@@ -33,7 +33,7 @@ public/                  # 静态资源;vue.esm-browser.js 为本地化的 Vue S
 | `/login` | 客户端 | 登录/注册二合一,open-redirect 防护(`safeFrom`) |
 | `/my/kb*` | 客户端 | 个人知识库:配额、文档列表、拖拽上传 |
 | `/my/favorites` | 客户端 | 我的收藏:星标文档列表与取消收藏 |
-| `/admin*` | 客户端 | 管理后台 10 页:仪表盘/文档/traces/config/quotas/usage/feedback/audit/users/eval |
+| `/admin*` | 客户端 | 管理后台 11 页:仪表盘/文档/traces/config/quotas/usage/**report(运营周报)**/feedback/audit/users/eval |
 | `/api/docs/url` | Route Handler | docPath → 站内 URL 反查(全站唯一 API Route) |
 | `/sitemap.xml` `/robots.txt` | 生成 | 全站 4000+ URL 的 sitemap;robots 放行文档区、屏蔽 /admin /my /ai /api |
 | `/feed.xml` | Route Handler | RSS 2.0:按文件 mtime 取最近更新 50 篇(1h revalidate,不依赖 git) |

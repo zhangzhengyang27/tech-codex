@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, ChevronDown, Menu, X, Sparkles, Shield, FileText, BarChart3, ScrollText, Library, LogOut, LayoutDashboard, MessageSquare, Users, Gauge, Activity, Settings } from "lucide-react";
+import { Home, ChevronDown, Menu, X, Sparkles, Shield, FileText, BarChart3, ScrollText, Library, LogOut, LayoutDashboard, MessageSquare, Users, Gauge, Activity, Settings, CalendarRange } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
@@ -85,6 +85,7 @@ const ADMIN_LINKS = [
   { label: "RAG 评测", href: "/admin/eval", icon: Shield },
   { label: "问答反馈", href: "/admin/feedback", icon: MessageSquare },
   { label: "用量统计", href: "/admin/usage", icon: BarChart3 },
+  { label: "运营周报", href: "/admin/report", icon: CalendarRange },
   { label: "检索诊断", href: "/admin/traces", icon: Activity },
   { label: "用户管理", href: "/admin/users", icon: Users },
   { label: "配额管理", href: "/admin/quotas", icon: Gauge },

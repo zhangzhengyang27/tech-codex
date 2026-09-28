@@ -73,3 +73,56 @@ export async function listLockedAccounts(): Promise<LockedAccountItem[]> {
 export async function unlockAccount(username: string): Promise<void> {
   await opsFetch(`/security/logins/${encodeURIComponent(username)}`, { method: "DELETE" });
 }
+
+/* ===== 运营周报（GET /admin/kb/report） ===== */
+
+export interface UsageTrendPoint {
+  date: string;
+  questions: number;
+  tokens: number;
+  avgLatencyMs: number;
+  avgHitCount: number;
+}
+
+export interface UsageSummary {
+  totalQuestions: number;
+  totalInputTokens: number;
+  totalOutputTokens: number;
+  totalTokens: number;
+  avgLatencyMs: number;
+  avgHitCount: number;
+  trend: UsageTrendPoint[];
+}
+
+export interface DownQuestion {
+  question: string;
+  count: number;
+  lastComment: string | null;
+  lastAt: string | null;
+}
+
+export interface EvalTrendPoint {
+  date: string;
+  caseCount: number;
+  hitRate: number | null;
+  mrr: number | null;
+  ndcg: number | null;
+}
+
+export interface WeeklyReport {
+  days: number;
+  generatedAt: string;
+  usage: UsageSummary;
+  feedbackUp: number;
+  feedbackDown: number;
+  downRate: number;
+  openAlerts: number;
+  downTopQuestions: DownQuestion[];
+  evalTrend: EvalTrendPoint[];
+}
+
+/** 运营周报：近 N 天用量/反馈/点踩榜/评测趋势/告警聚合 */
+export async function weeklyReport(days = 30): Promise<WeeklyReport> {
+  const res = await opsFetch(`/report?days=${days}`);
+  return (await res.json()) as WeeklyReport;
+}

@@ -16,6 +16,7 @@ import {
   ShieldAlert,
   Unlock,
   FolderSync,
+  CalendarRange,
 } from "lucide-react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
@@ -62,6 +63,7 @@ const QUICK_LINKS = [
   { href: "/admin/eval", label: "RAG 评测", desc: "Golden Set · A/B 对照 · 趋势", icon: FlaskConical },
   { href: "/admin/feedback", label: "问答反馈", desc: "点赞点踩 · 回流评测用例", icon: MessageSquare },
   { href: "/admin/usage", label: "用量统计", desc: "问答量 · token · Top 用户", icon: BarChart3 },
+  { href: "/admin/report", label: "运营周报", desc: "点踩问题榜 · 反馈率 · 质量趋势", icon: CalendarRange },
   { href: "/admin/audit", label: "审计日志", desc: "管理操作留痕查询", icon: ScrollText },
 ];
 

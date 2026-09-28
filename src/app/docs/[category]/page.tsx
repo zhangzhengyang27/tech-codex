@@ -1,11 +1,27 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { getCategoryBySlug, allCategories } from '@/lib/docs-config';
 import { getSections } from '@/lib/docs-reader';
 import type { DocSection } from '@/lib/docs-reader';
 
 export function generateStaticParams() {
   return allCategories.map((cat) => ({ category: cat.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}): Promise<Metadata> {
+  const { category } = await params;
+  const cat = getCategoryBySlug(category);
+  if (!cat) return {};
+  return {
+    title: cat.title,
+    description: cat.description || `${cat.title} 分类下的全部技术文档`,
+    alternates: { canonical: `/docs/${category}` },
+  };
 }
 
 /** 递归渲染章节（含嵌套子章节） */

@@ -160,6 +160,9 @@ export default function MyKbOverviewPage() {
             <Link href="/my/kb/documents" className="text-xs text-accent hover:underline">
               查看全部 →
             </Link>
+            <Link href="/my/favorites" className="text-xs text-foreground/50 hover:text-accent">
+              我的收藏
+            </Link>
           </div>
         </div>
         {!recent || recent.length === 0 ? (

@@ -1,11 +1,13 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { MarkdownAsync as ReactMarkdown } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import { getCategoryBySlug } from '@/lib/docs-config';
 import { getDocContent } from '@/lib/docs-reader';
+import { excerptOf } from '@/lib/site';
 import { relatedDocs } from '@/lib/related-docs';
 import { Toc } from '@/components/ui/toc';
 import { extractToc } from '@/lib/toc';
@@ -14,6 +16,7 @@ import { MermaidBlock } from '@/components/ui/mermaid-block';
 import { VpContainer } from '@/components/ui/vp-container';
 import { CodeGroup } from '@/components/ui/code-group';
 import { DocAskPanel } from '@/components/docs/doc-ask';
+import { FavoriteButton } from '@/components/docs/favorite-button';
 import { remarkVitepressContainers, normalizeVitepressContainers } from '@/lib/remark-vitepress-containers';
 import { remarkDocLinks } from '@/lib/remark-doc-links';
 import type { Components } from 'react-markdown';
@@ -93,6 +96,32 @@ function extractCodeText(children: React.ReactNode): string {
   return '';
 }
 
+/** 详情页 SEO 元数据：标题取文档标题，摘要取正文首段纯文本（正文 heading 之外的段落）。 */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string; slug: string[] }>;
+}): Promise<Metadata> {
+  const { category, slug } = await params;
+  const cat = getCategoryBySlug(category);
+  if (!cat) return {};
+  const slugPath = slug.map((s) => decodeURIComponent(s)).join('/');
+  const doc = getDocContent(`${cat.dir}/${slugPath}.md`);
+  if (!doc) return {};
+  const description = excerptOf(doc.content) || `${cat.title} · ${doc.title}`;
+  return {
+    title: doc.title,
+    description,
+    alternates: { canonical: `/docs/${category}/${slugPath}` },
+    openGraph: {
+      title: doc.title,
+      description,
+      type: 'article',
+      url: `/docs/${category}/${slugPath}`,
+    },
+  };
+}
+
 export default async function DocPage({
   params,
 }: {
@@ -123,6 +152,8 @@ export default async function DocPage({
           </Link>
           <span className="mx-0.5">/</span>
           <span className="text-foreground">{doc.title}</span>
+          {/* 收藏星标：仅登录用户且文档已入知识库时可见（内部自判断） */}
+          <FavoriteButton docPath={relativePath} />
         </nav>
 
         <article className="prose-doc">

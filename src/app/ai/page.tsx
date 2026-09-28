@@ -27,6 +27,7 @@ import {
 import { WelcomeCard } from "@/components/ai/welcome-card";
 import { ChatInput } from "@/components/ai/chat-input";
 import { ScopeSwitcher } from "@/components/kb/scope-switcher";
+import { CategorySwitcher } from "@/components/kb/category-switcher";
 
 export default function AiPage() {
   const router = useRouter();
@@ -44,6 +45,8 @@ export default function AiPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   /** 检索范围：默认公共文档，与既有访客行为一致（scope 随每次提问携带） */
   const [scope, setScope] = useState<KbScope>("public");
+  /** 课程分类过滤（frontmatter category，空串=不过滤；随每次提问携带） */
+  const [category, setCategory] = useState("");
   const abortRef = useRef<AbortController | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   /** 溯源 filePath → 完整文档 URL（未请求/未命中为 null），用于来源链接 */
@@ -233,6 +236,7 @@ export default function AiPage() {
         controller.signal,
         undefined,
         scope,
+        category,
       );
       // 流正常结束：泵排空剩余缓冲，onFinish 完成提交与收尾
       pump.end();
@@ -400,6 +404,7 @@ export default function AiPage() {
           </div>
           <div className="flex items-center gap-3">
             <ScopeSwitcher value={scope} onChange={setScope} disabled={busy} />
+            <CategorySwitcher value={category} onChange={setCategory} disabled={busy} />
             {phase && !busy && phase !== "完成" && (
               <span className="text-xs text-foreground/40">{phase}</span>
             )}

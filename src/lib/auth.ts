@@ -152,13 +152,15 @@ export async function kbSearch(
   query: string,
   k = 5,
   path?: string,
-  scope?: KbScope
+  scope?: KbScope,
+  category?: string
 ): Promise<KbChunkHit[]> {
   const token = getToken();
   const pathQs = path ? `&path=${encodeURIComponent(path)}` : "";
   const scopeQs = scope ? `&scope=${encodeURIComponent(scope)}` : "";
+  const categoryQs = category ? `&category=${encodeURIComponent(category)}` : "";
   const res = await fetch(
-    `/kb-api/search?query=${encodeURIComponent(query)}&k=${k}${pathQs}${scopeQs}`,
+    `/kb-api/search?query=${encodeURIComponent(query)}&k=${k}${pathQs}${scopeQs}${categoryQs}`,
     { headers: token ? { Authorization: `Bearer ${token}` } : {} }
   );
   if (!res.ok) throw new Error(`请求失败（${res.status}）`);
@@ -268,13 +270,15 @@ export async function streamChat(
   onEvent: (ev: ChatStreamEvent) => void,
   signal?: AbortSignal,
   docPath?: string,
-  scope?: KbScope
+  scope?: KbScope,
+  category?: string
 ): Promise<void> {
   const token = getToken();
   const body = new URLSearchParams({ message });
   if (conversationId) body.set("conversationId", conversationId);
   if (docPath) body.set("docPath", docPath);
   if (scope) body.set("scope", scope);
+  if (category) body.set("category", category);
   const res = await fetch("/kb-api/chat-stream", {
     method: "POST",
     headers: {

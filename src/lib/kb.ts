@@ -75,3 +75,59 @@ export async function myDocument(id: number): Promise<KbDocumentView> {
 export async function deleteMyDocument(id: number): Promise<void> {
   await kbFetch(`/my/documents/${id}`, { method: "DELETE" });
 }
+
+/* ===== 文档收藏 ===== */
+
+/** 收藏条目：文档展示信息实时取自 kb_document（标题/路径） */
+export interface KbFavoriteView {
+  docId: number;
+  libraryId: string;
+  title: string;
+  filePath: string;
+  space: string | null;
+  createdAt: string | null;
+}
+
+interface PagedFavorites {
+  content: KbFavoriteView[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
+}
+
+/** 我的收藏分页：GET /api/kb/favorites */
+export async function favoritesList(page = 0, size = 50): Promise<PagedFavorites> {
+  const qs = new URLSearchParams({ page: String(page), size: String(size) });
+  return (await kbFetch(`/favorites?${qs}`)).json();
+}
+
+/** 收藏文档（幂等）：POST /api/kb/favorites/{docId} */
+export async function favoriteAdd(docId: number): Promise<KbFavoriteView> {
+  return (await kbFetch(`/favorites/${docId}`, { method: "POST" })).json();
+}
+
+/** 取消收藏（幂等）：DELETE /api/kb/favorites/{docId} */
+export async function favoriteRemove(docId: number): Promise<void> {
+  await kbFetch(`/favorites/${docId}`, { method: "DELETE" });
+}
+
+/**
+ * 按 docs 相对路径解析公共文档收藏态（文档站详情页星标）。
+ * 未登录返回 null（调用方据此隐藏星标）；路径未命中 KB 文档返回 null。
+ */
+export async function favoriteByPath(
+  path: string
+): Promise<{ docId: number; favorite: boolean } | null> {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const res = await fetch(`/kb-api/favorites/by-path?path=${encodeURIComponent(path)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as { docId: number; favorite: boolean };
+  } catch {
+    return null;
+  }
+}

@@ -32,8 +32,11 @@ public/                  # 静态资源;vue.esm-browser.js 为本地化的 Vue S
 | `/ai` | 客户端 | RAG 对话主页:SSE 流式问答、会话管理、点赞反馈、检索范围切换、来源溯源(经 doc-url 反查站内链接) |
 | `/login` | 客户端 | 登录/注册二合一,open-redirect 防护(`safeFrom`) |
 | `/my/kb*` | 客户端 | 个人知识库:配额、文档列表、拖拽上传 |
+| `/my/favorites` | 客户端 | 我的收藏:星标文档列表与取消收藏 |
 | `/admin*` | 客户端 | 管理后台 10 页:仪表盘/文档/traces/config/quotas/usage/feedback/audit/users/eval |
 | `/api/docs/url` | Route Handler | docPath → 站内 URL 反查(全站唯一 API Route) |
+| `/sitemap.xml` `/robots.txt` | 生成 | 全站 4000+ URL 的 sitemap;robots 放行文档区、屏蔽 /admin /my /ai /api |
+| `/feed.xml` | Route Handler | RSS 2.0:按文件 mtime 取最近更新 50 篇(1h revalidate,不依赖 git) |
 
 ## src/lib 三层
 
@@ -64,8 +67,11 @@ UI 展示逻辑,真正的权限由后端 `/admin/**` 强制(无 middleware.ts)�
 
 ## 已知边界 / 待办
 
-- SEO:仅根 layout 一条静态 metadata;详情页无 `generateMetadata`,无 sitemap/robots/RSS(计划中)。
+- SEO:根 layout + 分类页/详情页 generateMetadata、sitemap、robots、RSS 均已就绪(2026-09-28);
+  OG 图片未配置。
 - 暗色模式:样式变量已预留,未开放切换。
 - Vue SFC 预览:运行时已本地化,编译器仍依赖 esm.sh CDN,离线不可用。
 - 无 i18n;`lang="zh-CN"` 单语。
 - 测试覆盖:`src/lib` 纯函数已有 vitest 单测;组件级测试未引入。
+- AI 问答支持课程分类过滤(category,来自后端 /kb-api/categories,与目录分类是两套口径);
+  首页智能搜索暂未接分类过滤。

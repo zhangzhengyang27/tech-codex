@@ -1,0 +1,9 @@
+# 同步依赖缓存据此幂等
+node_modules
+.next
+.git
+.DS_Store
+._*
+*.log
+scripts
+.workbuddy

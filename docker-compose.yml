@@ -1,0 +1,16 @@
+# https://docs.zhangzhengyang.com → frp/VPS → 本容器 :4200
+# KB 后端代理：/kb-auth|/kb-api|/kb-admin → rag-backend:8081（kbnet 网络）
+name: tech-codex
+services:
+  tech-codex:
+    build: .
+    environment:
+      NODE_ENV: production
+      KB_BACKEND_ORIGIN: http://rag-backend:8081
+    ports:
+      - "4200:4200"
+    restart: unless-stopped
+    networks: [kbnet]
+networks:
+  kbnet:
+    external: true

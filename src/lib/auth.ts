@@ -295,8 +295,22 @@ export async function streamChat(
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
+  // 空闲帧超时：连接中断时后端 SSE 可能既不完成也不报错（实测弱网下发生），
+  // 75s 内无任何帧则主动中止，避免界面永久卡在"回答中"（正常生成 token 间隔远小于此）
+  const IDLE_TIMEOUT_MS = 75_000;
+  let lastActivity = Date.now();
   while (true) {
-    const { done, value } = await reader.read();
+    const remaining = IDLE_TIMEOUT_MS - (Date.now() - lastActivity);
+    if (remaining <= 0) break;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const idle = new Promise<"__idle__">((resolve) => {
+      timer = setTimeout(() => resolve("__idle__"), remaining);
+    });
+    const result = await Promise.race([reader.read(), idle]);
+    clearTimeout(timer);
+    if (result === "__idle__") break;
+    lastActivity = Date.now();
+    const { done, value } = result;
     if (done) break;
     buffer += decoder.decode(value, { stream: true });
     let index;

@@ -3,6 +3,8 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
+import { getToken } from "@/lib/auth";
+
 /**
  * 课程分类过滤器（AI 问答页）：选项来自后端 /kb-api/categories
  * （kb_document.category 去重，即文档 frontmatter 的 category 标签，
@@ -21,7 +23,10 @@ export function CategorySwitcher({
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/kb-api/categories")
+    // 端点在 /api/kb/** 鉴权范围内，必须携带 Bearer token，否则 401 静默失败、下拉永不出现
+    fetch("/kb-api/categories", {
+      headers: { ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}) },
+    })
       .then((res) => (res.ok ? res.json() : []))
       .then((list: unknown) => {
         if (!cancelled && Array.isArray(list)) {

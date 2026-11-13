@@ -354,6 +354,7 @@ spring.zipkin.base-url 设置可用的 Zipkin 服务端IP端口即可。
 | 限流熔断 | Sentinel 1.8 | Sentinel 1.8+（规则可持久化到 Nacos） |
 | 分布式事务 | Seata 1.x | Seata 1.6+/2.x（AT 模式稳定） |
 | RPC | Dubbo 2.x | Dubbo 3.x（应用级服务发现） |
+| 负载均衡 | Ribbon（已停止维护） | Spring Cloud LoadBalancer |
 | 链路追踪 | Sleuth + Zipkin（Sleuth 已停止维护） | Micrometer Tracing + Zipkin/OTel |
 | 版本对应 | Boot 2.x + JDK 8 | Boot 3.5.x + JDK 17+（2022.0.0.0+ 起） |
 

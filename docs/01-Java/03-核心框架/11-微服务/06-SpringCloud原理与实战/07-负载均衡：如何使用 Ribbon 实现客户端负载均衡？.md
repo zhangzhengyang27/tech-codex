@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 负载均衡：如何使用 Ribbon 实现客户端负载均衡？
 
+> ⚠️ **组件状态说明**：Ribbon 已由 Netflix 官方宣布停止维护（Netflix 已将其转入归档状态，Spring Cloud 自 2020.0 版本起移除 Ribbon，以 Spring Cloud LoadBalancer 全面替代）。本文保留其原理讲解价值（客户端负载均衡的使用模式与策略配置思想并未过时），生产选型请参考 [Spring Cloud LoadBalancer 官方文档](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/loadbalancer.html)（文中组件对照见尾部版本差异表）。
+
 前面我们通过几个节详细介绍了基于 Eureka 的服务治理构建方式和实现原理。在服务治理技术体系中，服务的发现和调用往往是和**负载均衡**这个概念结合在一起的。Spring Cloud 中同样存在着与 Eureka 配套的负载均衡器，这就是 Ribbon 组件。
 
 

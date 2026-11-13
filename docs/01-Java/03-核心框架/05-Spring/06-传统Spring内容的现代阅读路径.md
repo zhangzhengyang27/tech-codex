@@ -335,7 +335,7 @@ public class Application {
 - [Bean 生命周期与循环依赖](04-Bean生命周期与循环依赖.md) — 三级缓存机制
 - [SpEL 表达式语言](10-SpEL表达式语言.md) — 表达式语法与校验上下文
 - [Spring 验证与数据校验](11-Spring验证与数据校验.md) — Bean Validation 与分组校验
-- [Spring Boot 介绍](/JAVA/SpringBoot/00-SpringBoot介绍) — 自动配置与现代实践
+- [Spring Boot 介绍](/docs/java-framework/06-SpringBoot/00-SpringBoot介绍) — 自动配置与现代实践
 :::
 
 ## 版本差异(旧版 → Spring 6.x)

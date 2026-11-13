@@ -35,22 +35,22 @@ tags: [Java, MyBatis]
 
 | 篇 | 主题 |
 |----|------|
-| [00-MyBatis 概述与选型](00-MyBatis概述与选型) | 定位、特性、与 JPA 对比、为何学原理 |
-| [01-快速上手与整体架构](01-快速上手与整体架构) | 订单示例、源码环境、三层架构 |
-| [02-反射工具箱](02-反射工具箱) | Reflector、MetaObject、ObjectWrapper |
-| [03-类型体系与 TypeHandler](03-类型体系与TypeHandler) | 类型转换、别名、JdbcType/JavaType |
-| [04-日志适配、数据源与事务](04-日志适配与数据源事务) | 适配器、DataSource、事务 |
-| [05-Mapper 代理映射](05-Mapper代理映射) | MapperProxy、MapperMethod |
-| [06-初始化与配置解析](06-初始化与配置解析) | 配置/映射文件解析、启动流程 |
-| [07-动态 SQL 解析](07-动态SQL解析) | OGNL、SqlNode、SqlSource |
-| [08-结果集映射](08-结果集映射) | ResultMap、嵌套映射、延迟加载 |
-| [09-StatementHandler](09-StatementHandler) | 参数绑定、SQL 执行、路由 |
-| [10-Executor 与 SqlSession 接口层](10-Executor与SqlSession接口层) | Executor 体系、一级缓存、接口层 |
-| [11-缓存与插件体系](11-缓存与插件体系) | 一级/二级缓存、Interceptor 责任链 |
-| [12-MyBatis 与 Spring 集成及生态](12-MyBatis与Spring集成及生态) | 集成原理、MyBatis-Plus、Generator |
-| [13-架构与执行流程分析](13-架构与执行流程分析) | 接口层/数据处理层/框架支撑层/引导层的分层剖析与核心执行流程 |
-| [14-MyBatis 源码分析](14-MyBatis源码分析) | 源码级执行链路：从 SqlSession 到 StatementHandler 的完整走读 |
-| [15-缓存机制](15-缓存机制) | 一级/二级缓存的使用与命中失效规则、源码实现 |
+| [00-MyBatis 概述与选型](00-MyBatis概述与选型.md) | 定位、特性、与 JPA 对比、为何学原理 |
+| [01-快速上手与整体架构](01-快速上手与整体架构.md) | 订单示例、源码环境、三层架构 |
+| [02-反射工具箱](02-反射工具箱.md) | Reflector、MetaObject、ObjectWrapper |
+| [03-类型体系与 TypeHandler](03-类型体系与TypeHandler.md) | 类型转换、别名、JdbcType/JavaType |
+| [04-日志适配、数据源与事务](04-日志适配与数据源事务.md) | 适配器、DataSource、事务 |
+| [05-Mapper 代理映射](05-Mapper代理映射.md) | MapperProxy、MapperMethod |
+| [06-初始化与配置解析](06-初始化与配置解析.md) | 配置/映射文件解析、启动流程 |
+| [07-动态 SQL 解析](07-动态SQL解析.md) | OGNL、SqlNode、SqlSource |
+| [08-结果集映射](08-结果集映射.md) | ResultMap、嵌套映射、延迟加载 |
+| [09-StatementHandler](09-StatementHandler.md) | 参数绑定、SQL 执行、路由 |
+| [10-Executor 与 SqlSession 接口层](10-Executor与SqlSession接口层.md) | Executor 体系、一级缓存、接口层 |
+| [11-缓存与插件体系](11-缓存与插件体系.md) | 一级/二级缓存、Interceptor 责任链 |
+| [12-MyBatis 与 Spring 集成及生态](12-MyBatis与Spring集成及生态.md) | 集成原理、MyBatis-Plus、Generator |
+| [13-架构与执行流程分析](13-架构与执行流程分析.md) | 接口层/数据处理层/框架支撑层/引导层的分层剖析与核心执行流程 |
+| [14-MyBatis 源码分析](14-MyBatis源码分析.md) | 源码级执行链路：从 SqlSession 到 StatementHandler 的完整走读 |
+| [15-缓存机制](15-缓存机制.md) | 一级/二级缓存的使用与命中失效规则、源码实现 |
 
 ## 版本差异(MyBatis 源码专题 → 3.5.x)
 

@@ -160,7 +160,7 @@ Spring Boot 默认会把 `{code}` 格式的 message 交给 `MessageSource` 解�
 
 Spring Boot 国际化由 `MessageSource` 提供文案、`LocaleResolver` 决定语言、`LocaleChangeInterceptor` 支持动态切换。把多语言文案抽到 `messages_*.properties`，校验注解 message 用 `{code}` 即可自动本地化。需要用户切换语言时务必用 Session/Cookie 解析器并注册拦截器。
 
-**相关阅读**：校验注解与分组见 [Spring 验证与数据校验](/JAVA/Spring/11-Spring验证与数据校验)；Web 请求处理流程见 [Spring MVC 请求处理流程](25-WebMvc请求处理流程源码)。
+**相关阅读**：校验注解与分组见 [Spring 验证与数据校验](/docs/java-framework/05-Spring/11-Spring验证与数据校验)；Web 请求处理流程见 [Spring MVC 请求处理流程](25-WebMvc请求处理流程源码)。
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 

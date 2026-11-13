@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 同步网关：如何剖析 Zuul 网关的工作原理？
 
+> ⚠️ **组件状态说明**：Zuul 1.x 已由 Netflix 官方宣布停止维护（Netflix 自身已转向 Zuul 2，但 Spring Cloud 从未集成 Zuul 2，官方以 Spring Cloud Gateway 全面替代）。本文保留其原理讲解价值（过滤器链、RequestContext 与动态加载等网关核心机制并未过时，Spring Cloud Gateway 的 Filter 体系与之思想相通），生产选型请参考 [Spring Cloud Gateway](<../05-SpringCloudAlibaba实战/09-服务门户：Spring Cloud Gateway 如何把好微服务的大门.md>) 等现代替代方案（文中组件对照见尾部版本差异表）。
+
 上一节中，我们详细介绍了 Spring Cloud 中的 Zuul 网关的使用方式。作为 API 网关的一种实现方式，Spring Cloud Netflix Zuul 为我们提供了丰富的网关控制功能。今天我们将对它的内部原理进行深入剖析。Spring Cloud Netflix Zuul 同样是基于 Netflix 旗下的 Zuul 组件，本文内容我们也先从 Netflix Zuul 开始讲起。
 
 ## ZuulFilter 组件架构

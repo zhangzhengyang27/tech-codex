@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 熔断之器：如何使用 Spring Cloud Circuit Breaker 实现服务容错？（下）
 
+> ⚠️ **组件状态说明**：Hystrix 已由 Netflix 官方宣布停止维护（进入维护模式，仅存量修复，Spring Cloud 自 2020.0 版本起移除对其支持，CircuitBreaker 抽象现以 Resilience4j 为默认实现）。本文保留其原理讲解价值（熔断器的统一抽象与集成思想并未过时），生产选型请参考 [Sentinel](<../05-SpringCloudAlibaba实战/11-限流与熔断：Sentinel 在项目中的最佳实践.md>)、Resilience4j 等现代替代方案（文中组件对照见尾部版本差异表）。
+
 在上一节中，我们系统介绍了 Hystrix 所提供了服务隔离、服务容错和服务回退功能。我们发现这个框架确实非常强大，能够灵活处理服务容错的各种场景。事实上，业界也存在一批类似 Hystrix 的框架。Spring Cloud 基于这些框架的共性，专门抽象并开发了一个 Spring Cloud Circuit Breaker 框架。在本节中，我们将引入 Spring Cloud Circuit Breaker 框架，并给出使用这个框架来满足各种服务容错需求的实现方法。
 
 ## 理解 Spring Cloud Circuit Breaker 中的熔断器抽象

@@ -234,7 +234,7 @@ Spring Security 的核心入口不是 Controller,而是**过滤器链**。请求
 ```
 
 ::: warning 过滤器命名的版本差异
-上面的链条是 Spring Security 5.x 的经典命名。在 6.x 中有两处更名： → （职责拆分）； → （ 的新授权实现，旧的拦截器类已废弃）。职责与顺序基本不变。
+上面的链条是 Spring Security 5.x 的经典命名。在 6.x 中有两处更名：`SecurityContextPersistenceFilter` → `SecurityContextHolderFilter`（职责拆分）；`FilterSecurityInterceptor` → `AuthorizationFilter`（`AuthorizationManager` 的新授权实现，旧的拦截器类已废弃）。职责与顺序基本不变。
 :::
 
 **主要过滤器职责：**

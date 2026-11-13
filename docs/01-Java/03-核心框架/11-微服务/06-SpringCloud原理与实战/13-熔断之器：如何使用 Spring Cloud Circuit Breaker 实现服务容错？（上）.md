@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 熔断之器：如何使用 Spring Cloud Circuit Breaker 实现服务容错？（上）
 
+> ⚠️ **组件状态说明**：Hystrix 已由 Netflix 官方宣布停止维护（进入维护模式，仅存量修复，Spring Cloud 自 2020.0 版本起移除对其支持）。本文保留其原理讲解价值（线程隔离、熔断与服务回退的核心机制并未过时），生产选型请参考 [Sentinel](<../05-SpringCloudAlibaba实战/11-限流与熔断：Sentinel 在项目中的最佳实践.md>)、Resilience4j 等现代替代方案（文中组件对照见尾部版本差异表）。
+
 在上一节中，我们全面梳理了在微服务架构中实现服务容错的设计思想和实现方案，也引出了 Spring Cloud 中专门用于实现服务容错的 Spring Cloud Circuit Breaker 框架。我们知道 Spring Cloud Circuit Breaker 是一个集成性的框架，内部整合了 Netflix Hystrix、Resilience4j、Sentinel 和 Spring Retry 这四款独立的熔断器组件。由于篇幅有限，我们无意对这四款组件都进行详细的展开，而是更多关注于 Netflix 旗下的 Hystrix，以及受 Hystrix 启发而诞生的 Resilience4j。在本节中，我们先来讨论 Netflix Hystrix。
 
 ## 引入 Hystrix

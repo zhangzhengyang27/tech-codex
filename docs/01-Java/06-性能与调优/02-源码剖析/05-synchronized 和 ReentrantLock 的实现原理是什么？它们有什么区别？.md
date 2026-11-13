@@ -11,6 +11,10 @@ tags: [Java, 源码剖析]
 
 我们本文的面试题是，synchronized 和 ReentrantLock 是如何实现的？它们有什么区别？
 
+::: tip 分工声明：锁与死锁专题
+本篇是面试问答视角的 synchronized/ReentrantLock 原理对比；锁的完整体系（分类、读写锁、自旋锁、JVM 锁优化）见 [02-JVM与并发/锁机制](../../02-JVM与并发/03-锁机制.md)，AQS 深入另见 [AQS 与并发工具总结](../../02-JVM与并发/10-AQS与并发工具总结.md)。
+:::
+
 ### 典型回答
 
 synchronized 属于独占式悲观锁，是通过 JVM 隐式实现的，synchronized 只允许同一时刻只有一个线程操作资源。

@@ -382,3 +382,7 @@ Binder 是 Spring Cloud Stream 的核心组件，通过这个组件，Spring Clo
 | 版本对应 | Hoxton/2020.x + Boot 2.x + JDK 8 | 2025.x + Boot 3.5.x + JDK 17+ |
 
 > 本文为 Spring Cloud 旧版课程（Hoxton/2020.x 时代）。Hystrix、Ribbon、Zuul 1.x、Eureka 已停止维护，新项目请使用 Spring Cloud Gateway + LoadBalancer + Resilience4j（或 Alibaba 系 Nacos/Sentinel/Seata），并升级到 Spring Cloud 2025.x + Spring Boot 3.5.x。
+
+## 相关阅读
+
+本篇剖析 Stream 集成 RabbitMQ/Kafka 的实现原理;各中间件的可靠性机制与幂等、积压治理的深潜见 [13-消息队列导航](../../13-消息队列/00-导航.md),消息消费落库与数据库一致性配合见 [12-数据库总览](../../12-数据库/00-数据库.md)。

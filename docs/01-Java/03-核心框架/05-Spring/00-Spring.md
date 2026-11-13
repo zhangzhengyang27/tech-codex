@@ -1251,7 +1251,7 @@ flowchart LR
 2. **源码阅读**：阅读 Spring 核心源码，深入理解原理
 3. **SpEL**：掌握表达式语言在 `@Value`、缓存键、条件装配中的用法 → [SpEL 表达式语言](10-SpEL表达式语言.md)
 4. **Validation**：掌握 Bean Validation 注解、分组校验与自定义约束 → [Spring 验证与数据校验](11-Spring验证与数据校验.md)
-5. **Spring Boot**：学习 Spring Boot，快速构建应用 → [Spring Boot 介绍](/JAVA/SpringBoot/00-SpringBoot介绍)
+5. **Spring Boot**：学习 Spring Boot，快速构建应用 → [Spring Boot 介绍](/docs/java-framework/06-SpringBoot/00-SpringBoot介绍)
 6. **Spring Cloud**：学习 Spring Cloud，构建分布式系统
 7. **性能优化**：学习 Spring 性能调优技巧
 

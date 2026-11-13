@@ -19,6 +19,10 @@ tags: [Java, 源码剖析]
 
 其实当我们去看 Executors 的源码会发现，Executors.newFixedThreadPool()、Executors.newSingleThreadExecutor() 和 Executors.newCachedThreadPool() 等方法的底层都是通过 ThreadPoolExecutor 实现的，所以本文我们就重点来了解一下 ThreadPoolExecutor 的相关知识，比如它有哪些核心的参数？它是如何工作的？
 
+::: tip 分工声明：线程池
+本篇是面试问答 + 源码执行流程视角；线程池的完整使用指南（参数、队列、拒绝策略、定制与关闭）见 [02-JVM与并发/线程池](../../02-JVM与并发/02-线程池.md)，监控与调优实战另见 [线程池监控调优与排查案例](../../02-JVM与并发/12-线程池监控调优与排查案例.md)。
+:::
+
 ### 典型回答
 
 ThreadPoolExecutor 的核心参数指的是它在构建时需要传递的参数，其构造方法如下所示：

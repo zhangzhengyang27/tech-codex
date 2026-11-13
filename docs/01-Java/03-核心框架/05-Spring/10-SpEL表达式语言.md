@@ -197,7 +197,7 @@ String result = exp.getValue(ctx, String.class);   // "Hello World"
 
 SpEL 是 Spring 内部的表达式引擎，核心用法集中在 `@Value` 动态注入、缓存键/条件、条件装配与安全表达式。使用上要分清 `${}`（属性占位符）与 `#{}`（SpEL），区分 `SimpleEvaluationContext`（外部/不可信输入）与 `StandardEvaluationContext`（内部可信），并善用 `?.` 安全导航避免空指针。
 
-**相关阅读**：`@Value` 注入更完整的依赖注入语境见 [IoC 容器](01-IoC容器.md)；方法级鉴权表达式见 [Spring Security 认证授权与 JWT 基础](/JAVA/SpringSecurity/00-认证授权与JWT基础)。
+**相关阅读**：`@Value` 注入更完整的依赖注入语境见 [IoC 容器](01-IoC容器.md)；方法级鉴权表达式见 [Spring Security 认证授权与 JWT 基础](/docs/java-framework/07-SpringSecurity/00-认证授权与JWT基础)。
 
 ## 版本差异(旧版 → Spring 6.x)
 

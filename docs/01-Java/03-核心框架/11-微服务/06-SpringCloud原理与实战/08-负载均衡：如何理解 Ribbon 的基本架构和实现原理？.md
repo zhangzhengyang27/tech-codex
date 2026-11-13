@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 负载均衡：如何理解 Ribbon 的基本架构和实现原理？
 
+> ⚠️ **组件状态说明**：Ribbon 已由 Netflix 官方宣布停止维护（Netflix 已将其转入归档状态，Spring Cloud 自 2020.0 版本起移除 Ribbon，以 Spring Cloud LoadBalancer 全面替代）。本文保留其原理讲解价值（ILoadBalancer/IRule/IPing 核心架构与负载策略的设计思想并未过时，LoadBalancer 沿用了相同的客户端负载均衡模型），生产选型请参考 [Spring Cloud LoadBalancer 官方文档](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/loadbalancer.html)（文中组件对照见尾部版本差异表）。
+
 上一节我们介绍了 Spring Cloud Netflix Ribbon 的使用方法。可以看到，基于 Spring Cloud 对 Netflix Ribbon 的完美整合，在微服务系统中实现客户端负载均衡的开发过程对开发人员而言可以说是透明的，我们只需要在 RestTemplate 上添加一个 @LoadBalanced 注解即可。那么，你可能会觉得好奇，Spring Cloud 是如何做到这一点的呢？这就需要我们对 Netflix Ribbon 以及 Spring Cloud Netflix Ribbon 的基本架构以及实现原理进行深入分析。今天我们就来讨论这个内容。
 
 ## Netflix Ribbon 基本架构

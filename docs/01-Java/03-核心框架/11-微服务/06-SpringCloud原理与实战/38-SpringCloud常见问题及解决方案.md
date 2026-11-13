@@ -8,6 +8,8 @@ tags: [Java, SpringCloud原理与实战]
 
 # Spring Cloud常见问题及解决方案
 
+> ⚠️ **组件状态说明**：本文涉及的多款 Netflix 组件已停止维护（Eureka 2.x 进入维护模式仅存量修复，Ribbon、Zuul 1.x 已归档，Spring Cloud 自 2020.0 起以 LoadBalancer/Gateway/Resilience4j 全面替代）。本文保留其原理讲解价值（服务发现缓存、超时与重试等排查思路并未过时），生产选型请参考 [Nacos](<../05-SpringCloudAlibaba实战/04-服务治理：Nacos 如何实现微服务服务治理.md>)、[Spring Cloud Gateway](<../05-SpringCloudAlibaba实战/09-服务门户：Spring Cloud Gateway 如何把好微服务的大门.md>) 等现代替代方案（文中组件对照见尾部版本差异表）。
+
 本文我们主要讲解 Eureka 服务发现慢的原因，Spring Cloud 组件的重试和调优，以及 Zuul 动态路由、Feign 动态日志级别等内容。
 
 ## Eureka 服务快速发现的背景

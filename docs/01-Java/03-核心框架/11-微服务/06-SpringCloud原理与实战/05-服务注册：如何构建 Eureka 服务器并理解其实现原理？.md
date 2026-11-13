@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 服务注册：如何构建 Eureka 服务器并理解其实现原理？
 
+> ⚠️ **组件状态说明**：Eureka 2.x 已由 Netflix 官方宣布停止维护（进入维护模式，仅存量修复），Spring Cloud Netflix 后续版本仅对 Eureka 1.x 做兼容支持。本文保留其原理讲解价值（服务注册、服务续约、注册表存储、多级缓存与集群节点同步等注册中心核心机制并未过时），生产选型请参考 [Nacos](<../05-SpringCloudAlibaba实战/04-服务治理：Nacos 如何实现微服务服务治理.md>) 等现代替代方案（文中组件对照见尾部版本差异表）。
+
 上一节，我们全面介绍了服务治理的解决方案，引出了 **Spring Cloud Netflix Eureka** 组件。Eureka 分为**服务器端组件**和**客户端组件**，今天我们将讨论 Eureka 服务器的构建方式及其实现原理。
 
 ## 基于 Eureka 构建注册中心

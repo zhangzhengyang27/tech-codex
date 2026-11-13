@@ -1,10 +1,18 @@
 ---
 title: "API 工程搭建和简单访问认证"
 description: "两套 API 访问准入方案：Nginx auth_request 模块调用 SpringBoot 认证接口的流程与 default.conf 配置，以及 SpringBoot 整合 Shiro + JWT 登录发放 Token（JwtRealm/JwtFilter/ShiroConfig/ApiAccessController）的实现与功能验证。"
-category: Java
-
+keywords: [Nginx auth_request, Shiro, JWT]
+category: "Java"
+tags: [ChatGPT, SpringBoot]
+created: 2026-11-13
+updated: 2026-11-13
+status: 存档
 ---
 # API 工程搭建和简单访问认证
+
+::: warning 复现前提说明
+本项目为知识星球付费课程存档：完整源码在知识星球内部分发，配套 gitcode.net 仓库需权限申请方可访问；文中 api.xfg.im 中转地址与 gpt-3.5-turbo 模型名均已随 OpenAI 接口迭代失效。本系列代码仅作架构学习参考，不建议照抄运行。
+:::
 
 在完成一个完整需求前，最好是先梳理需求，并把用于完成需求目标的各个功能节点进行单个验证，以确保方案的可行性。有了这些基本功能模块的验证后，就可以逐步再把各个模块像乐高积木一样搭建起来，搭建的过程就是架构和设计模式的运用。
 

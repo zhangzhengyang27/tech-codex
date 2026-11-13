@@ -8,6 +8,8 @@ tags: [Java, SpringCloud原理与实战]
 
 # 声明式服务调用-Feign
 
+> ⚠️ **组件状态说明**：本文写作时 Feign 尚属 Netflix 体系，其配套的负载均衡组件 Ribbon 与熔断组件 Hystrix 均已由 Netflix 官方宣布停止维护（Spring Cloud 自 2020.0 起分别以 Spring Cloud LoadBalancer、Resilience4j/Sentinel 替代），Feign 本身则由 Spring Cloud OpenFeign 接续维护。本文保留其原理讲解价值（声明式服务调用的核心机制并未过时），生产选型请参考 Spring Cloud OpenFeign 与 [Spring Cloud LoadBalancer 官方文档](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/loadbalancer.html)（文中组件对照见尾部版本差异表）。
+
 本文我们主要讲解：Feign 基础知识，Feign 的使用以及最佳使用技巧，Feign 源码分析。
 
 在日常工作中，我们经常会遇到需要调用内部 API 或者第三方 API 的情况，主要有以下方式：

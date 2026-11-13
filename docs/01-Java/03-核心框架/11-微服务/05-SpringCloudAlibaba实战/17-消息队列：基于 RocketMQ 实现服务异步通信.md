@@ -440,6 +440,12 @@ public class RocketmqConsumerApplication {
 | 限流熔断 | Sentinel 1.8 | Sentinel 1.8+（规则可持久化到 Nacos） |
 | 分布式事务 | Seata 1.x | Seata 1.6+/2.x（AT 模式稳定） |
 | RPC | Dubbo 2.x | Dubbo 3.x（应用级服务发现） |
+| 负载均衡 | Ribbon（已停止维护） | Spring Cloud LoadBalancer |
+| 链路追踪 | Sleuth + Zipkin（Sleuth 已停止维护） | Micrometer Tracing + Zipkin/OTel |
 | 版本对应 | Boot 2.x + JDK 8 | Boot 3.5.x + JDK 17+（2022.0.0.0+ 起） |
 
 > 本文为 Spring Cloud Alibaba 旧版课程。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。
+
+## 相关阅读
+
+本文聚焦"微服务如何接入 RocketMQ"。消息可靠性(投递确认、幂等、积压治理)的深潜见 [13-消息队列导航](../../13-消息队列/00-导航.md);消息消费后的数据库落库与一致性配合,见 [12-数据库总览](../../12-数据库/00-数据库.md)。

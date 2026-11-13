@@ -192,3 +192,9 @@ ELK 选型要点：中小规模用 Logstash 或 Filebeat 直采 ES；海量日�
 - Filebeat 官方文档：<https://www.elastic.co/guide/en/beats/filebeat/current/>
 - Kibana 官方文档：<https://www.elastic.co/guide/en/kibana/current/>
 - MySQL 慢查询日志官方文档：<https://dev.mysql.com/doc/refman/8.0/en/slow-query-log.html>
+
+### 相关阅读
+
+- 慢 SQL 本身怎么定位与分析(EXPLAIN 执行计划、慢查询日志参数):见 Java 专题 [执行计划与慢查询定位](../../01-Java/03-核心框架/12-数据库/06-执行计划与慢查询定位.md);
+- 数据库知识总览与全目录导航:见 [数据库总览](../../01-Java/03-核心框架/12-数据库/00-数据库.md),其"后续阅读建议"中有本文的反向链接。
+- MySQL 慢查询日志官方文档：<https://dev.mysql.com/doc/refman/8.0/en/slow-query-log.html>

@@ -82,7 +82,7 @@ Spring Security 的过滤器链由一系列有序的过滤器组成，每个过�
 ```
 
 ::: warning 过滤器命名的版本差异
-上面的链条是 Spring Security 5.x 的经典命名。在 6.x 中有两处更名： → （职责拆分）； → （ 的新授权实现）。职责与顺序基本不变，下文按经典命名讲解。
+上面的链条是 Spring Security 5.x 的经典命名。在 6.x 中有两处更名：`SecurityContextPersistenceFilter` → `SecurityContextHolderFilter`（职责拆分）；`FilterSecurityInterceptor` → `AuthorizationFilter`（`AuthorizationManager` 的新授权实现）。职责与顺序基本不变，下文按经典命名讲解。
 :::
 
 ### 关键过滤器详解

@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 熔断原理：如何正确理解 HystrixCircuitBreaker 的底层实现机制？
 
+> ⚠️ **组件状态说明**：Hystrix 已由 Netflix 官方宣布停止维护（进入维护模式，仅存量修复，Spring Cloud 自 2020.0 版本起移除对其支持）。本文保留其原理讲解价值（熔断器状态机与滑动窗口统计等底层机制并未过时，Resilience4j/Sentinel 的实现与之思想相通），生产选型请参考 [Sentinel](<../05-SpringCloudAlibaba实战/11-限流与熔断：Sentinel 在项目中的最佳实践.md>)、Resilience4j 等现代替代方案（文中组件对照见尾部版本差异表）。
+
 介绍完 Spring Cloud 中针对服务容错机制的 Spring Cloud Circuit Breaker 组件之后，今天我们还是探讨其中的 Hystrix 组件。Hystrix 作为最为经典的服务容错实现框架，我们有必要对它的底层实现机制有一定的了解。
 
 ## HystrixCircuitBreaker

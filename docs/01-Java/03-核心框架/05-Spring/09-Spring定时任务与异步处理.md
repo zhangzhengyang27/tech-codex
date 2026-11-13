@@ -971,7 +971,7 @@ public CompletableFuture<String> asyncTask() {
 ## 关联阅读
 
 - [AOP](02-AOP.md) — 代理原理与避坑指南，理解 `@Async` 失效的根本原因
-- [Spring Boot 介绍](/JAVA/SpringBoot/00-SpringBoot介绍) — Spring Boot 自动配置对定时任务和异步的支持
+- [Spring Boot 介绍](/docs/java-framework/06-SpringBoot/00-SpringBoot介绍) — Spring Boot 自动配置对定时任务和异步的支持
 
 ## 版本差异(旧版 → Spring 6.x)
 

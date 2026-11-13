@@ -7,6 +7,8 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 同步网关：如何基于 Zuul 构建 API 网关？
 
+> ⚠️ **组件状态说明**：Zuul 1.x 已由 Netflix 官方宣布停止维护（Netflix 自身已转向 Zuul 2，但 Spring Cloud 从未集成 Zuul 2，官方以 Spring Cloud Gateway 全面替代）。本文保留其原理讲解价值（API 网关的路由映射与入口收敛等核心机制并未过时），生产选型请参考 [Spring Cloud Gateway](<../05-SpringCloudAlibaba实战/09-服务门户：Spring Cloud Gateway 如何把好微服务的大门.md>) 等现代替代方案（文中组件对照见尾部版本差异表）。
+
 今天我们开始讨论 Spring Cloud 中的另一个核心技术组件，**API 网关**。
 
 我们先来简单介绍 API 网关的基本结构，然后给出 Spring Cloud 中关于 API 网关的解决方案。今天的内容重点是介绍如何使用 Zuul 这一特定工具来构建 API 网关的实现过程。

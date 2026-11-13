@@ -9,6 +9,10 @@ tags: [Java, SSM]
 
 # JDBCTemplate和事务
 
+::: tip 分工声明：Spring 事务三视角
+本篇是**整合/使用视角**（JdbcTemplate 与 SSM 时代的声明式事务，SSM 整合全流程另见 [01-SSM 整合](01-SSM整合.md)）；事务的**原理视角**（接入机制、传播行为、失效场景）见 [05-Spring/事务管理与失效场景](../05-Spring/03-事务管理与失效场景.md)，**源码视角**见 [06-SpringBoot/数据访问层深度实践](../06-SpringBoot/11-数据访问层深度实践.md)。
+:::
+
 ## JDBCTemplate
 
 JdbcTemplate 是 spring 框架中提供的一个模板对象，是对原始繁琐的 Jdbc API 对象的简单封装

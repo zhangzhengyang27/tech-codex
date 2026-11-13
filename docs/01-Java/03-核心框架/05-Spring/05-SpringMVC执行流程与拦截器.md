@@ -2270,7 +2270,7 @@ SpringMVC 执行流程是理解整个框架的核心：
 
 - [Spring 概览](00-Spring.md) — 模块组成与整体设计
 - [AOP](02-AOP.md) — 理解代理模式
-- [Spring Boot 介绍](/JAVA/SpringBoot/00-SpringBoot介绍) — 自动配置机制
+- [Spring Boot 介绍](/docs/java-framework/06-SpringBoot/00-SpringBoot介绍) — 自动配置机制
 
 ## 版本差异(旧版 → Spring 6.x)
 

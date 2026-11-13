@@ -7,6 +7,8 @@ tags: [Java, SpringCloudAlibaba实战]
 ---
 # 负载均衡：Ribbon 如何保证微服务的高可用
 
+> ⚠️ **组件状态说明**：Ribbon 已由 Netflix 官方宣布停止维护（Netflix 已将其转入归档状态，Spring Cloud 自 2020.0 版本起移除 Ribbon，以 Spring Cloud LoadBalancer 全面替代）。本文保留其原理讲解价值（负载均衡策略与客户端高可用通信的设计思想并未过时），生产选型请参考 [Spring Cloud LoadBalancer 官方文档](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/loadbalancer.html)（文中组件对照见尾部版本差异表）。
+
 上一节我们对 Nacos 的集群环境与实现原理进行了讲解，我们已经可以轻松将单个微服务接入到 Nacos 进行注册，但是微服务本不是孤岛，如何实现有效的服务间稳定通信是本文即将介绍的主要内容，本次我们将主要学习三方面知识：
 
 1. 介绍 Ribbon 负载均衡器；
@@ -414,6 +416,8 @@ consumer-service 获得数据:This is the message from provider service!
 | 限流熔断 | Sentinel 1.8 | Sentinel 1.8+（规则可持久化到 Nacos） |
 | 分布式事务 | Seata 1.x | Seata 1.6+/2.x（AT 模式稳定） |
 | RPC | Dubbo 2.x | Dubbo 3.x（应用级服务发现） |
+| 负载均衡 | Ribbon（已停止维护） | Spring Cloud LoadBalancer |
+| 链路追踪 | Sleuth + Zipkin（Sleuth 已停止维护） | Micrometer Tracing + Zipkin/OTel |
 | 版本对应 | Boot 2.x + JDK 8 | Boot 3.5.x + JDK 17+（2022.0.0.0+ 起） |
 
 > 本文为 Spring Cloud Alibaba 旧版课程。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。

@@ -4,10 +4,17 @@ description: "对接微信公众号实现 ChatGPT 消息自动回复：微信 SD
 keywords: [微信公众号, 验签, OpenAI, natapp, 内网穿透]
 category: "Java"
 tags: [Java, ChatGPT AI 问答助手]
+created: 2026-11-13
+updated: 2026-11-13
+status: 存档
 ---
 
 
 # 微信公众号验签和初步对接 OpenAI
+
+::: warning 复现前提说明
+本项目为知识星球付费课程存档：完整源码在知识星球内部分发，配套 gitcode.net 仓库需权限申请方可访问；文中 api.xfg.im 中转地址与 gpt-3.5-turbo 模型名均已随 OpenAI 接口迭代失效。本系列代码仅作架构学习参考，不建议照抄运行。
+:::
 
 微信公众号 SDK 对接，并通过异步调用的方式处理消息应答。完成开发后使用内网穿透工具做本地的测试验证
 

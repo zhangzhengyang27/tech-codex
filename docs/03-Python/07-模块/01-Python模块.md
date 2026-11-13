@@ -14,20 +14,20 @@ category: Python
 
 > 本页系统讲解 Python 模块与包的核心概念、import 机制全流程、命名空间隔离、循环导入解决方案等，是理解 Python 工程化能力的基础。
 >
-> 建议先完成 [Python 文档导航总览](/docs/python/基础与入门/00-导航总览) 中的核心内容后再阅读本页。
+> 建议先完成 [Python 文档导航总览](/docs/python/02-基础与入门/00-导航总览) 中的核心内容后再阅读本页。
 
 ## 前置阅读
 
-- [标准模块速查](02-常用的标准模块)
-- [Python 基础](/docs/python/基础与入门/00-导航总览)
-- [工程化](/docs/python/工程化与运维/工程化/01-代码规范)
+- [标准库导航与索引](02-标准库导航与索引)
+- [Python 基础](/docs/python/02-基础与入门/00-导航总览)
+- [工程化](/docs/python/03-工程化与运维/01-工程化/01-代码规范)
 
 ## 相关索引
 
-- [标准模块速查](02-常用的标准模块)
-- [数据分析库](04-数据分析库/01-NumPy数组与数据类型) — NumPy / Pandas / Matplotlib / Seaborn / PyEcharts
-- [工程化](/docs/python/工程化与运维/工程化/01-代码规范)
-- [爬虫](/docs/python/Web与爬虫/爬虫/01-爬虫概览与HTTP基础) / [数据科学](/docs/python/数据科学/index) / [Web 开发](/docs/python/数据科学/07-量化金融/05-RESTful与Socket交易执行)
+- [标准库导航与索引](02-标准库导航与索引)
+- [数据分析库](/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型) — NumPy / Pandas / Matplotlib / Seaborn / PyEcharts
+- [工程化](/docs/python/03-工程化与运维/01-工程化/01-代码规范)
+- [爬虫](/docs/python/01-Web与爬虫/02-爬虫/01-爬虫概览与HTTP基础) / [数据科学](/docs/python/05-数据科学/index) / [Web 开发](/docs/python/05-数据科学/07-量化金融/05-RESTful与Socket交易执行)
 
 ---
 
@@ -776,7 +776,7 @@ Python 自带 300+ 标准库模块，完整目录见 [官方文档](https://docs
 | `pillow` | 图像处理 | `openpyxl` | Excel 处理 |
 | `celery` | 异步任务队列 | `pytest` | 测试框架 |
 
-> NumPy、Pandas、Matplotlib、Seaborn、PyEcharts 等数据分析库的**深入教程**见 [数据分析库](04-数据分析库/01-NumPy数组与数据类型) 子专题。
+> NumPy、Pandas、Matplotlib、Seaborn、PyEcharts 等数据分析库的**深入教程**见 [数据分析库](/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型) 子专题。
 
 ## 十三、动态导入
 

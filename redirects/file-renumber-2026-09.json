@@ -3742,5 +3742,229 @@
  {
   "source": "/docs/python/%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%85%A5%E9%97%A8/19-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85",
   "destination": "/docs/python/02-基础与入门/16-模块与包"
+ },
+ {
+  "source": "/docs/python/Web与爬虫/爬虫/13-%E5%85%AC%E4%BC%97%E5%8F%B7%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98%EF%BC%9A%E6%8A%93%E5%8F%96%E3%80%81%E5%AD%98%E5%82%A8%E4%B8%8E%E4%BA%92%E5%8A%A8%E6%95%B0%E6%8D%AE",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/12-公众号爬虫：原理、抓包与实战"
+ },
+ {
+  "source": "/docs/python/Web%E4%B8%8E%E7%88%AC%E8%99%AB/%E7%88%AC%E8%99%AB/13-%E5%85%AC%E4%BC%97%E5%8F%B7%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98%EF%BC%9A%E6%8A%93%E5%8F%96%E3%80%81%E5%AD%98%E5%82%A8%E4%B8%8E%E4%BA%92%E5%8A%A8%E6%95%B0%E6%8D%AE",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/12-公众号爬虫：原理、抓包与实战"
+ },
+ {
+  "source": "/docs/python/Web%E4%B8%8E%E7%88%AC%E8%99%AB/%E7%88%AC%E8%99%AB/14-%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96",
+  "destination": "/docs/python/05-数据科学/03-可视化实战/05-爬取数据的分析与可视化"
+ },
+ {
+  "source": "/docs/python/Web%E4%B8%8E%E7%88%AC%E8%99%AB/%E7%88%AC%E8%99%AB/15-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE-%E5%85%AC%E5%BC%80%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8EDIY%E6%95%B0%E6%8D%AE%E9%9B%86",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/Web%E4%B8%8E%E7%88%AC%E8%99%AB/%E7%88%AC%E8%99%AB/16-%E4%B8%8B%E8%BD%BD%E7%BD%91%E9%A1%B5-%E6%A8%A1%E6%8B%9F%E8%AF%B7%E6%B1%82",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/Web%E4%B8%8E%E7%88%AC%E8%99%AB/%E7%88%AC%E8%99%AB/17-%E6%8F%90%E5%8F%96%E6%95%B0%E6%8D%AE-%E8%A7%A3%E6%9E%90%E7%BD%91%E9%A1%B5",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/Web%E4%B8%8E%E7%88%AC%E8%99%AB/%E7%88%AC%E8%99%AB/18-%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE-CSV%E6%A0%BC%E5%BC%8F",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/Web%E4%B8%8E%E7%88%AC%E8%99%AB/%E7%88%AC%E8%99%AB/19-%E5%AE%9E%E6%88%98-%E6%9E%84%E5%BB%BA%E7%94%B5%E8%A7%86%E5%89%A7%E8%AF%84%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/01-NumPy%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/01-NumPy%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/02-NumPy%E8%BF%90%E7%AE%97%E4%B8%8E%E5%B9%BF%E6%92%AD%E6%9C%BA%E5%88%B6",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/02-NumPy运算与广播机制"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/02-NumPy%E8%BF%90%E7%AE%97%E4%B8%8E%E5%B9%BF%E6%92%AD%E6%9C%BA%E5%88%B6",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/02-NumPy运算与广播机制"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/03-NumPy%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%AE%9E%E6%88%98",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/03-NumPy矩阵计算与数据实战"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/03-NumPy%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%AE%9E%E6%88%98",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/03-NumPy矩阵计算与数据实战"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/04-Pandas%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/04-Pandas数据结构与数据处理"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/04-Pandas%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/04-Pandas数据结构与数据处理"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/05-Matplotlib%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E6%88%98",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/05-Matplotlib数据可视化实战"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/05-Matplotlib%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E6%88%98",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/05-Matplotlib数据可视化实战"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/06-Seaborn%E7%BB%9F%E8%AE%A1%E5%9B%BE%E8%A1%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/06-Seaborn统计图表"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/06-Seaborn%E7%BB%9F%E8%AE%A1%E5%9B%BE%E8%A1%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/06-Seaborn统计图表"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/07-PyEcharts%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%9B%BE%E8%A1%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/07-PyEcharts交互式图表"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/07-PyEcharts%E4%BA%A4%E4%BA%92%E5%BC%8F%E5%9B%BE%E8%A1%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/07-PyEcharts交互式图表"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/08-%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E4%B8%8EAPI%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E6%88%98",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/08-数据获取与API可视化实战"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/08-%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E4%B8%8EAPI%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AE%9E%E6%88%98",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/08-数据获取与API可视化实战"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/09-NumPy%E6%89%B9%E9%87%8F%E8%AE%A1%E7%AE%97%E5%85%A5%E9%97%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/09-NumPy%E6%89%B9%E9%87%8F%E8%AE%A1%E7%AE%97%E5%85%A5%E9%97%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/10-NumPy%E5%9F%BA%E7%A1%80%E7%BB%9F%E8%AE%A1%E5%85%A5%E9%97%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/10-NumPy%E5%9F%BA%E7%A1%80%E7%BB%9F%E8%AE%A1%E5%85%A5%E9%97%A8",
+  "destination": "/docs/python/05-数据科学/09-数据分析工具库/01-NumPy数组与数据类型"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/00-Python%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%A1%A5%E5%85%85",
+  "destination": "/docs/python/02-基础与入门/01-入门指南与学习路线"
+ },
+ {
+  "source": "/docs/python/04-%E6%A8%A1%E5%9D%97/04-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%BA%93/00-Python%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%A1%A5%E5%85%85",
+  "destination": "/docs/python/02-基础与入门/01-入门指南与学习路线"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/03-%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/05-pathlib%E6%A8%A1%E5%9D%97",
+  "destination": "/docs/python/模块/03-内置模块/04-文件处理"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/02-%E5%B8%B8%E7%94%A8%E7%9A%84%E6%A0%87%E5%87%86%E6%A8%A1%E5%9D%97",
+  "destination": "/docs/python/模块/02-标准库导航与索引"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/05-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97/01-chardet",
+  "destination": "/docs/python/模块/04-第三方模块/01-chardet"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/05-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97/02-pillow",
+  "destination": "/docs/python/模块/04-第三方模块/02-pillow"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/05-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97/03-psutil",
+  "destination": "/docs/python/模块/04-第三方模块/03-psutil"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/05-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97/04-pydantic",
+  "destination": "/docs/python/模块/04-第三方模块/04-pydantic"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/05-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97/05-pytest",
+  "destination": "/docs/python/模块/04-第三方模块/05-pytest"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/05-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97/06-Pygame%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80",
+  "destination": "/docs/python/模块/04-第三方模块/06-Pygame游戏开发基础"
+ },
+ {
+  "source": "/docs/python/%E6%A8%A1%E5%9D%97/05-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97/07-Pygame%E5%A4%96%E6%98%9F%E4%BA%BA%E5%85%A5%E4%BE%B5%E5%AE%9E%E6%88%98",
+  "destination": "/docs/python/模块/04-第三方模块/07-Pygame外星人入侵实战"
+ },
+ {
+  "source": "/docs/python/%E8%BF%9B%E9%98%B6%E6%A0%B8%E5%BF%83/%E6%95%B0%E6%8D%AE%E5%BA%93/03-Python%E6%93%8D%E4%BD%9CMySQL",
+  "destination": "/docs/python/09-进阶核心/数据库/01-关系型数据库"
+ },
+ {
+  "source": "/docs/python/09-%E8%BF%9B%E9%98%B6%E6%A0%B8%E5%BF%83/%E8%BF%9B%E9%98%B6%E6%A0%B8%E5%BF%83/%E6%95%B0%E6%8D%AE%E5%BA%93/03-Python%E6%93%8D%E4%BD%9CMySQL",
+  "destination": "/docs/python/09-进阶核心/数据库/01-关系型数据库"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/01-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%A6%82%E8%BF%B0",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/02-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/03-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%B8%BB%E8%A6%81%E5%88%86%E6%94%AF",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/04-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/05-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E5%88%86%E7%B1%BB",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/06-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/07-Azure%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%AE%9E%E9%AA%8C",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/06-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/08-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AE%80%E4%BB%8B",
+  "destination": "/docs/python/05-数据科学/01-数据科学导论/02-AI与机器学习通识"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/13-%E5%85%AC%E4%BC%97%E5%8F%B7%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98%EF%BC%9A%E6%8A%93%E5%8F%96%E3%80%81%E5%AD%98%E5%82%A8%E4%B8%8E%E4%BA%92%E5%8A%A8%E6%95%B0%E6%8D%AE",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/12-公众号爬虫：原理、抓包与实战"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/14-%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96",
+  "destination": "/docs/python/05-数据科学/03-可视化实战/05-爬取数据的分析与可视化"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/15-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE-%E5%85%AC%E5%BC%80%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8EDIY%E6%95%B0%E6%8D%AE%E9%9B%86",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/16-%E4%B8%8B%E8%BD%BD%E7%BD%91%E9%A1%B5-%E6%A8%A1%E6%8B%9F%E8%AF%B7%E6%B1%82",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/17-%E6%8F%90%E5%8F%96%E6%95%B0%E6%8D%AE-%E8%A7%A3%E6%9E%90%E7%BD%91%E9%A1%B5",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/18-%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE-CSV%E6%A0%BC%E5%BC%8F",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/19-%E5%AE%9E%E6%88%98-%E6%9E%84%E5%BB%BA%E7%94%B5%E8%A7%86%E5%89%A7%E8%AF%84%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86",
+  "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
  }
 ]

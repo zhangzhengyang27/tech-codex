@@ -4,7 +4,7 @@ description: 深入掌握 Python concurrent.futures 模块，涵盖 ThreadPoolEx
 version: 1.0
 author: 文档维护组
 created: 2026-06-06
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -1150,13 +1150,4 @@ flowchart TD
 - [多进程基础](02-multiprocessing实战) — multiprocessing 模块详解
 - [异步编程](../02-异步编程/01-asyncio基础) — asyncio 异步并发模型
 
-## 版本差异（并发 → Python 3.13/3.14）
-
-| 特性 | 本文编写时 | Python 3.13/3.14 |
-|------|-----------|------------------|
-| GIL | 全局锁 | 3.13 提供实验性 free-threaded 构建（PEP 703，`python3.13t`）；3.14 起正式支持（PEP 779），但仍非默认构建 |
-| 线程池 | `ThreadPoolExecutor` | 不变；3.9+ 默认 max_workers 为 min(32, CPU+4) |
-| 进程池 | `ProcessPoolExecutor` | 3.14 起 Linux 等平台默认启动方式由 `fork` 改为 `forkserver`（Windows/macOS 仍为 `spawn`）；3.14 新增 `InterpreterPoolExecutor` |
-| 协程与线程混用 | `run_in_executor` | 3.9+ 推荐 `asyncio.to_thread()` |
-
-> 本文讲解的 threading/multiprocessing 原理在 3.14 中完全成立；free-threaded 构建为 CPU 密集型多线程提供了新选项（3.14 起正式支持）。
+> 🧭 并发版本差异速览统一维护在 [并发总览](00-并发与并行编程总览)。

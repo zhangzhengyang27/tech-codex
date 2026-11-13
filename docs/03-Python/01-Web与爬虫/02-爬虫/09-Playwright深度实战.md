@@ -3,7 +3,7 @@ title: Playwright 深度实战
 version: 1.0
 author: 文档维护组
 created: 2026-06-06
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -690,15 +690,4 @@ Playwright 渲染是同步阻塞操作，会大幅降低 Scrapy 的并发能力�
 - [playwright-stealth](https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-stealth) — stealth 插件
 - [scrapy-playwright](https://github.com/scrapinghub/scrapy-playwright) — Scrapy + Playwright 集成库
 
-## 版本差异（爬虫技术栈 → 当前版本）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `requests` | 2.28/2.31 | 2.32.x |
-| `Scrapy` | 1.x/2.0 | 2.13.x（API 稳定，截至 2026-09） |
-| `httpx` | 0.24 | 0.28.x |
-| `Playwright` | 1.3x | 1.6x（Python 版） |
-| `lxml`/`BeautifulSoup` | 旧版 | 保持稳定 |
-| Python | 3.8-3.12 | 3.14（推荐） |
-
-> 本文讲解的爬虫原理（HTTP、解析、反爬、存储）与核心 API 在最新版本中成立；注意 Python 3.9 及以下已 EOL，新项目使用 3.13/3.14。
+> 🧭 爬虫技术栈版本速览统一维护在 [爬虫导航](00-爬虫导航)。

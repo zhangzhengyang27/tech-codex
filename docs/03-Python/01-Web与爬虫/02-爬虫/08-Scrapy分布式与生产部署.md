@@ -3,7 +3,7 @@ title: 08-Scrapy分布式与生产部署
 version: 2.0
 author: 文档维护组
 created: 2026-06-05
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -62,7 +62,181 @@ flowchart TD
     E --> H
 ```
 
-## 二、分布式爬虫架构
+## 二、爬虫并发：多线程与多进程
+
+爬虫在向服务器发起请求后，往往需要等待响应返回，属于典型的 IO 密集型任务。如果采用单线程，处理器在等待期间处于闲置；采用多线程或多进程，处理器便可以在等待期间处理其他任务，从而大幅提升整体爬取效率。
+
+### 多线程与多进程的概念
+
+- **进程（Process）**：是具有一定独立功能的程序关于某个数据集合上的一次运行活动，是操作系统进行资源分配和调度的一个独立单位。打开一个浏览器即开启一个浏览器进程，打开一个文本编辑器即开启一个文本编辑器进程。
+- **线程（Thread）**：是操作系统进行运算调度的最小单位，是进程中的一个最小运行单元。一个进程由一个或多个线程构成，进程就是线程的集合。例如浏览器进程中，播放音乐是一个线程，播放视频是另一个线程，它们并发或并行执行，使浏览器能同时处理多个任务。
+- **多线程**：在一个进程中同时执行多个线程。
+- **多进程**：启用多个进程同时运行。由于进程由线程构成，多进程运行意味着有大于或等于进程数量的线程在运行。
+
+#### 并发与并行
+
+- **并发（Concurrency）**：同一时刻只能有一条指令执行，但多个线程的指令被快速轮换地执行。由于处理器执行和切换的速度极快，宏观上看起来多个线程在同时运行，但微观上同一时刻只有一个线程在执行。
+- **并行（Parallelism）**：同一时刻有多条指令在多个处理器上同时执行，必须依赖多处理器。并行只能在多处理器系统中存在；并发在单处理器和多处理器系统中都可以存在。
+
+#### 适用场景
+
+- **IO 密集型任务**：执行过程中大量时间在等待（如等待网络响应、数据库查询），启用多线程可让处理器在等待期间处理其他任务，提高整体效率。网络爬虫正是典型场景。
+- **计算密集型任务（CPU 密集型）**：任务运行一直需要处理器参与，启用多线程不会节省总体时间（计算总量不变），线程过多反而因切换增加开销，效率降低。此类任务更适合多进程。
+
+### Python 多线程实现
+
+Python 使用 `threading` 模块实现多线程。
+
+#### Thread 直接创建子线程
+
+通过 `Thread` 类创建线程，`target` 指定运行方法，`args` 传入参数：
+
+```python
+import threading
+import time
+
+def target(second):
+    print(f'Threading {threading.current_thread().name} is running')
+    print(f'Threading {threading.current_thread().name} sleep {second}s')
+    time.sleep(second)
+    print(f'Threading {threading.current_thread().name} is ended')
+
+print(f'Threading {threading.current_thread().name} is running')
+for i in [1, 5]:
+    thread = threading.Thread(target=target, args=[i])
+    thread.start()
+print(f'Threading {threading.current_thread().name} is ended')
+```
+
+这里一共产生三个线程：主线程 `MainThread` 和两个子线程 `Thread-1`、`Thread-2`。主线程并不等待子线程运行完毕即退出。若希望主线程等待子线程全部结束，需为每个子线程调用 `join()`：
+
+```python
+threads = []
+for i in [1, 5]:
+    thread = threading.Thread(target=target, args=[i])
+    threads.append(thread)
+    thread.start()
+for thread in threads:
+    thread.join()
+```
+
+#### 继承 Thread 类创建子线程
+
+通过继承 `Thread` 类创建线程，将执行逻辑写在 `run` 方法中，效果与直接创建相同：
+
+```python
+class MyThread(threading.Thread):
+    def __init__(self, second):
+        threading.Thread.__init__(self)
+        self.second = second
+    def run(self):
+        time.sleep(self.second)
+        print(f'Threading {threading.current_thread().name} sleep {self.second}s is ended')
+```
+
+#### 守护线程
+
+通过 `setDaemon(True)` 将线程设置为守护线程。主线程结束时，未运行完的守护线程会被强制结束。若让所有线程都调用 `join()`，主线程会等待所有子线程（含守护线程）执行完毕。
+
+#### 互斥锁
+
+多个线程共享同一进程内资源。若多个线程同时读取/修改同一数据，会产生不可预料的结果。通过 `threading.Lock` 加锁保护，确保同一时间只有一个线程操作数据：
+
+```python
+lock = threading.Lock()
+# 在操作共享数据前加锁，修改完成后释放
+lock.acquire()
+# ... 操作共享数据 ...
+lock.release()
+```
+
+### GIL 与多线程的局限
+
+Python 中存在全局解释器锁（GIL，Global Interpreter Lock），其最初设计出于数据安全考虑。在 Python 多线程下，每个线程执行须先获取 GIL，而一个 Python 进程只有一个 GIL，因此即使是多核条件下，同一时刻也只能执行一个线程。
+
+对于爬虫这类 IO 密集型任务，GIL 影响不大；对于计算密集型任务，由于 GIL 的存在，多线程总体效率反而可能低于单线程。
+
+### Python 多进程实现
+
+Python 使用 `multiprocessing` 库实现多进程。它提供 `Process`、`Queue`、`Semaphore`、`Pipe`、`Lock`、`Pool` 等组件。
+
+**多进程的优势**：每个进程有属于自己的 GIL，在多核处理器下不受 GIL 影响，能更好地发挥多核优势。但进程间数据无法直接共享，需要借助队列、管道等机制。
+
+#### 直接使用 Process 类
+
+```python
+import multiprocessing
+
+def process(index):
+    print(f'Process: {index}')
+
+if __name__ == '__main__':
+    for i in range(5):
+        p = multiprocessing.Process(target=process, args=(i,))
+        p.start()
+```
+
+注意 `args` 必须是元组，单个参数也要在元素后加逗号。通过 `cpu_count()` 获取 CPU 核心数，`active_children()` 获取当前运行中的进程。
+
+#### 继承 Process 类
+
+通过继承 `Process` 类创建进程，将执行逻辑写在 `run` 方法中，启动时调用 `start()`。
+
+#### 守护进程、进程等待与终止
+
+- **守护进程**：设置 `p.daemon = True`，父进程结束时子进程自动终止。
+- **进程等待**：调用 `join()` 等待子进程执行完毕；可传超时参数 `join(seconds)` 限制最长等待时间。
+- **终止进程**：`terminate()` 终止进程，之后应调用 `join()` 以更新进程状态。
+
+#### 进程互斥锁
+
+多个进程并行执行时可能同时抢占临界区资源（如同时输出导致换行错乱）。使用 `multiprocessing.Lock` 保证同一时刻只有一个进程访问共享资源：
+
+```python
+from multiprocessing import Process, Lock
+
+class MyProcess(Process):
+    def __init__(self, loop, lock):
+        Process.__init__(self)
+        self.loop = loop
+        self.lock = lock
+    def run(self):
+        for count in range(self.loop):
+            self.lock.acquire()
+            print(f'Pid: {self.pid} LoopCount: {count}')
+            self.lock.release()
+```
+
+#### 信号量
+
+当需要允许多个进程同时访问共享资源、但限制并发数量时，使用 `multiprocessing.Semaphore`。经典的生产者-消费者问题即可通过信号量（`empty`/`full`）+ 锁 + 队列实现。
+
+#### 队列与管道
+
+- **Queue（队列）**：用于进程间共享数据。进程 A 通过 `put()` 放入数据，进程 B 通过 `get()` 取出数据。普通全局变量在进程间无效，因为进程资源不共享。
+- **Pipe（管道）**：进程间直接通信的通道，支持单向（half-duplex）和双向（duplex）。默认双向，单向需传 `duplex=False`。
+
+#### 进程池
+
+`multiprocessing.Pool` 提供指定数量的进程供调用，可控制并发数量。使用 `apply_async` 提交任务，或更简洁的 `map` 方法批量执行。例如用 3 个进程并行抓取多个 URL：
+
+```python
+from multiprocessing import Pool
+
+def scrape(url):
+    # 请求并解析 url
+    ...
+
+if __name__ == '__main__':
+    pool = Pool(processes=3)
+    urls = ['https://www.example.com', 'https://www.example.org', 'https://www.example.net']
+    pool.map(scrape, urls)
+    pool.close()
+```
+
+进程池非常适合爬虫中"大量 URL 并行抓取"的场景，既能控制并发量避免 CPU 过载，又能显著提升抓取效率。
+
+## 三、分布式爬虫架构
 
 ### 2.1 Master-Worker 模式
 
@@ -119,7 +293,7 @@ Scrapy 原生去重使用本地 `set` 集合存储 Request 指纹。分布式架
 
 单机 Scrapy 使用 `JOBDIR` 参数将队列持久化到磁盘。分布式架构天然支持中断恢复——Redis 中的队列和去重集合在爬虫进程退出后依然存在，重启爬虫即可从上次中断处继续。
 
-## 三、Scrapy-Redis 原理与配置
+## 四、Scrapy-Redis 原理与配置
 
 Scrapy-Redis 是 Scrapy 分布式最成熟的方案，它通过替换 Scrapy 的三个核心组件来实现分布式。
 
@@ -238,7 +412,7 @@ scrapy crawl your_spider_name
 - `{spider_name}:requests` —— 爬取队列
 - `{spider_name}:dupefilter` —— 去重指纹集合
 
-## 四、Bloom Filter 去重优化
+## 五、Bloom Filter 去重优化
 
 ### 4.1 为什么需要 Bloom Filter
 
@@ -368,7 +542,7 @@ class BloomFilter:
 - 不同爬虫项目应使用不同的 Redis key 前缀，避免 Bloom Filter 互相干扰
 :::
 
-## 五、分布式部署方案
+## 六、分布式部署方案
 
 分布式爬虫写好之后，还需要解决部署问题。如果只有 2-3 台服务器，手动上传代码还可以接受；但如果有几十台甚至上百台，就需要自动化部署方案。
 
@@ -574,7 +748,7 @@ Gerapy 提供以下核心功能：
 - **任务调度**：Web 界面启动/停止爬虫任务，实时查看日志
 - **定时任务**：配置定时规则，自动调度爬虫运行
 
-## 六、从开发到部署的完整流水线
+## 七、从开发到部署的完整流水线
 
 ```mermaid
 flowchart TD
@@ -619,7 +793,7 @@ flowchart TD
     end
 ```
 
-## 七、监控与告警
+## 八、监控与告警
 
 分布式爬虫上线后，不能放任不管。需要建立监控体系来确保爬虫健康运行。
 
@@ -682,7 +856,7 @@ def check_workers_health(scrapyd_urls: list[str], redis_url: str) -> dict:
 - **邮件通知**：每日汇总报告
 - **Prometheus + Grafana**：搭建可视化监控面板（适合大规模集群）
 
-## 八、常见陷阱
+## 九、常见陷阱
 
 | 陷阱 | 表现 | 原因 | 解决方案 |
 |------|------|------|---------|
@@ -697,7 +871,7 @@ def check_workers_health(scrapyd_urls: list[str], redis_url: str) -> dict:
 | Python 版本不兼容 | Worker 启动失败或运行异常 | 各主机 Python 版本不一致，pickle 序列化不兼容 | 统一使用 Docker 镜像，或在 requirements.txt 中锁定 Python 版本 |
 | 时钟不同步 | 调度异常、日志时间戳混乱 | 多机系统时间不一致 | 配置 NTP 时间同步服务 |
 
-## 九、最佳实践
+## 十、最佳实践
 
 1. **渐进式演进**：先单机跑通，再接入 Scrapy-Redis 做分布式，最后引入 Docker 和 Gerapy 做运维管理。不要一步到位。
 2. **Redis 高可用**：生产环境务必配置 Redis Sentinel 或 Cluster，避免单点故障。Redis 是整个分布式爬虫的"心脏"。
@@ -753,15 +927,4 @@ def check_workers_health(scrapyd_urls: list[str], redis_url: str) -> dict:
 - [Redis 持久化文档](https://redis.io/topics/persistence)
 - [Bloom Filter 维基百科](https://en.wikipedia.org/wiki/Bloom_filter)
 
-## 版本差异（爬虫技术栈 → 当前版本）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `requests` | 2.28/2.31 | 2.32.x |
-| `Scrapy` | 1.x/2.0 | 2.13.x（API 稳定，截至 2026-09） |
-| `httpx` | 0.24 | 0.28.x |
-| `Playwright` | 1.3x | 1.6x（Python 版） |
-| `lxml`/`BeautifulSoup` | 旧版 | 保持稳定 |
-| Python | 3.8-3.12 | 3.14（推荐） |
-
-> 本文讲解的爬虫原理（HTTP、解析、反爬、存储）与核心 API 在最新版本中成立；注意 Python 3.9 及以下已 EOL，新项目使用 3.13/3.14。
+> 🧭 爬虫技术栈版本速览统一维护在 [爬虫导航](00-爬虫导航)。

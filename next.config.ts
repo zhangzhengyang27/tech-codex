@@ -22,7 +22,33 @@ const PYTHON_LEGACY_MAP: Record<string, string> = {
  */
 const PYTHON_DIR_RENAME: Record<string, string> = {
   "%E5%8F%82%E8%80%83": "归档",
+  "%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90": "数据分析思维", // 2026-11 目录更名承接（原 04-数据分析）
 };
+
+/**
+ * Python 组名无编号归一化（2026-11）：正文/外部链接大量使用 `/docs/python/基础与入门/…`
+ * 这类不带组编号的路径，但路由要求完整编号路径（如 `02-基础与入门`），
+ * 未覆盖时落到 notFound 兜底页（HTTP 200 + 404 UI，比 404 更隐蔽）。
+ * 按组名一条 `:path*` 通配统一承接，子目录编号由正文链接规范化（见文档整合）负责。
+ */
+const PYTHON_GROUP_NORMALIZE: Record<string, string> = {
+  "基础与入门": "02-基础与入门",
+  "Web与爬虫": "01-Web与爬虫",
+  "工程化与运维": "03-工程化与运维",
+  "数据分析": "04-数据分析思维",
+  "数据科学": "05-数据科学",
+  "机器学习": "06-机器学习",
+  "模块": "07-模块",
+  "自动化办公": "08-自动化办公",
+  "进阶核心": "09-进阶核心",
+};
+const PYTHON_GROUP_NORMALIZE_REDIRECTS = Object.entries(PYTHON_GROUP_NORMALIZE).map(
+  ([from, to]) => ({
+    source: `/docs/python/${encodeURIComponent(from)}/:path*`,
+    destination: `/docs/python/${to}/:path*`,
+    permanent: true,
+  })
+);
 
 /**
  * 数据科学目录融合重定向（旧四目录路径 → 新分层路径）。
@@ -826,7 +852,7 @@ const nextConfig: NextConfig = {
     const productRedirects = [
       { source: "/admin/my-tenant", destination: "/my/kb", permanent: false },
     ];
-    return [ ...productRedirects, ...REFACTOR_REDIRECT, ...legacy, ...dirRename, ...DATA_SCIENCE_REDIRECT, ...ARCH_MERGE_REDIRECT, ...ARCH_INTEGRATE_REDIRECT, ...ZHT_MOVE_REDIRECT, ...XU_SPLIT_REDIRECT, ...RENUMBER_REDIRECTS, ...SPLIT_DOC_REDIRECTS, ...FILE_RENUMBER_REDIRECTS];
+    return [ ...productRedirects, ...REFACTOR_REDIRECT, ...legacy, ...dirRename, ...DATA_SCIENCE_REDIRECT, ...ARCH_MERGE_REDIRECT, ...ARCH_INTEGRATE_REDIRECT, ...ZHT_MOVE_REDIRECT, ...XU_SPLIT_REDIRECT, ...RENUMBER_REDIRECTS, ...SPLIT_DOC_REDIRECTS, ...PYTHON_GROUP_NORMALIZE_REDIRECTS, ...FILE_RENUMBER_REDIRECTS];
   },
 };
 

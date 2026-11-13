@@ -196,7 +196,7 @@ export const docGroups: DocGroup[] = [
           title: '万能的数据分析法则',
           description: '拉勾《万能的数据分析法则》：目标导向、指标思维、逻辑推理、系统结构、分析流程与报告撰写的通用方法论',
           icon: '📐',
-          dir: '03-Python/04-数据分析/01-万能的数据分析法则',
+          dir: '03-Python/04-数据分析思维/01-万能的数据分析法则',
           hidden: true,
         },
         {
@@ -204,7 +204,7 @@ export const docGroups: DocGroup[] = [
           title: '数据分析思维与实战',
           description: '拉勾《数据分析思维与实战 23 讲》：从定义问题、拆解指标到用户研究、行业分析与职场提升的完整实战',
           icon: '📊',
-          dir: '03-Python/04-数据分析/02-数据分析思维与实战23讲',
+          dir: '03-Python/04-数据分析思维/02-数据分析思维与实战23讲',
           hidden: true,
         },
       ],

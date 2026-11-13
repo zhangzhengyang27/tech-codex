@@ -1197,7 +1197,7 @@ flowchart LR
 
 > 📖 **延伸阅读**：
 > - [Matplotlib 数据可视化实战](05-Matplotlib数据可视化实战) — 理解底层图形对象
-> - [Pandas 与 NumPy 策略回测](../../05-数据科学/07-量化金融/02-Pandas与NumPy策略回测) — 数据处理实战
+> - [Pandas 与 NumPy 策略回测](../07-量化金融/02-Pandas与NumPy策略回测) — 数据处理实战
 > - [Seaborn 官方文档](https://seaborn.pydata.org/) — API 完整参考
 > - [Python 可视化最佳实践](https://matplotlib.org/stable/tutorials/introductory/customizing.html) — 样式定制指南
 

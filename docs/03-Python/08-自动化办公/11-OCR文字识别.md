@@ -4,7 +4,7 @@ description: 系统掌握 Python OCR 文字识别，涵盖 Tesseract/pytesseract
 version: 1.0
 author: 文档维护组
 created: 2026-06-06
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式版
 category: Python
 
@@ -520,16 +520,4 @@ def batch_recognize_invoices(input_dir, output_file='invoices.json'):
 - [OCR 预处理最佳实践](https://tesseract-ocr.github.io/tessdoc/ImproveQuality)
 - [pdf2image 文档](https://github.com/Belval/pdf2image)
 
-## 版本差异（自动化办公库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版（截至 2026-09） |
-|----|-----------|-----------|
-| `openpyxl`（Excel） | 旧版 | 3.1.x |
-| `python-docx`（Word） | 旧版 | 1.2.x |
-| `python-pptx`（PPT） | 旧版 | 1.0.x |
-| `reportlab`（PDF） | 旧版 | 5.x |
-| `PyPDF2`/`pypdf` | PyPDF2 | 推荐 `pypdf`（6.x，PyPDF2 已停止维护） |
-| `Pillow`（图像） | 旧版 | 12.x |
-| `paddleocr` | 2.x | 3.x（移除 `show_log`，`use_angle_cls`→`use_textline_orientation`，表格识别升级为 PP-StructureV3） |
-
-> 本文讲解的自动化办公流程（读写 Excel/Word/PDF/PPT）与核心 API 在最新版本中成立；注意 PyPDF2 已迁移至 pypdf。
+> 🧭 办公库版本速览统一维护在 [自动化办公导航](00-自动化办公导航)。

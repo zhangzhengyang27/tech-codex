@@ -4,7 +4,7 @@ description: 深入掌握 python-pptx 操作 PowerPoint，涵盖幻灯片创建�
 version: 2.0
 author: 文档维护组
 created: 2026-06-05
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式版
 category: Python
 
@@ -873,15 +873,4 @@ generator.save('data_report_2026.pptx')
 - [Microsoft OpenXML 规范](https://docs.microsoft.com/en-us/openspecs/office_standards/)
 - [PPT 设计原则](https://www.garrreynolds.com/presentation-tips/)
 
-## 版本差异（自动化办公库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版（截至 2026-09） |
-|----|-----------|-----------|
-| `openpyxl`（Excel） | 旧版 | 3.1.x |
-| `python-docx`（Word） | 旧版 | 1.2.x |
-| `python-pptx`（PPT） | 旧版 | 1.0.x |
-| `reportlab`（PDF） | 旧版 | 5.x |
-| `PyPDF2`/`pypdf` | PyPDF2 | 推荐 `pypdf`（6.x，PyPDF2 已停止维护） |
-| `Pillow`（图像） | 旧版 | 12.x |
-
-> 本文讲解的自动化办公流程（读写 Excel/Word/PDF/PPT）与核心 API 在最新版本中成立；注意 PyPDF2 已迁移至 pypdf。
+> 🧭 办公库版本速览统一维护在 [自动化办公导航](00-自动化办公导航)。

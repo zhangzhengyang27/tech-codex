@@ -8,12 +8,7 @@ tags: [Java, 基础, 初识]
 
 # 初识 Java
 
-## 学习目标
-
-- 理解 Java 的语言定位与版本演进（Java SE / EE / ME 与 LTS 版本）
-- 掌握 JDK、JRE、JVM 三者的职责边界与包含关系
-- 理解"一次编写，到处运行"背后的字节码与 JVM 跨平台机制
-- 能够独立完成 JDK 安装、环境变量配置与第一个程序 `HelloWorld` 的编译运行
+本章介绍 Java 的语言定位、版本演进与 JDK/JRE/JVM 的职责边界，并演示从 JDK 安装、环境配置到第一个 `HelloWorld` 程序编译运行的完整流程。
 
 ## Java 语言概览
 

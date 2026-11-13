@@ -1000,7 +1000,7 @@ public class Application {
 }
 ```
 
->  启动流程的完整源码级分析，请参考 [20-启动流程源码剖析](20-启动流程源码剖析)
+>  启动流程的完整源码级分析，请参考 [20-SpringBoot启动主流程](20-SpringBoot启动主流程.md)
 
 ## 快速入门示例
 
@@ -1979,15 +1979,15 @@ management:
 | 自动配置源码剖析 | [21-自动配置与Starter机制](21-自动配置与Starter机制) |
 | 配置绑定与环境隔离 | [12-配置绑定与环境隔离](12-配置绑定与环境隔离) |
 | Actuator 与可观测性 | [13-Actuator与可观测性接入](13-Actuator与可观测性接入) |
-| 启动流程源码剖析 | [20-启动流程源码剖析](20-启动流程源码剖析) |
-| Bean 生命周期与容器原理 | [23-Bean生命周期与循环依赖源码](23-Bean生命周期与循环依赖源码) |
+| 启动主流程 | [20-SpringBoot启动主流程](20-SpringBoot启动主流程.md) |
+| Bean 生命周期源码 | [23-Bean生命周期源码](23-Bean生命周期源码.md) |
 | RESTful API 注解详解 | [01-RESTfulAPI注解](01-RESTfulAPI注解) |
 | 创建 Spring Boot 应用 | [03-创建SpringBoot应用](03-创建SpringBoot应用) |
 | 注解体系 | [04-注解](04-注解) |
 | 异常处理 | [05-Java异常深度处理](05-Java异常深度处理) |
-| 安全 | [06-SpringSecurity安全](06-SpringSecurity安全) |
+| 安全 | [07-SpringSecurity/认证授权与JWT基础](../07-SpringSecurity/00-认证授权与JWT基础.md) |
 | 国际化与本地化 | [18-SpringBoot国际化与本地化](18-SpringBoot国际化与本地化) |
-| 文件上传与 Multipart | [19-SpringBoot文件上传与Multipart](19-SpringBoot文件上传与Multipart) |
+| 文件上传与 Multipart | [25-WebMvc定制与静态资源](25-WebMvc定制与静态资源.md) |
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 

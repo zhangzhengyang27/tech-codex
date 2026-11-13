@@ -376,20 +376,20 @@ public final class SpringFactoriesLoader {
 **格式示例：**
 
 ```properties
-## Auto Configure
+# Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.example.autoconfigure.MyAutoConfiguration,\
 com.example.autoconfigure.AnotherAutoConfiguration
 
-## Enable ConfigurationProperties
+# Enable ConfigurationProperties
 org.springframework.boot.context.properties.EnableConfigurationProperties=\
 com.example.config.MyProperties
 
-## Application Listeners
+# Application Listeners
 org.springframework.context.ApplicationListener=\
 com.example.listener.MyApplicationListener
 
-## Failure Analyzers
+# Failure Analyzers
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.example.analyzer.MyFailureAnalyzer
 ```
@@ -1981,7 +1981,7 @@ Spring Boot 的自动配置和 Starter 机制是其核心特性：
 
 在了解 `@EnableAutoConfiguration` 之前，先了解 SpringFramework 的原生手动装配机制，这对后续阅读 `@EnableAutoConfiguration` 有很大帮助。
 
-【如果小伙伴没有很熟悉 SpringFramework 的组件装配方式，请继续往下看；熟悉的小伙伴请直接跳过第5章节】
+如果对 SpringFramework 的组件装配方式不熟悉，请继续往下看；已熟悉的读者请直接跳过第 5 章节。
 
 #### 5. SpringFramework的手动装配
 
@@ -1991,9 +1991,9 @@ Spring Boot 的自动配置和 Starter 机制是其核心特性：
 - 使用配置类 `@Configuration` 与 `@Bean` （Spring3.0+）
 - 使用模块装配 `@EnableXXX` 与 `@Import` （Spring3.1+）
 
-其中使用 `@Component` 及衍生注解很常见，咱开发中常用的套路，不再赘述。
+其中使用 `@Component` 及衍生注解很常见，是开发中常用的套路，不再赘述。
 
-但模式注解只能在自己编写的代码中标注，无法装配jar包中的组件。为此可以使用 `@Configuration` 与 `@Bean`，手动装配组件（如上一篇的 `@Configuration` 示例）。
+但模式注解只能在自己编写的代码中标注，无法装配 jar 包中的组件。为此可以使用 `@Configuration` 与 `@Bean`，手动装配组件（如前文的 `@Configuration` 示例）。
 
 但这种方式一旦注册过多，会导致编码成本高，维护不灵活等问题。
 
@@ -2236,7 +2236,7 @@ public @interface AutoConfigurationPackage
 
 > Indicates that the package containing the annotated class should be registered with AutoConfigurationPackages.表示包含该注解的类所在的包应该在 AutoConfigurationPackages 中注册。
 
-咱从一开始学 SpringBoot 就知道一件事：主启动类必须放在所有自定义组件的包的最外层，以保证Spring能扫描到它们。由此可知是它起的作用。
+从一开始学 SpringBoot 就知道一件事：主启动类必须放在所有自定义组件的包的最外层，以保证Spring能扫描到它们。由此可知是它起的作用。
 
 它的实现原理是在注解上标注了 `@Import`，导入了一个 `AutoConfigurationPackages.Registrar` 。
 
@@ -2356,9 +2356,9 @@ private final List<String> packages;
 
 ###### 6.1.3 basePackage的作用
 
-如果这个 basePackage 的作用仅仅是提供给 SpringFramework 和 SpringBoot 的内部使用，那这个设计似乎有一点多余。回想一下，SpringBoot 的强大之处，有一点就是整合第三方技术可以非常的容易。以咱最熟悉的 MyBatis 为例，咱看看 basePackage 如何在整合第三方技术时被利用。
+如果这个 basePackage 的作用仅仅是提供给 SpringFramework 和 SpringBoot 的内部使用，那这个设计似乎有一点多余。回想一下，SpringBoot 的强大之处，有一点就是整合第三方技术可以非常的容易。以最熟悉的 MyBatis 为例，看看 basePackage 如何在整合第三方技术时被利用。
 
-引入 `mybatis-spring-boot-starter` 依赖后，可以在 IDEA 中打开 `MyBatisAutoConfiguration` 类。在这个配置类中，咱可以找到这样一个组件：`AutoConfiguredMapperScannerRegistrar`
+引入 `mybatis-spring-boot-starter` 依赖后，可以在 IDEA 中打开 `MyBatisAutoConfiguration` 类。在这个配置类中，可以找到这样一个组件：`AutoConfiguredMapperScannerRegistrar`
 
 ```java
 public static class AutoConfiguredMapperScannerRegistrar implements BeanFactoryAware, ImportBeanDefinitionRegistrar {
@@ -2410,7 +2410,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 
 > DeferredImportSelector to handle auto-configuration. This class can also be subclassed if a custom variant of @EnableAutoConfiguration is needed.DeferredImportSelector 处理自动配置。如果需要自定义扩展 @EnableAutoConfiguration，则也可以编写该类的子类。
 
-咱能看出来它是 `ImportSelector` , 可它又特别提到了 `DeferredImportSelector`，它又是什么呢？
+能看出来它是 `ImportSelector`，可它又特别提到了 `DeferredImportSelector`，它又是什么呢？
 
 ###### 6.2.2 DeferredImportSelector
 
@@ -2444,7 +2444,7 @@ public String[] selectImports(AnnotationMetadata annotationMetadata) {
 
 关键的源码在 `getAutoConfigurationEntry(autoConfigurationMetadata, annotationMetadata)` ：
 
-【小伙伴在断点调试时，请把断点打在 `getAutoConfigurationEntry` 方法的内部实现中，不要直接打在这个 `selectImports` 方法！！！】
+断点调试时，请把断点打在 `getAutoConfigurationEntry` 方法的内部实现中，不要直接打在这个 `selectImports` 方法上。
 
 ###### 6.2.3 getAutoConfigurationEntry(autoConfigurationMetadata, annotationMetadata)
 
@@ -2547,26 +2547,26 @@ private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoad
 `spring-boot-autoconfiguration` 包下 `META-INF/spring.factories` 节选：
 
 ```properties
-## Initializers
+# Initializers
 org.springframework.context.ApplicationContextInitializer=\
 org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer,\
 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener
 
-## Application Listeners
+# Application Listeners
 org.springframework.context.ApplicationListener=\
 org.springframework.boot.autoconfigure.BackgroundPreinitializer
 
-## Auto Configuration Import Listeners
+# Auto Configuration Import Listeners
 org.springframework.boot.autoconfigure.AutoConfigurationImportListener=\
 org.springframework.boot.autoconfigure.condition.ConditionEvaluationReportAutoConfigurationImportListener
 
-## Auto Configuration Import Filters
+# Auto Configuration Import Filters
 org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
 org.springframework.boot.autoconfigure.condition.OnBeanCondition,\
 org.springframework.boot.autoconfigure.condition.OnClassCondition,\
 org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition
 
-## Auto Configure
+# Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration,\
 org.springframework.boot.autoconfigure.aop.AopAutoConfiguration,\
@@ -2802,13 +2802,13 @@ public interface MultiValueMap<K, V> extends Map<K, List<V>>
 
 
 
-（本篇文章篇幅较长，小伙伴们可以分段阅读哦）
+（本篇篇幅较长，可以分段阅读）
 
 本节按大纲解析 SpringWebMvc 的自动装配。
 
 在引入 `spring-boot-starter-web` 的依赖后，SpringBoot 会自动进行Web环境的装载。
 
-借由上一篇我们总结的规律，那么 SpringWebMvc 的自动配置就应该叫：`WebMvcAutoConfiguration`
+借由前文总结的规律，SpringWebMvc 的自动配置就应该叫：`WebMvcAutoConfiguration`
 
 #### 1. WebMvcAutoConfiguration
 
@@ -2845,7 +2845,7 @@ public class DispatcherServletAutoConfiguration
 
 其中 `SpringBootServletInitializer` 是SpringBoot用于打war包时留给Web容器初始化应用的钩子。
 
-至于它的作用，咱们暂且放在一边，留在**WebMvc**部分详细来看。
+至于它的作用暂且放在一边，留在 **WebMvc** 部分详细来看。
 
 `DispatcherServletAutoConfiguration` 的源码中又标注了 `@AutoConfigureAfter` ，说明它又要在 `ServletWebServerFactoryAutoConfiguration` 之后再执行。
 
@@ -3133,7 +3133,7 @@ public DispatcherServletRegistrationConfiguration(WebMvcProperties webMvcPropert
 
 在继续阅读注册 `DispatcherServlet` 之前，先了解 SpringBoot 注册Servlet的机制。
 
-【如果小伙伴没有接触过或使用过 `SpringBoot注册Servlet等组件`，请继续往下看；熟悉的小伙伴请直接跳过4.1节】
+如果没有接触过或使用过“SpringBoot 注册 Servlet 等组件”，请继续往下看；已熟悉的读者请直接跳过 4.1 节。
 
 ##### 4.1 SpringBoot注册传统Servlet三大组件
 
@@ -3467,7 +3467,141 @@ protected void configureHandlerExceptionResolvers(List<HandlerExceptionResolver>
 3. WebMvc的配置包括消息转换器、视图解析器、处理器映射器、处理器适配器、静态资源映射配置、主页设置、应用图标设置等。
 4. 配置 SpringBoot 应用除了可以使用 properties、yml 之外，还可以使用 Customizer 来编程式配置。
 
-【至此，SpringBoot 的应用启动和引导原理解析章节结束。接下来，我们来研究入门启动程序中的main方法，来深入探究IOC容器的初始化和工作原理。】
+至此，SpringBoot 应用启动与引导原理的源码解析结束。启动引导与 IoC 容器初始化的深入内容见 [34-可执行jar与启动引导](34-可执行jar与启动引导.md)。
+
+> 以下两节吸收自原独立篇《SpringBoot 自动装配原理解析》：自动配置元数据与调试排查位于装配主链路之外，单独补充于此。
+
+## 自动配置元数据
+
+Spring Boot 提供了自动配置元数据（Auto-configuration Metadata），用于 IDE 提示和配置验证。
+
+**位置：** `META-INF/spring-configuration-metadata.json`
+
+**示例：**
+
+```json
+{
+  "groups": [
+    {
+      "name": "my.service",
+      "type": "com.example.MyServiceProperties",
+      "sourceType": "com.example.MyServiceProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "my.service.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enable my service auto-configuration."
+    },
+    {
+      "name": "my.service.timeout",
+      "type": "java.lang.Integer",
+      "defaultValue": 1000,
+      "description": "Service timeout in milliseconds."
+    }
+  ]
+}
+```
+
+## 常见问题与调试
+
+### 问题 1：自动配置类没有生效
+
+**可能原因：**
+
+1. 条件注解不满足
+2. 配置类被排除
+3. `spring.factories` 文件路径错误
+
+**调试方法：**
+
+1. **启用调试日志**：
+
+   ```properties
+   # application.properties
+   debug=true
+   ```
+
+   或者：
+
+   ```properties
+   logging.level.org.springframework.boot.autoconfigure=DEBUG
+   ```
+
+2. **查看自动配置报告**：
+
+   启动应用后，控制台会输出自动配置报告，显示：
+
+   - 哪些配置类被加载（Positive matches）
+   - 哪些配置类被排除（Negative matches）
+   - 排除的原因（Exclusions）
+
+3. **使用 Actuator 端点**（需要引入 `spring-boot-starter-actuator`）：
+
+   ```properties
+   management.endpoints.web.exposure.include=conditions
+   ```
+
+   访问：`http://localhost:8080/actuator/conditions` 查看条件评估报告
+
+### 问题 2：Bean 冲突
+
+**场景：** 自动配置创建了 Bean，但用户也想自定义同名 Bean
+
+**解决方案：**
+
+1. **使用 @ConditionalOnMissingBean**：自动配置类应该使用此注解，允许用户覆盖
+2. **排除自动配置**：使用 `@SpringBootApplication(exclude = {...})` 排除
+3. **使用 @Primary**：标记用户自定义的 Bean 为主 Bean
+
+### 问题 3：配置类执行顺序问题
+
+**场景：** 配置类 A 依赖配置类 B，但 B 在 A 之后执行
+
+**解决方案：**
+
+使用 `@AutoConfigureAfter` 或 `@AutoConfigureBefore` 注解：
+
+```java
+@Configuration
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
+public class MyConfiguration {
+    // 确保在 DataSourceAutoConfiguration 之后执行
+}
+```
+
+### 调试技巧
+
+1. **断点调试**：
+
+   - 在 `AutoConfigurationImportSelector.selectImports()` 方法打断点
+   - 在 `getAutoConfigurationEntry()` 方法打断点
+   - 查看 `configurations` 列表，确认哪些配置类被加载
+
+2. **查看加载的配置类**：
+
+   ```java
+   @Component
+   public class AutoConfigurationReporter implements ApplicationListener<ApplicationReadyEvent> {
+       @Autowired
+       private ApplicationContext applicationContext;
+
+       @Override
+       public void onApplicationEvent(ApplicationReadyEvent event) {
+           // 适用于 2.7+/3.x：自动配置类标注了 @AutoConfiguration 时才能按该注解匹配
+           String[] autoConfigBeans = applicationContext.getBeanNamesForAnnotation(
+               org.springframework.boot.autoconfigure.AutoConfiguration.class);
+           System.out.println("Auto-configuration beans: " + Arrays.toString(autoConfigBeans));
+       }
+   }
+   ```
+
+3. **使用 Spring Boot DevTools**：
+
+   引入 `spring-boot-devtools` 依赖，可以快速重启应用，方便调试
+
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 

@@ -2730,6 +2730,50 @@ public void updateRolePermissions(Long roleId, List<Long> permissionIds) {
 }
 ```
 
+### 6. 忽略权限缓存失效问题
+
+```java
+// 问题:修改用户权限后,已登录用户的权限未更新
+@Service
+public class UserService {
+    
+    @Autowired
+    private RoleRepository roleRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    // 修改权限后需要重新登录才生效
+    
+    // 正确:刷新SecurityContext
+    public void updateUserRoles(Long userId, Set<Long> roleIds) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Set<Role> roles = roleIds.stream()
+            .map(roleRepository::findById)
+            .map(Optional::get)
+            .collect(Collectors.toSet());
+        
+        user.setRoles(roles);
+        userRepository.save(user);
+        
+        // 刷新当前用户的SecurityContext
+        refreshUserAuthentication(user);
+    }
+    
+    private void refreshUserAuthentication(User user) {
+        Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+        if (currentAuth != null && currentAuth.getName().equals(user.getUsername())) {
+            // 重新加载用户权限
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+            UsernamePasswordAuthenticationToken newAuth = 
+                new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
+    }
+}
+```
+
 ## 面试要点
 
 ### 基础概念类

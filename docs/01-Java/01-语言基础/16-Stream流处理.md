@@ -1,5 +1,5 @@
 ---
-title: "流处理"
+title: "Stream 流处理"
 description: "Stream 是 Java 8 引入的一种用于处理数据序列的抽象概念。它不是数据结构,不存储数据,而是按需计算数据,类似于数据库查询操作的流水线。"
 keywords: [流处理]
 category: "Java"
@@ -9,13 +9,7 @@ tags: [Java, 基础, Stream]
 
 # Stream 流处理
 
-## 学习目标
-
-- 理解 Stream 并非数据结构，而是惰性求值与流水线(Pipeline)模型
-- 区分中间操作(惰性：map/filter/sorted)与终结操作(触发：collect/forEach/count)
-- 掌握常用操作：map/flatMap/filter/distinct/sorted/reduce/collect
-- 理解并行流 parallelStream 的 fork-join 机制与线程安全前提
-- 识别流只能消费一次、无状态/有状态操作、装箱开销等陷阱
+本章讲解 Stream 的流水线模型与惰性求值机制，覆盖 map/filter/collect 等常用中间与终结操作、并行流的适用前提及其典型陷阱。
 
 ## 核心概念
 
@@ -597,13 +591,13 @@ Map<String, Integer> nameToAge = people.stream()
     ));
 // {Alice=30, Bob=25}
 
-// 处理 key 冲突
-List<Person> people = Arrays.asList(
+// 处理 key 冲突:重新赋值 people 演示
+people = Arrays.asList(
     new Person("Alice", 30),
     new Person("Alice", 25) // 重复 name
 );
 
-Map<String, Integer> nameToAge = people.stream()
+nameToAge = people.stream()
     .collect(Collectors.toMap(
         Person::getName,
         Person::getAge,

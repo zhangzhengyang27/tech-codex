@@ -12,6 +12,49 @@ tags: [Java, MyBatis]
 
 在开始介绍 SqlSource 接口、SqlNode 接口等核心接口的相关内容之前，我们需要先来了解一下动态 SQL 中使用到的基础知识和基础组件。
 
+::: details 动态 SQL 用法速查（if / set / foreach / sql 片段、#{} 与 ${}，来自 SSM 篇）
+本篇以下内容聚焦动态标签的**解析与构建原理**（SqlNode 树、SqlSource、BoundSql）。使用层面的常用写法速查如下（原「08-SSM/MyBatis 高级查询」篇已解体，用法内容并入此处，各标签与后文 SqlNode 实现一一对应）：
+
+```xml
+<!-- <if> + <where>：多条件动态查询，where 相当于 where 1=1 且无条件时不拼接 WHERE -->
+<select id="findByIdAndUsernameIf" parameterType="user" resultType="user">
+  select * from user
+  <where>
+    <if test="id != null">and id = #{id}</if>
+    <if test="username != null">and username = #{username}</if>
+  </where>
+</select>
+
+<!-- <set>：动态更新，自动添加 SET 关键字并去掉末尾多余逗号（对应 TrimSqlNode） -->
+<update id="updateIf" parameterType="user">
+  update user
+  <set>
+    <if test="username != null">username = #{username},</if>
+    <if test="birthday != null">birthday = #{birthday},</if>
+    <if test="sex != null">sex = #{sex},</if>
+    <if test="address != null">address = #{address},</if>
+  </set>
+  where id = #{id}
+</update>
+
+<!-- <foreach>：遍历集合/数组拼 IN 条件
+     collection：集合写 collection/list，数组写 array；open/close/separator/item 同名示意 -->
+<select id="findByList" parameterType="list" resultType="user">
+  <include refid="selectUser"/>
+  <where>
+    <foreach collection="collection" open="id in (" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </where>
+</select>
+
+<!-- <sql> + <include>：把重复 SQL 提取为片段复用 -->
+<sql id="selectUser">select * from user</sql>
+```
+
+`#{}` 与 `${}` 的区别（笔试高频）：`#{}` 是**占位符**，经 PreparedStatement 设置值，自动做 Java 类型与 JDBC 类型转换，可防 SQL 注入；`${}` 是**字符串拼接**，不做类型转换，有 SQL 注入风险（模糊查询推荐 `like concat('%', #{username}, '%')` 或在 Java 层拼好 `%` 后用 `#{}` 传入）。传单个简单类型参数时，`#{}` 占位符名称可随意写，`${}` 只能写 `value`。两者差异的源码证据：`${}` 由 TextSqlNode 处理（原文拼接），`#{}` 由本篇后文的 SqlSourceBuilder 统一替换为 `?` 占位符。
+:::
+
 ## OGNL 表达式语言
 
 **OGNL 表达式语言是一款成熟的、面向对象的表达式语言**。在动态 SQL 语句中使用到了 OGNL 表达式读写 JavaBean 属性值、执行 JavaBean 方法这两个基础功能。

@@ -17,15 +17,15 @@ tags: [Java, SpringBoot]
 
 ### WebFlux：快速了解响应式编程与Reactive
 
-小伙伴们，如果你已经走到这里，恭喜你已经对当下 SpringFramework 和 SpringBoot 中的核心原理都有了一个比较完整的了解。按照目前的互联网整体开发现状，响应式编程和 WebFlux 的开发已经越来越多，虽然 WebMvc 的使用和开发已经非常普遍而且大家都能熟练使用，但面对高并发和高性能的要求，响应式编程的呼声越来越高，而且自从14年jdk1.8发行后，Java就已经支持了函数式编程，这也为后续的响应式编程提供了技术基础。接下来的这几篇我们来了解一下响应式编程和 WebFlux ，以及解析 WebFlux 中的一些原理，从而让小伙伴们从更深层面理解 WebFlux ，以及它和 WebMvc 的异同。
+走到这里，读者已经对 SpringFramework 和 SpringBoot 中的核心原理有了比较完整的了解。按照目前的互联网整体开发现状，响应式编程和 WebFlux 的开发越来越多：WebMvc 的使用非常普遍，但面对高并发和高性能的要求，响应式编程的呼声越来越高。而且自从 2014 年 JDK 1.8 发行后，Java 就支持了函数式编程，为响应式编程提供了技术基础。本篇起介绍响应式编程和 WebFlux，并解析 WebFlux 的一些原理，从更深层面理解 WebFlux 与 WebMvc 的异同。
 
 #### 1. 响应式编程引入
 
 WebFlux 的核心技术是响应式编程，而对于这个概念，到目前业界还没有一个完完全全被认可的定义，那既然我们是研究 WebFlux ，那我们去 SpringFramework 的官网来了解一下：
 
-> We touched on “non-blocking” and “functional” but what does reactive mean?The term, “reactive,” refers to programming models that are built around reacting to change — network components reacting to I/O events, UI controllers reacting to mouse events, and others. In that sense, non-blocking is reactive, because, instead of being blocked, we are now in the mode of reacting to notifications as operations complete or data becomes available.There is also another important mechanism that we on the Spring team associate with “reactive” and that is non-blocking back pressure. In synchronous, imperative code, blocking calls serve as a natural form of back pressure that forces the caller to wait. In non-blocking code, it becomes important to control the rate of events so that a fast producer does not overwhelm its destination.Reactive Streams is a small spec (also adopted in Java 9) that defines the interaction between asynchronous components with back pressure. For example a data repository (acting as Publisher) can produce data that an HTTP server (acting as Subscriber) can then write to the response. The main purpose of Reactive Streams is to let the subscriber to control how quickly or how slowly the publisher produces data.咱都讲响应式编程是“非阻塞”和“函数式”的，但是响应式意味着什么呢？“响应式”这个概念是指围绕对更改做出反应的编程模型-网络组件对I/O事件做出反应，UI控制器对鼠标事件做出反应等。从这个意义上说，响应式是非阻塞的，因为随着操作完成或数据可用，我们现在处于响应通知的模式，而不是被阻塞。Spring团队还有另一个重要机制与“响应式”相关联，这是不阻碍背压的机制。在同步命令式代码中，阻塞调用是强制调用者等待的一种自然的背压形式。在非阻塞代码中，控制事件的速率非常重要，这样事件数据生产方就不会快速地淹没其消费方。Reactive Streams是一个小的规范（在Java 9中也采用了），它定义了带有反压力的异步组件之间的交互。例如，数据存储库（充当发布者）可以生成数据，以便作为HTTP服务器（充当订阅者）将其写入响应中。 Reactive Streams的主要目的是让订阅者控制发布者生成数据的速度。
+> We touched on “non-blocking” and “functional” but what does reactive mean?The term, “reactive,” refers to programming models that are built around reacting to change — network components reacting to I/O events, UI controllers reacting to mouse events, and others. In that sense, non-blocking is reactive, because, instead of being blocked, we are now in the mode of reacting to notifications as operations complete or data becomes available.There is also another important mechanism that we on the Spring team associate with “reactive” and that is non-blocking back pressure. In synchronous, imperative code, blocking calls serve as a natural form of back pressure that forces the caller to wait. In non-blocking code, it becomes important to control the rate of events so that a fast producer does not overwhelm its destination.Reactive Streams is a small spec (also adopted in Java 9) that defines the interaction between asynchronous components with back pressure. For example a data repository (acting as Publisher) can produce data that an HTTP server (acting as Subscriber) can then write to the response. The main purpose of Reactive Streams is to let the subscriber to control how quickly or how slowly the publisher produces data.上文讲响应式编程是“非阻塞”和“函数式”的，但响应式意味着什么呢？“响应式”这个概念是指围绕对更改做出反应的编程模型-网络组件对I/O事件做出反应，UI控制器对鼠标事件做出反应等。从这个意义上说，响应式是非阻塞的，因为随着操作完成或数据可用，我们现在处于响应通知的模式，而不是被阻塞。Spring团队还有另一个重要机制与“响应式”相关联，这是不阻碍背压的机制。在同步命令式代码中，阻塞调用是强制调用者等待的一种自然的背压形式。在非阻塞代码中，控制事件的速率非常重要，这样事件数据生产方就不会快速地淹没其消费方。Reactive Streams是一个小的规范（在Java 9中也采用了），它定义了带有反压力的异步组件之间的交互。例如，数据存储库（充当发布者）可以生成数据，以便作为HTTP服务器（充当订阅者）将其写入响应中。 Reactive Streams的主要目的是让订阅者控制发布者生成数据的速度。
 
-这段解释有好多陌生的概念，咱暂且放置一边，毕竟不好理解的内容不要强行灌输到自己脑子里，这样没什么好处的。咱先用几个简单的例子来体会一些基础概念。
+这段解释有好多陌生的概念，先放置一边——不好理解的内容不必强行灌输，先用几个简单的例子体会一些基础概念。
 
 #### 2. 体会一些基础概念
 
@@ -42,7 +42,7 @@ WebFlux 的核心技术是响应式编程，而对于这个概念，到目前业
 
 ##### 2.2 观察者模式
 
-这个最基础的设计模式之一，小伙伴们已经都很熟悉吧。这里文档只举几个简单例子，帮助小伙伴们回忆一下吧：
+这是最基础的设计模式之一。这里只举几个简单例子，帮助回忆：
 
 - 你要去面试，面试前准备出发时手机推送了天气预报今天有雨，于是你带了伞出门 观察者（监听器）：你 ； 主题（事件源）：天气 ； 事件派发器：手机天气预报
 - 面试完成后，面试官会对你说：请留下你的联系方式，有消息我们会通知你的 观察者（监听器）：你 ； 主题（事件源&事件广播器）：面试官
@@ -56,7 +56,7 @@ WebFlux 的核心技术是响应式编程，而对于这个概念，到目前业
 
 ##### 2.4 【思考】双向绑定中的玄机
 
-仔细思考双向绑定，咱会产生一种感觉：
+仔细思考双向绑定，会产生一种感觉：
 
 1. 上面动图中，文本框上面的 span 部分应该是“观察着”下面的文本框内容，当文本框中内容发生改变时， span 部分就跟着变化。这不也是观察者模式吗？好，这里引出第一个响应式的概念：变化传递。文本框的内容变化引起了 span 部分的变化。
 2. 再观察图，有注意到文本框中每发生一次变化，都会引起上面的 span 部分变化！如果把这一系列变化都列出来，会形成一组变化动作的事件记录。好，这里再引出第二个响应式的概念：数据流。事件源的每一个变化连起来就是一个事件流。
@@ -82,19 +82,19 @@ var app6 = new Vue({
 
 ##### 2.5 小总结
 
-由上面的体会，咱来总结一下响应式的关键点：**变化传递、数据流、声明式**。这里面一直有一个很关键的核心围绕着响应式编程：**事件**。咱们也知道，事件是观察者模式的核心，咱又说响应式也是观察者模式，那自然响应式编程也要依赖事件。
+由上面的体会，总结一下响应式的关键点：**变化传递、数据流、声明式**。其中有一个很关键的核心围绕着响应式编程：**事件**。事件是观察者模式的核心，响应式编程也是观察者模式，自然也要依赖事件。
 
 #### 3. 体会一些响应式的新概念
 
 ##### 3.1 响应式流
 
-前面咱总结出了数据流的概念，那响应式编程中的数据流自然就有些讲究，它与之前咱在 Java8 中熟悉的 Stream 有些不一样：普通的 Stream 还是同步阻塞的，对于高并发场景下还是不能解决问题，而**响应式流可以做到异步非阻塞**。另外，Stream 的一个特性是一旦有了消费型方法，它就会将这个流中的所有方法处理完毕，如果这期间的数据量很大，Stream 是无法对这些庞大数据量有一个妥善的处理，而响应式流可以对这些数据进行**流量控制**，保证数据的接收速度在处理能力之内。
+前面总结出了数据流的概念，响应式编程中的数据流有些讲究，它与 Java 8 中熟悉的 Stream 有些不一样：普通的 Stream 还是同步阻塞的，对于高并发场景下还是不能解决问题，而**响应式流可以做到异步非阻塞**。另外，Stream 的一个特性是一旦有了消费型方法，它就会将这个流中的所有方法处理完毕，如果这期间的数据量很大，Stream 是无法对这些庞大数据量有一个妥善的处理，而响应式流可以对这些数据进行**流量控制**，保证数据的接收速度在处理能力之内。
 
 所以总结下来，响应式流的关键点：**异步非阻塞、数据流速控制**。
 
 ##### 3.2 背压
 
-异步非阻塞的概念咱在前面已经体会过了，下面通过一个模拟情景来体会数据流速控制的策略：**背压**。
+异步非阻塞的概念前面已经体会过了，下面通过一个模拟情景来体会数据流速控制的策略：**背压**。
 
 - 你在一个知名手机生产大厂中，你的职位是生产流水线上的一名普通工人，你的工作是负责流水线上的一个关键部分，这部分需要的时间比较多，而恰好这段时间跟你一起干活的伙计都陪老婆生孩子去了，剩下你单枪匹马仍然战斗在一线。
 - 但是你的上游工人似乎并不知道跟你一起干活的伙计都陪老婆生孩子了，而且不知道咋回事他们天天跟打了鸡血似的干劲十足，搞得你这边压了好多上游同事给你的件儿，但你的这部分工序耗时长，积压这么多件你也hold不住，于是忍无可忍的你向你的上游同事发飙了：**你们慢点，我处理不过来了**！你的上游同事听到了你的怒吼，于是他们**处理好的件儿就先不给你了，暂时放在他们自己那儿**，等你告诉他你这边的处理差不多了，他们再塞件儿给你。
@@ -103,15 +103,15 @@ var app6 = new Vue({
 
 体会这个情景中的两个关键部分：**下游向上游反馈，上游将数据暂时缓存/直接废弃**。
 
-上面咱都是聊一些概念，下面咱用一些简单的Demo来体会真正的响应式编程应该是什么样子。
+上面聊的都是概念，下面用一些简单的 Demo 来体会真正的响应式编程是什么样子。
 
 #### 4. 快速体会Reactor
 
 之所以选择 **Reactor** 作为响应式编程的框架支撑，是因为 WebFlux 的底层库就是 **Reactor** 。
 
-咱直接导入 `spring-boot-starter-webflux` 依赖，**Reactor** 会一起引入进来。
+直接导入 `spring-boot-starter-webflux` 依赖，**Reactor** 会一起引入进来。
 
-咱上面也看到了，响应式编程是一种观察者模式，自然就有发布者（事件源）和接收者（监听器）。在 Reactor 中，发布者和接收者对应的接口分别是 `Publisher` 和 `Subscriber` 。
+上面已经看到，响应式编程是一种观察者模式，自然有发布者（事件源）和接收者（监听器）。在 Reactor 中，发布者和接收者对应的接口分别是 `Publisher` 和 `Subscriber` 。
 
 下面先快速体会一个最简单的发布-订阅的实现：
 
@@ -179,7 +179,7 @@ public void cancel();
 
 ###### 4.1.4 Processor
 
-`Processor` 字面意思可以翻译为处理器，咱之前也看到过IOC容器中的好多后置处理器。这些处理器的特点都是**有输入，有输出**，那对应到Reactor的概念中，就应该是发布者和接收者的合体：
+`Processor` 字面意思可以翻译为处理器，前面在 IoC 容器中也看到过很多后置处理器。这些处理器的特点都是**有输入，有输出**，对应到 Reactor 的概念中，就是发布者和接收者的合体：
 
 ```java
 public interface Processor<T, R> extends Subscriber<T>, Publisher<R>
@@ -199,7 +199,7 @@ public abstract class Flux<T> implements Publisher<T>
 
 那既然它是发布者，那它必然少不了 `subscribe` 方法。`Flux` 和下面的 `Mono` 的 `subscribe` 方法重载有很多：
 
-这里面要注意的是，它在实现 `Publisher` 原生的 `subscribe` 方法时，还扩展了几个方法，以简化操作。比如上面咱在快速体会中的简单示例，它就是使用了只传入一个数据消费 `Consumer` 的重载（只处理正常情况下的数据接收）。
+这里面要注意的是，它在实现 `Publisher` 原生的 `subscribe` 方法时，还扩展了几个方法，以简化操作。比如上面快速体会中的简单示例，就使用了只传入一个数据消费 `Consumer` 的重载（只处理正常情况下的数据接收）。
 
 之所以称它可以理解为 `Stream` ，是因为它拥有 `Stream` 中的中间操作，并且更多更全面，举几个例子吧：
 
@@ -218,7 +218,7 @@ public class FluxDemo {
 
 > 注：早期版本常用的 `Schedulers.elastic()`（无界弹性线程池）已在 Reactor 3.4 标记废弃、3.5 中移除，替换方案为 `boundedElastic()`（默认线程上限为 `max(CPU核数, 4) × 10`，任务队列上限 10 万）。
 
-更具体的方法的使用，小伙伴们可以参照API文档，或者网络资料进行了解和练习。
+更具体的方法使用可参照 API 文档或网络资料进行了解和练习。
 
 ###### 4.2.2 Mono
 
@@ -245,17 +245,17 @@ public abstract class Mono<T> implements Publisher<T>
 2. 响应式编程不同于观察者模式的关键点在于：接收者（监听器）可以反向与发布者（事件源）交互。
 3. Reactor 是实现 Reactive 编程规范的框架，核心组件包括 `Flux` 、`Mono` 、`Scheduler` 。
 
-【咱快速了解一下响应式编程，以及Reactor框架的一些核心点，接下来咱快速体会 WebFlux 的开发，好为后面解析 WebFlux 的源码做准备】
+本节快速了解了响应式编程与 Reactor 框架的核心点，接下来体会 WebFlux 的开发，为后面解析 WebFlux 源码做准备。
 
 ### WebFlux：快速使用WebFlux
 
-前一篇咱快速的了解了响应式编程，以及 Reactor 框架的基本使用，接下来咱要开始正式接触 WebFlux 了。
+前面快速了解了响应式编程与 Reactor 框架的基本使用，接下来正式接触 WebFlux。
 
-咱都知道，自打 SpringFramework5 发行后，之前的 **SpringMVC** 被改名为 **SpringWebMvc**，因为它多了一个兄弟叫 **SpringWebFlux** 。而且 Spring 的开发者们为了避免咱们这些使用者因为新技术的门槛过高而吓跑，WebFlux 可以完美使用 WebMvc 的开发风格。下面咱先实战使用 WebFlux 框架，但还是用 WebMvc 的开发风格。
+自打 SpringFramework 5 发行后，之前的 **SpringMVC** 被改名为 **SpringWebMvc**，因为它多了一个兄弟叫 **SpringWebFlux**。而且 Spring 的开发者们为了降低新技术的门槛，让 WebFlux 可以完美使用 WebMvc 的开发风格。下面先实战使用 WebFlux 框架，但仍用 WebMvc 的开发风格。
 
 #### 1. WebFlux环境下用WebMvc风格
 
-导入的依赖还是咱上一篇提到的 `spring-boot-starter-webflux` ，没有引入 WebMvc 模块，直接运行主启动类，观察控制台的输出：
+导入的依赖还是上面提到的 `spring-boot-starter-webflux`，没有引入 WebMvc 模块。直接运行主启动类，观察控制台的输出：
 
 ```text
 1970-01-01 10:00:00.000  INFO 10224 --- [           main] com.example.demo.DemoApplication         : Starting DemoApplication on DESKTOP with PID 10224 (D:\IDEA\spring-boot-demo\target\classes started by LinkedBear in D:\IDEA\spring-boot-demo)
@@ -266,7 +266,7 @@ public abstract class Mono<T> implements Publisher<T>
 
 注意看应用启动在 **Netty** 上而不是 Tomcat 了！因为 Netty 更适合做响应式编程的应用服务器。
 
-接下来，跟之前开发 WebMvc 应用一样，咱编写一个 `DemoController`：
+接下来，跟之前开发 WebMvc 应用一样，编写一个 `DemoController`：
 
 ```java
 @RestController
@@ -289,7 +289,7 @@ public class DemoController {
 
 #### 2. 逐步过渡到WebFlux
 
-在上一篇咱看到了，Reactor 中的核心数据的封装是 `Flux` 和 `Mono`，那下面咱来改造上面的 `DemoController` ，用上这两个组件：
+上面已经看到，Reactor 中核心数据的封装是 `Flux` 和 `Mono`。下面改造上面的 `DemoController`，用上这两个组件：
 
 ```java
 @RestController
@@ -319,7 +319,7 @@ public class DemoController {
 - Controller 类上要打 `@Controller` 或者 `@RestController` 注解
 - url映射的方法要在方法上打 `@RequestMapping` 注解或者它的扩展注解
 
-咱之前分析 WebMvc 的原理时也知道，这些 `Controller` 中的方法，最终都会封装为一个一个的 **`Handler`** ，每个 `Handler` 都有自己匹配的 **url**。
+前面分析 WebMvc 的原理时也知道，这些 `Controller` 中的方法最终都会封装为一个一个的 **`Handler`**，每个 `Handler` 都有自己匹配的 **url**。
 
 由此，WebFlux 的函数式开发的核心点就转换为两种关键组件：**`HandlerFunction`** 和 **`RouterFunction`** 。
 
@@ -346,7 +346,7 @@ public class DemoHandler {
 
 ##### 3.2 新编写RouterConfiguration
 
-因为上面的 `DemoHandler` 已经没有了 url 映射的功能，需要手动声明路由规则，下面咱编写一个 `RouterConfiguration` 来配置路由规则（注意这是一个配置类）：
+因为上面的 `DemoHandler` 已经没有了 url 映射的功能，需要手动声明路由规则。下面编写一个 `RouterConfiguration` 来配置路由规则（注意这是一个配置类）：
 
 ```java
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
@@ -374,7 +374,7 @@ public class RouterConfiguration {
 
 #### 4. WebMvc与WebFlux的对比
 
-写到这里，咱先不着急开始走原理，先停下来思考一下，WebMvc 和 WebFlux 有哪些是相同的，又有哪些是不同的呢？
+写到这里，先不急着走原理，停下来思考一下：WebMvc 和 WebFlux 有哪些相同，又有哪些不同？
 
 官方文档中有一张图我觉得不错，这里引用一下吧：
 
@@ -388,11 +388,11 @@ public class RouterConfiguration {
 
 社区中还有一张对比图，描述的差不多也是这个意思。
 
-【大概了解 WebFlux 的使用之后，下面咱开始解析 WebFlux 中的原理，并且咱希望通过源码分析和原理解读，来从更深的层面来对比 WebMvc和 WebFlux】
+了解 WebFlux 的使用之后，下面开始解析 WebFlux 中的原理，通过源码分析和原理解读，从更深层面对比 WebMvc 与 WebFlux。
 
 ### WebFlux：WebFlux的自动装配
 
-根据之前的经验，咱使用WebFlux的时候，主启动类上相对比于WebMvc来讲没有任何区别，那只有自动配置类可以控制WebFlux的装配了，那装配的自动配置类不难猜想应该是：`WebFluxAutoConfiguration` 。
+根据前面的经验，使用 WebFlux 时主启动类相比于 WebMvc 没有任何区别，那么只有自动配置类可以控制 WebFlux 的装配。装配的自动配置类不难猜想应该是：`WebFluxAutoConfiguration`。
 
 #### 1. WebFluxAutoConfiguration
 
@@ -496,9 +496,9 @@ static ConnectionProvider elastic(String name) {
                     handler, checker, true, false));
 ```
 
-果然它就是一个连接的提供者，而且它还是 **Pool** ，换句话说，咱就可以简单的理解成它是 **Reactor Netty 的连接池**。
+果然它是一个连接的提供者，而且它还是 **Pool**——可以简单理解为 **Reactor Netty 的连接池**。
 
-实际Debug了一下，发现确实与咱的推测基本贴合：`ConnectionProvider` 底层确实是一个连接池，而且能看到 Netty 事件循环的 **selector** 与 **worker** 线程组的概念，这就是 Netty 的核心（worker 线程数默认与 CPU 核心数相关）。
+实际 Debug 了一下，发现与推测基本贴合：`ConnectionProvider` 底层确实是一个连接池，而且能看到 Netty 事件循环的 **selector** 与 **worker** 线程组的概念，这就是 Netty 的核心（worker 线程数默认与 CPU 核心数相关）。
 
 `ReactiveWebServerFactoryAutoConfiguration` 看完之后，回到 `WebFluxAutoConfiguration`。作为对比，先看一眼 `WebMvcAutoConfiguration` 的装配顺序声明：
 
@@ -555,7 +555,7 @@ private static final MimeType[] EMPTY_MIME_TYPES = {};
 }
 ```
 
-接下来才是最核心的 `WebFluxAutoConfiguration` 。源码中它定义了三个内部类，咱一个一个来看：
+接下来才是最核心的 `WebFluxAutoConfiguration` 。源码中它定义了三个内部类，逐个来看：
 
 #### 4. WebFluxConfig
 
@@ -566,7 +566,7 @@ private static final MimeType[] EMPTY_MIME_TYPES = {};
 public static class WebFluxConfig implements WebFluxConfigurer
 ```
 
-可以看到它又导入了一个 `EnableWebFluxConfiguration` ，而它就是下面第5章节的 `EnableWebFluxConfiguration` ，咱从上往下一样一样看。先看 `WebFluxConfig` 中的配置：
+可以看到它又导入了一个 `EnableWebFluxConfiguration` ，也就是下面第 5 节的 `EnableWebFluxConfiguration`。从上往下逐个看，先看 `WebFluxConfig` 中的配置：
 
 ##### 4.1 静态资源映射
 
@@ -629,7 +629,7 @@ public void addFormatters(FormatterRegistry registry) {
 }
 ```
 
-这部分在 WebMvc 部分也是一模一样的，直接copy过来的！（不过这部分不是特别关键，而且之前也没有单独拿出来聊，小伙伴们知道这里是配置转换器的即可）
+这部分在 WebMvc 部分也是一模一样的，直接copy过来的！（不过这部分不是特别关键，之前也没有单独拿出来聊，知道这里是配置转换器的即可）
 
 大概来看 `WebFluxConfig` 主要就配置了这几个组件，继续往下看：
 
@@ -649,14 +649,14 @@ public static class EnableWebFluxConfiguration extends DelegatingWebFluxConfigur
 public static class EnableWebMvcConfiguration extends DelegatingWebMvcConfiguration implements ResourceLoaderAware
 ```
 
-至于这些 `Delegating***Configuration` 的作用咱之前也提到过，它就是 `@EnableWebMvc` 或者 `@EnableWebFlux` 注解导入的配置类：
+至于这些 `Delegating***Configuration` 的作用前面也提到过：它就是 `@EnableWebMvc` 或者 `@EnableWebFlux` 注解导入的配置类：
 
 ```java
 @Import(DelegatingWebFluxConfiguration.class)
 public @interface EnableWebFlux
 ```
 
-它的作用小伙伴们还记得吗？只要在 SpringBoot 中标注了这样的注解，代表 SpringBoot 默认的自动配置类不生效，改由咱们自己接管配置 WebMvc 或者 WebFlux 。
+它的作用是：只要在 SpringBoot 中标注了这样的注解，SpringBoot 默认的自动配置类就不生效，改由开发者自己接管配置 WebMvc 或 WebFlux。
 
 下面来看它里面配置的组件：
 
@@ -707,11 +707,11 @@ protected RequestMappingHandlerMapping createRequestMappingHandlerMapping() {
 }
 ```
 
-哇塞这不是咱之前在 WebMvc 部分常聊的两个配合 `DispatcherServlet` 的核心组件吗？对的，它在 WebFlux 中也是一样的其效果。
+这不是前面在 WebMvc 部分常聊的两个配合 `DispatcherServlet` 的核心组件吗？对的，它在 WebFlux 中也是一样的效果。
 
 #### 6. WebFluxConfigurationSupport
 
-上面咱注意到了 `EnableWebFluxConfiguration` 继承了 `DelegatingWebFluxConfiguration`，而它又继承了 `WebFluxConfigurationSupport` ，这个配置类中还注册了一些组件：
+上面注意到 `EnableWebFluxConfiguration` 继承了 `DelegatingWebFluxConfiguration`，而它又继承了 `WebFluxConfigurationSupport`，这个配置类中还注册了一些组件：
 
 ##### 6.1 DispatcherHandler
 
@@ -780,7 +780,7 @@ public RouterFunctionMapping routerFunctionMapping() {
 }
 ```
 
-与 `RequestMappingHandlerMapping` 区别开来，它是**函数式端点路由编程的Mapping处理器**。至于它的作用，咱到本篇 6.4 节再聊。
+与 `RequestMappingHandlerMapping` 区别开来，它是**函数式端点路由编程的Mapping处理器**。至于它的作用，到本篇 6.4 节再聊。
 
 ##### 6.5 SimpleUrlHandlerMapping
 
@@ -814,7 +814,7 @@ public HandlerMapping resourceHandlerMapping() {
 }
 ```
 
-注意看源码中第一个if结构下面，它用了一个 `ResourceHandlerRegistry` ，有没有感觉似曾相识？咱在前面看静态资源映射的时候见过它，它是**处理静态资源的映射**的。通常情况下咱的项目中会有一些静态资源，只要存在静态资源，它就会创建一个 `SimpleUrlHandlerMapping` 来真正处理静态资源的路径映射。通过Debug，发现确实存在（因为有应用图标 `favicon.ico`）：
+注意看源码中第一个if结构下面，它用了一个 `ResourceHandlerRegistry` ，似曾相识——前面看静态资源映射的时候见过它，它是**处理静态资源的映射**的。通常项目中会有一些静态资源，只要存在静态资源，它就会创建一个 `SimpleUrlHandlerMapping` 来真正处理静态资源的路径映射。通过Debug，发现确实存在（因为有应用图标 `favicon.ico`）：
 
 ##### 6.6 RequestMappingHandlerAdapter
 
@@ -915,13 +915,594 @@ static class ResourceChainCustomizerConfiguration {
 }
 ```
 
-发现它有一个 `@ConditionalOnEnabledResourceChain` 注解，它的作用咱不深追究了，它实际是跟一个 `application.properties` 中的配置有关：`spring.resources.chain.strategy.fixed.enabled` ，如果它配置为true，这个条件才生效，默认不生效，不再深究。
+发现它有一个 `@ConditionalOnEnabledResourceChain` 注解，它的作用与一个 `application.properties` 配置有关：`spring.resources.chain.strategy.fixed.enabled` ，如果它配置为true，这个条件才生效，默认不生效，不再深究。
 
 #### 小结
 
 1. `WebFluxAutoConfiguration` 的配置整体与 `WebMvcAutoConfiguration` 非常相似，其中不乏包括几个核心组件。
 2. `WebFluxAutoConfiguration` 默认配置的Web容器是Netty而非 Tomcat 等传统 Servlet 容器。
 3. 大部分比较熟悉的组件都在 `DelegatingWebFluxConfiguration` 的父类 `WebFluxConfigurationSupport` 中注册。
+
+## WebFlux 工作原理：DispatcherHandler 源码走读
+
+### WebFlux：DispatcherHandler的工作原理-传统方式
+
+前面已经看到并示例过：WebFlux 可以完美兼容 WebMvc 的开发风格。由此可以推测，WebFlux 中的核心前端控制器 `DispatcherHandler` 在这部分的处理上应该与 `DispatcherServlet` 相差不大。带着这个猜测，以 Debug 的方式观察处理逻辑走向：
+
+#### 1. DispatcherHandler#handle
+
+```java
+public Mono<Void> handle(ServerWebExchange exchange) {
+    if (this.handlerMappings == null) {
+        return createNotFoundError();
+    }
+    return Flux.fromIterable(this.handlerMappings)
+            .concatMap(mapping -> mapping.getHandler(exchange))
+            .next()
+            .switchIfEmpty(createNotFoundError())
+            .flatMap(handler -> invokeHandler(exchange, handler))
+            .flatMap(result -> handleResult(exchange, result));
+}
+```
+
+这里很惊讶的发现它的源码非常少，相比较 `DispatcherServlet` 的代码数量，少的不是一个数量级！
+
+注意它传入的参数是一个 `ServerWebExchange` ，联想 `DispatcherServlet` 中传入的是 `HttpServletRequest` 和 `HttpServletResponse` ，猜想它应该是类似于这两个类的合体：
+
+```java
+public interface ServerWebExchange {
+	/**
+	 * Return the current HTTP request.
+	 */
+	ServerHttpRequest getRequest();
+
+	/**
+	 * Return the current HTTP response.
+	 */
+	ServerHttpResponse getResponse();
+```
+
+果然从这个接口的方法中发现了 **Request** 和 **Response** 的概念，证明猜想正确。
+
+回到 `handle` 方法，通过Debug进来，首先要判断现有的 `HandlerMapping` ，当前测试的Demo工程中我分别写了基于注解的映射，和基于函数式端点的映射。Debug下发现有3个 `HandlerMapping` （注解映射、函数式端点映射与静态资源映射）。
+
+之后的return结构中是一连串链式调用，这也体现出了函数式编程和响应式编程的一个弊端：Debug真的困难。我在最开始Debug找线索时，真是费了不少功夫，才慢慢找到这些端倪。
+
+这段调用可读性挺高，参考前面 `DispatcherServlet` 的工作原理，大概分析一下其中的三个步骤：
+
+#### 2. 选定HandlerMapping
+
+不难看出，选定 `HandlerMapping` 的步骤是这几步：
+
+```java
+    return Flux.fromIterable(this.handlerMappings)
+            .concatMap(mapping -> mapping.getHandler(exchange))
+            .next()
+```
+
+首先进入 `fromIterable` 方法：
+
+##### 2.1 Flux#fromIterable
+
+```java
+public static <T> Flux<T> fromIterable(Iterable<? extends T> it) {
+    return onAssembly(new FluxIterable<>(it));
+}
+```
+
+它将这一组 `HandlerMapping` 转换成了一组 `FluxIterable` ，之后传入了 `onAssembly` 方法中。
+
+##### 2.2 onAssembly
+
+```java
+protected static <T> Flux<T> onAssembly(Flux<T> source) {
+    Function<Publisher, Publisher> hook = Hooks.onEachOperatorHook;
+    if(hook != null) {
+        source = (Flux<T>) hook.apply(source);
+    }
+    if (Hooks.GLOBAL_TRACE) {
+        AssemblySnapshot stacktrace = new AssemblySnapshot(null, Traces.callSiteSupplierFactory.get());
+        source = (Flux<T>) Hooks.addAssemblyInfo(source, stacktrace);
+    }
+    return source;
+}
+```
+
+方法的名称可以理解为 “触发了装载、扩展动作”，这个方法的文档注释：
+
+> To be used by custom operators: invokes assembly Hooks pointcut given a Flux, potentially returning a new Flux. This is for example useful to activate cross-cutting concerns at assembly time, eg. a generalized checkpoint().由自定义运算符使用：给定Flux调用程序集Hooks切入点，并有可能返回新的Flux。这对于在装配时激活横切关注点很有用，比方说泛型checkpoint()。
+
+文档注释中的几个关键词已经足以给我们提供思路了：切入点、装配、横切。是不是想到了AOP？其实这个方法的作用有点类似AOP，不过我个人感觉它应该更符合装饰者模式。通过Debug，发现它只是包装为一个 `FluxIterable` 对象，不过这就是装载、扩展的体现：将可迭代的集合装载为一个 Flux 流。
+
+##### 2.3 concatMap(mapping -> mapping.getHandler(exchange))
+
+上面将那一组 `HandlerMapping` 转换为 Flux后，接下来要从这组 `HandlerMapping` 中找出能处理当前请求的 `HandlerMapping` 了：
+
+来到 `AbstractHandlerMapping#getHandler` ：
+
+```java
+public Mono<Object> getHandler(ServerWebExchange exchange) {
+    return getHandlerInternal(exchange).map(handler -> {
+        // ......
+    });
+}
+```
+
+这个方法分为两部分：先执行 `getHandlerInternal` 获取可以处理当前请求的 `HandlerMapping` ，再执行 `map` 方法进行后处理。
+
+###### 2.3.1 getHandlerInternal
+
+对于传统的 `@RequestMapping` 方式标注的 “Handler”，会进入 `AbstractHandlerMethodMapping#getHandlerInternal` 方法（又跟 WebMvc 非常相似）：
+
+```java
+public Mono<HandlerMethod> getHandlerInternal(ServerWebExchange exchange) {
+    this.mappingRegistry.acquireReadLock();
+    try {
+        HandlerMethod handlerMethod;
+        try {
+            // 搜索处理器方法（真正处理请求的RequestMapping）
+            handlerMethod = lookupHandlerMethod(exchange);
+        }
+        catch (Exception ex) {
+            return Mono.error(ex);
+        }
+        // 将方法分离出来，单独形成一个Bean
+        if (handlerMethod != null) {
+            handlerMethod = handlerMethod.createWithResolvedBean();
+        }
+        return Mono.justOrEmpty(handlerMethod);
+    }
+    finally {
+        this.mappingRegistry.releaseReadLock();
+    }
+}
+```
+
+对比第 25 篇《WebMvc 请求处理流程源码》中 `DispatcherServlet` 的对应处理，发现 `DispatcherServlet` 中的方法更短，但相比较而言 WebFlux 中处理的更严谨（有异常处理的考虑），而WebMvc 中只是简单地把异常抛出去了而已。如果不看这些细枝末节，会发现思路完全一致：先搜索所有 “HandlerMethod”，后封装为一个单独的 `HandlerMethod` 类型的Bean。
+
+方法内部的实现与 WebMvc 部分思路几乎完全一致，不再深扒。这里看一眼扫描到的匹配请求的 `HandlerMethod`：Debug 中已经找到了示例的 `DemoController`。
+
+###### 2.3.2 搜索到后的map
+
+```java
+return getHandlerInternal(exchange).map(handler -> {
+    if (logger.isDebugEnabled()) {
+        logger.debug(exchange.getLogPrefix() + "Mapped to " + handler);
+    }
+    if (CorsUtils.isCorsRequest(exchange.getRequest())) {
+        CorsConfiguration configA = this.corsConfigurationSource.getCorsConfiguration(exchange);
+        CorsConfiguration configB = getCorsConfiguration(handler, exchange);
+        CorsConfiguration config = (configA != null ? configA.combine(configB) : configB);
+        if (!getCorsProcessor().process(config, exchange) ||
+                CorsUtils.isPreFlightRequest(exchange.getRequest())) {
+            return REQUEST_HANDLED_HANDLER;
+        }
+    }
+    return handler;
+});
+```
+
+可以看出来它有对跨域的处理。由于本例是最简单的测试，不会触发跨域处理，直接把封装好的 `Mono<HandlerMethod>` 返回了。
+
+返回回去后，回到 `DispatcherHandler` 的 `handle` 方法，要寻找这个 `HandlerMethod` 对应的 `HandlerAdapter` 了：
+
+#### 3. 寻找HandlerAdapter
+
+```java
+private Mono<HandlerResult> invokeHandler(ServerWebExchange exchange, Object handler) {
+    if (this.handlerAdapters != null) {
+        for (HandlerAdapter handlerAdapter : this.handlerAdapters) {
+            if (handlerAdapter.supports(handler)) {
+                return handlerAdapter.handle(exchange, handler);
+            }
+        }
+    }
+    return Mono.error(new IllegalStateException("No HandlerAdapter: " + handler));
+}
+```
+
+由于是 WebMvc 开发风格的处理，返回的 `HandlerMethod` 也是 `DemoController` 里的，默认情况下有3个 HandlerAdapter 。不用想，肯定走 `RequestMappingHandlerAdapter` ，通过Debug发现确实如此，之后直接调了它的 `handle` 方法了！
+
+#### 4. 【目标方法】HandlerAdapter#handle
+
+来到 `RequestMappingHandlerAdapter` 中：
+
+```java
+public Mono<HandlerResult> handle(ServerWebExchange exchange, Object handler) {
+    HandlerMethod handlerMethod = (HandlerMethod) handler;
+    Assert.state(this.methodResolver != null && this.modelInitializer != null, "Not initialized");
+
+// 4.1 初始化参数绑定上下文
+    InitBinderBindingContext bindingContext = new InitBinderBindingContext(
+            getWebBindingInitializer(), this.methodResolver.getInitBinderMethods(handlerMethod));
+
+// 4.2 创建方法执行对象
+    InvocableHandlerMethod invocableMethod = this.methodResolver.getRequestMappingMethod(handlerMethod);
+
+// 异常处理器的准备
+    Function<Throwable, Mono<HandlerResult>> exceptionHandler =
+            ex -> handleException(ex, handlerMethod, bindingContext, exchange);
+
+    // 4.3 执行目标方法，处理返回值和异常
+    return this.modelInitializer
+            .initModel(handlerMethod, bindingContext, exchange)
+            .then(Mono.defer(() -> invocableMethod.invoke(exchange, bindingContext)))
+            .doOnNext(result -> result.setExceptionHandler(exceptionHandler))
+            .doOnNext(result -> bindingContext.saveModel())
+            .onErrorResume(exceptionHandler);
+}
+```
+
+这里面先是对 `HandlerMethod` 进行一些处理，以及异常处理器的处理，最后的链式调用中第三行有一个 `invocableMethod.invoke` ，它就会去引导调用真正的 Controller 方法。根据上面源码的注释标注逐个来看：
+
+##### 4.1 InitBinderBindingContext
+
+这个类非常有意思，它在 SpringFramework 的官方API中根本没有收录进去，而且也找不到任何相关的资料，只能靠源码的部分来大概看一眼它：
+
+```java
+/** Extends BindingContext with @InitBinder method initialization. */
+class InitBinderBindingContext extends BindingContext
+```
+
+它的文档注释中提到了 `@InitBinder` 注解，这个注解在 WebMvc 部分见过，是做参数绑定的。另外它继承自 `BindingContext`，从类名可以推测 `BindingContext` 是配合 `@InitBinder` 做参数绑定相关工作的。看一眼它的文档注释：
+
+> Context to assist with binding request data onto Objects and provide access to a shared Model with controller-specific attributes. Provides methods to create a WebExchangeDataBinder for a specific target, command Object to apply data binding and validation to, or without a target Object for simple type conversion from request values. Container for the default model for the request.用于帮助将请求数据绑定到对象的上下文，并提供对具有控制器特定属性的共享模型的访问。提供用于为特定目标创建 WebExchangeDataBinder 的方法，提供对目标对象应用数据绑定和验证的命令Object（或不具有目标对象的命令Object）以从请求值进行简单类型转换的方法。请求的默认模型的容器。
+
+文档注释倒是可以比较明确的看出，它确实是跟参数绑定相关的组件。
+
+##### 4.2 InvocableHandlerMethod
+
+这个组件在 WebMvc 部分也见过，作用是调用 `HandlerMapping` 中真正封装的 Controller 方法。注意它跟 WebMvc 部分的 `ServletInvocableHandlerMethod` 应该是继承关系，只不过 WebFlux 中的 `InvocableHandlerMethod` 在 reactive 包下，而不是 mvc 包。其余部分几乎完全相同，可与 [36-DispatcherServlet源码](36-DispatcherServlet源码.md) 中 `DispatcherServlet` 工作原理对照翻看，此处不再赘述。
+
+##### 4.3 执行目标方法，处理返回值和异常
+
+```java
+return this.modelInitializer
+        .initModel(handlerMethod, bindingContext, exchange)
+        .then(Mono.defer(() -> invocableMethod.invoke(exchange, bindingContext)))
+        .doOnNext(result -> result.setExceptionHandler(exceptionHandler))
+        .doOnNext(result -> bindingContext.saveModel())
+        .onErrorResume(exceptionHandler);
+```
+
+注意这里面最重要的动作就是 `invocableMethod.invoke(exchange, bindingContext)` ，来看它的实现，进入到 `InvocableHandlerMethod` 中：
+
+```java
+public Mono<HandlerResult> invoke(
+        ServerWebExchange exchange, BindingContext bindingContext, Object... providedArgs) {
+    return getMethodArgumentValues(exchange, bindingContext, providedArgs).flatMap(args -> {
+        Object value;
+        try {
+            //4.3.1 执行目标方法
+            ReflectionUtils.makeAccessible(getBridgedMethod());
+            value = getBridgedMethod().invoke(getBean(), args);
+        }
+        // catch ......
+
+        // ......
+    });
+}
+```
+
+它直接就 return 了，里面又是流式调用，lambda 表达式中有一部分很眼熟：try 块中的 `value = getBridgedMethod().invoke(getBean(), args);` ，把 WebMvc 中的调用方式拿出来对比一下：
+
+###### 4.3.1 WebMvc 和 WebFlux 部分的Controller方法反射调用
+
+```java
+// org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod (注意看包名)
+public void invokeAndHandle(ServletWebRequest webRequest, ModelAndViewContainer mavContainer,
+        Object... providedArgs) throws Exception {
+
+Object returnValue = invokeForRequest(webRequest, mavContainer, providedArgs);
+    setResponseStatus(webRequest);
+
+------ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ------
+
+// org.springframework.web.method.support.InvocableHandlerMethod (注意看包名)
+protected Object doInvoke(Object... args) throws Exception {
+    ReflectionUtils.makeAccessible(getBridgedMethod());
+    try {
+        return getBridgedMethod().invoke(getBean(), args);
+    }
+    // catch ......
+}
+```
+
+竟然是一模一样的！是不是产生了一种感觉：WebFlux 不会基本上都是抄的 WebMvc 吧。（然而事实还真是）
+
+执行完目标方法后，回到 `invoke` 方法，要进行返回值处理：
+
+```java
+    try {
+        ReflectionUtils.makeAccessible(getBridgedMethod());
+        value = getBridgedMethod().invoke(getBean(), args);
+    } // catch ......
+
+// 处理响应状态
+    HttpStatus status = getResponseStatus();
+    if (status != null) {
+        exchange.getResponse().setStatusCode(status);
+    }
+
+MethodParameter returnType = getReturnType();
+    // 4.3.2 处理返回值
+    ReactiveAdapter adapter = this.reactiveAdapterRegistry.getAdapter(returnType.getParameterType());
+    boolean asyncVoid = isAsyncVoidReturnType(returnType, adapter);
+    if ((value == null || asyncVoid) && isResponseHandled(args, exchange)) {
+        return (asyncVoid ? Mono.from(adapter.toPublisher(value)) : Mono.empty());
+    }
+
+    HandlerResult result = new HandlerResult(this, value, returnType, bindingContext);
+    return Mono.just(result);
+```
+
+上面处理响应状态后，下面要处理返回值了：
+
+###### 4.3.2 处理返回值
+
+由于示例在 `DemoController` 中声明的返回值类型是 `Mono<String>`，这里的 value 也就是 `Mono<String>` 类型。通过Debug，发现它的类型和对应的 `ReactiveAdapter` 也都获取到了。
+
+补充一点：`ReactiveAdapter` 是通过 `ReactiveAdapterRegistry` 组件获取而来的，用它来实际兼容 RxJava 等其他响应式编程框架。
+
+最后，它会将返回值封装为一个 `HandlerResult` 对象，返回出去。
+
+#### 5. 最后的返回值处理
+
+回到 `DispatcherHandler` 中：
+
+```java
+return Flux.fromIterable(this.handlerMappings)
+        .concatMap(mapping -> mapping.getHandler(exchange))
+        .next()
+        .switchIfEmpty(createNotFoundError())
+        .flatMap(handler -> invokeHandler(exchange, handler))
+        .flatMap(result -> handleResult(exchange, result));
+```
+
+上一步执行完成的是 `handler -> invokeHandler` ，下面还要再处理上一步的返回值：
+
+```java
+private Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
+    return getResultHandler(result).handleResult(exchange, result)
+            .onErrorResume(ex -> result.applyExceptionHandler(ex).flatMap(exceptionResult ->
+                    getResultHandler(exceptionResult).handleResult(exchange, exceptionResult)));
+}
+```
+
+又是一个调用链，它先根据上一步的返回值，获取到 `ResultHandler` ，之后处理一下，返回。
+
+##### 5.1 getResultHandler
+
+```java
+private HandlerResultHandler getResultHandler(HandlerResult handlerResult) {
+    if (this.resultHandlers != null) {
+        for (HandlerResultHandler resultHandler : this.resultHandlers) {
+            if (resultHandler.supports(handlerResult)) {
+                return resultHandler;
+            }
+        }
+    }
+    throw new IllegalStateException("No HandlerResultHandler for " + handlerResult.getReturnValue());
+}
+```
+
+它的搜索方法还是循环所有的 `HandlerResultHandler` ，而默认情况下一共有4个 `HandlerResultHandler` （分别处理 ResponseEntity、@ResponseBody、视图渲染与 ServerResponse，见第 27 篇自动装配一节的源码）。
+
+很容易判断，通过 `@RestController` 出来的方法，都会走 `ResponseBodyResultHandler` ：
+
+##### 5.2 ResponseBodyResultHandler#handleResult
+
+```java
+public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
+    Object body = result.getReturnValue();
+    MethodParameter bodyTypeParameter = result.getReturnTypeSource();
+    return writeBody(body, bodyTypeParameter, exchange);
+}
+```
+
+在这里它会将返回值拿到，之后执行 `writeBody` 方法将返回值结果写到响应流中，处理结束。
+
+`handleResult` 方法执行完毕后，回到 `DispatcherHandler` 中，链式调用的链也执行完毕了，整个请求处理结束。
+
+#### 小结
+
+1. `DispatcherHandler` 与 `DispatcherServlet` 的处理思路几乎完全相同，包括寻找 `HandlerMapping` 、`HandlerAdapter` 、执行目标方法等。
+2. `DispatcherHandler` 相比较 `DispatcherServlet` 最大的不同点，是里面的实现绝大部分都采用响应式流编程。
+
+至此，一次传统 WebMvc 风格编程的请求处理就完成了。接下来看使用函数式端点编程时，`DispatcherHandler` 是如何处理的。
+
+### WebFlux：DispatcherHandler的工作原理-函数式端点
+
+前面用传统的 WebMvc 编程风格测试了一个请求，下面用前面写的函数式端点编程开发的 Handler，看看处理有什么相同和不同。
+
+#### 1. DispatcherHandler#handle
+
+对，你没看错，它还是来到 `DispatcherHandler` 的 `handle` 方法，证明两种方式最终都是走一个前端控制器。
+
+```java
+public Mono<Void> handle(ServerWebExchange exchange) {
+    if (this.handlerMappings == null) {
+        return createNotFoundError();
+    }
+    return Flux.fromIterable(this.handlerMappings)
+            .concatMap(mapping -> mapping.getHandler(exchange))
+            .next()
+            .switchIfEmpty(createNotFoundError())
+            .flatMap(handler -> invokeHandler(exchange, handler))
+            .flatMap(result -> handleResult(exchange, result));
+}
+```
+
+套路与前面一致，逐个来看：
+
+#### 2. 选定HandlerMapping
+
+`concatMap(mapping -> mapping.getHandler(exchange))` 的步骤是筛选 HandlerMapping 的，来到 `AbstractHandlerMapping#getHandler` ：
+
+```java
+public Mono<Object> getHandler(ServerWebExchange exchange) {
+    return getHandlerInternal(exchange).map(handler -> {
+        // ......
+    });
+}
+```
+
+进入Lambda表达式中发现 `Handler` 的类型是我自己写的 `RouterConfiguration` 中的Lambda表达式！而且它也帮我映射到了实际处理的 `DemoHandler` ！
+
+注意这个地方实际上的 `HandlerMapping` 是 `RouterFunctionMapping` ，这个组件在前文留了个缺口，这里回顾一下：
+
+##### 2.0 RouterFunctionMapping
+
+```java
+@Bean
+public RouterFunctionMapping routerFunctionMapping() {
+    RouterFunctionMapping mapping = createRouterFunctionMapping();
+    mapping.setOrder(-1); // go before RequestMappingHandlerMapping
+    mapping.setMessageReaders(serverCodecConfigurer().getReaders());
+    mapping.setCorsConfigurations(getCorsConfigurations());
+
+    return mapping;
+}
+```
+
+它有设置一个 `Order` 的属性为 -1，并且后面的单行注释也写得很明白：它会排在 `RequestMappingHandlerMapping` 的前面。这样看来，用**函数式端点开发的映射，优先级会高于用 WebMvc 的注解风格开发的映射**。
+
+对比 `RequestMappingHandlerMapping` ，发现它的 Order 是0，证明 `RouterFunctionMapping` 更靠前：
+
+```java
+@Bean
+public RequestMappingHandlerMapping requestMappingHandlerMapping() {
+    RequestMappingHandlerMapping mapping = createRequestMappingHandlerMapping();
+    mapping.setOrder(0);
+    // ......
+```
+
+另外，`RouterFunctionMapping` 中包含了所有的函数式端点，看看它的定义：
+
+```java
+public class RouterFunctionMapping extends AbstractHandlerMapping implements InitializingBean {
+
+    @Nullable
+    private RouterFunction<?> routerFunction;
+```
+
+它里面有一个 `routerFunction` 的属性，它保存了所有的函数式端点。可这样看上去只有一个，说明它肯定有一些组合/合并的动作。
+
+借助IDEA，发现在这个类中有一个 `initRouterFunctions` 方法：
+
+```java
+protected void initRouterFunctions() {
+    List<RouterFunction<?>> routerFunctions = routerFunctions();
+    this.routerFunction = routerFunctions.stream().reduce(RouterFunction::andOther).orElse(null);
+    logRouterFunctions(routerFunctions);
+}
+```
+
+这里它会先获取所有的 `RouterFunction` ，之后在下面有一个将所有 `RouterFunction` 的 `reduce` 操作，它会利用 `RouterFunction` 的 `andOther` 方法，将所有 `RouterFunction` 进行组合。
+
+#### 3. 寻找HandlerAdapter
+
+```java
+private Mono<HandlerResult> invokeHandler(ServerWebExchange exchange, Object handler) {
+    if (this.handlerAdapters != null) {
+        for (HandlerAdapter handlerAdapter : this.handlerAdapters) {
+            if (handlerAdapter.supports(handler)) {
+                return handlerAdapter.handle(exchange, handler);
+            }
+        }
+    }
+    return Mono.error(new IllegalStateException("No HandlerAdapter: " + handler));
+}
+```
+
+依旧来到 `invokeHandler` 方法中找 `HandlerAdapter` ，不过这次是函数式端点编程，所以找到的 `HandlerAdapter` 的类型会有所不同：
+
+发现类型为 `HandlerFunctionAdapter` ，不过Debug时想展开看看它里面有什么组成，结果扑了个空。（实际上也确实没有对象属性）
+
+#### 4. 执行目标方法
+
+```java
+public Mono<HandlerResult> handle(ServerWebExchange exchange, Object handler) {
+    HandlerFunction<?> handlerFunction = (HandlerFunction<?>) handler;
+    ServerRequest request = exchange.getRequiredAttribute(RouterFunctions.REQUEST_ATTRIBUTE);
+    return handlerFunction.handle(request)
+            .map(response -> new HandlerResult(handlerFunction, response, HANDLER_FUNCTION_RETURN_TYPE));
+}
+```
+
+注意在 `HandlerFunctionAdapter` 中，所有的 Handler 都可以转换为 `HandlerFunction` 类型。
+
+> `RouterFunctions` 类的 route 方法会传入 HandlerFunction 类型的 lambda表达式：
+
+```java
+public static <T extends ServerResponse> RouterFunction<T> route(
+        RequestPredicate predicate, HandlerFunction<T> handlerFunction) {
+    return new DefaultRouterFunction<>(predicate, handlerFunction);
+}
+```
+
+下面的return部分的调用，注意第一步：`handlerFunction.handle(request)` ，它会直接拿 `handlerFunction` 调 `handle` 方法，这个操作就相当于实际调用 Controller 的方法，而 HandlerFunction 接口的定义：
+
+```java
+@FunctionalInterface
+public interface HandlerFunction<T extends ServerResponse> {
+    Mono<T> handle(ServerRequest request);
+}
+```
+
+借助IDEA，发现 `handle` 方法的实现就是我自己写的 `DemoHandler` 里的方法：
+
+由此可以发现，原来函数式端点的执行更简单，不需要走反射，直接强转就可以调用 Controller/Handler的目标方法。
+
+#### 5. 返回值处理
+
+`DispatcherHandler` 的最后一步，要对上一步的返回值进行处理，会走 `result -> handleResult(exchange, result)` 方法：
+
+```java
+private Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
+    return getResultHandler(result).handleResult(exchange, result)
+            .onErrorResume(ex -> result.applyExceptionHandler(ex).flatMap(exceptionResult ->
+                    getResultHandler(exceptionResult).handleResult(exchange, exceptionResult)));
+}
+```
+
+调用链的第一步获取 `ResultHandler` ，不过这次获取的类型发生了变化：
+
+它的类型是 `ServerResponseResultHandler` ！就有必要看看这个类了，毕竟它跟 `ResponseBodyResultHandler` 肯定是不一样的实现。
+
+##### 5.1 ServerResponseResultHandler
+
+来到 `ServerResponseResultHandler` 的 `handleResult` 方法：
+
+```java
+public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
+    ServerResponse response = (ServerResponse) result.getReturnValue();
+    Assert.state(response != null, "No ServerResponse");
+    return response.writeTo(exchange, new ServerResponse.Context() {
+        @Override
+        public List<HttpMessageWriter<?>> messageWriters() {
+            return messageWriters;
+        }
+        @Override
+        public List<ViewResolver> viewResolvers() {
+            return viewResolvers;
+        }
+    });
+}
+```
+
+可以发现它其实也没那么神秘，也是直接拿 `ServerResponse` ，直接调 `writeTo` 方法，向响应流中写入数据。
+
+至此，请求被成功处理。
+
+#### 小结
+
+1. `RouterFunctionMapping` 用于在函数式端点的映射中寻找对应的目标方法，而且它的优先级高于 `RequestMappingHandlerMapping` 。
+2. 函数式端点编程在真正调用目标 Controller/Handler 方法时，相较于传统 WebMvc 方式，不需要走反射，而是直接强转为 `HandlerFunction` 后直接调用目标方法。
+
+【至此，WebFlux的核心装配和执行流程全部解析完毕】
+
+> 以下内容吸收自原独立篇《WebFlux 工作原理》：DispatcherHandler 处理请求的 Debug 走读（传统注解风格与函数式端点两种方式）。
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 
@@ -932,3 +1513,6 @@ static class ResourceChainCustomizerConfiguration {
 | 响应式客户端 | WebClient | 不变（响应式场景仍用 WebClient）；同步场景 Spring 6.1 新增 RestClient 替代 RestTemplate |
 | 虚拟线程 | 无 | 同步栈（WebMvc）可启用虚拟线程；WebFlux 仍适合高吞吐 I/O 密集场景 |
 | 选型 | WebFlux vs MVC | 权衡不变；简单阻塞 I/O 场景可考虑 MVC+虚拟线程 |
+| 函数式端点 | RouterFunction | 不变 |
+| 背压 | Reactor 背压 | 不变 |
+| Netty 调优 | Netty 参数调优 | 不变；Netty 事件循环参数稳定 |

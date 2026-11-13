@@ -3126,7 +3126,7 @@ Spring Boot 集成：启用 Actuator 的 `/actuator/health/liveness` 和 `/actua
 5. **镜像签名验证**：使用 Docker Content Trust、Cosign
 6. **策略执行**：使用 Kyverno、OPA Gatekeeper
 
->  相关文档：[7-性能优化](07-性能优化) · [8-微服务架构](08-微服务架构) · [13-Actuator与可观测性接入](13-Actuator与可观测性接入) · [18-SpringBoot国际化与本地化](18-SpringBoot国际化与本地化) · [19-SpringBoot文件上传与Multipart](19-SpringBoot文件上传与Multipart)
+>  相关文档：[7-性能优化](07-性能优化) · [8-微服务架构](08-微服务架构) · [13-Actuator与可观测性接入](13-Actuator与可观测性接入) · [18-SpringBoot国际化与本地化](18-SpringBoot国际化与本地化) · [25-WebMvc定制与静态资源](25-WebMvc定制与静态资源.md)
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 

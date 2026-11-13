@@ -362,6 +362,23 @@ public Object getNamedParams(Object[] args) {
 
 ```
 
+::: details 多条件查询的三种参数写法（arg/param、@Param、POJO，来自 SSM 篇）
+上面的 ParamNameResolver 决定了 Mapper 方法多参数在 XML 中的三种引用写法（原「08-SSM/MyBatis 高级查询」篇已解体，用法并入此处）：
+
+```java
+// 写法一：不加注解，可用 #{arg0}/#{arg1} 或 #{param1}/#{param2} 引用
+List<User> findByIdAndUsername1(Integer id, String username);
+
+// 写法二：@Param 指定参数名，XML 中用 #{id}/#{username} 引用（多参数推荐）
+List<User> findByIdAndUsername2(@Param("id") Integer id, @Param("username") String username);
+
+// 写法三：直接传 POJO，XML 中按属性名 #{id}/#{username} 引用（单实体参数推荐）
+List<User> findByIdAndUsername3(User user);
+```
+
+三种写法最终都会被 ParamNameResolver 归一化：`@Param` 指定的名称优先；未指定时按 useActualParamName（实际参数名）或下标记录，同时总会生成 `param1、param2…` 兜底别名——这就是写法一里 arg0 与 param1 并存的原因。
+:::
+
 了解了 ParamNameResolver 的核心功能之后，我们回到 MethodSignature 继续分析，在其构造函数中会解析方法中的返回值、参数列表等信息，并初始化前面介绍的核心字段，这里也会使用到前面介绍的 ParamNameResolver 工具类。下面是 MethodSignature 构造方法的核心实现：
 
 ```
@@ -452,6 +469,68 @@ Mapper 方法返回值为 boolean 或 Boolean 类型，则将 SQL 语句返回�
 如果方法返回值为 Map 类型，则会调用 executeForMap() 方法，底层依赖 SqlSession.selectMap() 方法完成查询，并将结果集映射成 Map 集合。
 
 针对 Cursor 以及 Optional返回值的处理，也是依赖的 SqlSession 的相关方法完成查询的，这里不再展开。
+
+::: details 注解方式开发 Mapper（@Select/@Results/@One/@Many 等，来自 SSM 篇）
+除了 XML 映射文件，Mapper 接口还可以直接用注解声明 SQL——本篇剖析的 MapperProxy/Binding 机制对两种方式完全一致，注解 SQL 会被解析成对应的 MappedStatement。原「08-SSM/缓存与注解开发」篇已解体，其注解用法并入此处。
+
+**常用注解与 XML 标签的对应关系**：
+
+| 注解 | 代替的 XML 标签 |
+|------|----------------|
+| @Insert / @Delete / @Update / @Select | `<insert>` / `<delete>` / `<update>` / `<select>` |
+| @Results + @Result | `<resultMap>` + `<result>` |
+| @One | `<association>`（一对一） |
+| @Many | `<collection>`（一对多） |
+
+**基本 CRUD**：
+
+```java
+public interface UserMapper {
+  @Select("SELECT * FROM user")
+  List<User> findAll();
+
+  @Insert("INSERT INTO user(username,birthday,sex,address) VALUES(#{username},#{birthday},#{sex},#{address})")
+  void save(User user);
+
+  @Update("UPDATE user SET username = #{username} WHERE id = #{id}")
+  void update(User user);
+
+  @Delete("DELETE FROM user WHERE id = #{id}")
+  void delete(Integer id);
+}
+```
+
+**复杂映射（@Results 组合 @One/@Many）**，嵌套查询通过 `select` 属性指向另一 Mapper 方法，`fetchType` 控制立即/延迟加载（EAGER/LAZY/DEFAULT，DEFAULT 走全局配置）：
+
+```java
+// 一对一：订单所属用户
+@Select("select * from orders")
+@Results({
+    @Result(property = "id", column = "id", id = true),
+    @Result(property = "ordertime", column = "ordertime"),
+    @Result(property = "user", javaType = User.class, column = "uid",
+            fetchType = FetchType.EAGER,
+            one = @One(select = "com.example.mapper.UserMapper.findById"))
+})
+List<Orders> findAllWithUser();
+
+// 一对多：用户的订单列表
+@Select("select * from user")
+@Results({
+    @Result(property = "id", column = "id", id = true),
+    @Result(property = "ordersList", javaType = List.class, column = "id",
+            fetchType = FetchType.LAZY,
+            many = @Many(select = "com.example.mapper.OrderMapper.findByUid"))
+})
+List<User> findAllWithOrder();
+```
+
+**基于注解的二级缓存**：接口上加 `@CacheNamespace`（等价 XML 的 `<cache/>`），全局仍需 `cacheEnabled=true`（默认已开）。注意：同一 Mapper 的注解缓存与 XML `<cache/>` 不能混用两个命名空间。
+
+**mappers 扫描**：注解方式无需 XML 映射文件，mybatis-config 中用 `<package name="com.example.mapper"/>` 扫描整个包即可；Spring/Boot 环境则用 `MapperScannerConfigurer` / `@MapperScan`（见 [MyBatis 与 Spring 集成及衍生框架](12-MyBatis与Spring集成及生态.md)）。
+
+XML 与注解的取舍：注解开发效率高，但改 SQL 需要改源码、可维护性差；复杂 ResultSet 映射与动态 SQL 仍建议用 XML（见 [01-快速上手与整体架构](01-快速上手与整体架构.md) 的建议）。
+:::
 
 ## 版本差异(旧版 → MyBatis 3.5.x)
 

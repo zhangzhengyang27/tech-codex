@@ -1199,6 +1199,17 @@ class ClientHandler extends ChannelInboundHandlerAdapter {
 }
 ```
 
+### 适用场景与设计价值
+
+这套"IdleStateHandler 触发空闲事件 + 自定义 Handler 关闭连接"的机制适合:
+
+- WebSocket
+- IM 服务
+- 长连接网关
+- 自定义 TCP 长连接协议
+
+它的价值不是"定时发包本身",而是及时识别失效连接,避免僵尸连接长期占用资源。
+
 ### 断线重连机制
 
 **自动重连实现**:

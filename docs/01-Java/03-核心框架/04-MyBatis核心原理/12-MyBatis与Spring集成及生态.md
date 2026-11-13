@@ -116,6 +116,56 @@ DataSourceTransactionManager，这是 Spring 提供的事务管理器，会与�
 
 SSM 开发环境中最核心的配置就介绍完了，关于其完整配置，你可以参考 SSM 的示例代码进行分析。在这份示例代码中，除了上述介绍的配置之外，还提供了一个简单的登录示例，其中的 UserBean 抽象了用户基本信息，例如用户名、密码；UserMapper 接口和 UserMapper.xml 实现了 DAO 层，实现了基本的数据库操作；ILoginService 接口和 LoginServiceImpl 实现类构成了 Service 层，完成了登录这个业务逻辑；LoginController 则是 Controller 层的实现，依赖 Service 层完成登录业务之后，会控制页面的跳转；最后，还有两个 JSP 页面用来展示用户登录前后的数据。这些内容就留给你自己分析了。
 
+::: details SSM 整合完整 XML 配置模板（来自 SSM 整合篇）
+原「08-SSM/SSM 整合」一篇已解体，其整合思想与配置步骤与本节重复，以下保留其独有的**一步到位可运行的整合配置模板**。核心思想：将 MyBatis 接口代理对象的创建权交给 Spring 管理，DAO 代理对象即可直接注入 Service；mybatis 主配置文件 SqlMapConfig.xml 可随之删除。
+
+```xml
+<!-- applicationContext.xml：Spring 整合 MyBatis + 声明式事务 -->
+<context:component-scan base-package="com.example.service"/>
+
+<context:property-placeholder location="classpath:jdbc.properties"/>
+
+<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+</bean>
+
+<!-- SqlSessionFactory 的创建权交给 Spring，负责生产 SqlSession -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="typeAliasesPackage" value="com.example.domain"/>
+    <!-- configLocation 可不配，即不再需要 mybatis 主配置文件 -->
+</bean>
+
+<!-- 扫描 Mapper 接口所在包，为每个接口生成代理对象存入 IOC 容器 -->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="com.example.dao"/>
+</bean>
+
+<!-- 声明式事务：事务管理器 + 注解支持 -->
+<bean id="transactionManager"
+      class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+<tx:annotation-driven/>
+```
+
+```xml
+<!-- web.xml：ContextLoaderListener 使 Web 容器启动时创建/销毁 Spring IOC 容器 -->
+<listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+</context-param>
+```
+
+依赖适配注意：mybatis-spring 2.x 才适配 MyBatis 3.5.x；升级 Spring Boot 3 时使用 mybatis-spring 3.x（`mybatis-spring-boot-starter`），并处理 javax → jakarta 包名迁移。Spring 与 Spring MVC 本无需"整合"（同源），真正的整合点是 Web 容器与 Spring IOC 容器的生命周期绑定，即上面的 ContextLoaderListener。
+:::
+
 ## Spring 集成 MyBatis 原理剖析
 
 在搭建 SSM 开发环境的时候，我们引入了一个 mybatis-spring-*.jar 的依赖，这个依赖是 Spring 集成 MyBatis 的关键所在，该依赖内部会将 MyBatis 管理的事务交给 Spring 的事务管理器进行管理，同时还会由 Spring IoC 容器来控制 SqlSession 对象的注入。

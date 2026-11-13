@@ -257,7 +257,7 @@ export const docGroups: DocGroup[] = [
       {
         slug: 'java-perf',
         title: '性能与调优',
-        description: '性能优化实战与源码剖析',
+        description: 'Java 性能优化实战：指标、工具、JMH、缓存与 JVM 调优案例',
         icon: '📈',
         dir: '01-Java/06-性能与调优',
         hidden: true,
@@ -265,7 +265,7 @@ export const docGroups: DocGroup[] = [
       {
         slug: 'java-interview',
         title: '面试与进阶',
-        description: 'Java 面试专题与进阶专题',
+        description: 'Java 面试主线、面试问答（源码视角高频题）与进阶专题',
         icon: '💡',
         dir: '01-Java/07-面试与进阶',
         hidden: true,

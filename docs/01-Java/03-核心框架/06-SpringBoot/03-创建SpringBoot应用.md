@@ -652,7 +652,7 @@ public class DemoApplication {
 启动类所在的包决定了 `@ComponentScan` 的默认扫描范围。如果启动类放在 `com.example.demo.controller` 包下，那么 `com.example.demo.service` 和 `com.example.demo.repository` 包中的组件将**不会被自动扫描**，导致 `NoSuchBeanDefinitionException`。**最佳实践：将启动类放在项目根包下**（如 `com.example.demo`），让所有子包都能被扫描到。
 :::
 
->  启动流程的完整源码级分析，请参考 [20-启动流程源码剖析](20-启动流程源码剖析)
+>  启动流程的完整源码级分析，请参考 [20-SpringBoot启动主流程](20-SpringBoot启动主流程.md)
 
 ### @SpringBootApplication 注解
 

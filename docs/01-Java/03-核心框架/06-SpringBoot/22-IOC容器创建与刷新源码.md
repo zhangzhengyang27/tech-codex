@@ -1384,7 +1384,7 @@ BeanPostProcessor：
 
 了解 `BeanPostProcessor` 后，来看下面几个片段：
 
-##### 3.1 addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+##### 3.1 addBeanPostProcessor：注册 ApplicationContextAwareProcessor
 
 ```java
     // Configure the bean factory with context callbacks.
@@ -1506,7 +1506,7 @@ public void registerResolvableDependency(Class<?> dependencyType, @Nullable Obje
 
 至此，它的功能已经明确了：它可以支持一些特殊依赖关系的类型，并放到 `resolvableDependencies` 集合中保存，使得能在任意位置注入上述源码中的组件。
 
-##### 3.3 addBeanPostProcessor(new ApplicationListenerDetector(this))
+##### 3.3 addBeanPostProcessor：注册 ApplicationListenerDetector
 
 ```java
     // Register early post-processor for detecting inner beans as ApplicationListeners.
@@ -4078,7 +4078,7 @@ protected void initLifecycleProcessor() {
 
 这两个接口比较简单，不再深入研究，有兴趣的小伙伴可以写几个测试Demo体会一下。
 
-##### 12.3 getLifecycleProcessor().onRefresh()
+##### 12.3 onRefresh：触发 Lifecycle 处理器刷新
 
 紧接着调用这些 `LifecycleProcessor` 的 `onRefresh` 方法。具体到 `DefaultLifecycleProcessor` 中：
 
@@ -4114,7 +4114,7 @@ private void startBeans(boolean autoStartupOnly) {
 
 源码也是比较好理解的，它会从IOC容器中找出所有的 `Lifecycle` 类型的Bean，遍历回调 `start` 方法。
 
-##### 12.4 publishEvent(new ContextRefreshedEvent(this))
+##### 12.4 publishEvent：发布 ContextRefreshedEvent
 
 很明显它发布了 `ContextRefreshedEvent` 事件，代表IOC容器已经刷新完成。有关事件与监听器的部分，我们在13篇中已经解释过了，不再赘述。
 

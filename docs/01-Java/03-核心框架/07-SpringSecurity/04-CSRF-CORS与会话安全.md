@@ -1588,6 +1588,38 @@ spring:
     timeout: 30m
 ```
 
+### Session 监听
+
+```java
+@Component
+public class HttpSessionEventListener extends HttpSessionEventPublisher {
+    
+    private static final Logger logger = LoggerFactory.getLogger(HttpSessionEventListener.class);
+    
+    @Override
+    public void onApplicationEvent(HttpSessionCreatedEvent event) {
+        String sessionId = event.getSession().getId();
+        logger.info("Session创建: {}", sessionId);
+    }
+    
+    @Override
+    public void onApplicationEvent(HttpSessionDestroyedEvent event) {
+        String sessionId = event.getId();
+        logger.info("Session销毁: {}", sessionId);
+        
+        // 记录用户退出日志
+        SecurityContext context = 
+            (SecurityContext) event.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+        if (context != null) {
+            Authentication auth = context.getAuthentication();
+            if (auth != null) {
+                logger.info("用户退出: {}", auth.getName());
+            }
+        }
+    }
+}
+```
+
 ## 排查与治理思路
 
 ### 排查重点
@@ -1709,6 +1741,366 @@ public ResponseEntity<?> debugSession(HttpServletRequest request) {
 - [ ] 登出后 Token 加入黑名单
 - [ ] Token 泄露可撤销
 - [ ] Refresh Token 安全存储
+```
+
+## 安全响应头
+
+Spring Security 默认添加多个安全响应头:
+
+### 常见安全响应头
+
+| 响应头 | 作用 | 示例值 |
+|--------|------|--------|
+| X-Content-Type-Options | 防止MIME类型嗅探 | nosniff |
+| X-Frame-Options | 防止点击劫持 | DENY |
+| X-XSS-Protection | XSS过滤器(已弃用) | 1; mode=block |
+| Strict-Transport-Security | 强制HTTPS | max-age=31536000 |
+| Content-Security-Policy | 内容安全策略 | default-src 'self' |
+
+### 配置安全响应头
+
+```java
+@Configuration
+@EnableWebSecurity
+public class HeadersSecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .headers(headers -> headers
+                // 内容类型选项(默认即为 nosniff)
+                .contentTypeOptions(Customizer.withDefaults())
+                
+                // X-Frame-Options
+                .frameOptions(frameOptions -> 
+                    frameOptions.sameOrigin())
+                
+                // HSTS (HTTP Strict Transport Security)
+                .httpStrictTransportSecurity(hsts -> hsts
+                    .includeSubDomains(true)
+                    .maxAgeInSeconds(31536000)
+                    .preload(true)
+                )
+                
+                // 内容安全策略(CSP)
+                .contentSecurityPolicy(csp -> csp
+                    .policyDirectives("default-src 'self'; " +
+                        "script-src 'self' 'unsafe-inline' https://cdn.example.com; " +
+                        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+                        "img-src 'self' data: https:; " +
+                        "font-src 'self' https://fonts.gstatic.com; " +
+                        "connect-src 'self' https://api.example.com; " +
+                        "frame-ancestors 'none'")
+                )
+                
+                // X-XSS-Protection (已弃用,但仍可配置)
+                .xssProtection(xss -> xss
+                    .headerValue(XXssProtectionHeaderWriter.HeaderValue.DISABLED)
+                )
+            );
+        
+        return http.build();
+    }
+}
+```
+
+### Content-Security-Policy (CSP) 详解
+
+CSP 是最强大的安全响应头,用于防止XSS攻击:
+
+```java
+@Configuration
+@EnableWebSecurity
+public class CspSecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .headers(headers -> headers
+                .contentSecurityPolicy(csp -> csp
+                    .policyDirectives(
+                        "default-src 'self'; " +                    // 默认只加载同源资源
+                        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +  // 允许的JS来源
+                        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " + // 允许的CSS来源
+                        "img-src 'self' data: https:; " +           // 允许的图片来源
+                        "font-src 'self' https://fonts.gstatic.com; " + // 允许的字体来源
+                        "connect-src 'self' https://api.example.com; " + // 允许的AJAX请求
+                        "frame-ancestors 'none'; " +                // 不允许被iframe嵌入
+                        "report-uri /csp-report"                    // 违规报告地址
+                    )
+                )
+            );
+        
+        return http.build();
+    }
+}
+```
+
+#### CSP 违规报告
+
+```java
+@RestController
+public class CspReportController {
+    
+    private static final Logger logger = LoggerFactory.getLogger(CspReportController.class);
+    
+    @PostMapping("/csp-report")
+    public void cspReport(@RequestBody String report) {
+        logger.warn("CSP违规报告: {}", report);
+        
+        // 可以存储到数据库或发送告警
+    }
+}
+```
+
+## 常见安全漏洞与防护
+
+> SQL 注入属数据访问层问题，参数化查询与 MyBatis 预编译的系统性方案见数据访问相关篇目；接口限流的 Redis 分布式实现见 [06-SpringBoot/分布式锁与限流实战](../06-SpringBoot/37-分布式锁与限流实战.md)；文件上传的 Multipart 配置与安全细节见 [06-SpringBoot/WebMvc定制与静态资源](../06-SpringBoot/25-WebMvc定制与静态资源.md)。
+
+### 1. SQL 注入防护
+
+```java
+// 不安全:字符串拼接
+@Query("SELECT u FROM User u WHERE u.username = '" + username + "'")
+
+// 安全:参数化查询
+@Query("SELECT u FROM User u WHERE u.username = :username")
+User findByUsername(@Param("username") String username);
+
+// 安全:JPA方法命名
+User findByUsername(String username);
+
+// 安全:Criteria API
+public User findByUsernameSafe(String username) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> query = cb.createQuery(User.class);
+    Root<User> root = query.from(User.class);
+    
+    query.where(cb.equal(root.get("username"), username));
+    
+    return entityManager.createQuery(query).getSingleResult();
+}
+```
+
+### 2. XSS (跨站脚本攻击) 防护
+
+```java
+// 使用Thymeleaf自动转义
+<p th:text="${userInput}"></p>  <!-- 自动转义 -->
+
+// 富文本过滤
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
+
+@Service
+public class SanitizationService {
+    
+    private final PolicyFactory policy = new HtmlPolicyBuilder()
+        .allowElements("p", "b", "i", "u", "strong", "em", "br")
+        .allowAttributes("class").onElements("p")
+        .toFactory();
+    
+    public String sanitizeHtml(String html) {
+        return policy.sanitize(html);
+    }
+}
+
+// 输入验证
+@PostMapping("/comments")
+public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto) {
+    // 验证输入
+    Comment comment = commentService.create(commentDto);
+    return ResponseEntity.ok(comment);
+}
+
+public class CommentDto {
+    @NotBlank
+    @Size(max = 1000)
+    @Pattern(regexp = "^[^<>]*$")  // 不允许HTML标签
+    private String content;
+}
+```
+
+### 3. 文件上传漏洞防护
+
+```java
+@Service
+public class FileUploadService {
+    
+    private static final List<String> ALLOWED_TYPES = Arrays.asList(
+        "image/jpeg", "image/png", "image/gif", "application/pdf"
+    );
+    
+    private static final long MAX_SIZE = 10 * 1024 * 1024; // 10MB
+    
+    public String uploadFile(MultipartFile file) throws IOException {
+        // 1. 检查文件是否为空
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("文件不能为空");
+        }
+        
+        // 2. 检查文件大小
+        if (file.getSize() > MAX_SIZE) {
+            throw new IllegalArgumentException("文件大小不能超过10MB");
+        }
+        
+        // 3. 检查文件类型
+        String contentType = file.getContentType();
+        if (!ALLOWED_TYPES.contains(contentType)) {
+            throw new IllegalArgumentException("不支持的文件类型");
+        }
+        
+        // 4. 检查文件扩展名
+        String originalFilename = file.getOriginalFilename();
+        String extension = getFileExtension(originalFilename);
+        if (!isAllowedExtension(extension)) {
+            throw new IllegalArgumentException("不允许的文件扩展名");
+        }
+        
+        // 5. 生成安全的文件名
+        String safeFilename = generateSafeFilename(extension);
+        
+        // 6. 保存文件到安全目录
+        Path uploadPath = Paths.get("/secure/uploads");
+        Files.createDirectories(uploadPath);
+        Path filePath = uploadPath.resolve(safeFilename);
+        file.transferTo(filePath.toFile());
+        
+        return safeFilename;
+    }
+    
+    private String generateSafeFilename(String extension) {
+        return UUID.randomUUID().toString() + "." + extension;
+    }
+    
+    private String getFileExtension(String filename) {
+        return filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+    }
+    
+    private boolean isAllowedExtension(String extension) {
+        return Arrays.asList("jpg", "jpeg", "png", "gif", "pdf").contains(extension);
+    }
+}
+```
+
+### 4. 敏感数据保护
+
+```java
+// 配置文件加密
+@Configuration
+public class JasyptConfig {
+    
+    @Bean
+    public StringEncryptor stringEncryptor() {
+        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+        config.setPassword(System.getenv("JASYPT_ENCRYPTOR_PASSWORD"));
+        config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
+        config.setKeyObtentionIterations("1000");
+        config.setPoolSize("1");
+        config.setProviderName("SunJCE");
+        config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+        config.setStringOutputType("base64");
+        encryptor.setConfig(config);
+        return encryptor;
+    }
+}
+
+// application.yml
+spring:
+  datasource:
+    username: ENC(加密后的用户名)
+    password: ENC(加密后的密码)
+
+// 日志脱敏
+@Slf4j
+@Service
+public class UserService {
+    
+    public void login(String username, String password) {
+        // 密码不记录日志
+        log.info("用户登录: username={}", username);
+    }
+    
+    public void register(UserDto userDto) {
+        // 手机号、身份证等脱敏
+        log.info("用户注册: phone={}", maskPhone(userDto.getPhone()));
+    }
+    
+    private String maskPhone(String phone) {
+        if (phone == null || phone.length() != 11) {
+            return phone;
+        }
+        return phone.substring(0, 3) + "****" + phone.substring(7);
+    }
+}
+```
+
+### 5. 接口限流防护
+
+```java
+// 使用Guava RateLimiter
+@Component
+public class RateLimitInterceptor implements HandlerInterceptor {
+    
+    private final ConcurrentHashMap<String, RateLimiter> limiters = new ConcurrentHashMap<>();
+    
+    @Override
+    public boolean preHandle(HttpServletRequest request, 
+                             HttpServletResponse response, 
+                             Object handler) throws Exception {
+        
+        String key = getClientKey(request);
+        RateLimiter limiter = limiters.computeIfAbsent(key, 
+            k -> RateLimiter.create(10.0)); // 每秒10个请求
+        
+        if (!limiter.tryAcquire()) {
+            response.setStatus(429);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"code\":429,\"message\":\"请求过于频繁\"}");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private String getClientKey(HttpServletRequest request) {
+        // 基于IP限流
+        return request.getRemoteAddr();
+        
+        // 或基于用户限流
+        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        // return auth != null ? auth.getName() : request.getRemoteAddr();
+    }
+}
+
+// 使用注解限流
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RateLimit {
+    int value() default 10;  // 每秒请求数
+    int timeout() default 1; // 超时时间(秒)
+}
+
+@Aspect
+@Component
+public class RateLimitAspect {
+    
+    private final ConcurrentHashMap<String, RateLimiter> limiters = new ConcurrentHashMap<>();
+    
+    @Around("@annotation(rateLimit)")
+    public Object around(ProceedingJoinPoint joinPoint, RateLimit rateLimit) throws Throwable {
+        String key = joinPoint.getSignature().toLongString();
+        RateLimiter limiter = limiters.computeIfAbsent(key, 
+            k -> RateLimiter.create(rateLimit.value()));
+        
+        if (!limiter.tryAcquire(rateLimit.timeout(), TimeUnit.SECONDS)) {
+            throw new RuntimeException("请求过于频繁,请稍后再试");
+        }
+        
+        return joinPoint.proceed();
+    }
+}
 ```
 
 ## 常见误区
@@ -1858,6 +2250,53 @@ from origin 'https://www.example.com' has been blocked by CORS policy
    - 错误信息是 401/403
    - Network 面板显示请求失败
    - Response 包含错误信息
+```
+
+### 误区六：以为引入 Spring Security 就自动防护了所有攻击
+
+```java
+// 错误观念:引入Spring Security就安全了
+// 实际:仍需手动防护SQL注入、XSS、文件上传等漏洞
+
+// 需要额外处理:
+// 1. SQL注入:使用参数化查询
+// 2. XSS:输入验证+输出转义
+// 3. 文件上传:文件类型检查+大小限制
+// 4. 敏感数据:加密存储+日志脱敏
+```
+
+### 误区七：在生产环境暴露敏感端点
+
+```yaml
+# 错误:暴露所有Actuator端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# 正确:只暴露必要端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+```
+
+### 误区八：CORS 配置过于宽松
+
+```java
+// 错误:允许所有源
+configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+
+// 正确:明确指定允许的源
+configuration.setAllowedOriginPatterns(Arrays.asList(
+    "https://app.example.com",
+    "https://admin.example.com"
+));
 ```
 
 ## 面试要点

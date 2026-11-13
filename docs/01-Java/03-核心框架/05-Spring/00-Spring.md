@@ -689,6 +689,10 @@ Around(前) → Before → 方法执行 → AfterThrowing → After → Around(�
 本节是事务管理的概述。完整的传播行为、隔离级别、失效场景、最佳实践等内容，请阅读 [事务管理与失效场景](03-事务管理与失效场景.md)。
 :::
 
+::: info SSM 整合篇已解体
+原 08-SSM 目录（JDBCTemplate 和事务、SSM 整合等五篇）已解体分流：事务整合视角（XML 声明式事务、ContextLoaderListener 等）并入 [03-事务管理与失效场景](03-事务管理与失效场景.md) 尾部附录，MyBatis 与 Spring 集成见 [04-MyBatis核心原理/12-MyBatis与Spring集成及生态](../04-MyBatis核心原理/12-MyBatis与Spring集成及生态.md)。
+:::
+
 ### 6.1 Spring 事务的本质
 
 Spring 事务本质上不是"给方法打个注解就自动回滚"，而是通过 **AOP 代理**把方法包进事务拦截逻辑里。

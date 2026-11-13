@@ -1,21 +1,15 @@
 ---
-title: "lambda表达式"
+title: "Lambda 表达式与函数式接口"
 description: "Lambda 表达式是 Java 8 引入的一项革命性特性,它允许我们将函数作为参数传递给方法,或者将代码块作为数据进行处理。本质上,Lambda 表达式是一个匿名函数,它实现了函数式接口中的抽象方法。"
-keywords: [lambda表达式]
+keywords: [Lambda 表达式, 函数式接口, 方法引用]
 category: "Java"
 tags: [Java, 基础, Lambda]
 ---
 
 
-# Lambda 表达式完整指南
+# Lambda 表达式与函数式接口
 
-## 学习目标
-
-- 掌握 Lambda 表达式语法与函数式接口（@FunctionalInterface，单一抽象方法）
-- 理解变量捕获(lambda 只能引用 final 或事实上 final 的局部变量)
-- 区分方法引用(::)的四种形式（静态/实例/特定对象/构造器）
-- 理解 Lambda 的延迟执行与流式编程的结合
-- 识别 Lambda 与匿名内部类在 this 语义、作用域上的差异
+本章讲解 Lambda 表达式的语法与函数式接口、方法引用的四种形式，以及变量捕获、延迟执行与匿名内部类的差异等关键规则。
 
 ## 一、Lambda 表达式概述
 
@@ -1701,7 +1695,7 @@ Runnable r2 = () -> System.out.println("Hello");
 
 **答案:**
 
-函数式接口是指**只有一个抽象方法**的接口。可以用 `@FunctionalInterface` 注解标注。
+函数式接口是指**只有一个抽象方法**的接口，`default`、`static` 方法不计入抽象方法数。可以用 `@FunctionalInterface` 注解标注并让编译器校验。
 
 **四大核心函数式接口:**
 
@@ -2064,13 +2058,6 @@ public class StreamOperations {
 6. **性能优化**: 理解性能影响,正确使用并行流
 
 Lambda 表达式是 Java 函数式编程的基础,掌握好 Lambda 表达式对于学习 Java 8 及以上版本的新特性至关重要。通过不断练习和实践,可以编写出更加简洁、高效、可维护的 Java 代码。
-
-## 面试要点
-
-1. **Lambda 与匿名内部类的 this 区别？** 匿名类的 this 指向匿名类自身；Lambda 的 this 指向包围它的外部实例。
-2. **函数式接口的约定？** 有且仅有 1 个抽象方法，可用 @FunctionalInterface 校验；default/static 方法不计入。
-3. **Lambda 捕获局部变量为何要求 final 或事实上 final？** Lambda 可能在变量生命周期结束后执行，JVM 需拷贝值，若可变将产生不一致。
-4. **方法引用的四种形式？** 类::静态方法、类::实例方法、实例::实例方法、类::new。
 
 ## 版本差异(旧版 → Java 21)
 

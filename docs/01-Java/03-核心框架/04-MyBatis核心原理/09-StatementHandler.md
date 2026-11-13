@@ -125,6 +125,32 @@ if (values.size() == 0) {
 
 ```
 
+::: details 返回主键的两种用法（useGeneratedKeys / selectKey，来自 SSM 篇）
+上面两个 KeyGenerator 对应 XML 中"插入后拿回自增主键"的两种写法：
+
+```xml
+<!-- 方式一：useGeneratedKeys，只适用于主键自增的数据库（MySQL/SQL Server 支持，Oracle 不行）
+     useGeneratedKeys：声明返回主键；keyProperty：把返回主键封装到实体的哪个属性 -->
+<insert id="saveUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+  insert into user(username, birthday, sex, address)
+  values (#{username}, #{birthday}, #{sex}, #{address})
+</insert>
+
+<!-- 方式二：selectKey，适用范围更广，支持所有数据库
+     order="AFTER"：在 insert 语句执行后执行该查询（Oracle 序列场景用 BEFORE）
+     keyColumn：主键对应列名；keyProperty：封装到实体的属性；resultType：主键类型 -->
+<insert id="saveUser2" parameterType="user">
+  <selectKey order="AFTER" keyColumn="id" keyProperty="id" resultType="int">
+    SELECT LAST_INSERT_ID();
+  </selectKey>
+  insert into user(username, birthday, sex, address)
+  values (#{username}, #{birthday}, #{sex}, #{address})
+</insert>
+```
+
+两种方式执行后，主键值都会写回传入的实参对象：方式一走 Jdbc3KeyGenerator（processAfter），方式二走 SelectKeyGenerator（order 决定 executeBefore/executeAfter）。
+:::
+
 ### 2. ParameterHandler
 
 介绍完 KeyGenerator 接口之后，我们再来看一下 BaseStatementHandler 中依赖的另一个辅助类—— ParameterHandler。

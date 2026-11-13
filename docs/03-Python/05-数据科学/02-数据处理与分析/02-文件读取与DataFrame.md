@@ -590,7 +590,7 @@ df_info
 ```
 # labels 是要删除行的 index，小E的index是2
 # axis = 0 代表要删除的是行
-df_info.drop(labels=2, axis=0, inplace=True)
+df_info = df_info.drop(labels=2, axis=0)
 # 查看
 df_info
 
@@ -641,7 +641,7 @@ DataFrame 提供了 sort_values 方法来实现排序，用法如下。
 ```
 # by 参数代表要按 rating 这个列索引来排序
 # inplace = True 的含义和上面说的一样，代表更新当前的 DataFrame，而不是返回一个新的
-df_rating.sort_values(by = "rating", inplace=True)
+df_rating = df_rating.sort_values(by="rating")
 # 查看排序后的 DataFrame
 df_rating
 
@@ -655,7 +655,7 @@ df_rating
 
 ```
 # 在刚才的基础上，增加 ascending=False，代表按降序排序
-df_rating.sort_values(by="rating", inplace=True, ascending=False)
+df_rating = df_rating.sort_values(by="rating", ascending=False)
 # 查看
 df_rating
 
@@ -782,7 +782,7 @@ flowchart TD
 |----|-----------|-----------|---------|
 | Python | 3.8-3.12 | 3.14 | 3.12+ 起性能显著提升；3.14 PEP 649/750 |
 | NumPy | 1.x/2.0 | 2.5.x | `np.float_` 等别名移除；NEP 50 类型提升 |
-| Pandas | 1.x/2.x | 3.0.x | Copy-on-Write 默认开启；`inplace`/`fillna(method=)` 弃用；`DataFrame.append` 已移除；字符串 dtype 变化 |
+| Pandas | 1.x/2.x | 3.0.x | Copy-on-Write 默认开启；`inplace` 行为变化；字符串 dtype 变化 |
 | Matplotlib | 3.x | 3.x 稳定版 | API 兼容，样式更新 |
 | Seaborn | 0.12/0.13 | 0.13.x | API 稳定 |
 | scikit-learn | 1.x | 1.9.x | API 稳定，新算法持续加入 |

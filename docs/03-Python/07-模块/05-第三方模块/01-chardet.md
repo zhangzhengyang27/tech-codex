@@ -3,7 +3,7 @@ title: chardet — 字符编码检测利器
 version: 3.0
 author: 文档维护组
 created: 2026-02-23
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -832,15 +832,3 @@ if encoding and encoding.upper() in ('GB2312', 'GB18030'):
 - [Python Unicode HOWTO](https://docs.python.org/3/howto/unicode.html) — Python 官方 Unicode 指南
 - [The Absolute Minimum Every Software Developer Must Know About Unicode](https://tonsky.me/blog/unicode/) — Unicode 核心概念精讲
 - [UTF-8 Everywhere](https://utf8everywhere.org/) — 为什么应该统一使用 UTF-8
-
-## 版本差异（第三方库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `pydantic` | 1.x | 2.x（V2 核心重写，API 兼容层 `v1` 可选） |
-| `pytest` | 7.x | 8.x（`pytest 8` 移除部分旧插件兼容） |
-| `Pillow` | 9.x/10.x | 11.x |
-| `psutil` | 5.x | 6.x/7.x |
-| `chardet` | 4.x | 5.x（纯 Python；如需更高性能可选用 `charset-normalizer` 或维护中的 `faust-cchardet`） |
-
-> 本文示例多为概念讲解，API 基本稳定；升级第三方库时以官方 changelog 为准。

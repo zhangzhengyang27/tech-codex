@@ -3,7 +3,7 @@ title: Pydantic — 运行时数据校验与序列化
 version: 2.0
 author: 文档维护组
 created: 2026-06-05
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -1032,15 +1032,3 @@ APP_REDIS_PORT=6380
 | [Pydantic v1 → v2 迁移指南](https://docs.pydantic.dev/latest/migration/) | 官方迁移指南，覆盖所有 API 变更 |
 | [Python 类型注解（PEP 484）](https://peps.python.org/pep-0484/) | Python 类型注解标准，Pydantic 的设计基础 |
 | [attrs 官方文档](https://www.attrs.org/) | Pydantic 的替代方案之一，适合需要更灵活数据类的场景 |
-
-## 版本差异（第三方库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `pydantic` | 1.x | 2.x（V2 核心重写，API 兼容层 `v1` 可选） |
-| `pytest` | 7.x | 8.x（`pytest 8` 移除部分旧插件兼容） |
-| `Pillow` | 9.x/10.x | 11.x |
-| `psutil` | 5.x | 6.x/7.x |
-| `chardet` | 4.x | 5.x（纯 Python；如需更高性能可选用 `charset-normalizer` 或维护中的 `faust-cchardet`） |
-
-> 本文示例多为概念讲解，API 基本稳定；升级第三方库时以官方 changelog 为准。

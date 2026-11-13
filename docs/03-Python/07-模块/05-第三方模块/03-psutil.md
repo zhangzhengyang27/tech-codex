@@ -3,7 +3,7 @@ title: psutil — 系统与进程监控
 version: 2.0
 author: 文档维护组
 created: 2026-02-23
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -1130,15 +1130,3 @@ psutil 本身只能监控本地主机。如需远程监控，常见方案：
 | [glances](https://github.com/nicolargo/glances) | 基于 psutil 的全功能系统监控工具，可学习其架构设计 |
 | [prometheus_client](https://github.com/prometheus/client_python) | 配合 psutil 采集指标，接入 Prometheus 监控体系 |
 | [supervisor](https://github.com/Supervisor/supervisor) | 进程管理工具，与 psutil 的进程管理能力互补 |
-
-## 版本差异（第三方库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `pydantic` | 1.x | 2.x（V2 核心重写，API 兼容层 `v1` 可选） |
-| `pytest` | 7.x | 8.x（`pytest 8` 移除部分旧插件兼容） |
-| `Pillow` | 9.x/10.x | 11.x |
-| `psutil` | 5.x | 6.x/7.x |
-| `chardet` | 4.x | 5.x（纯 Python；如需更高性能可选用 `charset-normalizer` 或维护中的 `faust-cchardet`） |
-
-> 本文示例多为概念讲解，API 基本稳定；升级第三方库时以官方 changelog 为准。

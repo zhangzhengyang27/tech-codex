@@ -4,7 +4,7 @@ description: Python turtle 模块完全指南，涵盖绘图原理、基础命�
 version: 4.0
 author: 文档维护组
 created: 2026-02-23
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -1545,15 +1545,3 @@ os.environ['DISPLAY'] = ':99'   # 指向虚拟显示器
 - [Turtle Graphics 教程 - Real Python](https://realpython.com/beginners-guide-python-turtle/) —— 英文入门教程
 - [Python123 turtle 作品集](https://python123.io/index/turtles/latest) —— 大量 turtle 绘图案例
 - [Seymour Papert - Mindstorms](https://en.wikipedia.org/wiki/Mindstorms_(book)) —— 构造主义教育经典，turtle 的哲学基础
-
-## 版本差异（第三方库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `pydantic` | 1.x | 2.x（V2 核心重写，API 兼容层 `v1` 可选） |
-| `pytest` | 7.x | 8.x（`pytest 8` 移除部分旧插件兼容） |
-| `Pillow` | 9.x/10.x | 11.x |
-| `psutil` | 5.x | 6.x/7.x |
-| `chardet` | 4.x | 5.x（纯 Python；如需更高性能可选用 `charset-normalizer` 或维护中的 `faust-cchardet`） |
-
-> 本文示例多为概念讲解，API 基本稳定；升级第三方库时以官方 changelog 为准。

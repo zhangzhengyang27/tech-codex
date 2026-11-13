@@ -12,6 +12,8 @@ category: Python
 
 # Python 操作 PDF 文件指南
 
+> ⚠️ **PyPDF2 → pypdf 迁移提示**:本文部分示例基于旧版 **PyPDF2** 语法编写。PyPDF2 已停止维护,新项目请使用其官方继任者 **pypdf**(`pip install pypdf`)。两者 API 基本一一对应:`PyPDF2.PdfReader` → `pypdf.PdfReader`、`PyPDF2.PdfWriter` → `pypdf.PdfWriter`,方法名一致,仅需更换导入路径;下文正文处另有局部对照说明。
+
 ## 概述
 
 PDF (Portable Document Format) 是最通用的文档交换格式，由 Adobe 于 1993 年发明，2008 年成为 ISO 32000 国际标准。PDF 的核心设计目标是**在任何设备上保持一致的视觉呈现**——"所见即所得"。

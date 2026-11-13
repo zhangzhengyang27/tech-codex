@@ -3,7 +3,7 @@ title: functools 模块
 version: 2.0
 author: 文档维护组
 created: 2026-06-05
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -1133,17 +1133,3 @@ print(f"股票缓存状态: {fetch_stock_price.cache_info()}")
 - [Python Cookbook 第 3 版 - 第 9 章：元编程](https://python3-cookbook.readthedocs.io/zh-cn/latest/)
 - [Real Python - Python functools 模块指南](https://realpython.com/lessons/functools-module/)
 - [Python 3.14 What's New](https://docs.python.org/zh-cn/3.14/whatsnew/3.14.html)
-
-## 版本差异（标准库 → Python 3.14）
-
-| 模块/特性 | 本文编写时 | Python 3.14 变化 |
-|-----------|-----------|------------------|
-| `datetime` | `utcnow()` / `utcfromtimestamp()` | 3.12 起弃用，改用 `datetime.now(tz=datetime.UTC)` / `fromtimestamp(ts, tz=datetime.UTC)`（aware 对象） |
-| `asyncio` | 基础 API | 3.14 新增内省能力（`asyncio.Task`/`Future` 状态查询）；3.11 起推荐 `TaskGroup` + `asyncio.timeout()` |
-| `typing` | 旧式 `List`/`Dict` | 3.9+ 内置泛型；3.10+ 联合类型 `X \| Y`；3.12 `type` 语句；3.14 PEP 649 延迟注解 |
-| `importlib` | `imp` 模块 | `imp` 于 3.12 移除，统一使用 `importlib` |
-| 压缩 | zlib/gzip/bz2/lzma | 3.14 新增 `zstandard` 标准库支持（PEP 784） |
-| `pathlib` | 基础路径操作 | 3.12+ 持续增强（`Path.walk()` 等）；`is_relative_to()` 自 3.9 起可用 |
-| 往事清理 | — | 3.13 移除 `cgi`、`telnetlib`、`crypt`、`audioop` 等已废弃模块 |
-
-> 本文讲解的模块核心 API 与使用模式在 3.14 中保持稳定；注意上述弃用/移除项，升级时优先用标准库推荐的替代方案。

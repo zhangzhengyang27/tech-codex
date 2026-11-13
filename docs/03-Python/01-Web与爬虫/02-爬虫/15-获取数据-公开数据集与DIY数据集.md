@@ -40,19 +40,10 @@ category: Python
 （1）访问天池官网：[https://tianchi.aliyun.com/](https://tianchi.aliyun.com/)，并使用淘宝账户注册、登录。
 
 （2）选择天池大赛 - 学习赛，进入学习赛题列表。
-
-![](/python-data-analysis-images/08-Cgp9HWB_mo2ABMAMABH0sO52AC0477.png)
-
 （3）下滑列表，选择二手车交易价格预测比赛，标题为："零基础入门数据挖掘 - 二手车交易价格预测"。
 
 （4）进入比赛详情页后，点击报名参赛。
-
-![](/python-data-analysis-images/08-CioPOWB_mpWAAuzSAAsRRiNirwU593.png)
-
 （5）点击左侧的赛题与数据，进入数据集页面，页面上方是数据集的下载链接，下方是数据集的描述。
-
-![](/python-data-analysis-images/08-Cgp9HWB_mpyAfpljAAjIHmJ_BqY148.png)
-
 分析比赛的数据集通常分为训练集和测试集，此阶段无需关注测试集，直接查看训练集(train.csv) 即可。
 
 ### 行业数据集
@@ -62,9 +53,6 @@ category: Python
 （1）清博智能：[http://www.gsdata.cn/](http://www.gsdata.cn/)
 
 清博智能是聚焦新媒体行业的大数据服务网站，提供了大量新媒体渠道的榜单，如微信、头条、抖音等。登录后即可查看，并支持下载为 Excel 格式。
-
-![](/python-data-analysis-images/08-CioPOWB_mrGAHwfEAAN_m5WcYhA065.png)
-
 （2）房天下房价指数：[https://fdc.fang.com/index/](https://fdc.fang.com/index/)
 
 该网站提供房价相关的数据集，但数据以表格形式提供，不提供 Excel 格式。
@@ -115,13 +103,7 @@ flowchart TD
 通过一个例子说明爬虫的功能。
 
 以某电视剧网站为例，页面呈现如下图所示。
-
-![](/python-data-analysis-images/08-Cgp9HWB_mr6AJ-q6AE9EHTcr6SI070.png)
-
 该网站能够整理出一个电视剧的表格，例如下图所示：
-
-![](/python-data-analysis-images/08-Cgp9HWCCKouAeyL7AABkwIWn3SY673.png)
-
 一种方法是人工查看网页，将电视剧和主演逐条抄录到 Excel 中，但这种方式效率低，且电视剧有几十页，难以全部抄完。
 
 另一种方式是通过 Python 爬虫，将网页中所需的内容（电视剧名、演员名）提取出来存放在 Python 列表中。由于整个过程由代码实现，无论最终有多少页，通过一个循环即可获得所有电视剧的信息，最后再将保存结果的列表存为 Excel 或 CSV 格式。相比人工抄写，效率提升显著。
@@ -131,9 +113,6 @@ flowchart TD
 ### 爬虫的主要流程
 
 爬虫的原理与浏览器类似，如 Chrome、Edge 等。先说明浏览器的工作原理，以 Chrome 为例：
-
-![](/python-data-analysis-images/08-CioPOWB_mseAUnjWAAEXP0VO4pM752.png)
-
 浏览器的流程大致分为四个步骤：
 
 - 用户输入网址，指定想要访问的网页；
@@ -142,9 +121,6 @@ flowchart TD
 - 浏览器将收到的网页内容在窗口中展示给用户。
 
 了解了浏览器的工作流程后，来看爬虫的工作流程：
-
-![](/python-data-analysis-images/08-Cgp9HWB_ms6AEYncAAEbeo1d1zE293.png)
-
 可以看到，爬虫的工作流程与浏览器非常相似，其中第二步和第三步与浏览器完全相同。爬虫的工作主要包括以下步骤：
 
 - 在代码中指定要抓取的网页网址；

@@ -3,7 +3,7 @@ title: Pillow 图像处理
 version: 3.0
 author: 文档维护组
 created: 2026-02-23
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -776,15 +776,3 @@ flowchart TD
 - [OpenCV-Python](https://docs.opencv.org/master/d6/d00/tutorial_py_root.html) — 更强大的计算机视觉库
 - [imageio](https://github.com/imageio/imageio) — 支持更多格式的图像 IO 库
 - [scikit-image](https://scikit-image.org/) — 科学计算图像处理库
-
-## 版本差异（第三方库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `pydantic` | 1.x | 2.x（V2 核心重写，API 兼容层 `v1` 可选） |
-| `pytest` | 7.x | 8.x（`pytest 8` 移除部分旧插件兼容） |
-| `Pillow` | 9.x/10.x | 11.x |
-| `psutil` | 5.x | 6.x/7.x |
-| `chardet` | 4.x | 5.x（纯 Python；如需更高性能可选用 `charset-normalizer` 或维护中的 `faust-cchardet`） |
-
-> 本文示例多为概念讲解，API 基本稳定；升级第三方库时以官方 changelog 为准。

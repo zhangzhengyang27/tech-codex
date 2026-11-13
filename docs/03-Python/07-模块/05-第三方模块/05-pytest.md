@@ -3,7 +3,7 @@ title: pytest — Python 测试框架
 version: 2.0
 author: 文档维护组
 created: 2026-06-05
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -1193,15 +1193,3 @@ def test_python311_feature(calc: Calculator):
 | [pytest 插件列表](https://docs.pytest.org/en/stable/reference/plugin_list.html) | 官方收录的 pytest 插件清单 |
 | [Real Python - pytest 教程](https://realpython.com/pytest-python-testing/) | 面向初学者的 pytest 入门教程 |
 | [pytest-mock 文档](https://pytest-mock.readthedocs.io/) | pytest-mock 插件的官方文档 |
-
-## 版本差异（第三方库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `pydantic` | 1.x | 2.x（V2 核心重写，API 兼容层 `v1` 可选） |
-| `pytest` | 7.x | 8.x（`pytest 8` 移除部分旧插件兼容） |
-| `Pillow` | 9.x/10.x | 11.x |
-| `psutil` | 5.x | 6.x/7.x |
-| `chardet` | 4.x | 5.x（纯 Python；如需更高性能可选用 `charset-normalizer` 或维护中的 `faust-cchardet`） |
-
-> 本文示例多为概念讲解，API 基本稳定；升级第三方库时以官方 changelog 为准。

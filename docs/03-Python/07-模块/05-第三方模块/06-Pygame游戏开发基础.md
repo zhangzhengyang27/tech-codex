@@ -4,7 +4,7 @@ description: 从零构建武装飞船游戏，掌握 Pygame 核心概念：Surfa
 version: 1.0
 author: 文档维护组
 created: 2026-06-07
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -1076,15 +1076,3 @@ elif event.type == pygame.KEYDOWN:
 | [Python Crash Course - Alien Invasion](https://nostarch.com/pythoncrashcourse2e) | Eric Matthes 的经典书籍，本章内容即源于此项目的精炼版 |
 | [Pygame Wiki](https://www.pygame.org/wiki/) | 社区维护的知识库，包含大量技巧和最佳实践 |
 | [Pygame GitHub](https://github.com/pygame/pygame) | 源码仓库，可查阅实现细节和提交 Issue |
-
-## 版本差异（第三方库 → 当前稳定版）
-
-| 库 | 本文编写时 | 当前稳定版 |
-|----|-----------|-----------|
-| `pydantic` | 1.x | 2.x（V2 核心重写，API 兼容层 `v1` 可选） |
-| `pytest` | 7.x | 8.x（`pytest 8` 移除部分旧插件兼容） |
-| `Pillow` | 9.x/10.x | 11.x |
-| `psutil` | 5.x | 6.x/7.x |
-| `chardet` | 4.x | 5.x（纯 Python；如需更高性能可选用 `charset-normalizer` 或维护中的 `faust-cchardet`） |
-
-> 本文示例多为概念讲解，API 基本稳定；升级第三方库时以官方 changelog 为准。

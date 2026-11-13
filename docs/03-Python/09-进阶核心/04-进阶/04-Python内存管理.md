@@ -4,7 +4,7 @@ description: 深入理解 Python 内存管理机制：引用计数、分代垃�
 version: 1.0
 author: 文档维护组
 created: 2026-06-05
-updated: 2026-08-12
+updated: 2026-11-13
 status: 正式
 category: Python
 
@@ -841,15 +841,3 @@ tracemalloc.stop()
 - [CPython 源码 - Objects/obmalloc.c](https://github.com/python/cpython/blob/main/Objects/obmalloc.c) — pymalloc 内存分配器实现
 - [CPython 源码 - Modules/gcmodule.c](https://github.com/python/cpython/blob/main/Modules/gcmodule.c) — 分代垃圾回收器实现
 - [The Garbage Collector - Python Developer's Guide](https://devguide.python.org/internals/garbage-collector/)
-
-## 版本差异（类型注解 → Python 3.13/3.14）
-
-| 特性 | 本文编写时 | Python 3.13/3.14 |
-|------|-----------|------------------|
-| 注解求值 | 运行时立即求值 | PEP 649/749（3.14）：延迟求值，类型注解不再在定义时执行 |
-| 类型别名 | `TypeAlias` / 赋值 | 3.12 引入 `type X = ...` 语句 |
-| 联合类型 | `Union[X, Y]` | 3.10+ 使用 `X \| Y` 语法 |
-| `Self` 类型 | 手动标注 | 3.11+ `typing.Self` |
-| 泛型语法 | `TypeVar` 冗长语法 | 3.12 PEP 695 类型参数语法 `def f[T](...)` |
-
-> 本文讲解的 typing 核心概念在 3.14 中成立；新项目建议使用 3.12+ 的 `type` 语句与 PEP 695 语法，注解延迟求值让前向引用更简单。

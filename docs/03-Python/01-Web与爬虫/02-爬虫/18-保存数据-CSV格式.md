@@ -21,9 +21,6 @@ CSV（Comma-Separated Values）是一种使用逗号分隔来实现存储表格�
 下面以一个例子讲解 CSV 存储表格的原理。
 
 假设有如下员工信息的表格。
-
-![](/python-data-analysis-images/11-Cgp9HWCGW3uAdw0gAAEO7lp53XM723.png)
-
 要存储类似上面的表格，以往只能将其输入到 Excel 中并保存为 xlsx 格式，现在尝试将其以 CSV 的格式保存。
 
 在工作目录下新建 chapter09 文件夹，作为本节实验的目录。然后打开文本编辑器，如 Windows 下的记事本，新建空白文件。
@@ -39,9 +36,6 @@ CSV（Comma-Separated Values）是一种使用逗号分隔来实现存储表格�
 ```
 
 保存成功后，用 Excel 打开这个文件，可以看到存储的 CSV 文件成功地在 Excel 中展示为表格。
-
-![](/python-data-analysis-images/11-Cgp9HWCGW4iAfTk4AASFdtZ50e0408.png)
-
 至此，CSV 格式的奥秘已经清晰，总结如下：
 
 - 表格中的一行，对应 CSV 文件中的一行；
@@ -265,9 +259,6 @@ fo.close()
 上述代码的关键点就在于，创建了 DictWriter 后，需要首先调用 writeheader 来写入表头，然后再调用 writerow 来写入行。
 
 执行上述代码之后，并不会有内容输出，但是 chapter09 文件夹下会多出一个 Info2.csv，用 Excel 打开后，如下图所示。
-
-![](/python-data-analysis-images/11-CioPOWCGW5-AAHi1AAUBviplMwg738.png)
-
 可以看到，表头和记录已经成功写入 CSV 文件中。
 
 DictWriter 除了提供 writerow 方法来将单个字典保存为 CSV 表格中的一行，还提供了 writerows 方法来一次性地保存多行的内容。
@@ -295,9 +286,6 @@ fo.close()
 ```
 
 执行完毕后，chapter09/ 下生成了新的 info3.csv，打开后如下图所示，包含了一开始的三条记录，以及插入的“小刚”的记录。
-
-![](/python-data-analysis-images/11-CioPOWCGW-WAP4BrAAU43clX1Mg547.png)
-
 ## 实现煎蛋新闻列表保存到 CSV 文件中
 
 下面将前文中过滤出来的新闻列表写入 CSV 文件中。在前文中，课程内容中获取了煎蛋的新闻标题，在课后作业中获取了新闻发布的时间。
@@ -518,9 +506,6 @@ fo.close()
 ```
 
 执行之后，在 chapter09 文件夹下会生成 news.CSV 文件，用 Excel 打开后如下图所示。可以看到，数据已经成功以表格的形式呈现了。
-
-![](/python-data-analysis-images/11-Cgp9HWCGXFOAGwVfAAdzQElKjnA321.png)
-
 ## 小结
 
 本文主要介绍了以下内容：
@@ -587,9 +572,6 @@ write_dict_list_to_CSV(news_list, "news1.CSV", header)
 ```
 
 执行后，用 Excel 打开新产生的 news1.csv，如下图所示。可以看到分级信息已经按照题目要求加上了。
-
-![](/python-data-analysis-images/11-Cgp9HWCGXF-AS6avAAgYOOiMiFQ649.png)
-
 ## 版本差异（爬虫技术栈 → 当前版本）
 
 | 库 | 本文编写时 | 当前稳定版 |

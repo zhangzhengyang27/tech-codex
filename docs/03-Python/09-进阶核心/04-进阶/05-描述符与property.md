@@ -20,7 +20,7 @@ category: Python
 
 > 阅读提示
 >
-> - 如果你只想知道 `@property` 怎么用，请先阅读 [面向对象 - 封装小节](/docs/python/基础与入门/14-面向对象)
+> - 如果你只想知道 `@property` 怎么用，请先阅读 [面向对象 - 封装小节](/docs/python/基础与入门/11-面向对象)
 > - 如果你想**真正理解属性查找的优先级**、**编写可复用的类型校验逻辑**、**看懂 ORM 字段定义源码**，那么本文就是为你准备的
 > - 建议阅读时间：35 分钟
 
@@ -1089,7 +1089,7 @@ flowchart TD
 - [PEP 487 -- Simpler customisation of class creation](https://peps.python.org/pep-0487/) —— 引入了 `__set_name__` 协议
 - [Django 源码：django.db.models.fields.Field](https://github.com/django/django/blob/main/django/db/models/fields/__init__.py) —— Django 字段如何利用描述符实现 ORM 映射
 - [SQLAlchemy 源码：sqlalchemy.orm.attributes.InstrumentedAttribute](https://github.com/sqlalchemy/sqlalchemy/blob/main/lib/sqlalchemy/orm/attributes.py) —— SQLAlchemy 属性检测与追踪的描述符实现
-- [面向对象基础](/docs/python/基础与入门/14-面向对象) —— 含描述符协议入门介绍
+- [面向对象基础](/docs/python/基础与入门/11-面向对象) —— 含描述符协议入门介绍
 - [装饰器进阶](03-装饰器进阶) —— 装饰器与描述符的关系：`@property` 作为装饰器-描述符的复合体
 - [元类与抽象基类](06-元类与抽象基类) —— 元类经常与描述符协同工作（如 Django Model 的元类注册字段描述符）
 

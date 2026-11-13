@@ -3990,5 +3990,13 @@
  {
   "source": "/docs/python/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B2%BE%E8%AE%B2/15-PyEchart%20%26%20Flak%20%E9%9B%86%E6%88%90%E6%A1%88%E4%BE%8B",
   "destination": "/docs/python/05-数据科学/08-数据分析与可视化精讲/15-PyEchart & Flask 集成案例"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/01-Web%E5%BC%80%E5%8F%91/06-Django-REST-Framework",
+  "destination": "/docs/python/01-Web与爬虫/01-Web开发/10-Django-REST-Framework"
+ },
+ {
+  "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/01-Web%E5%BC%80%E5%8F%91/07-Flask%E8%93%9D%E5%9B%BE%E4%B8%8E%E5%A4%A7%E5%9E%8B%E5%BA%94%E7%94%A8",
+  "destination": "/docs/python/01-Web与爬虫/01-Web开发/11-Flask蓝图与大型应用"
  }
 ]

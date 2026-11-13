@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Playwright 端到端测试框架
 
 ## 概述
 
 Playwright 是 Microsoft 开发的现代 E2E 测试框架，支持 Chromium / Firefox / WebKit 三大引擎，具备自动等待、多上下文隔离、代码生成器（Codegen）和执行追踪（Trace Viewer）等能力。本文讲解 Playwright 的安装配置、核心 API 与 CI 集成。
-
-## 学习目标
-
-- 掌握 Playwright 项目初始化与配置文件编写
-- 学会使用 page 对象模拟用户操作和断言
-- 掌握 Codegen 录制、Trace Viewer 调试工作流
-- 理解多浏览器并行测试与 CI 集成方案
-
----
 
 ## 一、Playwright 核心优势
 

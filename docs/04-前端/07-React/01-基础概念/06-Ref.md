@@ -8,14 +8,7 @@ tags: [React, 基础概念]
 
 # Ref
 
-## 学习目标
-
-- 掌握 ref基本概念和使用
-- 掌握 Ref对象创建
-- 掌握 React对Ref属性的处理-标记ref
-
 ## ref基本概念和使用
-
 
 对于 Ref ，我认为应该分成两个部分去分析，第一个部分是 **Ref 对象的创建**，第二个部分是 **React 本身对Ref的处理**。两者不要混为一谈，所谓 Ref 对象的创建，就是通过 React.createRef 或者 React.useRef 来创建一个 Ref 原始对象。而 React 对 Ref 处理，主要指的是对于标签中 ref 属性，React 是如何处理以及 React 转发 Ref 。下面来仔细介绍一下。
 
@@ -60,7 +53,6 @@ export function createRef() {
 createRef 只做了一件事，就是创建了一个对象，对象上的 current 属性，用于保存通过 ref 获取的 DOM 元素，组件实例等。 createRef 一般用于类组件创建 Ref 对象，可以将 Ref 对象绑定在类组件实例上，这样更方便后续操作 Ref。
 
 注意：不要在函数组件中使用 createRef，否则会造成 Ref 对象内容丢失等情况。
-
 
 **②函数组件 useRef**
 
@@ -108,7 +100,6 @@ export default class Index extends React.Component{
     </div>
 }
 ````
-
 
 如上面代码片段，用一个字符串 ref 标记一个 DOM 元素，一个类组件(函数组件没有实例，不能被 Ref 标记)。React 在底层逻辑，会判断类型，如果是 DOM 元素，会把真实 DOM 绑定在组件 this.refs (组件实例下的 refs )属性上，如果是类组件，会把子组件的实例绑定在 this.refs 上。
 
@@ -216,7 +207,6 @@ class GrandFather extends React.Component{
 #### ② 场景二:合并转发ref
 
 通过 forwardRef 转发的 ref 不要理解为只能用来直接获取组件实例，DOM 元素，也可以用来传递合并之后的自定义的 ref ，可能这么说，有些同学没有明白，不过不要紧，下面我举一个例子。
-
 
 > 场景：想通过Home绑定ref，来获取子组件Index的实例index，dom元素button，以及孙组件Form的实例
 ````js
@@ -451,7 +441,6 @@ export default class Index extends React.Component{
 
 第一次打印为 null ，第二次才是 div ，为什么会这样呢？ 这样的意义又是什么呢？
 
-
 ### ref 执行时机和处理逻辑
 
 在上一节生命周期，提到了一次更新的两个阶段- render 阶段和 commit 阶段，后面的 fiber 章节会详细介绍两个阶段。对于整个 Ref 的处理，都是在 commit 阶段发生的。之前了解过 commit 阶段会进行真正的 Dom 操作，此时 ref 就是用来获取真实的 DOM 以及组件实例的，所以需要 commit 阶段处理。
@@ -475,7 +464,6 @@ function commitDetachRef(current: Fiber) {
   }
 }
 ````
-
 
 * 第二阶段：DOM 更新阶段，这个阶段会根据不同的 effect 标签，真实的操作 DOM 。
 
@@ -553,7 +541,6 @@ ref(<div>)
 接下来看一下 ref 的一些特性，首先来看一下，上述没有提及的一个问题，React 被 ref 标记的 fiber，那么每一次 fiber 更新都会调用 **commitDetachRef**  和 **commitAttachRef** 更新 Ref 吗 ？
 
 **答案是否定的，只有在 ref 更新的时候，才会调用如上方法更新 ref ，究其原因还要从如上两个方法的执行时期说起**
-
 
 #### 更新 ref
 
@@ -676,8 +663,6 @@ function safelyDetachRef(current) {
 * ref 组件通信-函数组件和类组件两种方式。
 * useRef 缓存数据。
 * Ref 的处理逻辑原理
-
-下一节，我们一起走进 React context 的世界。
 
 ## 继续阅读
 

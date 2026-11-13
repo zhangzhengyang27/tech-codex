@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron MessagePort 双窗口实战、contextIsolation 差异与页面接线
 
 ## 概述
 
 上一节把 `MessagePort` 的概念讲清楚了：适合后台任务、是成对端口、通过主进程转交。这一节进入真正的代码落地，最关键的问题是——这对 `port1 / port2` 到底怎么在 Electron 里交给两个窗口。课程没有停留在浏览器原生 `MessageChannel` 的抽象上，而是直接进入 `MessageChannelMain` / `MessagePortMain`，并演示主进程用 `webContents.postMessage` 转交端口、preload 接住端口、页面层只处理消息的完整链路。同时它专门点出了 `contextIsolation` 会直接影响你能不能直接照搬官方示例，提醒我们理解上下文前提比抄示例更重要。
-
-## 学习目标
-
-- 知道 `MessageChannelMain` 是 Electron 里创建端口对的固定起点，生成 `port1 / port2`。
-- 理解主进程角色从“持续路由”变成“一次性通道建桥”：把端口交给两边后，后续消息沿专属通道直接互发。
-- 看懂主进程用 `webContents.postMessage("port", null, [port])` 把端口转交给各窗口。
-- 明确官方示例里直接 `window.postMessage / onmessage` 的写法是建立在宽松上下文假设上，`contextIsolation` 开启后不能随意照搬。
-- 坚持让 preload 接住 port 和消息，再把页面需要的发送 / 监听能力受控转接出去，保持统一的安全主线。
-
----
 
 ## 一、真正难点不在“通道是什么”，而在“端口怎么交给窗口”
 
@@ -35,7 +24,7 @@ type MessagePortImplementationStep = {
 }
 ```
 
-这节课的重点是“落地链路”，不再只是概念理解；把这条链路看懂，后面再看官方示例就不会觉得像黑魔法。
+本篇的重点是“落地链路”，不再只是概念理解；把这条链路看懂，后面再看官方示例就不会觉得像黑魔法。
 
 ## 二、主进程的关键起点：new MessageChannelMain()
 

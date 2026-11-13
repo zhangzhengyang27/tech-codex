@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # package.json 脚本扩展与发包流程
 
 ## 概述
 
 这一节从 Electron 打包链路切回「TypeScript 库模板项目的工程脚本扩展」。课程主线包含四部分：给 package.json 增加 lint / lint:fix；用 simple-git-hooks + lint-staged 在提交前自动修复；用 tsx 增加 TypeScript 运行时脚本；增加发包脚本并切换 npm 源。整理时对照当前官方资料做了几处关键修正：lint-staged 最适合直接执行「只针对 staged 文件」的命令；自定义脚本不要命名成 publish，因为它是 npm / pnpm 生命周期脚本名；正式发包比起 nrm 手动切源，更稳妥的是 publishConfig.registry、显式 --registry 或 CI 里用 Trusted Publishing。
-
-## 学习目标
-
-- 把 lint / lint:fix 作为可复用命令，统一团队校验入口
-- 用 lint-staged 只处理暂存区文件，提升提交前校验的性能与可控性
-- 用 simple-git-hooks 把校验挂到 pre-commit，理解它只是触发器
-- 区分 .gitignore 与 ESLint 忽略规则服务的不同工具层
-- 用 tsx 提供开发期运行入口，并规范 release 发包脚本与 registry 配置
-
----
 
 ## 一、lint / lint:fix：把质量校验变成可复用命令
 

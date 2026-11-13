@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Nuxt DevTools 开发工具详解
 
 ## 概述
 
 Nuxt DevTools 是 Nuxt 官方内置的开发者工具面板，提供性能分析、组件检查、模块管理、构建分析等能力，显著提升 Nuxt 项目的开发调试效率。
-
-## 学习目标
-
-- 掌握 DevTools 的启用与打开方式
-- 学会使用首页概览查看性能指标
-- 掌握 Pages / Components / Modules 等核心面板的使用
-- 了解 VS Code 联动与命令面板功能
-
----
 
 ## 一、启用与打开
 

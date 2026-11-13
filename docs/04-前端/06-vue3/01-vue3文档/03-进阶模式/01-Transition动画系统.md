@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Transition动画系统
 
 > 使用 `<Transition>` 组件为元素添加进入和离开动画。Vue 提供 CSS 和 JavaScript 两种动画方式，并可配合第三方库（GSAP、Motion 等）。
@@ -1064,7 +1063,6 @@ function onLeave(el: Element, done: gsap.Callback) {
 
 ## 列表过渡（TransitionGroup）
 
-
 > 使用 `<TransitionGroup>` 为列表元素添加进入、离开和移动动画。与 `<Transition>` 不同，它会渲染一个真实的容器元素。
 
 ## TransitionGroup vs Transition
@@ -1541,7 +1539,6 @@ function reorder(id: number, direction: 'up' | 'down') {
 ---
 
 ## 状态过渡
-
 
 > 状态过渡是指数据变化时的视觉过渡——数字跳变、颜色渐变、尺寸变化等。Vue 3 通过 `watch` + Web Animations API / GSAP 实现数据驱动的动画。
 
@@ -2067,7 +2064,6 @@ function onLeaveCancelled(el: Element) {
 ---
 
 ## 动画工程最佳实践
-
 
 > Vue 动画的性能优化、第三方库集成和无障碍设计。遵循最佳实践可确保动画流畅（60fps）且对所有用户友好。
 

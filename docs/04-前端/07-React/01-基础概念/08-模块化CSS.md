@@ -8,12 +8,6 @@ tags: [React, 基础概念]
 
 # 模块化CSS
 
-## 学习目标
-
-- 掌握 CSS Modules
-- 掌握 自定义命名规则
-- 掌握 全局变量
-
 ## CSS Modules
 
 css Modules ，使得项目中可以像加载 js 模块一样加载 css ，本质上通过一定自定义的命名规则生成唯一性的 css 类名，从根本上解决 css 全局污染，样式覆盖的问题。对于 css modules 的配置，推荐使用 css-loader，因为它对 CSS Modules 的支持最好，而且很容易使用。接下来介绍一下配置的流程。
@@ -145,7 +139,6 @@ export default ()=><div>
 ````
 上述可以看到，用了 composes 可以将多个 class 类名添加到元素中。composes 还有一个更灵活的方法，支持动态引入别的模块下的类名。比如上述写的 `.base` 样式在另外一个文件中，完全可以如下这么写：
 
-
 **style1.css 中**
 ````css
 .base{
@@ -161,7 +154,6 @@ export default ()=><div>
     background-color: pink;
 }
 ````
-
 
 ### 4 配置 less 和 sass 
 
@@ -449,8 +441,6 @@ CSS IN JS 注意事项。
 * css 模块化的意义。
 * 学习了 CSS Modules 方式。
 * 详解了 CSS IN JS 方式。
-
-下一节，将详细讲解React HOC。
 
 ## 继续阅读
 

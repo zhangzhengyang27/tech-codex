@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Nuxt3 PWA 配置问题排查与修复实践
 
 ## 概述
 
 Nuxt3 通过 `@vite-pwa/nuxt` 模块集成 PWA 能力，但实际配置中常遇到 Service Worker 未注册、缓存不完整、更新不生效等问题。本文记录完整的排查清单与 Workbox 缓存优化方案。
-
-## 学习目标
-
-- 掌握 PWA 注册状态的验证方法
-- 学会排查 Service Worker 未注册的常见原因
-- 掌握 Workbox globPatterns 缓存类型配置
-- 理解 periodicSyncForUpdates 后台更新机制
-
----
 
 ## 一、PWA 状态验证
 

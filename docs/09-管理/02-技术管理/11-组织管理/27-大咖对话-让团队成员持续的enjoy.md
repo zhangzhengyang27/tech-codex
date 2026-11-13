@@ -72,7 +72,7 @@ enjoy 有两个层面，一个是 enjoy 过程，我们叫 enjoy working，你�
 ### 2.4 AI 时代验证
 
 **关键数据（2026）：**
-- 使用 AI 编程工具的开发者**工作满意度提升 37%**（Stack Overflow 2026）
+
 - **78% 的工程师**表示 AI 让他们从繁琐工作中解放，更有时间做有创造力的事
 - 团队引入 AI 后，**创新想法的验证周期从 2 周缩短到 2-3 天**
 
@@ -243,7 +243,7 @@ graph TD
 
 **核心升级：**
 
-> 2018: Enjoy = 做喜欢的事 + 创造价值  
+> 2018: Enjoy = 做喜欢的事 + 创造价值 
 > **2026: Enjoy = 与 AI 共创的愉悦感 + 放大后的价值创造 + 快速试错的创新循环**
 
 **对管理者的启示：**
@@ -256,7 +256,7 @@ graph TD
 
 ### 6.2 参考与延伸
 
-*注解生成时间：2026 年 6 月 | 基于 2026 年开发者幸福感调查更新。参考：Stack Overflow Developer Survey 2026、GitHub Copilot Impact Report 2026。*
+*基于 2026 年开发者幸福感调查更新。参考：Stack Overflow Developer Survey 2026、GitHub Copilot Impact Report 2026*
 
 ---
 

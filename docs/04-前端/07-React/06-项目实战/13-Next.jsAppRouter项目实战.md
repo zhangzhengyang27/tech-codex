@@ -8,12 +8,6 @@ tags: [React, 项目实战]
 
 # Next.js App Router 项目实战
 
-## 学习目标
-
-- 用 App Router 目录约定组织一个真实项目
-- 用 Server Component 取数 + Server Action 提交，组合出「零客户端取数」页面
-- 用 `error.tsx` / `loading.tsx` 声明边界
-
 ## 目录约定
 
 ```

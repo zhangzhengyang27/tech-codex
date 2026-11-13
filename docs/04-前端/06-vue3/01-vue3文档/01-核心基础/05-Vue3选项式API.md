@@ -567,8 +567,6 @@ setTimeout(()=>{
 
 ![img](https://cdn.nlark.com/yuque/0/2023/png/28081210/1681442541974-8f0d4aa1-64a7-4d8b-a081-2cef32906319.png)
 
-
-
 生命周期可划分为三个部分：
 
 1. 初始阶段：beforeCreate、created、beforeMount、mounted

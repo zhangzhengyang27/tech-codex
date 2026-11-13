@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron IPC 通信模式、invoke-handle 与 webContents send 实战
 
 ## 概述
 
 这一节把 IPC 这条 Electron 最常用也最容易让人晕的链路讲透。课程主张别先背官方“模式一二三四”，而是先按“谁发给谁”和“事件型还是异步请求型”两条轴归类，于是 `send / on`、`invoke / handle`、`event.reply`、`webContents.send` 就不再是零散名字，而是能自动归位。它是后续设计健壮 Electron 应用最牢固的通信基础。
-
-## 学习目标
-
-- 建立 IPC 学习的主线框架：先分方向（渲染→主、主→渲染），再分风格（事件驱动、异步请求）。
-- 会用 `ipcRenderer.send` → `ipcMain.on` 做单向事件通知型通信。
-- 会用 `ipcRenderer.invoke` → `ipcMain.handle` 做双向异步请求 / 响应，并理解它为何是官方主推。
-- 知道 `event.reply` 也能回结果，但链路比 `invoke` 更绕，因此不是首选。
-- 理解主进程主动发消息给页面要走具体窗口的 `webContents.send()`，而非 `ipcMain`。
-- 明确当前只立最基础的 IPC 大图景，渲染进程之间的通信（如 MessagePort）留到后面。
-
----
 
 ## 一、学 IPC 先别背模式编号，先按“方向 + 风格”归类
 
@@ -136,7 +124,7 @@ type IpcScope = {
 }
 ```
 
-所以课程把这一部分拆出去是非常合理的节奏安排。先把主线模式学清楚，再去碰更复杂的跨窗口通信，是更稳的学习顺序；这节课真正的任务，是把 `send / on`、`invoke / handle`、`webContents.send` 三条最常见路径打通，不要一开始就陷入所有模式并行学习。
+所以把这一部分拆出去单独讲是非常合理的节奏安排。先把主线模式学清楚，再去碰更复杂的跨窗口通信，是更稳的学习顺序；本篇真正的任务，是把 `send / on`、`invoke / handle`、`webContents.send` 三条最常见路径打通，不要一开始就陷入所有模式并行学习。
 
 ## 八、这一节真正打通的是“基础 IPC 大图景”
 

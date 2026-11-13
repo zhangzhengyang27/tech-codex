@@ -575,7 +575,7 @@ $colors: (
 
 ### @import（旧语法）
 
-⚠️ `@import` 已被 Sass 官方标记为弃用，建议使用 `@use` 替代。
+⚠️ `@import` 已被 Sass 官方标记为弃用，建议使用 `@use` 替代。（Dart Sass 编译时会对 `@import` 输出 deprecation 警告；新项目建议直接用 `@use` 引入变量与混入。）
 
 ```scss
 // _variables.scss

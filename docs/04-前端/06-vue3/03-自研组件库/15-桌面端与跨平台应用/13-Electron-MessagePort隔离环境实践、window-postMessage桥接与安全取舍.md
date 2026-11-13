@@ -6,26 +6,15 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron MessagePort 隔离环境实践、window.postMessage 桥接与安全取舍
 
 ## 概述
 
 上一节把双窗口 `MessagePort` 的最小链路跑起来了。这一节继续往下挖一个更难、但更贴近真实工程的问题：同样都是 `MessagePort`，在 `contextIsolation: false` 和 `contextIsolation: true` 两种安全配置下，页面层的接法并不一样。课程先后演示了宽松环境下的“端口直接挂到 window”写法，以及隔离环境下的“preload 用 `window.postMessage` 转交端口、页面用 `window.onmessage` 接端口”的折中方案，并解释了为什么 `contextBridge` 不能直接原样转交 `port`。这一节真正立住的是 `MessagePort` 在 Electron 里的“安全版落地路径”。
 
-## 学习目标
-
-- 理解 `MessagePort` 的难点不在“建通道”，而在“不同安全配置下，通道对象怎么安全地交给页面”。
-- 知道 `contextIsolation: false` 时端口几乎可以直接挂到 window 上，但也意味着更宽松的隔离边界。
-- 明白 `contextBridge` 不能直接原样转交 `port`：它会做值拷贝与原型裁剪，导致 `postMessage / onmessage` 等能力丢失。
-- 掌握隔离环境下的折中链路：preload 接端口 → 用 `window.postMessage(..., event.ports)` 转交 → 页面 `window.onmessage` 解出 `event.ports[0]`。
-- 记住不管写法怎么变，分层原则不变：preload 负责桥接，页面负责业务消息处理。
-
----
-
 ## 一、真正难点不在“建通道”，而在“端口怎么安全交给页面”
 
-上一节已经把双窗口 `MessagePort` 最小链路跑通了。这一节课程继续处理一个更难的问题：同样都是 `MessagePort`，在 `contextIsolation: false` 和 `contextIsolation: true` 下，页面层的接法并不一样。这说明 `MessagePort` 在 Electron 里真正复杂的地方，不只是 `MessageChannelMain`、`port1 / port2`、`postMessage`，而是还要结合当前应用的安全边界来看。所以这节课其实是在补一个非常现实的认知：能跑的方案，和推荐上线的方案，不一定是同一套写法。
+上一节已经把双窗口 `MessagePort` 最小链路跑通了。本篇继续处理一个更难的问题：同样都是 `MessagePort`，在 `contextIsolation: false` 和 `contextIsolation: true` 下，页面层的接法并不一样。这说明 `MessagePort` 在 Electron 里真正复杂的地方，不只是 `MessageChannelMain`、`port1 / port2`、`postMessage`，而是还要结合当前应用的安全边界来看。所以本篇其实是在补一个非常现实的认知：能跑的方案，和推荐上线的方案，不一定是同一套写法。
 
 ```ts
 type MessagePortDifficulty = {

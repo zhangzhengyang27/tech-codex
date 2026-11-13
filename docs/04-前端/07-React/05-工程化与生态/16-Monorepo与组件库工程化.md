@@ -8,12 +8,6 @@ tags: [React, 工程化与生态]
 
 # Monorepo 与组件库工程化
 
-## 学习目标
-
-- 掌握 pnpm workspace 多包管理
-- 理解 Turborepo 的任务缓存与依赖编排
-- 了解组件库的构建、类型与发布链路
-
 ## 为什么 Monorepo
 
 当「多个应用 + 共享组件库 + 工具包」需要统一版本与原子提交，Monorepo 让跨包改动一次提交完成，避免多仓库版本漂移。
@@ -58,5 +52,5 @@ Monorepo 让多包工程「一次提交、原子联动」，pnpm workspace 管�
 
 ## 继续阅读
 
-- 上一篇：[15-使用 @testing-library/react 测试组件](15-使用testing-library测试组件)
+- 上一篇：[15-使用testing-library测试组件](15-使用testing-library测试组件)
 - 下一篇：[05-开发前准备](../06-项目实战/05-开发前准备)

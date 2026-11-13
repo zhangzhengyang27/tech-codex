@@ -6,25 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # SortableJS 列拖拽实现与拖拽事件透传
 
 ## 概述
 
 正式落地拖拽功能时，先从列拖拽入手更合理：它操作的是 columns，不会马上影响整行数据语义，更适合先验证拖拽库接入、索引计算和状态回写是否成立。实现上继续采用成熟的 SortableJS，先用本地 localColumns 承接可变的列顺序（绝不直接改 props），再把拖拽目标精确锁定到表头的 tr，通过 onEnd 拿到的 oldIndex / newIndex 配合 splice 完成重排。稳定 id/key 是列表正确重排的硬前提，组件内部应在用户没传 id 时自动补齐。最后通过 drag-col-change 事件把新列顺序回传给页面层，并用 dragRow / dragCol 两个独立布尔开关按需启用不同拖拽能力。
-
-## 学习目标
-
-- 理解为何先从列拖拽入手验证拖拽链路
-- 用 SortableJS 作为成熟稳定的拖拽排序基础方案
-- 建立本地 localColumns 承接拖拽重排，绝不直接改 props
-- 把拖拽目标精确锁定到表头区域的 tr
-- 用 onEnd 的 oldIndex / newIndex 配合 splice 完成列重排
-- 认识稳定 id/key 是拖拽列表正确重排的硬前提
-- 在用户没传 id 时由组件内部自动补齐增强容错
-- 用 drag-col-change 事件把新顺序回传页面层，dragCol 按需开关
-
----
 
 ## 一、为何先从列拖拽入手
 

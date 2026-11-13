@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # ECharts 基础接入与 Vue-ECharts 通用图表组件封装
 
 ## 概述
 
 数据可视化是后台系统的高频需求，而 Apache ECharts 是国内最成熟的图表引擎之一，文档完善、图表类型齐全。在 Vue 3 项目里接入 ECharts，最稳妥的组合是 `echarts` + `vue-echarts`：`echarts` 提供图表引擎与渲染能力，`vue-echarts` 提供 Vue 包装层（响应式 `option`、主题注入、自动 resize、事件绑定）。本文聚焦"把这套组合封装成一个通用图表组件"，覆盖按需引入、默认开启自动缩放、`option` 类型选择、`theme` 语义与背景色分离、尺寸样式统一收口等工程要点。
-
-## 学习目标
-
-- 理解为什么选 `echarts + vue-echarts` 而非裸接 ECharts 或手写封装。
-- 掌握 `echarts/core` + `use()` 的按需注册方式，理解渲染器和依赖组件必须手动注册。
-- 知道 `autoresize` 官方默认是 `false`，而业务包装层通常应默认开启。
-- 能为 `option` 选择 `EChartsOption`/`ComposeOption` 这类通用类型，而不是 `typeof demoOption`。
-- 厘清 `theme`、`backgroundColor`、`height`、`style` 的语义边界，避免混用导致组件接口混乱。
-
----
 
 ## 一、为什么选 echarts + vue-echarts
 

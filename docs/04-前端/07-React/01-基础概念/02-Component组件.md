@@ -8,12 +8,6 @@ tags: [React, 基础概念]
 
 # Component组件
 
-## 学习目标
-
-- 掌握 什么是React组件？
-- 掌握 两种不同 React 组件
-- 掌握 class类组件
-
 ## 什么是React组件？
 
 想要理解 React 组件是什么？我们首先要来分析一下组件和常规的函数和类到底有什么本质的区别。
@@ -185,7 +179,6 @@ function Index(){
 
 为了能让函数组件可以保存一些状态，执行一些副作用钩子，React Hooks 应运而生，它可以帮助记录 React 中组件的状态，处理一些额外的副作用。
 
-
 ## 组件通信方式
 
 React 一共有 5 种主流的通信方式：
@@ -324,7 +317,6 @@ export default Programmer
 
 但是也有值得注意的地方，就是 state 和生命周期会被继承后的组件修改。像上述 demo 中，Person 组件中的 componentDidMount 生命周期将不会被执行。
 
-
 **②函数组件自定义 Hooks**
 
 在自定义 hooks 章节，会详细介绍自定义 hooks 的原理和编写。
@@ -333,7 +325,6 @@ export default Programmer
 
 在 HOC 章节，会详细介绍高阶组件 HOC 。
 
-
 ## 总结
 
 从本章节学到了哪些知识：
@@ -341,9 +332,6 @@ export default Programmer
 * 明白了函数组件和类组件的区别。
 * 掌握组件通信方式。
 * 掌握了组件强化方式。
-
-
-下一章节，我们将走进 React 状态管理 state 的世界中，一起探讨 State 的奥秘。
 
 ## 继续阅读
 

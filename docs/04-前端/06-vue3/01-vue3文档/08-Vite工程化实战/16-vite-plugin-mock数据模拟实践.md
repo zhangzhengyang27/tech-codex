@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # vite-plugin-mock 数据模拟实践
 
 ## 概述
 
 vite-plugin-mock 为 Vite 项目提供本地和生产环境的 Mock 数据服务，支持 TypeScript、热更新和自定义响应延迟。本文讲解其安装配置、Mock 文件编写规范及与前端请求层的集成方式。
-
-## 学习目标
-
-- 掌握 vite-plugin-mock 的安装与配置
-- 学会编写 Mock 接口文件（支持 GET/POST/延迟）
-- 理解 Mock 数据在开发流程中的定位
-
----
 
 ## 一、安装与配置
 

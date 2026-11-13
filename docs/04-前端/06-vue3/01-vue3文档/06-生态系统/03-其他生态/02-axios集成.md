@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # axios 集成
 
 > axios 是 Vue 项目中最流行的 HTTP 客户端，支持浏览器和 Node.js，提供了拦截器、取消请求、自动转换 JSON 等强大功能。

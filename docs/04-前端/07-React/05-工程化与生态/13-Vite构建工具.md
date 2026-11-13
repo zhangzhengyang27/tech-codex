@@ -8,12 +8,6 @@ tags: [React, 工程化与生态]
 
 # Vite 构建工具
 
-## 学习目标
-
-- 理解 Vite「开发期原生 ESM、生产期 Rollup」的双模式
-- 掌握 `@vitejs/plugin-react` 的集成
-- 理解 Vite 与 webpack/CRA 的核心差异
-
 ## 为什么快
 
 webpack 类工具启动时要**先打包整个依赖图**再起服务；Vite 开发期直接以**浏览器原生 ESM** 提供源码，依赖（node_modules）用 esbuild 预打包为临时模块，应用代码按需编译，因此冷启动几乎即时。
@@ -45,5 +39,4 @@ Vite 用「开发期不打包、生产期 Rollup」的取舍换来了极致开�
 
 ## 继续阅读
 
-- 上一篇：[12-react-dnd实战-拖拽版TodoList](12-react-dnd实战-拖拽版TodoList)
 - 下一篇：[14-Turbopack 与 Rspack](14-Turbopack与Rspack)

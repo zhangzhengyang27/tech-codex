@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # vite-plugin-ssr 实战集成
 
 ## 概述
 
 本文以 Pinia 状态管理为例，讲解 vite-plugin-ssr 项目中的状态集成：服务端创建 Store、渲染后序列化状态、通过 passToClient 传递、客户端恢复状态，完成 SSR 状态闭环。
-
-## 学习目标
-
-- 掌握 vite-plugin-ssr 项目中 Pinia 的集成方式
-- 理解 SSR 状态传递的完整链路（服务端 → HTML → 客户端）
-- 学会配置 passToClient 避免状态丢失
-- 掌握 Layout 布局与页面组合的实践模式
-
----
 
 ## 一、Pinia Store 定义
 

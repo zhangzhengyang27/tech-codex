@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 调试扩展、--inspect-brk 与 VS Code 断点排查
 
 ## 概述
 
 断点进不去时，先别怀疑业务代码——问题常在调试链路本身。这一节给出一套务实排错路径：用 `--inspect-brk` 配合 Chrome DevTools 接管主进程调试，用 `launch.json` 的 `runtimeVersion` / `integratedTerminal` 稳定 VS Code 链路，并按“调试器 → Node 环境 → 系统环境”逐层缩小范围。它把 Electron 从“能跑应用”推进到“能调应用”。
-
-## 学习目标
-
-- 建立“断点不生效 ≠ 代码没执行”的排查意识，先把问题归位到调试链路。
-- 会用 `--inspect-brk` + `chrome://inspect` 接管主进程调试，作为 VS Code 不稳定时的降级方案。
-- 会在关键位置用 `debugger` 关键字强制断住，不依赖编辑器图形断点。
-- 理解 `launch.json` 里 `runtimeVersion` / `integratedTerminal` 的作用，尤其是 NVM 管理 Node 的场景。
-- 掌握从调试器一路缩到系统环境的逐层排错顺序，避免一上来就重装系统。
-- 形成“多通道调试”的桌面端调试观：在编辑器调试器、Chrome Inspector、环境排查之间灵活切换。
-
----
 
 ## 一、断点进不去，先归位到调试链路而非业务代码
 

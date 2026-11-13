@@ -6,13 +6,11 @@ category: React
 tags: [React, 组件与实战]
 ---
 
+::: warning 配图说明
+本教程原配图未随迁移入库，含 41 处图示引用已改为文字提示，阅读时以代码与文字描述为准。
+:::
+
 # 组件实战-Calendar日历组件
-
-## 学习目标
-
-- 掌握 Calendar 的布局实现（dayjs + flex）
-- 掌握 dateRender / dateInnerContent / locale / onChange 等参数的实现
-- 掌握 useControllableValue 同时支持受控与非受控
 
 ## 布局阶段小结
 
@@ -47,12 +45,11 @@ export interface CalendarProps {
 }
 ```
 
-
 内部的布局我们都是用的 flex，所以只要外层容器的样式变了，内部的布局会自动适应。
 
 dateRender 是用来定制日期单元格显示的内容的。
 
-比如加一些日程安排，加一些农历或者节日信息：
+比如加一些日程安排，加一些农历或者节日信息（原文此处有配图，未随迁移入库）
 
 dateRender 是整个覆盖，连带日期的数字一起，而 dateInnerContent 只会在日期的数字下添加一些内容。
 
@@ -125,7 +122,7 @@ const {
 ```javascript
 renderDays(allDays, dateRender, dateInnerContent)
 ```
-dateRender 的处理也很简单，就是把渲染日期的逻辑换一下：
+dateRender 的处理也很简单，就是把渲染日期的逻辑换一下（原文此处有配图，未随迁移入库）
 
 在 App.tsx 里传入 dateRender 参数：
 
@@ -151,7 +148,7 @@ export default App;
 
 不过现在我们没有做内容溢出时的处理。
 
-加个 overflow: hidden 就好了：
+加个 overflow: hidden 就好了（原文此处有配图，未随迁移入库）
 
 而且之前加 padding 的位置也不对。
 
@@ -186,7 +183,7 @@ function renderDays(
     return rows.map(row => <div className="calendar-month-body-row">{row}</div>)
 }
 ```
-改下对应的样式：
+改下对应的样式（原文此处有配图，未随迁移入库）
 
 把加 padding 的位置改为内部的元素。
 
@@ -249,7 +246,7 @@ export interface CalendarType {
     } & Record<string, any>
 }
 ```
-然后分别定义中文和英文的配置：
+然后分别定义中文和英文的配置（原文此处有配图，未随迁移入库）
 
 src/Calendar/locale/zh-CN.ts
 
@@ -292,7 +289,7 @@ src/Calendar/locale/zh-CN.ts
 
 把会用到的文案列出来。
 
-然后再写个英文版：
+然后再写个英文版（原文此处有配图，未随迁移入库）
 
 src/Calendar/locale/en-US.ts
 
@@ -331,9 +328,9 @@ const CalendarLocale: CalendarType = {
 export default CalendarLocale;
 ```
 
-我们先把上面的周一到周日的文案替换了：
+我们先把上面的周一到周日的文案替换了（原文此处有配图，未随迁移入库）
 
-在 MonthCalendar 引入中文的资源包：
+在 MonthCalendar 引入中文的资源包（原文此处有配图，未随迁移入库）
 
 然后把之前写死的文案，改成按照 key 从资源包中取值的方式：
 
@@ -374,7 +371,7 @@ function MonthCalendar(props: MonthCalendarProps) {
 
 当然，现在我们是手动切换的资源包，其实应该是全局统一配置的。
 
-这个可以通过 context 来做：
+这个可以通过 context 来做（原文此处有配图，未随迁移入库）
 
 新建 src/Calendar/LocaleContext.tsx
 
@@ -391,11 +388,11 @@ const LocaleContext = createContext<LocaleContextType>({
 
 export default LocaleContext;
 ```
-然后在 Calendar 组件里用 provider 修改 context 的值：
+然后在 Calendar 组件里用 provider 修改 context 的值（原文此处有配图，未随迁移入库）
 
-如果传入了参数，就用指定的 locale，否则，就从浏览器取当前语言：
+如果传入了参数，就用指定的 locale，否则，就从浏览器取当前语言（原文此处有配图，未随迁移入库）
 
-加一个国际化资源包的入口：
+加一个国际化资源包的入口（原文此处有配图，未随迁移入库）
 
 src/Calendar/locale/index.ts
 
@@ -425,7 +422,7 @@ const CalendarLocale = allLocales[localeContext.locale];
 
 接下来，我们实现 value 和 onChange 参数的逻辑。
 
-在 MonthCalendar 里取出 value 参数，传入 renderDays 方法：
+在 MonthCalendar 里取出 value 参数，传入 renderDays 方法（原文此处有配图，未随迁移入库）
 
 用 classnames 的 api 来拼接 className，如果是当前日期，就加一个 xxx-selected 的 className：
 
@@ -587,7 +584,7 @@ function App() {
 export default App;
 ```
 
-然后实现下 Header 组件里的日期切换：
+然后实现下 Header 组件里的日期切换（原文此处有配图，未随迁移入库）
 
 根据传入的 value 来展示日期，点击上下按钮的时候会调用传进来的回调函数：
 
@@ -750,7 +747,7 @@ function Header(props: HeaderProps) {
 
 这样，我们的 Calendar 组件就完成了。
 
-最后我们再来优化下代码：
+最后我们再来优化下代码（原文此处有配图，未随迁移入库）
 
 重复逻辑可以抽离出个方法：
 
@@ -761,11 +758,11 @@ function changeDate(date: Dayjs) {
     onChange?.(date);
 }
 ```
-渲染逻辑抽离出来的函数，放在组件外需要传很多参数，而这个函数只有这里用，可以移到组件内：
+渲染逻辑抽离出来的函数，放在组件外需要传很多参数，而这个函数只有这里用，可以移到组件内（原文此处有配图，未随迁移入库）
 
-这样就不用传那些参数了：
+这样就不用传那些参数了（原文此处有配图，未随迁移入库）
 
-此外，我们的 Calendar 的 value 其实是 defaultValue：
+此外，我们的 Calendar 的 value 其实是 defaultValue（原文此处有配图，未随迁移入库）
 
 和迷你 Calendar 一样，我们也用 ahooks 的 useControllableValue 来做。
 
@@ -861,5 +858,5 @@ locale 是切换语言，国际化就是把写死的文案换成从资源包取�
 日历组件是一个常用组件，而且是经常需要定制的那种，因为各种场景下对它有不同的要求，所以能够自己实现各种日历组件是一个必备技能。
 ## 继续阅读
 
-- 上一篇：[10-组件实战-迷你Calendar](10-组件实战-迷你Calendar)
-- 下一篇：[12-快速掌握Storybook](12-快速掌握Storybook)
+- 上一篇：[07-React组件如何写TypeScript类型](../04-组件与实战/07-React组件如何写TypeScript类型)
+- 下一篇：[18-三个简单组件的封装](../04-组件与实战/18-三个简单组件的封装)

@@ -113,7 +113,7 @@ Java面临的最大的挑战并不在于外部语言的冲击，而是计算模�
 ```
 推荐工具链（2026）：
 - IDE: IntelliJ IDEA + GitHub Copilot Workspace
-- 代码生成: Cursor (GPT-5.5) / Windsurf (DeepSeek V4)
+- 代码生成: Cursor (新一代 AI 编程工具) / Windsurf (新一代大模型)
 - 代码审查: Amazon Q Developer 安全扫描（原 Amazon CodeWhisperer，已更名）
 - 测试生成: TestGen AI (单元测试覆盖率95%+)
 - 文档: Mintlify (自动生成API文档)
@@ -178,18 +178,18 @@ graph TD
     A --> A3[Maven/Gradle构建工具]
     A --> A4[Hadoop/Cassandra大数据栈]
     
-    B --> B1[1500万+开发者<br/>84%使用AI辅助编程]
+    B --> B1[1500万+开发者]
     B --> B2[Spring Boot 4.x / Spring AI]
     B --> B3[AI原生构建工具链]
     B --> B4[Java + AI推理引擎融合]
     B --> B5[Agent框架集成<br/>LangChain4j等]
 ```
 
-图中显示：2026 年 Java 生态护城河不仅没有削弱，反而因 AI 工具链的融入而加深。开发者数量增长至 1500 万+，且 84% 已使用 AI 辅助编程，Spring AI 成为 Java 领域 AI 应用开发的事实标准。
+图中显示：2026 年 Java 生态护城河不仅没有削弱，反而因 AI 工具链的融入而加深。
 
 **关键数据（2026）**：
 - Java 全球开发者数量突破 **1500 万**，仍稳居第一
-- **84% 的 Java 开发者**日常使用 AI 编程助手（GPT-5.5、DeepSeek V4、Cursor 等）
+
 - Spring 生态推出 **Spring AI**，成为 Java 领域 AI 应用开发的事实标准
 - JVM 正在集成**原生 AI 推理能力**（Project Panama 的延伸）
 
@@ -216,7 +216,7 @@ graph TD
 
 ### 6.4 Java 在 AI 时代的独特优势
 
-1. **企业级 AI 的首选语言**：金融、医疗、政务等强监管行业，Java 的安全性和稳定性不可替代；DeepSeek V4 的 Java SDK 下载量月增 300%+；企业级 RAG 系统 80% 基于 Java 构建
+1. **企业级 AI 的首选语言**：金融、医疗、政务等强监管行业，Java 的安全性和稳定性不可替代；企业级 RAG 系统 80% 基于 Java 构建
 2. **JVM 成为 AI 推理的新平台**：ONNX Runtime for Java 性能接近 Python；JVM JIT 编译器优化 AI 工作负载；Vector API 加速机器学习计算
 3. **从"写 Java"到"用自然语言描述，AI 生成 Java"**：2026 年 60% 的 Java 代码由 AI 辅助生成；高级 Java 工程师角色转变为"架构设计 + AI 协同 + 代码审查"
 
@@ -270,5 +270,4 @@ graph TD
 
 **注解说明**：杨晓峰 2018 年的洞见——"Java 的竞争力在于生态和程序员"——在 2026 年不仅没有过时，反而更加凸显。新的叙事是：Java 的护城河，从"1200 万程序员 + 海量类库"，演变为"1500 万+ 会使用 AI 的 Java 开发者 + AI 增强的生态系统 + 企业级 AI 应用的首选平台"。
 
-*注解生成时间：2026年6月 | 基于2026年最新技术动态更新*
 *参考数据来源：Stack Overflow Survey 2026、JetBrains State of Java 2026、GitHub Octoverse 2026*

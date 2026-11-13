@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 组件库局部引入方案：Element-Plus 自动按需解析
 
 ## 概述
 
 上一节靠「消费方全局 `app.use(ElementPlus)`」打通了链路，这一节把第二条路线真正跑通：让组件库内部按需解析并带出自己用到的 Element Plus 组件和样式，从而 Playground 不必再全局安装 Element Plus。本文把「局部使用 Element Plus」拆成作者开发体验和消费方运行体验两层，讲清 `unplugin-auto-import` + `unplugin-vue-components` + `ElementPlusResolver` 的组合、库产物样式如何通过 `exports["./style.css"]` 暴露、`element-plus` 到底该进 `peerDependencies` 还是 `devDependencies`，以及这条路线在体积与升级上的代价。
-
-## 学习目标
-
-- 区分「作者开发期自动按需解析」与「消费方运行期依赖是否 external」这两层不同问题
-- 用 `unplugin-auto-import` + `unplugin-vue-components` + `ElementPlusResolver` 降低手写导入成本
-- 理解库产物带出的 CSS 应通过 `exports["./style.css"]` 暴露，而非自定义非标准字段
-- 根据 external 策略决定 `element-plus` 进入 `peerDependencies` 还是 `devDependencies`
-- 认识局部打包方案的代价：包体积变大、样式耦合更强、升级更被动
-
----
 
 ## 一、「局部使用」要分清两层含义
 
@@ -107,7 +96,7 @@ Vite 官方库模式文档给出的推荐方式是：如果库会额外产出 CS
 
 自动导入 Vue API 和自动解析 Element Plus 组件，不等于可以放弃显式依赖管理——构建链路会帮你少写 import，但不会替你决定架构边界。对 Vue API 这类语法层能力，自动导入对打包边界影响很小；对 Element Plus 这类大体量 UI 依赖，是否开启自动解析会直接影响产物体积、样式分发、external 策略和使用者负担。
 
-这节课真正的结论不是「哪种方案绝对更好」，而是：在组件库从 0 到 1 阶段，先把两条链路都验证一遍，后面才能有依据做取舍。课程最后更推荐 external 掉 Element Plus，这个判断有工程经验支撑——尤其当组件库主要服务同一套 admin 体系内部项目时，external 策略通常更划算。
+本篇真正的结论不是「哪种方案绝对更好」，而是：在组件库从 0 到 1 阶段，先把两条链路都验证一遍，后面才能有依据做取舍。原文更推荐 external 掉 Element Plus，这个判断有工程经验支撑——尤其当组件库主要服务同一套 admin 体系内部项目时，external 策略通常更划算。
 
 ---
 

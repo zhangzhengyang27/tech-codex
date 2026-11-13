@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # State
 
 > State 是 Store 的核心数据，存储应用状态。
@@ -619,11 +618,9 @@ export const useStore = defineStore('store', () => {
 | `store.$subscribe()` | 订阅状态变化 | 所有 Store |
 | `storeToRefs()` | 响应式解构 | 所有 Store |
 
-
 ---
 
 ## Getters
-
 
 > Getters 是 Store 的计算属性，用于派生状态，具有缓存特性。
 

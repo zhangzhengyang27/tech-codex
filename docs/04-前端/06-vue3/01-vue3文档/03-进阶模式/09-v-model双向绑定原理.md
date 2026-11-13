@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # v-model双向绑定原理
 
 ## 前言

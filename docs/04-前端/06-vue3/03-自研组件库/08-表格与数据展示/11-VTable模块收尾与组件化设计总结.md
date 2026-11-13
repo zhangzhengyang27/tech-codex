@@ -6,25 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # VTable 模块收尾与组件化设计总结
 
 ## 概述
 
 这一节不做新的表格能力，而是回头收尾与总结：回顾整个 VTable 模块，真正完成的不是"把官方示例抄完"，而是把官方 el-table 收口成了一个项目自己的 VTable 组件体系。其中最关键的一步是把列定义从模板写法改成 columns 的 JSON 配置；最有工程价值的两个工具函数是事件透传的 forwardEventsUtils 和实例方法透传的 exposeMethodsUtils；VTableColumn 递归组件标志着列结构从单层渲染升级到树形渲染。另外提醒：TSX 不是必须路线、深层树结构可保留 provide/inject、AI 适合生成重复类型但必须人工复核、当前阶段继续基于 el-table 打磨而非仓促切换虚拟化表格。
-
-## 学习目标
-
-- 认识这一轮抽象的本质是把 el-table 收口成项目统一的 VTable 体系
-- 理解 columns JSON 配置化是整个表格封装最关键的一步
-- 明白 TSX 只是高级列渲染的一种表达形式，复杂时可回到 h 或独立组件
-- 记住 forwardEventsUtils 与 exposeMethodsUtils 是两个最有工程价值的工具沉淀
-- 理解 VTableColumn 递归组件标志列结构进入树形渲染阶段
-- 知道 provide/inject 是深层树结构透传时值得保留的可选路线
-- 用 AI 加速重复类型与默认结构生成，但关键语义必须人工复核
-- 判断当前阶段继续基于 el-table 比仓促切虚拟化表格更稳妥
-
----
 
 ## 一、把 el-table 收口成项目自己的 VTable 体系
 

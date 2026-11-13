@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Element-Plus 样式外部化与 CDN 样式注入
 
 ## 概述
 
 打包优化不能只盯 JS，CSS 也可能是体积大户。本节发现 `index.css` 比主入口 JS 还大，主体来自 `element-plus` 样式；接着说明 `vite-plugin-cdn2` 只 external JS、不会自动处理主入口手动导入的 CSS，于是用 `import.meta.env.MODE` 配合动态 `import()` 按环境拆分入口样式，并在生产环境 HTML 中注入对应的 CDN 样式，最终把入口资源导入策略与 CDN 注入策略连成闭环。
-
-## 学习目标
-
-- 意识到 CSS 体积同样是构建优化重点，能从 `dist/assets` 判断样式来源。
-- 理解 `vite-plugin-cdn2` 只解决 JS external，主入口静态样式导入仍需单独处理。
-- 能用 `import.meta.env.MODE` + 动态 `import()` 实现“开发导入、生产不打包”的样式策略。
-- 会为 CDN external 模块补充 `css` 配置，在生成 HTML 注入对应样式链接。
-- 养成“先手动验证 CDN 资源可访问，再写进配置”的习惯，并验证体积闭环。
-
----
 
 ## 一、CSS 也可能是体积大户
 

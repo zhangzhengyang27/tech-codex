@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 单文件组件与Vite
 
 > 单文件组件 (Single-File Component，简称 SFC) 是 Vue 的标志性特性，将模板、脚本和样式封装在一个 `.vue` 文件中。
@@ -876,11 +875,9 @@ emit('item-click', item)
 - [SFC 语法规范](https://vuejs.org/api/sfc-spec.html)
 - [script setup RFC](https://github.com/vuejs/rfcs/blob/master/active-rfcs/0040-script-setup.md)
 
-
 ---
 
 ## Vite 构建工具深度配置
-
 
 > Vite 是 Vue 3 官方推荐的下一代前端构建工具，提供极速的开发体验和优化的生产构建。
 

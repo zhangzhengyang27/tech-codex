@@ -8,13 +8,6 @@ tags: [React, 基础概念]
 
 # React 19 新特性概览
 
-## 学习目标
-
-- 掌握 `use` Hook 读取 Promise 与 Context 的用法与限制
-- 掌握 Actions 体系：`useActionState`、`useOptimistic`、`useFormStatus`
-- 理解 Server Components 在 React 19 中的增强与边界
-- 了解原生文档元数据（`<title>`/`<meta>`/`<link>` 自动提升到 head）
-
 ## 为什么需要 React 19
 
 React 18 引入了并发特性（并发渲染、`useTransition`、`useDeferredValue`、自动批量更新），但数据获取、表单提交、服务端渲染三者仍依赖大量第三方约定。React 19 的核心目标是**把数据获取与变更变成一等公民**：
@@ -64,7 +57,7 @@ function Submit() {
 
 ## Server Components 增强
 
-React 19 正式将 Server Components 作为框架级能力：服务端组件默认不携带客户端 JS，可直接 `async` 并 `await` 数据；`use server` 标记的函数可在服务端执行并被客户端调用（即 Server Actions）。注意 RSC 的**边界**由打包器/框架决定（`'use client'` / `'use server'` 指令），React 本身只定义模型。关于 RSC 的序列化协议与流式渲染原理，详见 [19-React Server Components 原理](../02-原理与源码/17-ReactServerComponents原理)。
+React 19 正式将 Server Components 作为框架级能力：服务端组件默认不携带客户端 JS，可直接 `async` 并 `await` 数据；`use server` 标记的函数可在服务端执行并被客户端调用（即 Server Actions）。注意 RSC 的**边界**由打包器/框架决定（`'use client'` / `'use server'` 指令），React 本身只定义模型。关于 RSC 的序列化协议与流式渲染原理，详见 [17-ReactServerComponents原理](../02-原理与源码/17-ReactServerComponents原理)。
 
 ## 文档元数据
 

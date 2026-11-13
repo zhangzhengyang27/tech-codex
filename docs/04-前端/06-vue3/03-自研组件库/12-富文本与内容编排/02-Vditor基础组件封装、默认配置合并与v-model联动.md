@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Vditor 基础组件封装、默认配置合并与 v-model 联动
 
 ## 概述
 
 选定 Vditor 后，下一步是把这个第三方实例型编辑器封装成 Vue 组件。Vditor 本质上和 ECharts、地图类库一样，是"DOM 容器 + 第三方实例"模式：模板留一个挂载节点，在 `onMounted()` 里手动 `new Vditor()`，在 `onBeforeUnmount()` 销毁实例。本文覆盖几个工程要点：用官方成品样式免 Less、挂载时 `cache.id` 的硬性要求、`IOptions` 类型与受控 props、`defaultOptions + Object.assign` 合并大配置对象、`v-model` 双向绑定且不破坏用户回调、外部回写时的差异判断，以及语言切换这类实例重建场景的正确恢复时机。
-
-## 学习目标
-
-- 理解 Vditor 在 Vue 中的封装本质是"容器 + 实例 + 生命周期管理"。
-- 掌握用 `vditor/dist/index.css` 免 Less 接入，以及 `HTMLElement` 挂载时 `cache.id` 必填的约束。
-- 能为组件导出一层受控 props 类型，而不是直接依赖包内部 `IOptions` 声明。
-- 用 `defaultOptions + Object.assign` 合并大配置对象，而不是把所有默认值硬塞进 `withDefaults()`。
-- 实现 `v-model` 双向绑定：内部同步内容且不吞掉用户 `after`/`input` 回调；外部回写做差异判断；语言切换在 `after` 恢复内容并清空历史栈。
-
----
 
 ## 一、Vue 接入方式：容器 + 实例 + 生命周期
 

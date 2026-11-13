@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # GitHub Actions 实操配置：前置准备与构建测试
 
 ## 概述
 
 上一节建立了 CI/CD 的认知框架，这一节落地到具体动作。我们会从推送代码前的本地准备讲起，依次覆盖 Personal Access Token 的申请与 Secrets 配置、代码推送到远程、工作流文件的修改、构建流程的执行，以及最后如何把草稿 Release 发布出去。目标是在你第一次跑通自动化发布前，知道每一步在防什么坑。
-
-## 学习目标
-
-- 完成推送前的本地准备工作：构建测试、锁定依赖、确认 Node 版本
-- 申请 GitHub Personal Access Token 并配置到仓库 Secrets
-- 正确推送代码并管理远程仓库与分支
-- 修改 release.yml：加入手动触发、替换 Token 变量、补充 release-notes
-- 理解准备阶段与构建阶段的分工
-- 手动编辑并发布 Draft Release
-
----
 
 ## 一、推送前的本地准备
 

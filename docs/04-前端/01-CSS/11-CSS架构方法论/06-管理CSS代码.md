@@ -324,8 +324,6 @@ styled-components 只是 CSS in JavaScript 的一种解决方案，其他解决�
 
 对于样式文件的管理，推荐使用 7-1 模式简化后的目录结构，包括 pages/、components/、abstracts/、base/ 4 个目录。对于样式命名，可以采用 BEM 来命名组件、面向属性的方式来命名公共样式。
 
-最后留一道思考题：说说你在项目中是如何管理样式代码的？
-
 ---
 
 ```mermaid

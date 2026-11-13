@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 响应式-computed与依赖注入
 
 ## 前言
@@ -374,7 +373,6 @@ Vue 3.5 对 `computed` 做了以下重要优化：
 3. **ReactiveEffect 内部优化**：`computed` 底层的 `ReactiveEffect` 也受益于 Vue 3.5 的依赖追踪优化，减少了全量清理 deps 的性能开销。
 
 理解了本小节关于 `computed` 函数的介绍后，计算属性相对于普通函数的不同之处的原理已经清晰，在以后的开发中，可以更合理地使用计算属性。
-
 
 ---
 

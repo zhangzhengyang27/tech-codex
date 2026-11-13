@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Dropdown 通用封装与 LocaleSelect 泛型改造
 
 ## 概述
@@ -14,19 +13,6 @@ tags: [Vue, 组件化, 响应式, 路由]
 这一节把服务于 LocaleSelect 的下拉结构进一步抽象成通用 Dropdown 容器：接收任意类型列表、渲染菜单项、支持激活态高亮、对外回调 item + index、并通过 trigger / item 插槽把显示层交给调用方。核心是从「写死 LocaleItem」升级到泛型建模，从单纯事件同步升级到受控状态设计，并明确 Vue 3.3 泛型 SFC 与 Vue 3.4 defineModel 的版本边界。
 
 注意本节不涉及路由跳转、i18n 实例创建或语言包加载，这些都属于 LocaleSelect 业务层的职责；Dropdown 只负责把「点击某个菜单项」这一交互原语稳定地交付出去。抽象得越早，后续接入主题切换、通知中心、用户菜单等同类结构时的复用成本就越低，否则每个业务都要重复写一遍展开收起、激活高亮与点击回调。
-
-## 学习目标
-
-- 从业务组件里抽离「通用 Dropdown 容器」，保留结构与交互、下沉业务包装
-- 用泛型 T 描述菜单项的「可选能力」，而不是退化成 any[]
-- 让通用 Dropdown 回调 item + index，业务组件再决定是否转成 string
-- 用 props + watch 或 defineModel 管理受控激活索引 currentIndex
-- 开放 trigger 与 item 两个插槽，并区分 Vue 3.3 泛型与 3.4 defineModel
-- 明确 Dropdown 内部只交付交互原语，不预判业务值的真正语义
-- 在泛型约束里为「未知字段」保留扩展空间，避免业务被迫套模板
-- 判断哪些场景值得做通用封装、哪些场景直接写业务组件更省事
-
----
 
 ## 一、抽离的是通用 Dropdown 容器
 

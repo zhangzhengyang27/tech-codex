@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # KeepAlive 与 Transition 联动的缓存失效、Key 策略与动画切换坑点
 
 ## 概述
 
 这一节处理页面切换动画接入 `KeepAlive` 之后暴露出来的三个联动坑点：`key` 层级放错会破坏缓存边界、动态组件 `key` 的粒度决定缓存命中、全局动画切换后旧缓存页面延迟生效。核心结论是缓存边界必须放在 `RouterView` 插槽中的动态组件层，而不是 `RouterView` 自身；`meta.keepAlive` 只是业务标记，真正命中还依赖组件 `name` 与 `include`；动画配置热切换与缓存树复用之间存在天然的“延迟生效”权衡。
-
-## 学习目标
-
-- 掌握 `KeepAlive` 与 `Transition` 的标准组合：缓存路由组件而非 `RouterView` 容器。
-- 理解 `key` 层级的关键性：绑到 `RouterView` 会重建缓存边界，导致“动画有了缓存没了”。
-- 设计动态组件 `key` 的缓存粒度（`path` / `fullPath` / `name + path`），而非越细越好。
-- 区分 `meta.keepAlive` 开关与组件 `name` 匹配；理解 Vue 3.2.34+ 自动推断 `name` 的边界。
-- 认识缓存页面“动画延迟生效”的取舍，以及给 `KeepAlive` 绑动画 `key` 的折中代价。
-
----
 
 ## 一、动画与缓存可共存，但缓存目标是路由组件
 

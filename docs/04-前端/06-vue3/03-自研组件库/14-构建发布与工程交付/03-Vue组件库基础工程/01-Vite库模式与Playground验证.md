@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Vite 库模式与 Playground 验证
 
 ## 概述
@@ -14,16 +13,6 @@ tags: [Vue, 组件化, 响应式, 路由]
 把现有业务项目里的 `components` 直接打包成组件库，技术上可行，但不建议在已经很复杂的业务工程里硬改。一个真实业务项目的 `vite.config.ts` 往往同时承担 Web 应用、桌面端、环境变量分支等多种构建职责，再把组件库构建逻辑塞进去只会让配置越来越难维护。更合理的路径是先独立出一个轻量、纯粹的组件库基础工程，再在这个工程里学习 Vite Library Mode、导出方式和打包流程。
 
 本文聚焦三件事：如何用 Vite Library Mode 把 `.vue` 组件构建成可被其他项目 `import` 的库产物、如何建立清晰的库入口、以及如何用一个 Playground 项目验证库真的能被安装、导入和渲染。
-
-## 学习目标
-
-- 理解为什么组件库应该放在独立的轻量工程里，而不是业务项目里顺手切一刀
-- 掌握 Vite Library Mode 的核心配置：`build.lib`、`formats`、`rollupOptions.external`
-- 区分应用入口 `main.ts` 与库入口 `src/index.ts` 的职责差异
-- 把 `vue` 设为 `peerDependencies` 与 `external`，避免使用方出现重复 Vue
-- 用 Playground（workspace / `file:` / link）模拟真实消费，而不是只看 `build` 是否成功
-
----
 
 ## 一、为什么需要独立的组件库工程
 

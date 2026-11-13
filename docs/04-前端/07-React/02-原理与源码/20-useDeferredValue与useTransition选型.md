@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # useDeferredValue 与 useTransition 选型
 
-## 学习目标
-
-- 理解两者「延迟非紧急工作」的共同目标
-- 区分「值延迟」与「动作包裹」的差异
-- 掌握实际选型标准
-
 ## 共同点
 
 二者都基于并发渲染，把**非紧急的渲染**标记为低优先级，让输入框、点击等**紧急更新**先响应，避免卡顿：
@@ -67,5 +61,4 @@ function App() {
 
 ## 继续阅读
 
-- 上一篇：[21-Server Actions 原理](19-ServerActions原理)
-- 下一篇：[00-Ref 的实现原理](00-Ref的实现原理)
+- 上一篇：[19-ServerActions原理](19-ServerActions原理)

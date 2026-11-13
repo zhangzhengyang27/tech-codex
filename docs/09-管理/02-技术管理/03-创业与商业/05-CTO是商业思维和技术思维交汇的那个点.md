@@ -84,11 +84,11 @@ graph TB
 
 | 效率维度 | 传统方法 | AI增强方法 | 典型工具 |
 |---------|---------|-----------|---------|
-| **编码效率** | 代码规范、组件复用 | AI代码生成（40%代码由AI生成） | GPT-5.5、Cursor、Windsurf |
+| **编码效率** | 代码规范、组件复用 | AI代码生成（40%代码由AI生成） | 新一代 AI 编程工具、Cursor、Windsurf |
 | **测试效率** | 自动化测试框架 | AI自动生成测试用例 | GitHub Copilot Testing |
 | **运维效率** | 监控告警、自动化脚本 | AIOps智能运维（预测性维护） | Datadog AI、PagerDuty AI |
 | **文档效率** | 模板化文档 | AI自动生成文档 | Notion AI、ChatGPT |
-| **客服效率** | FAQ机器人 | AI智能客服（解决率80%+） | DeepSeek V4定制、Intercom AI |
+| **客服效率** | FAQ机器人 | AI智能客服（解决率80%+） | 新一代大模型定制、Intercom AI |
 | **数据分析** | BI工具、手动分析 | AI自然语言查询数据分析 | ChatBI、Hex AI |
 
 关键原则更新：AI不是省人，而是释放人的创造力去做更高价值的事。某公司引入Agentic Coding后开发效率提升300%，但没有裁员，而是让工程师转型做AI Prompt Engineer和AI Workflow Designer，新产品上线速度从6个月缩短到6周。
@@ -226,7 +226,7 @@ graph LR
 ### 4.3 持续行动：建立个人的"AI商业敏感度"
 
 每周花2小时关注：
-- AI领域的最新突破（GPT-5.5、DeepSeek V4等）
+- AI领域的最新突破（新一代大模型等）
 - 同行业的AI应用案例
 - AI监管政策的变化
 - AI人才市场的动向

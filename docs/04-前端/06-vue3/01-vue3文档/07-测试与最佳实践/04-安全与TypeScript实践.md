@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 安全与TypeScript实践
 
 > 前端安全是应用开发的重要环节。本章节涵盖 Vue 3 应用中常见的安全风险及其防护措施。
@@ -609,11 +608,9 @@ jobs:
 - [MDN CSP 指南](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
 - [DOMPurify 文档](https://github.com/cure53/DOMPurify)
 
-
 ---
 
 ## TypeScript 最佳实践
-
 
 > Vue 3 与 TypeScript 的最佳结合方式。本章节涵盖类型定义、泛型组件、类型工具使用等内容。
 

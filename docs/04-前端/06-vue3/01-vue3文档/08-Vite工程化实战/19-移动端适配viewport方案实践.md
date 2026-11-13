@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 移动端适配 viewport 方案实践
 
 ## 概述
 
 viewport 方案（vw/vh）是现代移动端适配的主流选择，通过 `postcss-px-to-viewport` 将设计稿 px 自动转换为 vw 单位，无需 JavaScript 干预。本文讲解 viewport 原理、PostCSS 插件配置及与 REM 方案的对比。
-
-## 学习目标
-
-- 理解 viewport 单位（vw/vh/vmin/vmax）的含义
-- 掌握 postcss-px-to-viewport 的配置与使用
-- 学会处理转换排除和第三方库兼容问题
-
----
 
 ## 一、Viewport 单位
 

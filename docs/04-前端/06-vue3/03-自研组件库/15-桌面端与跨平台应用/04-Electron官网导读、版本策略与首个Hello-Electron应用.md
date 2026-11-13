@@ -6,24 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 官网导读、版本策略与首个 Hello-Electron 应用
 
 ## 概述
 
 这一节把 Electron 从“听说过”推进到“真正跑起来”。先去官网读懂它的定位与阅读路线，再讲清运行时底座（Chromium + Node.js）、版本支持窗口、本地 Node 与运行时 Node 的区别，最后落地一个最小可运行的 Hello Electron 应用，并解决国内安装慢这个最现实的问题。它承接上一节“为什么选 Electron”，是桌面端工程实践的第一块砖。
-
-## 学习目标
-
-- 能复述 Electron 的核心定位：用 JavaScript / HTML / CSS 构建跨平台桌面应用，聚焦桌面端而非移动端。
-- 理解 Electron 的运行时底座是 Chromium + Node.js，所以它是一个完整运行时，而不只是“网页套壳”。
-- 掌握版本策略：大版本迭代很快，但真正该关注的是官方支持窗口（最近 3 个稳定大版本），而非盲目追新。
-- 区分本地 Node.js 与 Electron 内置 Node.js：前者用于开发与构建，后者才是应用运行时真正执行代码的环境。
-- 建立“先 Tutorial、再 Releases、最后查 API”的官网阅读顺序。
-- 能独立跑起一个最小 Hello Electron 应用，并理解主进程创建窗口、加载本地 HTML 这条最小闭环。
-- 知道国内安装慢的本质是下载 Electron 二进制，掌握换源与配置镜像两类加速思路。
-
----
 
 ## 一、先读懂 Electron 的官网定位
 

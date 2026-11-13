@@ -19,7 +19,7 @@ CSS 动画和 WAAPI 具有不同的特性和用法，因此在选择动画方法
   
 
 
-在这节课中，我将与大家一起探讨 CSS 动画和 WAAPI 两种方法的优势、劣势以及在不同场景下选择最佳动画方法的考虑因素。通过深入了解两者的利弊，Web 开发人员才能更好的决定在特定的情境下使用哪种动画技术，以实现最佳的用户体验。
+在本文中，我将与大家一起探讨 CSS 动画和 WAAPI 两种方法的优势、劣势以及在不同场景下选择最佳动画方法的考虑因素。通过深入了解两者的利弊，Web 开发人员才能更好的决定在特定的情境下使用哪种动画技术，以实现最佳的用户体验。
 
   
 
@@ -32,7 +32,7 @@ CSS 动画和 WAAPI 具有不同的特性和用法，因此在选择动画方法
   
 
 
-通常情况之下，CSS 动画指的是过渡动画（`transition`）和关键帧动画（`animation`），但在这节课中，我们所说的 CSS 动画主要以关键帧动画为主，即使用 CSS 的 `@keyframes` 定义的关键帧动画，并以 `animation` 属性设置动画相关参数。而 WAAPI 则是通过一系列 JavaScript API 定义的动画。从这一点而言，CSS 动画与 WAAPI 最大的差异就是：**CSS 动画是一种声明式动画；WAAPI 是一种命令式动画**。
+通常情况之下，CSS 动画指的是过渡动画（`transition`）和关键帧动画（`animation`），但在本文中，我们所说的 CSS 动画主要以关键帧动画为主，即使用 CSS 的 `@keyframes` 定义的关键帧动画，并以 `animation` 属性设置动画相关参数。而 WAAPI 则是通过一系列 JavaScript API 定义的动画。从这一点而言，CSS 动画与 WAAPI 最大的差异就是：**CSS 动画是一种声明式动画；WAAPI 是一种命令式动画**。
 
   
 
@@ -118,7 +118,7 @@ const options = {
   
 
 
-> 注意，在 WAAPI 中还可以以对象形式来创建 `keyframes` ，有关于这方面详细介绍，请移步阅读上一节课《掌握 Web Animations API 的精髓》中关于 `keyframes` 定义的内容。
+> 注意，在 WAAPI 中还可以以对象形式来创建 `keyframes` ，有关于这方面详细介绍，请移步阅读上一篇《掌握 Web Animations API 的精髓》中关于 `keyframes` 定义的内容。
 
   
 
@@ -219,7 +219,7 @@ const options = {
   
 
 
-> 注意，上节课对 WAAPI 的 endDelay 和 iterationStart 有过详细的阐述，这里就不做再重复性阐述。
+> 注意，上一篇《掌握 Web Animations API 的精髓》对 WAAPI 的 endDelay 和 iterationStart 有过详细的阐述，这里就不做再重复性阐述。
 
   
 
@@ -1166,7 +1166,7 @@ buttonHandler.addEventListener("click", (etv) => {
   
 
 
-没有接触过 CSS 的 `linear()` 缓动函数的同学，一定会好奇，`bounce()` 函数是如何转换成 `linear()` 函数的。正如《使用 linear() 函数创建令人惊叹的动画曲线》课程中所介绍的，我们可以通过 [@Jake Archibald](https://twitter.com/jaffathecake) 创建了一个[在线生成器](https://linear-easing-generator.netlify.app/)，将 `bounce()` 函数或其他 JavaScript 版本的缓动函数转换为 `linear()` 函数：
+没有接触过 CSS 的 `linear()` 缓动函数的读者，一定会好奇，`bounce()` 函数是如何转换成 `linear()` 函数的。正如《使用 linear() 函数创建令人惊叹的动画曲线》一文中所介绍的，我们可以通过 [@Jake Archibald](https://twitter.com/jaffathecake) 创建了一个[在线生成器](https://linear-easing-generator.netlify.app/)，将 `bounce()` 函数或其他 JavaScript 版本的缓动函数转换为 `linear()` 函数：
 
   
 

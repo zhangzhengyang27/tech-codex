@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 顶部 Tabs 持久化、切换联动与样式优化
 
 ## 概述
 
 这一节把顶部 Tabs 从“能显示”推进到“能真正使用”。核心补齐三件事：用 `pinia-plugin-persistedstate` 让 Tabs 刷新后仍在；把 `tab-click` 从基础组件透传到外层，通过命名路由实现点击切换；让 `el-tabs` 的 `v-model` 与 `tabsStore.current` 成为同一份状态源，保证激活态、路由、store 三处一致。最后对 Tabs 默认样式做结构化收口。关闭 Tabs 与删除策略留到下一节。
-
-## 学习目标
-
-- 掌握 `pinia-plugin-persistedstate` 的最小接入：注册插件 + store 开 `persist`。
-- 理解 `persist: true` 是把 store 交给插件托管生命周期，而非普通布尔字段。
-- 封装基础组件后必须透传 `tab-click` 等原生事件，否则外层交互接不起来。
-- 用 `immediate: true` 补齐首屏 `current`，并区分持久化“数据回来”与“激活态对齐路由”。
-- 用 `defineModel()` 统一 `v-model` / `current` / `paneName` 为同一套 `route.name` 标识。
-
----
 
 ## 一、刷新丢失是内存态问题，必须接持久化层
 

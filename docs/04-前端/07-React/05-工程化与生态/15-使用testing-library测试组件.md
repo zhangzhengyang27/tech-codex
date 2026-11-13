@@ -8,12 +8,6 @@ tags: [React, 工程化与生态]
 
 # 使用 @testing-library/react 测试组件
 
-## 学习目标
-
-- 掌握 RTL 的查询优先级（role > label > text > testid）
-- 理解 `userEvent` 与 `fireEvent` 的区别
-- 掌握异步渲染（Suspense / 请求）的测试写法
-
 ## 核心原则：测试行为而非实现
 
 RTL 反对查询组件内部 state，鼓励用「用户可见的方式」查询：

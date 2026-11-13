@@ -395,7 +395,7 @@ const animation = lottieWeb.loadAnimation({
   
 
 
-刚才也提到了，如果要获得符合自己需求的动画效果的 JSON 数据， 那就需要使用相关的设计软件来设计动画，例如 [AE](https://www.adobe.com/products/aftereffects.html)（Adobe After Effects）。如何使用 AE 来设计动画效果相关的内容已经超出这节课的范畴，如果你感兴趣的话，可以在网上搜索相关的教程，或者[阅读 AE 软件所提供的操作文档](https://helpx.adobe.com/support/after-effects.html)。
+刚才也提到了，如果要获得符合自己需求的动画效果的 JSON 数据， 那就需要使用相关的设计软件来设计动画，例如 [AE](https://www.adobe.com/products/aftereffects.html)（Adobe After Effects）。如何使用 AE 来设计动画效果相关的内容已经超出本文的范畴，如果你感兴趣的话，可以在网上搜索相关的教程，或者[阅读 AE 软件所提供的操作文档](https://helpx.adobe.com/support/after-effects.html)。
 
   
 
@@ -565,4 +565,4 @@ const animation = lottieWeb.loadAnimation({
   
 
 
-这节课主要和大家一起探讨了 Web 开发动画存在的一些痛点。以此为着手点，探讨了 Web 动画开发的流程差异，并且深入探讨了当下开发 Web 动画的主流方式。即从设计软件中设计动画，然后直接导出所需的 Web 动画。为了让大家能更直观地感受，还专门向大家演示了如何基于 Lottie-web ，将 AE 设计的动画转换成在 Web 动画。
+本文主要和大家一起探讨了 Web 开发动画存在的一些痛点。以此为着手点，探讨了 Web 动画开发的流程差异，并且深入探讨了当下开发 Web 动画的主流方式。即从设计软件中设计动画，然后直接导出所需的 Web 动画。为了让大家能更直观地感受，还专门向大家演示了如何基于 Lottie-web ，将 AE 设计的动画转换成在 Web 动画。

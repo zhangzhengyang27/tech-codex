@@ -8,12 +8,6 @@ tags: [React, 状态管理与路由]
 
 # React-Redux
 
-## 学习目标
-
-- 掌握 React-Redux用法
-- 掌握 用法简介
-- 掌握 实践一：React-Redux实现状态共享
-
 ## React-Redux用法
 
 > ⚠️ **版本说明**：本文以 `connect` 高阶组件为主线讲解 React-Redux 的工作原理。现代 React-Redux（v8/v9）与 Redux 官方更推荐 **Redux Toolkit（`createSlice` / `configureStore`）+ Hooks 写法（`useSelector` / `useDispatch`）**，`connect` 仍然受支持但属于旧式写法，适合用于理解原理。
@@ -124,7 +118,6 @@ export default function Root(){
 ````js
 import { connect } from 'react-redux'
 
-
 class Index extends React.Component {
     componentDidMount() { }
     render() {
@@ -228,7 +221,6 @@ function Provider({ store, context, children }) {
 * 2 subscription 可以理解为订阅器，在 React-redux 中一方面用来订阅来自 state 变化，另一方面通知对应的组件更新。在 Provider 中的订阅器 subscription 为根订阅器，
 * 3 在 Provider 的 useEffect 中，进行真正的绑定订阅功能，其原理内部调用了 store.subscribe ，只有根订阅器才会触发store.subscribe，至于为什么，马上就会讲到。
 
-
 ### 第二部分： Subscription订阅器
 
 > react-redux/src/utils/Subscription.js
@@ -271,7 +263,6 @@ export default class Subscription {
 **层层订阅**：React-Redux 采用了层层订阅的思想，上述内容讲到 Provider 里面有一个 Subscription ，提前透露一下，每一个用 connect 包装的组件，内部也有一个 Subscription ，而且这些订阅器一层层建立起关联，Provider中的订阅器是最根部的订阅器，可以通过 trySubscribe 和 addNestedSub 方法可以看到。还有一个注意的点就是，如果父组件是一个 connect ，子孙组件也有 connect ，那么父子 connect 的 Subscription 也会建立起父子关系。
 
 **上订下发**：在调用 trySubscribe 的时候，能够看到订阅器会和上一级的订阅器通过 addNestedSub 建立起关联，当 store 中 state 发生改变，会触发 store.subscribe ，但是只会通知给 Provider 中的根Subscription，根 Subscription 也不会直接派发更新，而是会下发给子代订阅器（ connect 中的 Subscription ），再由子代订阅器，决定是否更新组件，层层下发。
-
 
 ## 面试要点
 
@@ -351,7 +342,6 @@ connect 的逻辑还是比较复杂的，我总结一下核心流程。
 * 2 上述讲到过，每一个 connect 都会产生一个新的 Subscription ，和父级订阅器建立起关联，这样父级会触发子代的 Subscription 来实现逐层的状态派发。
 * 3 有一点很重要，就是 Subscription 通知的是 checkForUpdates 函数，checkForUpdates 会形成新的 props ，与之前缓存的 props 进行浅比较，如果不想等，那么说明 state 已经变化了，直接触发一个 useReducer 来更新组件，上述代码片段中，我用 useState 代替 useReducer 了，如果相等，那么当前组件不需要更新，直接通知子代 Subscription ，检查子代 Subscription 是否更新，完成整个流程。
 
-
 ## 实现异步
 
 基于 redux 异步的库有很多，最简单的 `redux-thunk` ，代码量少，只有几行，其中大量的逻辑需要开发者实现，还有比较复杂的 `redux-saga` ，基于 `generator` 实现，用起来稍微繁琐。（在使用 Redux Toolkit 的现代项目中，推荐直接使用其内置的 `createAsyncThunk` 处理异步逻辑。）
@@ -365,8 +355,6 @@ connect 的逻辑还是比较复杂的，我总结一下核心流程。
 * 1 Redux 的基本概念和常用 API 。
 * 2 react-redux 基本用法，以及两种常用场景的实践 demo 。
 * 3 react-redux 原理实现。
-
-下一节将学习 React 状态管理的另外一种方式 Mobx 。
 
 ## 继续阅读
 

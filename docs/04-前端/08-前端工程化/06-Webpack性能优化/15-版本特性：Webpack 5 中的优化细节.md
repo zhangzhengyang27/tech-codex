@@ -5,7 +5,7 @@ category: 前端工程化
 ---
 
 # Webpack 5 中的效率优化点
-上节课讨论了 Webpack 4 中增量构建的原理，也分析了为什么在生产环境下难以使用增量构建，其中最主要的一点是 Webpack 4 中没有基于文件系统的持久化缓存。这个问题在 Webpack 5 中得到了解决，本课来看 Webpack 5 有哪些新的功能特性。
+上一篇讨论了 Webpack 4 中增量构建的原理，也分析了为什么在生产环境下难以使用增量构建，其中最主要的一点是 Webpack 4 中没有基于文件系统的持久化缓存。这个问题在 Webpack 5 中得到了解决，本文来看 Webpack 5 有哪些新的功能特性。
 
 ## Webpack 5 中的效率优化点
 
@@ -21,7 +21,7 @@ Webpack 5 中的变化有很多，完整的功能变更清单参见[官方文档
 
 ### 持久化缓存的示例
 
-如下面的代码和图片所示：
+如下面的代码所示：
 
 ```javascript
 ./webpack.cache.config.js
@@ -38,10 +38,6 @@ module.exports = {
   ...
 }
 ```
-
-![](/frontend-eng-images/2d335ecf6f54.png)
-![](/frontend-eng-images/dd2d9fd6e8f3.png)
-![](/frontend-eng-images/42ef5fe14ef5.png)
 
 可以看到，初次构建完整花费了 3282ms，而在不修改代码进行再次构建的情况下，只花费了不到原先时间的 1/10。在修改代码文件的情况下也只花费了 628ms，多花费的时间体现在构建被修改的文件的编译上，这就实现了前文所寻求的**生产环境下的增量构建**。
 
@@ -164,10 +160,7 @@ console.log(a)
 
 ## Logs
 
-第三个要提到的 Webpack 5 的效率优化点是，它增加了许多内部处理过程的日志，可以通过 stats.logging 来访问。下面两张图是使用相同配置*stats: {logging: "verbose"}*的情况下，Webpack 4 和 Webpack 5 构建输出的日志：
-
-![](/frontend-eng-images/754662ae88e1.png)
-![](/frontend-eng-images/9c5ac191b5f5.png)
+第三个要提到的 Webpack 5 的效率优化点是，它增加了许多内部处理过程的日志，可以通过 stats.logging 来访问。在使用相同配置*stats: {logging: "verbose"}*的情况下，Webpack 4 和 Webpack 5 构建输出的日志存在明显差异：
 
 可以看到，Webpack 5 构建输出的日志要丰富完整得多。通过这些日志能够很好地反映构建各阶段的处理过程、耗费时间，以及缓存使用的情况。在大多数情况下，它已经能够代替之前人工编写的统计插件功能。
 

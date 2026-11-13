@@ -10,12 +10,6 @@ tags: [React, 状态管理与路由]
 
 > ⚠️ **版本说明**：本文基于 React Router **v5** 讲解路由实现原理与机制。React Router v6/v7（2026 年主流）已重构 API：`Switch` 改为 `Routes`、`component`/`render`/`children` 函数统一为 `element`、`useHistory` 改为 `useNavigate`、`Redirect` 改为 `Navigate`、`exact` 与 `withRouter` 已移除，并推荐 `createBrowserRouter` 的数据路由写法。迁移对照见文末。
 
-## 学习目标
-
-- 掌握 路由原理
-- 掌握 history ,React-router , React-router-dom 三者关系
-- 掌握 两种路由主要方式
-
 ## 路由原理
 
 单页面路由实现方式，一直是前端面试容易提问的点之一，从路由实现到深入路由原理，都是需要必要掌握的知识，所以有必要先来探讨一下路由原理。
@@ -23,7 +17,6 @@ tags: [React, 状态管理与路由]
 ### 1 history ,React-router , React-router-dom 三者关系
 
 先来梳理一下 History ，React-Router ， React-Router-Dom 三者的关系，这对下面的系统学习很重要。
-
 
 * **history：** history 是整个 React-router 的核心，里面包括两种路由模式下改变路由的方法，和监听路由变化方法等。
 * **react-router：**既然有了 history 路由监听/改变的核心，那么需要**调度组件**负责派发这些路由的更新，也需要**容器组件**通过路由更新，来渲染视图。所以说 React-router 在 history 核心基础上，增加了 Router ，Switch ，Route 等组件来处理视图渲染。
@@ -67,7 +60,6 @@ class BrowserRouter extends React.Component {
 }
 ````
 * 通过 createBrowserHistory 创建一个 history 对象，并传递给 Router 组件。
-
 
 ### 3 React路由原理
 
@@ -123,7 +115,6 @@ window.addEventListener('hashchange',function(e){
 })
 ````
 hash 路由模式下，监听路由变化用的是 hashchange 。
-
 
 ## React-Router 基本构成
 
@@ -203,7 +194,6 @@ Route 是整个路由核心部分，它的工作主要就是一个： **匹配�
 export default Index
 ````
 
-
 * path 属性：Route 接受 path 属性，用于匹配正确的路由，渲染组件。
 * 对于渲染组件 Route 可以接受四种方式。
 
@@ -213,7 +203,6 @@ export default Index
 * `render` 形式：Route 组件的 render 属性，可以接受一个渲染函数，函数参数就是路由信息，可以传递给页面组件，还可以混入父组件信息。<br/>
 * `children` 形式：直接作为 children 属性来渲染子组件，但是这样无法直接向子组件传递路由信息，但是可以混入父组件信息。<br/>
 * `renderProps` 形式：可以将 childen 作为渲染函数执行，可以传递路由信息，也可以传递父组件信息。
-
 
 **exact**
 
@@ -260,7 +249,6 @@ function Index(){
 }
 ````
 这样的效果和上述一样，省去了在组件内部手动写 Route ，绑定 path ，component 等属性。
-
 
 #### ③Switch
 Switch 有什么作用呢，假设在组件中像如下这么配置路由：
@@ -520,7 +508,6 @@ export function PermissionRouter(props){
 ````
 * useContext 接受消费权限列表，判断当前页面是否有权限，如果没有权限那么跳转无权限页面。
 
-
 **第三步：注册权限路由和无权限跳转页面**
 
 ````js
@@ -569,8 +556,6 @@ export default function App() {
   return <RouterProvider router={router} />
 }
 ````
-
-下一节将一起研究React-Redux的奥秘。
 
 ## 继续阅读
 

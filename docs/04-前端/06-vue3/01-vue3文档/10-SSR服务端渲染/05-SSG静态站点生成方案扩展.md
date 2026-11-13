@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # SSG 静态站点生成方案扩展
 
 ## 概述
 
 SSG（Static Site Generation）在构建时将所有页面预渲染为静态 HTML，部署到 CDN 即可获得极致访问速度。本文对比 SSG 与 SSR 的差异，并介绍 Vue 生态主流 SSG 工具：VitePress、Hexo、Astro。
-
-## 学习目标
-
-- 理解 SSG 的构建时渲染机制与适用边界
-- 掌握 SSG vs SSR 的选型依据
-- 了解 VitePress 的核心功能与项目搭建
-- 了解 Hexo 和 Astro 的定位与特点
-
----
 
 ## 一、SSG 核心概念
 

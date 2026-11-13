@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # GitHub Actions CI/CD 集成与多平台自动化构建
 
 ## 概述
 
 当应用需要在 Windows、macOS、Linux 三端交付时，靠本地一台机器手动打包很快就会成为瓶颈：环境不一致、签名证书难管理、耗时且容易漏步骤。GitHub Actions 把“拉代码 → 装依赖 → 构建 → 打包 → 发布”固化为可重复的工作流，让每次发布都走同一条受控路径。本节先建立 CI/CD 的整体认知，再给出一个可直接参照的 release 工作流骨架，并顺势引出自动更新所需的发布链路。
-
-## 学习目标
-
-- 理解 CI/CD 对桌面端多平台交付的价值
-- 掌握 GitHub Actions 的四个核心概念：Workflow、Job、Step、Action
-- 能读懂并改写一份 release.yml 模板
-- 区分不同触发方式：push、pull_request、workflow_dispatch、schedule
-- 理清构建流程的多个阶段与 Draft 草稿机制
-- 理解 electron-updater 自动更新对发布链路的前置要求
-
----
 
 ## 一、为什么桌面端需要 CI/CD
 

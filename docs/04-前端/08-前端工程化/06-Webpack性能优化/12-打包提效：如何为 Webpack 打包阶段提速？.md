@@ -4,15 +4,14 @@ category: 前端工程化
 
 ---
 
-
 # 打包提效：如何为 Webpack 打包阶段提速？
-上节课介绍了 Webpack 构建流程中第一阶段，也就是编译模块阶段的提效方案，这些方案可以归为三个不同的优化方向。可以对照分析项目里用到了其中的哪些方案。
+上一篇介绍了 Webpack 构建流程中第一阶段，也就是编译模块阶段的提效方案，这些方案可以归为三个不同的优化方向。可以对照分析项目里用到了其中的哪些方案。
 
 本课讨论 Webpack 构建流程中第二阶段，也就是从代码优化到生成产物阶段的效率提升问题（本课的示例代码参照 [12_optimize_efficiency](https://github.com/fe-efficiency/lessons_fe_efficiency/tree/master/12_optimize_efficiency)）。
 
 ## 准备分析工具
 
-同上节课一样，在分析优化阶段的提效方案之前，还是需要先准备一个分析统计时间的工具。但不同的是，在优化阶段对应的生命周期 Hooks 有很多（参照《流程分解：Webpack 的完整构建流程》中的内容）。因此在编写统计插件时，要将需要统计的 Hooks 划分为不同区间，如下面的代码所示：
+同上一篇一样，在分析优化阶段的提效方案之前，还是需要先准备一个分析统计时间的工具。但不同的是，在优化阶段对应的生命周期 Hooks 有很多（参照《流程分解：Webpack 的完整构建流程》中的内容）。因此在编写统计插件时，要将需要统计的 Hooks 划分为不同区间，如下面的代码所示：
 
 ```javascript
 WebpackTimingPlugin.js:
@@ -38,17 +37,11 @@ compilation.hooks[end].tap(PluginName, () => {
 ...
 ```
 
-使用后的效果如下图所示：
-
-![](/frontend-eng-images/3d87c2f06196.png)
-
 通过这样的插件，可以分析目前项目中的效率瓶颈，从而进一步为选取优化方案及评估方案效果提供依据。
 
 ## 优化阶段效率提升的整体分析
 
-在《流程分解：Webpack 的完整构建流程》中，提到了下面的这张图。如图所示，整个优化阶段可以细分为 12 个子任务，每个任务依次对数据进行一定的处理，并将结果传递给下一任务：
-
-![](/frontend-eng-images/8f244f7bf572.png)
+在《流程分解：Webpack 的完整构建流程》中提到，整个优化阶段可以细分为 12 个子任务，每个任务依次对数据进行一定的处理，并将结果传递给下一任务。
 
 因此，这一阶段的优化也可以分为两个不同的方向：
 
@@ -69,9 +62,7 @@ Webpack 4 中内置了 [TerserWebpackPlugin](https://www.npmjs.com/package/terse
 
 从[第三方的测试结果](https://github.com/babel/minify#benchmarks)看，两者在压缩效率与质量方面差别不大，但 Terser 整体上略胜一筹。
 
-从本文示例代码的运行结果（npm run build:jscomp）来看，如下面的表格所示，在不带任何优化配置的情况下，3 个测试文件的构建结果都是 Terser 效果更好。
-
-![](/frontend-eng-images/5c74f58adbe0.png)
+从本文示例代码的运行结果（npm run build:jscomp）来看，在不带任何优化配置的情况下，3 个测试文件的构建结果都是 Terser 效果更好。
 
 **Terser 和 UglifyJS 插件中的效率优化**
 
@@ -103,11 +94,9 @@ function(module,exports){function HelloWorld(){var foo="1234";console.log(HelloW
 
 - **compress 参数的作用**是执行特定的压缩策略，例如省略变量赋值的语句，从而将变量的值直接替换到引入变量的位置上，减小代码体积。而当 compress 参数为 false 时，这类压缩策略不再生效，示例代码压缩后的体积从 1.16KB 增加到 1.2KB，对压缩质量的影响有限。
 - **mangle 参数的作用**是对源代码中的变量与函数名称进行压缩，当参数为 false 时，示例代码压缩后的体积从 1.16KB 增加到 1.84KB，对代码压缩的效果影响非常大。
-在了解了两个参数对压缩质量的影响之后，再来看它们对效率的影响。以上面表格中的 example-antd 为例，制作了下面的表格进行对比：
+在了解了两个参数对压缩质量的影响之后，再来看它们对效率的影响。
 
-![](/frontend-eng-images/cf8d137084e2.png)
-
-从结果中可以看到，当**compress**参数为 false 时，压缩阶段的效率有明显提升，同时对压缩的质量影响较小。在需要对压缩阶段的效率进行优化的情况下，**可以优先选择设置该参数**。
+以 example-antd 为例，当**compress**参数为 false 时，压缩阶段的效率有明显提升，同时对压缩的质量影响较小。在需要对压缩阶段的效率进行优化的情况下，**可以优先选择设置该参数**。
 
 ### 面向 CSS 的压缩工具
 
@@ -115,13 +104,11 @@ CSS 同样有几种压缩工具可供选择：[OptimizeCSSAssetsPlugin](https://
 
 这三个插件在压缩 CSS 代码功能方面，都默认基于 [cssnano](https://cssnano.co/) 实现，因此在压缩质量方面没有什么差别。
 
-在压缩效率方面，首先值得一提的是最新发布的 CSSMinimizerWebpackPlugin，它**支持缓存和多进程**，这是另外两个工具不具备的。而在非缓存的普通压缩过程方面，整体上 3 个工具相差不大，不同的参数结果略有不同，如下面的表格所示（下面结果为示例代码中 example-css 的执行构建结果）。
-
-![](/frontend-eng-images/13e6735cb1ab.png)
+在压缩效率方面，首先值得一提的是最新发布的 CSSMinimizerWebpackPlugin，它**支持缓存和多进程**，这是另外两个工具不具备的。而在非缓存的普通压缩过程方面，整体上 3 个工具相差不大，不同的参数结果略有不同（结果为示例代码中 example-css 的执行构建结果）。
 
 注：CSSMinimizerWebpackPlugin 中默认开启多进程选项 parallel，但是在测试示例较小的情况下，多进程的通信时间反而可能导致效率的降低。测试中关闭多进程选项后，构建时间明显缩短。
 
-从上面的表格中可以看到，三个插件的构建时间基本相近，在开启 sourceMap 的情况下 CSSMinimizerWebpackPlugin 的构建时间相对较长。但考虑到**只有这一新发布的插件支持缓存和多进程**等对项目构建效率影响明显的功能，即使在压缩 CSS 的时间较长的情况下，还是**推荐使用它**。
+从对比结果来看，三个插件的构建时间基本相近，在开启 sourceMap 的情况下 CSSMinimizerWebpackPlugin 的构建时间相对较长。但考虑到**只有这一新发布的插件支持缓存和多进程**等对项目构建效率影响明显的功能，即使在压缩 CSS 的时间较长的情况下，还是**推荐使用它**。
 
 ## 以提升后续环节工作效率为目标的方案
 
@@ -151,10 +138,7 @@ optimization: {
 ...
 ```
 
-在这个示例中，有两个入口文件引入了相同的依赖包 lodash，在没有额外设置分包的情况下，lodash 被同时打入到两个产物文件中，在后续的压缩代码阶段耗时 1740ms。**而在设置分包规则为 chunks:'all' 的情况下**，通过分离公共依赖到单独的 Chunk，使得在后续压缩代码阶段，只需要压缩一次 lodash 的依赖包代码，从而减少了压缩时长，总耗时为 1036ms。通过下面两张图片也可以看出这样的变化。
-
-![](/frontend-eng-images/a61d66d7e5cd.png)
-![](/frontend-eng-images/a170ae106755.png)
+在这个示例中，有两个入口文件引入了相同的依赖包 lodash，在没有额外设置分包的情况下，lodash 被同时打入到两个产物文件中，在后续的压缩代码阶段耗时 1740ms。**而在设置分包规则为 chunks:'all' 的情况下**，通过分离公共依赖到单独的 Chunk，使得在后续压缩代码阶段，只需要压缩一次 lodash 的依赖包代码，从而减少了压缩时长，总耗时为 1036ms。
 
 这里起作用的是 Webpack 4 中内置的 SplitChunksPlugin，该插件在 production 模式下默认启用。其默认的分包规则为 chunks: '**async**'，作用是分离动态引入的模块 (import('...'))，在处理动态引入的模块时能够自动分离其中的公共依赖。
 
@@ -162,11 +146,9 @@ optimization: {
 
 ### Tree Shaking
 
-[Tree Shaking（摇树）](https://webpack.js.org/guides/tree-shaking/)是指在构建打包过程中，移除那些引入但未被使用的无效代码（Dead-code elimination）。这种优化手段最早应用于在 Rollup 工具中，而在 Webpack 2 之后的版本中，Webpack 开始内置这一功能。下面先来看 Tree Shaking 的例子，如下面的表格所示：
+[Tree Shaking（摇树）](https://webpack.js.org/guides/tree-shaking/)是指在构建打包过程中，移除那些引入但未被使用的无效代码（Dead-code elimination）。这种优化手段最早应用于在 Rollup 工具中，而在 Webpack 2 之后的版本中，Webpack 开始内置这一功能。下面先来看 Tree Shaking 的例子。
 
-![](/frontend-eng-images/714de1b697fe.png)
-
-可以看到，引入不同的依赖包（lodash vs lodash-es）、不同的引入方式，以及是否使用 babel 等，都会对 Tree Shaking 的效果产生影响。下面分析具体原因。
+在实际使用中，引入不同的依赖包（lodash vs lodash-es）、不同的引入方式，以及是否使用 babel 等，都会对 Tree Shaking 的效果产生影响。下面分析具体原因。
 
 - **ES6 模块**： 首先，只有 ES6 类型的模块才能进行 Tree Shaking。因为 ES6 模块的依赖关系是确定的，因此可以进行不依赖运行时的**静态分析**，而 CommonJS 类型的模块则不能。因此，CommonJS 类型的模块 lodash，在无论哪种引入方式下都不能实现 Tree Shaking，而需要依赖第三方提供的插件（例如 babel-plugin-lodash 等）才能实现动态删除无效代码。而 ES6 风格的模块 lodash-es，则可以进行 Tree Shaking 优化。
 - **引入方式**：以 default 方式引入的模块，无法被 Tree Shaking；而引入单个导出对象的方式，无论是使用 import * as xxx 的语法，还是 import {xxx} 的语法，都可以进行 Tree Shaking。

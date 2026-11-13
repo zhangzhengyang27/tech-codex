@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # Transition
 
-## 学习目标
-
-- 掌握 transition 使命
-- 掌握 transition 的诞生
-- 掌握 模拟场景
-
 ## transition 使命
 
 ### 1 transition 的诞生
@@ -23,7 +17,6 @@ tags: [React, 原理与源码]
 Transition 本质上是用于一些不是很急迫的更新上，在 React 18 之前，所有的更新任务都被视为急迫的任务，在 React 18 诞生了并发渲染（Concurrent Rendering，通过 `createRoot` 开启），在这个模式下，渲染是可以中断，低优先级任务，可以让高优先级的任务先更新渲染。可以说 React 18 更青睐于良好的用户体验。从并发渲染到 `suspense` 再到 `startTransition` 无疑都是围绕着更优质的用户体验展开。
 
 startTransition 依赖于并发渲染模式。也就是说在 React 18 中使用 `startTransition` ，那么要先开启并发模式，也就是需要通过 `createRoot` 创建 Root （注意：React 19 已移除 `ReactDOM.render`，只能通过 `createRoot` 创建 Root）。我们先来看一下两种模式下，创建 Root 区别。
-
 
 **传统 legacy 模式**
 ````js
@@ -84,7 +77,6 @@ const handleChange=(e)=>{
 * 有一个搜索框和一个 10000 条数据的列表，列表中每一项有相同的文案。
 * input 改变要实时改变 input 的内容（第一种更新），然后高亮列表里面的相同的搜索值（第二种更新）。
 * 用一个按钮控制 常规模式 ｜ `transition` 模式。
-
 
 ````js
 /*  模拟数据  */
@@ -153,21 +145,17 @@ export default function App(){
 * 首先通过 handleChange 事件来处理 onchange 事件。
 * `button`按钮用来切换 **transition** （设置优先级） 和 **normal** （正常模式）。接下来就是见证神奇的时刻。
 
-
 **常规模式下效果：**
 
 * 可以清楚的看到在常规模式下，输入内容，内容呈现都变的异常卡顿，给人一种极差的用户体验。
 
-
 **transition 模式下效果：**
-
 
 * 把大量并发任务通过 startTransition 处理之后，可以清楚看到，input 会正常的呈现，更新列表任务变得滞后，不过用户体验大幅度提升。
 
 **整体效果：**
 
 * 读者可以本地运行上述 demo，感受 startTransition 的魅力。
-
 
 **总结：** 通过上面可以直观的看到 startTransition 在处理过渡任务，优化用户体验上起到了举足轻重的作用。
 
@@ -186,7 +174,6 @@ const handleChange=(e)=>{
 }
 ````
 * 这里通过 setTimeout ，把更新放在 setTimeout 内部，那么我们都知道 setTimeout 是属于延时器任务，它不会阻塞浏览器的正常绘制，浏览器会在下次空闲时间之行 setTimeout 。那么效果如何呢？我们来看一下：
-
 
 * 如上可以看到，通过 setTimeout 确实可以让输入状态好一些，但是由于 setTimeout 本身也是一个宏任务，而每一次触发 onchange 也是宏任务，所以 setTimeout 还会影响页面的交互体验。
 
@@ -210,7 +197,6 @@ const handleChange = (e) => {
 ````
 * 如上将 setSearchQuery 防抖处理。然后我们看一下效果。
 
-
 通过上面可以直观感受到通过防抖处理后，基本上已经不影响 input 输入了。但是面临一个问题就是 list 视图改变的延时时间变长了。那么 transition 和**节流防抖** 本质上的区别是：
 
 * 一方面，节流防抖 本质上也是 setTimeout ，只不过控制了执行的频率，那么通过打印的内容就能发现，原理就是让 render 次数减少了。而 transitions 和它相比，并没有减少渲染的次数。
@@ -223,15 +209,11 @@ transition 在处理慢的计算机上效果更加明显，可以看一下 [Real
 
 * 处理性能高，更快速的设备上。不使用 startTransition 。
 
-
 * 处理性能高，更快速的设备上。使用 startTransition。
-
 
 * 处理性能差，慢速的设备上，不使用 startTransition。
 
-
 * 处理性能差，慢速的设备上，使用 startTransition。
-
 
 ## transition 特性
 
@@ -434,7 +416,6 @@ useDeferredValue 处理流程是这样的。
 * `startTransition` 的用法和原理。
 * `useTransition` 的用法和原理。
 * `useDeferredValue` 的用法和原理。
-
 
 ### 参考文档
 

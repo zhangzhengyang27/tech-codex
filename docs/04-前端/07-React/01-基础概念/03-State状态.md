@@ -8,13 +8,6 @@ tags: [React, 基础概念]
 
 # State状态
 
-## 学习目标
-
-- 掌握 类组件中的 state
-- 掌握 setState用法
-- 掌握 setState原理揭秘
-- 掌握 函数组件中的 state
-
 ## 类组件中的 state
 
 ### setState用法
@@ -29,7 +22,6 @@ setState(obj,callback)
 * 第一个参数：当 obj 为一个对象，则为即将合并的 state ；如果 obj 是一个函数，那么当前组件的 state 和 props 将作为参数，返回值用于合并新的 state。
 
 * 第二个参数 callback ：callback 为一个函数，函数执行上下文中可以获取当前 setState 更新后的最新 state 的值，可以作为依赖 state 变化的副作用函数，可以用来做一些基于 DOM 的操作。
-
 
 ````js
 /* 第一个参数为function类型 */
@@ -215,7 +207,6 @@ render(){
 
 **flushSync补充说明**：flushSync 在同步条件下，会合并之前的 setState | useState，可以理解成，如果发现了 flushSync ，就会先执行更新，如果之前有未更新的 setState ｜ useState ，就会一起合并了，所以就解释了如上，2 和 3 被批量更新到 3 ，所以 3 先被打印。
 
-
 综上所述， React 同一级别**更新优先级**关系是: 
 
 flushSync 中的 setState **>** 正常执行上下文中 setState **>** setTimeout ，Promise 中的 setState。
@@ -254,7 +245,6 @@ initData 为函数的情况:
        return Math.ceil(Math.random() * 100 ) 
     })
 ````
-
 
 对于 dispatch的参数,也有两种情况：
 
@@ -368,7 +358,6 @@ export default function Index(){
 ### useState原理揭秘
 
 对于 useState 原理，后面会有独立的篇章介绍，这里就不多说了。
-
 
 ## 面试要点
 

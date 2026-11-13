@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # VueUse 与自动导入配置实践
 
 ## 概述
 
 VueUse 是 Vue Composition API 的工具函数集合，提供 200+ 个响应式工具函数。配合 unplugin-auto-import 实现零导入使用，大幅减少样板代码。本文讲解 VueUse 集成、自动导入配置及类型声明的协作机制。
-
-## 学习目标
-
-- 掌握 unplugin-auto-import 的配置与 VueUse 集成
-- 理解自动导入的类型声明生成机制
-- 熟练使用 VueUse 常用组合式函数
-
----
 
 ## 一、自动导入配置
 

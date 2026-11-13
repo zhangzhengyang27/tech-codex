@@ -148,7 +148,6 @@ MOCK=none umi dev
 ```ts
 import mockjs from 'mockjs';
 
-
 export default {
 
   // 使用 mockjs 等三方库
@@ -401,8 +400,6 @@ export async function clientLoader() {
 如果将组件请求数据的程序提取到 `clientLoader` 中，则 Umi 可以并行地请求这些数据：
 
 ![img](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202311061151627.gif)
-
-
 
 ## 开启TypeScript
 

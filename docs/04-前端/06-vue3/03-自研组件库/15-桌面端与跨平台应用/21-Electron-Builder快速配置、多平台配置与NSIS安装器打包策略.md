@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron Builder 快速配置、多平台配置与 NSIS 安装器打包策略
 
 ## 概述
 
 这两节定位是快速上手版、基础认知版，而不是字段精读版。课程真正想解决的不是“把所有配置背下来”，而是让你先搞清 Builder 配置长什么样、多平台配置怎么分层、macOS / Windows / Linux 最常见目标格式分别是什么、Windows 安装器体验是怎么被配置项直接影响的。最有效的方法始终是“公共层 + 平台层”：公共层放共用信息，`mac / win / linux` 在其上叠加平台差异。配完之后一定要回去看产物和安装流程，建立“配置 → 产物 → 用户体验”的映射。
-
-## 学习目标
-
-- 理解 Builder 配置应按“公共层 + 平台层 + 安装器层”来拆，而非平铺硬记。
-- 知道 macOS 常见 `dmg`、Windows 常见 `nsis`、Linux 常见 `AppImage` 的交付形态差异。
-- 掌握 nsis 关键交互字段（`oneClick`、`allowToChangeInstallationDirectory`、`shortcutName`）。
-- 建立“配置 → 产物 → 安装流程 → 用户体验”的验证闭环。
-- 认识本地能打包只是开始，签名与 CI/CD 才是正式交付的下一步。
-
----
 
 ## 一、正确学习姿势是先跑通最小闭环
 

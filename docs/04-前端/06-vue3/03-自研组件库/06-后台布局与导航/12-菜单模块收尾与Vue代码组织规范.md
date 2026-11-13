@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 菜单模块收尾与 Vue 代码组织规范
 
 ## 概述
@@ -14,18 +13,6 @@ tags: [Vue, 组件化, 响应式, 路由]
 菜单组件的核心逻辑到这里已经稳定：模式切换主链路跑通、一/二级菜单职责拆清、折叠/主题/布局联动接上、组件具备独立可复用边界。后续的重点从「把功能做出来」转向「组织代码」。本节沉淀几条 Vue 3 script setup 下的工程规范：不必为形式统一急着改 v-model、主动维持代码分组顺序、明确 emit / provide-inject / Store 的通信边界，以及用 useMenu 这类 composable 收口逻辑边界。
 
 代码组织的目标不是“一次写完美”，而是让后续维护和重构的成本更低、风险更可控。
-
-## 学习目标
-
-- 理解菜单模块「主干逻辑稳定」即阶段性收尾，重构前提是链路先跑通
-- 在 props + emit 已清晰独立时，不必为了形式统一立即改 v-model
-- 为 script setup 建立 import/type/props/state/computed/watch/function 的分组顺序
-- 用 useMenu 这类 composable 收口相关逻辑，判断标准是关联性与运行时上下文
-- 区分 emit、provide/inject、Store、app.provide 四者的通信范围与职责
-- 认识重构应“先稳链路、再小步优化”，不一次性过度抽象
-- 掌握按关注点把菜单相关 composable 拆分到独立目录
-
----
 
 ## 一、收尾意味着主干逻辑已稳定
 

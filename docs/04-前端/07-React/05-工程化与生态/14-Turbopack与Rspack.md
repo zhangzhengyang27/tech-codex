@@ -8,12 +8,6 @@ tags: [React, 工程化与生态]
 
 # Turbopack 与 Rspack
 
-## 学习目标
-
-- 理解 Rust 重写构建工具的动力（速度）
-- 区分 Turbopack 与 Rspack 的定位差异
-- 知道何时选择它们而非 webpack / Vite
-
 ## 为什么用 Rust 重写
 
 webpack 的 JS 运行时在大项目增量构建上到达瓶颈。Rust 工具链（基于 SWC / NAPI）在解析、转译、增量缓存上数量级提速，催生了两款工具。
@@ -75,4 +69,4 @@ module.exports = {
 ## 继续阅读
 
 - 上一篇：[13-Vite 构建工具](13-Vite构建工具)
-- 下一篇：[15-使用 @testing-library/react 测试组件](15-使用testing-library测试组件)
+- 下一篇：[15-使用testing-library测试组件](15-使用testing-library测试组件)

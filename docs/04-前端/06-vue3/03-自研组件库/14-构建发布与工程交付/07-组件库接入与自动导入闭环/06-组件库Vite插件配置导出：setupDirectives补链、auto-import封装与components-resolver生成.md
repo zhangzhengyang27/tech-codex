@@ -6,24 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 组件库 Vite 插件配置导出：setupDirectives 补链、auto-import 封装与 components resolver 生成
 
 ## 概述
 
 这一节做了两件容易被混在一起的事：先补了宿主遗漏的 `setupDirectives(app)` 调用链路，再把原本写在宿主 `vite.config.ts` 里的 auto-import 和 components 配置，抽成组件库自己导出的公共方法。宿主项目虽已能消费组件库包，但接入成本仍偏高——要自己写 resolver、维护 hooks 列表，内容一更新宿主配置也要跟着改。解决的实质是：让组件库不仅导出运行时代码，还导出“如何接入这个组件库”的构建期配置。
-
-## 学习目标
-
-- 理解 `setupDirectives(app)` 没被宿主调用时指令页面会失效
-- 理解宿主手写 resolver / imports 会随组件库演进漂移，应由组件库统一导出
-- 用脚本读取 `package.json.name` 作为单一事实来源
-- 导出 `VPAutoImports` 配置片段（非执行逻辑）
-- 导出 `VPComponentsResolver` 解析函数
-- 理解脚本现在生成 `vite-plugin.ts` 构建期辅助模块
-- 注意 `components.d.ts` / `auto-imports.d.ts` 重新生成
-
----
 
 ## 一、setupDirectives 没调用时指令页面看起来像组件库坏了
 

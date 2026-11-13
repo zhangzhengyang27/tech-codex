@@ -9,7 +9,7 @@ tags: [Babel, 编译, AST, 插件]
 
 # 工具介绍：VSCode Debugger 的使用
 
-> 想看懂复杂代码离不开 debugger，它是提升 Node.js 水平必备的能力。因为后面的案例代码都是有一定的复杂度的，建议同学们先学会使用 debugger 再去学后面的案例，结合 debugger 来看。
+> 想看懂复杂代码离不开 debugger，它是提升 Node.js 水平必备的能力。因为后面的案例代码都是有一定的复杂度的，建议读者先学会使用 debugger 再去学后面的案例，结合 debugger 来看。
 
 这一节，我们来学习下 vscode debugger 的使用。
 
@@ -20,7 +20,7 @@ tags: [Babel, 编译, AST, 插件]
 
 ## vscode debugger 的配置
 
-会了怎么使用之后，我们来深入讲下怎么配置，希望能够让同学们的 nodejs 调试能力有所提升。
+会了怎么使用之后，我们来深入讲下怎么配置，希望能够让读者的 nodejs 调试能力有所提升。
 
 编辑 .vscode/launch.json 可以写各种调试配置；点击右下角的按钮会有菜单来选择配置的模版。运行环境有很多，比如 chrome、node.js 等，这里我们只需要 node.js 的环境。
 
@@ -99,7 +99,7 @@ launch 的方式就是启动一个 debugger server（websocket），然后用 de
 
 node --inspect xxx.js 就可以看到 ws://127.0.0.1:9229 这样的地址，这就是 websocket 的 debugger server 的地址。客户端用 chrome devtools 可以，用 vscode 或者其他 ide 都可以，因为他们都实现了 v8 debug protocol 的 websocket client，只是做了各自的 ui。（当然，原理做了解即可，了解原理的目的是为了更好的使用工具）。
 
-希望同学们能掌握 vscode debugger 的使用，对更好的理解案例代码有很大的帮助。
+希望读者能掌握 vscode debugger 的使用，对更好的理解案例代码有很大的帮助。
 
 扩展阅读（想更深入 debugger 的同学可以看下）：
 

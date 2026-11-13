@@ -19,7 +19,7 @@ tags: [CSS, 布局, 动画, 响应式]
   
 
 
-在这节课中，我将向你介绍 CSS 路径动画的基础知识和实际应用。你将学会如何创建各种各样的动画效果，从简单的路径移动到复杂的曲线运动。无论你是初学者还是有经验的 Web 开发人员，都可以通过这节课的内容掌握 CSS 路径动画的精髓。
+在本文中，我将向你介绍 CSS 路径动画的基础知识和实际应用。你将学会如何创建各种各样的动画效果，从简单的路径移动到复杂的曲线运动。无论你是初学者还是有经验的 Web 开发人员，都可以通过本文的内容掌握 CSS 路径动画的精髓。
 
   
 
@@ -893,7 +893,7 @@ CSS 的 `offset-path` 属性使用 `path()` 函数来指定动画路径时，其
   
 
 
-到目前为止，CSS 还没有一个合理的方案能解决 `path()` 给我们带来的麻烦（适配性麻烦）。因此，要避免 `path()` 带来的麻烦，还是需要[通过 JavaScript 来解决](https://css-tricks.com/create-a-responsive-css-motion-path-sure-we-can/)。在这里推荐 [GreenSock 的 MotionPath 插件](https://greensock.com/motionpath/)，它可以对 SVG 的 `path()` 进行缩放。只不过，它用于路径动画，并不是件轻易的事情，[感兴趣的同学自己可以查看下面这个 Demo](https://codepen.io/GreenSock/full/LwzMKL)，或对它进行更深层次的学习，这里就不详细展开，因为它已超出这节课的范畴。
+到目前为止，CSS 还没有一个合理的方案能解决 `path()` 给我们带来的麻烦（适配性麻烦）。因此，要避免 `path()` 带来的麻烦，还是需要[通过 JavaScript 来解决](https://css-tricks.com/create-a-responsive-css-motion-path-sure-we-can/)。在这里推荐 [GreenSock 的 MotionPath 插件](https://greensock.com/motionpath/)，它可以对 SVG 的 `path()` 进行缩放。只不过，它用于路径动画，并不是件轻易的事情，[感兴趣的读者自己可以查看下面这个 Demo](https://codepen.io/GreenSock/full/LwzMKL)，或对它进行更深层次的学习，这里就不详细展开，因为它已超出本文的范畴。
 
   
 
@@ -1285,7 +1285,7 @@ CSS 的 `offset-distance` 属性用于定义动画元素在路径（`offset-path
   
 
 
-> W3C 规范对 `offset-rotate` 属性的角度计算有相应描述，想深入探究的同学，[可以阅读规范](https://www.w3.org/TR/motion-1/#calculating-path-transform)。
+> W3C 规范对 `offset-rotate` 属性的角度计算有相应描述，想深入探究的读者，[可以阅读规范](https://www.w3.org/TR/motion-1/#calculating-path-transform)。
 
   
 
@@ -1909,7 +1909,7 @@ offset-anchor: right 3em bottom 10px;
   
 
 
-以往在 CSS 要实现上面这样的 Loading 动效，对于 Web 开发者来说还是极其困难的。现在，我们使用这节课所学的知识，就要容易很多了。
+以往在 CSS 要实现上面这样的 Loading 动效，对于 Web 开发者来说还是极其困难的。现在，我们使用本文所学的知识，就要容易很多了。
 
   
 
@@ -2819,7 +2819,7 @@ offset-anchor: right 3em bottom 10px;
   
 
 
-详细代码就不在这里展示了，感兴趣的同学可以查看 Demo 源码！
+详细代码就不在这里展示了，感兴趣的读者可以查看 Demo 源码！
 
   
 

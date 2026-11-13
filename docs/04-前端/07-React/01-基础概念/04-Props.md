@@ -8,12 +8,6 @@ tags: [React, 基础概念]
 
 # Props
 
-## 学习目标
-
-- 掌握 理解props
-- 掌握 props是什么？
-- 掌握 React如何定义的props？
-
 ## 理解props
 
 ### 1 props是什么？
@@ -97,12 +91,11 @@ PropsComponent 如果是一个类组件，那么可以直接通过 this.props �
 **从React插槽层面props充当的角色**
 React 可以把组件的闭合标签里的插槽，转化成 Children 属性，一会将详细介绍这个模式。
 
-
 ### 3 监听props改变
 
 **类组件中**
 
-① 类组件中，componentWillReceiveProps 可以作为监听 props 的生命周期，但是 React 已经不推荐使用 componentWillReceiveProps——React 17 起它已被更名为 `UNSAFE_componentWillReceiveProps`（使用旧名会有废弃告警），因为这个生命周期超越了 React 的可控制范围，可能引起多次执行等情况发生。于是出现了它的替代方案 getDerivedStateFromProps ，在下一章节，会详细介绍 React 生命周期。
+① 类组件中，componentWillReceiveProps 可以作为监听 props 的生命周期，但 React 已经不推荐使用它：React 16.3 起提供了 `UNSAFE_componentWillReceiveProps` 别名，16.9 起对旧名 `componentWillReceiveProps` 发出弃用警告，React 17 起则只保留 `UNSAFE_` 前缀的名称。因为这个生命周期超越了 React 的可控制范围，可能引起多次执行等情况发生，于是出现了它的替代方案 getDerivedStateFromProps ，React 生命周期将在后续文章中详细介绍。
 
 **函数组件中**
 
@@ -135,7 +128,6 @@ props + children 模式 在 React 中非常常用，尤其对一些优秀开源�
 
 * 2 像上一节所说的， Container 可以用 React.cloneElement 强化 props (混入新的 props )，或者修改 Children 的子元素。
 
-
 **② render props模式**
 
 ````js
@@ -144,7 +136,6 @@ props + children 模式 在 React 中非常常用，尤其对一些优秀开源�
 </Container>
 ````
 这种情况，在 Container 中， props.children 属性访问到是函数，并不是 React element 对象，针对这种情况，像下面这种情况下 children 是不能直接渲染的，直接渲染会报错。
-
 
 ````js
 function  Container(props) {
@@ -216,7 +207,6 @@ const Index = ()=>{
 * 针对 element 节点，通过 cloneElement 混入 props ；
 * 针对函数，直接传递参数，执行函数。
 
-
 ### 5 操作 props 小技巧
 
 #### 抽象 props
@@ -272,7 +262,6 @@ function Index(){
 ````
 
 成功的将 indexProps 中的 age 属性抽离出来。
-
 
 #### 注入props
 
@@ -433,9 +422,7 @@ Form.displayName = 'form'
 * 要过滤掉除了 `FormItem` 元素之外的其他元素，那么怎么样知道它是不是`FormItem`，这里教大家一种方法，可以给函数组件或者类组件绑定静态属性来证明它的身份，然后在遍历 props.children 的时候就可以在 React element 的 type 属性(类或函数组件本身)上，验证这个身份，在这个 demo 项目，给函数绑定的 displayName 属性，证明组件身份。
 * 要克隆 `FormItem` 节点，将改变表单单元项的方法 handleChange 和表单的值 value 混入 props 中。
 
-
 ### 2 编写 `<FormItem>`
-
 
 ````js
 function FormItem(props){
@@ -476,17 +463,14 @@ Input.displayName = 'input'
 * 绑定 displayName 标识`input`。
 * `input` DOM 元素，绑定 onChange 方法，用于传递 value 。
 
-
 ## 总结
 
-通过本章节，系统学习了 props ，总结一下这节课的内容：
+通过本章节，系统学习了 props ，总结一下本文的内容：
 
 * 系统学习 props ，props是什么，props的作用。
 * 操作 props 小技巧。
 * 掌握了插槽组件的使用与编写。
 * 实践一个 demo ，`<Form> <FormItem>` 嵌套插槽组件协调管理表单状态。
-
-下一节，将走进 React 的生命周期，去探索生命周期的奥秘。
 
 ## 继续阅读
 

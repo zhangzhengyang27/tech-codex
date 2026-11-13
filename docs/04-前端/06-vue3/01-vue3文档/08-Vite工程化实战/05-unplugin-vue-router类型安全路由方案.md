@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # unplugin-vue-router 类型安全路由方案
 
 ## 概述
 
 unplugin-vue-router 是 Vue Router 官方推荐的下一代文件系统路由方案，核心优势是自动生成完整的 TypeScript 类型定义，实现路由路径和参数的编译时类型检查。本文讲解其安装配置、类型生成机制和与 vite-plugin-pages 的对比选型。
-
-## 学习目标
-
-- 掌握 unplugin-vue-router 的安装与插件顺序要求
-- 理解 `vue-router/auto` 导入路径的类型安全机制
-- 掌握 VS Code 配置优化与类型声明文件的协作
-
----
 
 ## 一、与 vite-plugin-pages 对比
 

@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Nuxt3 自动导入与 Mock Server 配置实践
 
 ## 概述
 
 Nuxt3 内置组件、组合式函数和 Vue API 的自动导入能力，并通过 Nitro Server API 替代传统 Mock 方案。本文讲解自动导入的扩展配置（Pinia / VueUse）和 server/api 目录的 Mock 数据实践。
-
-## 学习目标
-
-- 理解 Nuxt3 自动导入的工作机制与内置范围
-- 掌握 Pinia、VueUse 的自动导入配置
-- 学会使用 server/api 目录编写 Mock 接口
-- 对比 Nuxt3 与纯 Vite 项目的工程化差异
-
----
 
 ## 一、Nuxt3 内置集成清单
 

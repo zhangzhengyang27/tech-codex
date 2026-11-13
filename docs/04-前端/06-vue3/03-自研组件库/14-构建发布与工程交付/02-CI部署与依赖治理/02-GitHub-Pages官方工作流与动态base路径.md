@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # GitHub Pages 官方工作流与动态 base 路径
 
 ## 概述
 
 最小可发布工作流跑通之后，下一步是从“推 `gh-pages` 分支”升级到 GitHub Pages 官方推荐的工作流链路，并解决仓库子路径部署下的 `base` 问题。本节讲清官方链路的结构差异、部署所需的 `permissions` / `concurrency` / `environment`，以及如何用 `GITHUB_REPOSITORY` 动态注入 `BASE_PATH`，让部署路径随仓库上下文自动适配。
-
-## 学习目标
-
-- 理解官方 Pages 工作流与传统 `gh-pages` 分支推送方案的结构差异（artifact 与 deploy 分离）。
-- 掌握 `permissions`、`concurrency`、`environment` 在官方部署链路中的作用。
-- 能用环境变量动态注入 `base`，避免把仓库名写死。
-- 会用 `GITHUB_REPOSITORY` 提取仓库名并写入 `GITHUB_ENV` 供后续步骤复用。
-- 理解“环境变量提取 -> 传递 -> 构建消费”三步全通才算真正生效。
-
----
 
 ## 一、从可用走向规范：官方 Pages 链路
 

@@ -8,12 +8,6 @@ tags: [React, 组件与实战]
 
 # 一网打尽组件常用Hook
 
-## 学习目标
-
-- 掌握 useState
-- 掌握 useEffect
-- 掌握 useLayoutEffect
-
 ## useState
 
 什么是 state 呢？
@@ -805,7 +799,6 @@ function Aaa() {
     const [,setNum] = useState(1);
 
     const [count, setCount] = useState(2);
-
 
     useEffect(() => {
         setInterval(()=> {

@@ -5,8 +5,6 @@ category: Vue
 keywords: [VeeValidate, 表单验证, Vue3, 前端校验]
 ---
 
-
-
 # VeeValidate
 
 官方文档：https://vee-validate.logaretm.com/v4/
@@ -16,7 +14,6 @@ keywords: [VeeValidate, 表单验证, Vue3, 前端校验]
 ```sh
 pnpm add vee-validate @vee-validate/i18n @vee-validate/rules
 ```
-
 
 在 `common` 目录下创建一个名为 `vee-validate.ts` 的文件，并添加以下内容：
 

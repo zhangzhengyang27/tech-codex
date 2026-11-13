@@ -87,11 +87,11 @@ flowchart LR
     end
 
     subgraph AI时代["⭐ AI时代新特征（2026）"]
-        B1["🤖 AI协作能力<br/>会用GPT-5.5/DeepSeek V4提效"]
+        B1["🤖 AI协作能力<br/>会用新一代大模型提效"]
         B2["🧠 AI适应力<br/>快速学习新AI工具链"]
         B3["🎯 Prompt Engineering<br/>精准引导AI输出"]
         B4["🔗 Agent思维<br/>设计AI工作流"]
-        B5["⚡ 人机协同<br/>84%开发者用AI编程的新常态"]
+        B5["⚡ 人机协同"]
     end
 
     传统定义 --> AI时代
@@ -280,7 +280,7 @@ Offer 阶段的所有承诺需要清清楚楚地书面确认，并且在入职�
 职位：AI-Augmented Java工程师 🤖
 要求：
 - 5年Java经验 + 1年AI工具使用经验
-- 能用GPT-5.5/Copilot将开发效率提升3x+
+- 能用Copilot将开发效率提升3x+
 - 有Prompt Engineering实践经验优先
 - 我们提供：全套AI工具订阅 + GPU算力 + AI项目机会
 

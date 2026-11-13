@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # React18的并发机制是怎么实现的
 
-## 学习目标
-
-- 掌握 React 渲染流程
-- 掌握 同步 vs 并发
-- 掌握 react 里的优先级
-
 ## React 渲染流程
 
 React 是通过 JSX 描述页面的，JSX 编译成 render function（也就是 React.createElement 等），执行之后产生 vdom。
@@ -27,7 +21,6 @@ vdom 是通过 children 关联子节点，而 fiber 通过 child、sibling、ret
 从 vdom 转 fiber 的过程叫做 reconcile，这个过程还会创建用到的 dom 节点，并且打上增删改的标记。
 
 这个 reconcile 的过程叫做 render 阶段。
-
 
 之后 commit 阶段会根据标记来增删改 dom。
 

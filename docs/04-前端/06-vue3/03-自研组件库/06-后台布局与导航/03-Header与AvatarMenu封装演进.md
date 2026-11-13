@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Header 与 AvatarMenu 封装演进
 
 ## 概述
 
 头部是 `DefaultLayout` 真正成型的起点。本节把 Header 拆成左侧导航区与右侧工具区，处理折叠事件的归属、语言数据的来源、工具栏对齐与图标扩展统一；再围绕用户头像菜单，解决复合组件（Dropdown + Avatar）的 props 类型冲突、触发方式覆盖顺序、`command` 事件透传，以及头像加载失败的内容回退。整体主线是「基础组件从能显示走向稳用」。
-
-## 学习目标
-
-- 用 Left / flex-grow / Right 三段结构稳定头部布局，折叠按钮只发事件不持状态
-- 把语言列表等数据由外层传入，并用 `LocaleItem` 统一跨组件类型
-- 用 `iconClass`/`iconProps` 收口图标尺寸与对齐，透传时用 `computed` 排除本地消费字段
-- 把 AvatarMenu 拆成 Dropdown 配置与 Avatar 配置两层，用 `Partial`/`Omit` 消解同名字段冲突
-- 通过 `command` 事件向外透传命令，并设计头像尺寸回退链与首字母/默认头像回退
-
----
 
 ## 一、Header 左右分区与状态上抛
 

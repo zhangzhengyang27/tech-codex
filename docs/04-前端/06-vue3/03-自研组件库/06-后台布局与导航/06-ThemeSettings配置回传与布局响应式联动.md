@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # ThemeSettings 配置回传与布局响应式联动
 
 ## 概述
 
 ThemeSettings 面板搭好抽屉、表单与模式卡片后，真正的分水岭是「配置值能不能驱动外层布局」。如果抽屉里改了菜单宽度、背景色、导航模式，外层 `DefaultLayout` 却纹丝不动，那面板只是个摆设。本节把主题配置从「可编辑的表单」推进成「可驱动布局的状态入口」：明确单一数据源的回流链路，用 `computed` 兜底首屏缺省，剖析子组件拷贝导致响应式脱钩的根因，对比 `onUnmounted + emit` 兜底与 `defineModel` 实时联动，并落到菜单背景色 CSS 变量与 `reactive` 解构保响应等具体工程细节。
-
-## 学习目标
-
-- 理解 ThemeSettings 的配置必须沿 ThemeSettings → Header → DefaultLayout 回流，形成单一数据源
-- 用 `computed` 提供带默认值的派生状态，消除首屏访问 `undefined` 的报错
-- 识别「`reactive({ ...props.settings })` 展开拷贝」造成父子脱钩的根因
-- 对比 `onUnmounted + emit` 兜底保存与 `defineModel` / `watch` 实时联动的语义差异
-- 把菜单背景色从写死类名迁移到 CSS 变量，避免解构 `reactive` 丢失响应式
-
----
 
 ## 一、配置必须回流到布局层
 

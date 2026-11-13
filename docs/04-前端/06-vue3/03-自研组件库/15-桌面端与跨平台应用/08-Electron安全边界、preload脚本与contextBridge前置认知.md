@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 安全边界、preload 脚本与 contextBridge 前置认知
 
 ## 概述
 
 这一节切中 Electron 安全模型最关键的点：渲染进程默认不该拿到系统级能力。课程用一组很有层次的实验——先开 `nodeIntegration`、再调 `contextIsolation`、再引出 `preload`、再用 `contextBridge` 精细暴露——让你一步步看到危险在哪、官方为什么默认关掉它、更安全的替代姿势是什么。它是后续学 IPC 与系统 API 接入的安全前置认知。
-
-## 学习目标
-
-- 理解 `nodeIntegration` 默认关闭的原因：页面一旦能直接 `require`，就等同于拿到系统级能力。
-- 知道 Electron 的安全是多层隔离（`nodeIntegration` + `contextIsolation` + `sandbox`），不是单一开关。
-- 明确 `preload` 的定位：主进程 / Node 能力与渲染页面之间的受控桥梁，而非“另一个业务脚本”。
-- 掌握 `contextBridge.exposeInMainWorld()` 的“精细滴灌”原则，绝不整包暴露 `process` / `fs`。
-- 了解 Electron 20 之后 preload 默认更受限，应把渲染进程当作不可信边界。
-- 建立“最小暴露”的安全观：页面拿最少能力，主进程做重活，IPC 做通信。
-
----
 
 ## 一、nodeIntegration 为什么默认关闭：页面拿到系统能力等于打穿边界
 
@@ -97,7 +85,7 @@ webPreferences: {
 
 ## 七、把安全观落成一条最小暴露原则
 
-如果把这节课抽象成一句话，它真正建立起来的是 Electron 的安全边界意识。课程前面用了几步很有层次的演示：打开 `nodeIntegration` 看看会发生什么 → 再调整 `contextIsolation` → 再引出 `preload` → 再通过 `contextBridge` 精细暴露 → 再提醒你不要把高权限对象整个甩出去。这条链路非常适合前端同学，因为它不是抽象讲安全，而是在一步步让你看到什么叫危险、为什么危险、官方为什么要默认关掉它、更安全的替代姿势是什么。
+如果把这些内容抽象成一句话，它真正建立起来的是 Electron 的安全边界意识。前面用了几步很有层次的演示：打开 `nodeIntegration` 看看会发生什么 → 再调整 `contextIsolation` → 再引出 `preload` → 再通过 `contextBridge` 精细暴露 → 再提醒你不要把高权限对象整个甩出去。这条链路非常适合前端开发者，因为它不是抽象讲安全，而是在一步步让你看到什么叫危险、为什么危险、官方为什么要默认关掉它、更安全的替代姿势是什么。
 
 ```ts
 type ElectronSecurityMindset = {
@@ -111,7 +99,7 @@ type ElectronSecurityMindset = {
 
 ## 八、这一节真正建立的是“Electron 安全观”
 
-到这一节为止，桌面端篇章已经从架构认知正式进入到了安全设计认知。它真正的价值不是某个 API 细节，而是安全边界感：渲染进程应该尽量被隔离，真正需要系统能力时应通过 preload 和 IPC 做最小暴露。后面真正学 IPC 时，你就不会把它当成“麻烦的额外步骤”，而会理解成这是必要的隔离设计。这节课为后续 IPC 通信和系统 API 接入的安全前置认知已经打好了底。
+到这一节为止，桌面端篇章已经从架构认知正式进入到了安全设计认知。它真正的价值不是某个 API 细节，而是安全边界感：渲染进程应该尽量被隔离，真正需要系统能力时应通过 preload 和 IPC 做最小暴露。后面真正学 IPC 时，你就不会把它当成“麻烦的额外步骤”，而会理解成这是必要的隔离设计。本篇为后续 IPC 通信和系统 API 接入的安全前置认知打好了底。
 
 ---
 

@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # SSR 与 CSR 性能对比测试实践
 
 ## 概述
 
 本文通过 Lighthouse 对同一应用的 SSR 和 CSR 版本进行性能对比测试，用 FCP / LCP / TTI 等量化指标验证 SSR 的首屏优势，并记录测试环境搭建中的跨域问题解决方案。
-
-## 学习目标
-
-- 掌握 Lighthouse 性能测试的核心指标（FCP / LCP / TTI / CLS）
-- 学会搭建公平的 SSR vs CSR 对比测试环境
-- 掌握 Preview 环境的跨域代理配置
-- 理解测试数据的解读方式与结论边界
-
----
 
 ## 一、测试指标与工具
 

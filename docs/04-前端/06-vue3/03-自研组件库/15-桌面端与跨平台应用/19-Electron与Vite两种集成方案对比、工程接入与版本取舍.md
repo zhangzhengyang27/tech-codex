@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 与 Vite 两种集成方案对比、工程接入与版本取舍
 
 ## 概述
 
 这一节开始把 Electron 和前端工程真正接到一起。课程里重点对比了两条和 Vite 相关的主流路线：一条是 `electron-vite` 这类“桌面端脚手架”，另一条是 `vite-plugin-electron` 这类“Vite 插件”。它们的核心差异不是 API 写法，而是工程形态——前者从初始化就按 Electron 项目组织目录，后者把 Electron 能力嵌入你已有的 Vite 工程。课程最后反复强调一个工程判断：选型要看你当前项目处于什么阶段，而不是按个人喜好站队。
-
-## 学习目标
-
-- 区分 `electron-vite`（脚手架式）与 `vite-plugin-electron`（插件式）两条接入路线。
-- 理解前者自带主进程 / preload / renderer 分层约定，后者尽量保留原 Vite 工程结构。
-- 意识到脚手架默认值（如 `sandbox:false`、preload 暴露过多 API）仍需按安全意识复查。
-- 注意插件方案更依赖 Electron 大版本、Vite 版本与插件链的兼容性。
-- 形成“按项目状态选方案”的工程判断，而不是盲目追新或工具站队。
-
----
 
 ## 一、Electron 接入前端工程至少两条主路径
 

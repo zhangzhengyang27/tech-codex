@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # SSR 与 Nuxt
 
 > 服务端渲染（Server-Side Rendering）可以提升首屏加载性能、改善 SEO、优化用户体验。Nuxt 3 是 Vue 3 生态中最成熟的 SSR 框架。

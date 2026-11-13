@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 面包屑选择性过渡与 GSAP 延迟动画
 
 ## 概述
 
 这一节把面包屑动画从“整段容器替换”推进到“逐项列表动画”。核心不是接入某个动画库，而是判断动画对象已经从单个容器变成了当前路由链路生成的一组列表项，从而改用 `TransitionGroup`；再通过观察“同级切换时最后一项等待过久”的体验问题，引出“选择性延迟”——根据本次路由切换到底改动了几项面包屑来动态调整节奏。GSAP 在这里只是实现手段，纯 CSS 的 `TransitionGroup` 同样可用。
-
-## 学习目标
-
-- 判断何时从 `transition` 切换到 `TransitionGroup`：动画目标是列表项而非互斥容器。
-- 用 `:css="false"` 让 JS 钩子（`@enter` / `@leave`）完整接管动画，并正确调用 `done`。
-- 用 `gsap.fromTo()` 同时声明初始状态和最终状态，实现列表项从右滑入。
-- 通过 `data-index` 给每项独立 delay，再用 `watch(newVal, oldVal)` 统计变化项数实现选择性延迟。
-- 理解 GSAP 与纯 CSS 方案的取舍：精细节奏控制用 GSAP，基础滑入用 CSS 足矣。
-
----
 
 ## 一、逐项动画应切换到 `TransitionGroup`
 
@@ -75,7 +64,7 @@ function onEnter(el: Element, done: () => void) {
 }
 ```
 
-`fromVars` 放初始状态，`toVars` 放最终状态和 `duration`、`delay`、`ease`、`onComplete` 等。这节课核心是 X 轴位移，重点参数通常是 `x` 和 `opacity`。
+`fromVars` 放初始状态，`toVars` 放最终状态和 `duration`、`delay`、`ease`、`onComplete` 等。本例核心是 X 轴位移，重点参数通常是 `x` 和 `opacity`。
 
 ## 四、`data-index` 让每项拥有独立延迟节奏
 

@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 应用上架 Mac App Store：打包演示与常见问题
 
 ## 概述
 
 配置就绪之后，真正的考验是“能不能稳定打出一个能被 Apple 接收的包”。这一节把 MAS 打包的实操步骤串起来：从清理旧产物、执行专用构建脚本，到理解 .app 与 .pkg 的区别、通过 Transporter 上传、处理版本号冲突，再到常见打包失败的系统排查。目标是让你在遇到报错时，能快速定位是配置问题、证书问题还是产物结构问题。
-
-## 学习目标
-
-- 掌握 MAS 构建前的清理与专用脚本执行顺序
-- 理解 electron-builder 单证书自动签名，避免手动 electron-osx-sign 的坑
-- 区分 .app 与 .pkg 两种产物及其用途
-- 通过 Transporter 完成上传并理解自动验证与公证环节
-- 规避 MAS 版本号冲突（CFBundleVersion 必须递增）
-- 建立 MAS 与 DMG 分配置、分产物排查的思路
-
----
 
 ## 一、构建前先清理 dist
 

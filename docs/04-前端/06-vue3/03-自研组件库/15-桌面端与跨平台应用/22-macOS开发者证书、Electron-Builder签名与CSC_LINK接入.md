@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # macOS 开发者证书、Electron Builder 签名与 CSC_LINK 接入
 
 ## 概述
 
 这一节进入 macOS 平台分发里最现实的一块：开发者证书与代码签名。课程一开始就点明——Electron 应用在 macOS 上“能打包”并不等于“能顺畅分发”，没有证书时用户安装会看到“未知开发者”警告，这是体验和信任问题，不是单纯的技术可运行问题。非 App Store 分发场景主推 `Developer ID Application` 证书；本机装好证书后 Builder 可自动签名，而要让团队或 CI 复用同一张证书，则要把它从钥匙串导出成 `.p12` 并配密码，再经 `CSC_LINK` 与 `CSC_KEY_PASSWORD` 接入。最后课程特意把“公证”留到下一节，提醒签名和公证是两层不同的问题。
-
-## 学习目标
-
-- 理解“签名是交付问题，不只是构建问题”。
-- 知道非 App Store 分发场景主推 `Developer ID Application` 证书。
-- 掌握本机自动签名与导出 `.p12` + 密码两条路径。
-- 理解 `CSC_LINK` 与 `CSC_KEY_PASSWORD` 是 Builder 接证书的标准方式。
-- 分清签名与公证是两层不同的问题，避免混为一谈。
-
----
 
 ## 一、能打包不等于能顺畅分发
 

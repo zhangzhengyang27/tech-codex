@@ -12,10 +12,6 @@ keywords: [v-model, 双向绑定, Object.defineProperty, Vue2]
 
 ![1.gif](https://github.com/fengshi123/blog/blob/master/assets/mvvm/1.gif?raw=true) 
 
-
-
-
-
 ## 一、什么是 MVVM 数据双向绑定
 
 `MVVM` 数据双向绑定主要是指：数据变化更新视图，视图变化更新数据，如下图所示：
@@ -332,8 +328,6 @@ Dep.target = null;  // 释放自己
 而 `update()` 函数是用来当数据发生变化时调用 `Watcher` 自身的更新函数进行更新的操作。先通过 `let value = this.vm.data[this.exp];` 获取到最新的数据,然后将其与之前 `get()` 获得的旧数据进行比较，如果不一样，则调用更新函数 `cb` 进行更新。
 
 至此，简单的订阅者 `Watcher` 设计完毕。
-
-
 
 ## 五、解析器 Compile 实现
 
@@ -814,15 +808,9 @@ addDep (dep: Dep) {
 
 ![4.png](https://github.com/fengshi123/blog/blob/master/assets/mvvm/4.png?raw=true)  
 
-
-
 ## 七、总结
 
 本文通过监听器 `Observer` 、订阅器 `Dep` 、订阅者 `Watcher` 和解析器 `Compile` 的实现，模拟初始化一个 `Vue` 实例，帮助大家了解数据双向绑定的基本原理。接着，从 `Vue` 源码层面介绍了 `Vue` 数据双向绑定的实现过程，了解 `Vue` 源码的实现逻辑，从而巩固加深对数据双向绑定的理解认识。希望本文对您有帮助。
-
-
-
-
 
 ## 参考文献
 

@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 插件
 
 > Pinia 插件用于扩展 Store 功能，可以添加全局属性、响应状态变化、实现持久化等。
@@ -2793,11 +2792,9 @@ export { createDevDebugPlugin }
 
 - [其他生态](../03-其他生态/01-SSR与Nuxt.md) - 学习 SSR 与 Nuxt 集成
 
-
 ---
 
 ## TypeScript 支持
-
 
 > Pinia 提供完美的 TypeScript 支持，自动类型推断，无需额外声明。
 

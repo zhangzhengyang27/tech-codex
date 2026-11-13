@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 菜单系统、角色菜单、快捷键与动态菜单项更新
 
 ## 概述
 
 这一节正式进入 Electron 的原生菜单系统。课程先把菜单的几种形态铺开——顶部应用菜单、macOS 的 Dock 菜单、页面内的右键菜单，并指出它们都属于菜单系统的一部分。随后用最常见、也最好理解的应用菜单入手，给出创建菜单的最小链路：先写 `template`，再 `buildFromTemplate()`，最后 `setApplicationMenu()`。课程还重点讲了内置 `role` 的省事之处、自定义项的 `click` 边界、`accelerator` 的快捷键礼仪，以及用 `id + getMenuItemById()` 动态改 `visible / enabled / checked` 的状态更新方式。
-
-## 学习目标
-
-- 知道 Electron 菜单至少分三类：顶部应用菜单、Dock 菜单、上下文菜单，底层思维相近但入口不同。
-- 会用“先模板、后实例”的最小链路创建应用菜单：`template` → `buildFromTemplate()` → `setApplicationMenu()`。
-- 理解内置 `role` 的价值：很多标准菜单不用自己造，但 `role` 不支持自定义 click。
-- 明白自定义菜单项和 `role` 不是互斥，而是标准系统行为交给 role、业务动作自己定义。
-- 掌握 `accelerator` 的快捷键礼仪与通过 `id + getMenuItemById()` 动态修改菜单项状态的写法。
-
----
 
 ## 一、Electron 菜单不只是一种，先铺开整张地图
 

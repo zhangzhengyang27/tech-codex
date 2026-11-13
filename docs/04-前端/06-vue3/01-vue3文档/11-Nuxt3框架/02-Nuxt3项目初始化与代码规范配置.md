@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Nuxt3 项目初始化与代码规范配置
 
 ## 概述
 
 本文讲解使用 Nuxt CLI 创建项目、配置 VS Code 开发环境、集成 Prettier + ESLint 代码规范体系的完整流程，建立团队统一的开发基线。
-
-## 学习目标
-
-- 掌握 nuxi CLI 创建 Nuxt3 项目的方法
-- 配置 VS Code 扩展实现保存自动格式化
-- 掌握 Prettier + ESLint 协作配置
-- 理解 Sass 集成与 CSS 规范约定
-
----
 
 ## 一、项目初始化
 

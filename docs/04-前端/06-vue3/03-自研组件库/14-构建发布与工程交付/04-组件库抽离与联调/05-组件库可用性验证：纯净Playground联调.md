@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 组件库可用性验证：纯净 Playground 联调
 
 ## 概述
 
 这一节第一次把「构建成功」和「真正可用」明确区分开。组件库已经能打包了，但一个完全独立的项目真的能把它用起来吗？课程强调要用一个「单纯的基础环境」来验证，而不是直接回到原模板项目——因为原模板里天然已有 Element Plus、i18n、样式系统、全局注册等，会掩盖组件库的隐式依赖。本文讲清纯净 Playground 的价值、`npm link` 联调缓存、`optimizeDeps.force` 强制重预构建、Source Map 跳源码，以及 `$t is not a function` 暴露的宿主 i18n 隐式依赖问题。
-
-## 学习目标
-
-- 理解组件库「打包成功」不等于「可被第三方项目真实消费」，需用纯净 Playground 从零模拟接入
-- 识别 `npm link` 联调的三层缓存：link 产物、Vite 预构建缓存、浏览器缓存
-- 用 `optimizeDeps.force: true` 强制重新预构建依赖，缩短 linked package 旧缓存干扰
-- 借助 Source Map 把运行时报错映射回源码，而非在构建产物里盲猜
-- 通过 `$t is not a function` 识别组件对宿主 i18n 的隐式依赖，并在三种 i18n 策略间做选择
-
----
 
 ## 一、纯净 Playground 才是真实的消费方验收
 

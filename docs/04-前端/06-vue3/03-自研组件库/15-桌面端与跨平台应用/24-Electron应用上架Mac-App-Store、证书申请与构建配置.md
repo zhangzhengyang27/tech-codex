@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 应用上架 Mac App Store：证书申请与构建配置
 
 ## 概述
 
 把 Electron 应用送进 Mac App Store（MAS），和走 Developer ID 直接分发是两条完全不同的路径。前者要接受 Apple 审核、遵循沙盒规则、使用专用证书；后者自由度高，但需要自己处理签名与公证。本节聚焦 MAS 路径，把证书种类、App ID 与描述文件、两套构建配置、沙盒权限清单、上传与元数据这些容易混淆的环节一次性理顺，让你在动手前先建立完整的配置地图。
-
-## 学习目标
-
-- 区分 App Store 与非 App Store 两条分发路径的差异与适用场景
-- 厘清五类 macOS 证书各自的职责，尤其是 Mac App Store Distribution 的手动申请
-- 理解 Identifiers、App ID 与 Provisioning Profile 三者如何串起签名链路
-- 掌握 DMG 配置与 MAS 配置分离的工程做法
-- 正确编写 entitlements.mas.plist，满足沙盒等硬性要求
-- 了解 Transporter 上传与 App Store Connect 元数据填写流程
-
----
 
 ## 一、两条分发路径：App Store 与非 App Store
 

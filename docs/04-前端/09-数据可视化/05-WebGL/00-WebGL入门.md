@@ -11,7 +11,7 @@ webgl 是在网页上绘制和渲染三维图形的技术，可以让用户与�
 
 ## webgl 行业背景
 
-随着 5G 时代的到来，3D 可视化需求大量涌现。3D 游戏，酷炫的活动宣传页，三维数字城市，VR全景展示、3D 产品展示等领域中，很多项目都是用 WebGL 实现的，也只能用 WebGL 来做，也就是说，WebGL 的时代就在眼前了
+近年来，3D 可视化需求持续增长。3D 游戏，酷炫的活动宣传页，三维数字城市，VR全景展示、3D 产品展示等领域中，很多项目都是用 WebGL 实现的
 
 通过一些实际案例，我们可以知道WebGL 能做什么：
 
@@ -21,17 +21,7 @@ webgl 是在网页上绘制和渲染三维图形的技术，可以让用户与�
 - 汽车模型：https://ezshine.gitee.io/www/showcase/smart3dh5/loader.html
 - 趣空间：http://www.3dnest.cn/page/case/case0.html
 
-webgl 的行业背景决定了其在市场中具有广大的需求量。
-
-webgl 发展潜力大，不像曾经的 flash，学完了，还会面临被淘汰的风险。
-
-webgl 的职场竞争力要比 vue、react 等主流框架小。
-
-webgl 薪资可观，一般只要你理解 webgl 原理，可以熟练使用 three.js，会用 react，月薪可达 25k+
-
-![img](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202310202222539.png)
-
-综上所述，对公司而言，webgl 可以解决他们在三维模型的显示和交互上的问题；对开发者而言，webgl 可以让我们实现更多、更炫酷的效果，让我们即使工作，也可以乐在其中，并且还会有一份不错的薪资
+综上所述，对公司而言，webgl 可以解决他们在三维模型的显示和交互上的问题；对开发者而言，webgl 可以让我们实现更多、更炫酷的效果
 
 ## webgl 最快入门
 

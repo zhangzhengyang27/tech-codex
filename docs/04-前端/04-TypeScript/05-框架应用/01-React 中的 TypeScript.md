@@ -1088,7 +1088,8 @@ export const ChildB = ({ data }: IChildBProps) => {
 
 ## 七、常见问题解答（FAQ）
 
-### Q1: 为什么不推荐使用 FC？
+### Q1：为什么不推荐使用 FC？
+
 
 **回答**：
 
@@ -1114,7 +1115,32 @@ const Container: FC<IProps> = (props) => {
 };
 ```
 
-### Q2: useState 初始值为空对象如何处理？
+---
+
+### Q2：useState 初始值为 null 时如何处理？
+
+
+```typescript
+interface IUser {
+  id: number;
+  name: string;
+}
+
+const Component = () => {
+  const [user, setUser] = useState<IUser | null>(null);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  return <div>{user.name}</div>;
+};
+```
+
+---
+
+### Q3：useState 初始值为空对象如何处理？
+
 
 **回答**：
 
@@ -1140,7 +1166,10 @@ const [data, setData] = useState<IData>({
 });
 ```
 
-### Q3: 如何为 useRef 指定正确的类型？
+---
+
+### Q4：如何为 useRef 指定正确的类型？
+
 
 **回答**：
 
@@ -1163,7 +1192,32 @@ if (inputRef.current) {
 }
 ```
 
-### Q4: 事件处理函数如何正确标注类型？
+**另一种常见场景**：
+
+
+```typescript
+const inputRef = useRef<HTMLInputElement>(null);
+
+useEffect(() => {
+  if (inputRef.current) {
+    inputRef.current.focus();
+  }
+}, []);
+
+return <input ref={inputRef} />;
+```
+
+**原因**: React 19 起 `useRef` 必须显式传入初始值（如 DOM 引用传 `null`），对应返回 `RefObject<HTMLInputElement | null>`，因此使用 `current` 前需要判空。注意 React 18 及之前"初始值为 null 时返回只读 `RefObject`"的区分在 React 19 类型中已取消——现在三种重载都返回 `RefObject` 且 `current` 可写，只是类型上会带上 `null | undefined`。如果只是存储可变值，使用非空初始值即可：
+
+```typescript
+const countRef = useRef<number>(0);
+countRef.current = 1;
+```
+
+---
+
+### Q5：事件处理函数如何正确标注类型？
+
 
 **回答**：
 
@@ -1184,7 +1238,31 @@ const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 }} />
 ```
 
-### Q5: 如何提取第三方组件的属性类型？
+**另一种常见场景**：
+
+
+```typescript
+import type { ChangeEvent, FormEvent } from 'react';
+
+const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const formData = new FormData(e.currentTarget);
+  console.log(formData.get('username'));
+};
+
+const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  console.log(e.target.value);
+};
+
+<form onSubmit={handleSubmit}>
+  <input name="username" onChange={handleChange} />
+</form>
+```
+
+---
+
+### Q6：如何提取组件 props 类型？
+
 
 **回答**：
 
@@ -1210,7 +1288,157 @@ const CustomButton = ({ loading, ...props }: ICustomButtonProps) => {
 };
 ```
 
-### Q6: forwardRef 如何正确标注类型？
+**另一种常见场景**：
+
+
+```typescript
+import type { ComponentProps } from 'react';
+
+interface IButtonProps extends ComponentProps<'button'> {
+  variant?: 'primary' | 'secondary';
+}
+
+const Button = ({ variant = 'primary', ...props }: IButtonProps) => {
+  return (
+    <button
+      className={`btn btn-${variant}`}
+      {...props}
+    />
+  );
+};
+
+type MyButtonProps = ComponentProps<typeof Button>;
+```
+
+---
+
+### Q7：如何为 children 属性定义类型？
+
+
+```typescript
+import { ReactNode } from 'react';
+
+interface ICardProps {
+  children: ReactNode;
+  title: string;
+}
+
+const Card = ({ children, title }: ICardProps) => {
+  return (
+    <div className="card">
+      <h2>{title}</h2>
+      {children}
+    </div>
+  );
+};
+```
+
+---
+
+### Q8：如何处理可选 props 与默认值？
+
+
+```typescript
+interface IGreetingProps {
+  name?: string;
+  count?: number;
+}
+
+const Greeting = ({ name = 'Guest', count = 1 }: IGreetingProps) => {
+  return (
+    <div>
+      Hello, {name}! (Visit #{count})
+    </div>
+  );
+};
+```
+
+---
+
+### Q9：泛型组件如何定义？
+
+
+```typescript
+interface ITableProps<T> {
+  data: T[];
+  columns: {
+    key: keyof T;
+    title: string;
+    render?: (value: T[keyof T], record: T) => ReactNode;
+  }[];
+}
+
+function Table<T extends Record<string, any>>({ data, columns }: ITableProps<T>) {
+  return (
+    <table>
+      <thead>
+        <tr>
+          {columns.map(col => <th key={String(col.key)}>{col.title}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((row, idx) => (
+          <tr key={idx}>
+            {columns.map(col => (
+              <td key={String(col.key)}>
+                {col.render ? col.render(row[col.key], row) : String(row[col.key])}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
+<Table<IUser>
+  data={users}
+  columns={[
+    { key: 'name', title: 'Name' },
+    { key: 'email', title: 'Email' },
+  ]}
+/>
+```
+
+---
+
+### Q10：forwardRef 如何正确标注类型？
+
+
+```typescript
+import { forwardRef } from 'react';
+
+interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+}
+
+const Input = forwardRef<HTMLInputElement, IInputProps>(
+  ({ label, ...props }, ref) => {
+    return (
+      <div>
+        {label && <label>{label}</label>}
+        <input ref={ref} {...props} />
+      </div>
+    );
+  }
+);
+
+Input.displayName = 'Input';
+
+const Form = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  return <Input ref={inputRef} label="Username" />;
+};
+```
+
+**另一种常见场景**：
+
 
 **回答**：
 
@@ -1241,6 +1469,60 @@ const App = () => {
 ```
 
 ---
+
+### Q11：如何处理第三方组件的类型扩展？
+
+
+```typescript
+import { Button } from 'antd';
+import type { ButtonProps } from 'antd';
+
+interface IExtendedButtonProps extends ButtonProps {
+  loading?: boolean;
+  confirmText?: string;
+}
+
+const ExtendedButton = ({ loading, confirmText, ...props }: IExtendedButtonProps) => {
+  return (
+    <Button {...props} loading={loading}>
+      {loading ? 'Loading...' : props.children}
+    </Button>
+  );
+};
+```
+
+---
+
+### Q12：如何处理动态组件的类型？
+
+
+```typescript
+import { ComponentType, lazy, Suspense } from 'react';
+
+interface IComponentMap {
+  header: ComponentType<{ title: string }>;
+  footer: ComponentType<{ links: string[] }>;
+  sidebar: ComponentType<{ items: string[] }>;
+}
+
+const components: IComponentMap = {
+  header: ({ title }) => <header>{title}</header>,
+  footer: ({ links }) => <footer>{links.join(', ')}</footer>,
+  sidebar: ({ items }) => <aside>{items.map(i => <p key={i}>{i}</p>)}</aside>,
+};
+
+type ComponentName = keyof IComponentMap;
+
+const DynamicComponent = <N extends ComponentName>({
+  name,
+  ...props
+}: { name: N } & React.ComponentProps<IComponentMap[N]>) => {
+  const Component = components[name];
+  return <Component {...props as any} />;
+};
+
+<DynamicComponent name="header" title="My App" />
+```
 
 ## 八、最佳实践
 
@@ -1808,257 +2090,7 @@ const SearchInput = () => {
 
 ---
 
-## 十三、常见问题解答
-
-### Q1: useState 初始值为 null 时如何处理？
-
-```typescript
-interface IUser {
-  id: number;
-  name: string;
-}
-
-const Component = () => {
-  const [user, setUser] = useState<IUser | null>(null);
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
-  return <div>{user.name}</div>;
-};
-```
-
-### Q2: 如何为 children 属性定义类型？
-
-```typescript
-import { ReactNode } from 'react';
-
-interface ICardProps {
-  children: ReactNode;
-  title: string;
-}
-
-const Card = ({ children, title }: ICardProps) => {
-  return (
-    <div className="card">
-      <h2>{title}</h2>
-      {children}
-    </div>
-  );
-};
-```
-
-### Q3: useRef 的类型如何选择？
-
-```typescript
-const inputRef = useRef<HTMLInputElement>(null);
-
-useEffect(() => {
-  if (inputRef.current) {
-    inputRef.current.focus();
-  }
-}, []);
-
-return <input ref={inputRef} />;
-```
-
-**原因**: React 19 起 `useRef` 必须显式传入初始值（如 DOM 引用传 `null`），对应返回 `RefObject<HTMLInputElement | null>`，因此使用 `current` 前需要判空。注意 React 18 及之前"初始值为 null 时返回只读 `RefObject`"的区分在 React 19 类型中已取消——现在三种重载都返回 `RefObject` 且 `current` 可写，只是类型上会带上 `null | undefined`。如果只是存储可变值，使用非空初始值即可：
-
-```typescript
-const countRef = useRef<number>(0);
-countRef.current = 1;
-```
-
-### Q4: 如何处理事件处理函数的类型？
-
-```typescript
-import type { ChangeEvent, FormEvent } from 'react';
-
-const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const formData = new FormData(e.currentTarget);
-  console.log(formData.get('username'));
-};
-
-const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  console.log(e.target.value);
-};
-
-<form onSubmit={handleSubmit}>
-  <input name="username" onChange={handleChange} />
-</form>
-```
-
-### Q5: 如何提取组件 props 类型？
-
-```typescript
-import type { ComponentProps } from 'react';
-
-interface IButtonProps extends ComponentProps<'button'> {
-  variant?: 'primary' | 'secondary';
-}
-
-const Button = ({ variant = 'primary', ...props }: IButtonProps) => {
-  return (
-    <button
-      className={`btn btn-${variant}`}
-      {...props}
-    />
-  );
-};
-
-type MyButtonProps = ComponentProps<typeof Button>;
-```
-
-### Q6: 如何处理可选 props 与默认值？
-
-```typescript
-interface IGreetingProps {
-  name?: string;
-  count?: number;
-}
-
-const Greeting = ({ name = 'Guest', count = 1 }: IGreetingProps) => {
-  return (
-    <div>
-      Hello, {name}! (Visit #{count})
-    </div>
-  );
-};
-```
-
-### Q7: 泛型组件如何定义？
-
-```typescript
-interface ITableProps<T> {
-  data: T[];
-  columns: {
-    key: keyof T;
-    title: string;
-    render?: (value: T[keyof T], record: T) => ReactNode;
-  }[];
-}
-
-function Table<T extends Record<string, any>>({ data, columns }: ITableProps<T>) {
-  return (
-    <table>
-      <thead>
-        <tr>
-          {columns.map(col => <th key={String(col.key)}>{col.title}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, idx) => (
-          <tr key={idx}>
-            {columns.map(col => (
-              <td key={String(col.key)}>
-                {col.render ? col.render(row[col.key], row) : String(row[col.key])}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-interface IUser {
-  id: number;
-  name: string;
-  email: string;
-}
-
-<Table<IUser>
-  data={users}
-  columns={[
-    { key: 'name', title: 'Name' },
-    { key: 'email', title: 'Email' },
-  ]}
-/>
-```
-
-### Q8: 如何处理第三方组件的类型扩展？
-
-```typescript
-import { Button } from 'antd';
-import type { ButtonProps } from 'antd';
-
-interface IExtendedButtonProps extends ButtonProps {
-  loading?: boolean;
-  confirmText?: string;
-}
-
-const ExtendedButton = ({ loading, confirmText, ...props }: IExtendedButtonProps) => {
-  return (
-    <Button {...props} loading={loading}>
-      {loading ? 'Loading...' : props.children}
-    </Button>
-  );
-};
-```
-
-### Q9: 如何正确使用 forwardRef？
-
-```typescript
-import { forwardRef } from 'react';
-
-interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-}
-
-const Input = forwardRef<HTMLInputElement, IInputProps>(
-  ({ label, ...props }, ref) => {
-    return (
-      <div>
-        {label && <label>{label}</label>}
-        <input ref={ref} {...props} />
-      </div>
-    );
-  }
-);
-
-Input.displayName = 'Input';
-
-const Form = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  return <Input ref={inputRef} label="Username" />;
-};
-```
-
-### Q10: 如何处理动态组件的类型？
-
-```typescript
-import { ComponentType, lazy, Suspense } from 'react';
-
-interface IComponentMap {
-  header: ComponentType<{ title: string }>;
-  footer: ComponentType<{ links: string[] }>;
-  sidebar: ComponentType<{ items: string[] }>;
-}
-
-const components: IComponentMap = {
-  header: ({ title }) => <header>{title}</header>,
-  footer: ({ links }) => <footer>{links.join(', ')}</footer>,
-  sidebar: ({ items }) => <aside>{items.map(i => <p key={i}>{i}</p>)}</aside>,
-};
-
-type ComponentName = keyof IComponentMap;
-
-const DynamicComponent = <N extends ComponentName>({
-  name,
-  ...props
-}: { name: N } & React.ComponentProps<IComponentMap[N]>) => {
-  const Component = components[name];
-  return <Component {...props as any} />;
-};
-
-<DynamicComponent name="header" title="My App" />
-```
-
----
-
-## 十四、最佳实践总结
+## 十三、最佳实践总结
 
 ### 10.1 类型定义原则
 

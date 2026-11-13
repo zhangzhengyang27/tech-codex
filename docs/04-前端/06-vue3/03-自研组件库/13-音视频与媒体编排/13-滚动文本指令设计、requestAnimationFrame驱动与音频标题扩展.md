@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 滚动文本指令设计、requestAnimationFrame 驱动与音频标题扩展
 
 ## 概述
@@ -14,17 +13,6 @@ tags: [Vue, 组件化, 响应式, 路由]
 这一节是播放器的体验增强扩展节，目标是解决长标题滚动这种高频场景：歌名很长、单行放不下，又希望用户看到完整内容。它不只服务于歌单标题，也能用于歌词、公告、跑马灯文本，最终应沉淀成一个可复用能力而非临时代码。
 
 课程把功能做成自定义指令 `v-scroll-text`，用 `requestAnimationFrame()` 驱动 `scrollLeft` 而非纯 CSS 平移，先算 `maxScrollLeft` 判断是否需要滚动，再用「方向变量 + 起始时间重置」的状态机实现到边界后反向滚动。
-
-## 学习目标
-
-- 理解长标题滚动为何适合做成自定义指令而非硬编码在组件里
-- 区分 `scrollLeft` 与 `translateX`：前者推动容器内部内容滚动，后者平移整个元素
-- 用 `scrollWidth - clientWidth` 算出 `maxScrollLeft`，仅在溢出时启用滚动
-- 用 `requestAnimationFrame()` 时间戳驱动滚动，比 `setInterval()` 更贴合浏览器绘制节奏
-- 用 `direction` + 重置 `start` 的状态机实现到边界反向滚动
-- 预留后续扩展空间：悬停暂停、触摸暂停、边界停顿、单向滚动
-
----
 
 ## 一、这是体验增强，也是可复用能力
 

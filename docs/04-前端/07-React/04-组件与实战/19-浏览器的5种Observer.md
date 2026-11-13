@@ -8,14 +8,6 @@ tags: [React, 组件与实战]
 
 # 浏览器的5种Observer
 
-## 学习目标
-
-- 掌握 IntersectionObserver
-- 掌握 MutationObserver
-- 掌握 ResizeObserver
-- 掌握 PerformanceObserver
-- 掌握 ReportingObserver
-
 ## IntersectionObserver
 
 一个元素从不可见到可见，从可见到不可见，这种变化如何监听呢？
@@ -273,7 +265,6 @@ performance.measure('button clicked', 'from', 'to');
 
 所以自然也要监听，所以浏览器提供了 ReportingObserver 的 api 用来监听这些报告的打印，我们可以拿到这些报告然后上传。
 
-
 ```javascript
 const reportingObserver = new ReportingObserver((reports, observer) => {
     for (const report of reports) {
@@ -309,4 +300,4 @@ reportingObserver.observe();
 ## 继续阅读
 
 - 上一篇：[18-三个简单组件的封装](18-三个简单组件的封装)
-- 下一篇：[20-组件实战-Watermark防删除水印组件](20-组件实战-Watermark防删除水印组件)
+- 下一篇：[22-图解网页的各种距离](22-图解网页的各种距离)

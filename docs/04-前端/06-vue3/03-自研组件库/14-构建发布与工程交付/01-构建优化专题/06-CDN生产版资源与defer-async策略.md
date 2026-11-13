@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # CDN 生产版资源与 defer-async 策略
 
 ## 概述
 
 CDN external 不只是“把包丢到外面去”，还要继续优化到底加载哪个文件、以什么时序加载。本节在 external 基础上，把核心库替换成对应的生产版 CDN 文件，根据资源性质给不同脚本补 `defer` / `async`，并明确自动路由这类构建期生成能力不适合粗暴 external，把 external 策略从“粗粒度减包”推进到资源版本选择、加载时序优化与 external 边界控制。
-
-## 学习目标
-
-- 理解 external 之后还要选对 CDN 生产版 / 压缩版文件，节省首屏带宽。
-- 会去 npm 包 `dist` 目录或 CDN 上确认可用文件名再写配置。
-- 建立“external 不是越多越好”的取舍观：优先大而稳定的运行时库。
-- 分清 `defer` 与 `async` 的加载时序差异，并能按脚本名称精细控制。
-- 识别 external 的边界：构建期生成型模块（如自动路由）暂不适合 external。
-
----
 
 ## 一、external 之后还要选对生产版文件
 

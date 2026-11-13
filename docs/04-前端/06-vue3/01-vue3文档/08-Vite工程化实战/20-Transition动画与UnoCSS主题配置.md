@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Transition 动画与 UnoCSS 主题配置
 
 ## 概述
 
 Vue 的 Transition 组件为路由切换和元素显隐提供声明式动画能力，配合 UnoCSS 的主题系统可以实现一致的设计令牌管理。本文讲解路由过渡动画配置和 UnoCSS 主题变量定制。
-
-## 学习目标
-
-- 掌握 Vue Transition 在路由切换中的应用
-- 理解 UnoCSS theme 配置与设计令牌的关系
-- 学会定义全局主题变量并在组件中引用
-
----
 
 ## 一、路由过渡动画
 

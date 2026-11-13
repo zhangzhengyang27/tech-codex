@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # GitHub Actions 接入 macOS 公证签名、Linux 构建与打包问题修复
 
 ## 概述
 
 基础发布闭环打通后，真正的工程难点才浮现：macOS 既要签名又要公证，认证凭证在云端无法直接读取本地钥匙串，Linux 虽简单但也有自己的坑。这一节把 macOS 自动化发布的两阶段拆开讲，对比课程旧方案与官方新方案在命名上的差异，说明证书与 API Key 如何安全注入，并给出矩阵构建和常见打包失败的系统排查。
-
-## 学习目标
-
-- 区分 macOS 的代码签名与公证两个阶段
-- 对比 electron-builder-notarize + afterSign 与内置 @electron/notarize
-- 厘清 Apple API Key 的课程旧命名与官方 APPLE_* 命名
-- 掌握证书 .p12 导出、base64 与 CSC_LINK 注入
-- 用矩阵构建扩展到 macOS 与 Linux
-- 定位 files 配置遗漏与 CI 细节错误
-
----
 
 ## 一、签名与公证是两个独立阶段
 

@@ -6,25 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Schema 表单双向绑定与嵌套结构初始化
 
 ## 概述
 
 渲染出控件只是第一步，真正棘手的是数据：Schema 描述的字段要能初始化成 `model`，用户改动后要能回传给页面层，嵌套结构（一个字段里还有子表单）还要正确递归。本章围绕 `setForm` 递归初始化、`modelValue` 的双向绑定、`watch` 深度监听回写，以及为什么当前阶段用显式 `emit` 而非 `defineModel()` 更稳，讲清楚 Schema 表单的数据链路。
-
-## 学习目标
-
-- 掌握 `setForm` 递归把 Schema 初始化为 `model` 的实现
-- 理解 `modelValue` 作为统一数据出口的设计
-- 用 `watch(model, { deep: true })` 把改动回传给页面层
-- 认识为什么当前阶段显式 `emit` 比 `defineModel()` 更稳
-- 理解嵌套表单结构阶段性合理的取舍
-- 区分"初始化值"和"运行时双向绑定"两条链路
-- 掌握未定义 field 时的兜底命名策略
-- 理解联动场景下绑定链路的延伸用法
-
----
 
 ## 一、setForm 递归初始化 model
 

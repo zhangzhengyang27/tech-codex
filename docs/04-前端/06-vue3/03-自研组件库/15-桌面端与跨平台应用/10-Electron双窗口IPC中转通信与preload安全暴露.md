@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron 双窗口 IPC 中转通信与 preload 安全暴露
 
 ## 概述
 
 这一节正式进入“渲染进程与渲染进程之间怎么通信”的实践。课程没有直接上更复杂的 `MessagePort`，而是先带大家用最容易理解的方式做出来：让主进程充当消息中转站。通过一个双窗口互发消息的示例，它把几个关键能力串在了一起：主进程里真正持有多个 `BrowserWindow` 实例、用两组 `ipcMain.on` 做消息路由、再用目标窗口的 `webContents.send` 把消息转发出去，最后还演示了 preload 层如何从“通用 send/receive”收口到“点对点 API”。这套做法最大的价值，是帮你在进入更复杂方案前先建立多窗口通信的第一层心智。
-
-## 学习目标
-
-- 理解渲染进程之间通信的第一种方案：主进程中转（win1 → main → win2）。
-- 知道多窗口通信的前提是主进程里真的持有多个 `BrowserWindow` 实例，并能分清谁是 win1、谁是 win2。
-- 会用两组 `ipcMain.on` + 目标窗口 `webContents.send` 实现消息路由。
-- 认识到 preload 暴露“通用 send(channel, data) / receive(channel, fn)”的安全风险，并改造成受控的点对点 API。
-- 明确主进程中转只是渲染进程互通的第一种方案，更专门的 `MessagePort` 留到后面展开。
-
----
 
 ## 一、渲染进程互通，最直观的方式是主进程中转
 

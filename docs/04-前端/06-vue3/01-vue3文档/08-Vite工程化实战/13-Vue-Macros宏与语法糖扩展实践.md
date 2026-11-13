@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Vue Macros 宏与语法糖扩展实践
 
 ## 概述
 
 Vue Macros 是一个扩展 Vue SFC 语法的插件集合，提供 `defineModels`、`defineProp`、`defineRender` 等实验性宏，让组件编写更简洁。本文介绍核心宏的用法及集成方式。
-
-## 学习目标
-
-- 了解 Vue Macros 提供的语法扩展能力
-- 掌握常用宏（defineModels、defineProp）的使用
-- 理解实验性宏与 Vue 官方宏的关系
-
----
 
 ## 一、Vue Macros 概述
 

@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Actions
 
 > Actions 是 Store 的方法，可以包含同步和异步逻辑，是修改 State 的主要方式。

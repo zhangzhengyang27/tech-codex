@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # ESLint 版本冲突问题排查与解决
 
 ## 概述
 
 Nuxt 项目配置 ESLint 时，`@nuxtjs/eslint-config-typescript` 内部依赖的 `@typescript-eslint` 版本可能与项目手动安装的版本冲突，导致 ESLint 无法加载配置。本文记录完整的排查思路与解决方案。
-
-## 学习目标
-
-- 掌握 ESLint 依赖版本冲突的排查流程
-- 学会通过 VS Code Output 面板定位 ESLint 错误
-- 理解 npm/pnpm 依赖树中版本冲突的产生机制
-- 掌握 overrides / 版本对齐等解决手段
-
----
 
 ## 一、问题现象
 

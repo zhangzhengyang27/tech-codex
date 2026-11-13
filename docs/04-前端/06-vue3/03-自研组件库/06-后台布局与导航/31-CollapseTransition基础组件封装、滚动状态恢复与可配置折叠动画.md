@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # CollapseTransition 基础组件封装、滚动状态恢复与可配置折叠动画
 
 ## 概述
@@ -14,18 +13,6 @@ tags: [Vue, 组件化, 响应式, 路由]
 前面章节零散写过折叠展开过渡，本章把它收口成一个可复用的基础组件 `CollapseTransition`。这一步的核心价值不是"少写几行代码"，而是把一整套折叠动画状态机沉淀下来：哪些状态在进入前处理、哪些在进入中恢复、哪些在结束后清理，以及如何兼容本身带滚动条和内边距的内容块。
 
 组件基于 Vue 的 `<Transition>` 与 JavaScript 钩子实现，完整管理 `height`、`padding`、`overflow` 三类状态的接力，并通过 `dataset` 缓存旧值以便动画结束后恢复。最后暴露 `duration` 配置项，并用 CSS `v-bind` 与组件 props 联动，让折叠速度可调。
-
-## 学习目标
-
-- 理解把 `<Transition>` 封装成基础组件，沉淀的是"折叠动画行为模型"
-- 掌握折叠动画中 `height`、`padding`、`overflow` 三状态在钩子间的完整接力
-- 学会用 `dataset` 缓存旧 `overflow`，兼容内部原本就有滚动条的内容块
-- 识别 `scrollHeight !== 0` 不能准确判断"是否有滚动条"的误区
-- 理解 JS 钩子控制进入/离开态后，CSS 只需保留 `*-active` 过渡规则
-- 用 `duration` props + `v-bind` 实现可配置的折叠动画时长
-- 了解如何将基础过渡组件接入真实业务面板（图标旋转、schema 渲染）
-
----
 
 ## 一、封装的价值是沉淀动画状态机
 

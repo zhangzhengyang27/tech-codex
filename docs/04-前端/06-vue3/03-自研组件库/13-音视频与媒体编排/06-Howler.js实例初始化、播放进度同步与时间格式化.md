@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Howler.js 实例初始化、播放进度同步与时间格式化
 
 ## 概述
@@ -14,17 +13,6 @@ tags: [Vue, 组件化, 响应式, 路由]
 前几节把进度条、音量条和控制区都做成了纯 UI 状态。本节开始真正把这些状态接到 Howler.js 的播放逻辑上：先把全局对象 `Howler` 和实例对象 `Howl` 的职责分清，再用默认配置合并与全局字段白名单完成初始化，最后通过 `onload`、`seek()` 和 `requestAnimationFrame()` 把时长、播放状态和进度接通到 UI。
 
 这一节的产出是播放器的「基础闭环」：能加载、能播放、能暂停、能显示时长、能同步进度。拖拽反向控制 `seek()`、音量联动、倍率联动留到后续章节继续做穿。
-
-## 学习目标
-
-- 区分 `Howler`（全局层）与 `Howl`（实例层）的职责边界
-- 用 `defaultAudioOptions` 维护组件默认配置，并与用户配置合并
-- 用字段白名单把全局选项挂到 `Howler`，避免误写进实例配置
-- 在 `onload` 回调里通过 `duration()` 拿到总时长并格式化显示
-- 用 `handleTogglePlay()` 在 `play()` 与 `pause()` 之间按状态切换
-- 用 `seek()` 加 `requestAnimationFrame()` 实时同步进度，并把秒数换算成百分比
-
----
 
 ## 一、先分清 Howler 与 Howl 的职责
 

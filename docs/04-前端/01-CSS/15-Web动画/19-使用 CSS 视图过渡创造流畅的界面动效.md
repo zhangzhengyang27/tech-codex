@@ -32,7 +32,7 @@ CSS View Transition API 是一个令人兴奋的新技术，它为 Web 开发者
   
 
 
-在这节课中，我将引导你深入了解 CSS View Transition API 的工作原理，并提供实用的示例和技巧，帮助你在自己的项目中利用这一强大的技术。那就让我们一起开始探索这个充满创造力和可能性的新世界吧！
+在本文中，我将引导你深入了解 CSS View Transition API 的工作原理，并提供实用的示例和技巧，帮助你在自己的项目中利用这一强大的技术。
 
   
 
@@ -2259,7 +2259,7 @@ function activateCard(card) {
   
 
 
-示例源码不在这里展示了，感兴趣的同学请查看源代码。
+示例源码不在这里展示了，感兴趣的读者请查看源代码。
 
   
 
@@ -2388,7 +2388,7 @@ loadTemplate('#content_1');
   
 
 
-你也[可以基于一些 JavaScript 框架给 SPA 添加视图过渡的动画效果，比如 Astro、SvelteKit、Nuxt 和 Angular 等](https://developer.chrome.com/docs/web-platform/view-transitions/#working-with-frameworks)。不过，有关于 CSS View Transitions API 在 JavaScript 框架中的使用已超出这节课的范畴，在这里不做相关阐述。如果你对这方面知识感兴趣的话，可以移步阅读下面这些教程：
+你也[可以基于一些 JavaScript 框架给 SPA 添加视图过渡的动画效果，比如 Astro、SvelteKit、Nuxt 和 Angular 等](https://developer.chrome.com/docs/web-platform/view-transitions/#working-with-frameworks)。不过，有关于 CSS View Transitions API 在 JavaScript 框架中的使用已超出本文的范畴，在这里不做相关阐述。如果你对这方面知识感兴趣的话，可以移步阅读下面这些教程：
 
   
 
@@ -2606,9 +2606,9 @@ CSS View Transitions API 的精致之处在于它管理了新旧 DOM 状态之�
   
 
 
-如果你想更深入了解 CSS View Transitions API，个人建议你花些时间[阅读 @Jake Archibald 关于该主题的文章](https://developer.chrome.com/docs/web-platform/view-transitions/)。他是这个 API 背后的主要人物之一。在这节课中，我用我自己简单的话解释了 CSS View Transitions API 是什么，并且通过大量的实际案例向大家展示了该 API 可以用来做些什么。
+如果你想更深入了解 CSS View Transitions API，个人建议你花些时间[阅读 @Jake Archibald 关于该主题的文章](https://developer.chrome.com/docs/web-platform/view-transitions/)。他是这个 API 背后的主要人物之一。在本文中，我用我自己简单的话解释了 CSS View Transitions API 是什么，并且通过大量的实际案例向大家展示了该 API 可以用来做些什么。
 
   
 
 
-最后，希望大家能通过这节课的学习，将掌握到的新技术灵活地应用于实际项目当中，从而改进自己的 Web 应用或网站。
+最后，希望大家能通过本文的学习，将掌握到的新技术灵活地应用于实际项目当中，从而改进自己的 Web 应用或网站。

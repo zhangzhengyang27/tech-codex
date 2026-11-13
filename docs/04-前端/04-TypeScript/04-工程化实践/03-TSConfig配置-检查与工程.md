@@ -31,7 +31,7 @@ mindmap
 
 ## 文档概述
 
-上一节我们介绍了构建相关的 TSConfig 配置，包括源码相关、解析相关、产物相关等几个部分，这一节我们会接着来介绍类型检查与工程相关的 TSConfig。
+上一篇介绍了构建相关的 TSConfig 配置，包括源码相关、解析相关、产物相关等几个部分，本文接着介绍类型检查与工程相关的 TSConfig。
 
 > 本节代码见：[Project References](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Flinbudu599%2FTypeScript-Tiny-Book%2Ftree%2Fmain%2Fpackages%2F22-project-references%2F)
 
@@ -1859,4 +1859,4 @@ monorepo/
 - [TypeScript 官方文档 - Project References](https://www.typescriptlang.org/docs/handbook/project-references.html)
 - [TypeScript 官方文档 - Strict Mode](https://www.typescriptlang.org/docs/handbook/2/basic-types.html#strictness)
 
-在下一节，我们会进入完全的实战环节，使用 TypeScript + NestJs + Prisma 开发一个博客 API，从项目搭建、基本语法、数据库与 ORM、请求链路到部署，让你拥有一个完整的，属于自己的 API 服务。
+接下来将进入完全的实战环节，使用 TypeScript + NestJs + Prisma 开发一个博客 API，从项目搭建、基本语法、数据库与 ORM、请求链路到部署，让你拥有一个完整的，属于自己的 API 服务。

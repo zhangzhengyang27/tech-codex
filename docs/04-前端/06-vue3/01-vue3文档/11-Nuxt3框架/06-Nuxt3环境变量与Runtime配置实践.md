@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Nuxt3 环境变量与 Runtime 配置实践
 
 ## 概述
 
 Nuxt3 通过 runtimeConfig 统一管理运行时配置，配合 `.env` 文件实现环境差异化。本文讲解环境变量命名约定、公开/私有配置的边界、多环境管理方案。
-
-## 学习目标
-
-- 掌握 runtimeConfig 的配置与使用方式
-- 理解 NUXT_PUBLIC_* 与 NUXT_* 的访问边界
-- 学会 .env 多环境文件管理
-- 掌握 useRuntimeConfig 在组件和服务端的使用
-
----
 
 ## 一、配置体系概览
 

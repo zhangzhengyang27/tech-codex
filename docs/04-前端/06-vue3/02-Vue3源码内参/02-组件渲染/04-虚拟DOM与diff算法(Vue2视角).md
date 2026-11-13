@@ -28,7 +28,6 @@ keywords: [虚拟DOM, diff, snabbdom, patch, Vue2]
 
 - 第五步，绘制页面：根据 `Render` 树和节点显示坐标，然后调用每个节点的 `paint` 方法，将它们绘制出来。
 
-
 **注意点：**
 
 **1、`DOM` 树的构建是文档加载完成开始的？ **构建 `DOM` 树是一个渐进过程，为达到更好的用户体验，渲染引擎会尽快将内容显示在屏幕上，它不必等到整个 `HTML` 文档解析完成之后才开始构建 `render` 树和布局。
@@ -1028,17 +1027,9 @@ export function removeChild (node: Node, child: Node) {
 
 ![22.png](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/22.png?raw=true)  
 
-
-
 ## 四、总结
 
 本文从通过介绍真实 `DOM` 结构其解析过程以及存在的问题，从而引出为什么需要虚拟 `DOM`；然后分析虚拟`DOM` 的好处，以及其一些理论基础和基础算法的实现；最后根据我们已经掌握的基础知识，再一步步去查看`Vue.js` 的源码如何实现的。从存在问题 —> 理论基础 —> 具体实践，一步步深入，帮助大家更好的了解什么是`Virtual DOM`、为什么需要 `Virtual DOM`、以及 `Virtual DOM`的具体实现，希望本文对您有帮助。
-
-
-
-
-
-
 
 ## 参考文献
 

@@ -15,7 +15,7 @@ category: 前端工程化
 
 而**无包构建**是指这样一类构建方式：在构建时只需处理模块的编译而**无须打包**，把模块间的**依赖关系完全交给浏览器来处理。**浏览器会加载入口模块，分析依赖后，再通过网络请求加载被依赖的模块。通过这样的方式简化构建时的处理过程，提升构建效率。
 
-这种通过浏览器原生的模块进行解析的方式又称为 Native-ESM（Native ES Module）。下面通过一个简单示例来展示这种基于浏览器的模块加载过程（[16_nobundle](https://github.com/fe-efficiency/lessons_fe_efficiency/tree/master/16_nobundle)/simple-esm），如下面的代码和图片所示：
+这种通过浏览器原生的模块进行解析的方式又称为 Native-ESM（Native ES Module）。下面通过一个简单示例来展示这种基于浏览器的模块加载过程（[16_nobundle](https://github.com/fe-efficiency/lessons_fe_efficiency/tree/master/16_nobundle)/simple-esm），如下面的代码所示：
 
 ```text
 //./src/index.html
@@ -29,17 +29,11 @@ import { appendHTML } from './common.js'
 import('https://cdn.jsdelivr.net/npm/lodash-es@4.17.15/slice.js').then((module) => {...})
 ```
 
-![](/frontend-eng-images/2c3f6533e60c.png)
-
 从示例中可以看到，在没有任何构建工具处理的情况下，在页面中引入带有 type="module" 属性的 script，浏览器就会在加载入口模块时依次加载所有被依赖的模块。下面深入了解这种基于浏览器加载 JS 模块的技术的细节。
 
 ## 基于浏览器的 JS 模块加载功能
 
-从 caniuse 网站中可以看到，目前大部分主流的浏览器都已支持 JavaScript modules 这一特性，如下图所示：
-
-![](/frontend-eng-images/0ff638ab6b30.png)
-
-[图片来源：[https://caniuse.com/es6-module](https://caniuse.com/es6-module)]
+从 caniuse 网站中可以看到，目前大部分主流的浏览器都已支持 JavaScript modules 这一特性。
 
 下面总结这种加载方式的注意点。
 
@@ -67,7 +61,7 @@ import('https://cdn.jsdelivr.net/npm/lodash-es@4.17.15/slice.js').then((module) 
 
 ## Vite
 
-[Vite](https://github.com/vitejs/vite) 是 Vue 框架的作者尤雨溪推出的基于 Native-ESM 的 Web 构建工具。它在开发环境下基于 Native-ESM 处理构建过程，只编译不打包，在生产环境下则基于 Rollup 打包。先通过 Vite 的官方示例来观察它的使用效果，如下面的代码和图片所示（示例代码参见 [example-vite](https://github.com/fe-efficiency/lessons_fe_efficiency/tree/master/16_nobundle/example-vite)）：
+[Vite](https://github.com/vitejs/vite) 是 Vue 框架的作者尤雨溪推出的基于 Native-ESM 的 Web 构建工具。它在开发环境下基于 Native-ESM 处理构建过程，只编译不打包，在生产环境下则基于 Rollup 打包。先通过 Vite 的官方示例来观察它的使用效果，如下面的代码所示（示例代码参见 [example-vite](https://github.com/fe-efficiency/lessons_fe_efficiency/tree/master/16_nobundle/example-vite)）：
 
 ```bash
 npm init vite-app example-vite
@@ -76,11 +70,7 @@ npm install
 npm run dev
 ```
 
-![](/frontend-eng-images/0338efe05dd3.png)
-
-可以看到，运行示例代码后，在浏览器中只引入了 src/main.js 这一个入口模块，但是在网络面板中却依次加载了若干依赖模块，包括外部模块 vue 和 css。依赖图如下：
-
-![](/frontend-eng-images/149b72d2f4f0.png)
+可以看到，运行示例代码后，在浏览器中只引入了 src/main.js 这一个入口模块，但是在网络面板中却依次加载了若干依赖模块，包括外部模块 vue 和 css。
 
 可以看到，经过 Vite 处理后，浏览器中加载的模块与源代码中导入的模块相比发生了变化，这些变化包括对外部依赖包的处理，对 vue 文件的处理，对 css 文件的处理等。下面逐个分析其中的变化。
 
@@ -92,7 +82,7 @@ npm run dev
 
 **对外部依赖包的解析**
 
-首先是对不带路径前缀的外部依赖包（也称为**Bare Modules**）的解析，例如上图中在示例源代码中导入了 'vue' 模块，但是在浏览器的网络请求中变为了请求 /@module/vue。
+首先是对不带路径前缀的外部依赖包（也称为**Bare Modules**）的解析，例如在示例源代码中导入了 'vue' 模块，但是在浏览器的网络请求中变为了请求 /@module/vue。
 
 这个解析过程在 Vite 中主要通过三个文件来处理：
 

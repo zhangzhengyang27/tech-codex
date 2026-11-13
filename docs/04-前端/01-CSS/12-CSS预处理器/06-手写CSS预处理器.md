@@ -352,7 +352,7 @@ function generate(nodes) {
 
 [完整代码地址](https://github.com/yalishizhude/course/blob/master/plus1/pre.js)
 
-最后布置一道思考题：你能否为预处理器添加一些其他功能呢（比如局部变量）？
+作为延伸，读者可以尝试为这个预处理器添加更多功能，比如支持局部变量。
 
 ---
 

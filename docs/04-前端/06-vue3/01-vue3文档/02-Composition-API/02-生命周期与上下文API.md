@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 生命周期钩子
 
 > Vue 3 Composition API 中的生命周期钩子以 `on` 前缀的函数形式使用。`setup()` 本身替代了 `beforeCreate` 和 `created`。
@@ -1000,7 +999,6 @@ onUnmounted(() => {
 
 ## 依赖注入（Composition API）
 
-
 > 在 Composition API 中使用 `provide` 和 `inject` 实现跨层级依赖注入。配合 TypeScript 的 `InjectionKey` 实现类型安全。
 
 ## 基本用法
@@ -1542,7 +1540,6 @@ function onFallback() {
 
 ## 模板引用
 
-
 > 使用模板引用获取 DOM 元素或组件实例。Vue 3.5+ 推荐使用 `useTemplateRef()` 替代传统的 `ref` 模式，获得更好的类型安全。
 
 ## 基本用法
@@ -1889,7 +1886,6 @@ const btn = ref<HTMLButtonElement | null>(null)
 const btn = useTemplateRef<HTMLButtonElement>('submitBtn')
 //         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 编译时类型约束
 
-
 // ── 场景 2：多 ref 管理 ──
 
 // 传统 ref：每个都需要单独声明
@@ -1901,7 +1897,6 @@ const submitBtn = ref<HTMLButtonElement | null>(null)
 const nameInput = useTemplateRef<HTMLInputElement>('name')
 const emailInput = useTemplateRef<HTMLInputElement>('email')
 const submitBtn = useTemplateRef<HTMLButtonElement>('submit')
-
 
 // ── 场景 3：动态 ref 名称 ──
 

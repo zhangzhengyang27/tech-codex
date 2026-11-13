@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 风格指南与FAQ
 
 > 遵循官方风格指南可以编写更规范、可维护的代码。本章节涵盖 Vue 3 开发的编码规范和最佳实践。
@@ -627,11 +626,9 @@ defineExpose({ fetchUser })
 - [Vue 官方风格指南](https://vuejs.org/style-guide/)
 - [Vue 3 文档 - 最佳实践](https://vuejs.org/guide/best-practices/production-deployment.html)
 
-
 ---
 
 ## 常见问题解答
-
 
 > Vue 3 开发中的常见问题及解决方案，涵盖响应式、组件通信、生命周期、性能优化等方面。
 

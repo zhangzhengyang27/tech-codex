@@ -6,24 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 宿主项目自动导入回接：VP 组件 custom resolver、hooks auto-import 与缓存排查
 
 ## 概述
 
 宿主项目切换到组件库包之后，如果不重新配置自动导入链路，页面虽能跑，开发体验会明显退化。这一节把宿主项目的开发体验恢复到接近原模板的状态：给 `unplugin-vue-components` 增加自定义 resolver，让 `VP*` 组件自动从组件库包解析；给 `unplugin-auto-import` 增加自定义 `imports`，让 `useForm`、`useMenu` 这类 hooks 自动解析。组件库抽离完成后，宿主的“自动导入体验”不是天然保留的，它必须通过新规则重新接回。
-
-## 学习目标
-
-- 理解切回组件库包后自动导入链路必须重新接回，否则体验退化
-- 用 `unplugin-vue-components` 的 custom resolver 解析 `VP*` 组件
-- 理解 resolver 只处理模板标签，旧 import 和旧组件名仍需替换
-- 切换来源后删除旧 `components.d.ts` 并重建声明文件
-- 用 `unplugin-auto-import` 显式 `imports` 接回组件库 hooks
-- 排查 auto-import 接通后暴露的组件库源码质量问题（如 `useRoute` 漏导入）
-- 处理 `.vite` 缓存、声明文件、包内容三者不同步
-
----
 
 ## 一、切回组件库包后自动导入体验会退化
 

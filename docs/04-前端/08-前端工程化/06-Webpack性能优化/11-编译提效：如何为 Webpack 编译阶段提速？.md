@@ -4,7 +4,6 @@ category: 前端工程化
 
 ---
 
-
 # 编译提效：如何为 Webpack 编译阶段提速？
 上一课介绍了 Webpack 的基本工作流程，分析了其中几个主要源码文件的执行过程，并介绍了 Compiler 和 Compilation 两个核心模块中的生命周期 Hooks。
 
@@ -28,26 +27,17 @@ category: 前端工程化
 
 ### IgnorePlugin
 
-有的依赖包，除了项目所需的模块内容外，还会附带一些多余的模块。典型的例子是 [moment](https://www.npmjs.com/package/moment) 这个包，一般情况下在构建时会自动引入其 locale 目录下的多国语言包，如下面的图片所示：
+有的依赖包，除了项目所需的模块内容外，还会附带一些多余的模块。典型的例子是 [moment](https://www.npmjs.com/package/moment) 这个包，一般情况下在构建时会自动引入其 locale 目录下的多国语言包。
 
-![](/frontend-eng-images/f1940e4f6d04.png)
-
-但对于大多数情况而言，项目中只需要引入本国语言包即可。而 Webpack 提供的 IgnorePlugin 即可在构建模块时直接剔除那些需要被排除的模块，从而提升构建模块的速度，并减少产物体积，如下面的图片所示。
-
-![](/frontend-eng-images/103d9e5225e4.png)
-![](/frontend-eng-images/1d8034675350.png)
+但对于大多数情况而言，项目中只需要引入本国语言包即可。而 Webpack 提供的 IgnorePlugin 即可在构建模块时直接剔除那些需要被排除的模块，从而提升构建模块的速度，并减少产物体积。
 
 除了 moment 包以外，其他一些带有国际化模块的依赖包，例如之前介绍 Mock 工具中提到的 Faker.js 等都可以应用这一优化方式。
 
 ### 按需引入类库模块
 
-第二种典型的减少执行模块的方式是按需引入。这种方式一般适用于工具类库性质的依赖包的优化，典型例子是[ lodash ](https://www.npmjs.com/package/lodash)依赖包。通常在项目里我们只用到了少数几个 lodash 的方法，但是构建时却发现构建时引入了整个依赖包，如下图所示：
+第二种典型的减少执行模块的方式是按需引入。这种方式一般适用于工具类库性质的依赖包的优化，典型例子是[ lodash ](https://www.npmjs.com/package/lodash)依赖包。通常在项目里我们只用到了少数几个 lodash 的方法，但是构建时却发现构建时引入了整个依赖包。
 
-![](/frontend-eng-images/3d333189d4b1.png)
-
-要解决这个问题，效果最佳的方式是在导入声明时只导入依赖包内的特定模块，这样就可以大大减少构建时间，以及产物的体积，如下图所示。
-
-![](/frontend-eng-images/3b2df75f9f50.png)
+要解决这个问题，效果最佳的方式是在导入声明时只导入依赖包内的特定模块，这样就可以大大减少构建时间，以及产物的体积。
 
 除了在导入时声明特定模块之外，还可以使用 babel-plugin-lodash 或 babel-plugin-import 等插件达到同样的效果。
 
@@ -60,12 +50,9 @@ category: 前端工程化
 
 > **注（2026-09）**：DllPlugin 是 Webpack 4 时代的方案，需要独立的构建脚本与配置、维护成本高，且与 Webpack 5 的持久化缓存等新特性存在兼容问题。Webpack 5 中通常以持久化缓存（`cache.type: 'filesystem'`）替代，这里仅作为旧项目优化思路了解。
 
-DllPlugin 是另一类减少构建模块的方式，它的核心思想是将项目依赖的框架等模块单独构建打包，与普通构建流程区分开。例如，原先一个依赖 React 与 react-dom 的文件，在构建时，会如下图般处理：
+DllPlugin 是另一类减少构建模块的方式，它的核心思想是将项目依赖的框架等模块单独构建打包，与普通构建流程区分开。例如，原先一个依赖 React 与 react-dom 的文件，在构建时会被一并处理。
 
-![](/frontend-eng-images/633637baaac2.png)
-而在通过 DllPlugin 和 DllReferencePlugin 分别配置后的构建时间就变成如下图所示，由于构建时减少了最耗时的模块，构建效率大幅提升。
-
-![](/frontend-eng-images/544bdc5b75e0.png)
+而通过 DllPlugin 和 DllReferencePlugin 分别配置后，由于构建时减少了最耗时的模块，构建效率大幅提升。
 
 ### Externals
 
@@ -75,10 +62,7 @@ Webpack 配置中的 externals 和 DllPlugin 解决的是同一类问题：将�
 - DllPlugin 包含了依赖包的独立构建流程，而 externals 配置中不包含依赖框架的生成方式，通常使用已传入 CDN 的依赖包。
 - externals 配置的依赖包需要单独指定依赖模块的加载方式：全局对象、CommonJS、AMD 等。
 - 在引用依赖包的子模块时，DllPlugin 无须更改，而 externals 则会将子模块打入项目包中。
-externals 的示例如下面两张图，可以看到经过 externals 配置后，构建速度有了很大提升。
-
-![](/frontend-eng-images/7d27dcb64927.png)
-![](/frontend-eng-images/dcf5135c7b27.png)
+可以看到，经过 externals 配置后，构建速度有了很大提升。
 
 ## 提升单个模块构建的速度
 
@@ -88,10 +72,8 @@ externals 的示例如下面两张图，可以看到经过 externals 配置后�
 
 Webpack 加载器配置中的 include/exclude，是常用的优化特定模块构建速度的方式之一。
 
-include 的用途是只对符合条件的模块使用指定 Loader 进行转换处理。而 exclude 则相反，不对特定条件的模块使用该 Loader（例如不使用 babel-loader 处理 node_modules 中的模块）。如下面两张图片所示。
+include 的用途是只对符合条件的模块使用指定 Loader 进行转换处理。而 exclude 则相反，不对特定条件的模块使用该 Loader（例如不使用 babel-loader 处理 node_modules 中的模块）。
 
-![](/frontend-eng-images/65dfa0c87267.png)
-![](/frontend-eng-images/c19dc73164b9.png)
 这里有两点需要注意：
 
 - 从上面的第二张图中可以看到，jquery 和 lodash 的编译过程仍然花费了数百毫秒，说明通过 include/exclude 排除的模块，并非不进行编译，而是使用 Webpack 默认的 js 模块编译器进行编译（例如推断依赖包的模块类型，加上装饰代码等）。
@@ -99,10 +81,7 @@ include 的用途是只对符合条件的模块使用指定 Loader 进行转换�
 
 ### noParse
 
-Webpack 配置中的 module.noParse 则是在上述 include/exclude 的基础上，进一步省略了使用默认 js 模块编译器进行编译的时间，如下面两张图片所示。
-
-![](/frontend-eng-images/b8accda23087.png)
-![](/frontend-eng-images/6e92a6824fe7.png)
+Webpack 配置中的 module.noParse 则是在上述 include/exclude 的基础上，进一步省略了使用默认 js 模块编译器进行编译的时间。
 
 ### Source Map
 
@@ -110,15 +89,12 @@ Source Map 对于构建时间的影响在之前讨论构建流程的课程中已
 
 ### TypeScript 编译优化
 
-Webpack 中编译 TS 有两种方式：使用 ts-loader 或使用 babel-loader。其中，在使用 ts-loader 时，由于 ts-loader 默认在编译前进行类型检查，因此编译时间往往比较慢，如下面的图片所示。
+Webpack 中编译 TS 有两种方式：使用 ts-loader 或使用 babel-loader。其中，在使用 ts-loader 时，由于 ts-loader 默认在编译前进行类型检查，因此编译时间往往比较慢。
 
-![](/frontend-eng-images/e6efe5251bff.png)
-通过加上配置项 transpileOnly: true，可以在编译时忽略类型检查，从而大大提升 TS 模块的编译速度，如下面的图片所示。
+通过加上配置项 transpileOnly: true，可以在编译时忽略类型检查，从而大大提升 TS 模块的编译速度。
 
-![](/frontend-eng-images/fd377ddaea90.png)
-而 babel-loader 则需要单独安装 @babel/preset-typescript 来支持编译 TS（Babel 7 之前的版本则还是需要使用 ts-loader）。babel-loader 的编译效率与上述 ts-loader 优化后的效率相当，如下面的图片所示。
+而 babel-loader 则需要单独安装 @babel/preset-typescript 来支持编译 TS（Babel 7 之前的版本则还是需要使用 ts-loader）。babel-loader 的编译效率与上述 ts-loader 优化后的效率相当。
 
-![](/frontend-eng-images/7f80314b4211.png)
 不过单独使用这一功能就丧失了 TS 中重要的类型检查功能，因此在许多脚手架中往往配合 ForkTsCheckerWebpackPlugin 一同使用。
 
 ### Resolve
@@ -129,10 +105,7 @@ Webpack 中的 resolve 配置指定的是构建时查找模块文件的规则，
 - **resolve.extensions**：指定查找模块的文件类型范围。
 - **resolve.mainFields**：指定查找模块的 package.json 中主文件的属性名。
 - **resolve.symlinks**：指定在查找模块时是否处理软链接（symlink）。
-这些规则在处理每个模块时都会有所应用，因此尽管对小型项目的构建速度来说影响不大，但对于大型的模块众多的项目而言，这些配置的变化就可能产生可观的构建时长区别。例如下面的示例就展示了使用默认配置和增加了大量无效范围后，构建时长的变化情况：
-
-![](/frontend-eng-images/9bee8ac1f745.png)
-![](/frontend-eng-images/b015a9c4b90c.png)
+这些规则在处理每个模块时都会有所应用，因此尽管对小型项目的构建速度来说影响不大，但对于大型的模块众多的项目而言，这些配置的变化就可能产生可观的构建时长区别。例如，使用默认配置和增加了大量无效范围后，构建时长会产生明显的区别。
 
 ## 并行构建以提升总体效率
 
@@ -140,17 +113,11 @@ Webpack 中的 resolve 配置指定的是构建时查找模块文件的规则，
 
 ### HappyPack 与 thread-loader
 
-这两种工具的本质作用相同，都作用于模块编译的 Loader 上，用于在特定 Loader 的编译过程中，以开启多进程的方式加速编译。HappyPack 诞生较早（现已停止维护，仅建议在维护旧项目时了解），而 thread-loader 参照它的效果实现了更符合 Webpack 中 Loader 的编写方式。下面以 thread-loader 为例，来看应用前后的构建时长对比，如下面的两张图所示。
-
-![](/frontend-eng-images/22a6d7799318.png)
-![](/frontend-eng-images/72ea5728f4ad.png)
+这两种工具的本质作用相同，都作用于模块编译的 Loader 上，用于在特定 Loader 的编译过程中，以开启多进程的方式加速编译。HappyPack 诞生较早（现已停止维护，仅建议在维护旧项目时了解），而 thread-loader 参照它的效果实现了更符合 Webpack 中 Loader 的编写方式。下面以 thread-loader 为例，来看应用前后的构建时长对比。
 
 ### parallel-webpack
 
-并发构建的第二种场景是针对与多配置构建。Webpack 的配置文件可以是一个包含多个子配置对象的数组，在执行这类多配置构建时，默认串行执行，而通过 parallel-webpack，就能实现相关配置的并行处理。从下图的示例中可以看到，通过不同配置的并行构建，构建时长缩短了 30%：
-
-![](/frontend-eng-images/3ee6d5f3d486.png)
-![](/frontend-eng-images/9da6a34f9d1c.png)
+并发构建的第二种场景是针对与多配置构建。Webpack 的配置文件可以是一个包含多个子配置对象的数组，在执行这类多配置构建时，默认串行执行，而通过 parallel-webpack，就能实现相关配置的并行处理。通过不同配置的并行构建，构建时长可以缩短 30%。
 
 ## 总结
 

@@ -8,12 +8,6 @@ tags: [React, 基础概念]
 
 # useMemo 与 useCallback 在 React 19 的取舍
 
-## 学习目标
-
-- 理解 React 19 / React Compiler 对记忆化的影响
-- 掌握 `useMemo` / `useCallback` 仍然有意义的场景
-- 识别「为优化而优化」的误用
-
 ## 记忆化的初衷
 
 `useMemo` 缓存计算结果，`useCallback` 缓存函数引用，目的是避免**每次渲染都重复做昂贵工作**或**因引用变化触发子组件无谓重渲染**。

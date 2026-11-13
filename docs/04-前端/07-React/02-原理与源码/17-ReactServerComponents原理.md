@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # React Server Components 原理
 
-## 学习目标
-
-- 理解 RSC 的「服务端 / 客户端」组件二分模型
-- 掌握 RSC 的序列化协议（RSC Wire Format）
-- 理解流式渲染（streaming）与 Suspense 的协作
-
 ## 两类组件的边界
 
 RSC 把组件按运行位置分为：
@@ -57,4 +51,4 @@ RSC 的核心是「用序列化协议替换 HTML，用指令划定服务端/客�
 ## 继续阅读
 
 - 上一篇：[16-React18的并发机制是怎么实现的](16-React18的并发机制是怎么实现的)
-- 下一篇：[20-use Hook 实现原理](18-useHook实现原理)
+- 下一篇：[18-useHook实现原理](18-useHook实现原理)

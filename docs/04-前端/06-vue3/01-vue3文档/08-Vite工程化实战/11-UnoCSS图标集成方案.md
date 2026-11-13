@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # UnoCSS 图标集成方案
 
 ## 概述
 
 UnoCSS 通过 preset-icons 预设实现 CSS 类名形式的图标使用，无需注册组件即可在模板中通过 `class="i-mdi-home"` 引用任意图标。本文讲解 preset-icons 的配置、图标样式定制及与 unplugin-icons 的协作策略。
-
-## 学习目标
-
-- 掌握 UnoCSS preset-icons 的配置与使用
-- 理解 CSS mask/background 两种图标渲染模式
-- 学会图标样式定制与自定义图标集
-
----
 
 ## 一、配置
 

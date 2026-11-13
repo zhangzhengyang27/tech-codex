@@ -2,9 +2,7 @@
 title: CSS Shapes 完全指南：打破矩形布局限制
 description: 深入讲解 CSS Shapes 规范，包括 shape-outside、shape-margin、shape-image-threshold 属性，clip-path 裁切，以及实战案例和性能优化策略
 keywords: [CSS Shapes, shape-outside, shape-margin, shape-image-threshold, clip-path, 浮动布局, 文本环绕, 不规则布局, 多边形裁切]
-category:
-  - CSS
-  - 文本与背景
+category: CSS
 tags:
   - CSS
   - CSS Shapes

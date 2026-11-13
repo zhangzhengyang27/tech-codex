@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # TypeScript 支持
 
 > Vue 3 从设计之初就考虑了 TypeScript 支持，使用 TypeScript 编写，提供完整的类型推断和 IDE 支持。
@@ -932,11 +931,9 @@ src/
 - [TypeScript 官方文档](https://www.typescriptlang.org/)
 - [Vue + TypeScript 最佳实践](https://vuejs.org/guide/typescript/overview.html#recommended-configuration)
 
-
 ---
 
 ## Vue Loader 与 Webpack 集成
-
 
 > Vue Loader 是 Webpack 的加载器，用于解析和编译 Vue 单文件组件（`.vue` 文件）。
 

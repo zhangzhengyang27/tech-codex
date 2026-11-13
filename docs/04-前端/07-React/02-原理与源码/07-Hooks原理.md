@@ -8,16 +8,9 @@ tags: [React, 原理与源码]
 
 # Hooks原理
 
-## 学习目标
-
-- 掌握 hooks与fiber（workInProgress）
-- 掌握 函数组件触发
-- 掌握 hooks初始化- hooks 如何和 fiber 建立起关系
-
 ## hooks与fiber（workInProgress）
 
 之前章节讲过，类组件的状态比如 state ，context ，props 本质上是存在类组件对应的 fiber 上，包括生命周期比如 componentDidMount ，也是以副作用 effect 形式存在的。那么 Hooks 既然赋予了函数组件如上功能，所以 hooks 本质是离不开函数组件对应的 fiber 的。 hooks 可以作为函数组件本身和函数组件对应的 fiber 之间的沟通桥梁。
-
 
 hooks 对象本质上是主要以三种处理策略存在 React 中：
 * 1 `ContextOnlyDispatcher`：  第一种形态是防止开发者在函数组件外部调用 hooks ，所以第一种就是报错形态，只要开发者调用了这个形态下的 hooks ，就会抛出异常。
@@ -124,7 +117,6 @@ export default function Index({ showNumber }){
 | 第一次hook复用 | useState |  useState |
 | 第二次hook复用 | useState |  useRef   |
 
-
 第二次复用时，新的 useRef 会复用到老 useState 的位置上，hooks 状态已经错位。需要注意，React 在运行时校验的是 hooks 的**数量**：本例中更新后少执行了第一个 useState，React 会直接抛出错误 `Rendered fewer hooks than during the previous render.`（多渲染了 hook 则报 `Rendered more hooks than during the previous render.`）；如果 hooks 数量相同只是类型或顺序错位，React 并不会报错，而是盲目复用错位的 hooks 状态，产生难以排查的 bug。所以开发的时候一定注意 hooks 顺序一致性。
 
 ## 状态派发
@@ -186,7 +178,6 @@ function dispatchAction(fiber, queue, action){
 * 反之，说明当前 fiber 没有更新任务，那么会拿出上一次 state 和 这一次 state 进行对比，如果相同，那么直接退出更新。如果不相同，那么发起更新调度任务。**这就解释了，为什么函数组件 useState 改变相同的值，组件不更新了。**
 
 接下来就是更新的环节，下面模拟一个更新场景。
-
 
 ````js
 export default  function Index(){
@@ -292,7 +283,7 @@ function updateEffect(create,deps){
 ## 状态获取与状态缓存
 
 ### 1 对于 ref 处理
-在《00-Ref的实现原理》中详细介绍过，useRef 就是创建并维护一个 ref 原始对象。用于获取原生 DOM 或者组件实例，或者保存一些状态等。
+前面讲 ref 处理机制时详细介绍过，useRef 就是创建并维护一个 ref 原始对象。用于获取原生 DOM 或者组件实例，或者保存一些状态等。
 
 创建：
 ````js

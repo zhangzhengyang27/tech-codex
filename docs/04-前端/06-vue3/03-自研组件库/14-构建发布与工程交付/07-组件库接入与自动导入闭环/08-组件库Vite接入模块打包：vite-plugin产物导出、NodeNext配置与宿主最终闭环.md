@@ -6,24 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 组件库 Vite 接入模块打包：vite-plugin 产物导出、NodeNext 配置与宿主最终闭环
 
 ## 概述
 
 这一节的重点不是再发明新的接入协议，而是把上一节生成的 `vite-plugin.ts` 真正变成可发布、可安装、可被宿主导入的产物。组件库内部已具备运行时入口、组件自动注册插件、hooks / types / directives 导出，以及 `VPAutoImports` 和 `VPComponentsResolver`，但这些“Vite 接入辅助能力”若只留在源码目录，还不算真正对外可用。要给 `vite-plugin.ts` 单独做构建输出、在 `package.json.exports` 声明子路径入口，并让宿主最终把组件、hooks、directives 的自动接入链路全部打通。
-
-## 学习目标
-
-- 理解 `vite-plugin.ts` 要单独构建进 dist 并通过 exports 暴露
-- 用 `tsup` 单独打包 `vite-plugin.ts`（ESM / CJS / DTS）
-- 在 `package.json.exports` 增加 `./vite-plugin` 子路径入口
-- 理解 `NodeNext` 是针对该构建期模块的单独 TS 配置
-- 理解导出配置让接入协议版本随包走
-- 三者（resolver / auto-imports / setupDirectives）打通才是真正闭环
-- 验证标准是删掉手写 import 页面仍能跑
-
----
 
 ## 一、vite-plugin.ts 要构建进 dist 并通过 exports 暴露
 

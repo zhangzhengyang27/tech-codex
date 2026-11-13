@@ -11,9 +11,7 @@ category: 前端工程化
 
 ## 什么是 Source Map
 
-在前端开发过程中，通常编写的源代码会经过多重处理（编译、封装、压缩等），最后形成产物代码。于是在浏览器中调试产物代码时，往往会发现代码变得面目全非，例如：
-
-![](/frontend-eng-images/985cdbcbbf72.png)
+在前端开发过程中，通常编写的源代码会经过多重处理（编译、封装、压缩等），最后形成产物代码。于是在浏览器中调试产物代码时，往往会发现代码变得面目全非。
 
 因此，我们需要一种在调试时将产物代码显示回源代码的功能，**source map** 就是实现这一目标的工具。
 
@@ -89,16 +87,14 @@ if (options.devtool.includes("source-map")) {
 
 ## 不同预设的示例结果对比
 
-下面，以课程示例代码 [03_develop_environment](https://github.com/fe-efficiency/lessons_fe_efficiency/tree/master/03_develop_environment) 为例，对比几种常用预设的差异（为了使时间差异更明显，示例中引入了几个大的类库文件）：
-
-![](/frontend-eng-images/90c1aee842eb.png)
+下面，以课程示例代码 [03_develop_environment](https://github.com/fe-efficiency/lessons_fe_efficiency/tree/master/03_develop_environment) 为例，对比几种常用预设的差异（为了使时间差异更明显，示例中引入了几个大的类库文件）。
 
 *注1：“/”前后分别表示产物 js 大小和对应 .map 大小。
 *注2：“/”前后分别表示初次构建时间和开启 watch 模式下 rebuild 时间。对应统计的都是 development 模式下的笔者机器环境下几次构建时间的平均值，只作为相对快慢与量级的比较。
 
 ### 不同预设的效果总结
 
-从上图的数据中不难发现，选择不同的 devtool 类型在以下几个方面会产生不同的效果。
+从上述统计数据中不难发现，选择不同的 devtool 类型在以下几个方面会产生不同的效果。
 
 - 质量：生成的 source map 的质量分为 5 个级别，对应的调试便捷性依次降低：源代码 > 缺少列信息的源代码 > loader 转换后的代码 > 生成后的产物代码 > 无法显示代码（具体参见下面的**不同质量的源码示例**小节）。对质量产生影响的预设关键字优先级为 source-map = eval-source-map > cheap-module- > cheap- > eval = none > nosource-。
 - 构建的速度：再次构建速度都要显著快于初次构建速度。不同环境下关注的速度也不同：
@@ -108,17 +104,15 @@ if (options.devtool.includes("source-map")) {
 - 包的大小和生成方式：在开发环境下我们并不需要关注这些因素，正如在开发环境下也通常不考虑使用分包等优化方式。我们需要关注速度和质量来保证我们的高效开发体验，而其他的部分则是在生产环境下需要考虑的问题。
 ### 不同质量的源码示例
 
+> 🖼️ 原文配图未随迁移入库,步骤描述见正文文字。
+
 - 源码且包含列信息
-![](/frontend-eng-images/4e56cf8c6a72.png)
 
 - 源码不包含列信息
-![](/frontend-eng-images/42decb3c81d8.png)
 
 - Loader转换后代码
-![](/frontend-eng-images/fb595426d342.png)
 
 - 生成后的产物代码
-![](/frontend-eng-images/3b8b9b54774e.png)
 
 ### 开发环境下 Source Map 推荐预设
 
@@ -156,9 +150,7 @@ if (options.devtool.includes("source-map")) {
 `
 ```
 
-在上面的示例中，将 devtool 设为 false，而直接使用 EvalSourceMapDevToolPlugin，通过传入 module: true 和 column:false，达到和预设 eval-cheap-module-source-map 一样的质量，同时传入 exclude 参数，排除第三方依赖包的 source map 生成。保存设定后通过运行可以看到，在文件体积减小（尽管开发环境并不关注文件大小）的同时，再次构建的速度相比上面表格中的速度提升了将近一倍，达到了最快一级。
-
-![](/frontend-eng-images/f41502b09f6b.png)
+在上面的示例中，将 devtool 设为 false，而直接使用 EvalSourceMapDevToolPlugin，通过传入 module: true 和 column:false，达到和预设 eval-cheap-module-source-map 一样的质量，同时传入 exclude 参数，排除第三方依赖包的 source map 生成。保存设定后通过运行可以看到，在文件体积减小（尽管开发环境并不关注文件大小）的同时，再次构建的速度相比使用预设时提升了将近一倍，达到了最快一级。
 
 类似这样的优化可以帮助在一些大型项目中，通过自定义设置来获取比预设更好的开发体验。
 

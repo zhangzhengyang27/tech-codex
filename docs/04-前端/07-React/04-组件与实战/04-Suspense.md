@@ -8,11 +8,6 @@ tags: [React, 组件与实战]
 
 # Suspense
 
-## 学习目标
-
-- 掌握 v18新特性 SuspenseList
-- 掌握 ssr 中的 Suspense
-
 ## v18新特性 SuspenseList
 
 通过[渲染调优](../01-基础概念/11-渲染调优)章节 Suspense 的介绍，我们知道 Suspense 异步组件的原理本质上是让组件先挂起来，等到请求数据之后，再直接渲染已经注入数据的组件。
@@ -53,7 +48,6 @@ SuspenseList 接受两个 props：
 ````
 如上当 revealOrder 属性设置成 forwards 之后，异步组件会按照 CompA -> CompB -> CompC 顺序展示。
 
-
 另外一个属性就是 tail，这个属性决定了如何显示 SuspenseList 中未加载的组件。
 
 * 默认情况下，SuspenseList 会显示列表中每个 Suspense 的 fallback。
@@ -61,7 +55,6 @@ SuspenseList 接受两个 props：
 * hidden 未加载的组件不显示任何信息。
 
 比如我们把如上案例中 SuspenseList 加入 tail="collapsed" 之后，只会显示第一个未就绪的 CompA 的 fallback，CompB、CompC 的 fallback 不再展示。
-
 
 ## ssr 中的 Suspense
 
@@ -73,9 +66,7 @@ SuspenseList 接受两个 props：
 
 但是如果其中一个模块，服务端请求数据，数据量比较大，耗费时间长，我们不期望在服务端完全形成 html 之后在渲染，那么 React 18 给了一个新的可能性。可以使用 Suspense 包装页面的一部分，然后让这一部分的内容先挂起。
 
-
 接下来会通过 script 加载 js 的方式 流式注入 html 代码的片段，来补充整个页面。接下来的流程如下所示：
-
 
 * 页面 A B 是初始化渲染的，C 是 Suspense 处理的组件，在开始的时候 C 没有加载，C 通过流式渲染的方式优先注入 html 片段。
 * 接下来 A B 注入逻辑，C 并没有注水。
@@ -84,7 +75,6 @@ SuspenseList 接受两个 props：
 在这个原理基础之上， React 个特性叫 Selective Hydration，可以**根据用户交互改变 hydrate 的顺序**。
 
 比如有两个模块都是通过 Suspense 挂起的，当两个模块发生交互逻辑时，会根据交互来选择性地改变 hydrate 的顺序。
-
 
 我们来看一下 Selective Hydration 在 SSR 上的流程：
 * 初始化的渲染 A B 组件，C 和 D 通过 Suspense 的方式挂起。

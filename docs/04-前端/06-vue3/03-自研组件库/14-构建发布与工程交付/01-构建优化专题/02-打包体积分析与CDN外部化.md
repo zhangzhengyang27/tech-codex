@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 打包体积分析与 CDN 外部化
 
 ## 概述
 
 打包优化不能靠猜，第一步永远是先看“到底是谁把包撑大了”。本节先用可视化分析插件把 bundle 展开成 treemap，明确优化优先级，再把体积最大的通用依赖（如 `element-plus`、`echarts`）通过 `vite-plugin-cdn2` 外部化到 CDN，并深入处理 external 后仍被子路径或解析器拉回来的典型坑，最终把分析与外部化做成按环境启用的配置。
-
-## 学习目标
-
-- 掌握用 `rollup-plugin-visualizer` 做打包体积分析，从 treemap 读出优化优先级。
-- 理解最终打包体积受业务 import、自动导入插件、组件解析插件与构建配置共同影响。
-- 能用 `vite-plugin-cdn2` 完成 CDN external，并理解它相比手写 `external + globals` 的价值。
-- 能排查 external 后体积仍不降的根因：`ElementPlusResolver` 与 `echarts/*` 子路径导入。
-- 会把分析插件、resolver 与 CDN external 按环境（`mode` / 环境变量）条件启用。
-
----
 
 ## 一、先分析后优化：可视化体积分布
 

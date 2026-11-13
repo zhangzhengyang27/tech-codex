@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # vite-plugin-pwa 集成实战
 
 ## 概述
 
 vite-plugin-pwa 基于 Workbox 为 Vite 项目提供零配置的 PWA 支持，自动生成 Service Worker、Manifest 和资源预缓存。本文讲解其安装配置、缓存策略定制和开发调试方法。
-
-## 学习目标
-
-- 掌握 vite-plugin-pwa 的安装与基础配置
-- 理解 Workbox 预缓存与运行时缓存的区别
-- 学会自定义 Manifest 和缓存策略
-
----
 
 ## 一、安装与基础配置
 

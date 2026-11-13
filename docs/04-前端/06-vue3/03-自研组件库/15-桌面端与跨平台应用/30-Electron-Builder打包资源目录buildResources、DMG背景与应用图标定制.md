@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Electron Builder 打包资源目录、DMG 背景与应用图标定制
 
 ## 概述
 
 应用能跑起来不等于能交付。这一节集中在“交付外观与元信息”的定制：打包资源目录 buildResources、macOS 安装镜像背景、产品名与 appId、三端图标。这些配置大多不改变业务逻辑，却直接影响用户对产品专业度的判断。把它们分层理解，能避免“改了背景图应用首页没变”这类典型误解。
-
-## 学习目标
-
-- 理解 buildResources 是构建资源目录，默认不进运行时包
-- 用 dmg.background 定制 macOS 安装镜像外观
-- 区分 productName 与 name、appId 的职责
-- 为 macOS、Windows、Linux 分别配置图标格式
-- 厘清“安装镜像外观/应用图标/运行时 UI”的层级差异
-- 识别模板脚本别名背后的真正构建命令
-
----
 
 ## 一、buildResources：构建资源目录而非运行时资源
 

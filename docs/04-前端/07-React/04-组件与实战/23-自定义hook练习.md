@@ -8,12 +8,6 @@ tags: [React, 组件与实战]
 
 # 自定义hook练习
 
-## 学习目标
-
-- 掌握 useMountedState / useLifeCycles / useCookie / useHover / useScrolling
-- 掌握 useSize / useTimeout / useWhyDidYouUpdate / useCountDown
-- 掌握 事件绑定类 hook 的三种封装方式
-
 ## useMountedState 和 useLifeCycles
 
 useMountedState 可以用来获取组件是否 mount 到 dom：
@@ -378,7 +372,6 @@ export default useScrolling;
 - 返回 props 对象或者事件处理函数，调用者自己绑定
 
 自定义 hook 的封装方式都差不多，练习几个就会了。
-
 
 上文写了几个 react-use 的 hook，接下来写几个 ahooks 里的。
 
@@ -866,9 +859,7 @@ useCountDown：倒计时，通过当前时间和目标时间的差值实现，�
 
 写完这些 hook，相信你对自定义 hook 的封装更加得心应手了。
 
-
-
 ## 继续阅读
 
 - 上一篇：[22-图解网页的各种距离](22-图解网页的各种距离)
-- 下一篇：[24-组件实战-Message全局提示组件](24-组件实战-Message全局提示组件)
+- 下一篇：[28-组件实战-ColorPicker颜色选择器](../08-项目实战/28-组件实战-ColorPicker颜色选择器)

@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # Server Actions 原理
 
-## 学习目标
-
-- 理解 `use server` 标记的函数的调用链路
-- 掌握 Server Action 的参数序列化边界
-- 理解它与 `useActionState` / `useOptimistic` / `useFormStatus` 的衔接
-
 ## 什么是 Server Action
 
 被 `'use server'` 标记的函数运行在**服务端**，但可以被客户端组件像普通异步函数一样调用：
@@ -67,5 +61,5 @@ Server Actions 让「提交表单 = 调用服务端函数」成为原生能力�
 
 ## 继续阅读
 
-- 上一篇：[20-use Hook 实现原理](18-useHook实现原理)
+- 上一篇：[18-useHook实现原理](18-useHook实现原理)
 - 下一篇：[20-useDeferredValue与useTransition选型](20-useDeferredValue与useTransition选型)

@@ -8,12 +8,6 @@ tags: [React, 状态管理与路由]
 
 # Next.js App Router 数据加载
 
-## 学习目标
-
-- 理解 App Router 中「服务端组件直接取数」替代 useEffect 取数的变化
-- 掌握 `loading.tsx` / `error.tsx` 与 Suspense 的对应关系
-- 了解 `use` 在 App Router 数据读取中的角色
-
 ## 从 useEffect 取数到服务端取数
 
 传统 SPA 在客户端用 `useEffect` + `fetch` 取数，存在「先渲染空白再请求」的瀑布流。App Router 下，页面组件本身是 Server Component，可直接 `async` 取数：
@@ -36,7 +30,7 @@ App Router 用约定文件表达 Suspense / ErrorBoundary 边界：
 - `error.tsx`：等价于该路由的 ErrorBoundary（需 `'use client'`）；
 - `not-found.tsx`：404 边界。
 
-这与 React 的 [14-深入理解Suspense和ErrorBoundary](../04-组件与实战/14-深入理解Suspense和ErrorBoundary) 一脉相承，只是把边界「声明在文件系统」上。
+这与 React 的 Suspense / ErrorBoundary 边界机制一脉相承，只是把边界「声明在文件系统」上。
 
 ## use 与客户端取数
 

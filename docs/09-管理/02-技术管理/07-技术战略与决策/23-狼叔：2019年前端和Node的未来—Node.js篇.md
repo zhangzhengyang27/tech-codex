@@ -22,7 +22,7 @@ tags: [技术领导力, 团队管理, CTO]
 
 Node.js在大前端布局里意义重大，除了基本构建和Web服务外，狼叔（网名i5ting，阿里巴巴前端技术专家，Node.js技术布道者，Node全栈公众号运营者）重点讲了两点。首先它打破了原有的前端边界，之前应用开发只分前端和API开发。但通过引入Node.js做BFF（Backend for Frontend）这样的API proxy中间层，使得API开发也成了前端的工作范围，让后端同学专注于开发RPC服务。其次，在前端开发过程中，有很多问题不依赖服务器端是做不到的，比如场景的性能优化，在使用React后导致bundle过大、首屏渲染时间过长且存在SEO问题时，使用Node.js做SSR就是非常好的。
 
-本文原发布于2019年，聚焦Node.js在API聚合、SSR、BFF层的技术实践。7年后的今天，前端生态已发生翻天覆地的变化——**84%的开发者已将AI编程工具融入日常工作流**（GitHub Copilot 2025年度报告），Node.js的角色也从单纯的"中间件"进化为"AI服务的智能网关"。
+本文原发布于2019年，聚焦Node.js在API聚合、SSR、BFF层的技术实践。
 
 ### 2019 vs 2026 核心数据对比
 
@@ -30,7 +30,7 @@ Node.js在大前端布局里意义重大，除了基本构建和Web服务外，�
 |------|--------|--------|----------|
 | Node.js LTS版本 | v10 (Dubnium) | v24 (Krypton) | +14个大版本 |
 | NPM日新增包数 | 507个/天 | ~2,100个/天 | **314%↑** |
-| 开发者使用AI编程比例 | <5%（实验阶段） | **84%**（Stack Overflow 2025） | 质的飞跃 |
+
 | Serverless成熟度 | 概念验证期 | **企业级标配**（AWS Lambda日调用超万亿） | 全面落地 |
 | Node.js在AI领域角色 | 几乎为零 | **AI API Gateway/BFF层智能化核心** | 新赛道诞生 |
 
@@ -120,7 +120,7 @@ timeline
     section 2023-2024
         AI Coding爆发 : Vercel AI SDK : Node.js AI Runtime
     section 2025-2026
-        GPT-5.5时代 : Agent Framework成熟 : 84%开发者用AI编程
+        新一代大模型时代
 ```
 
 ### 3.2 AI API Gateway架构
@@ -150,8 +150,8 @@ graph LR
     end
     
     subgraph "AI Infrastructure"
-        I[GPT-5.5 Cluster]
-        J[DeepSeek V4 Cluster]
+        I[新一代大模型 Cluster]
+        J[新一代大模型 Cluster]
         K[Custom Fine-tuned Models]
     end
     
@@ -249,9 +249,9 @@ class AIBffGateway {
     const complexity = await this.analyzeComplexity(query);
     
     const model = complexity > 0.8 
-      ? 'gpt-5.5-turbo'
+      ? 'gpt-4o'
       : complexity > 0.5 
-        ? 'deepseek-v4'
+        ? 'deepseek-v3'
         : 'gpt-4o-mini';
 
     return this.callLLM(model, query, context);
@@ -389,4 +389,4 @@ gantt
 
 ---
 
-*注解完成时间：2026年6月 | 适用读者：技术领导者、架构师、全栈开发者 | 核心价值：将2019年前端智慧与2026年AI实践打通，提供可落地的演进路径*
+*适用读者：技术领导者、架构师、全栈开发者  |  核心价值：将2019年前端智慧与2026年AI实践打通，提供可落地的演进路径*

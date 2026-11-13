@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # unplugin-icons 图标集成实践
 
 ## 概述
 
 unplugin-icons 基于 Iconify 生态实现图标的按需自动导入，支持 150+ 图标集、200,000+ 图标，以 Vue 组件形式使用且只打包实际用到的图标。本文讲解其安装配置、与 unplugin-vue-components 的协作及图标使用方式。
-
-## 学习目标
-
-- 掌握 unplugin-icons 的安装与 Vite 配置
-- 理解 Iconify 图标集的命名规则与按需加载
-- 学会通过组件方式使用图标并控制样式
-
----
 
 ## 一、Iconify 生态
 

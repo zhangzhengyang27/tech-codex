@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # beginWork与render流程
 
-## 学习目标
-
-- 掌握 state 更新源泉
-- 掌握 更新的最小单元
-- 掌握 beginWork 更新源泉
-
 ##  state 更新源泉
 
 ### 1 更新的最小单元
@@ -39,7 +33,6 @@ tags: [React, 原理与源码]
 * **fiber是调和过程中的最小单元，每一个需要调和的 fiber 都会进入 workLoop 中。**
 
 * **而组件是最小的更新单元，React 的更新源于数据层 state 的变化。**
-
 
 ### 2 beginWork 更新源泉
 
@@ -121,7 +114,6 @@ function dispatchReducerAction(fiber,queue,action){
 
 * 创建一个任务优先级 lane。
 * 然后进行 **scheduleUpdateOnFiber**。 那么这个 scheduleUpdateOnFiber 应该就是整个 React 更新任务的开始。那么这个函数到底做了些什么呢 ？
-
 
 ### 1 scheduleUpdateOnFiber 开始更新 fiber 
 
@@ -217,7 +209,6 @@ function performSyncWorkOnRoot(root) {
 
 到此为止，一次更新调度任务的初始化工作完成。开始正式进入调和阶段。对前置阶段做一下总结：state 改变 → setState / dispatchAction 创建 update 并标记 lane → scheduleUpdateOnFiber 向上标记 lanes / childLanes → ensureRootIsScheduled 发起调度 → performSyncWorkOnRoot / performConcurrentWorkOnRoot 进入 render + commit 两大阶段。
 
-
 ## 探索：从 workLoop 到 beginWork
 
 上述讲到了 performSyncWorkOnRoot 正式进入了 fiber 的调和流程。因为本章节主要讲 beginWork 和组件更新流程，这些主要都发生在 `render` 阶段，所以下面将围绕 `renderRootSync` 展开。首先看一下 renderRootSync 做了什么？
@@ -280,20 +271,15 @@ function performUnitOfWork(unitOfWork){
 
 root Fiber --child--> A组件 --child--> B组件 --child--> C组件。
 
-
 而主角就是**组件B**，以组件B 为参考。来看一下 React 如何调和的。那么一次更新就有可能有三种场景：
 
 * 场景一：**更新 A 组件 state**，那么 A 触发更新，那么如果 B,C 没有做渲染控制处理（比如 memo PureComponent），那么更新会波动到 B ， C，那么 A，B，C 都会 rerender。
 
-
 * 场景二：**当更新 B 组件**，那么组件 A fiber 会被标记，然后 A 会调和，但是不会 rerender；组件 B 是当事人，既会进入调和，也会 rerender；组件 C 受到父组件 B 的影响，会 rerender。
-
 
 * 场景三：**当更新 C组件**，那么 A，B 会进入调和流程，但是不会 rerender，C 是当事人，会调和并 rerender。
 
-
 那么如上的场景本质上都在 **`beginWork`** 中进行的，这个 beginWork 是如何处理这些逻辑的。
-
 
 ## 揭秘：从 beginWork 到组件更新全流程
 
@@ -433,12 +419,9 @@ bailoutOnAlreadyFinishedWork 流程非常重要。它主要做了两件事。
 
 **场景一**：当更新 A 时候，那么 A 组件的 fiber 会进入调和流程，会执行 render 形成新的组件 B 对应的 element 元素，接下来调和 B ，因为 B 的 newProps 不等于 oldProps，所以会 didReceiveUpdate = true ，然后更新组件，也会触发 render。（这里都是默认没有渲染控制的场景，比如 memo PureComponent 等 ），这样也就解决了文章开头的问题四。 
 
-
 **场景二**：当更新 B 时候，那么 A 组件会标记 childLanes，所以 A 会被调和，但是不会 render，然后到了主角 B ，B 由于新老 props 相等，所以会 `checkScheduledUpdateOrContext` 流程，判断 lane 等于 renderLanes ，检查到 lane 等于 renderLane，所以会执行更新，触发 render。 C 组件也就跟着更新。
 
-
 **场景三**：当更新 C 时候，那么 A 和 B 组件会标记 childLanes，所以 A 和 B 会被调和，但是不会更新，然后到 C ，C 会走正常流程。
-
 
 **场景四**：还有一种情况，什么时候 B 会跳出调和流程呢？
 

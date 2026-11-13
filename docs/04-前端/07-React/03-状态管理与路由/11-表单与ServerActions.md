@@ -8,12 +8,6 @@ tags: [React, 状态管理与路由]
 
 # 表单与 Server Actions
 
-## 学习目标
-
-- 掌握 `<form action={...}>` 直接对接 Server Action 的写法
-- 区分 `useActionState` / `useOptimistic` / `useFormStatus` 三者的职责
-- 理解乐观更新的回滚机制
-
 ## 基础：form 直接提交
 
 React 19 允许把函数直接传给 `<form action>`，提交时 React 自动收集 `FormData` 并调用它（可以是客户端函数，也可以是 `'use server'` 的 Server Action，后者详见 [21-Server Actions 原理](../02-原理与源码/19-ServerActions原理)）。
@@ -60,5 +54,5 @@ function Status() {
 
 ## 继续阅读
 
-- 上一篇：[10-用react-intl实现国际化](10-用react-intl实现国际化)
+- 上一篇：[03-实现mini-Router](03-实现mini-Router)
 - 下一篇：[12-Next.js App Router 数据加载](12-Next.jsAppRouter数据加载)

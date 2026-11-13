@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 组件库拆分与重用：el-admin-components 抽离
 
 ## 概述
 
 真正把模板项目里的业务组件抽离成独立组件库，第一步不是「复制文件」，而是先决定组件库对 Element Plus 的依赖策略——这个决定会一路影响是否 external `element-plus`、是否把样式打进产物、包体积大小和能否脱离 admin 模板单独复用。本文以 `el-admin-components` 为例，讲清楚抽离工程里的两条并存的链路（库模式负责产物交付、Playground 负责本地验证）、`npm link` 联调的坑、包名/构建文件名/`exports`/类型声明必须对齐，以及迁移组件时最容易漏掉的样式系统与隐形前置依赖。
-
-## 学习目标
-
-- 在抽离前先决定 Element Plus 依赖策略（消费方全局注入 vs 库内自带），而不是先复制组件
-- 理解 Playground 是组件库的第一个真实消费方，比直接发包更能暴露问题
-- 掌握 `npm link` 链接的是 `package.json.name` 而非目录名这一关键事实
-- 保证包名、构建文件名、`exports` 与类型声明路径四者一致，避免「能运行但类型失效」
-- 迁移组件时把样式系统、预处理器、Vue 宏、Auto Import 等隐形环境依赖一并迁过来
-
----
 
 ## 一、抽离前先决定 Element Plus 依赖策略
 

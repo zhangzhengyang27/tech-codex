@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # unplugin-vue-markdown Markdown 组件化实践
 
 ## 概述
 
 unplugin-vue-markdown 将 `.md` 文件编译为 Vue 组件，支持在路由中直接使用 Markdown 文件作为页面，并可在 Markdown 中嵌入 Vue 组件。本文讲解其配置方式和实际应用场景。
-
-## 学习目标
-
-- 掌握 unplugin-vue-markdown 的安装与 Vite 配置
-- 理解 Markdown 文件作为 Vue 组件的编译机制
-- 学会在 Markdown 中嵌入 Vue 组件和交互逻辑
-
----
 
 ## 一、安装与配置
 

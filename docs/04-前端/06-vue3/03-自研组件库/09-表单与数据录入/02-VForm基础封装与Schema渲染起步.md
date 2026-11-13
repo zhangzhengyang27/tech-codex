@@ -6,26 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # VForm 基础封装与 Schema 渲染起步
 
 ## 概述
 
 确定用 Schema 驱动表单后，下一步是把这套思路落地成真正能跑的组件。本章从 `VForm` 与 `VFormItem` 的初步拆分讲起，定义 `FormSchema` 的核心字段，并对比"模板 `v-if` 分发"与"纯 TSX 渲染"两条路线。首版我们优先选择模板方案，原因是它能复用 Vue 的自动导入与 Element Plus 的样式生态，开发更顺手；同时列出第一批要支持的控件类型（Input、Select、DatePicker、TimePicker），为后续动态组件收口打下基础。
-
-## 学习目标
-
-- 掌握 `VForm` 继承 `FormProps` 的基础封装方式
-- 理解 `VFormItem` 作为字段级中间层的作用
-- 定义 `FormSchema` 的 `type`/`field`/`attrs`/`events` 核心字段
-- 比较模板 `v-if` 分发与纯 TSX 渲染两条路线
-- 理解首版优先模板方案的现实考量
-- 认识 Input / Select / DatePicker / TimePicker 作为高频首批控件
-- 掌握动态组件里 `v-model` 与 `modelValue` 的绑定写法
-- 了解控件注册与动态解析的预留位置
-- 掌握一个最小可运行的 VForm 雏形
-
----
 
 ## 一、VForm 直接继承 Element Plus 的 Form Props
 

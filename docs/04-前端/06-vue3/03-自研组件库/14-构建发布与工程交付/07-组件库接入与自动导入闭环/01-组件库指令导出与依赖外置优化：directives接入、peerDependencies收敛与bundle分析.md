@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 组件库指令导出与依赖外置优化：directives 接入、peerDependencies 收敛与 bundle 分析
 
 ## 概述
 
 组件、hooks、types、i18n 这些主链路打通之后，组件库的“公共能力面”还需要继续扩展。这一节做三件事：把 `directives` 作为正式公共能力导出、把 `video.js`/`vditor`/`vue-echarts` 这类大依赖从产物里 external 掉并收进 `peerDependencies`、用 bundle 可视化工具实际验证 external 是否生效。真正要建立的工程意识是：组件库不只是组件集合，还包括指令、插件能力，以及一套能持续收敛体积的依赖边界策略。
-
-## 学习目标
-
-- 把 `directives` 与 components、hooks、types 一样当作组件库正式对外暴露的能力
-- 用统一的 `setupDirectives(app)` 入口暴露指令，而不是让使用者逐条手动安装
-- 协同调整 `package.json`（peer 归属）、`rollupOptions.external`、Playground（补齐依赖）完成大依赖外置
-- 用 `rollup-plugin-visualizer` 看清谁在变大、谁已被剥离，验证 external 成效
-- 按真实使用场景选择 external 粒度，而不是盲目追求最小包体积
-
----
 
 ## 一、directives 与组件一样，是可被正式对外暴露的公共能力
 

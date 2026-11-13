@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 渲染函数与 JSX
 
 > 渲染函数（`h()`）提供了比模板更底层的渲染能力。JSX/TSX 是类 XML 的语法糖，在 Vue 3 中通过 `@vitejs/plugin-vue-jsx` 支持。

@@ -1,6 +1,6 @@
 ---
 title: 判定 API 调用
-description: "这节课我们来讲解 step 5 中的第二个小步骤，即如何判定代码中存在 API 调用，这一步会用到上节课收集的 API 信息，文档内容涉及 codeAnalysis 中 _dealAST 函数的实现原理，完整源码可参考 lib/analysis.js。"
+description: "本文讲解 step 5 中的第二个小步骤，即如何判定代码中存在 API 调用，这一步会用到上一篇收集的 API 信息，文档内容涉及 codeAnalysis 中 _dealAST 函数的实现原理，完整源码可参考 lib/analysis.js。"
 keywords: [判定, API, 调用]
 category: tools
 tags: [AST, 代码分析, TypeScript]
@@ -12,7 +12,7 @@ tags: [AST, 代码分析, TypeScript]
 依赖调用分析需要对代码文件 AST 进行两轮遍历分析，上一篇我们主要讲解了如何分析 Import 节点，也就是第一轮遍历， 分析 Import 节点是为了搞清楚有哪些 API 被导入，同时收集这些导入 API 的相关信息。
 
 
-这节课我们来讲解 `step 5` 中的第二个小步骤，即如何判定代码中存在 API 调用，这一步会用到上节课收集的 API 信息，文档内容涉及 codeAnalysis 中 `_dealAST` 函数的实现原理，完整源码可参考 [lib/analysis.js](https://github.com/liangxin199045/code-analysis-ts/blob/main/lib/analysis.js) 。
+本文讲解 `step 5` 中的第二个小步骤，即如何判定代码中存在 API 调用，这一步会用到上一篇收集的 API 信息，文档内容涉及 codeAnalysis 中 `_dealAST` 函数的实现原理，完整源码可参考 [lib/analysis.js](https://github.com/liangxin199045/code-analysis-ts/blob/main/lib/analysis.js) 。
 
 
 在《从分析一段 TS 代码开始》一篇中，我们实现了一个分析 TS 代码中 API 调用的分析脚本，虽然存在一些缺陷，但通过遍历所有 `identifier` 类型节点名称与 Import API 名称进行相等判断这个逻辑是成立的，我们本篇要讲的内容可以理解为对那个分析脚本的进一步完善。

@@ -6,20 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # PWA 渐进式 Web 应用基础
 
 ## 概述
 
 PWA（Progressive Web App）通过 Service Worker、Web App Manifest 和 HTTPS 三大技术，让 Web 应用具备离线访问、可安装、推送通知等原生应用能力。本文讲解 PWA 的核心概念与技术组成。
-
-## 学习目标
-
-- 理解 PWA 的三大技术支柱及其作用
-- 掌握 Web App Manifest 的配置规范
-- 理解 Service Worker 的生命周期与缓存策略
-
----
 
 ## 一、PWA 核心特征
 

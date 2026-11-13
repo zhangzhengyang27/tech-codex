@@ -8,12 +8,6 @@ tags: [React, 组件与实战]
 
 # React组件如何写TypeScript类型
 
-## 学习目标
-
-- 掌握 JSX 的类型
-- 掌握 函数组件的类型
-- 掌握 hook 的类型
-
 ## JSX 的类型
 
 在 App.tsx 里开始练习 TypeScript 类型：
@@ -321,7 +315,6 @@ type CccProps = PropsWithChildren<{
   styles: CSSProperties
 }>
 
-
 function Ccc(props: CccProps) {
   return <div>ccc,{props.content}{props.children}</div>
 }
@@ -453,4 +446,4 @@ interface CccProps {
 ## 继续阅读
 
 - 上一篇：[06-Hook的闭包陷阱的成因和解决方案](06-Hook的闭包陷阱的成因和解决方案)
-- 下一篇：[08-React组件如何调试](08-React组件如何调试)
+- 下一篇：[11-组件实战-Calendar日历组件](../08-项目实战/11-组件实战-Calendar日历组件)

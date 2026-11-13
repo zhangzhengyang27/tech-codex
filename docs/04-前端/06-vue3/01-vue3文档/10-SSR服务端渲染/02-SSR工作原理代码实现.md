@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # SSR 工作原理代码实现
 
 ## 概述
 
 本文从零实现一个最小 Vue3 SSR 应用：Node.js 服务器 + createSSRApp + renderToString + 客户端 Hydration，完整展示服务端渲染的代码级工作流程。
-
-## 学习目标
-
-- 掌握 createSSRApp 与 renderToString 的用法
-- 理解服务端入口与客户端入口的职责划分
-- 实现完整的 SSR → Hydration 闭环
-- 理解服务端状态传递到客户端的机制
-
----
 
 ## 一、SSR 核心流程
 

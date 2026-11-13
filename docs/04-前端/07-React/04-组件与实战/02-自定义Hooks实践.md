@@ -8,12 +8,6 @@ tags: [React, 组件与实战]
 
 # 自定义Hooks实践
 
-## 学习目标
-
-- 掌握 实践一：自动上报pv/click的埋点hooks—— useLog
-- 掌握 实践二：带查询的分页加载长列表—— useQueryTable
-- 掌握 设计原则
-
 ## 实践一：自动上报pv/click的埋点hooks—— useLog
 
 接下来实现一个能够自动上报 点击事件 | pv 的自定义 hooks 。通过这个自定义 hooks ，将带来的收获是：
@@ -66,7 +60,6 @@ export default function useLog(){
 
 如果上述没有分清楚依赖项关系，那么 context 改变，会让 reportMessage 打印不到最新的 context 值。
 
-
 **使用**
 
 ````js
@@ -95,7 +88,6 @@ export default function Root(){
 ````
 
 如上当 context 改变，能够达到正常上报的效果。有一个小细节，就是用 `React.memo` 来阻断 Root 组件改变 state 给 Home 组件带来的更新效应。
-
 
 ## 实践二：带查询的分页加载长列表—— useQueryTable 
 
@@ -288,11 +280,9 @@ function Index (){
 
 **效果**
 
-
 * 整个查询表格逻辑层基本就一个自定义 hooks —— `useQueryTable` 就搞定了。
 * `getTableData` 模拟了数据交互过程 ，其内部的代码逻辑不必纠结 。
 * `useCallback` 对 Table 的 React element 做缓存处理，这样频繁的表单控件更新，不会让 Table 组件重新渲染。
-
 
 ## 实践三：实现React-Redux功能—— useCreateStore | useConnect
 
@@ -300,7 +290,6 @@ function Index (){
 
 * 如何将不同组件的自定义 hooks 建立通信，共享状态。
 * 合理编写自定义 hooks ， 分析 hooks 之间的依赖关系。
-
 
 首先，看一下要实现的两个自定义 hooks 具体功能。
 
@@ -359,7 +348,6 @@ const [ state , dispatch ] = useConnect(mapStoreToState)
 
 * 数组第一项：为映射的 state 的值。
 * 数组第二项：为改变 state 的 `dispatch` 函数。
-
 
 ### 2 useCreateStore 
 
@@ -521,7 +509,6 @@ export function useConnect(mapStoreToState=()=>{}){
 
 * 解绑：在 useEffect 的销毁函数中，可以用调用 unSubscribe 传入 name 来解绑当前的 connectValue
 
-
 **connectValue是否更新组件**
 
 * connectValue ：真正地向 ReduxHooksStore 注册的状态，首先用 `useMemo` 来对 connectValue 做缓存，connectValue 为一个对象，里面的 cacheState 保留了上一次的 mapStoreToState 产生的 state ，还有一个负责更新的 update 函数。
@@ -529,7 +516,6 @@ export function useConnect(mapStoreToState=()=>{}){
 * **更新流程** ： 当触发 `dispatch` 在 ReduxHooksStore 中，会让每一个 connectValue 的 update 都执行， update 会触发映射函数 `mapStoreToState` 来得到当前组件想要的 state 内容。然后通过 `shallowEqual` 浅比较新老 state 是否发生变化，如果发生变化，那么更新组件。完成整个流程。
 
 * shallowEqual ： 这个浅比较就是 React 里面的浅比较，其流程在 [渲染控制](../01-基础概念/10-渲染控制) 中已经讲了，这里就不讲了。
-
 
 **分清依赖关系**
 
@@ -600,7 +586,6 @@ function Root(){
 **Index组件**
 
 * 有四个子组件 CompA ， CompB ，CompC ，CompD 。其中 CompD 是 动态挂载的。
-
 
 #### 业务组件使用 
 

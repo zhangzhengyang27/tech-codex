@@ -8,12 +8,6 @@ tags: [React, 项目实战]
 
 # SSR 与 SSG 部署实战
 
-## 学习目标
-
-- 区分 SSR / SSG / CSR 的取舍
-- 掌握缓存与 revalidate 策略
-- 了解从构建产物到上线的部署要点
-
 ## 三种渲染模式
 
 | 模式 | 渲染时机 | 适用 |
@@ -22,7 +16,7 @@ tags: [React, 项目实战]
 | SSR | 每次请求 | 个性化、实时数据、需 SEO |
 | SSG | 构建时 | 内容稳定、高并发公开页 |
 
-React 的 SSR 原理见 [02-React 服务端渲染-从 SSR 到 hydrate](../02-原理与源码/02-React服务端渲染-从SSR到hydrate)，本章侧重工程选择。
+React 的 SSR 原理可参考 [17-ReactServerComponents原理](../02-原理与源码/17-ReactServerComponents原理)，本章侧重工程选择。
 
 ## 缓存与重新生成
 

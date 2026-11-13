@@ -109,7 +109,7 @@ graph TD
     end
     
     subgraph "2026年AI时代新形态"
-        B1[🆕 AI Native App<br/>GPT-5.5驱动的智能应用]
+        B1[🆕 AI Native App<br/>新一代大模型驱动的智能应用]
         B2[🆕 AI Agent/智能体<br/>自主完成任务的应用]
         B3[🆕 AI增强小程序<br/>内置AI能力的轻量应用]
         B4[🆕 对话式UI<br/>自然语言即界面]
@@ -317,13 +317,13 @@ Phase 3: 数据验证（第4-8周）
 
 **核心理念升级：**
 
-> 2018: 应用形态 = App + 小程序 + PWA  
+> 2018: 应用形态 = App + 小程序 + PWA 
 > **2026: 应用形态 = App + 小程序 + AI Agent + AI Native App + 对话式服务**
 
-> 2018: 开发者关注"哪个框架更好"  
+> 2018: 开发者关注"哪个框架更好" 
 > **2026: 开发者关注"什么问题最适合用什么形态 + 如何用 AI 加速开发"**
 
-> 2018: Serverless 是"未来方向"  
+> 2018: Serverless 是"未来方向" 
 > **2026: Serverless 是"默认选项"，AI 推理即服务是新的基础设施**
 
 **最重要的变化：**
@@ -333,4 +333,3 @@ Phase 3: 数据验证（第4-8周）
 
 ### 6.2 参考与延伸
 
-*注解生成时间：2026 年 6 月 | 基于 AI Agent、Serverless 和小程序生态最新发展更新。参考：Alipay Mini Program Developer Report 2026、Serverless Survey 2026、AI Agent Ecosystem Report。*

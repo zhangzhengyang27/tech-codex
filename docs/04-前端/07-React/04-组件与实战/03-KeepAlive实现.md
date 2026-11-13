@@ -8,12 +8,6 @@ tags: [React, 组件与实战]
 
 # KeepAlive实现
 
-## 学习目标
-
-- 掌握 设计思想
-- 掌握 如何使用
-- 掌握 核心原理
-
 ## 设计思想
 
 ### 2.1 如何使用
@@ -33,7 +27,6 @@ tags: [React, 组件与实战]
   <CustomComponent >
 </KeepaliveItem>
 ````
-
 
 通过 KeepaliveItem 注册一个缓存组件，在这里需要设置一个**缓存 id**，至于干什么用，马上会讲到。
 
@@ -75,7 +68,6 @@ export default function (props){
 
 * 第一个问题：切换 isShow 的时候，并没有卸载真正的组件，组件还要保持‘存活’的状态。
 * 第二个问题：组件没有被卸载，那么 fiber 就仍然存在的，包括上面的 DOM 元素也是存在的，但是不能够让元素显示。
-
 
 **控制 DOM 元素显示与隐藏：**
 
@@ -146,13 +138,11 @@ function Index(){
 { isShow && <KeepaliveItem cacheId="demo"><Content /></KeepaliveItem> }
 ````
 
-
 那么 KeepaliveItem 组件也会被卸载的，这个是在所难免的，如果 Content 是 KeepaliveItem 的子元素节点，那么 KeepaliveItem 的卸载，所有的子元素也会被卸载，这样的话保持 Content 的存活也就不可能实现了。
 
  
 
 如何解决这个问题呢？答案实际很简单，就是让 Content 组件在 KeepaliveItem 之外渲染，那么在 KeepaliveItem 之外渲染，具体在哪里呢？上面提到在整个应用外层通过有一个缓存状态的作用域 KeepaliveScope ，把 context 交给 KeepaliveScope 去渲染挂载，就不会担心 KeepaliveItem 被卸载导致 context 也被卸载的情况。本质上的结构如下所示:
-
 
 ````js
 <KeepaliveScope>
@@ -168,16 +158,13 @@ function Index(){
 
 当 KeepaliveItem 组件渲染的时候，Content 将会被 React.createElement 创建成 element 对象，能够在 KeepaliveItem 中通过 children 属性获取到。
 
-
 这个时候关键的一步来了，**children 不要在 KeepaliveItem 中直接渲染，而是把 children（ Content 对应的 element 对象 ），交给 KeepaliveScope。**
-
 
 KeepaliveScope 得到了 Content 的 element 对象，这个时候直接渲染 element 对象就可以了，此时 Content 组件对应的 DOM 元素就会存在了。
 
 **回传 DOM 元素：**
 
 虽然有了真实的 DOM 元素了，那么接下来又来了一个问题，就是正常情况下 content 产生的 DOM 是在 KeepaliveItem 位置渲染的，但是我们却把它交给了 KeepaliveScope 去渲染，这样会让 DOM 元素脱离之前的位置，而且如果一些 css 属性是通过父级选择器添加的，那么样式也就无法加上去。
-
 
 针对上面这个问题，这个时候我们就需要把在 KeepaliveScope 中渲染的 DOM 元素状态回传给 KeepaliveItem 就可以了。
 
@@ -186,11 +173,9 @@ KeepaliveScope 得到了 Content 的 element 对象，这个时候直接渲染 e
 
 如果卸载 KeepaliveItem ，因为此时的 dom 还在 KeepaliveItem 中 ，所以首先我们需要把元素回到 KeepaliveScope 上，但是此时 dom 还是显示状态，重点来了此时我们需要隐藏元素。这个时候就需要设置 display 属性为 none 。
 
-
 **再次挂载元素，重新激活组件：**
 
 如果再次挂载组件，那么就会重复上面的流程，唯一不同的是此时 KeepaliveScope 不在需要初始化 content 组件，因为 content 组件一直存活并没有卸载，这个时候需要做的事，改变 display 状态，然后继续将 dom 传给重新挂载的 KeepaliveItem 组件就可以了。
-
 
 ### 2.3 架构设计
 
@@ -225,7 +210,6 @@ KeepaliveScope 得到了 Content 的 element 对象，这个时候直接渲染 e
 
 架构流程如下。
 
-
 **卸载组件阶段：**
 
 如上一个 keepaliveItem 组件卸载，那么 keepaliveItem 组件本身是卸载的，但是 item 组件因为在 Scope 内部挂载， item 并不会销毁，但是因为此时组件不能再显示了，那么接下来做的事情是把 item 的状态设置为 unActive， 把 dom 回传到 body 上，但是此时需要把元素从布局树上隐藏，所以最终把 display 属性设置为 none 即可。
@@ -233,7 +217,6 @@ KeepaliveScope 得到了 Content 的 element 对象，这个时候直接渲染 e
 **再次挂载组件，启动缓存：**
 
 当再次挂载的时候，keepaliveItem 可以通过 cacheId 来向 Scope 查询组件是否缓存过，因为已经缓存过，所以直接使用 ScopeItem 的状态和 dom 元素就可以了。
-
 
 ## 具体实现
 
@@ -359,7 +342,6 @@ export default function Index() {
 }
 ````
 
-
 * 如上介绍了缓存组件和路由页面的基本用法，接下来就到了具体实现的环节了。
 
 ### 3.1 KeepaliveScope  
@@ -409,7 +391,6 @@ KeepaliveScope 选用的是组合模式，props 接收参数，首先会通过 u
 
 上面说到了 useKeep 是每一个 item 的管理器，我们来看一下 useKeep 是什么？
 
-
 ### 3.2 状态管理器 useKeep
 
 ````js
@@ -423,7 +404,6 @@ export const ACTION_DESTROY    = 'destroy'       /* 设置摧毁状态 */
 export const ACTION_DESTROYED  = 'destroyed'     /* 摧毁缓存 */
 export const ACTION_CLEAR      = 'clear'         /* 清除缓存 */
 export const ACTION_UPDATE     = 'update'        /* 更新组件 */
-
 
 class Keepalive {
     constructor(setState, maxLimit) {
@@ -520,7 +500,6 @@ export default function useKeep(CACHE_MAX_DEFAULT_LIMIT) {
 useKeep 本身是一个自定义 hooks ，首先会通过 new Keepalive 创建一个状态管理器，并用 useRef 来保存状态管理器。通过 useState 创建一个 update 函数——setKeepItems，用于更新每一个 item 状态（增，删，改）。
 
 new Keepalive 状态管理器中会通过 cacheDispatch 方法来改变 item 的状态，比如有激活状态到休眠状态。通过下发对应的 action 指令来让缓存组件切换状态。
-
 
 ### 3.3 ScopeItem 
 
@@ -657,7 +636,6 @@ KeepaliveItem 的核心逻辑是：
 * 当 KeepaliveItem 第一次加载，所以应该没有缓存，直接调用 created 指令，创建一个 ScopeItem 。
 * 如果 KeepaliveItem 父组件更新，那么触发 update 来更新 updater 对象，让缓存的组件重新渲染。
 * 当组件挂载的时候，会下发 active 指令，激活组件，接下来 ScopeItem 会把 dom 元素回传给 KeepaliveItem。当卸载的时候会下发 unActive 指令，dom 元素会重新插入到 document body 中，借此整个流程都走通了。
-
 
 ### 3.5 完善其他功能
 

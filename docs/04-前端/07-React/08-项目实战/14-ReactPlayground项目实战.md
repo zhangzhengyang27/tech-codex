@@ -6,20 +6,17 @@ category: React
 tags: [React, 原理与源码]
 ---
 
+::: warning 配图说明
+本教程原配图未随迁移入库，含 242 处图示引用已改为文字提示，阅读时以代码与文字描述为准。
+:::
+
 # ReactPlayground项目实战
-
-## 学习目标
-
-- 掌握 React Playground 的整体实现思路（编译、模块引入、预览）
-- 掌握 allotment 布局、@monaco-editor/react 编辑器与 @typescript/ata 自动类型获取
-- 掌握 babel 插件改写 import、blob url、import maps 与 iframe postMessage 通信
-- 掌握 Web Worker 性能优化的思路与实践
 
 ## 思路分析：实现思路
 
 这节我们开始做一个实战项目：React Playground。
 
-类似 [vue 的 playground](https://play.vuejs.org/)：
+类似 [vue 的 playground](https://play.vuejs.org/)（原文此处有配图，未随迁移入库）
 
 左边写代码，右边实时预览。
 
@@ -27,7 +24,7 @@ tags: [React, 原理与源码]
 
 先来分析下实现思路。
 
-首先是编译：
+首先是编译（原文此处有配图，未随迁移入库）
 
 编译用的 [@babel/standalone](https://babeljs.io/docs/babel-standalone)，这个是 babel 的浏览器版本。
 
@@ -47,7 +44,7 @@ npm i --save @babel/standalone
 npm i --save-dev @types/babel__standalone
 ```
 
-去掉 index.css 和 StrictMode：
+去掉 index.css 和 StrictMode（原文此处有配图，未随迁移入库）
 
 改下 App.tsx
 
@@ -104,11 +101,11 @@ export default App
 
 打印 res.code。
 
-可以看到，打印了编译后的代码：
+可以看到，打印了编译后的代码（原文此处有配图，未随迁移入库）
 
-但现在编译后的代码也不能跑啊：
+但现在编译后的代码也不能跑啊（原文此处有配图，未随迁移入库）
 
-主要是 import 语句这里：
+主要是 import 语句这里（原文此处有配图，未随迁移入库）
 
 运行代码的时候，会引入 import 的模块，这时会找不到。
 
@@ -151,9 +148,9 @@ export default App
 </body>
 </html>
 ```
-浏览器访问下：
+浏览器访问下（原文此处有配图，未随迁移入库）
 
-这里用的就是 blob url：
+这里用的就是 blob url（原文此处有配图，未随迁移入库）
 
 我们可以把一段 JS 代码，用 URL.createObjectURL 和 new Blob 的方式变为一个 url：
 
@@ -184,9 +181,9 @@ babel 插件呀。
 
 babel 编译流程分为 parse、transform、generate 三个阶段。
 
-babel 插件就是在 transform 的阶段增删改 AST 的：
+babel 插件就是在 transform 的阶段增删改 AST 的（原文此处有配图，未随迁移入库）
 
-通过 [astexplorer.net](https://astexplorer.net/#/gist/6f01ee950445813f623214fb2c7abba9/b45fffd5a735f829d15098efa4f860438c3a070e) 看下对应的 AST：
+通过 [astexplorer.net](https://astexplorer.net/#/gist/6f01ee950445813f623214fb2c7abba9/b45fffd5a735f829d15098efa4f860438c3a070e) 看下对应的 AST（原文此处有配图，未随迁移入库）
 
 只要在对 ImportDeclaration 的 AST 做处理，把 source.value 替换为对应文件的 blob url 就行了。
 
@@ -249,7 +246,7 @@ npm i --save-dev @types/babel__core
 
 那如果是引入 react 和 react-dom 的包呢？这些也不是在左侧写的代码呀？
 
-这种可以用 import maps 的机制：
+这种可以用 import maps 的机制（原文此处有配图，未随迁移入库）
 
 在 public 下新建 test2.html
 
@@ -277,17 +274,17 @@ npm i --save-dev @types/babel__core
 </body>
 </html>
 ```
-访问下：
+访问下（原文此处有配图，未随迁移入库）
 
 可以看到，import react 生效了。
 
 为什么会生效呢？
 
-你访问下可以看到，[返回的内容](https://esm.sh/react@18.2.0)也是 import url 的方式：
+你访问下可以看到，[返回的内容](https://esm.sh/react@18.2.0)也是 import url 的方式（原文此处有配图，未随迁移入库）
 
-这里的 [esm.sh](https://esm.sh) 就是专门提供 esm 模块的 CDN 服务：
+这里的 [esm.sh](https://esm.sh) 就是专门提供 esm 模块的 CDN 服务（原文此处有配图，未随迁移入库）
 
-这是它们做的 [react playground](https://code.esm.sh/)：
+这是它们做的 [react playground](https://code.esm.sh/)（原文此处有配图，未随迁移入库）
 
 这样，如何引入编辑器里写的 ./Aaa.tsx 这种模块，如何引入 react、react-dom 这种模块我们就都清楚了。
 
@@ -335,7 +332,7 @@ export default App;
 
 Editor 有很多[参数](https://github.com/suren-atoyan/monaco-react?tab=readme-ov-file#editor)，等用到的时候再展开看。
 
-接下来看下预览部分：
+接下来看下预览部分（原文此处有配图，未随迁移入库）
 
 这部分就是 iframe，然后加一个通信机制，左边编辑器的结果，编译之后传到 iframe 里渲染就好了。
 
@@ -414,9 +411,9 @@ iframe.html：
 </html>
 
 ```
-这里路径后面加个 ?raw 是通过字符串引入（webpack 和 vite 都有这种功能），用 URL.createObjectURL + Blob 生成 blob url 设置到 iframe 的 src 就好了：
+这里路径后面加个 ?raw 是通过字符串引入（webpack 和 vite 都有这种功能），用 URL.createObjectURL + Blob 生成 blob url 设置到 iframe 的 src 就好了（原文此处有配图，未随迁移入库）
 
-渲染的没问题：
+渲染的没问题（原文此处有配图，未随迁移入库）
 
 这样，我们只需要内容变了之后生成新的 blob url 就好了。
 
@@ -444,7 +441,7 @@ iframe.html：
 
 我们先写编辑器部分。
 
-布局和 [vue playground](https://play.vuejs.org/#eNp9kUFLwzAUx7/KM5cqzBXR0+gGKgP1oKKCl1xG99ZlpklIXuag9Lv7krK5w9it7//7v/SXthP3zo23EcVEVKH2yhEEpOhm0qjWWU/QgccV9LDytoWCq4U00tTWBII2NDBN/LJ4Qq0tfFuvlxfFlTRVORzHB/FA2Dq9IOQJoFrfzLouL/d9VfKUU2VcJNhet3aJeioFcymgZFiVR/tiJCjw61eqGW+CNWzepX0pats6pdG/OVKsJ8UEMklswXa/LzkjH3G0z+s11j8n8k3YpUyKd48B/RalODBa+AZpwPPPV9zx8wGyfdTcPgM/MFgdk+NQe4hmydpHvWz7nL+/Ms1XmO8ITdhfKommZp/7UvA/eTxz9X/d2/Fd3pOmF/0fEx+nNQ==) 一样：
+布局和 [vue playground](https://play.vuejs.org/#eNp9kUFLwzAUx7/KM5cqzBXR0+gGKgP1oKKCl1xG99ZlpklIXuag9Lv7krK5w9it7//7v/SXthP3zo23EcVEVKH2yhEEpOhm0qjWWU/QgccV9LDytoWCq4U00tTWBII2NDBN/LJ4Qq0tfFuvlxfFlTRVORzHB/FA2Dq9IOQJoFrfzLouL/d9VfKUU2VcJNhet3aJeioFcymgZFiVR/tiJCjw61eqGW+CNWzepX0pats6pdG/OVKsJ8UEMklswXa/LzkjH3G0z+s11j8n8k3YpUyKd48B/RalODBa+AZpwPPPV9zx8wGyfdTcPgM/MFgdk+NQe4hmydpHvWz7nL+/Ms1XmO8ITdhfKommZp/7UvA/eTxz9X/d2/Fd3pOmF/0fEx+nNQ==) 一样（原文此处有配图，未随迁移入库）
 
 左边 Editor 右边 Preview，上面还有 Header。
 
@@ -495,15 +492,15 @@ npm run dev
 
 然后来写布局。
 
-[vue playground](https://play.vuejs.org/#eNp9kUFLwzAUx7/KM5cqzBXR0+gGKgP1oKKCl1xG99ZlpklIXuag9Lv7krK5w9it7//7v/SXthP3zo23EcVEVKH2yhEEpOhm0qjWWU/QgccV9LDytoWCq4U00tTWBII2NDBN/LJ4Qq0tfFuvlxfFlTRVORzHB/FA2Dq9IOQJoFrfzLouL/d9VfKUU2VcJNhet3aJeioFcymgZFiVR/tiJCjw61eqGW+CNWzepX0pats6pdG/OVKsJ8UEMklswXa/LzkjH3G0z+s11j8n8k3YpUyKd48B/RalODBa+AZpwPPPV9zx8wGyfdTcPgM/MFgdk+NQe4hmydpHvWz7nL+/Ms1XmO8ITdhfKommZp/7UvA/eTxz9X/d2/Fd3pOmF/0fEx+nNQ==) 这个布局是可以拖拽改变 editor 和 preview 部分的宽度的：
+[vue playground](https://play.vuejs.org/#eNp9kUFLwzAUx7/KM5cqzBXR0+gGKgP1oKKCl1xG99ZlpklIXuag9Lv7krK5w9it7//7v/SXthP3zo23EcVEVKH2yhEEpOhm0qjWWU/QgccV9LDytoWCq4U00tTWBII2NDBN/LJ4Qq0tfFuvlxfFlTRVORzHB/FA2Dq9IOQJoFrfzLouL/d9VfKUU2VcJNhet3aJeioFcymgZFiVR/tiJCjw61eqGW+CNWzepX0pats6pdG/OVKsJ8UEMklswXa/LzkjH3G0z+s11j8n8k3YpUyKd48B/RalODBa+AZpwPPPV9zx8wGyfdTcPgM/MFgdk+NQe4hmydpHvWz7nL+/Ms1XmO8ITdhfKommZp/7UvA/eTxz9X/d2/Fd3pOmF/0fEx+nNQ==) 这个布局是可以拖拽改变 editor 和 preview 部分的宽度的（原文此处有配图，未随迁移入库）
 
 怎么实现呢？
 
-原理就是 position 设置 absolute，然后拖动改变 width：
+原理就是 position 设置 absolute，然后拖动改变 width（原文此处有配图，未随迁移入库）
 
 但是不用自己写，有三方组件可以用。
 
-[allotment](https://www.npmjs.com/package/allotment) 这个组件：
+[allotment](https://www.npmjs.com/package/allotment) 这个组件（原文此处有配图，未随迁移入库）
 
 我们用一下：
 
@@ -540,7 +537,7 @@ defaultSizes 指定 100、100 也就是按照 1:1 的比例展示。
 
 minSize 是最小宽度。
 
-测试下：
+测试下（原文此处有配图，未随迁移入库）
 
 可以看到，最开始是 1:1，可以拖动改变大小。
 
@@ -589,7 +586,7 @@ export default function Preview() {
     return <div>Preview</div>
 }
 ```
-现在是这样的：
+现在是这样的（原文此处有配图，未随迁移入库）
 
 这里没有靠边，我们在 App.scss 里重置下样式就好了：
 
@@ -605,7 +602,7 @@ export default function Preview() {
 npm install -D sass
 ```
 
-在 App.tsx 引入下：
+在 App.tsx 引入下（原文此处有配图，未随迁移入库）
 
 先来写写 Header 部分：
 
@@ -674,7 +671,7 @@ export default function Header() {
   )
 }
 ```
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 没啥问题。
 
@@ -696,7 +693,7 @@ export default function CodeEditor() {
 ```
 设置高度 100%，然后 flex 布局，方向为 column。
 
-这部分可以细分为 FileNameList 和 Editor 两个组件：
+这部分可以细分为 FileNameList 和 Editor 两个组件（原文此处有配图，未随迁移入库）
 
 创建 ./Editor/index.tsx
 
@@ -712,7 +709,7 @@ export default function FileNameList() {
 }
 ```
 
-然后先写 Editor 组件：
+然后先写 Editor 组件（原文此处有配图，未随迁移入库）
 
 引入 monaco editor：
 
@@ -739,7 +736,7 @@ export default function Editor() {
     />
 }
 ```
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 代码渲染没问题，但是提示 jsx 不知道怎么处理。
 
@@ -797,11 +794,11 @@ import * as fs from 'fs';
 import fs from 'fs';
 ```
 
-再看下：
+再看下（原文此处有配图，未随迁移入库）
 
 错误消失了。
 
-我们还可以添加快捷键的交互：
+我们还可以添加快捷键的交互（原文此处有配图，未随迁移入库）
 
 默认 cmd（windows 下是 ctrl） + j 没有处理。
 
@@ -813,7 +810,7 @@ editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyJ, () => {
 });
 ```
 
-试下效果：
+试下效果（原文此处有配图，未随迁移入库）
 有同学可能问，monaco editor 还有哪些 action 呢？
 
 打印下就知道了：
@@ -825,11 +822,11 @@ editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyJ, () => {
     console.log(actions);
 });
 ```
-有 131 个：
+有 131 个（原文此处有配图，未随迁移入库）
 
 用到再搜吧。
 
-现在还一个比较大的问题：
+现在还一个比较大的问题（原文此处有配图，未随迁移入库）
 
 这个缩略图用不到。
 
@@ -870,7 +867,7 @@ scrollbar 是设置横向纵向滚动条宽度的。
 
 设置都生效了。
 
-还有一个问题：
+还有一个问题（原文此处有配图，未随迁移入库）
 
 现在引入第三方包是没提示的。
 
@@ -878,7 +875,7 @@ scrollbar 是设置横向纵向滚动条宽度的。
 
 我们也要支持下。
 
-这里用到 @typescript/ata 这个包：
+这里用到 @typescript/ata 这个包（原文此处有配图，未随迁移入库）
 
 ata 是 automatic type acquisition 自动类型获取。
 
@@ -929,7 +926,7 @@ ata(editor.getValue());
 ```
 就是最开始获取一次类型，然后内容改变之后获取一次类型，获取类型之后用 addExtraLib 添加到 ts 里。
 
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 有类型了！
 
@@ -1066,17 +1063,17 @@ git reset --hard 0aebeab1826edf35fefa1b4a6d5b9f44c4aa970f
 
 上节完成了整体布局和代码编辑器部分的开发。
 
-这节继续来做多文件的切换：
+这节继续来做多文件的切换（原文此处有配图，未随迁移入库）
 
 点击上面的 tab 可以切换当前选中的文件，然后下面就会展示对应文件的内容。
 
-上面的 FileNameList 组件、下面的 Editor 组件，还有右边的 Preview 组件都需要拿到所有文件的信息：
+上面的 FileNameList 组件、下面的 Editor 组件，还有右边的 Preview 组件都需要拿到所有文件的信息（原文此处有配图，未随迁移入库）
 
 如何跨多个组件共享同一份数据呢？
 
 很明显要用 Context。
 
-我们先来创建这个 Context：
+我们先来创建这个 Context（原文此处有配图，未随迁移入库）
 
 创建 PlaygroundContext.tsx
 
@@ -1110,7 +1107,7 @@ export const PlaygroundContext = createContext<PlaygroundContext>({
 
 context 里保存了 files 的信息，还有当前选中的文件 selectedFileName。
 
-file 的信息是这样保存的：
+file 的信息是这样保存的（原文此处有配图，未随迁移入库）
 
 files 里是键值对方式保存的文件信息，键是文件名，值是文件的信息，包括 name、value、language。
 
@@ -1118,9 +1115,9 @@ context 里除了 files 和 selectedFileName 外，还有修改它们的方法 s
 
 以及 addFile、removeFile、updateFileName 的方法。
 
-增删改文件的时候用：
+增删改文件的时候用（原文此处有配图，未随迁移入库）
 
-然后提供一个 PlaygroundProvider 组件：
+然后提供一个 PlaygroundProvider 组件（原文此处有配图，未随迁移入库）
 
 它就是对 Context.Provider 的封装，注入了这些增删改文件的方法的实现：
 
@@ -1193,9 +1190,9 @@ export const fileName2Language = (name: string) => {
 ```
 就是根据不同的后缀名返回 language。
 
-在 monaco editor 这里会用到，用于不同语法的高亮：
+在 monaco editor 这里会用到，用于不同语法的高亮（原文此处有配图，未随迁移入库）
 
-然后我们在 App.tsx 里包一层 Provider：
+然后我们在 App.tsx 里包一层 Provider（原文此处有配图，未随迁移入库）
 
 这样就可以在任意组件用 useContext 读取 context 的值了。
 
@@ -1296,7 +1293,7 @@ export const initFiles: Files = {
 
 import 模块的时候加一个 ?raw，就是直接文本的方式引入模块内容。
 
-在 template 目录下添加这四个文件：
+在 template 目录下添加这四个文件（原文此处有配图，未随迁移入库）
 
 App.tsx
 
@@ -1411,9 +1408,9 @@ import-map.json
   }
 }
 ```
-然后在 Provider 里初始化 files：
+然后在 Provider 里初始化 files（原文此处有配图，未随迁移入库）
 
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 上面的 tab 展示出来了，下面的 editor 还没有展示对应的文件内容。
 
@@ -1431,7 +1428,7 @@ const file = files[selectedFileName];
 ```
 换成从 context 读取的当前选中的 file 就好了。
 
-然后点击文件名的时候做下 selectedFileName 的切换：
+然后点击文件名的时候做下 selectedFileName 的切换（原文此处有配图，未随迁移入库）
 
 现在，点击 tab 就会切换编辑的文件，并且语法高亮也是对的。
 
@@ -1564,11 +1561,11 @@ export default function FileNameList() {
 ```
 selectedFileName 对应的 item 的 actived 为 true。
 
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 好看多了。
 
-在 initFiles 里多加点文件，我们测试下滚动条：
+在 initFiles 里多加点文件，我们测试下滚动条（原文此处有配图，未随迁移入库）
 
 确实有滚动条，就是有点丑。
 
@@ -1590,7 +1587,7 @@ selectedFileName 对应的 item 的 actived 为 true。
 
 现在滚动条就不明显了。
 
-我们现在并没有在编辑的时候修改 context 的 files 内容，所以切换 tab 又会变回去：
+我们现在并没有在编辑的时候修改 context 的 files 内容，所以切换 tab 又会变回去（原文此处有配图，未随迁移入库）
 
 只要在编辑器内容改变的时候修改下 files 就好了：
 
@@ -1609,7 +1606,7 @@ function onEditorChange(value?: string) {
 npm install --save lodash-es
 npm install --save-dev @types/lodash-es
 ```
-安装 lodash，然后调用下 debounce：
+安装 lodash，然后调用下 debounce（原文此处有配图，未随迁移入库）
 
 这样性能好一点。
 
@@ -1715,7 +1712,7 @@ export default function Preview() {
 ```
 在 files 变化的时候，对 main.tsx 内容做编译，然后展示编译后的代码。
 
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 可以看到，右边展示了编译后的代码，并且左边编辑的时候，右边会实时展示编译的结果。
 
@@ -1738,9 +1735,9 @@ function customResolver(files: Files): PluginObj {
     }
 }
 ```
-babel 的编译流程分为 parse、transform、generate 三个阶段：
+babel 的编译流程分为 parse、transform、generate 三个阶段（原文此处有配图，未随迁移入库）
 
-通过 [astexplorer.net](https://astexplorer.net/#/gist/6f01ee950445813f623214fb2c7abba9/b45fffd5a735f829d15098efa4f860438c3a070e) 看下对应的 AST：
+通过 [astexplorer.net](https://astexplorer.net/#/gist/6f01ee950445813f623214fb2c7abba9/b45fffd5a735f829d15098efa4f860438c3a070e) 看下对应的 AST（原文此处有配图，未随迁移入库）
 
 我们要改的就是 ImportDeclaration 节点的 source.value 的内容。
 
@@ -1748,25 +1745,25 @@ babel 的编译流程分为 parse、transform、generate 三个阶段：
 
 那替换成什么样还不是我们说了算。
 
-我们分别对 css、json 还有 tsx、ts 等后缀名的 import 做下替换：
+我们分别对 css、json 还有 tsx、ts 等后缀名的 import 做下替换（原文此处有配图，未随迁移入库）
 
 首先，我们要对路径做下处理，比如 ./App.css 这种路径提取出 App.css 部分
 
-万一输入的是 ./App 这种路径，也要能查找到对应的 App.tsx 模块：
+万一输入的是 ./App 这种路径，也要能查找到对应的 App.tsx 模块（原文此处有配图，未随迁移入库）
 
 如果去掉 ./ 之后，剩下的不包含 . 比如 ./App 这种，那就要补全 App 为 App.tsx 等。
 
 过滤下 files 里的 js、jsx、ts、tsx 文件，如果包含这个名字的模块，那就按照补全后的模块名来查找 file。
 
-之后把 file.value 也就是文件内容转成对应的 blob url：
+之后把 file.value 也就是文件内容转成对应的 blob url（原文此处有配图，未随迁移入库）
 
 ts 文件的处理就是用 babel 编译下，然后用 URL.createObjectURL 把编译后的文件内容作为 url。
 
-而 css 和 json 文件则是要再做一下处理：
+而 css 和 json 文件则是要再做一下处理（原文此处有配图，未随迁移入库）
 
-json 文件的处理比较简单，就是把 export 一下这个 json，然后作为 blob url 即可：
+json 文件的处理比较简单，就是把 export 一下这个 json，然后作为 blob url 即可（原文此处有配图，未随迁移入库）
 
-而 css 文件，则是要通过 js 代码把它添加到 head 里的 style 标签里：
+而 css 文件，则是要通过 js 代码把它添加到 head 里的 style 标签里（原文此处有配图，未随迁移入库）
 
 全部代码如下：
 
@@ -1862,11 +1859,11 @@ export const compile = (files: Files) => {
   return babelTransform(ENTRY_FILE_NAME, main.value, files)
 }
 ```
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 可以看到，./App 的模块内容编译之后变为了 blob url。
 
-我们引入 ./App.css 试下：
+我们引入 ./App.css 试下（原文此处有配图，未随迁移入库）
 
 可以看到，css 模块也变为了 blob url。
 
@@ -1883,13 +1880,13 @@ fetch("blob:http://localhost:5173/xxxx")
 
 ./App.css 的内容也是我们做的转换。
 
-而上面的 react、react-dom/client 的包是通过 import maps 引入：
+而上面的 react、react-dom/client 的包是通过 import maps 引入（原文此处有配图，未随迁移入库）
 
-其实还有一个问题要处理：
+其实还有一个问题要处理（原文此处有配图，未随迁移入库）
 
 比如 App.tsx 的 jsx 内容编译后变成了 React.createElement，但是我们并没有引入 React，这样运行会报错。
 
-处理下：
+处理下（原文此处有配图，未随迁移入库）
 
 babel 编译之前，判断下文件内容有没有 import React，没有就 import 一下：
 
@@ -1921,16 +1918,16 @@ export const babelTransform = (filename: string, code: string, files: Files) => 
 
 ```
 
-现在，如果没引入 React 就会自动引入：
+现在，如果没引入 React 就会自动引入（原文此处有配图，未随迁移入库）
 
 至此， main.tsx 的所有依赖都引入了：
 
 - react、react-dom/client 的包通过 import maps 引入
 - ./App.tsx、./App.css 或者 xx.json 之类的依赖通过 blob url 引入
 
-这样，编译过后的这段代码就可以直接在浏览器里跑了：
+这样，编译过后的这段代码就可以直接在浏览器里跑了（原文此处有配图，未随迁移入库）
 
-我们加个 iframe 来跑下：
+我们加个 iframe 来跑下（原文此处有配图，未随迁移入库）
 
 加一个 iframe 标签，src url 同样是用 blob url 的方式。
 
@@ -2012,9 +2009,9 @@ export default function Preview() {
 }
 ```
 
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
-看下 iframe 的内容：
+看下 iframe 的内容（原文此处有配图，未随迁移入库）
 
 没啥问题。
 
@@ -2044,11 +2041,11 @@ tsx 模块直接用 babel 编译，css 模块包一层代码加到 head 的 styl
 
 我们实现了多个文件的编辑、编译、预览，整体流程已经跑通了。
 
-但是文件的新增、删除、文件名修改还没做：
+但是文件的新增、删除、文件名修改还没做（原文此处有配图，未随迁移入库）
 
 这节来实现下。
 
-改下 FileNameItem：
+改下 FileNameItem（原文此处有配图，未随迁移入库）
 
 创建一个 editing 的 state 来记录编辑状态，然后用 ref 来保存 input 的引用。
 
@@ -2105,7 +2102,7 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
   )
 }
 ```
-试下效果：
+试下效果（原文此处有配图，未随迁移入库）
 
 然后 blur 的时候，切换为非编辑状态：
 
@@ -2117,9 +2114,9 @@ const hanldeInputBlur = () => {
 
 当然，这里应该去修改 files 里的文件名。
 
-我们在 FileNameList 组件里做这个，这里加一个回调函数：
+我们在 FileNameList 组件里做这个，这里加一个回调函数（原文此处有配图，未随迁移入库）
 
-然后在 FileNameList 组件传入：
+然后在 FileNameList 组件传入（原文此处有配图，未随迁移入库）
 
 修改文件名，并切换 selectedFileName 为新的文件名。
 
@@ -2167,15 +2164,15 @@ export default function FileNameList() {
     </div>
 }
 ```
-之前我们在 context.Provider 里注入了这个方法：
+之前我们在 context.Provider 里注入了这个方法（原文此处有配图，未随迁移入库）
 
 它会在 files 里查找旧的 file 信息，去掉后换成新的。
 
 可以看到，修改完之后文件跑后面去了，这个是因为我们插入新 file 的时候就是往后面插入的。
 
-然后修改完右面白屏了，打开 devtools 可以看到报错：
+然后修改完右面白屏了，打开 devtools 可以看到报错（原文此处有配图，未随迁移入库）
 
-因为 App.tsx 文件改名了，那 main.tsx 里引用的路径也得改下：
+因为 App.tsx 文件改名了，那 main.tsx 里引用的路径也得改下（原文此处有配图，未随迁移入库）
 
 这样，修改文件名的功能就完成了。
 
@@ -2198,11 +2195,11 @@ export default function FileNameList() {
 
 好看多了。
 
-接下来实现下新增 file 功能：
+接下来实现下新增 file 功能（原文此处有配图，未随迁移入库）
 
 新增其实和修改差不多，完全可以复用之前的逻辑。
 
-我们加一个 creating 参数：
+我们加一个 creating 参数（原文此处有配图，未随迁移入库）
 
 这样就可以由父组件来控制哪个 tab 是编辑状态。
 
@@ -2216,9 +2213,9 @@ useEffect(() => {
 }, [creating]);
 ```
 
-比如我们让最后一个 tab 是编辑状态：
+比如我们让最后一个 tab 是编辑状态（原文此处有配图，未随迁移入库）
 
-可以看到，现在不用双击也是编辑文件名的状态：
+可以看到，现在不用双击也是编辑文件名的状态（原文此处有配图，未随迁移入库）
 
 我们添加一个 + 按钮
 
@@ -2290,9 +2287,9 @@ export default function FileNameList() {
 
 没啥问题。
 
-而且 tsx、css 等语法都能正确的高亮和提示：
+而且 tsx、css 等语法都能正确的高亮和提示（原文此处有配图，未随迁移入库）
 
-因为我们 addFile 的时候已经做了处理：
+因为我们 addFile 的时候已经做了处理（原文此处有配图，未随迁移入库）
 
 最后还剩下个删除，这个比较简单。
 
@@ -2377,7 +2374,7 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
   )
 }
 ```
-在 FileNameList 组件里处理下：
+在 FileNameList 组件里处理下（原文此处有配图，未随迁移入库）
 
 删除文件，并且把选中的文件名换成 main.tsx
 
@@ -2403,7 +2400,7 @@ const handleRemove = (name: string) => {
 
 import-map.json 也是不能删除。
 
-我们加一个 readonly 参数：
+我们加一个 readonly 参数（原文此处有配图，未随迁移入库）
 
 非 readonly 状态才展示删除按钮。
 
@@ -2495,7 +2492,7 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
 ```javascript
 const readonlyFileNames = [ENTRY_FILE_NAME, IMPORT_MAP_FILE_NAME, APP_COMPONENT_FILE_NAME];
 ```
-试下效果：
+试下效果（原文此处有配图，未随迁移入库）
 
 可以看到，除了这三个文件外，其余文件名都是可以编辑和删除的。
 
@@ -2533,13 +2530,13 @@ e.stopPropagation 在这里调用，父组件那里就不需要了。
 
 （其实之前我们调用 e.stopPropagation 的位置就不对，应该是组件内处理完 stopPropagation 后再调用回调函数，而不是在父组件里 stopPropagation）
 
-测试下：
+测试下（原文此处有配图，未随迁移入库）
 
 没啥问题。
 
 至此，我们文件增删改的功能就都完成了。
 
-和前面实现的编译预览串联测试下：
+和前面实现的编译预览串联测试下（原文此处有配图，未随迁移入库）
 
 新建一个 Aaa.tsx 组件：
 
@@ -2565,9 +2562,9 @@ export default Aaa
     font-size: 50px;
 }
 ```
-在 App.tsx 里引入下：
+在 App.tsx 里引入下（原文此处有配图，未随迁移入库）
 
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
 没啥问题。
 
@@ -2601,9 +2598,9 @@ main.tsx、App.tsx、import-map.json 设置为 readonly，不可编辑和删除�
 
 首先，我们预览出错时，iframe 会白屏，并不会显示错误。
 
-比如当依赖的模块找不到的时候：
+比如当依赖的模块找不到的时候（原文此处有配图，未随迁移入库）
 
-这时候在 devtools 可以看到错误信息：
+这时候在 devtools 可以看到错误信息（原文此处有配图，未随迁移入库）
 
 但总不能让开发者自己打开 devtools 看，我们要在页面做一下错误的显示。
 
@@ -2646,7 +2643,7 @@ React 里设置 html 要用 dangerouslySetInnerHTML={{__html: "xxx"}} 的方式�
 
 用 visible 的 state 控制显示隐藏，当传入内容的时候，设置 visible 为 true。
 
-写下样式：
+写下样式（原文此处有配图，未随迁移入库）
 
 index.module.scss
 ```scss
@@ -2714,16 +2711,16 @@ pre {
 
 注意，.error 和 .warn 的时候 color 和 background-color 都不同，我们声明了两个 css 变量。
 
-css 变量可以在它元素和子元素 css 里生效，所以切换了 .error 和 .warn 就切换了整体的颜色：
+css 变量可以在它元素和子元素 css 里生效，所以切换了 .error 和 .warn 就切换了整体的颜色（原文此处有配图，未随迁移入库）
 
 在 Preview 组件引入下试试：
 
 ```javascript
 <Message type='warn' content={new Error().stack!.toString()} />
 ```
-看下效果：
+看下效果（原文此处有配图，未随迁移入库）
 
-把 type 换成 error，再缩小下窗口试试：
+把 type 换成 error，再缩小下窗口试试（原文此处有配图，未随迁移入库）
 
 没啥问题。
 
@@ -2823,17 +2820,17 @@ export default function Preview() {
     </div>
 }
 ```
-试下效果：
+试下效果（原文此处有配图，未随迁移入库）
 
-错误展示出来了，这就是控制台那个报错：
+错误展示出来了，这就是控制台那个报错（原文此处有配图，未随迁移入库）
 
 这里暂时用不到 warn，后面用到 warn 再切换 type。
 
-然后再来做下主题切换：
+然后再来做下主题切换（原文此处有配图，未随迁移入库）
 
-这个同样要在 context 里保存配置：
+这个同样要在 context 里保存配置（原文此处有配图，未随迁移入库）
 
-然后加一个 theme 对应的 className：
+然后加一个 theme 对应的 className（原文此处有配图，未随迁移入库）
 
 写下用到的样式：
 
@@ -2855,19 +2852,19 @@ export default function Preview() {
 
 所以只要把之前 css 的样式值改成这些变量就可以了。
 
-比如我们在 Header 组件里用下：
+比如我们在 Header 组件里用下（原文此处有配图，未随迁移入库）
 
 然后把 theme 初始值改为 dark
 
-这时候 Header 就切换为暗色主题了：
+这时候 Header 就切换为暗色主题了（原文此处有配图，未随迁移入库）
 
-改为 light 就会变回来：
+改为 light 就会变回来（原文此处有配图，未随迁移入库）
 
-这就是主题切换的原理：
+这就是主题切换的原理（原文此处有配图，未随迁移入库）
 
 声明一些全局的 css 变量，写样式的时候用这些变量。切换主题时切换不同的全局变量值即可。
 
-切成暗色主题后可以看到周边有点间距，加下重置样式：
+切成暗色主题后可以看到周边有点间距，加下重置样式（原文此处有配图，未随迁移入库）
 
 然后我们在 Header 加一个切换主题的按钮：
 
@@ -2914,13 +2911,13 @@ export default function Header() {
 npm install @ant-design/icons --save
 ```
 
-试下效果：
+试下效果（原文此处有配图，未随迁移入库）
 
 确实能切换了，不过我们要完善下暗色主题的样式。
 
 其余地方也是同理。
 
-再改下 FileNameList 的样式：
+再改下 FileNameList 的样式（原文此处有配图，未随迁移入库）
 
 编辑器同样也可以切换主题，这个是 monaco editor 自带的。
 
@@ -2950,11 +2947,11 @@ git reset --hard 4a77f1bf3dc8be9e270cc346145fde6a6a896b89
 
 代码写完后我们希望能通过链接分享出去，别人访问链接就可以看到这段代码。
 
-vue playground 是有这个功能的：
+vue playground 是有这个功能的（原文此处有配图，未随迁移入库）
 
 点击分享按钮，链接会复制到剪贴板。
 
-然后在新的浏览器窗口打开，可以看到分享的代码：
+然后在新的浏览器窗口打开，可以看到分享的代码（原文此处有配图，未随迁移入库）
 
 我们也来实现下。
 
@@ -2978,7 +2975,7 @@ useEffect(() => {
 ```
 当 files 内容变化的时候，会同步修改。
 
-这里还要对字符串 encodeURIComponent 下，把 url 里不支持的字符做下转换：
+这里还要对字符串 encodeURIComponent 下，把 url 里不支持的字符做下转换（原文此处有配图，未随迁移入库）
 
 可以看到，确实会把 files 内容保存到 hash。
 
@@ -2998,11 +2995,11 @@ const getFilesFromUrl = () => {
 ```
 对 hash decodeURIComponent 一下，然后 JSON.parse 作为 files 的内容。
 
-试下效果：
+试下效果（原文此处有配图，未随迁移入库）
 
 我在 chrome 里改了一下代码内容，新建了一个 Aaa.tsx 组件。
 
-在别的浏览器打开这个链接试下：
+在别的浏览器打开这个链接试下（原文此处有配图，未随迁移入库）
 
 可以看到，App.tsx、Aaa.tsx 组件都是我们改动的内容。
 
@@ -3010,7 +3007,7 @@ const getFilesFromUrl = () => {
 
 当然，直接把文件内容放到 hash 上不大好，太长了，我们要压缩下。
 
-用 [fflate](https://www.npmjs.com/package/fflate) 这个包：
+用 [fflate](https://www.npmjs.com/package/fflate) 这个包（原文此处有配图，未随迁移入库）
 
 安装下：
 
@@ -3038,7 +3035,7 @@ export function uncompress(base64: string): string {
 }
 ```
 
-这里的 atob、btoa 是二进制字符串（Latin-1 字符串）和 base64 字符串之间的转换：
+这里的 atob、btoa 是二进制字符串（Latin-1 字符串）和 base64 字符串之间的转换（原文此处有配图，未随迁移入库）
 
 compress 方法里，我们先调用 fflate 包的 strToU8 把字符串转为字节数组，然后 zlibSync 压缩，之后 strFromU8 转为字符串。
 
@@ -3069,7 +3066,7 @@ const getFilesFromUrl = () => {
 ```
 现在，代码内容会压缩后以 base64 字符串的方式保存在 url 里。
 
-在另一个窗口里打开这个 url：
+在另一个窗口里打开这个 url（原文此处有配图，未随迁移入库）
 
 内容同样能恢复。
 
@@ -3094,7 +3091,7 @@ npm install --save copy-to-clipboard
 
 点击分享按钮，会把 url 复制到剪贴板，可以直接粘贴。
 
-然后我们再来实现下代码下载功能：
+然后我们再来实现下代码下载功能（原文此处有配图，未随迁移入库）
 
 我们需要在浏览器里把多个文件打成 zip 包，这需要用到 jszip：
 
@@ -3133,7 +3130,7 @@ export async function downloadFiles(files: Files) {
   }}
 />
 ```
-试一下：
+试一下（原文此处有配图，未随迁移入库）
 
 下载成功！
 
@@ -3163,21 +3160,21 @@ git reset --hard ea67b94f512f023779077dfedca02e87c6d59b4f
 
 大家觉得我们的 playground 有啥性能瓶颈没有？
 
-用 Performace 跑下就知道了：
+用 Performace 跑下就知道了（原文此处有配图，未随迁移入库）
 
 用无痕模式打开这个页面，无痕模式下不会跑浏览器插件，比较准确。
 
-打开 devtools，点击 reload 重新加载页面：
+打开 devtools，点击 reload 重新加载页面（原文此处有配图，未随迁移入库）
 
 等页面渲染完点击停止，就可以看到录制的性能数据。
 
-按住可以上下左右拖动，按住然后上下滑动可以放大缩小：
+按住可以上下左右拖动，按住然后上下滑动可以放大缩小（原文此处有配图，未随迁移入库）
 
-这里的 main 就是主线程：
+这里的 main 就是主线程（原文此处有配图，未随迁移入库）
 
 主线程会通过 event loop 的方式跑一个个宏任务，也就是这里的 task。
 
-超过 50ms 的被称为长任务 long task：
+超过 50ms 的被称为长任务 long task（原文此处有配图，未随迁移入库）
 
 long task 会导致主线程一直被占据，阻塞渲染，表现出来的就是页面卡顿。
 
@@ -3185,7 +3182,7 @@ long task 会导致主线程一直被占据，阻塞渲染，表现出来的就�
 
 图中的宽度代表耗时，可以看到是 babelTransform 这个方法耗费了 24 ms
 
-点击火焰图中的 babelTransform，下面会展示它的代码位置，点击可以跳到 Sources 面板的代码：
+点击火焰图中的 babelTransform，下面会展示它的代码位置，点击可以跳到 Sources 面板的代码（原文此处有配图，未随迁移入库）
 
 这就是我们要优化性能的代码。
 
@@ -3193,9 +3190,9 @@ long task 会导致主线程一直被占据，阻塞渲染，表现出来的就�
 
 其实这段代码就是计算量比较大，我们把它放到单独的 worker 线程来跑就好了，这样就不会占用主线程的时间。
 
-vite 项目用 web worker 可以这样用：
+vite 项目用 web worker 可以这样用（原文此处有配图，未随迁移入库）
 
-我们用一下：
+我们用一下（原文此处有配图，未随迁移入库）
 
 把 compiler.ts 改名为 compiler.worker.ts
 
@@ -3226,7 +3223,7 @@ useEffect(() => {
     }
 }, []);
 ```
-跑一下：
+跑一下（原文此处有配图，未随迁移入库）
 
 可以看到，主线程接收到了 worker 线程传过来的消息。
 
@@ -3343,7 +3340,7 @@ self.addEventListener('message', async ({ data }) => {
     }
 })
 ```
-可以看到，拿到了 worker 线程传过来的编译后的代码：
+可以看到，拿到了 worker 线程传过来的编译后的代码（原文此处有配图，未随迁移入库）
 
 预览也正常。
 
@@ -3355,9 +3352,9 @@ useEffect(debounce(() => {
 }, 500), [files]);
 ```
 
-我们再用 performance 看下优化后的效果：
+我们再用 performance 看下优化后的效果（原文此处有配图，未随迁移入库）
 
-之前的编译代码的耗时没有了，现在被转移到了 worker 线程：
+之前的编译代码的耗时没有了，现在被转移到了 worker 线程（原文此处有配图，未随迁移入库）
 
 还是 24ms，但是不占据主线程了。
 
@@ -3365,15 +3362,15 @@ useEffect(debounce(() => {
 
 这样，性能优化就完成了。
 
-然后再优化两处代码：
+然后再优化两处代码（原文此处有配图，未随迁移入库）
 
-main.tsx 有个编辑器错误说 StrictMode 不是一个 jsx，这种不用解决，也不影响运行，改下模版把它去掉就行了：
+main.tsx 有个编辑器错误说 StrictMode 不是一个 jsx，这种不用解决，也不影响运行，改下模版把它去掉就行了（原文此处有配图，未随迁移入库）
 
-上面那个只要编辑下文件就会触发类型下载，也不用解决：
+上面那个只要编辑下文件就会触发类型下载，也不用解决（原文此处有配图，未随迁移入库）
 
-再就是我们生成的文件名没必要 6 位随机数：
+再就是我们生成的文件名没必要 6 位随机数（原文此处有配图，未随迁移入库）
 
-改为 4 位正好：
+改为 4 位正好（原文此处有配图，未随迁移入库）
 
 案例代码上传了[小册仓库](https://github.com/QuarkGluonPlasma/react-course-code/tree/main/react-playground-project)。
 
@@ -3397,50 +3394,50 @@ main.tsx 有个编辑器错误说 StrictMode 不是一个 jsx，这种不用解�
 
 我们从 0 到 1 实现了和 [vue playground](https://play.vuejs.org/) 功能一样的项目。
 
-整体测试一下 react playground 的功能：
+整体测试一下 react playground 的功能（原文此处有配图，未随迁移入库）
 
 我们用 create-vite 创建的项目，进入项目，把开发服务跑起来：
 
 ```
 npm run dev
 ```
-浏览器访问下：
+浏览器访问下（原文此处有配图，未随迁移入库）
 
-我们可以在左侧编辑器写组件和样式，然后在右边实时预览：
+我们可以在左侧编辑器写组件和样式，然后在右边实时预览（原文此处有配图，未随迁移入库）
 
-css 和 ts 代码都有提示：
+css 和 ts 代码都有提示（原文此处有配图，未随迁移入库）
 
-并且我们后面引入的 npm 包也会有类型提示：
+并且我们后面引入的 npm 包也会有类型提示（原文此处有配图，未随迁移入库）
 
-但额外引入的 npm 包不能直接用：
+但额外引入的 npm 包不能直接用（原文此处有配图，未随迁移入库）
 
-需要在 import-map.json 里配置下才行：
+需要在 import-map.json 里配置下才行（原文此处有配图，未随迁移入库）
 
-文件可以新增、删除、修改：
+文件可以新增、删除、修改（原文此处有配图，未随迁移入库）
 
 比如我们新增一个 Aaa.tsx 组件
 
 还有它的样式 Aaa.css
 
-在 App.tsx 里引入后就可以使用：
+在 App.tsx 里引入后就可以使用（原文此处有配图，未随迁移入库）
 
 你可以直接打开[这个 url](http://localhost:5173/#eNqNVV9v2zYQ/yqcgsI2ZsmyEreZlgTtugHrwzage9jDtAdapCQ2FCmQlGPX8HffkdQ/O97QKLapu9/9P94dgxozERm9D9JjIHBNg3QkLQOORdni0lLNoaE6V6wxQN9h3loiqxupDPpMcW5QoWSNZsqeZ5mYsn7+47cpNySyXuWcUWGBA/RD03SoaAVnx+rFoxwkDf0spZkTmbc1yEYlNb9wao8/HT6R+UwBd7b4bhEpKghV80wg+HuweldPmVhkIjgtA3i9CLinfHO8R9Rq+qcBh5b2hE7XY/dxRLnWI41LgnXV4f1LSPXsxzELGI9ZwNhyMlG0IjdMCpuj+QIdbWS5FNqgv3PZCrNEmpqP9vQPehycm8cQMkL2o6hplUB9SiAb9tcmB2Obm+6tWj/9SjmX6C+pODl6/yJMyPz29naJkiRZnB5WgBokCNuhnGOtf4dcPs5yrMhs4AJ/2xoDfkvxkbP8+fEI3j8+Dd7O5859R3Mn9D1aL05P/sw0OroT2PR6RrsrMNy9PfgAINaTzRXduzwSWuCWu64a6w6luKi7pZzV3RP6gqe2p3y+CylMWOCa8UOKPglDFWT9oA2tw5Yt0YcdFQxIkL8dNSzHQFIMcwBhoUNNFSuglgiFL3T7zECV1adr0F8xUaYICwNwhjUlHlfLr6HU+1fAUuGDzjGnDua4L5SVlUnRXRw7ImeChlVHXEcbR8wllypFqtzOk80G9Z8Vun/3ZuEQhu5N6C+PsyQbw2r2lXJasi3jzBxGmAZ6iMmXVlsTcfzGsbY4fy4V1IyEnbmb5M4+owehziu4tCk4Ce4hgtXzGIg+CFNRzXSKhBQ2QlfTm7EMNd6HL4yYCqwm93Gzd8IN9KhzOVG0dpQaq5KJFMUIt0aOfkOKSyDnMDWo6vVvJTl49YTphmOocMGpV10z0Ru8TXp7ljjkN4531blN7xPHOQ0ZNAhEc26vWk96ymYSdEdJ5/lF8daDk/4qOcEh3jh6S2tA9cJnXcpEBZU0k/Q6U+sptm+dTdc6eau0rVsjWefx1aqusX08VypoGFDb7JGWnBFkFLR8g6GTvG2PCBUmrIVc3HdJdDBm51raQ5x6CCrZ6POw00ruqPLBT7Hgytu7t3lh79YUXsCS0Mvz13DHNNty6rXI1thMw6UBv22PTG6mBdsr4G30qt/XlDCM5o2iBVXaM8/buZvNk7Ex3LubZH27uXvnIr+a0sIFgZCzBYhJua/jf7BPLwL/dsr5LRLWuIm+aCkm0+6Sczb1Oko/9pzRrBPRWZD2bmSB23GWkgWVMY1OVyuq60hXK8d5v76PkijOAsj9RGCy8v9b1oJeyw9L8qrghHueCFhsl2u+o3zzmvcb2O3viy2Msd3CZ6vVbUJGHrMAY5wFT/DdL6mrawlAg58Xa6mj/M9augHtfUkmF3vTj6eh6baAf9VxMNjh5pVuugan0796w1lP) 试试
 
 这个通过 url 分享代码也是 playgrond 的功能。
 
-点击右上角的分享按钮可以复制分享链接：
+点击右上角的分享按钮可以复制分享链接（原文此处有配图，未随迁移入库）
 
-此外，还可以下载代码到本地：
+此外，还可以下载代码到本地（原文此处有配图，未随迁移入库）
 
-还有切换亮色、暗色主题：
+还有切换亮色、暗色主题（原文此处有配图，未随迁移入库）
 
 这些就是 React Playground 的全部功能。
 
 最终实现的效果还不错。
 
-回顾下我们的开发过程：
+回顾下我们的开发过程（原文此处有配图，未随迁移入库）
 
-我们首先写了下布局：
+我们首先写了下布局（原文此处有配图，未随迁移入库）
 
 用 [allotment](https://www.npmjs.com/package/allotment) 实现的 split-pane，两边可以通过拖动改变大小。
 
@@ -3450,7 +3447,7 @@ css 和 ts 代码都有提示：
 
 这样，在编辑器里写代码就有 ts 类型提示了。
 
-然后我们实现了多文件的切换：
+然后我们实现了多文件的切换（原文此处有配图，未随迁移入库）
 
 在 Context 中保存全局数据，比如 files、selectedFileName，还有对应的增删改的方法。
 
@@ -3464,23 +3461,23 @@ css 和 ts 代码都有提示：
 
 使用 @babel/standalone 做的 tsx 代码的编译，编译过程中需要对 .tsx、.css、.json 等模块的 import 做处理，变成 blob url 的方式。
 
-通过 babel 插件实现了对 import 语句的修改：
+通过 babel 插件实现了对 import 语句的修改（原文此处有配图，未随迁移入库）
 
 css 模块包一层代码加到 head 的 style 标签里，json 包一层代码直接 export，而 tsx 模块直接 babel 编译即可。
 
 对于 react、react-dom/client 这种，用浏览器的 import maps 来引入。
 
-然后通过 iframe 实现了预览：
+然后通过 iframe 实现了预览（原文此处有配图，未随迁移入库）
 
 替换 html 模版里 import maps 和 src 部分的 script 标签后，同样用 blob url 设置为 iframe 的 src 就可以了。
 
-这样就可以预览了：
+这样就可以预览了（原文此处有配图，未随迁移入库）
 
-iframe 的代码如下：
+iframe 的代码如下（原文此处有配图，未随迁移入库）
 
 正是替换了 importmap 和 src 部分的 html，并且 css 也被添加到了 head 里的 style 标签下。
 
-然后我们实现了文件的新增、删除、修改：
+然后我们实现了文件的新增、删除、修改（原文此处有配图，未随迁移入库）
 
 main.tsx、App.tsx、import-map.json 设置为 readonly，不可编辑和删除。
 
@@ -3488,11 +3485,11 @@ main.tsx、App.tsx、import-map.json 设置为 readonly，不可编辑和删除�
 
 父窗口里监听 message 事件传过来的错误，用 Message 组件显示。
 
-然后实现了主题切换：
+然后实现了主题切换（原文此处有配图，未随迁移入库）
 
 主题切换就是在根元素加一个 .light、.dark 的 className，里面声明 css 变量，因为 css 变量可以在子元素里生效，子元素写样式基于这些变量，那切换了 className 也就切换了这些变量的值，从而实现主题切换。
 
-之后实现了通过链接分享代码的功能：
+之后实现了通过链接分享代码的功能（原文此处有配图，未随迁移入库）
 
 原理就是把 files 信息 JSON.stringify 之后保存到 location.hash。
 
@@ -3504,7 +3501,7 @@ main.tsx、App.tsx、import-map.json 设置为 readonly，不可编辑和删除�
 
 这样，playground 里写的代码内容就可以通过 url 分享出去，并且可以下载了。
 
-之后做了下性能优化：
+之后做了下性能优化（原文此处有配图，未随迁移入库）
 
 用 Performance 分析了页面的 Event Loop，发现有 long task，性能优化的目标就是消除 long task。
 
@@ -3533,5 +3530,5 @@ main.tsx、App.tsx、import-map.json 设置为 readonly，不可编辑和删除�
 总之，大家可以把这个项目消化吸收，内化成你自己的东西。
 ## 继续阅读
 
-- 上一篇：[13-Commit全流程](13-Commit全流程)
-- 下一篇：[15-手写MiniReact](15-手写MiniReact)
+- 上一篇：[13-Commit全流程](../02-原理与源码/13-Commit全流程)
+- 下一篇：[15-手写MiniReact](../02-原理与源码/15-手写MiniReact)

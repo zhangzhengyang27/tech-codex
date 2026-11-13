@@ -930,6 +930,5 @@ async function batchGeocode(addresses) {
 
 ## 下一步
 
-- 学习 [地图智能体](05-地图智能体.md) 智能服务
 - 了解 [行业解决方案](06-行业解决方案.md)
 - 查看 [实战案例](07-实战案例.md)

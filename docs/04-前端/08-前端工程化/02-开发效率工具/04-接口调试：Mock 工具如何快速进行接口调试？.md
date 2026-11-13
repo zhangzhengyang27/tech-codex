@@ -133,8 +133,6 @@ faker.fake("{{name.lastName}}, {{name.firstName}} {{name.suffix}}")
 
 > 注：YApi 开源版本近年来已基本停止维护，且存在已知安全问题，选型时建议评估 Apifox 等替代方案。
 
-![](/frontend-eng-images/c4067992e81f.png)
-
 ### Apifox
 
 [Apifox](https://www.apifox.cn/) 是一个桌面应用类的接口管理工具。与 YApi 相比，除了使用方式不同外，其主要特点还包括：
@@ -143,8 +141,6 @@ faker.fake("{{name.lastName}}, {{name.firstName}} {{name.suffix}}")
 - 对同一个接口支持多种用例管理（成功用例、错误用例等）。
 - Mock 数据功能方面支持自定义期望，支持自定义占位符规则等。
 - 支持生成自动业务代码和接口请求代码，支持自定义代码模板等。
-
-![](/frontend-eng-images/85f7ea3606d4.png)
 
 以上两种接口管理工具都包含了提供对应接口的 Mock 服务的能力。相比于单独提供生成 Mock 数据能力的 Mock.js 和 Faker.js，这类工具解决了接口定义与 Mock 数据脱离的问题：
 

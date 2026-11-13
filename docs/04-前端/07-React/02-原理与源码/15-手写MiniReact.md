@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # 手写MiniReact-思路分析
 
-## 学习目标
-
-- 理解 React 渲染流程（JSX → Element → fiber → reconcile → render/commit）
-- 动手实现一个支持 JSX、useState、useEffect 的 Mini React
-- 通过调试 React 源码对比 Mini React 与真实实现的异同
-
 ## 思路分析：React 渲染流程
 
 这节我们简单分析了下 React 的渲染流程。
@@ -31,7 +25,6 @@ commit 阶段会遍历构建好的 fiber 链表，执行 dom 操作，还有函�
 它按照更新 dom 前后，分了 before mutation、mutation、layout 三个小阶段。
 
 这就是 React 的 fiber 架构的好处和渲染流程，下节我们按照这个流程来写下 Mini React。
-
 
 ## 实现：手写 Mini React
 
@@ -593,7 +586,6 @@ function commitWork(fiber) {
         return
     }
 
-
     commitWork(fiber.child)
     commitWork(fiber.sibling)
 }
@@ -860,7 +852,6 @@ reconcile 到子节点的时候要和 alternate 对比，判断是新增、修�
 
 这样，和 React 的真实渲染流程类似的 mini react 就完成了。
 
-
 ## 调试：对比 React 源码
 
 上节我们写了 mini react。
@@ -1033,5 +1024,5 @@ react 的 hook 的值是存放在 fiber.memoizedState 链表上的，每个 hook
 
 ## 继续阅读
 
-- 上一篇：[14-ReactPlayground项目实战](14-ReactPlayground项目实战)
+- 上一篇：[14-ReactPlayground项目实战](../08-项目实战/14-ReactPlayground项目实战)
 - 下一篇：[16-React18的并发机制是怎么实现的](16-React18的并发机制是怎么实现的)

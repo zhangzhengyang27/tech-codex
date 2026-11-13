@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Pinia 概述
 
 > Pinia 是 Vue 3 官方推荐的状态管理库，是 Vuex 的继任者。
@@ -461,11 +460,9 @@ export const useCounterStore = defineStore('counter', () => {
 - [ ] 利用 TypeScript 类型推断简化类型声明
 - [ ] 更新测试代码
 
-
 ---
 
 ## 定义 Store
-
 
 > Pinia 提供两种方式定义 Store：Option Store 和 Setup Store。
 

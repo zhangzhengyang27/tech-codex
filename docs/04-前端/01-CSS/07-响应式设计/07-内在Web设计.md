@@ -1,7 +1,7 @@
 ---
 title: 内在 Web 设计完全指南
 description: 深入讲解内在 Web 设计（Intrinsic Web Design）的核心理念与实战技术，包括 min-content/max-content/fit-content、auto-fill/auto-fit、fr 单位、aspect-ratio、容器查询、逻辑属性等现代 CSS 特性，实现内容驱动的响应式布局。
-category: 前端工程化
+category: CSS
 
 ---
 

@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 组件库包名规范与本地 Link 调试
 
 ## 概述
 
 上一节通过相对路径导入 `dist` 文件、再改消费方 TS 配置跑通了 Playground，但这只是教学演示。真实组件库开发应该让「包名、产物命名、入口字段和消费方式」形成一整套闭环：组件库打包后本身就像一个规范包，使用方按包名安装、按包名导入，类型声明和样式导出都由包自身负责说明。本文围绕这个闭环，讲清三个容易混淆的命名概念、`build.sourcemap` 与 `.d.ts` 两类产物、`package.json` 入口字段的正确写法，以及本地联调时 `npm link`、`pnpm link` 与 `file:` 的差异。
-
-## 学习目标
-
-- 把「演示版组件库」推进到「可发布组件库」，让包名、产物名、入口字段、消费方式形成闭环
-- 区分 npm 包名、`build.lib.fileName`、`build.lib.name` 三个命名概念
-- 理解 `build.sourcemap` 与 `.d.ts` 分别解决调试体验与类型消费体验
-- 用 `unplugin-dts/vite` 生成类型声明，并正确配置 `tsconfigPath`、`outDir`、`rollupTypes`
-- 分清 `package.json` 里 `type`、`types`、`main`、`module`、`exports` 的分工
-- 掌握 `npm link` / `pnpm link` / `file:` 的差异，以及 `build:watch` 显式脚本的写法
-
----
 
 ## 一、从「演示」走向「可发布」的闭环
 

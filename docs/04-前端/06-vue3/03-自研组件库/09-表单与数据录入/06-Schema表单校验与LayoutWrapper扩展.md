@@ -6,26 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Schema 表单校验与 LayoutWrapper 扩展
 
 ## 概述
 
 表单能渲染、能绑定值还不够，"能校验、能提交"才是业务闭环。本章把校验规则也推进 Schema：每个字段用 `rules`（字段级 `FormItemRule[]`）描述自己的规则，再用 `setRules` 递归汇总成整张表单的 `FormRules`；随后通过 `FormInstance.validate()` 在提交时兜底校验。同时讨论多层组件默认值对齐、`Select` 初值用 `undefined` 更稳的坑，以及 `ElSpace` 这类"包裹整个 FormItem"的需求引出更外层的 `LayoutWrapper`。
-
-## 学习目标
-
-- 理解为什么规则也要进 Schema 才算完整配置驱动
-- 掌握 `schema.rules` 用字段级 `FormItemRule[]` 而非整表 `FormRules`
-- 掌握 `setRules` 递归汇总整表规则的写法
-- 用 `FormInstance.validate()` 在提交流程中兜底校验
-- 认识多层组件默认值漂移导致的校验错觉
-- 理解 `ElSpace` 引出更外层的 `LayoutWrapper` 抽象
-- 掌握 Select 初值语义用 undefined 更稳的细节
-- 接入 status-icon 等校验增强属性
-- 用一个最小实战串起校验与提交
-
----
 
 ## 一、规则进 Schema 才算真正配置驱动
 

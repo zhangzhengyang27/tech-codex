@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # unbuild 实战：Rollup 级配置与 stub 模式
 
 ## 概述
 
 这一节是上一节 tsup 实战的自然延伸，重点不是「换一个命令名」，而是理解为什么有些项目会从 tsup 转向 unbuild。unbuild 明确强调自己是 Rollup-based bundler，对底层 Rollup 配置暴露更直接，同时提供 --stub 这种更偏开发调试的能力。关键校正有几处：unbuild --stub 本质是让 dist 产物改由 jiti 直接加载源码而非持续重打包；node --watch-path 不是「Node 18 以上都通用」，官方文档明确它从 v18.11.0 / v16.19.0 引入且只支持 macOS 和 Windows；官方推荐在 package.json 配 prepack: "unbuild" 作为发布前兜底。
-
-## 学习目标
-
-- 理解 unbuild 与 tsup 的差异在于底层控制力度，而非谁更高级
-- 用 build.config.ts 承载可维护的工程化配置
-- 掌握 entries / outDir / declaration 三项基础配置
-- 通过 rollup 选项透传底层 esbuild minify、emitCJS 等能力
-- 理解 --stub 借助 jiti 运行时加载源码、node --watch-path 的平台限制，以及 prepack 兜底
-
----
 
 ## 一、unbuild 与 tsup 不是谁更高级
 

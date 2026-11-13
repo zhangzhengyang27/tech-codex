@@ -53,7 +53,7 @@ function timeOut(name: string){
 ```
 
 
-这节课，我们就来学习如何分析 Browser API。
+本文就来学习如何分析 Browser API。
 
 
 ## Browser API 分析意义

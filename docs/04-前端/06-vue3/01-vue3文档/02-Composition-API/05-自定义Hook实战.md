@@ -346,7 +346,6 @@ type AutoLoadingResult = [
   <T>(requestPromise: Promise<T>) => Promise<T>
     ];
 
-
 export function useAutoLoading(defaultLoading = false): AutoLoadingResult {
   const ld = ref(defaultLoading);
 
@@ -430,7 +429,6 @@ import { computed } from "vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
 import { isArray } from "@/utils/is";
 import { Button } from "ant-design-vue";
-
 
 type ViewStatus = "loading" | "error" | "success" | "empty";
 
@@ -635,7 +633,6 @@ const placeholderData = computed(() => {
 }
 </style>
 
-
 ```
 
 这里样式中用到的`no_url.png`只是一张空白透明图片，防止加载时图片显示裂图。
@@ -649,7 +646,6 @@ import type { UnwrapRef } from "vue";
 type TApiFun<TData, TParams extends Array<any>> = (
   ...params: TParams
 ) => Promise<TData>;
-
 
 export type SkeletonStatus = "loading" | "success";
 
@@ -826,7 +822,6 @@ function Demo(){
     return <Select {...select} />;
 }
 
-
 ```
 
 比起`vue`的`v-bind`和`v-on`算是简便了不少。那么，有没有一种办法也能做到差不多的效果呢？就比如能做到`v-xxx="select"`。
@@ -842,7 +837,6 @@ function Demo(){
 ```ts
 
 import type { PluginOption } from "vite";
-
 
 type HookBindPluginOptions = {
   prefix?: string;
@@ -917,7 +911,6 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 
 import { viteHookBind } from "./vBindPlugin";
-
 
 export default defineConfig({
   plugins: [vue(), vueJsx(), viteHookBind()],

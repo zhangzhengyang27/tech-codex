@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 原生 ECharts 组件封装、shallowRef 实例管理与自适应更新
 
 ## 概述
 
 除了用 `vue-echarts` 包装层，也可以不依赖它、直接在组件里接管 ECharts 原生实例。这条路线尤其适用于：计划把 ECharts 作为 CDN external 掉、希望完全控制初始化与更新时机、或只需要项目内部一套自定义图表包装层。它和前两篇的 `vue-echarts` 封装并不冲突，而是两种不同的工程策略——前者偏官方包装复用，后者偏内部定制和 external 场景。代价是你要自己补齐 `vue-echarts` 替你做好的生命周期、事件、`resize`、销毁与更新。本文聚焦原生封装的四个核心动作、`shallowRef` 管理实例、尺寸自适应与实例暴露。
-
-## 学习目标
-
-- 理解原生 ECharts 封装的适用场景，以及它与 `vue-echarts` 封装的取舍。
-- 掌握原生组件最核心的四件事：初始化、更新、缩放、销毁。
-- 知道为什么 ECharts 实例要用 `shallowRef()` 或普通变量保存，而不能进深层响应式。
-- 能为 `option` 保持 `EChartsOption` 类型，而不是退化成裸 `object` 绕过 TS 报错。
-- 理解 `ResizeObserver` 比 `window.resize` 更稳、`watch(option)` 的成本边界，以及实例暴露的两条路。
-
----
 
 ## 一、原生封装的适用场景
 

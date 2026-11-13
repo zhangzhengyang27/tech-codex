@@ -203,7 +203,7 @@ ast.statements[3].importClause.namedBindings.name.escapedText        // APP
 
 ### 记录 API 信息
 
-Import 节点是一种特殊的声明语句，导入的 API 相当于变量声明，还记得上节课我们反复强调的 `Symbol` 吧，回到上一篇的示例代码：
+Import 节点是一种特殊的声明语句，导入的 API 相当于变量声明，还记得前文反复强调的 `Symbol` 吧，回到上一篇的示例代码：
 
 ```typescript
 // 示例代码

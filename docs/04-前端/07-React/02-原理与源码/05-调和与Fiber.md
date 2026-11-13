@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # 调和与Fiber
 
-## 学习目标
-
-- 掌握 全面认识Fiber
-- 掌握 element,fiber,dom三种什么关系？
-- 掌握 fiber保存了哪些信息
-
 ## 全面认识Fiber
 
 ### 1 element,fiber,dom三种什么关系？
@@ -124,13 +118,11 @@ FiberRoot（fiberRoot）
              └─ 点赞（HostText）
 ```
 
-
 ## Fiber更新机制
 
 ### 1 初始化
 
 既然上述明白了 fiber 里面有什么，以及 fiber 之间是如何建立起关联的，那么接下来就要从初始化和一次更新入手，看一下 fiber 是如何工作的。
-
 
 **第一步：创建fiberRoot和rootFiber**
 
@@ -174,7 +166,6 @@ workInProgressFiber.alternate = currentFiber
 
 最后会以 workInProgress 作为最新的渲染树，fiberRoot 的 current 指针指向 workInProgress 使其变为 current Fiber 树。到此完成初始化流程。
 
-
 ### 2 更新
 如果对于上述 demo ，开发者点击一次按钮发生更新，接下来会发生什么呢?
 首先会走如上的逻辑，重新创建一颗 workInProgress 树，复用当前 current 树上的 alternate ，作为新的 workInProgress ，由于初始化 rootfiber 有 alternate ，所以对于剩余的子节点，React 还需要创建一份，和 current 树上的 fiber 建立起 alternate 关联。渲染完毕后，workInProgress 再次变成 current 树。
@@ -194,7 +185,6 @@ React 用 workInProgress 树(内存中构建的树) 和 current (渲染树) 来�
 ## 两大阶段：render和commit
 
 render 阶段和 commit 阶段是整个 fiber Reconciler 的核心，接下来研究一下两个阶段能做些什么？在正式讲解之前，有必要看一下整个 fiber 的遍历开始—— workLoop ，那么首先看一下 workLoop 。
-
 
 ### 1 render阶段
 
@@ -322,7 +312,6 @@ completeUnitOfWork 的流程是自下向上的，那么 completeUnitOfWork 过�
 * `mutation` 阶段（执行 DOM 操作）；
 * `layout` 阶段（执行 DOM 操作后）
 
-
 #### ① Before mutation
 
 > react-reconciler/src/ReactFiberWorkLoop.js
@@ -350,7 +339,6 @@ Before mutation 阶段做的事主要有以下内容：
 * 因为 Before mutation 还没修改真实的 DOM ，是获取 DOM 快照的最佳时期，如果是类组件有 getSnapshotBeforeUpdate ，那么会执行这个生命周期。
 * 会异步调用 useEffect ，useEffect 是采用异步调用的模式，其目的就是防止同步执行时阻塞浏览器做视图渲染（详见《07-Hooks原理》）。
 
-
 #### ② Mutation
 
 ````js
@@ -372,9 +360,8 @@ function commitMutationEffects(){
 ````
 mutation 阶段做的事情有：
 
-* 置空 ref ，在《00-Ref的实现原理》讲到对于 ref 的处理。
+* 置空 ref ，render 阶段对带 ref 的 fiber 打了标记，mutation 阶段会先置空旧的 ref，layout 阶段再统一更新。
 * 对新增元素，更新元素，删除元素。进行真实的 DOM 操作。
-
 
 #### ③ Layout
 
@@ -407,7 +394,7 @@ Layout 阶段 DOM 已经更新完毕，Layout 做的事情有：
 * fiber 的更新机制，双缓冲树。
 * reconciler 调和过程，以及 render 和 commit 两大阶段。
 
-明白了 fiber 架构，下一节将深入 Hooks 原理 。
+明白了 fiber 架构，Hooks 原理将在后续内容中深入探讨。
 
 ## 继续阅读
 

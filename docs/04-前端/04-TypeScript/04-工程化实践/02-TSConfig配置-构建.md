@@ -33,7 +33,7 @@ mindmap
 
 ## 文档概述
 
-在前面的内容中，我们已经学习了 TypeScript 在工程中的许多实践，包括类型声明、TypeScript 与 React、ESLint 的结合使用以及装饰器等。这些实践更像是上层建筑，默认是在一个已经基本配置完环境的 TypeScript 项目中进行的。这一节，我们深入下层基础，来了解 TypeScript 工程中最基础的一部分：TSConfig 配置。
+在前面的内容中，我们已经学习了 TypeScript 在工程中的许多实践，包括类型声明、TypeScript 与 React、ESLint 的结合使用以及装饰器等。这些实践更像是上层建筑，默认是在一个已经基本配置完环境的 TypeScript 项目中进行的。本文深入下层基础，来了解 TypeScript 工程中最基础的一部分：TSConfig 配置。
 
 **为什么选择现在才讲配置？** 因为在前面的工程实践中，我们并不需要自己去修改 TSConfig，脚手架已经帮我们处理好了。有了实践经验，再来讲解这些配置效果会更好。
 
@@ -1611,4 +1611,4 @@ const enum Direction {
 - [TypeScript 官方文档 - Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
 - [TypeScript Deep Dive - tsconfig.json](https://basarat.gitbook.io/typescript/project/compilation-context)
 
-在下一节，我们会介绍检查相关与工程相关的配置项，其中检查部分包括了类型检查、逻辑检查等，而工程配置则包括了一系列兼容性与工程能力的配置。
+下一篇《TSConfig配置：检查与工程》会介绍检查相关与工程相关的配置项，其中检查部分包括了类型检查、逻辑检查等，而工程配置则包括了一系列兼容性与工程能力的配置。

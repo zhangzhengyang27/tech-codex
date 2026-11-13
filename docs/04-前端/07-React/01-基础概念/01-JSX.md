@@ -8,12 +8,6 @@ tags: [React, 基础概念]
 
 # JSX
 
-## 学习目标
-
-- 掌握 进阶实践-可控性 render
-- 掌握 @babel/plugin-syntax-jsx 和 @babel/plugin-transform-react-jsx
-- 掌握 api层面模拟实现
-
 ## 进阶实践-可控性 render
 
 本节的实践 demo（完整代码见下文 `controlRender`）暴露出了如下问题：
@@ -27,7 +21,6 @@ tags: [React, 基础概念]
 2. 干掉children中文本类型节点；
 3. 向children最后插入<div className="last" > say goodbye</div>元素；
 4. 克隆新的元素节点并渲染。
-
 
 希望通过这个实践 demo ，大家可以**加深对 jsx 编译后结构的认识，学会对 jsx 编译后的 React.element 进行一系列操作，达到理想化的目的，以及熟悉 React API 的使用。**
 
@@ -91,7 +84,6 @@ console.log(flatChildren)
 ````
 React.Children.toArray 可以扁平化、规范化 React.element 的 children 组成的数组，只要 children 中的数组元素被打开，对遍历 children 很有帮助，而且 React.Children.toArray 还可以深层次 flat 。
 
-
 **第 2 步：遍历 children ，验证 React.element 元素节点，除去文本节点。**
 
 ````js
@@ -110,7 +102,6 @@ React.Children.forEach(flatChildren,(item)=>{
 这种情况下，是完全可以用数组方法过滤的，因为 React.Children.toArray 已经处理了 children ，使它变成了正常的数组结构 也就是说 `React.Children.forEach` =  `React.Children.toArray` + `Array.prototype.forEach`。
 
 React.Children.forEach 本身就可以把 children 扁平化了，也就是上述第一步操作多此一举了。为什么要有第一步，主要是更多的学习一下 React api。
-
 
 **第 3 步：用 React.createElement ，插入到 children 最后**
 
@@ -288,7 +279,6 @@ export default Index;
 
 如上可以看到已经成功转成 React.createElement 形式，从根本上弄清楚了 Babel 解析 JSX 的大致流程。
 
-
 ## 总结
 
 本章节主要讲到了两方面的知识。
@@ -298,9 +288,6 @@ export default Index;
 另一方面，通过学习第一个实践 demo，我们掌握了如何控制经过 render 之后的 React element 对象。
 
 同时也搞清楚了 Babel 解析 JSX 的大致流程。
-
-下一章节，我们将从React组件角度出发，全方面认识React组件。
-
 
 ### [案例代码的 GitHub 地址](https://github.com/GoodLuckAlien/React-Advanced-Guide-Pro)（点击即可跳转）
 ## 继续阅读

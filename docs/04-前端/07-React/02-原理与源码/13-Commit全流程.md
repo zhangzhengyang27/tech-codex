@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # Commit全流程
 
-## 学习目标
-
-- 掌握 更新标志
-- 掌握 beforeMutation 阶段
-- 掌握 mutation 阶段
-
 ## 更新标志
 
 我们都知道在 render 阶段，会遍历 fiber 树，收集需要更新的地方，打不同的标志，这些标志代表的意义不相同，它们的更新会在 commit 阶段执行。
@@ -271,7 +265,7 @@ if (firstChild && firstChild === node.lastChild && firstChild.nodeType === TEXT_
 }
 ````
 **置空文本节点和 ref 属性**
-对于文本节点，会先做准备工作，会置空文本节点的内容。对于 ref 属性，也会调用 commitDetachRef，做更新前的重置 ref。commitDetachRef 在《00-Ref的实现原理》中已经讲解了，这里就不赘述了。
+对于文本节点，会先做准备工作，会置空文本节点的内容。对于 ref 属性，也会调用 commitDetachRef，做更新前的重置 ref。commitDetachRef 的作用前面已经讲解过，这里就不赘述了。
 
 ````js
 if (current !== null) {
@@ -280,7 +274,6 @@ if (current !== null) {
 ````
 
 那么如果是插入新的 fiber 节点，会调用 commitPlacement 。commitPlacement 做了些什么事情呢？
-
 
 ````js
 function commitPlacement(finishedWork){
@@ -309,7 +302,6 @@ if (before) {
 }
 ````
 如果有兄弟节点，那么在调用 insertBefore 往兄弟节点之前插入就可以了。如果没有之后的兄弟节点，说明需要插入最后一个子节点，那么调用 appendChild 插入节点就可以了。最后对于更新节点，调用 commitWork 就可以了。
-
 
 ````js
 function commitWork(current, finishedWork) {
@@ -428,7 +420,6 @@ commitLayoutEffectOnFiber 做了非常重要的事：
 
 整个 Layout 阶段就结束了，Layout 阶段主要是执行回调函数，比如 setState 的 callback 和生命周期等，还有比如 useLayoutEffect 的钩子就是在这里执行 。
 
-
 ## useEffect 执行
 
 细心的同学可以发现，useEffect 的部分还没处理。对于 useEffect 的处理，主要在 commitRootImpl 中通过 flushPassiveEffects 来执行，而 flushPassiveEffects 是在 scheduleCallback 中调度的。
@@ -489,4 +480,4 @@ function commitHookEffectListMount(flags, finishedWork) {
 ## 继续阅读
 
 - 上一篇：[12-订阅外部数据源](12-订阅外部数据源)
-- 下一篇：[14-ReactPlayground项目实战](14-ReactPlayground项目实战)
+- 下一篇：[14-ReactPlayground项目实战](../08-项目实战/14-ReactPlayground项目实战)

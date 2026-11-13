@@ -8,12 +8,6 @@ tags: [React, 基础概念]
 
 # Context
 
-## 学习目标
-
-- 掌握 新版本 context 基本使用
-- 掌握 createContext
-- 掌握 新版本提供者
-
 ## 新版本 context 基本使用
 
 老版本的 context API 用起来流程可能会很繁琐，而且还依赖于 propTypes 等第三方库。所以 `v16.3.0` 之后，context api 正式发布了，所以可以直接用 createContext 创建出一个 context 上下文对象，context 对象提供两个组件，`Provider`和 `Consumer`作为新的提供者和消费者，这种 context 模式，更便捷的传递 context ，还增加了一些新的特性，但是也引出了一些新的问题，什么问题后面会讲到。接下来需要重点研究一下新版本的 context 。
@@ -57,7 +51,6 @@ provider 作用有两个：
 
 `React v16.6` 提供了 contextType 静态属性，用来获取上面 Provider 提供的 value 属性，这里注意的是 contextType ，不是老版本的 contextTypes, 对于 React 起的这两个名字，真是太相像了。
 
-
 ````js
 const ThemeContext = React.createContext(null)
 // 类组件 - contextType 方式
@@ -89,7 +82,6 @@ function ConsumerDemo(){
 const Son = ()=> <ConsumerDemo />
 ````
 useContext 接受一个参数，就是想要获取的 context ，返回一个 value 值，就是最近的 provider 提供 contextValue 值。
-
 
 #### ③ 订阅者之 Consumer 方式
 
@@ -364,7 +356,6 @@ export default function (){
 * 在 App 中切换主题。
 * 封装统一的 Input Checkbox Box 组件，组件内部消费主题颜色的 context ，主题改变，统一更新，这样就不必在每一个模块都绑定主题，统一使用主题组件就可以了。
 
-
 ## 总结
 
 通过这节学习了：
@@ -373,8 +364,6 @@ export default function (){
 * 新版本提供者 Provider 特性和三种消费者模式。
 * context 的高阶用法。
 * 实践 demo 切换主题。
-
-下一节，将一起研究css in React!
 
 ## 继续阅读
 

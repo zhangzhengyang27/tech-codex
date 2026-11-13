@@ -6,25 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # VTable 事件透传与高级案例接线
 
 ## 概述
 
 沿 Element Plus Table 官方案例逐步扩展 VTable 时，样式类能力（斑马线、边框、固定列、流体高度）大多靠 props 透传就能接住；但当案例走到单选行高亮、row-click、current-change 这类交互时，问题就从"props 能不能透传"变成了"这些事件怎样在外层也能拿到，并且还有类型提示"。本章把 VTable 从"样式壳"推进到"交互壳"，先收口事件名列表与事件类型，再用 forwardEventsUtils 批量生成回调，最后通过 v-on="events" 落到 el-table。事件名优先保持与官方一致，避免无收益的格式转换。
-
-## 学习目标
-
-- 理解样式类能力靠 props 透传，交互类能力靠事件透传这两条边界
-- 认识单选行高亮案例如何第一次逼出 VTable 的事件出口需求
-- 对比 $attrs 透传与 defineEmits + forward 两种事件透传路线
-- 先把事件名列表与事件类型收口，再做批量透传
-- 用 TableEventsType + defineEmits 给页面层事件监听提供类型提示
-- 用 forwardEventsUtils 统一生成事件回调，避免手写大量 handleXxx
-- 理解 v-on="events" 是整条透传链路落到 el-table 的关键一步
-- 知道事件名转小驼峰是可选增强，优先与官方事件名保持一致
-
----
 
 ## 一、把 VTable 逼出新边界的不是样式，而是事件
 

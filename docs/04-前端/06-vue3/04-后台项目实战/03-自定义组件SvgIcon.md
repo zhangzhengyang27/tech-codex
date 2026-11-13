@@ -16,7 +16,6 @@ title: "自定义组件SvgIcon"
    1. 显示外部 `svg` 图标
    2. 显示项目内的 `svg` 图标
 
-
 基于以上概念创建出以下对应代码：创建 `components/SvgIcon/index.vue`：
 
 ```html

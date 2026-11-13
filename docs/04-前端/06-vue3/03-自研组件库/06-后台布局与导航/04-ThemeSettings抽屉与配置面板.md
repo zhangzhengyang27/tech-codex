@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # ThemeSettings 抽屉与配置面板
 
 ## 概述
 
 主题设置是 `DefaultLayout` 的最后一环入口。它视觉上是 Header 工具区的图标按钮，交互上却打开一个右侧抽屉配置面板。本节把主题配置从抽象分析推进到可点击、可展开、可填表单的阶段：明确 Drawer 的显隐主线与拦截增强边界，把零散配置项收口成统一的响应式模型，并用 `el-form` 承载颜色、开关、宽度等控件。
-
-## 学习目标
-
-- 区分 ThemeSettings 的「入口组件」与「配置面板」双重角色，并归入 Header 工具区视觉规范
-- 用 `v-model` 控制 Drawer 显隐，仅在需要关闭前拦截时再接 `before-close`
-- 把主题配置收口成统一的 `reactive` 配置对象，而非散落的多个 `ref`
-- 用 `el-form` 组织配置项，按控件语义选型（color-picker / switch / slider）
-- 识别真正拉开复杂度的导航模式与页面切换动画两项布局级配置
-
----
 
 ## 一、ThemeSettings 是面板入口而非按钮
 

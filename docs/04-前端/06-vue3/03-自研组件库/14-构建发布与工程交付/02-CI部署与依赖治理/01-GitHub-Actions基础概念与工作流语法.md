@@ -6,22 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # GitHub Actions 基础概念与工作流语法
 
 ## 概述
 
 项目能本地构建之后，下一步是把“拉代码、装依赖、跑构建、发产物”这套流程交给云端 CI/CD 平台自动执行。本节从 GitHub Actions 的本质讲起，读懂 YAML 的层级结构，掌握 `on` / `jobs` / `steps` 三大概念，写一个最小可运行的前端工作流，并学会在 GitHub 页面里手动触发与查看日志。
-
-## 学习目标
-
-- 理解 GitHub Actions 是云端 CI/CD 运行环境与工作流编排能力，而非“替你写代码的按钮”。
-- 能读懂 workflow YAML 的层级结构：顶层元信息、触发器、`jobs`、`steps`。
-- 掌握三类最常见触发器：`push`、`pull_request`、`workflow_dispatch`。
-- 区分 `steps` 串行与 `jobs` 可并行，理解它们对上下文共享与耗时的影响。
-- 能写出 `checkout + setup-node + npm ci + build` 的最小前端工作流，并手动触发查看日志。
-
----
 
 ## 一、GitHub Actions 的本质：云端执行环境
 

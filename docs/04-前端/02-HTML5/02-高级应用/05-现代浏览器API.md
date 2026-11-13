@@ -136,7 +136,7 @@ timeline
 
 View Transitions API 提供声明式的页面/元素过渡动画，替代了以往需要 FLIP 动画库的复杂实现。
 
-> 本节为概览，详细用法参见 [17-HTML5其他应用.md](../01-基础知识/17-HTML5其他应用) 中的 View Transitions 章节。
+> 本节为概览，详细用法参见 [17-HTML5其他应用](/docs/html5/01-基础知识/17-HTML5其他应用) 中的 View Transitions 章节。
 
 ### 核心概念
 
@@ -163,7 +163,7 @@ document.startViewTransition(() => {
 
 Navigation API 是 History API 的现代替代方案，为 SPA 提供更清晰的导航管理。
 
-> 本节为概览，详细用法参见 [17-HTML5其他应用.md](../01-基础知识/17-HTML5其他应用) 中的 Navigation API 章节。
+> 本节为概览，详细用法参见 [17-HTML5其他应用](/docs/html5/01-基础知识/17-HTML5其他应用) 中的 Navigation API 章节。
 
 ### 核心优势
 
@@ -188,7 +188,7 @@ window.navigation.addEventListener('navigate', (event) => {
 
 Web Share API 调用系统原生分享面板，支持文本、链接和文件。
 
-> 本节为概览，详细用法参见 [17-HTML5其他应用.md](../01-基础知识/17-HTML5其他应用) 中的 Web Share API 章节。
+> 本节为概览，详细用法参见 [17-HTML5其他应用](/docs/html5/01-基础知识/17-HTML5其他应用) 中的 Web Share API 章节。
 
 ### 核心用法
 

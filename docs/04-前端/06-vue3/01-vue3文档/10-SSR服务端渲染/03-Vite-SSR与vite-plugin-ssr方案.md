@@ -6,21 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Vite SSR 与 vite-plugin-ssr 方案
 
 ## 概述
 
 Vite 提供原生 SSR 支持（双入口 + ssrLoadModule），但需要自行实现路由、数据获取和状态传递。vite-plugin-ssr（现更名 Vike）在 Vite 之上提供类 Next.js 的约定式架构，补齐这些能力。本文对比两种方案的架构与适用场景。
-
-## 学习目标
-
-- 理解 Vite SSR 的双入口架构（entry-client / entry-server）
-- 掌握 vite-plugin-ssr 的约定式文件结构与核心概念
-- 理解 data() / render() / passToClient 的协作机制
-- 能够在 Vite SSR、vite-plugin-ssr、Nuxt3 之间做出选型
-
----
 
 ## 一、Vite SSR 原生方案
 

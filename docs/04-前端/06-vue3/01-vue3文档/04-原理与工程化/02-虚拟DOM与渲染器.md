@@ -6,7 +6,6 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # 虚拟 DOM 与渲染器
 
 > Vue 3 的渲染器基于虚拟 DOM，通过 Diff 算法高效更新真实 DOM。Vue 3.6 的 Vapor Mode 提供了无虚拟 DOM 的编译路径。
@@ -948,7 +947,6 @@ state.list = newList // ✅ 触发更新
   </div>
 </template>
 ```
-
 
 ---
 
@@ -3450,7 +3448,6 @@ export default {
 }
 ```
 
-
 ### 组件更新机制
 
 #### 组件更新的响应式驱动：从 effect() 到 ReactiveEffect
@@ -4373,7 +4370,6 @@ sequenceDiagram
 7. **Hello 组件 patch 子树**：最终更新 DOM 中的文本内容
 
 > **设计洞察**：注意步骤 5 中 `instance.update()` 是同步调用的，而不是通过调度器异步排队。这保证了组件树的更新是深度优先的——父组件更新时，所有子组件的更新在同一个同步调用栈中完成。而步骤 1 中 App 组件的更新是通过调度器异步触发的，这保证了多个响应式数据变化只会触发一次组件更新。
-
 
 ### Diff 算法实现
 

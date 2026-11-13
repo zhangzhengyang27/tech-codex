@@ -8,12 +8,6 @@ tags: [React, 组件与实战]
 
 # Activity 视图缓存
 
-## 学习目标
-
-- 理解 `<Activity>` 的「卸载但保留状态」语义
-- 区分 `<Activity>` 与 `display:none` / 手写 KeepAlive 的差异
-- 掌握多页签 / 路由切换缓存的典型用法
-
 ## 为什么需要视图缓存
 
 Tab 切换、路由前进后退时，若直接卸载组件，其局部状态（输入框内容、滚动位置、表单草稿）会丢失。经典解法是 KeepAlive——把组件从树里「摘下但存着」。React 19 前社区需手写（见 [03-KeepAlive 实现](03-KeepAlive实现)），React 19.2 起官方提供 `<Activity>`。

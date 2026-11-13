@@ -8,12 +8,6 @@ tags: [React, 状态管理与路由]
 
 # 实现mini-Router
 
-## 学习目标
-
-- 掌握 设计思路
-- 掌握 建立目标
-- 掌握 设计功能图
-
 ## 设计思路
 
 整个 mini-Router 还是采用 `history` 库，也就是 mini-Router  需要完成的是 `React-Router` 和 `React-Router-DOM` 核心部分。今天编写的 mini-Router 是在 BrowserHistory 模式下。
@@ -396,4 +390,4 @@ export default function  Index() {
 ## 继续阅读
 
 - 上一篇：[02-React-Mobx](02-React-Mobx)
-- 下一篇：[04-数据不可变-immutable和immer](04-数据不可变-immutable和immer)
+- 下一篇：[11-表单与ServerActions](11-表单与ServerActions)

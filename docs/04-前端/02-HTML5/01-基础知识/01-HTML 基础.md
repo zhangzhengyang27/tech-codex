@@ -121,7 +121,7 @@ HTML5 在继承 HTML4 的基础上，对标签进行了分组和扩展。可以�
 ```
 
 ::: tip
-`<dialog>` 和 `popover` 的完整用法详见 [Dialog 与 Popover API](/HTML5/高级应用/4-Dialog与Popover) 章节
+`<dialog>` 和 `popover` 的完整用法详见 [Dialog 与 Popover API](/docs/html5/02-高级应用/04-Dialog与Popover) 章节
 :::
 
 ## HTML 文档基本结构

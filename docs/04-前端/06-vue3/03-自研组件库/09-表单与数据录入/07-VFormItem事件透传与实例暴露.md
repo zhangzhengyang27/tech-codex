@@ -6,26 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # VFormItem 事件透传与实例暴露
 
 ## 概述
 
 表单渲染、绑定、校验都就绪后，下一个复杂度来自"表单项级别的事件和实例能力怎么向外暴露"。本章把表格里做过的事件透传、实例方法透传思路迁移到表单：整表级事件（`validate`）直接手写 `defineEmits` 更合适；单项级用 `FormItemInstance` 暴露 `clearValidate` 等局部能力；用回调式 `itemRef` 把单个实例主动上交页面层；并讨论插槽扁平化、`watch` 持续同步实例的鲁棒性细节。
-
-## 学习目标
-
-- 理解表单透传复杂度来自"层级细"而非事件多
-- 掌握整表级 `validate` 事件直接手写 emit 的取舍
-- 区分 `FormInstance`（整表）与 `FormItemInstance`（单项）两个维度
-- 用 `defineExpose` 暴露单个 FormItem 的局部能力
-- 用回调式 `itemRef` 把实例主动上交页面层
-- 掌握 `watch(formItemRef)` 持续同步实例优于 `onMounted` 只传一次
-- 掌握 labelSlot / errorSlot 在模板里的插槽写法
-- 了解多个 itemRef 在页面层如何收集管理
-- 通过自定义 label/error 实战理解插槽价值
-
----
 
 ## 一、表单透传复杂度来自层级细
 

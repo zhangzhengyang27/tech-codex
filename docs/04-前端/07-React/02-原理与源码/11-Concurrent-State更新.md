@@ -8,12 +8,6 @@ tags: [React, 原理与源码]
 
 # Concurrent-State更新
 
-## 学习目标
-
-- 掌握 主流框架中更新处理方式
-- 掌握 第一种：微任务｜宏任务实现集中更新
-- 掌握 第二种：可控任务实现批量更新
-
 ## 主流框架中更新处理方式
 
 在正式讲解 v18 concurrent 之前，先来看一下主流框架中两种批量更新的原理。
@@ -165,7 +159,6 @@ mockOnclick()
   /* 让 handleClick 变成可控的  */
   handleClick = wrapEvent(handleClick)
 
-
 </script>
 ````
 
@@ -286,21 +279,17 @@ function Index(){
 
 * 点击按钮 `同步环境下`，组件渲染一次。
 
-
 * 点击按钮 `异步环境下`，组件会渲染二次。相信读过之前章节的同学，都明白原理是什么，在异步条件下的更新任务，不在 React 可控的范围内，所以会触发两次流程。
-
 
 **重点来了，我们看一下 v18 concurrent 下更新：**
 
 * 无论点击 **`同步环境下`** 还是 **`异步环境下`** ，组件都会执行一次。
-
 
 首先想一下，在 concurrent 下，如何实现更新合并的呢？
 
 ## v18 更新原理揭秘
 
 按照上面的问题，来探究一下 `concurrent` 下的更新原理。我们还是按照**同步**和**异步**两个方向去探索。 无论是哪种条件下，只要触发 React 的 `setState` 或者 `useState`，最终进入调度任务开始更新的入口函数都是 `ensureRootIsScheduled` ，所以可以从这个函数找到线索。
-
 
 > react-reconciler/src/ReactFiberWorkLoop.js -> ensureRootIsScheduled
 ````js
@@ -333,7 +322,6 @@ function ensureRootIsScheduled(root,currentTime){
     root.callbackNode = newCallbackNode;
 }
 ````
-
 
 ### 1 同步条件下的逻辑
 
@@ -372,7 +360,6 @@ var scheduleMicrotask = typeof queueMicrotask === 'function' ? queueMicrotask : 
 scheduleMicrotask 本质上就是 `Promise.resolve` ，还有一个 setTimeout 向下兼容的情况。通过 scheduleMicrotask 去进行调度更新。
 
 * 那么如果发生第二次 useState ，则会出现 ` existingCallbackPriority === newCallbackPriority` 的情况，接下来就会 return 退出更新流程了。
-
 
 ### 2 异步条件下的逻辑
 

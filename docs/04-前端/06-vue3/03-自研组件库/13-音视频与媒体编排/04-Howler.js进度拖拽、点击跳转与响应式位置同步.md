@@ -6,23 +6,11 @@ category: Vue
 tags: [Vue, 组件化, 响应式, 路由]
 ---
 
-
 # Howler.js 进度拖拽、点击跳转与响应式位置同步
 
 ## 概述
 
 音频播放器的进度条交互，本质是“点击跳转 + 拖拽延续 + 双端兼容 + 尺寸变化同步”的组合问题。本文先修正一个头部布局小 bug，再引入 UnoCSS 分组变体，然后把进度条交互拆成 startDrag 与 jumpTo 两套入口，统一到 updatePosition 做边界裁剪，最后用 useResizeObserver 解决容器宽度变化后手柄错位的响应式问题。
-
-## 学习目标
-
-- 修正头部布局冲突：不要把 ElRow 和自定义 flex 混用，直接换回普通 div
-- 了解 UnoCSS 分组变体（transformerVariantGroup）对响应式类名可读性的提升
-- 把进度条交互拆成 startDrag 与 jumpTo 两套入口，并兼容鼠标与触摸
-- 掌握 startDrag 的事件生命周期管理（document 级监听 + 清理）
-- 用 updatePosition + Math.max/min 做边界裁剪，并用 useResizeObserver 按比例重算位置
-- 认识触摸与鼠标双端事件统一处理（getClientX 抽象）对移动端兼容的意义
-
----
 
 ## 一、先修布局小 bug
 

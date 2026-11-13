@@ -86,7 +86,7 @@ graph TB
 
 | 环节 | AI 工具 | 效果 |
 |------|--------|------|
-| 需求拆分 | GPT-5.5 分析 PRD 生成 User Stories | 时间下降 60% |
+| 需求拆分 | 新一代 AI 编程工具 分析 PRD 生成 User Stories | 时间下降 60% |
 | 代码生成 | Cursor / Copilot | 编码速度提升 40% |
 | Code Review | AI 静态分析加安全扫描 | Review 时间下降 50% |
 | 测试生成 | AI 根据代码生成单元测试 | 覆盖率提升 35% |
@@ -120,7 +120,7 @@ graph LR
 
 | 指标 | 数据 | 来源 |
 |------|------|------|
-| 使用 AI 的开发者比例 | 84% | Stack Overflow 开发者调查 2025 |
+
 | AI 辅助开发的效率提升 | 30-55% | McKinsey Dev Survey |
 | AI 增强团队的需求返工率降低 | 35-45% | Agile Alliance Report |
 | 企业采用 AI 项目管理工具的比例 | 62% | Forrester Research |

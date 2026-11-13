@@ -6,13 +6,11 @@ category: React
 tags: [React, 组件与实战]
 ---
 
+::: warning 配图说明
+本教程原配图未随迁移入库，含 45 处图示引用已改为文字提示，阅读时以代码与文字描述为准。
+:::
+
 # 组件实战-ColorPicker颜色选择器
-
-## 学习目标
-
-- 掌握 RGB / HSL / HSV 颜色表示法
-- 掌握 调色板与拖拽滑块的实现（位置与颜色双向换算）
-- 掌握 useControllableValue 同时支持受控与非受控
 
 ## 颜色表示法小结
 
@@ -20,9 +18,9 @@ tags: [React, 组件与实战]
 
 原生标签虽然支持的功能多，但是各个浏览器实现不一致。
 
-实现这样的颜色选择组件，需要了解颜色表示法：
+实现这样的颜色选择组件，需要了解颜色表示法（原文此处有配图，未随迁移入库）
 
-网页支持的颜色表示法有 RGB、HSL 两种：
+网页支持的颜色表示法有 RGB、HSL 两种（原文此处有配图，未随迁移入库）
 
 RGB 是计算机喜欢的颜色表示法，可以直接用红绿蓝来显示颜色。
 
@@ -30,7 +28,7 @@ HSL 是人更喜欢的颜色表示法，用色相、饱和度、亮度来表示�
 
 （HSV 和 HSB 是一样的东西，V/B 叫明度；注意它与 HSL 的 L（亮度）并不是同一个值，两者可以互相换算）
 
-ColorPicker 一般都是用 HSL 来实现的，通过滑块调节色相、饱和度、亮度，显示的时候加上几个渐变，就能实现这种组件：
+ColorPicker 一般都是用 HSL 来实现的，通过滑块调节色相、饱和度、亮度，显示的时候加上几个渐变，就能实现这种组件（原文此处有配图，未随迁移入库）
 
 理解了 HSL 颜色表示法，接下来我们自己实现下 ColorPicker 组件。
 
@@ -38,15 +36,15 @@ ColorPicker 一般都是用 HSL 来实现的，通过滑块调节色相、饱和
 
 这节我们开始写 ColorPicker 组件。
 
-看下 antd 的 [ColorPicker 组件](https://ant-design.antgroup.com/components/color-picker-cn#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%A4%BA)：
+看下 antd 的 [ColorPicker 组件](https://ant-design.antgroup.com/components/color-picker-cn#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%A4%BA)（原文此处有配图，未随迁移入库）
 
-可以分成这两部分：
+可以分成这两部分（原文此处有配图，未随迁移入库）
 
 上面是一个 ColorPickerPanel，可以通过滑块选择颜色，调整色相、饱和度。
 
 下面是 ColorInput，可以通过输入框修改颜色，可以切换 RGB、HEX 等色彩模式。
 
-我们先写 ColorPickerPanel 的部分：
+我们先写 ColorPickerPanel 的部分（原文此处有配图，未随迁移入库）
 
 这部分分为上面的调色板 Palette，下面的 Slider 滑动条。
 
@@ -94,7 +92,6 @@ export default ColorPickerPanel;
 npm install --save classnames
 ```
 
-
 然后添加 value 和 onChange 的参数：
 
 ```javascript
@@ -112,7 +109,7 @@ interface ColorPickerProps {
 ```
 npm install --save @ctrl/tinycolor
 ```
-先试一下这个包：
+先试一下这个包（原文此处有配图，未随迁移入库）
 
 创建 index.js
 
@@ -155,7 +152,7 @@ export class Color extends TinyColor {
 
 也不好，这样用起来得 new 一个 Color 对象才行，不方便。
 
-所以我们类型要这样写：
+所以我们类型要这样写（原文此处有配图，未随迁移入库）
 
 创建 ColorPicker/interface.ts
 
@@ -236,7 +233,7 @@ function ColorPickerPanel(props: ColorPickerProps) {
 
 export default ColorPickerPanel;
 ```
-接下来写 Palette 组件：
+接下来写 Palette 组件（原文此处有配图，未随迁移入库）
 
 src/Palette.tsx
 
@@ -299,7 +296,7 @@ npm run start
 
 调色板出来了。
 
-还要实现上面的滑块，这个封装个组件，因为 Slider 也会用到：
+还要实现上面的滑块，这个封装个组件，因为 Slider 也会用到（原文此处有配图，未随迁移入库）
 
 创建 ColorPicker/Handler.tsx：
 
@@ -366,7 +363,7 @@ size 是 default 和 small 两个取值，因为这俩滑块是不一样大的�
 
 这样它就不纯粹了，复用性会变差。
 
-所以可以把定位的样式抽离成一个单独的 Transform 组件：
+所以可以把定位的样式抽离成一个单独的 Transform 组件（原文此处有配图，未随迁移入库）
 
 创建 Transform： 
 ```javascript
@@ -491,7 +488,6 @@ function useColorDrag(
 
     };
 
-
     const onDragStop: EventHandle = e => {
         document.removeEventListener('mousemove', onDragMove);
         document.removeEventListener('mouseup', onDragStop);
@@ -516,23 +512,23 @@ function useColorDrag(
 
 export default useColorDrag;
 ```
-代码比较多，从上到下来看：
+代码比较多，从上到下来看（原文此处有配图，未随迁移入库）
 
 MouseEvent 是 ts 内置的原生鼠标事件类型，而 React.MouseEvent 是 react 提供鼠标事件类型。
 
 是因为 react 里的事件是被 react 处理过的，和原生事件不一样。
 
-直接给 document 绑定事件，这时候 event 是 MouseEvent 类型：
+直接给 document 绑定事件，这时候 event 是 MouseEvent 类型（原文此处有配图，未随迁移入库）
 
-而在 jsx 里绑定事件，这时候 event 是 React.MouseEvent 类型：
+而在 jsx 里绑定事件，这时候 event 是 React.MouseEvent 类型（原文此处有配图，未随迁移入库）
 
-我们都要支持：
+我们都要支持（原文此处有配图，未随迁移入库）
 
 这两个一个是保存 offset 的，一个是保存是否在拖动中的标记的。
 
 然后先把之前的事件监听器去掉。
 
-在 mousedown 的时候绑定 mousemove 和 mouseup 事件：
+在 mousedown 的时候绑定 mousemove 和 mouseup 事件（原文此处有配图，未随迁移入库）
 
 mousemove 的时候根据 event 修改 offset。
 
@@ -640,7 +636,7 @@ export default Palette;
 
 只是颜色没有变化，这个需要根据 x、y 的值来算出当前的颜色。
 
-我们封装个工具方法：
+我们封装个工具方法（原文此处有配图，未随迁移入库）
 
 新建 ColorPicker/utils.ts
 
@@ -792,7 +788,6 @@ function useColorDrag(
         onDragChange?.(calcOffset);
     };
 
-
     const onDragStop: EventHandle = e => {
         document.removeEventListener('mousemove', onDragMove);
         document.removeEventListener('mouseup', onDragStop);
@@ -893,7 +888,7 @@ cursor: pointer;
 
 好多了。
 
-还有一点，我们前面的 value 参数其实是 defaultValue：
+还有一点，我们前面的 value 参数其实是 defaultValue（原文此处有配图，未随迁移入库）
 
 也就是用来作为内部 state 的初始值。
 
@@ -906,7 +901,6 @@ npm install --save ahooks
 ```
 
 把 useState 换成 ahooks 的 useControllableValue：
-
 
 ```javascript
 export interface ColorPickerProps {
@@ -923,7 +917,7 @@ const [colorValue, setColorValue] = useControllableValue<Color>(props);
 ```
 这样就同时支持了 value 和 defaultValue，也就是受控和非受控模式。
 
-然后我们加上调节色相和亮度的滑块：
+然后我们加上调节色相和亮度的滑块（原文此处有配图，未随迁移入库）
 
 因为我们计算颜色用的是 hsv，这里两个滑块分别改变的就是 h（色相）、v（明度）。
 
@@ -995,7 +989,7 @@ h 的取值范围是 0 到 360。
 
 就是根据位置计算颜色、根据颜色计算位置，这两个方向的计算比较复杂。
 
-根据位置计算颜色，以 x 方向为例：
+根据位置计算颜色，以 x 方向为例（原文此处有配图，未随迁移入库）
 
 需要用 mousemove 时的 e.pageX（距离文档左边的距离） 减去 scrollLeft 计算出滑块距离视口的距离，然后减去容器距离视口的距离，再减去滑块半径就是滑块距离容器的距离 x。
 
@@ -1014,5 +1008,5 @@ h 的取值范围是 0 到 360。
 至此，ColorPicker 组件就完成了。
 ## 继续阅读
 
-- 上一篇：[27-一次超爽的React调试体验](27-一次超爽的React调试体验)
-- 下一篇：[29-组件实战-onBoarding漫游式引导组件](29-组件实战-onBoarding漫游式引导组件)
+- 上一篇：[23-自定义hook练习](../04-组件与实战/23-自定义hook练习)
+- 下一篇：[33-错误边界实践进阶](../04-组件与实战/33-错误边界实践进阶)

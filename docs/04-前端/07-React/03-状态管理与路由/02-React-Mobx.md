@@ -8,18 +8,11 @@ tags: [React, 状态管理与路由]
 
 # React-Mobx
 
-## 学习目标
-
-- 掌握 Mobx特性
-- 掌握 基本用法
-- 掌握 Mobx基本使用
-
 ## Mobx特性
 
 > ⚠️ **版本说明**：本文基于 MobX 6 + mobx-react 讲解用法与原理。注意 `Provider` / `inject` 属于旧式写法，mobx-react 自 v6 起即不再推荐（官方建议新代码改用 React.createContext），并已在 mobx-react 10（2026-07）中移除，现代 MobX 项目推荐用 React Context 或直接引入 store 单例，配合 `observer` 使用。
 
 同为状态管理工具，Mobx 和 Redux 本质上有很大的区别，但是 Mobx 和 Redux 都是独立的，不依赖于 React 本身；为了把 React 和 Mobx 关联起来，在 React 应用中更好的使用 Mobx ，出现了 mobx-react ， mobx-react 提供了 HOC ，可以获取状态管理 Mobx 的数据层，也能接受 mobx 数据改变带来的更新。
-
 
 **①观察者模式**
 
@@ -87,7 +80,6 @@ observable 对于引用数据类型，比如 Object ，Array ，Set ，Map等，
 
 * 一 `Proxy`：会把原始对象用 Proxy 代理，Proxy 会精确响应原始对象的变化，比如增加属性——给属性绑定 ObserverValue ，删除属性——给属性解绑 ObserverValue 等。
 * 二 `ObservableAdministration`： 对于子代属性，会创建一个 `ObservableAdministration`，用于管理子代属性的ObserverValue。 
-
 
 * 对于外层 Root ，在 `constructor` 使用 `makeObservable` ，mobx 会默认给最外层的 Root 添加 ObservableAdministration 。
 
@@ -411,7 +403,6 @@ class ObservableObjectAdministration{
 
 #### ①观察者——ObservableValue
 
-
 上面我知道了只要通过 @observable 包裹，就会创建一个 ObservableValue 。
 
 在 Mobx 有一个核心的思想就是 Atom 主要是收集依赖，通知依赖。先来看一下 Atom 的重点方法:
@@ -544,7 +535,6 @@ function makeComponentReactive(){
 
 * 对 render 函数进行改造，改造成 reactiveRender ，在 reactiveRender 中，reaction.track 是真正的进行依赖的收集，track 回调函数中，执行真正的 render 方法，得到 element 对象 rendering 。
 
-
 #### ④反应器——Reaction
 那么接下来重点看一下 Reaction 如何处理更新函数，还有就是 track 方法是如何收集依赖的。在如下 track 中，我标记了三个阶段，阅读的同学请细心看这个三阶段都做了些什么。
 
@@ -593,7 +583,6 @@ function makeComponentReactive(){
 
 **这个函数特别重要，是整个收集依赖核心。**
 
-
 * 第一阶段： 首先在执行 track 的时候，会把全局变量的 `trackingDerivation`，指向当前的 trackingDerivation 。这样在收集依赖的过程中，可以直接收集当前的 trackingDerivation ，也就是为什么 ObservableValue 能精确收集每一个 Reaction 。
 
 * 第二阶段：首先当被 observer 包装的组件，只要执行 render 函数，就会执行 track 方法，`fn.call(context)`，真正的 render 函数会在里面执行，如果在 render 的过程中，引用了 mobx 可观察模块，比如：
@@ -611,7 +600,6 @@ class Index extends React.Component{
 ````
 
 * 第二阶段（接上）：当如上 render 执行的时候，首先会触发 track ，将当前Reaction 赋值给 trackingDerivation ，然后访问了 Root 下面的name 属性，那么首先会触发观察状态管理者的 adm 的 getObservablePropValue_ ，接下来会触发 name 属性的观察者 ObservableValue 下面的 get 方法，最后执行的是 `reportObserved(this)`，看一下 reportObserved 里面做了些什么？
-
 
 > mobx/src/core/observable.ts
 ````js
@@ -655,7 +643,6 @@ function bindDependencies(Reaction){ /* 当前组件的 Reaction */
 接下来就是一次更新中，比如在（ DEMO1 ）中点击按钮，通过 action ，改变 mobx 中的 name 属性。那么会发生什么呢。
 
 * **第一步：** 首先对于观察者属性管理者 ObservableAdministration 会触发 setObservablePropValue_ ，然后找到对应的 ObservableValue 触发 setNewValue_ 方法。
-
 
 * **第二步：** setNewValue_ 本质上会触发Atom中的reportChanged ，然后调用 `propagateChanged`。首先来看一下propagateChanged：
 

@@ -3966,5 +3966,29 @@
  {
   "source": "/docs/python/01-Web%E4%B8%8E%E7%88%AC%E8%99%AB/02-%E7%88%AC%E8%99%AB/19-%E5%AE%9E%E6%88%98-%E6%9E%84%E5%BB%BA%E7%94%B5%E8%A7%86%E5%89%A7%E8%AF%84%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86",
   "destination": "/docs/python/01-Web与爬虫/02-爬虫/13-爬虫最小实战：构建电视剧评分数据集"
+ },
+ {
+  "source": "/docs/python/05-%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/08-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B2%BE%E8%AE%B2/13-Flak%20Web%20%E6%A1%86%E6%9E%B6%E5%9F%BA%E7%A1%80",
+  "destination": "/docs/python/05-数据科学/08-数据分析与可视化精讲/13-Flask Web 框架基础"
+ },
+ {
+  "source": "/docs/python/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B2%BE%E8%AE%B2/13-Flak%20Web%20%E6%A1%86%E6%9E%B6%E5%9F%BA%E7%A1%80",
+  "destination": "/docs/python/05-数据科学/08-数据分析与可视化精讲/13-Flask Web 框架基础"
+ },
+ {
+  "source": "/docs/python/05-%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/08-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B2%BE%E8%AE%B2/14-PyEchart%20%26%20Flak%20%E6%A1%86%E6%9E%B6%E9%9B%86%E6%88%90",
+  "destination": "/docs/python/05-数据科学/08-数据分析与可视化精讲/14-PyEchart & Flask 框架集成"
+ },
+ {
+  "source": "/docs/python/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B2%BE%E8%AE%B2/14-PyEchart%20%26%20Flak%20%E6%A1%86%E6%9E%B6%E9%9B%86%E6%88%90",
+  "destination": "/docs/python/05-数据科学/08-数据分析与可视化精讲/14-PyEchart & Flask 框架集成"
+ },
+ {
+  "source": "/docs/python/05-%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/08-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B2%BE%E8%AE%B2/15-PyEchart%20%26%20Flak%20%E9%9B%86%E6%88%90%E6%A1%88%E4%BE%8B",
+  "destination": "/docs/python/05-数据科学/08-数据分析与可视化精讲/15-PyEchart & Flask 集成案例"
+ },
+ {
+  "source": "/docs/python/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B2%BE%E8%AE%B2/15-PyEchart%20%26%20Flak%20%E9%9B%86%E6%88%90%E6%A1%88%E4%BE%8B",
+  "destination": "/docs/python/05-数据科学/08-数据分析与可视化精讲/15-PyEchart & Flask 集成案例"
  }
 ]

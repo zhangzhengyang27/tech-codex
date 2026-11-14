@@ -11,13 +11,6 @@ tags: [DevOps, CI/CD]
 
 GitLab 提供两种容器镜像仓库方案：内置 Container Registry 和集成 Harbor。内置方案需要独立域名和 SSL 证书，配置复杂；Harbor 集成方案部署简单、功能丰富，是企业级场景的推荐选择。本文详解两种方案的配置方法，以及在 CI/CD 中推送 Docker 镜像的完整流程。
 
-## 学习目标
-
-- 理解两种镜像仓库方案的架构差异与选型依据
-- 掌握内置 Container Registry 的配置流程与常见坑点
-- 掌握 GitLab 集成 Harbor 的配置方法
-- 实现在 CI/CD Pipeline 中构建并推送 Docker 镜像
-
 ---
 
 ## 一、方案对比与选型

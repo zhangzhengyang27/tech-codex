@@ -10,7 +10,7 @@ tags: [架构, 05-Serverless架构]
 # 概念新知：到底什么是 Serverless
 上一节我讲了 Serverless 架构兴起的必然因素，在这个过程中，我简单提到了 Serverless 的概念，相信你对 Serverless 已经有了初步的认知，本节我将继续深入剖析到底什么是 Serverless。
 
-有不少刚接触 Serverless 的同学会认为 FaaS 就是 Serverless，也有同学认为 PaaS 也是 Serverless，还有同学说使用 Serverless 就没有服务器了。总的来说，很多同学对 Serverless 到底是什么并没有一个很清晰的认知，概念还比较模糊，所以咱们就用一节的时间，搞定这个概念。
+有不少刚接触 Serverless 的同学会认为 FaaS 就是 Serverless，也有同学认为 PaaS 也是 Serverless，还有同学说使用 Serverless 就没有服务器了。总的来说，很多同学对 Serverless 到底是什么并没有一个很清晰的认知，概念还比较模糊，所以这一节就专门把 Serverless 的概念讲清楚。
 
 在我看来，你可以从广义和狭义两个角度入手，这样会更清楚 Serverless 的特点，对它有个整体的认知。**先来看一下广义上的 Serverless 是指什么？**
 

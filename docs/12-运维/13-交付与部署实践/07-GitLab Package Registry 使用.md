@@ -12,13 +12,6 @@ tags: [DevOps, CI/CD]
 
 GitLab Package Registry 是 GitLab 内置的制品管理功能，支持 NPM、Docker、Maven、NuGet 等多种包格式。对于使用 GitLab 的团队，它提供了与 CI/CD 深度集成的 NPM 私有包管理能力，无需额外部署 Verdaccio 等独立仓库。
 
-## 学习目标
-
-- 理解 GitLab Package Registry 的架构与适用场景
-- 掌握 NPM 包发布流程（.npmrc 配置、Deploy Token、npm publish）
-- 实现 CI/CD 自动化发布（CI_JOB_TOKEN）
-- 理解 Token 权限管理与安全最佳实践
-
 ---
 
 ## 一、Package Registry 概述

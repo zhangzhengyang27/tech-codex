@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 本文详解使用 Docker 安装 Jenkins 的完整流程，包括镜像选择、docker.sock 映射原理、DinD vs DooD 方案对比、Docker Compose 编排及版本冲突问题处理。
 
-## 学习目标
-
-1. 掌握 Docker 安装 Jenkins 的标准流程
-2. 理解 docker.sock 映射与 DooD 模式原理
-3. 能够使用 Docker Compose 编排 Jenkins 环境
-
 ---
 
 ## 一、镜像选择

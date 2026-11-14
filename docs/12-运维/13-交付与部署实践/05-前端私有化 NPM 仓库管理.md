@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 Verdaccio 是一个轻量级 Node.js 私有 NPM Registry，零配置启动、支持用户认证和代理缓存。本文详解 Verdaccio 的搭建、NRM 源管理工具使用、包发布流程及权限配置。
 
-## 学习目标
-
-1. 了解私有 NPM 仓库的需求场景和方案对比
-2. 掌握 Verdaccio 的安装、配置和使用
-3. 能够发布和管理内部 NPM 包
-
 ---
 
 ## 一、方案对比

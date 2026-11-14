@@ -9,8 +9,6 @@ tags: [Node.js, Express, Koa, 服务端]
 
 # rsync 与 Git Hooks 自动化部署
 
-> 学习目标：掌握 rsync 文件同步、Git Hooks 自动化、Husky 工具使用、SSH 免密登录、自动化部署脚本编写。
-
 ## 一、自动化部署方案对比
 
 ### 1.1 个人开发者 vs 团队部署需求

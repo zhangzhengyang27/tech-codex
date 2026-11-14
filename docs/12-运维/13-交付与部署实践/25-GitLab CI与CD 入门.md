@@ -12,13 +12,6 @@ tags: [DevOps, CI/CD]
 
 GitLab CI/CD 是 GitLab 内置的持续集成与持续交付解决方案，通过 `.gitlab-ci.yml` 配置文件驱动流水线执行，无需额外部署独立 CI 服务。本文介绍 CI/CD 工具生态分类、GitLab CI/CD 核心架构，以及 GitLab Runner 的安装与执行器选择。
 
-## 学习目标
-
-- 理解 CI/CD 工具生态的三大分类及各自适用场景
-- 掌握 GitLab CI/CD 与 Jenkins 的核心差异
-- 理解 GitLab Runner 架构与三种 Runner 类型
-- 完成 GitLab Runner 的安装、注册与执行器配置
-
 ---
 
 ## 一、CI/CD 工具生态

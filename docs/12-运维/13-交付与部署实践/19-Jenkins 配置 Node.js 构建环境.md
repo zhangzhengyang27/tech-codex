@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 NodeJS Plugin 为 Jenkins 提供类似 NVM 的多版本 Node.js 管理能力，支持自动安装、镜像加速和全局包预装。本文详解配置流程及多版本管理方案。
 
-## 学习目标
-
-1. 掌握 NodeJS Plugin 的安装与全局工具配置
-2. 配置国内镜像加速 Node.js 和 NPM 包下载
-3. 实现多版本 Node.js 环境管理
-
 ---
 
 ## 一、NodeJS Plugin 功能

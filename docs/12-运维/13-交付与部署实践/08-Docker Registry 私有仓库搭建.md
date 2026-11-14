@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 Docker Registry 是 Docker 官方提供的镜像存储和分发系统。本文详解私有 Registry 的搭建流程、镜像推送/拉取操作、认证配置及镜像代理缓存。
 
-## 学习目标
-
-1. 理解私有 Registry 的使用场景
-2. 掌握 Docker Registry 的搭建和基本操作
-3. 了解认证配置和 HTTPS 安全访问
-
 ---
 
 ## 一、为什么需要私有 Registry

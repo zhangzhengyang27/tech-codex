@@ -19,13 +19,6 @@ tags: [DevOps, Linux, 数据恢复]
 - 了解 inode 与 block 的基本概念
 - 熟悉 `lsof`、`mount`/`umount`、`rm`、`tar` 等基础命令
 
-### 1.2 学习目标
-
-- 理解 `rm` 删除的本质与数据可恢复的原理
-- 掌握进程占用中删除文件的 `lsof` + `/proc/<pid>/fd` 恢复法
-- 掌握无占用删除文件的 extundelete 恢复工具实战
-- 牢记"立即 umount 防止 block 覆盖"的第一原则
-
 ---
 
 ## 二、核心方法论

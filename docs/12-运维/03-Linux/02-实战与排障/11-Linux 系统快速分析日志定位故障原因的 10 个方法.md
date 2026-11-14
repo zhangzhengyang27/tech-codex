@@ -21,13 +21,6 @@ tags: [DevOps, Linux, 日志分析]
 - 了解 Nginx 操作基础（配置、日志）
 - 了解 MySQL 使用基础
 
-### 1.3 学习目标
-
-- 理解 Linux 上 Nginx / MySQL 各类日志的存储位置与类型
-- 掌握 Nginx access_log 的格式定义（`log_format`）与日志字段含义
-- 掌握访问量、错误性能、安全分析三大类组合命令
-- 掌握 MySQL 慢日志分析工具 `mysqldumpslow` 与 `pt-query-digest`
-
 ---
 
 ## 二、核心方法论

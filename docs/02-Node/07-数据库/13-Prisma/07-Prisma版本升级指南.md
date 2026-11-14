@@ -19,13 +19,6 @@ Prisma 主版本升级涉及 Breaking Changes、依赖环境要求和 API 变更
 - [Prisma 实体关系定义详解](06-Prisma实体关系定义详解.md)
 - Node.js 版本管理与 npm/pnpm 基础
 
-## 学习目标
-
-1. 掌握获取版本更新信息的多种途径
-2. 理解 Prisma 5 的新特性与 Breaking Changes
-3. 熟练执行从 Prisma 4 到 5 的完整升级流程
-4. 能够处理升级过程中的常见兼容性问题
-
 ---
 
 ## 一、版本升级流程

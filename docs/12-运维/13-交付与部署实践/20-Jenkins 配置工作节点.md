@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 当构建任务增多时，单节点 Jenkins 面临资源不足和单点故障问题。本文详解 Master-Slave 分布式架构（Jenkins 官方现已改称 Controller-Agent，本文沿用旧称），包括工作节点创建、SSH 连接配置、JDK 环境安装及任务绑定策略。
 
-## 学习目标
-
-1. 理解 Jenkins Master-Slave 架构原理
-2. 掌握通过 SSH 添加工作节点的完整流程
-3. 能够配置标签实现任务精确分配
-
 ---
 
 ## 一、Master-Slave 架构

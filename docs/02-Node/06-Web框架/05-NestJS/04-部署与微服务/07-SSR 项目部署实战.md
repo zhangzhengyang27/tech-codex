@@ -9,8 +9,6 @@ tags: [Node.js, Express, Koa, 服务端]
 
 # SSR 项目部署实战
 
-> 学习目标：掌握 Node.js 环境安装、PM2 进程管理、NestJS 部署、Nuxt.js 部署、PM2 配置文件、环境变量配置。
-
 ## 一、SSR 部署概述
 
 ```

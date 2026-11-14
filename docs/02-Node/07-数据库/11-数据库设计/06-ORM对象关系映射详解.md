@@ -7,9 +7,6 @@ tags: [Node.js, Express, Koa, 服务端]
 ---
 # ORM对象关系映射详解
 
-
-> **学习目标**：理解 ORM 的概念、优缺点、主流库对比，掌握 ORM 在 NestJS 中的应用。
-
 ---
 
 ## 一、ORM 的定义

@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 DevOps 是一套实践方法、工具链和文化理念的组合，旨在打破开发（Development）和运维（Operations）之间的壁垒，通过协作和自动化加速软件交付。本文详解 DevOps 三大支柱、生命周期八阶段及与 CI/CD 的层级关系。
 
-## 学习目标
-
-1. 理解 DevOps 的定义、三大支柱及发展历程
-2. 掌握 Atlassian DevOps 生命周期 8 个阶段
-3. 理清 DevOps、自动化、CI/CD 三者的包含关系
-
 ---
 
 ## 一、DevOps 核心概念

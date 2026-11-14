@@ -3878,9 +3878,6 @@ export class PerformanceInterceptor implements NestInterceptor {
 
 ## NestJS开发工具扩展
 
-
-> **学习目标**：掌握 SWC 编译器的使用和 REPL 开发模式，提升开发效率。
-
 ---
 
 ## 一、SWC 编译器

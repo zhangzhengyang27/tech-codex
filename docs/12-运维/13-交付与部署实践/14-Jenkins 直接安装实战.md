@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 本文详解在 Ubuntu/Debian 系统上通过 apt-get 安装 Jenkins 的完整流程，包括环境准备、服务管理、端口冲突排查与修改、初始化配置及常见问题处理。
 
-## 学习目标
-
-1. 掌握 Ubuntu/Debian 上 apt-get 安装 Jenkins 的完整步骤
-2. 熟练使用 systemctl 管理 Jenkins 服务
-3. 掌握端口冲突排查与修改方法
-
 ---
 
 ## 一、安装前准备

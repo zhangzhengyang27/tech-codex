@@ -11,13 +11,6 @@ tags: [DevOps, CI/CD]
 
 本文以 Vue/React 前端项目为例，完整实现 GitLab CI/CD 从构建到部署的全流程：使用 Node.js 镜像构建项目、通过 artifacts 传递制品、配置 SSH 密钥实现 rsync 增量部署，并深入讲解 CI/CD 变量管理与分支保护机制。
 
-## 学习目标
-
-- 掌握 GitLab CI/CD 前端项目完整部署流程
-- 熟练使用 artifacts 实现跨 Stage 制品传递
-- 掌握 SSH 密钥配置与 rsync 远程部署
-- 理解 CI/CD 变量的保护机制与分支保护的关系
-
 ---
 
 ## 一、部署流程设计

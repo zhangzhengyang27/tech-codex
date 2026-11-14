@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 本文详解使用 Publish Over SSH 插件将 Jenkins 构建产物发布到远程 Nginx 服务器的完整流程，包括插件安装、SSH Server 配置、密钥认证及构建后操作配置。
 
-## 学习目标
-
-1. 掌握 Publish Over SSH 插件的配置方法
-2. 理解 SSH 密钥认证的配置流程
-3. 能够配置自动化的文件传输和远程命令执行
-
 ---
 
 ## 一、发布流程

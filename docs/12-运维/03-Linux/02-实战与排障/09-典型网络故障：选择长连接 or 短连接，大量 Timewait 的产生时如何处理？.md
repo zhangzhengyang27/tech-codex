@@ -19,13 +19,6 @@ tags: [DevOps, Linux, 网络故障]
 - 了解 TCP 三次握手、四次挥手与连接状态
 - 熟悉 `netstat`、`sysctl` 等命令与 HTTP 协议基础
 
-### 1.2 学习目标
-
-- 理解长连接与短连接的原理、优劣与应用场景
-- 掌握 HTTP 1.0/1.1/2.0 的连接模型演进
-- 理解 TIME_WAIT 的产生机制（四次挥手）与影响
-- 掌握 `tcp_tw_reuse`、`tcp_max_tw_buckets` 等 TIME_WAIT 优化参数，厘清 `tcp_fin_timeout` 的真实含义
-
 ---
 
 ## 二、核心方法论

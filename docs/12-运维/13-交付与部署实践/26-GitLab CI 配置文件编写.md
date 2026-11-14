@@ -12,13 +12,6 @@ tags: [DevOps, CI/CD]
 
 `.gitlab-ci.yml` 是 GitLab CI/CD 的核心配置文件，采用 YAML 格式定义流水线的阶段、任务和执行规则。本文系统讲解配置文件的核心概念、关键字语法和流水线编辑器的使用方法。
 
-## 学习目标
-
-- 掌握 Pipeline / Stage / Job 三层概念模型及执行规则
-- 熟练使用常用 Job 关键字（image、script、artifacts、cache、rules）
-- 理解分支控制与条件执行的多种方式
-- 学会使用流水线编辑器进行配置验证
-
 ---
 
 ## 一、配置文件基础

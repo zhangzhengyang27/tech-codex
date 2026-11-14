@@ -19,13 +19,6 @@ Benchmark（基准测试）通过标准化流程对系统性能进行评分和�
 - Node.js 基础与 Web 框架（Express / Koa / Fastify）
 - 命令行工具使用
 
-## 学习目标
-
-- 理解 Benchmark 的核心价值与正确解读方式
-- 掌握性能影响因素的多维分析框架
-- 能够使用 autocannon / wrk / hey 执行基准测试
-- 建立技术选型的综合决策能力（性能只是因素之一）
-
 ---
 
 ## 一、Benchmark 的意义

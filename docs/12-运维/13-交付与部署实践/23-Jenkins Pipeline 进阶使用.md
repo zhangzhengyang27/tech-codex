@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 Jenkins Pipeline 通过 Jenkinsfile 将 CI/CD 流程代码化，支持版本控制、复用和可视化。本文详解 Pipeline 核心概念、Jenkinsfile 语法、前端项目完整示例及 Blue Ocean 可视化界面。
 
-## 学习目标
-
-1. 理解 Pipeline 核心概念（Agent、Stage、Step）
-2. 掌握 Jenkinsfile 声明式语法
-3. 能够编写前端项目的完整 Pipeline 配置
-
 ---
 
 ## 一、Pipeline vs 传统 GUI

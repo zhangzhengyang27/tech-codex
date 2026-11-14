@@ -400,13 +400,9 @@ kubectl rollout status deployment/名称
 
 - kubernetes ingress 官方文档：[https://kubernetes.github.io/ingress-11-Nginx基础概述/user-guide/11-Nginx基础概述-configuration/annotations/#canary](https://kubernetes.github.io/ingress-11-Nginx基础概述/user-guide/11-Nginx基础概述-configuration/annotations/#canary)
 
-## 结束语
+## 本章小结
 
 
-在这一章，我们通过 `Kubernetes` 实现了灰度发布/滚动发布环境，基本上可以满足需求。在下一章，我们会给大家带来新东西 —— 健康度检查。可以让你更好地管理服务状态，控制服务的运行行为。
-
-
-大家有什么问题呢？欢迎在评论区留言回复 
-
+本章通过 `Kubernetes` 实现了灰度发布/滚动发布环境，基本上可以满足需求。下一章将介绍健康度检查，用于更好地管理服务状态、控制服务的运行行为。
 > 📖 **相关理论延伸**：灰度/滚动/蓝绿等部署策略的概念与选型逻辑，及灰度发布与 A/B 测试的关系，见《持续交付36讲》[部署策略：蓝绿、金丝雀、渐进式交付](../02-持续交付36讲/16-部署策略：蓝绿、金丝雀、渐进式交付.md) 与 [灰度发布与 A/B 测试](../02-持续交付36讲/18-灰度发布与A-B测试.md)。 
 

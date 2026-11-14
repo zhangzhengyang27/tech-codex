@@ -20,14 +20,6 @@ tags: [DevOps, Linux, 网络故障, 抓包分析]
 - 了解 ICMP（Internet Control Message Protocol，互联网控制报文协议）与 UDP（User Datagram Protocol，用户数据报协议）
 - 熟悉基础的 `ping`、`netstat` / `ss` 命令
 
-### 1.2 学习目标
-
-- 掌握常见网络故障的分类与定位思路
-- 理解 `traceroute` 逐跳路由侦测的 TTL（Time To Live，生存时间）原理
-- 掌握 `ping` / `fping` / `tcpping` / `traceroute` / `MTR` 的选择与使用
-- 掌握服务端端口检测（`telnet`、`netstat`、`nc`）
-- 掌握 `tcpdump` 抓包与 `Wireshark` / `Charles` 分析
-
 ---
 
 ## 二、核心方法论

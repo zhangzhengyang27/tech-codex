@@ -26,13 +26,6 @@ tags: [Node.js, 工程化]
 - **CLI 框架**：Commander.js
 - **终端美化**：Chalk
 
-### 学习目标
-
-- ✅ 掌握 pnpm workspace 的配置和使用
-- ✅ 理解 Monorepo 中包之间的依赖管理
-- ✅ 学会使用 Changesets 进行版本管理
-- ✅ 掌握从开发到发布的完整流程
-
 ## 项目架构
 
 ### 目录结构

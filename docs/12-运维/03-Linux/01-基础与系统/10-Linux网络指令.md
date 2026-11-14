@@ -19,14 +19,6 @@ tags: [DevOps, Linux]
 - 熟悉命令行与 SSH 基本概念
 - 了解 IP 地址、域名与 DNS 的基本概念更佳
 
-### 1.2 学习目标
-
-- 掌握远程操作指令 ssh/scp
-- 掌握本地网络状态查看 ifconfig/netstat
-- 掌握网络测试 ping/telnet
-- 掌握 DNS 查询 host/dig
-- 掌握 HTTP 请求指令 curl，并回答"如何查看 NS 记录"
-
 ---
 
 ## 二、核心方法论

@@ -17,13 +17,6 @@ tags: [DevOps, Linux]
 - 已完成 Linux 环境搭建（虚拟机/WSL2/云服务器）
 - 能通过 SSH 连接到 Linux 系统
 
-### 1.2 学习目标
-
-- 理解 Linux 文件系统层次结构（FHS，Filesystem Hierarchy Standard）
-- 掌握文件查看、搜索、管理的核心命令
-- 理解权限模型（rwx / 数字表示法）
-- 熟练使用 APT/YUM 包管理器
-
 ---
 
 ## 二、核心方法论

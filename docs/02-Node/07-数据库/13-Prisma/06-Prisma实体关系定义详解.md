@@ -19,13 +19,6 @@ Prisma Schema 通过声明式语法定义数据库实体间的关系。本文覆
 - [Prisma 的全部 schema 语法](03-Prisma%20的全部%20schema%20语法.md)
 - 关系型数据库外键与 JOIN 基础
 
-## 学习目标
-
-1. 掌握三种关系类型的 Schema 定义规则
-2. 熟练使用 include/select 进行关系查询
-3. 理解多对多关系的中间表机制
-4. 对比 Prisma 与 TypeORM 的关系定义差异
-
 ---
 
 ## 一、关系类型总览

@@ -113,7 +113,7 @@ server {
 
 那么我们来讲一讲应该如何去防范这样的攻击行为：
 
-第一点，需要验证 HTTP Referer 字段。前面的课程里面我们有讲过 HTTP Referer 是什么，它记录了用户本次访问的 URL 的上一个来源地址，这个信息可以溯源出它的上一级来源 URL 地址。这个时候我们可以在网站 A 里面添加一个 Referer 的头的控制。如果是拿 Nginx 进行配置，它是这样来进行配置：
+第一点，需要验证 HTTP Referer 字段。HTTP Referer 记录了用户本次访问的 URL 的上一个来源地址，这个信息可以溯源出它的上一级来源 URL 地址。这个时候我们可以在网站 A 里面添加一个 Referer 的头的控制。如果是拿 Nginx 进行配置，它是这样来进行配置：
 
 ```11-Nginx基础概述
 valid_referers none blocked server_names www.example.com;

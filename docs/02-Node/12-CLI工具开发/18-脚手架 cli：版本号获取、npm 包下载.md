@@ -25,14 +25,6 @@ tags: [Node.js, CLI工具开发]
 
 本章节将详细介绍如何在脚手架 CLI 工具中实现 NPM 包的版本号获取和下载功能。这是实现 `create` 命令的关键步骤，需要从 NPM 仓库获取模板包并支持版本更新。
 
-### 学习目标
-
-- 掌握 NPM Registry API 的使用方法
-- 学会封装版本号获取工具函数
-- 理解 NPM 包下载和缓存机制
-- 掌握使用 npminstall 进行包管理
-- 学会发布工具包到 NPM 仓库
-
 ### 技术栈
 
 - **运行时**: Node.js with ES Modules

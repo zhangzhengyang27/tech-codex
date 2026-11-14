@@ -12,12 +12,6 @@ tags: [DevOps, CI/CD]
 
 Harbor 是 CNCF 毕业项目，提供企业级容器镜像仓库能力，内置 RBAC 权限、Web UI、漏洞扫描、镜像签名和垃圾回收。本文详解 Harbor 与 Docker Registry 的对比、部署流程及基本使用。
 
-## 学习目标
-
-1. 理解 Harbor 相比 Docker Registry 的企业级优势
-2. 掌握 Docker Compose 部署 Harbor 的流程
-3. 熟悉 Harbor 项目管理和镜像操作
-
 ---
 
 ## 一、Harbor vs Docker Registry

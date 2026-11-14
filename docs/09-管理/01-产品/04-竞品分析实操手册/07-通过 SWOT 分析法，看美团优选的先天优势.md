@@ -1,7 +1,12 @@
 ---
 title: "通过 SWOT 分析法，看美团优选的先天优势"
-category: 管理
-
+description: SWOT 分析法实战：以美团优选为例推演优势、劣势、机会与威胁，并附格局变化的事后复盘
+keywords: [SWOT, 美团优选, 战略分析]
+category: 产品
+tags: [竞品分析, SWOT, 案例分析]
+author: 文档维护组
+created: 2026-09-28
+updated: 2026-11-14
 ---
 
 # 通过 SWOT 分析法，看美团优选的先天优势

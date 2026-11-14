@@ -1135,3 +1135,38 @@ export default lodash;
 | `lib/EntryPlugin.js` | `apply()` | L40~L60 | make 钩子监听 |
 | `lib/WebpackOptionsApply.js` | `process()` | 全文 | 内置插件动态注入 |
 | `lib/ChunkGraph.js` | 类定义 | 全文 | Module-Chunk 映射 |
+
+## 附录 B：生命周期 Hooks 速查表
+
+> 📎 本附录补自旧版《流程分解：Webpack 的完整构建流程》篇（原 05-Webpack核心 目录，去重并入本系列；该篇基于 webpack-4 分支撰写，合并时已按 Webpack 5 校正——Entry 相关的 `addEntry/failedEntry/succeedEntry` Hooks 在 v5 中已移除，产物优化 Hooks 由 `processAssets` 统一承担，v4 的 `optimizeChunkAssets` 等旧名已废弃）。
+
+**Compiler Hooks（按三阶段分组，完整定义见上文 1.3 `Compiler.hooks` 全貌）：**
+
+| 阶段 | Hooks | 触发时机 |
+|------|-------|---------|
+| 初始化 | `environment` / `afterEnvironment` | compiler 实例创建、配置内插件 apply 执行前后 |
+| 初始化 | `entryOption` / `afterPlugins` / `afterResolvers` | EntryOptions 插件与内置插件注入、resolver 就绪后（WebpackOptionsApply 内） |
+| 构建 | `normalModuleFactory` / `contextModuleFactory` | 两类模块工厂创建后 |
+| 构建 | `beforeRun` / `run` / `watchRun` | 构建运行前后（watch 模式为 `watchRun`） |
+| 构建 | `beforeCompile` / `compile` / `thisCompilation` / `compilation` / `make` / `afterCompile` | `compile()` 调度、Compilation 实例创建与 make 触发 |
+| 产物 | `shouldEmit` / `emit` / `assetEmitted` / `afterEmit` | 产物写入判断、写入前后及单个文件写完后 |
+| 收尾 | `failed` / `done` | 达到最终结果状态（失败 / 成功） |
+
+**Compilation Hooks（按两阶段分组，定义见 `lib/Compilation.js`）：**
+
+| 阶段 | Hooks | 触发时机 |
+|------|-------|---------|
+| 构建 | `buildModule` / `rebuildModule` / `finishRebuildingModule` / `failedModule` / `succeedModule` | 单个模块的构建过程 |
+| 构建 | `finishModules` | 全部模块构建完成后 |
+| 优化（seal 内） | `seal` / `needAdditionalSeal` / `unseal` / `afterSeal` | seal 函数起止 |
+| 优化 | `optimizeDependencies` / `afterOptimizeDependencies` | 依赖优化（FlagDependencyUsagePlugin；Tree Shaking 的 usedExports 标记由此承担） |
+| 优化 | `beforeChunks` / `afterChunks` | Chunk 生成前后 |
+| 优化 | `optimize`、`optimizeModule`、`optimizeChunks`、`optimizeTree`、`optimizeChunkModules`（及各自 `after*`） | 模块与 Chunk 的拆分合并、树优化（如 AggressiveMergingPlugin、ModuleConcatenationPlugin 的 Scope Hoisting） |
+| 优化 | `shouldRecord` / `recordModules` / `recordChunks` / `recordHash` | `shouldRecord` 返回 true 时依次记录构建信息 |
+| 优化 | `reviveModules` / `beforeModuleIds` / `moduleIds` / `optimizeModuleIds` / `afterOptimizeModuleIds` | 模块 ID 生成前后（Chunk 侧为同名 `*Chunks` / `*ChunkIds` 系列） |
+| 优化 | `beforeHash` / `afterHash` | 模块与 Chunk hash 计算前后 |
+| 产物 | `beforeModuleAssets` / `moduleAsset` | 模块级产物数据生成前后 |
+| 产物 | `shouldGenerateChunkAssets` / `beforeChunkAssets` / `chunkAsset` | Chunk 产物数据生成前后 |
+| 产物 | `processAssets`（含各 stage）/ `afterProcessAssets` | v5 产物优化统一入口（TerserPlugin 等压缩器在此工作；v4 对应为 `optimizeChunkAssets` / `optimizeAssets`） |
+
+**插件接入的固定四步**：构造函数中定义 Hook 类型与参数 → 插件内 `tap` 注册回调 → 生成插件实例并执行 `apply` → 构建运行到对应生命周期节点时触发回调。Hook 类型按同步/异步、bail/waterfall/loop 语义共九种，详见 [34-tapable核心库](34-tapable核心库.md)。

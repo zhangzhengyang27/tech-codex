@@ -2264,6 +2264,19 @@ npm run eject
 | [Turbopack](https://turbo.build/) | Next.js | Rust 编写，极速构建 | ✅ 快速发展 |
 | [Farm](https://farm-fe.org/) | 通用 | Rust 编写，Webpack 兼容 | ✅ 快速发展 |
 
+#### 8.2.5 createapp.dev — 可视化配置生成
+
+> 📎 本小节补自旧版《Webpack 配置生成工具详解》篇（原 05-Webpack核心 目录，去重并入本系列）。
+
+除了命令行脚手架，Webpack 官网配置页还链接了一个可视化配置生成工具 [createapp.dev](https://createapp.dev/)：
+
+- **用法**：左侧勾选功能（Vue / TypeScript / Sass / Less / PostCSS / Images / Lodash 优化 / Optimization 等），右侧实时生成对应配置片段，可直接拷贝
+- **入口**：Webpack 官网 → 配置 → 使用不同的配置文件 → createapp.dev
+- **多工具切换**：同一界面支持在 Webpack / Parcel 等工具的配置间切换，便于对照学习
+- **适用场景**：新项目快速起步；已有项目想不起某个功能的配置写法时按功能点查阅
+
+**与命令行脚手架的分工**：`create-webpack-app` 生成的是完整可运行的工程（含依赖安装与目录结构），`createapp.dev` 只生成配置片段，两者不是竞争关系而是互补。
+
 ### 8.3 脚手架选择建议
 
 根据项目需求选择合适的脚手架：

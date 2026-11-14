@@ -1231,6 +1231,17 @@ if (!forceSideEffects &&
 }
 ```
 
+### 两处 sideEffects 开关的分工（补自旧版《打包提效》篇）
+
+> 📎 补自旧版《打包提效：如何为 Webpack 打包阶段提速？》篇（原 06-Webpack性能优化 目录，去重并入本系列）。
+
+`sideEffects` 相关配置有两处，作用对象不同，容易混淆：
+
+| 配置位置 | 默认值 | 作用 |
+|---------|--------|------|
+| `module.rules[].sideEffects` | `false` | 声明**当前 rule 匹配的模块**是否有副作用；典型用法是对 CSS 文件模块开启副作用标记，防止样式被 Tree Shaking 误删 |
+| `optimization.sideEffects` | `true`（production） | 控制 Webpack 是否**遵循依赖包 package.json 中的 `sideEffects` 描述**来执行删除优化 |
+
 ---
 
 ## 最佳实践总结

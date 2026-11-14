@@ -1,9 +1,12 @@
 ---
 title: CSS 滚动驱动动效的艺术
-description: "滚动驱动动效是 Web 上常见的一种用户交互模式。过去需要依赖 JavaScript 的滚动事件或 Intersection Observer API 才能实现的动效，如今通过 CSS 滚动驱动动效规范即可纯 CSS 实现。"
-keywords: [CSS, 滚动驱动动效的艺术]
+description: "CSS 滚动驱动动效完全指南：scroll()/view() 时间轴、animation-timeline/animation-range、视差滚动与进度指示器，附滚动揭示、多层视差、故事叙述实战及性能优化、兼容性降级与常见问题。"
+version: 1.0
+author: 文档维护组
+created: 2026-09-28
+updated: 2026-11-14
+status: 正式
 category: CSS
-tags: [CSS, 布局, 动画, 响应式]
 ---
 
 
@@ -3507,6 +3510,1190 @@ body {
 
   
 
+
+
+---
+
+> 以下「滚动驱动动画工程实践」部分由原 `04-前端/01-CSS/10-特效与动画` 目录同主题篇目合并而来（2026-11-14 目录去重治理）。其中 scroll()/view() 时间轴、animation-timeline、animation-range、视差滚动、进度指示器等基础与案例内容与本文正文重复，已去重。
+
+## 滚动揭示
+
+滚动揭示（Scroll Reveal）是最常见的滚动驱动动画应用，元素在滚入视口时以动画方式出现。
+
+### 基础揭示效果
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; }
+
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* 从下方淡入 */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(80px);
+
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+
+    @keyframes reveal-up {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 从左侧滑入 */
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-80px);
+
+      animation: reveal-left linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+
+    @keyframes reveal-left {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* 缩放淡入 */
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.85);
+
+      animation: reveal-scale linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+
+    @keyframes reveal-scale {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* 旋转淡入 */
+    .reveal-rotate {
+      opacity: 0;
+      transform: rotate(-8deg) translateY(60px);
+
+      animation: reveal-rotate linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+
+    @keyframes reveal-rotate {
+      to {
+        opacity: 1;
+        transform: rotate(0deg) translateY(0);
+      }
+    }
+
+    /* 内容样式 */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 600px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .grid .card {
+      max-width: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <div class="card reveal-up">
+      <h2>从下方淡入</h2>
+      <p>当此卡片滚入视口时，从下方淡入显示。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card reveal-left">
+      <h2>从左侧滑入</h2>
+      <p>当此卡片滚入视口时，从左侧滑入显示。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="grid">
+      <div class="card reveal-scale">
+        <h3>缩放淡入</h3>
+        <p>从缩小状态放大到正常尺寸。</p>
+      </div>
+      <div class="card reveal-rotate">
+        <h3>旋转淡入</h3>
+        <p>从旋转状态回归正常角度。</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+```
+
+### 交错揭示
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; }
+
+    .stagger-list {
+      padding: 40vh 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(50px);
+      margin-bottom: 24px;
+      padding: 24px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+      animation: stagger-in linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 70%;
+    }
+
+    /* 滚动驱动动画与时间无关，animation-delay 不生效。
+       通过错开各元素的 animation-range 起点实现交错效果 */
+    .stagger-item:nth-child(1) { animation-range: entry 10% entry 70%; }
+    .stagger-item:nth-child(2) { animation-range: entry 15% entry 75%; }
+    .stagger-item:nth-child(3) { animation-range: entry 20% entry 80%; }
+    .stagger-item:nth-child(4) { animation-range: entry 25% entry 85%; }
+    .stagger-item:nth-child(5) { animation-range: entry 30% entry 90%; }
+
+    @keyframes stagger-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stagger-list">
+    <div class="stagger-item">第一步：了解滚动驱动动画</div>
+    <div class="stagger-item">第二步：使用 scroll() 时间线</div>
+    <div class="stagger-item">第三步：使用 view() 时间线</div>
+    <div class="stagger-item">第四步：配置 animation-range</div>
+    <div class="stagger-item">第五步：优化性能与兼容性</div>
+  </div>
+</body>
+</html>
+```
+
+---
+## 性能
+
+### 主线程 vs 合成器线程
+
+```mermaid
+flowchart TB
+    subgraph 主线程
+        A["JavaScript scroll 事件"] --> B["计算样式"] --> C["布局 Layout"] --> D["绘制 Paint"]
+    end
+
+    subgraph 合成器线程
+        E["滚动位置变化"] --> F["直接更新合成层"] --> G["GPU 合成输出"]
+    end
+
+    H["scroll 事件监听<br/>（传统方式）"] --> A
+    I["CSS 滚动驱动动画<br/>（现代方式）"] --> E
+
+```
+
+### 性能最佳实践
+
+| 实践 | 说明 |
+|------|------|
+| 使用合成属性 | 优先使用 `transform` 和 `opacity`，避免触发布局和绘制 |
+| 避免大量同时动画 | 控制同时参与滚动驱动动画的元素数量 |
+| 合理使用 `will-change` | 对频繁动画的元素设置 `will-change: transform` |
+| 控制 animation-range | 精确设置范围，避免不必要的动画计算 |
+| 避免在滚动动画中读写布局属性 | 不使用 `width`、`height`、`top`、`left` 等触发重排的属性 |
+
+### 传统 JavaScript 方式 vs CSS 滚动驱动动画
+
+```javascript
+// 传统方式：监听 scroll 事件（主线程，可能卡顿）
+window.addEventListener('scroll', () => {
+  const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  element.style.transform = `scaleX(${progress})`;
+});
+
+// CSS 滚动驱动动画：合成器线程，流畅无卡顿
+// 无需 JavaScript，纯 CSS 声明即可
+```
+
+```css
+/* CSS 滚动驱动动画 - 合成器线程执行 */
+.progress-bar {
+  transform: scaleX(0);
+  animation: progress linear;
+  animation-timeline: scroll(root);
+
+  /* 提示浏览器优化 */
+  will-change: transform;
+}
+
+@keyframes progress {
+  to { transform: scaleX(1); }
+}
+```
+
+### 性能对比
+
+| 指标 | JavaScript scroll 事件 | CSS 滚动驱动动画 |
+|------|----------------------|------------------|
+| 执行线程 | 主线程 | 合成器线程 |
+| 帧率稳定性 | 受主线程负载影响 | 稳定 60fps |
+| 布局触发 | 可能触发 | 不触发 |
+| 代码复杂度 | 较高 | 低 |
+| 兼容性 | 广泛 | 较新（需渐进增强） |
+
+---
+## 浏览器兼容性
+
+### 支持情况
+
+| 特性 | Chrome | Firefox | Safari | Edge |
+|------|--------|---------|--------|------|
+| `animation-timeline: scroll()` | 115+ | 预览版* | 26+ | 115+ |
+| `animation-timeline: view()` | 115+ | 预览版* | 26+ | 115+ |
+| `animation-range` | 115+ | 预览版* | 26+ | 115+ |
+| `scroll-timeline-name` | 115+ | 预览版* | 26+ | 115+ |
+| `view-timeline-name` | 115+ | 预览版* | 26+ | 115+ |
+
+> \* 截至 2026-09：Safari 自 26.0 起支持；Firefox 尚未进入正式版（仅 Nightly 预览可用）。最新进度以 [MDN 兼容性表](https://developer.mozilla.org/zh-CN/docs/Web/CSS/animation-timeline) 为准（caniuse 暂未收录该特性）。
+
+### 渐进增强策略
+
+```css
+/* 基础样式：所有浏览器可见 */
+.reveal-element {
+  opacity: 1;
+  transform: none;
+}
+
+/* 支持滚动驱动动画的浏览器增强 */
+@supports (animation-timeline: view()) {
+  .reveal-element {
+    opacity: 0;
+    transform: translateY(60px);
+
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+```
+
+### Polyfill 方案
+
+对于不支持滚动驱动动画的浏览器，可使用以下方案：
+
+```html
+<!-- Scroll-Timeline Polyfill -->
+<script src="https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js"></script>
+```
+
+```javascript
+// 检测支持情况
+if (!CSS.supports('animation-timeline', 'scroll()')) {
+  // 加载 polyfill 或降级处理
+  const script = document.createElement('script');
+  script.src = 'https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js';
+  document.head.appendChild(script);
+}
+```
+
+---
+## 常见问题
+
+### 1. 滚动驱动动画卡顿怎么办？
+
+**原因分析：**
+- 同时动画的元素过多
+- 使用了触发重排的属性（width、height、top、left）
+- 未启用 GPU 加速
+
+**解决方案：**
+
+```css
+/* ✅ 推荐：使用 transform 和 opacity */
+.scroll-animated {
+  animation: reveal linear both;
+  animation-timeline: view();
+  will-change: transform, opacity;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ❌ 避免：触发重排 */
+.bad-scroll-animation {
+  animation: bad-reveal linear both;
+  animation-timeline: view();
+}
+
+@keyframes bad-reveal {
+  from {
+    height: 0;
+    margin-top: 50px;
+  }
+  to {
+    height: 100px;
+    margin-top: 0;
+  }
+}
+```
+
+### 2. 如何控制同时动画的元素数量？
+
+使用 `animation-range` 精确控制动画触发范围，避免所有元素同时动画：
+
+```css
+/* ✅ 推荐：元素进入视口 20%-80% 时动画 */
+.card {
+  animation: fadeIn linear both;
+  animation-timeline: view();
+  animation-range: entry 20% entry 80%;
+}
+
+/* ❌ 避免：整个 cover 范围都动画 */
+.bad-card {
+  animation: fadeIn linear both;
+  animation-timeline: view();
+  animation-range: cover 0% cover 100%;
+}
+```
+
+### 3. 如何在不支持的浏览器中降级？
+
+使用 `@supports` 进行特性检测：
+
+```css
+/* 基础样式：所有浏览器可见 */
+.reveal-element {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s, transform 0.6s;
+}
+
+/* 支持滚动驱动动画的浏览器增强 */
+@supports (animation-timeline: view()) {
+  .reveal-element {
+    opacity: 0;
+    transform: translateY(60px);
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+    transition: none;
+  }
+
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+```
+
+### 4. 如何实现交错揭示效果？
+
+滚动驱动动画由滚动位置驱动，与时间无关，`animation-delay` 对其无效。应通过错开各元素的 `animation-range` 起点实现交错：
+
+```css
+.stagger-item {
+  animation: fadeIn linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 80%;
+}
+
+.stagger-item:nth-child(1) { animation-range: entry 0% entry 80%; }
+.stagger-item:nth-child(2) { animation-range: entry 10% entry 90%; }
+.stagger-item:nth-child(3) { animation-range: entry 20% entry 100%; }
+.stagger-item:nth-child(4) { animation-range: entry 30% entry 110%; }
+```
+
+### 5. scroll() 和 view() 有什么区别？
+
+| 特性 | scroll() | view() |
+|------|----------|--------|
+| 进度来源 | 滚动容器的滚动位置 | 元素在视口中的可见性 |
+| 适用场景 | 进度条、视差滚动 | 滚动揭示、元素入场动画 |
+| 触发时机 | 整个页面滚动 | 元素进入/离开视口 |
+| 进度范围 | 0%（顶部）到 100%（底部） | 0%（进入视口）到 100%（离开视口） |
+
+---
+## 最佳实践
+
+### 1. 性能优化
+
+```css
+/* ✅ 使用合成属性 */
+.optimized {
+  animation: transform-opacity linear both;
+  animation-timeline: view();
+  will-change: transform, opacity;
+}
+
+@keyframes transform-opacity {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ❌ 避免触发布局和绘制 */
+.non-optimized {
+  animation: layout-paint linear both;
+  animation-timeline: view();
+}
+
+@keyframes layout-paint {
+  from {
+    width: 0;
+    height: 0;
+    background-color: gray;
+  }
+  to {
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+  }
+}
+```
+
+### 2. 合理使用 will-change
+
+```css
+/* 对频繁动画的元素设置 */
+.frequently-animated {
+  will-change: transform, opacity;
+  animation: reveal linear both;
+  animation-timeline: view();
+}
+
+/* 动画结束后移除 */
+.reveal-complete {
+  will-change: auto;
+}
+```
+
+### 3. 控制动画范围
+
+```css
+/* ✅ 精确控制：只在元素进入视口时动画 */
+.precise {
+  animation-range: entry 0% entry 100%;
+}
+
+/* ✅ 元素完全可见时动画 */
+.while-visible {
+  animation-range: contain 0% contain 100%;
+}
+
+/* ❌ 避免：整个 cover 范围 */
+.too-broad {
+  animation-range: cover 0% cover 100%;
+}
+```
+
+### 4. 提供可访问性支持
+
+```css
+/* 尊重用户偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-animated {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+```
+
+### 5. 使用 Polyfill
+
+对于不支持的浏览器，使用官方 Polyfill：
+
+```html
+<!-- 在 </body> 前引入 -->
+<script src="https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js"></script>
+```
+
+```javascript
+// 检测并加载 Polyfill
+if (!CSS.supports('animation-timeline', 'view()')) {
+  const script = document.createElement('script');
+  script.src = 'https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js';
+  document.head.appendChild(script);
+}
+```
+
+---
+## 高级技巧与实战案例
+
+### 结合 JavaScript 增强交互
+
+虽然滚动驱动动画可以纯 CSS 实现，但结合 JavaScript 可以实现更复杂的交互逻辑：
+
+```javascript
+// 动态切换动画时间线
+function switchTimeline(element, timelineName) {
+  element.style.animationTimeline = `var(${timelineName})`;
+}
+
+// 监听滚动位置触发自定义逻辑
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // 元素进入视口时触发额外逻辑
+      entry.target.classList.add('is-visible');
+      
+      // 可以触发其他动画或数据加载
+      loadAdditionalContent(entry.target);
+    }
+  });
+}, {
+  threshold: [0, 0.25, 0.5, 0.75, 1.0]
+});
+
+document.querySelectorAll('.scroll-element').forEach(el => {
+  observer.observe(el);
+});
+
+// 结合 GSAP ScrollTrigger 实现更复杂的滚动动画
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.to('.parallax-layer', {
+  y: -100,
+  scrollTrigger: {
+    trigger: '.hero-section',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: true,
+    markers: true
+  }
+});
+```
+
+### 多层视差深度效果
+
+创建更真实的视差效果，模拟 3D 深度：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body {
+      margin: 0;
+      min-height: 300vh;
+      perspective: 1000px;
+      overflow-x: hidden;
+    }
+
+    .parallax-scene {
+      position: fixed;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+
+    /* 远景层 - 移动最慢 */
+    .layer-far {
+      position: absolute;
+      inset: -50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transform: translateZ(-300px) scale(1.3);
+      animation: parallax-far linear;
+      animation-timeline: scroll(root);
+    }
+
+    /* 中景层 */
+    .layer-mid {
+      position: absolute;
+      inset: -30%;
+      background: url('https://picsum.photos/seed/mid/1920/1080') center/cover;
+      transform: translateZ(-150px) scale(1.15);
+      animation: parallax-mid linear;
+      animation-timeline: scroll(root);
+    }
+
+    /* 近景层 - 移动最快 */
+    .layer-near {
+      position: absolute;
+      inset: -10%;
+      background: url('https://picsum.photos/seed/near/1920/1080') center/cover;
+      transform: translateZ(-50px) scale(1.05);
+      animation: parallax-near linear;
+      animation-timeline: scroll(root);
+    }
+
+    /* 前景内容 */
+    .content-layer {
+      position: relative;
+      z-index: 10;
+      padding: 100px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    @keyframes parallax-far {
+      from { transform: translateZ(-300px) scale(1.3) translateY(0); }
+      to { transform: translateZ(-300px) scale(1.3) translateY(-10%); }
+    }
+
+    @keyframes parallax-mid {
+      from { transform: translateZ(-150px) scale(1.15) translateY(0); }
+      to { transform: translateZ(-150px) scale(1.15) translateY(-25%); }
+    }
+
+    @keyframes parallax-near {
+      from { transform: translateZ(-50px) scale(1.05) translateY(0); }
+      to { transform: translateZ(-50px) scale(1.05) translateY(-45%); }
+    }
+
+    /* 卡片进入动画 */
+    .reveal-card {
+      opacity: 0;
+      transform: translateY(80px) rotateX(15deg);
+      animation: card-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+
+    @keyframes card-reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="parallax-scene">
+    <div class="layer-far"></div>
+    <div class="layer-mid"></div>
+    <div class="layer-near"></div>
+  </div>
+  
+  <div class="content-layer">
+    <div class="reveal-card" style="background: white; padding: 40px; border-radius: 16px; margin-bottom: 60px;">
+      <h2>沉浸式视差体验</h2>
+      <p>多层视差创造真实的深度感</p>
+    </div>
+    <!-- 更多内容 -->
+  </div>
+</body>
+</html>
+```
+
+### 滚动驱动的故事叙述
+
+使用滚动驱动动画创建交互式故事叙述体验：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background: #0a0a0a;
+      color: white;
+    }
+
+    .story-chapter {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 章节标题动画 */
+    .chapter-title {
+      font-size: clamp(2rem, 8vw, 6rem);
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(100px) scale(0.8);
+      animation: title-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 20% entry 80%;
+    }
+
+    @keyframes title-reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* 章节内容动画 */
+    .chapter-content {
+      max-width: 600px;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateX(-50px);
+      animation: content-slide linear both;
+      animation-timeline: view();
+      animation-range: entry 30% entry 90%;
+    }
+
+    @keyframes content-slide {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* 背景图像视差 */
+    .chapter-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.3;
+      animation: bg-parallax linear;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    @keyframes bg-parallax {
+      from { transform: scale(1.2) translateY(-10%); }
+      to { transform: scale(1) translateY(10%); }
+    }
+
+    /* 进度指示器 */
+    .story-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb);
+      transform-origin: left;
+      transform: scaleX(0);
+      z-index: 1000;
+      animation: progress-fill linear;
+      animation-timeline: scroll(root);
+    }
+
+    @keyframes progress-fill {
+      to { transform: scaleX(1); }
+    }
+
+    /* 章节特定样式 */
+    .chapter-1 .chapter-bg {
+      background-image: url('https://picsum.photos/seed/chapter1/1920/1080');
+    }
+
+    .chapter-2 .chapter-bg {
+      background-image: url('https://picsum.photos/seed/chapter2/1920/1080');
+    }
+
+    .chapter-3 .chapter-bg {
+      background-image: url('https://picsum.photos/seed/chapter3/1920/1080');
+    }
+  </style>
+</head>
+<body>
+  <div class="story-progress"></div>
+
+  <section class="story-chapter chapter-1">
+    <div class="chapter-bg"></div>
+    <div class="chapter-title">第一章：开始</div>
+    <div class="chapter-content">
+      <p>故事从这里开始，随着滚动，情节逐渐展开...</p>
+    </div>
+  </section>
+
+  <section class="story-chapter chapter-2">
+    <div class="chapter-bg"></div>
+    <div class="chapter-title">第二章：发展</div>
+    <div class="chapter-content">
+      <p>情节逐渐深入，角色开始展现...</p>
+    </div>
+  </section>
+
+  <section class="story-chapter chapter-3">
+    <div class="chapter-bg"></div>
+    <div class="chapter-title">第三章：高潮</div>
+    <div class="chapter-content">
+      <p>故事达到高潮，冲突达到顶点...</p>
+    </div>
+  </section>
+</body>
+</html>
+```
+
+### 与 GSAP ScrollTrigger 对比
+
+| 特性 | CSS 滚动驱动动画 | GSAP ScrollTrigger |
+|------|-----------------|-------------------|
+| **实现方式** | 纯 CSS 声明 | JavaScript 库 |
+| **性能** | 合成器线程，最优 | 主线程，良好 |
+| **浏览器支持** | Chrome 115+ | 所有现代浏览器 |
+| **学习曲线** | 中等 | 较低 |
+| **功能丰富度** | 基础滚动动画 | 完整动画生态 |
+| **代码量** | 少 | 多 |
+| **调试工具** | DevTools | 专用调试面板 |
+| **适用场景** | 简单滚动效果 | 复杂动画序列 |
+
+```javascript
+// GSAP ScrollTrigger 示例 - 更复杂的控制
+gsap.registerPlugin(ScrollTrigger);
+
+//  pin 元素并在固定位置播放动画
+gsap.to('.pinned-element', {
+  scale: 1.5,
+  rotation: 360,
+  scrollTrigger: {
+    trigger: '.trigger-section',
+    start: 'top top',
+    end: '+=500',
+    pin: true,
+    scrub: 1,
+    markers: true
+  }
+});
+
+// 批量动画
+ScrollTrigger.batch('.card', {
+  onEnter: (elements) => {
+    gsap.to(elements, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.1,
+      duration: 0.8
+    });
+  },
+  start: 'top 80%'
+});
+```
+
+---
+## 性能优化深入
+
+### 合成层优化策略
+
+```css
+/* ✅ 最佳实践：为滚动动画元素创建独立合成层 */
+.scroll-animated-element {
+  /* 提示浏览器创建合成层 */
+  will-change: transform, opacity;
+  
+  /* 使用 contain 限制渲染范围 */
+  contain: layout style paint;
+  
+  /* 确保动画在合成器线程运行 */
+  animation: reveal linear both;
+  animation-timeline: view();
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(60px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+/* 动画完成后释放合成层 */
+.scroll-animated-element.revealed {
+  will-change: auto;
+}
+```
+
+### 避免性能陷阱
+
+```css
+/* ❌ 错误 1：同时动画过多元素 */
+.bad-practice .many-elements {
+  animation: reveal linear both;
+  animation-timeline: view();
+  /* 100 个元素同时动画会导致性能问题 */
+}
+
+/* ✅ 正确 1：使用 animation-range 错开动画 */
+.good-practice .many-elements {
+  animation: reveal linear both;
+  animation-timeline: view();
+  animation-range: entry 10% entry 70%;
+  /* 精确控制范围，减少同时动画的元素 */
+}
+
+/* ❌ 错误 2：使用触发重排的属性 */
+@keyframes bad-animation {
+  from {
+    width: 0;
+    height: 0;
+    margin-top: 50px;
+  }
+  to {
+    width: 100px;
+    height: 100px;
+    margin-top: 0;
+  }
+}
+
+/* ✅ 正确 2：只使用 transform 和 opacity */
+@keyframes good-animation {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ❌ 错误 3：未使用 contain 隔离 */
+.non-isolated {
+  /* 内部动画会影响外部布局计算 */
+}
+
+/* ✅ 正确 3：使用 contain 隔离渲染范围 */
+.isolated {
+  contain: layout style paint;
+  /* 内部动画不会影响外部 */
+}
+```
+
+### 性能监控与调试
+
+```javascript
+// 监控滚动动画性能
+class ScrollAnimationMonitor {
+  constructor() {
+    this.frameCount = 0;
+    this.lastTime = performance.now();
+    this.fps = 60;
+  }
+
+  start() {
+    const measure = () => {
+      this.frameCount++;
+      const now = performance.now();
+      const delta = now - this.lastTime;
+
+      if (delta >= 1000) {
+        this.fps = Math.round((this.frameCount * 1000) / delta);
+        this.frameCount = 0;
+        this.lastTime = now;
+
+        // 输出 FPS
+        console.log(`Scroll Animation FPS: ${this.fps}`);
+
+        // 如果 FPS 过低，发出警告
+        if (this.fps < 50) {
+          console.warn('⚠️ 滚动动画性能下降，考虑优化');
+        }
+      }
+
+      requestAnimationFrame(measure);
+    };
+
+    requestAnimationFrame(measure);
+  }
+}
+
+// 使用
+const monitor = new ScrollAnimationMonitor();
+monitor.start();
+
+// 使用 Performance API 检测长任务
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    if (entry.duration > 50) {
+      console.warn(`⚠️ 检测到长任务: ${entry.duration.toFixed(2)}ms`);
+    }
+  }
+});
+
+observer.observe({ entryTypes: ['longtask'] });
+```
+
+---
+## 浏览器兼容性深入
+
+### 渐进增强完整方案
+
+```css
+/* 第 1 层：基础样式 - 所有浏览器 */
+.reveal-element {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* 第 2 层：JavaScript 降级方案 */
+.no-scroll-animation .reveal-element {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.no-scroll-animation .reveal-element.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 第 3 层：CSS 滚动驱动动画增强 */
+@supports (animation-timeline: view()) {
+  .reveal-element {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: none;
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+```
+
+```javascript
+// JavaScript 降级方案
+if (!CSS.supports('animation-timeline', 'view()')) {
+  document.documentElement.classList.add('no-scroll-animation');
+
+  // 使用 Intersection Observer 作为降级
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  document.querySelectorAll('.reveal-element').forEach(el => {
+    observer.observe(el);
+  });
+}
+```
+
+### Polyfill 使用指南
+
+```html
+<!-- 方式 1：使用官方 Polyfill -->
+<script src="https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js"></script>
+
+<!-- 方式 2：条件加载 Polyfill -->
+<script>
+  if (!CSS.supports('animation-timeline', 'scroll()')) {
+    const script = document.createElement('script');
+    script.src = 'https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js';
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<!-- 方式 3：使用 npm 包 -->
+<!-- npm install scroll-timeline -->
+```
+
+```javascript
+// 使用 npm 包
+import 'scroll-timeline';
+
+// 现在可以使用滚动驱动动画 API
+// 注意：不同版本的 polyfill 构造参数命名有差异（source/axis 与 scrollSource/orientation），以所用版本的 README 为准
+const timeline = new ScrollTimeline({
+  scrollSource: document.querySelector('.scroller'),
+  orientation: 'block'
+});
+
+const animation = new Animation(
+  new KeyframeEffect(element, [
+    { transform: 'translateY(0)' },
+    { transform: 'translateY(100px)' }
+  ], { duration: 1000 }),
+  timeline
+);
+
+animation.play();
+```
+
+---
+## 参考资源
+
+- [MDN - CSS scroll-driven animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations)
+- [Chrome Developers - Scroll-driven animations](https://developer.chrome.com/docs/css-ui/scroll-driven-animations)
+- [W3C CSS Scroll-driven Animations Level 1](https://www.w3.org/TR/scroll-animations-1/)
+- [Scroll Timeline Polyfill](https://github.com/flackr/scroll-timeline)
+- [CSS scroll-driven animations - Bram.us](https://bram.us/2023/10/17/css-scroll-driven-animations-the-state-of-affairs/)
+- [GSAP ScrollTrigger](https://greensock.com/scrolltrigger/)
 
 ## 小结
 

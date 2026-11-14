@@ -1,9 +1,12 @@
 ---
 title: CSS 路径动画：动画对象沿指定路径运动
-description: "在现代 Web 设计中，动画已成为吸引用户和增强用户体验的关键元素之一。CSS 路径动画（也称为 offset-path 动画）是一种独特而引人注目的技术，它使你可以在 Web 上创建令人印象深刻的动效。"
-keywords: [CSS, 路径动画, 动画对象沿指定路径运动]
+description: "CSS 路径动画（offset-path 动画）完全指南：offset-path/distance/rotate/anchor/position 语法详解、抛物线/Loading/进度指示器等用例，附路线动画、SVG 路径跟随、圆形菜单实战与性能优化、兼容性方案。"
+version: 1.0
+author: 文档维护组
+created: 2026-09-28
+updated: 2026-11-14
+status: 正式
 category: CSS
-tags: [CSS, 布局, 动画, 响应式]
 ---
 
 
@@ -2823,6 +2826,1000 @@ offset-anchor: right 3em bottom 10px;
 
   
 
+
+
+---
+
+> 以下「路径动画工程实践」部分由原 `04-前端/01-CSS/10-特效与动画` 目录同主题篇目合并而来（2026-11-14 目录去重治理）。其中 offset-path/offset-distance/offset-rotate/offset-anchor/offset 简写语法与飞行物体、滚动驱动路径用例与本文正文重复，已去重。
+
+### 路径类型对比
+
+| 路径类型 | 语法 | 特点 | 适用场景 |
+|----------|------|------|----------|
+| `path()` | `path('M...')` | 任意曲线，最灵活 | 复杂曲线路径 |
+| `circle()` | `circle(r at cx cy)` | 圆形轨道 | 环形运动、轨道动画 |
+| `ellipse()` | `ellipse(rx ry at cx cy)` | 椭圆轨道 | 椭圆运动 |
+| `polygon()` | `polygon(x1 y1, x2 y2, ...)` | 多边形路径 | 规则形状路径 |
+| `url()` | `url(#id)` | 引用 SVG 路径 | 复用 SVG 路径定义 |
+
+---
+### 路线动画
+
+模拟地图上的路线绘制和标记点移动。
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #1e293b;
+      font-family: system-ui, sans-serif;
+    }
+
+    .map-container {
+      position: relative;
+      width: 800px;
+      height: 500px;
+      background: #334155;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* 地图网格 */
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* 路线轨迹 SVG */
+    .route-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .route-bg {
+      fill: none;
+      stroke: rgba(99, 102, 241, 0.2);
+      stroke-width: 4;
+    }
+
+    .route-progress {
+      fill: none;
+      stroke: #6366f1;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+
+      animation: draw-route 5s linear infinite;
+    }
+
+    @keyframes draw-route {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* 移动标记 */
+    .route-marker {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #6366f1;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+
+      offset-path: path('M 100,400 C 200,300 250,150 400,200 S 550,350 700,100');
+      offset-distance: 0%;
+      offset-rotate: 0deg;
+
+      animation: marker-move 5s linear infinite;
+    }
+
+    @keyframes marker-move {
+      to { offset-distance: 100%; }
+    }
+
+    /* 起终点标记 */
+    .waypoint {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #10b981;
+      border: 2px solid white;
+      border-radius: 50%;
+    }
+
+    .waypoint-start { top: 394px; left: 94px; }
+    .waypoint-end   { top: 94px;  left: 694px; }
+
+    .waypoint-label {
+      position: absolute;
+      color: white;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .label-start { top: 410px; left: 80px; }
+    .label-end   { top: 78px;  left: 680px; }
+  </style>
+</head>
+<body>
+  <div class="map-container">
+    <div class="map-grid"></div>
+
+    <svg class="route-svg" viewBox="0 0 800 500">
+      <path class="route-bg" d="M 100,400 C 200,300 250,150 400,200 S 550,350 700,100" />
+      <path class="route-progress" d="M 100,400 C 200,300 250,150 400,200 S 550,350 700,100" />
+    </svg>
+
+    <div class="route-marker"></div>
+    <div class="waypoint waypoint-start"></div>
+    <div class="waypoint waypoint-end"></div>
+    <div class="waypoint-label label-start">起点</div>
+    <div class="waypoint-label label-end">终点</div>
+  </div>
+</body>
+</html>
+```
+
+---
+### SVG 路径跟随
+
+元素沿复杂 SVG 路径运动，适合波浪、螺旋等效果。
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #0f172a;
+    }
+
+    .wave-container {
+      position: relative;
+      width: 100%;
+      height: 300px;
+    }
+
+    /* 波浪路径 */
+    .wave-path {
+      position: absolute;
+      inset: 0;
+    }
+
+    .wave-path svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .wave-path path {
+      fill: none;
+      stroke: rgba(99, 102, 241, 0.15);
+      stroke-width: 2;
+    }
+
+    /* 沿波浪运动的多个粒子 */
+    .wave-particle {
+      position: absolute;
+      border-radius: 50%;
+      offset-rotate: 0deg;
+    }
+
+    .wave-particle:nth-child(1) {
+      width: 12px;
+      height: 12px;
+      background: #6366f1;
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+      offset-path: path('M 0,150 Q 200,50 400,150 T 800,150 T 1200,150');
+      animation: wave-1 4s linear infinite;
+    }
+
+    .wave-particle:nth-child(2) {
+      width: 8px;
+      height: 8px;
+      background: #8b5cf6;
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+      offset-path: path('M 0,150 Q 200,50 400,150 T 800,150 T 1200,150');
+      animation: wave-2 4s linear infinite;
+    }
+
+    .wave-particle:nth-child(3) {
+      width: 6px;
+      height: 6px;
+      background: #ec4899;
+      box-shadow: 0 0 6px rgba(236, 72, 153, 0.5);
+      offset-path: path('M 0,150 Q 200,50 400,150 T 800,150 T 1200,150');
+      animation: wave-3 4s linear infinite;
+    }
+
+    @keyframes wave-1 {
+      from { offset-distance: 0%; }
+      to   { offset-distance: 100%; }
+    }
+
+    @keyframes wave-2 {
+      from { offset-distance: 10%; }
+      to   { offset-distance: 90%; }
+    }
+
+    @keyframes wave-3 {
+      from { offset-distance: 20%; }
+      to   { offset-distance: 80%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wave-container">
+    <div class="wave-path">
+      <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+        <path d="M 0,150 Q 200,50 400,150 T 800,150 T 1200,150" />
+      </svg>
+    </div>
+    <div class="wave-particle"></div>
+    <div class="wave-particle"></div>
+    <div class="wave-particle"></div>
+  </div>
+</body>
+</html>
+```
+
+---
+### 圆形菜单
+
+利用圆形路径实现环形菜单布局。
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #0f172a;
+      font-family: system-ui, sans-serif;
+    }
+
+    .circular-menu {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+
+    /* 中心按钮 */
+    .menu-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      background: #6366f1;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .menu-center:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: #8b5cf6;
+    }
+
+    /* 菜单项沿圆形路径分布 */
+    .menu-item {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      background: #1e293b;
+      border: 2px solid #6366f1;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+
+      offset-path: circle(120px at 150px 150px);
+      offset-rotate: 0deg;
+    }
+
+    .menu-item:hover {
+      background: #6366f1;
+      transform: scale(1.15);
+    }
+
+    /* 6 个菜单项均匀分布在圆上 */
+    .menu-item:nth-child(1) { offset-distance: 0%; }
+    .menu-item:nth-child(2) { offset-distance: 16.67%; }
+    .menu-item:nth-child(3) { offset-distance: 33.33%; }
+    .menu-item:nth-child(4) { offset-distance: 50%; }
+    .menu-item:nth-child(5) { offset-distance: 66.67%; }
+    .menu-item:nth-child(6) { offset-distance: 83.33%; }
+
+    /* 展开动画 */
+    .circular-menu.collapsed .menu-item {
+      offset-path: circle(0px at 150px 150px);
+      opacity: 0;
+      transition: offset-path 0.5s ease, opacity 0.3s;
+    }
+
+    .circular-menu.expanded .menu-item {
+      offset-path: circle(120px at 150px 150px);
+      opacity: 1;
+      transition: offset-path 0.5s ease, opacity 0.3s 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <div class="circular-menu expanded" id="menu">
+    <button class="menu-center" onclick="toggleMenu()">+</button>
+    <div class="menu-item">1</div>
+    <div class="menu-item">2</div>
+    <div class="menu-item">3</div>
+    <div class="menu-item">4</div>
+    <div class="menu-item">5</div>
+    <div class="menu-item">6</div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('expanded');
+      menu.classList.toggle('collapsed');
+    }
+  </script>
+</body>
+</html>
+```
+
+---
+## 浏览器兼容性
+
+### 支持情况
+
+| 特性 | Chrome | Firefox | Safari | Edge |
+|------|--------|---------|--------|------|
+| `offset-path: path()` | 55+ | 72+ | 15.4+ | 79+ |
+| `offset-path: circle()` | 116+ | 122+ | 部分支持* | 116+ |
+| `offset-path: ellipse()` | 116+ | 122+ | 部分支持* | 116+ |
+| `offset-path: polygon()` | 116+ | 122+ | 部分支持* | 116+ |
+| `offset-path: url()` | 116+ | 部分支持* | 部分支持* | 116+ |
+| `offset-distance` | 55+ | 72+ | 15.4+ | 79+ |
+| `offset-rotate` | 55+ | 72+ | 15.4+ | 79+ |
+| `offset-anchor` | 116+ | 72+ | 16+ | 116+ |
+| `offset` 简写 | 55+ | 72+ | 15.4+ | 79+ |
+
+> \* 基本形状与 url() 值类型的支持进度各浏览器存在差异，具体以 [caniuse](https://caniuse.com/mdn-css_properties_offset-path) 与 MDN 兼容性表为准。
+
+### 渐进增强
+
+```css
+/* 基础：使用 transform 模拟路径动画 */
+.fallback-mover {
+  animation: fallback-move 4s linear infinite;
+}
+
+@keyframes fallback-move {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(200px, -100px); }
+  100% { transform: translate(400px, 0); }
+}
+
+/* 支持 offset-path 的浏览器增强 */
+@supports (offset-path: path('M 0,0')) {
+  .fallback-mover {
+    offset-path: path('M 0,200 C 100,0 300,0 400,200');
+    offset-rotate: auto;
+    animation: path-move 4s linear infinite;
+  }
+
+  @keyframes path-move {
+    from { offset-distance: 0%; }
+    to   { offset-distance: 100%; }
+  }
+}
+```
+
+---
+## 性能优化策略
+
+路径动画虽然强大，但如果使用不当可能导致性能问题。以下是关键的性能优化策略。
+
+### 合成层提升
+
+将路径动画元素提升到独立的合成层，避免触发主线程重绘。
+
+```css
+/* 优化路径动画性能 */
+.path-mover {
+  offset-path: path('M 0,200 C 100,0 300,0 400,200');
+  offset-rotate: auto;
+  animation: move 4s linear infinite;
+
+  /* 性能优化 */
+  will-change: transform, offset-distance;
+  transform: translateZ(0); /* 强制 GPU 加速 */
+  contain: layout style paint; /* 限制重绘范围 */
+}
+
+@keyframes move {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+```
+
+### 避免布局抖动
+
+路径动画只应改变 `offset-distance` 和 `offset-rotate`，避免同时改变尺寸或布局属性。
+
+```css
+/* ❌ 错误：同时改变尺寸和路径位置 */
+.bad-animation {
+  offset-path: path('M 0,0 L 400,0');
+  animation: bad 3s ease-in-out infinite alternate;
+}
+
+@keyframes bad {
+  0% {
+    offset-distance: 0%;
+    width: 20px; /* 触发布局重排 */
+    height: 20px;
+  }
+  100% {
+    offset-distance: 100%;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* ✅ 正确：只改变路径位置和变换 */
+.good-animation {
+  offset-path: path('M 0,0 L 400,0');
+  animation: good 3s ease-in-out infinite alternate;
+}
+
+@keyframes good {
+  0% {
+    offset-distance: 0%;
+    transform: scale(1) translateZ(0); /* 只改变变换 */
+  }
+  100% {
+    offset-distance: 100%;
+    transform: scale(2) translateZ(0);
+  }
+}
+```
+
+### 减少路径复杂度
+
+复杂的路径（特别是包含大量控制点的贝塞尔曲线）会增加浏览器的计算负担。
+
+```css
+/* ❌ 过于复杂的路径 */
+.complex-path {
+  offset-path: path('M 0,0 C 10,20 30,40 50,60 C 70,80 90,100 110,120 C 130,140 150,160 170,180 C 190,200 210,220 230,240 C 250,260 270,280 290,300');
+}
+
+/* ✅ 简化的路径 */
+.simple-path {
+  offset-path: path('M 0,0 Q 150,150 300,300'); /* 使用二次贝塞尔曲线 */
+}
+```
+
+### 性能监控
+
+使用 Chrome DevTools 的 Performance 面板监控路径动画的性能：
+
+1. **Recording 录制**：录制动画运行时的性能数据
+2. **Frames 帧率**：检查是否稳定在 60fps
+3. **Main thread 主线程**：查看是否有长时间的任务阻塞
+4. **GPU 活动**：在 Rendering 标签中启用 "Layer borders" 和 "Paint flashing"
+
+```javascript
+// 性能监控代码
+const monitorPerformance = () => {
+  let lastTime = performance.now();
+  let frameCount = 0;
+
+  const measure = () => {
+    frameCount++;
+    const currentTime = performance.now();
+
+    if (currentTime >= lastTime + 1000) {
+      console.log(`FPS: ${frameCount}`);
+      frameCount = 0;
+      lastTime = currentTime;
+    }
+
+    requestAnimationFrame(measure);
+  };
+
+  requestAnimationFrame(measure);
+};
+
+monitorPerformance();
+```
+
+---
+## 高级技巧
+
+### 多元素路径同步
+
+让多个元素沿同一路径以不同速度运动，创建粒子流效果。
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #0f172a;
+    }
+
+    .particle-flow {
+      position: relative;
+      width: 800px;
+      height: 400px;
+    }
+
+    /* 路径轨迹 */
+    .flow-track {
+      position: absolute;
+      inset: 0;
+    }
+
+    .flow-track svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .flow-track path {
+      fill: none;
+      stroke: rgba(99, 102, 241, 0.15);
+      stroke-width: 2;
+      stroke-dasharray: 8 4;
+    }
+
+    /* 粒子样式 */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      offset-path: path('M 50,200 C 200,50 600,350 750,200');
+      offset-rotate: 0deg;
+    }
+
+    /* 生成 20 个粒子，每个有不同的延迟和速度 */
+    .particle:nth-child(1) {
+      width: 8px; height: 8px;
+      background: #6366f1;
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+      animation: flow 3s linear infinite;
+      animation-delay: 0s;
+    }
+
+    .particle:nth-child(2) {
+      width: 6px; height: 6px;
+      background: #8b5cf6;
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.6);
+      animation: flow 3.5s linear infinite;
+      animation-delay: -0.5s;
+    }
+
+    .particle:nth-child(3) {
+      width: 10px; height: 10px;
+      background: #ec4899;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.6);
+      animation: flow 4s linear infinite;
+      animation-delay: -1s;
+    }
+
+    .particle:nth-child(4) {
+      width: 5px; height: 5px;
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+      animation: flow 3.2s linear infinite;
+      animation-delay: -1.5s;
+    }
+
+    .particle:nth-child(5) {
+      width: 7px; height: 7px;
+      background: #f59e0b;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+      animation: flow 3.8s linear infinite;
+      animation-delay: -2s;
+    }
+
+    @keyframes flow {
+      from { offset-distance: 0%; }
+      to   { offset-distance: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="particle-flow">
+    <div class="flow-track">
+      <svg viewBox="0 0 800 400">
+        <path d="M 50,200 C 200,50 600,350 750,200" />
+      </svg>
+    </div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+</body>
+</html>
+```
+
+### 路径变形动画
+
+通过动态改变 `offset-path` 实现路径形状的变形。
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #0f172a;
+    }
+
+    .morph-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+    }
+
+    .morph-track {
+      position: absolute;
+      inset: 0;
+    }
+
+    .morph-track svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .morph-track path {
+      fill: none;
+      stroke: rgba(99, 102, 241, 0.2);
+      stroke-width: 2;
+    }
+
+    .morph-mover {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #6366f1;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+      offset-rotate: auto;
+      animation: morph-path 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes morph-path {
+      0% {
+        offset-path: path('M 50,250 C 150,50 350,50 450,250');
+      }
+      25% {
+        offset-path: path('M 50,250 C 150,150 350,150 450,250');
+      }
+      50% {
+        offset-path: path('M 50,250 C 150,250 350,250 450,250');
+      }
+      75% {
+        offset-path: path('M 50,250 C 150,350 350,350 450,250');
+      }
+      100% {
+        offset-path: path('M 50,250 C 150,450 350,450 450,250');
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="morph-container">
+    <div class="morph-track">
+      <svg viewBox="0 0 500 500">
+        <path d="M 50,250 C 150,50 350,50 450,250" />
+      </svg>
+    </div>
+    <div class="morph-mover"></div>
+  </div>
+</body>
+</html>
+```
+
+### 响应式路径动画
+
+使用 CSS 变量和媒体查询实现响应式路径动画。
+
+```css
+:root {
+  --path-width: 600;
+  --path-height: 400;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --path-width: 300;
+    --path-height: 200;
+  }
+}
+
+.responsive-mover {
+  offset-path: path('M 50,200 C 150,50 350,350 550,200');
+  offset-rotate: auto;
+  animation: responsive-move 4s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .responsive-mover {
+    offset-path: path('M 25,100 C 75,25 175,175 275,100');
+  }
+}
+
+@keyframes responsive-move {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+```
+
+---
+## 常见问题与解决方案
+
+### 问题 1：元素不跟随路径旋转
+
+**现象**：设置了 `offset-rotate: auto`，但元素没有跟随路径方向旋转。
+
+**原因**：元素的初始方向可能不是朝向路径前进方向。
+
+**解决方案**：
+
+```css
+/* 如果元素初始朝右，使用 auto */
+.arrow-right {
+  offset-rotate: auto;
+}
+
+/* 如果元素初始朝上，需要额外旋转 -90° */
+.arrow-up {
+  offset-rotate: auto -90deg;
+}
+
+/* 如果元素初始朝下，需要额外旋转 90° */
+.arrow-down {
+  offset-rotate: auto 90deg;
+}
+```
+
+### 问题 2：路径动画卡顿
+
+**现象**：路径动画运行时帧率不稳定，出现卡顿。
+
+**原因**：元素没有提升到独立的合成层，或者路径过于复杂。
+
+**解决方案**：
+
+```css
+.performance-fix {
+  offset-path: path('M 0,0 C 100,100 200,100 300,0');
+  animation: move 4s linear infinite;
+
+  /* 强制 GPU 加速 */
+  will-change: transform, offset-distance;
+  transform: translateZ(0);
+
+  /* 限制重绘范围 */
+  contain: layout style paint;
+}
+```
+
+### 问题 3：Safari 中 offset-anchor 不生效
+
+**现象**：在 Chrome 中正常，但 Safari 中 `offset-anchor` 不起作用。
+
+**原因**：Safari 对 `offset-anchor` 的支持不完整。
+
+**解决方案**：使用 `transform-origin` 作为替代。
+
+```css
+.safari-compatible {
+  offset-path: path('M 0,0 L 400,0');
+  offset-rotate: auto;
+  animation: move 4s linear infinite;
+
+  /* Safari 兼容 */
+  transform-origin: center center; /* 替代 offset-anchor */
+}
+
+@supports (offset-anchor: center) {
+  .safari-compatible {
+    offset-anchor: center;
+  }
+}
+```
+
+### 问题 4：路径动画与滚动驱动结合不工作
+
+**现象**：使用 `animation-timeline: scroll()` 时，路径动画不随滚动触发。
+
+**原因**：`animation-timeline` 和 `offset-path` 的组合在某些浏览器中支持不完整。
+
+**解决方案**：使用 JavaScript 作为降级方案。
+
+```css
+/* 现代浏览器：纯 CSS */
+@supports (animation-timeline: scroll()) {
+  .scroll-path-element {
+    offset-path: path('M 0,0 C 100,100 200,100 300,0');
+    animation: scroll-move linear;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes scroll-move {
+    from { offset-distance: 0%; }
+    to   { offset-distance: 100%; }
+  }
+}
+```
+
+```javascript
+// JavaScript 降级方案
+if (!CSS.supports('animation-timeline', 'scroll()')) {
+  const element = document.querySelector('.scroll-path-element');
+  const pathLength = 300; // 路径总长度
+
+  window.addEventListener('scroll', () => {
+    const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    const distance = scrollPercent * pathLength;
+    element.style.offsetDistance = `${distance}px`;
+  });
+}
+```
+
+---
+## 最佳实践
+
+### 1. 优先使用简单路径
+
+对于简单的直线或圆弧运动，使用 `circle()` 或 `ellipse()` 比 `path()` 更高效。
+
+```css
+/* ✅ 推荐：圆形轨道 */
+.orbit {
+  offset-path: circle(150px at 200px 200px);
+}
+
+/* ❌ 不推荐：用 path() 近似圆形 */
+.orbit-complex {
+  offset-path: path('M 200,50 A 150,150 0 1,1 199.99,50');
+}
+```
+
+### 2. 使用 CSS 变量管理路径
+
+将路径定义提取为 CSS 变量，便于复用和维护。
+
+```css
+:root {
+  --flight-path: path('M 0,300 C 200,100 600,100 800,300');
+}
+
+.airplane-1 {
+  offset-path: var(--flight-path);
+  animation: fly 8s linear infinite;
+}
+
+.airplane-2 {
+  offset-path: var(--flight-path);
+  animation: fly 10s linear infinite;
+  animation-delay: -2s;
+}
+
+@keyframes fly {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+```
+
+### 3. 结合 will-change 谨慎使用
+
+`will-change` 可以提升性能，但过度使用会消耗内存。
+
+```css
+/* ✅ 在动画开始前设置 */
+.mover:hover {
+  will-change: transform, offset-distance;
+}
+
+.mover {
+  offset-path: path('M 0,0 L 400,0');
+  animation: move 4s linear infinite;
+}
+
+/* 动画结束后移除 will-change */
+.mover:not(:hover) {
+  will-change: auto;
+}
+```
+
+### 4. 使用 contain 限制重绘
+
+对于路径动画元素，使用 `contain` 属性限制其重绘影响范围。
+
+```css
+.contained-mover {
+  offset-path: path('M 0,0 L 400,0');
+  animation: move 4s linear infinite;
+
+  contain: layout style paint;
+  transform: translateZ(0);
+}
+```
+
+### 5. 测试多种浏览器
+
+路径动画的浏览器支持仍在完善中，务必在多个浏览器中测试。
+
+```javascript
+// 特性检测
+if ('offsetPath' in document.createElement('div')) {
+  // 支持 offset-path，使用 CSS 路径动画
+  document.body.classList.add('supports-offset-path');
+} else {
+  // 不支持，使用 JavaScript 降级方案
+  document.body.classList.add('no-offset-path');
+}
+```
+
+---
+## 参考资源
+
+- [MDN - offset-path](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path)
+- [MDN - offset-distance](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-distance)
+- [MDN - offset-rotate](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-rotate)
+- [CSS Motion Path Level 1 Specification](https://www.w3.org/TR/motion-1/)
+- [Chrome Developers - Motion Path](https://developer.chrome.com/articles/motion-path/)
+- [CSS Tricks - offset-path](https://css-tricks.com/almanac/properties/o/offset-path/)
 
 ## 小结
 

@@ -1,7 +1,12 @@
 ---
 title: "除了 SWOT 分析，另外 4 个常见的分析方法"
-category: 管理
-
+description: SWOT 之外的四种分析方法：用户故事、功能比较、波特五力与波士顿矩阵的适用场景
+keywords: [用户故事, 波特五力, 波士顿矩阵]
+category: 产品
+tags: [竞品分析, 分析方法, 波特五力]
+author: 文档维护组
+created: 2026-09-28
+updated: 2026-11-14
 ---
 
 # 除了 SWOT 分析，另外 4 个常见的分析方法

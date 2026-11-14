@@ -1,7 +1,12 @@
 ---
 title: "怎么用 AARRR 模型做运营策略的竞品分析？（v2：升级为 RARRA 框架）"
-category: 管理
-
+description: 用 AARRR 与 RARRA 模型分析竞品运营策略：从留存优先视角拆解竞品增长打法
+keywords: [AARRR, RARRA, 运营策略]
+category: 产品
+tags: [竞品分析, AARRR, 增长策略]
+author: 文档维护组
+created: 2026-09-28
+updated: 2026-11-14
 ---
 
 # 怎么用 AARRR 模型做运营策略的竞品分析？（v2：升级为 RARRA 框架）

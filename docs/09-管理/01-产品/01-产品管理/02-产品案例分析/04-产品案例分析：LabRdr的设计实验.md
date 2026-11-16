@@ -193,7 +193,7 @@ AI 技术在数据透明化领域既是挑战也是机遇：
 
 ```mermaid
 ---
-title: "互动即交易"分析框架：用户付出注意力、认知、隐私、行动四类成本，产品提供功能、
+title: '"互动即交易"分析框架：用户付出注意力、认知、隐私、行动四类成本，产品提供功能、'
 ---
 %%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F1FB", "lineColor": "#4A7CB5"}}}%%
 flowchart TD

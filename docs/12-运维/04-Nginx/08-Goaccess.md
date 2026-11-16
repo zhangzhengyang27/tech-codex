@@ -68,7 +68,7 @@ access.log → 格式解析（log-format/date-format/time-format）
 
 ```mermaid
 flowchart TD
-    NGX[Nginx 工作进程<br>写访问日志 log_format] -->|追加写入| LOG[/var/log/nginx/access.log<br>或 access.log.*.gz]
+    NGX[Nginx 工作进程<br>写访问日志 log_format] -->|追加写入| LOG["/var/log/nginx/access.log<br>或 access.log.*.gz"]
     LOG -->|读取解析| GZP{CLI 调用 goaccess}
     GZP -->|log-format/date-format/time-format| PARSE[逐行按占位符解析<br>%h %t %r %s %b 等]
     PARSE --> AGG[内存聚合<br>IP/页面/状态码/时长/地理位置]

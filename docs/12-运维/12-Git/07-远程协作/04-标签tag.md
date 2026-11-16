@@ -24,7 +24,7 @@ tag 和 branch 在底层都是"引用"，都指向某个 commit，但它们的�
 用一个直观的比喻：**branch 像是书签夹在"你正在读的那一页"，每次翻页它跟着走；tag 像是你在某一页上用荧光笔写下的批注，永远留在那一页，不会移动。**
 
 ```mermaid
-gitgraph
+gitGraph
   commit id: "A"
   commit id: "B"
   commit id: "C" tag: "v1.0.0"

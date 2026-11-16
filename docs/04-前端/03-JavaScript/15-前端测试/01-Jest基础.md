@@ -32,10 +32,10 @@ mindmap
       resolves / rejects
       async/await
     Mock
-      jest.fn() 记录调用
-      jest.spyOn() 监听
-      jest.mock() 模块
-      假定时器 jest.useFakeTimers()
+      jest.fn 记录调用
+      jest.spyOn 监听
+      jest.mock 模块
+      假定时器 jest.useFakeTimers
     配置
       jest.config.js
       coverageThreshold

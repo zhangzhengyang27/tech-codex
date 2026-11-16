@@ -222,35 +222,35 @@ mindmap
   root((LoaderContext<br/>this))
     资源定位
       resourcePath : 当前资源文件的绝对路径
-      resourceQuery : 文件请求参数 (?foo=bar)
+      resourceQuery : 文件请求参数 ?foo=bar
       context : 资源所在目录
       rootContext : Webpack 配置根目录
     选项与配置
-      getOptions(schema?) : 获取配置对象(v5内置,替代loader-utils)
+      getOptionsschema? : 获取配置对象v5内置,替代loader-utils
       loaderIndex : 当前Loader在数组中的索引
       options : 已废弃,请用getOptions
     异步控制
-      async() : 声明异步,返回callback
-      callback(err,content,map,meta) : 返回多结果
+      async : 声明异步,返回callback
+      callbackerr,content,map,meta : 返回多结果
     缓存控制
-      cacheable(flag?) : 设置是否可缓存(默认true)
+      cacheableflag? : 设置是否可缓存默认true
     文件依赖
-      addDependency(file) : 添加文件依赖
-      addContextDependency(dir) : 添加目录依赖
-      addMissingDependency(file) : 添加不存在文件依赖
-      clearDependencies() : 清除所有依赖
+      addDependencyfile : 添加文件依赖
+      addContextDependencydir : 添加目录依赖
+      addMissingDependencyfile : 添加不存在文件依赖
+      clearDependencies : 清除所有依赖
     文件系统
       fs : compilation.inputFileSystem
-      emitFile(name,content,map) : 发射产物文件
+      emitFilename,content,map : 发射产物文件
     日志与错误
-      getLogger(name) : 获取结构化日志器
-      emitWarning(warn) : 发出警告(不中断编译)
-      emitError(error) : 发出错误(不中断编译)
+      getLoggername : 获取结构化日志器
+      emitWarningwarn : 发出警告不中断编译
+      emitErrorerror : 发出错误不中断编译
     解析相关
-      resolve(context,request,callback) : 解析模块路径
-      getResolve(options) : 创建自定义解析函数
-      loadModule(request,callback) : 加载并编译模块
-      importModule(request,options?,cb?) : 子编译加载(v5.32+)
+      resolvecontext,request,callback : 解析模块路径
+      getResolveoptions : 创建自定义解析函数
+      loadModulerequest,callback : 加载并编译模块
+      importModulerequest,options?,cb? : 子编译加载v5.32+
     元信息
       data : pitch与normal间共享的数据对象
       version : Loader API版本号
@@ -258,15 +258,15 @@ mindmap
       mode : development/production/none
       hot : HMR是否启用
       environment : 目标环境ES特性支持表
-      hashFunction : 哈希算法(v5.95+)
-      hashDigest : 哈希编码(v5.95+)
-      hashDigestLength : 哈希长度(v5.95+)
-      hashSalt : 哈希盐值(v5.95+)
+      hashFunction : 哈希算法v5.95+
+      hashDigest : 哈希编码v5.95+
+      hashDigestLength : 哈希长度v5.95+
+      hashSalt : 哈希盐值v5.95+
     其它
       sourceMap : 是否应生成sourcemap
-      target : 编译目标(web/node/...)
+      target : 编译目标web/node/...
       request : 原始请求字符串
-      line1 : 第一行行号(用于sourcemap偏移)
+      line1 : 第一行行号用于sourcemap偏移
 ```
 
 ### 关键接口详解

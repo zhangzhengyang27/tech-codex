@@ -146,7 +146,7 @@ dialog 分支的内嵌段与 drawer 分支高度同构（`overlay-form.vue:282-2
 flowchart TB
     subgraph INPUT["输入"]
         SCHEMA["schema: ProFieldSchema[]<br/>core.ts:106-124"]
-        MODEL["model: Record&lt;string, unknown&gt;<br/>宿主持有的响应式对象"]
+        MODEL["model: Record&#60;string, unknown&#62;<br/>宿主持有的响应式对象"]
         RP["readonly / loading / columns<br/>submitting / showSubmit / showReset"]
     end
 

@@ -32,8 +32,8 @@ const validateMessage = ref("");
 flowchart TD
     subgraph FI["XyFormItem（状态属主）"]
         V["validate(trigger)<br/>form-item.vue:87-129"]
-        S["validateState: Ref&lt;ValidateState&gt;<br/>form-item.vue:41"]
-        M["validateMessage: Ref&lt;string&gt;<br/>form-item.vue:42"]
+        S["validateState: Ref&#60;ValidateState&#62;<br/>form-item.vue:41"]
+        M["validateMessage: Ref&#60;string&#62;<br/>form-item.vue:42"]
         P["provide(formItemKey)<br/>form-item.vue:154-172"]
         V --> S
         V --> M
@@ -51,7 +51,7 @@ flowchart TD
     end
 
     subgraph B["去向② 无障碍树"]
-        A1["消息 &lt;p&gt; 持有 messageId<br/>form-item.vue:209"]
+        A1["消息 &#60;p&#62; 持有 messageId<br/>form-item.vue:209"]
         A2["aria-describedby 条件指向<br/>input.vue:472 / select.vue:653"]
         A3["aria-invalid = state==='error'<br/>input.vue:473"]
         A4["aria-required = formItem.required<br/>input.vue:474（口径差见第八节）"]

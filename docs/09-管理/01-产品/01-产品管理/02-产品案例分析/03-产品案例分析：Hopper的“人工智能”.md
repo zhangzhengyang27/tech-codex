@@ -143,7 +143,7 @@ Hopper 从单一的机票价格预测工具，演进为覆盖机票、酒店、�
 
 ```mermaid
 ---
-title: "向技术索要人情味"的时代演进：前大模型时代，技术限制使机器难以说人话，Hopp
+title: '"向技术索要人情味"的时代演进：前大模型时代，技术限制使机器难以说人话，Hopp'
 ---
 %%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F1FB", "lineColor": "#4A7CB5"}}}%%
 flowchart TD

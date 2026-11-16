@@ -536,7 +536,7 @@ flowchart TD
         B1["provide 模型值 + 变更方法 + 级联属性<br/>六件状态 + changeValue"] --> B2["子项 inject 双模切换<br/>事件单向回流收口"]
     end
     subgraph C["几何参数型 · 5-16（Row → Col）"]
-        C1["provide 一个 ComputedRef&lt;number&gt;<br/>RowContext 仅 1 个字段"] --> C2["子项独立换算 padding<br/>无事件、无回传、零协商"]
+        C1["provide 一个 ComputedRef&#60;number&#62;<br/>RowContext 仅 1 个字段"] --> C2["子项独立换算 padding<br/>无事件、无回传、零协商"]
     end
     A -.状态复杂度：高.-> C
     B -.协作复杂度：高.-> C

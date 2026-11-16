@@ -69,7 +69,7 @@ Spring Boot 大大简化了配置，但出问题时必须理解底层机制：
 
 ```mermaid
 flowchart LR
-    A["XML 配置<br/>Spring 1.x-2.x<br/>&lt;bean&gt; + &lt;property&gt;"] --> B["注解配置<br/>Spring 2.5-3.x<br/>@Component + @Autowired"]
+    A["XML 配置<br/>Spring 1.x-2.x<br/>&#60;bean&#62; + &#60;property&#62;"] --> B["注解配置<br/>Spring 2.5-3.x<br/>@Component + @Autowired"]
     B --> C["Java Config<br/>Spring 3.x-4.x<br/>@Configuration + @Bean"]
     C --> D["自动配置<br/>Spring Boot 1.x-3.x<br/>@SpringBootApplication"]
 

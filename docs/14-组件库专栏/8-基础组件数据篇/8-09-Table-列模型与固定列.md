@@ -450,7 +450,7 @@ flowchart TD
     A -- "onMounted/onUpdated: updateRenderOrder()<br/>DOM childNodes 下标写回 order" --> B
     B -- "columns computed<br/>按 order 排序" --> C["注册列树"]
     C --> D["store.normalizedColumns<br/>normalizeColumns()"]
-    D --> D1["宽度三层覆盖<br/>auto &lt; drag &lt;声明+fit 均摊"]
+    D --> D1["宽度三层覆盖<br/>auto &#60; drag &#60;声明+fit 均摊"]
     D --> D2["fixed 祖先继承<br/>normalizeColumn inheritedFixed"]
     D --> D3["leafIndex/leafCount<br/>colSpan/rowSpan 标定"]
     D1 --> E["flattenColumns → leafColumns<br/>leafIndex 即数据列下标"]

@@ -30,7 +30,7 @@ flowchart TD
   C --> D["closeBundle: seo-prerender 插件<br/>build/plugins/seo-prerender.ts"]
   D --> E["esbuild 把纯数据入口<br/>build/plugins/seo-data-entry.ts 打成 CJS 执行"]
   E --> F["页面清单 listSeoRoutes()<br/>catalog + categories + seo/index"]
-  F --> G["以 dist/index.html 为外壳<br/>逐页生成 dist/&lt;path&gt;/index.html<br/>（实测 152 个）"]
+  F --> G["以 dist/index.html 为外壳<br/>逐页生成 dist/&#60;path&#62;/index.html<br/>（实测 152 个）"]
   G --> H["同场产出 sitemap.xml<br/>robots.txt · llms.txt"]
 ```
 

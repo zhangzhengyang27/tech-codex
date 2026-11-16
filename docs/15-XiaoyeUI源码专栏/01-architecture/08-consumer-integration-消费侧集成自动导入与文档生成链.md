@@ -151,7 +151,7 @@ sequenceDiagram
   participant Reg as register.ts
   participant Kit as nuxt kit
   participant Upl as unplugin nuxt
-  participant_tpl as 生成的插件源码
+  participant _tpl as 生成的插件源码
 
   Cfg->>Mod: 传入 xiaoyeUi 选项
   Mod->>Mod: 补 components 与 directives 默认值

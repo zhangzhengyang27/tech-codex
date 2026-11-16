@@ -217,8 +217,8 @@ export const TeleportImpl = {
 ```mermaid
 flowchart TB
   subgraph 主容器["主容器 (组件所在位置)"]
-    start["&lt;!--teleport start--&gt;"]
-    end_["&lt;!--teleport end--&gt;"]
+    start["&#60;!--teleport start--&#62;"]
+    end_["&#60;!--teleport end--&#62;"]
   end
 
   subgraph body["body (目标容器)"]

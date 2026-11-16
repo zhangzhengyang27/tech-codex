@@ -222,7 +222,7 @@ flowchart TD
     H --> D
     G --> I{点击确定 confirmSelection}
     I --> J{isRange?}
-    J -->|是| K["start 与 end 比较<br/>start &gt; end 则交换"]
+    J -->|是| K["start 与 end 比较<br/>start &#62; end 则交换"]
     K --> L["formatTime 输出 [start, end]"]
     J -->|否| M["formatTime 输出单值"]
     L --> N["emitChangeValue<br/>currentValue + update:modelValue + change"]

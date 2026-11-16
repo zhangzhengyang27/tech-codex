@@ -765,19 +765,19 @@ if __name__ == "__main__":
 
 ```mermaid
 flowchart LR
-    subgraph 策略一:线程池+进程池
+    subgraph sg1["策略一:线程池+进程池"]
         A1[IO 任务队列] --> B1[ThreadPoolExecutor<br/>并发下载]
         B1 --> C1[ProcessPoolExecutor<br/>并发处理]
         C1 --> D1[结果收集]
     end
 
-    subgraph 策略二:asyncio+进程池
+    subgraph sg2["策略二:asyncio+进程池"]
         A2[事件循环] --> B2[asyncio.gather<br/>异步IO]
         B2 --> C2[run_in_executor<br/>CPU委托进程池]
         C2 --> D2[结果收集]
     end
 
-    subgraph 策略三:多进程+线程
+    subgraph sg3["策略三:多进程+线程"]
         A3[主进程] --> B3[Worker进程1<br/>内部线程池]
         A3 --> C3[Worker进程2<br/>内部线程池]
         A3 --> D3[Worker进程N<br/>内部线程池]

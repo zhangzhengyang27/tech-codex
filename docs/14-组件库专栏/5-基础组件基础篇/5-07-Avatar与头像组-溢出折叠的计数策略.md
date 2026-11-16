@@ -85,9 +85,9 @@ export const avatarGroupContextKey: InjectionKey<AvatarGroupContext> = Symbol(
 ```mermaid
 flowchart TD
     P["props.size"] -->|有值| E["effectiveSize"]
-    P|无值| G["avatarGroup 上下文<br/>（provide 注入）"]
+    P -->|无值| G["avatarGroup 上下文<br/>（provide 注入）"]
     G -->|有值| E
-    G|无值| C["useConfig 全局配置"]
+    G -->|无值| C["useConfig 全局配置"]
     E -->|number| N["numericSize<br/>→ CSS 变量三件套<br/>icon=round(n*0.45) 下限 14"]
     E -->|string| S["mergedSize<br/>→ xy-avatar--sm/md/lg 类名<br/>icon 走冻结查表"]
 ```

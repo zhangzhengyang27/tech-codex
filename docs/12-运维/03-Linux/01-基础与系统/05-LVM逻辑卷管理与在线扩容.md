@@ -29,8 +29,8 @@ tags: [DevOps, Linux]
 ```mermaid
 graph TB
     subgraph Physical Layer
-        PV1[/dev/vda1 20GB]
-        PV2[/dev/vdb1 10GB]
+        PV1["/dev/vda1 20GB"]
+        PV2["/dev/vdb1 10GB"]
     end
 
     subgraph Volume Group

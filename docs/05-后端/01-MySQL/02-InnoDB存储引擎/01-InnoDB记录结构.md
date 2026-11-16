@@ -127,13 +127,13 @@ block-beta
 ```mermaid
 block-beta
     columns 7
-    block:len["变长字段长度列表<br/>01 03 04<br/>(c4)(c2)(c1) 逆序"]
-    block:null["NULL值列表"]
-    block:head["记录头信息"]
-    block:c1["c1='aaaa'"]
-    block:c2["c2='bbb'"]
-    block:c3["c3='cc'"]
-    block:c4["c4='d'"]
+    len["变长字段长度列表<br/>01 03 04<br/>(c4)(c2)(c1) 逆序"]
+    null["NULL值列表"]
+    head["记录头信息"]
+    c1["c1='aaaa'"]
+    c2["c2='bbb'"]
+    c3["c3='cc'"]
+    c4["c4='d'"]
 ```
 
 第一条记录中 `c1`、`c2`、`c4` 列的内容都较短，占用字节数较小，用 1 个字节即可表示。但如果变长列的内容占用字节数较多，可能需要 2 个字节表示。具体用 1 个还是 2 个字节表示真实数据占用的字节数，`InnoDB` 有一套规则。先声明 `W`、`M` 和 `L` 的含义：

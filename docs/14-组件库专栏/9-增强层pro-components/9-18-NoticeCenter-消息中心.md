@@ -34,7 +34,7 @@ flowchart LR
 
     subgraph BIZ["业务侧（唯一汇合点）"]
         GLUE["业务 glue code"]
-        STORE["tabs 数据<br/>ref&lt;NoticeCenterTab[]&gt;<br/>唯一事实源"]
+        STORE["tabs 数据<br/>ref&#60;NoticeCenterTab[]&#62;<br/>唯一事实源"]
     end
 
     subgraph INSTANT["瞬时线（7-03）"]

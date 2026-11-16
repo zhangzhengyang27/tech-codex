@@ -266,7 +266,7 @@ sequenceDiagram
     Page->>RF: mount（model / initialRequest / submitRequest）
     RF->>RF: onMounted → load("initial")
     RF->>API: createProRequestContext("initial", {}, 1, 1)
-    API-->>RF: Promise&lt;Record&lt;string, unknown&gt;&gt;
+    API-->>RF: Promise&#60；Record&#60；string, unknown&#62；&#62；
     RF->>RF: Object.assign(model, result) 回填
     RF->>RF: initialSnapshot = { ...result } 定格快照
     RF-->>Page: emit request-success(result)
@@ -274,7 +274,7 @@ sequenceDiagram
     PF->>RF: @submit（pro-form 内部 validate 后 emit）
     RF->>RF: submit()：readonly 门 → validate 门 → 提交门
     RF->>API: submitRequest({ ...ctx("submit"), model })
-    API-->>RF: Promise&lt;unknown&gt;
+    API-->>RF: Promise&#60；unknown&#62；
     RF-->>Page: emit submit-success / submit-error
     Page->>Page: 提示 / 关闭 / 跳转（组件不接管）
 ```

@@ -835,7 +835,7 @@ flowchart TD
     end
 
     subgraph Output_Used["✅ 已使用导出 (bar)"]
-        O1['__webpack_require__.d(__webpack_exports__,<br/>  "bar": () => (/* binding */ bar));']
+        O1["__webpack_require__.d(__webpack_exports__,<br/>  #quot;bar#quot;: () => (/* binding */ bar));"]
     end
 
     subgraph Output_Unused["❌ 未使用导出 (foo)"]

@@ -66,13 +66,13 @@ graph TD
     RSH["ResultSetHandler 接口"]
     RSH --> AH["ArrayHandler<br/>首行 → Object[]"]
     RSH --> ALH["ArrayListHandler<br/>每行 → Object[] → List"]
-    RSH --> BH["BeanHandler&lt;T&gt;<br/>首行 → JavaBean"]
-    RSH --> BLH["BeanListHandler&lt;T&gt;<br/>每行 → JavaBean → List"]
+    RSH --> BH["BeanHandler&#60;T&#62;<br/>首行 → JavaBean"]
+    RSH --> BLH["BeanListHandler&#60;T&#62;<br/>每行 → JavaBean → List"]
     RSH --> MH["MapHandler<br/>首行 → Map"]
     RSH --> MLH["MapListHandler<br/>每行 → Map → List"]
-    RSH --> SH["ScalarHandler&lt;T&gt;<br/>单个值（COUNT 等）"]
-    RSH --> CLH["ColumnListHandler&lt;T&gt;<br/>某列所有值 → List"]
-    RSH --> KH["KeyedHandler&lt;K&gt;<br/>以某列为 Key → Map"]
+    RSH --> SH["ScalarHandler&#60;T&#62;<br/>单个值（COUNT 等）"]
+    RSH --> CLH["ColumnListHandler&#60;T&#62;<br/>某列所有值 → List"]
+    RSH --> KH["KeyedHandler&#60;K&#62;<br/>以某列为 Key → Map"]
 
 ```
 

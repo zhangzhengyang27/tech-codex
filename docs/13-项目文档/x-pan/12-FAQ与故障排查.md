@@ -112,7 +112,7 @@ flowchart TB
     subgraph Preview["预览/下载故障"]
         P1[预览空白/下载失败] --> P2{何种文件?}
         P2 -->|图片/视频缩略图| P3{ptoken 链路}
-        P3 -->|报"预览签名 token 无效或已过期"| P4[ptoken 5 分钟过期→重拉 preview/url]
+        P3 -->|"报#quot;预览签名 token 无效或已过期#quot;"| P4[ptoken 5 分钟过期→重拉 preview/url]
         P3 -->|404| P5[对象缺失→查 OrphanFileGc 日志与桶]
         P2 -->|视频拖进度条卡| P6[Range 头被反代剥离? 检查 nginx 是否缓存/缓冲]
         P2 -->|Office| P7{转换任务}

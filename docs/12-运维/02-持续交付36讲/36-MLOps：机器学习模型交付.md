@@ -45,7 +45,7 @@ flowchart LR
     L2 -.- D2["特征：\n- CI/CD 自动化\n- 模型 A/B 测试\n- 影子部署\n- 自动化部署"]
     L3 -.- D3["特征：\n- 漂移检测触发再训练\n- 自动化特征工程\n- 模型性能监控\n- 持续训练（CT）"]
 
-    L1 fill:#fff3e0
+    style L1 fill:#fff3e0
 ```
 
 ### 持续训练（Continuous Training）

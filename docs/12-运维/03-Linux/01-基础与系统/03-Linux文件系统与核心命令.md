@@ -27,22 +27,22 @@ tags: [DevOps, Linux]
 
 ```mermaid
 graph TB
-    Root[/ 根目录] --> bin[/bin 基本命令]
-    Root --> etc[/etc 配置文件]
-    Root --> home[/home 用户目录]
-    Root --> var[/var 可变数据]
-    Root --> tmp[/tmp 临时文件]
-    Root --> usr[/usr 用户程序]
-    Root --> proc[/proc 虚拟文件系统]
-    Root --> dev[/dev 设备文件]
-    Root --> opt[/opt 第三方软件]
-    Root --> boot[/boot 启动文件]
+    Root["/ 根目录"] --> bin["/bin 基本命令"]
+    Root --> etc["/etc 配置文件"]
+    Root --> home["/home 用户目录"]
+    Root --> var["/var 可变数据"]
+    Root --> tmp["/tmp 临时文件"]
+    Root --> usr["/usr 用户程序"]
+    Root --> proc["/proc 虚拟文件系统"]
+    Root --> dev["/dev 设备文件"]
+    Root --> opt["/opt 第三方软件"]
+    Root --> boot["/boot 启动文件"]
 
-    var --> varlog[/var/log 系统日志]
-    var --> varwww[/var/www Web 根目录]
-    etc --> etcssh[/etc/ssh SSH 配置]
-    etc --> etcapt[/etc/apt 软件源]
-    home --> homeuser[/home/username 用户空间]
+    var --> varlog["/var/log 系统日志"]
+    var --> varwww["/var/www Web 根目录"]
+    etc --> etcssh["/etc/ssh SSH 配置"]
+    etc --> etcapt["/etc/apt 软件源"]
+    home --> homeuser["/home/username 用户空间"]
 ```
 
 上图为 FHS（文件系统层次标准）下的统一目录树。所有路径都从根目录 `/` 出发，`/etc` 存配置、`/var` 存可变数据（含日志）、`/home` 存用户空间、`/proc` 与 `/dev` 是特殊虚拟文件系统。理解该结构是高效操作文件、定位配置与排查问题的基石。
@@ -296,7 +296,7 @@ stateDiagram-v2
     [*] --> Normal: 打开文件
     Normal --> Insert: i / a / o
     Insert --> Normal: Esc
-    Normal --> Command: :
+    Normal --> Command: &#58;
     Command --> Normal: Esc
     Command --> [*]: :wq / :q!
 ```

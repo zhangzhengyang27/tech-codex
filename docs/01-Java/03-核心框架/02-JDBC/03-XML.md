@@ -39,15 +39,15 @@ XML 文档本质是一棵由节点构成的树，理解其树形结构是掌握�
 
 ```mermaid
 graph TD
-    A["&lt;?xml version='1.0'?&gt; 文档声明"] --> B["&lt;users&gt; 根元素"]
-    B --> C["&lt;user id='001'&gt;"]
-    B --> D["&lt;user id='002'&gt;"]
-    C --> E["&lt;name&gt;大叶&lt;/name&gt;"]
-    C --> F["&lt;age&gt;25&lt;/age&gt;"]
-    C --> G["&lt;hobby&gt;编程&lt;/hobby&gt;"]
-    D --> H["&lt;name&gt;小叶&lt;/name&gt;"]
-    D --> I["&lt;age&gt;18&lt;/age&gt;"]
-    D --> J["&lt;hobby&gt;阅读&lt;/hobby&gt;"]
+    A["&#60;?xml version='1.0'?&#62; 文档声明"] --> B["&#60;users&#62; 根元素"]
+    B --> C["&#60;user id='001'&#62;"]
+    B --> D["&#60;user id='002'&#62;"]
+    C --> E["&#60;name&#62;大叶&#60;/name&#62;"]
+    C --> F["&#60;age&#62;25&#60;/age&#62;"]
+    C --> G["&#60;hobby&#62;编程&#60;/hobby&#62;"]
+    D --> H["&#60;name&#62;小叶&#60;/name&#62;"]
+    D --> I["&#60;age&#62;18&#60;/age&#62;"]
+    D --> J["&#60;hobby&#62;阅读&#60;/hobby&#62;"]
 
 ```
 
@@ -663,7 +663,7 @@ flowchart LR
     A[编译 XPath 表达式] --> B[在文档树中<br/>定位节点集合]
     B --> C{返回类型}
     C -->|selectSingleNode| D[单个 Node]
-    C -->|selectNodes| E[List&lt;Node&gt;]
+    C -->|selectNodes| E[List&#60;Node&#62;]
     C -->|numberValue| F[数值]
     D --> G[getText 获取文本]
     E --> G

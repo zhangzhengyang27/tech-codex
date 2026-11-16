@@ -245,7 +245,7 @@ stateDiagram-v2
         无 loading ref、无占位 UI
         时长显示 0s
     end note
-    note bottom of stopped
+    note left of stopped
         stopped 不是独立响应式状态
         与 ready / paused 同为 playing = false
         区别只在 onstop 的复位副作用

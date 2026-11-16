@@ -378,7 +378,7 @@ flowchart TD
     P -->|跟随锚点元素| AN[锚点定位]
     E -->|否| Start
     Start --> T{展示结构化数据？}
-    T -->|是| Table["&lt;table&gt; 语义表格"]
+    T -->|是| Table["&#60;table&#62; 语义表格"]
     T -->|否| Start
 ```
 

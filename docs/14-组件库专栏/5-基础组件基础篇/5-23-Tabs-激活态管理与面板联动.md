@@ -383,7 +383,7 @@ flowchart LR
     D --> E2["指示条：activeIndex<br/>→ offsetLeft 测量"]
     D --> F["tab-pane：isActive =<br/>currentValue === name"]
     F --> G["v-if：激活面板挂 DOM<br/>未激活面板无 DOM"]
-    A1 -.props.items 为空才走.-> B2
+    A1 -.->|props.items 为空才走| B2
 ```
 
 ## 五、指示条：测量的三重时机与 transform 过渡

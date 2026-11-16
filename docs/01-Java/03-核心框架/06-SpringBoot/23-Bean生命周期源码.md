@@ -804,16 +804,16 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, Object[] 
 ```mermaid
 sequenceDiagram
     participant Get as getBean()
-    participant Create as createBean()
+    participant CreateStep as createBean()
     participant DoCreate as doCreateBean()
     participant Instance as createBeanInstance()
     participant Populate as populateBean()
     participant Init as initializeBean()
     participant Cache as 三级缓存
 
-    Get->>Create: createBean(beanName, mbd, args)
-    Create->>Create: resolveBeforeInstantiation()<br/>（InstantiationAwareBPP 短路）
-    Create->>DoCreate: doCreateBean()
+    Get->>CreateStep: createBean(beanName, mbd, args)
+    CreateStep->>CreateStep: resolveBeforeInstantiation()<br/>（InstantiationAwareBPP 短路）
+    CreateStep->>DoCreate: doCreateBean()
 
     DoCreate->>Instance: createBeanInstance()<br/>调用构造器创建实例
     Instance-->>DoCreate: 返回 BeanWrapper

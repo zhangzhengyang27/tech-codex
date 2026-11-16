@@ -73,9 +73,9 @@ classDiagram
         +genComponentStyleHook("VirtualScroller")
     }
     XYVirtualScroller --> VirtualScrollerState : 持有
-    XYVirtualScroller --> ExposedApi : expose :887
-    XYVirtualScroller --> PropsFile : props :27
-    XYVirtualScroller --> StyleHook : useStyle :76
+    XYVirtualScroller --> ExposedApi : expose (887)
+    XYVirtualScroller --> PropsFile : props (27)
+    XYVirtualScroller --> StyleHook : useStyle (76)
 ```
 
 `classDiagram` 里最值得盯的是 `ExposedApi` 与 `PropsFile`：`setup` 的形参只解构了 `{ slots, emit, expose }`（`VirtualScroller.tsx:36`），**没有 `attrs`**，配合 `inheritAttrs: false`（`:25`），意味着未声明属性无处可去——这条会在论点 4 展开。

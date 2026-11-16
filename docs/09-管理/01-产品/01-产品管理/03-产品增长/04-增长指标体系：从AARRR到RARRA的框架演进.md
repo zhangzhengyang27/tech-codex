@@ -88,13 +88,13 @@ title: RARRA 三阶段模型：先做价值验证（留存+激活），再做价
 ---
 %%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F1FB", "lineColor": "#4A7CB5"}}}%%
 graph LR
-    subgraph 第一阶段：价值验证
+    subgraph sg1["第一阶段：价值验证"]
         R1["留存 Retention<br/>产品价值金标准"] --> A1["激活 Activation<br/>价值传递枢纽"]
     end
-    subgraph 第二阶段：价值扩散
+    subgraph sg2["第二阶段：价值扩散"]
         A1 --> R2["传播 Referral<br/>用户自发推荐"]
     end
-    subgraph 第三阶段：商业闭环
+    subgraph sg3["第三阶段：商业闭环"]
         R2 --> V["变现 Revenue<br/>商业模式验证"]
         V --> AC["获取 Acquisition<br/>规模化获客"]
     end

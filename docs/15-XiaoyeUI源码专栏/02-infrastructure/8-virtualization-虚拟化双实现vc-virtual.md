@@ -113,7 +113,8 @@ stateDiagram-v2
     s1 --> s1: "onScroll→onScrollPositionChange：currentIndex=floor(scrollPos/itemSize)（VirtualList.tsx:267-268）"
     s1 --> s2["区间外溢：越过 triggerIndex（±numToleratedItems）"]
     s2 --> s1: "calculateFirst/Last 重划驻留区间，loadedItems 重切片（VirtualList.tsx:102-115）"
-    s1 --> s3["lazy 模式：emit lazy-load{first,last} 交父组件供数（VirtualList.tsx:434-441）"]
+    state "lazy 模式：emit lazy-load{first,last} 交父组件供数（VirtualList.tsx:434-441）" as s3
+    s1 --> s3
     s3 --> s1
     s1 --> s4["disabled=true：直接渲染 props.items 全量（VirtualList.tsx:899-907）"]
 ```

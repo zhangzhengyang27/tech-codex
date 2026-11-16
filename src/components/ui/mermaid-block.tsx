@@ -18,16 +18,73 @@ function loadMermaid(): Promise<typeof import('mermaid')> {
 let uid = 0;
 
 /** mermaid v11 兼容性预处理：
- * 1. 节点标签内的 () 等特殊字符需用双引号包裹
- * 2. HTML 自闭合标签 <br/> 改为 Mermaid 支持的 <br /> */
+ * 1. HTML 自闭合标签 <br/> 改为 Mermaid 支持的 <br />
+ * 2. flowchart 系图中，节点/边/菱形标签里的易碎字符（() @ = : ; ? 等）未加引号时
+ *    会导致 v11 lexer 报错——统一双引号包裹；已在双引号内的内容不动，
+ *    规则只作用于 flowchart/graph（sequence/class 等其他图型语法不适用）。 */
 function sanitizeMermaid(code: string): string {
-  return code
-    .replace(/<br\s*\/?>/gi, '<br />')
-    .replace(/\[([^\]["]*)\]/g, (match, label: string) => {
-      const trimmed = label.trim();
-      if (!/[()]/.test(trimmed)) return match;
-      return `["${trimmed}"]`;
-    });
+  let s = code.replace(/<br\s*\/?>/gi, '<br />');
+
+  // 图表可能携带 YAML frontmatter（--- ... ---）——frontmatter 原样保留，规则只作用于其后的正文
+  let frontLines: string[] = [];
+  if (s.startsWith('---')) {
+    const lines = s.split('\n');
+    const close = lines.slice(1).findIndex((l) => l.trim() === '---');
+    if (close !== -1) {
+      frontLines = lines.slice(0, close + 2);
+      s = lines.slice(close + 2).join('\n');
+    }
+  }
+
+  if (!/^\s*(flowchart|graph)\b/.test(s.trimStart())) {
+    return frontLines.length ? [...frontLines, s].join('\n') : s;
+  }
+
+  // 逐行做引号感知分段：仅对双引号外的片段应用标签修复规则
+  const fixSegment = (seg: string): string =>
+    seg
+      // [] 节点标签：含 () 或 @（如 [@PostConstruct]）→ 引号包裹
+      .replace(/\[([^\][\n]*)\]/g, (match, label: string) => {
+        const t = label.trim();
+        if (!/[()@]/.test(t)) return match;
+        return `["${t}"]`;
+      })
+      // |...| 边标签：含易碎字符（如 |put() 写入数据|）→ 引号包裹
+      .replace(/\|([^|\n]*)\|/g, (match, label: string) => {
+        const t = label.trim();
+        if (!/[()@=:;?]/.test(t)) return match;
+        return `|"${t}"|`;
+      })
+      // {...} 菱形标签：含易碎字符（如 {target === toRaw(x)?}）→ 引号包裹；@{...} 声明语法不动
+      .replace(/\{([^{}\n]*)\}/g, (match, label: string, offset: number, full: string) => {
+        const t = label.trim();
+        if (!/[()@=:;?[\]]/.test(t)) return match;
+        if (offset > 0 && full[offset - 1] === '@') return match;
+        return `{"${t}"}`;
+      });
+
+  const fixed = s
+    .split('\n')
+    .map((line) => {
+      let out = '';
+      let buf = '';
+      let inQuote = false;
+      for (const ch of line) {
+        if (ch === '"') {
+          out += inQuote ? buf : fixSegment(buf);
+          buf = '';
+          out += ch;
+          inQuote = !inQuote;
+        } else {
+          buf += ch;
+        }
+      }
+      out += inQuote ? buf : fixSegment(buf);
+      return out;
+    })
+    .join('\n');
+
+  return frontLines.length ? [...frontLines, fixed].join('\n') : fixed;
 }
 
 /** Mermaid 图表渲染组件：将 mermaid 源码渲染为 SVG，失败时回退显示源码 */

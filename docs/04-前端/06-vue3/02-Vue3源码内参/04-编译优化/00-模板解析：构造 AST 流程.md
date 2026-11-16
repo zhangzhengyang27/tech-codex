@@ -71,7 +71,7 @@ flowchart TD
     PARSE --> TYPE{节点类型?}
     TYPE -->|元素| EL[parseElement<br/>处理 startTag/endTag]
     TYPE -->|文本| TXT[parseText<br/>处理文本节点]
-    TYPE -->|插值| IV[parseInterpolation<br/>处理 {{ msg }}]
+    TYPE -->|插值| IV["parseInterpolation<br/>处理 {{ msg }}"]
     TYPE -->|注释| CM[parseComment<br/>处理 html 注释]
     TYPE -->|DOCTYPE| DT[parseBogusComment]
     EL --> ADVANCE[advanceBy 推进源码]

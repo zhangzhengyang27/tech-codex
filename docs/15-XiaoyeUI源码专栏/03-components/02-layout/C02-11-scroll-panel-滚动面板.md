@@ -78,7 +78,10 @@ classDiagram
   ScrollPanel_tsx --> style_index_ts
   ScrollPanel_tsx --> useConfigInject
   ScrollPanel_tsx --> dom_utils
-  ScrollPanel_tsx -.-> "缺边: 从不 import"
+  ScrollPanel_tsx ..> QN1
+  class QN1 {
+    缺边: 从不 import
+  }
 ```
 
 `ScrollPanel.tsx` 把「读几何 → 反算 → 写样式」闭环全收在自己内部，对外只借 `useConfigInject` 拿前缀、借 `@xiaoye-ui/utils/dom` 的类名/高度工具。它与 `vc_resize_observer` 之间的箭头是**虚线缺边**：这条边在 OUTLINE 里被登记，但在源码里不存在，是理解本篇一切「尺寸不跟手」问题的根因（论点 1、坑 1）。

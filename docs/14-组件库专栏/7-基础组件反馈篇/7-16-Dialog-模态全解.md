@@ -47,7 +47,7 @@ category: 组件库专栏
 
 ```mermaid
 flowchart TB
-    subgraph Comp["组件式形态：业务模板里写 &lt;xy-dialog v-model&gt;"]
+    subgraph Comp["组件式形态：业务模板里写 &#60;xy-dialog v-model&#62;"]
         A["业务组件"] -->|"v-model / ref 实例方法"| B["XyDialog（dialog.vue，234 行）"]
     end
 

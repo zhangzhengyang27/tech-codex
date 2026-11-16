@@ -61,13 +61,13 @@ graph TB
 
 ```mermaid
 graph LR
-    subgraph 稳定点——CPU指令集
+    subgraph "稳定点——CPU指令集"
         CALC["计算类指令<br>加减乘除、逻辑运算"]
         IO_INST["I/O 类指令<br>存储读写、设备数据交换"]
         JUMP["跳转类指令<br>条件/无条件跳转、函数调用"]
     end
 
-    subgraph 变化点——存储中的指令序列
+    subgraph "变化点——存储中的指令序列"
         PROG1["程序A：文字处理器"]
         PROG2["程序B：3D渲染引擎"]
         PROG3["程序C：神经网络推理"]
@@ -140,13 +140,13 @@ flowchart LR
 
 ```mermaid
 graph TB
-    subgraph CISC——复杂指令集
+    subgraph "CISC——复杂指令集"
         CISC_CORE["设计哲学：<br>用硬件复杂度换软件简洁性"]
         CISC_FEAT["特征：指令多而复杂<br>变长编码 / 微程序实现<br>内存-内存操作 / 多种寻址模式"]
         CISC_REP["代表：x86 (Intel / AMD)"]
     end
 
-    subgraph RISC——精简指令集
+    subgraph "RISC——精简指令集"
         RISC_CORE["设计哲学：<br>用软件复杂度换硬件简洁性"]
         RISC_FEAT["特征：指令少而规整<br>定长编码 / 硬连线实现<br>LOAD/STORE 架构 / 寄存器密集"]
         RISC_REP["代表：ARM / RISC-V / MIPS"]

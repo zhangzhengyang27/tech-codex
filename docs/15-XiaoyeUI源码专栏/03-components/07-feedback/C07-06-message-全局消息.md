@@ -41,7 +41,7 @@ packages/xiaoye-ui/src/message/
 ```mermaid
 graph TD
   A["useMessage(config)"] --> B["shallowRef holderRef<br/>useMessage.tsx:118"]
-  A --> C["() => &lt;Holder {...config} ref/&gt;<br/>useMessage.tsx:229"]
+  A --> C["() => &#60;Holder {...config} ref/&#62;<br/>useMessage.tsx:229"]
   C --> D["Holder setup"]
   D --> E["useConfigInject('message', props)<br/>:51"]
   D --> F["useStyle(prefixCls) → hashId<br/>:55"]

@@ -14,9 +14,9 @@ tags: [Vue]
 ```mermaid
 graph TB
     subgraph Component.vue
-        T["&lt;template&gt;<br/>HTML 模板"]
-        S["&lt;script&gt;<br/>JavaScript 逻辑"]
-        C["&lt;style&gt;<br/>CSS 样式"]
+        T["&#60;template&#62;<br/>HTML 模板"]
+        S["&#60;script&#62;<br/>JavaScript 逻辑"]
+        C["&#60;style&#62;<br/>CSS 样式"]
     end
     T --> S --> C
 ```

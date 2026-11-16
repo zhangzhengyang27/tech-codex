@@ -38,9 +38,9 @@ flowchart TD
     A["浏览器/构建器请求 button.md 模块"] --> B["markdownTransform()<br/>enforce: 'pre'<br/>plugins/markdown-transform.ts"]
     B --> C["extractDemoPaths 从原文提取 demo 路径<br/>在 md 文本层注入 script setup 导入块：<br/>defineAsyncComponent + 虚拟模块动态导入"]
     C --> D["VitePress markdown-it 渲染管线<br/>（demoMdPlugin 已在 config.ts 注册）"]
-    D --> E[":::demo 容器 render：<br/>1. readFileSync 读 basic.vue<br/>2. sfcTs2js 生成 JS 视图<br/>3. setDemoSource 写入内存注册表<br/>4. 输出 &lt;Demo&gt; HTML"]
+    D --> E[":::demo 容器 render：<br/>1. readFileSync 读 basic.vue<br/>2. sfcTs2js 生成 JS 视图<br/>3. setDemoSource 写入内存注册表<br/>4. 输出 &#60;Demo&#62; HTML"]
     E --> F["import('../examples/button/basic.vue')<br/>→ 独立异步 chunk"]
-    E --> G['import("virtual:xy-demo-source:button/basic")']
+    E --> G["import(#quot;virtual:xy-demo-source:button/basic#quot;)"]
     G --> H["demoSourcePlugin：<br/>resolveId 加 \\0 前缀 → load()<br/>从注册表取数 → export default JSON"]
     F --> I["浏览器按需加载：<br/>示例渲染 + 源码面板各自独立 chunk"]
     H --> I

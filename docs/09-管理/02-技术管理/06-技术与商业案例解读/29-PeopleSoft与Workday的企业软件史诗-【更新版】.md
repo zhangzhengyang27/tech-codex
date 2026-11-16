@@ -523,7 +523,7 @@ timeline
 title: 流程图
 ---
 graph TB
-    subgraph 周期1: PeopleSoft时代 (1987-2005)
+    subgraph sg1["周期1: PeopleSoft时代 (1987-2005)"]
         A1[技术创新<br>C/S架构突破] --> A2[快速增长<br>90%年增长率]
         A2 --> A3[市场领导地位<br>HR软件40%份额]
         A3 --> A4[多元化扩张<br>财务/制造/供应链]
@@ -531,7 +531,7 @@ graph TB
         A5 --> A6[悲剧结局<br>103亿美元被收购]
     end
 
-    subgraph 周期2: Workday时代 (2005-2024+)
+    subgraph sg2["周期2: Workday时代 (2005-2024+)"]
         B1[技术再创新<br>SaaS纯云端] --> B2[重新崛起<br>2012年IPO]
         B2 --> B3[新王者诞生<br>300亿+市值]
         B3 --> B4[持续扩张<br>72.6亿美元营收]

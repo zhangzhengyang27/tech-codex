@@ -204,10 +204,10 @@ flowchart TD
 
     B --> C{"解析 SFC 各 block"}
 
-    C --> D["&lt;template&gt; block"]
-    C --> E["&lt;script setup&gt; block"]
-    C --> F["&lt;style&gt; block"]
-    C --> G["Custom Blocks<br/>(如 &lt;docs&gt;)"]
+    C --> D["&#60;template&#62; block"]
+    C --> E["&#60;script setup&#62; block"]
+    C --> F["&#60;style&#62; block"]
+    C --> G["Custom Blocks<br/>(如 &#60;docs&#62;)"]
 
     D --> H["@vue/compiler-sfc<br/>编译 template"]
     H --> I["生成 render 函数<br/>(Virtual DOM 创建函数)"]
@@ -215,7 +215,7 @@ flowchart TD
 
     E --> K["根据 lang 属性分发"]
     K --> L{lang=?}
-    L -->|"默认 js"| M["原样输出<br/>&lt;script setup&gt; 编译为 setup()"]
+    L -->|"默认 js"| M["原样输出<br/>&#60;script setup&#62; 编译为 setup()"]
     L -->|"ts"| N["ts-loader / swc-loader<br/>处理 TypeScript"]
     L -->|"tsx"| O["ts-loader / swc-loader<br/>处理 TSX"]
 

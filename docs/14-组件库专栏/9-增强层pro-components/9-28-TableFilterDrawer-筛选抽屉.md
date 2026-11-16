@@ -466,7 +466,7 @@ flowchart TB
     subgraph TFD["XyTableFilterDrawer（table-filter-drawer.vue:29-72）"]
         BR["xy-drawer 桥<br/>:model-value=open<br/>update:open / closed 转发"]
         PF["xy-pro-form :model 直绑<br/>show-submit / show-reset 双 false"]
-        CTL["字段控件 &lt;component :is&gt;<br/>受控绑定 pro-form.vue:160-170"]
+        CTL["字段控件 &#60;component :is&#62;<br/>受控绑定 pro-form.vue:160-170"]
         BTN["footer 自拼按钮<br/>重置 / 应用筛选"]
     end
 

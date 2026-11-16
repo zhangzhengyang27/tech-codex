@@ -111,20 +111,20 @@ sequenceDiagram
     participant P as 父组件/FormItem
 
     U->>DIV: mousemove
-    DIV->>STAR: onMousemove :80
-    STAR->>IDX: emit hover(e, index) :30
-    IDX->>OFF: getStarDOM(index) 取 li 物理左 :82
-    OFF-->>IDX: leftDis(文档坐标)
-    IDX->>IDX: x-leftDis 与 width/2 比较 :85
-    IDX->>ST: 仅当 != cleanedValue 才写 hoverValue :104
-    IDX->>P: emit hoverChange(value) :108 无条件
+    DIV->>STAR: onMousemove (80)
+    STAR->>IDX: emit hover(e, index) (30)
+    IDX->>OFF1: getStarDOM(index) 取 li 物理左 (82)
+    OFF1-->>IDX: leftDis(文档坐标)
+    IDX->>IDX: x-leftDis 与 width/2 比较 (85)
+    IDX->>ST: 仅当 != cleanedValue 才写 hoverValue (104)
+    IDX->>P: emit hoverChange(value) (108) 无条件
     U->>DIV: click
-    DIV->>STAR: onClick :78
-    STAR->>IDX: emit click(e, index) :34
-    IDX->>IDX: newValue = getStarValue :117
-    IDX->>IDX: isReset = newValue == state.value :120
-    IDX->>ST: onMouseLeave 清 hoverValue :122
-    IDX->>P: changeValue -> update:value + change + onFieldChange :97
+    DIV->>STAR: onClick (78)
+    STAR->>IDX: emit click(e, index) (34)
+    IDX->>IDX: newValue = getStarValue (117)
+    IDX->>IDX: isReset = newValue == state.value (120)
+    IDX->>ST: onMouseLeave 清 hoverValue (122)
+    IDX->>P: changeValue -> update:value + change + onFieldChange (97)
 ```
 
 悬停链的关键不对称在倒数第 5、4 行：`state.hoverValue` 有 `!== state.cleanedValue` 去重（`rate/index.tsx:102`），但紧随其后的 `emit('hoverChange', hoverValue)`（`rate/index.tsx:106`）在 `if` 之外——**每一个 mousemove 都对外发一次 `hoverChange`，与值是否变化无关**（论点 5）。落定链里 `rate/index.tsx:118` 的 `isReset` 拿 `newValue` 和 `state.value` 比，而 `state.value` 在非受控用法里被 `rate/index.tsx:92` 的守卫钉死（C04-00 坑 1），这条比较的后果见坑 6。

@@ -431,7 +431,7 @@ export function assertLayouts(tools: readonly ToolItem[]): void {
 flowchart TD
   A["1. catalog.ts 对应导出组加记录<br/>（7 字段，categoryId 必填）"] --> B["2. routes.ts 的 TOOL_ROUTE_PATHS<br/>加 id→path"]
   B --> C["3. toolComponents.ts 加 id→懒加载 import"]
-  C --> D["4. 建页面文件<br/>views/tools/&lt;与同类工具同目录&gt;/XxxPage.vue"]
+  C --> D["4. 建页面文件<br/>views/tools/&#60;与同类工具同目录&#62;/XxxPage.vue"]
   D --> E["5. 选 layout 字段<br/>（选型规则见 04 册 §4）"]
   E --> F["6. 需要新图标则加 ms: 名<br/>并重跑 pnpm icons:build"]
   F --> G["7. 重跑 pnpm pinyin:build"]

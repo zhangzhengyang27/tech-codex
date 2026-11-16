@@ -189,9 +189,9 @@ graph TD
     P --- R
     R --- C
     C --- P
-    P -.|"RAID 0"| R
-    R -.|"RAID 6"| C
-    P -.|"RAID 10"| C
+    P -. "RAID 0" .- R
+    R -. "RAID 6" .- C
+    P -. "RAID 10" .- C
 ```
 
 **不存在同时满足高性能、高可靠、低成本的 RAID 方案**。所有 RAID 级别都是在此三角形上的不同投影：

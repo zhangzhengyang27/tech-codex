@@ -159,15 +159,15 @@ flowchart TD
     end
 
     subgraph CORE["第二级：内核 OverlayFormProps（overlay-form.ts:14-34）"]
-        DCH["dialogProps?: Omit&lt;Partial&lt;DialogProps&gt;,<br/>'modelValue' | 'title'&gt;　:33"]
-        WCH["drawerProps?: Omit&lt;Partial&lt;DrawerProps&gt;,<br/>'modelValue' | 'title'&gt;　:32"]
+        DCH["dialogProps?: Omit&#60;Partial&#60;DialogProps&#62;,<br/>'modelValue' | 'title'&#62;　:33"]
+        WCH["drawerProps?: Omit&#60;Partial&#60;DrawerProps&#62;,<br/>'modelValue' | 'title'&#62;　:32"]
         FLAT["手写平铺面 17 字段<br/>open / mode / title / model / schema / rules<br/>labelWidth / labelPosition / size / loading / submitting<br/>readonly / submitText / cancelText / resetOnClose / destroyOnClose…"]
         OFI["OverlayFormInstance :36-40"]
         OFP2["OverlayFormSubmitPayload :9-12"]
     end
 
     subgraph FACADE["第三级：特化层 DialogFormProps（dialog-form.ts:7）"]
-        DFP["DialogFormProps =<br/>Omit&lt;OverlayFormProps,<br/>'container' | 'drawerProps'&gt;"]
+        DFP["DialogFormProps =<br/>Omit&#60;OverlayFormProps,<br/>'container' | 'drawerProps'&#62;"]
         ALIAS1["DialogFormSubmitPayload = 纯别名 :9"]
         ALIAS2["DialogFormInstance = 纯别名 :10"]
     end
@@ -180,7 +180,7 @@ flowchart TD
     OFP -->|"第 2 次 Omit：减掉 container / drawerProps"| DFP
     OFI --> ALIAS2
     OFP2 --> ALIAS1
-    DFP --> CONSUME["dialog-form.vue:11<br/>withDefaults(defineProps&lt;DialogFormProps&gt;(), …)"]
+    DFP --> CONSUME["dialog-form.vue:11<br/>withDefaults(defineProps&#60;DialogFormProps&#62;(), …)"]
 ```
 
 这张图里有两件事必须实码定论。

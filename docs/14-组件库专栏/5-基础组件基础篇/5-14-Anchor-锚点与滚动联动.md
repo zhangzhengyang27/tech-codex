@@ -184,8 +184,8 @@ onBeforeUnmount(() => {
 ```mermaid
 flowchart LR
     subgraph A["XyAnchor（父）"]
-        M["links: Map&lt;href, HTMLElement&gt;<br/>注册表"]
-        C["currentAnchor: Ref&lt;string&gt;<br/>当前高亮"]
+        M["links: Map&#60;href, HTMLElement&#62;<br/>注册表"]
+        C["currentAnchor: Ref&#60;string&#62;<br/>当前高亮"]
         P["provide(anchorContextKey)"]
     end
     subgraph L["XyAnchorLink（子，可嵌套）"]

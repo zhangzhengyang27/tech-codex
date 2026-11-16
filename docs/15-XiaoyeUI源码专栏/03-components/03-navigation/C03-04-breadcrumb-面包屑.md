@@ -55,16 +55,16 @@ graph TD
   G --> GP["getPath 替换 :param<br/>:69-75"]
   GP --> ACC["paths 累加 / tempPaths 快照<br/>:92、:99"]
   ACC --> OV{"route.children?"}
-  OV -->|是| MENU["&lt;Menu items=…&gt;&lt;br/&gt;Breadcrumb.tsx:104-113"]
+  OV -->|是| MENU["&#60;Menu items=…&#62;&#60;br/&#62;Breadcrumb.tsx:104-113"]
   OV -->|否| NOOV["overlay = null<br/>:101"]
-  MENU --> BI["&lt;BreadcrumbItem overlay=…&gt;<br/>:121-127"]
+  MENU --> BI["&#60;BreadcrumbItem overlay=…&#62;<br/>:121-127"]
   NOOV --> BI
   P -->|"routes 为空"| CH["默认插槽 children<br/>:133"]
   CH --> CLONE["cloneVNode(el,{separator,key})<br/>:153"]
-  CLONE --> BI2["用户手写的 &lt;breadcrumb-item&gt;"]
+  CLONE --> BI2["用户手写的 &#60;breadcrumb-item&#62;"]
   BI --> DR{"overlay 存在?"}
-  DR -->|是| DD["&lt;Dropdown placement=\"bottom\"&gt;<br/>BreadcrumbItem.tsx:45-51"]
-  DR -->|否| LI["&lt;li&gt; 直接落 DOM"]
+  DR -->|是| DD["&#60;Dropdown placement=#quot;bottom#quot;&#62;<br/>BreadcrumbItem.tsx:45-51"]
+  DR -->|否| LI["&#60;li&#62; 直接落 DOM"]
   DD --> LI
 ```
 

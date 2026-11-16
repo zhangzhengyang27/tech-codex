@@ -100,7 +100,7 @@ flowchart TD
     D -->|40100 账号已被封禁| F[status≠0 手改库解封]
     D -->|40000 参数错误| G[检查命令参数 -u/-p 齐全]
     D -->|50010| H[发码类: SMTP 未配置或发送失败]
-    D -->|50000 server error| I[服务端日志 [api error] 看堆栈]
+    D -->|50000 server error| I["服务端日志 #91;api error#93; 看堆栈"]
     A --> J[登录成功但掉线/不同步]
     J --> J1[console 是否有 云同步初始化失败]
     J1 -->|有| J2[查该类型 store 初始化异常]
@@ -113,7 +113,7 @@ flowchart TD
 flowchart TD
     A[数据不同步] --> B{前端 console 有无报错?}
     B -->|同步前拉取失败 / 同步失败| C[网络或服务端 5xx]
-    C --> C1[服务端 [api error] 与 health]
+    C --> C1["服务端 #91;api error#93; 与 health"]
     B -->|xx 云同步初始化失败| D[store 动态 import 失败<br/>看具体类型]
     B -->|无报错但数据旧| E{该类型在白名单?}
     E -->|否| F[SOP-3 补登记<br/>registry + dataAccess 两处]

@@ -72,7 +72,7 @@ gitGraph
     checkout feature
     commit id: "C4"
     commit id: "C5" tag: "feature"
-    checkout master
+    checkout main
 ```
 
 执行 `git checkout feature` 之前，HEAD 指向 master（C3）；执行之后，HEAD 指向 feature（C5），工作目录和暂存区同步变为 C5 的内容。
@@ -314,7 +314,7 @@ gitGraph
     checkout feature
     commit id: "C4"
     commit id: "C5" tag: "feature"
-    checkout C3
+    checkout main
     commit id: "C6"
     commit id: "C7"
 ```
@@ -417,14 +417,14 @@ git restore --staged --worktree file.txt
 
 ```mermaid
 flowchart TD
-    subgraph 旧方式: git checkout
+    subgraph sg1["旧方式: git checkout"]
         C1["git checkout branch"] --> C2["切换分支"]
         C3["git checkout -b branch"] --> C4["创建+切换分支"]
         C5["git checkout -- file"] --> C6["恢复文件"]
         C7["git checkout commit -- file"] --> C8["从指定 commit 恢复文件"]
     end
 
-    subgraph 新方式: switch + restore
+    subgraph sg2["新方式: switch + restore"]
         S1["git switch branch"] --> S2["切换分支"]
         S3["git switch -c branch"] --> S4["创建+切换分支"]
         R1["git restore file"] --> R5["恢复文件"]

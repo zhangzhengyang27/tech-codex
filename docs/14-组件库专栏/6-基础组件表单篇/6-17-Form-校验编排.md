@@ -177,7 +177,7 @@ sequenceDiagram
     opt 校验失败且 scrollToError
         F->>F: find 首个失败字段并 scrollIntoView（69-74）
     end
-    F-->>U: Promise&lt;boolean&gt; —— 永远 resolve，不 reject
+    F-->>U: Promise&#60；boolean&#62； —— 永远 resolve，不 reject
 ```
 
 这张图上有三个值得展开的段落。第一个是执行者本体——form-item 的 `validate` 全量源码（43 行），它是全库与 async-validator 唯一的正面对话：

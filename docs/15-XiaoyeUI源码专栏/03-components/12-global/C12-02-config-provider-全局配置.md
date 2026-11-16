@@ -106,15 +106,15 @@ classDiagram
     notification/index.tsx:73
   }
   XYConfigProvider ..> configProviderProps : 输入
-  XYConfigProvider ..> ConfigProviderInnerProps : 逐字段构造 index.tsx:154
-  XYConfigProvider ..> configProviderKey : useConfigContextProvider index.tsx:215
+  XYConfigProvider ..> ConfigProviderInnerProps : 逐字段构造 index.tsx (154)
+  XYConfigProvider ..> configProviderKey : useConfigContextProvider index.tsx (215)
   ConfigProviderInnerProps ..> renderEmptyComponent : renderEmpty 槽
-  renderEmptyComponent ..> DefaultRenderEmpty : 第四级兜底 index.tsx:92
-  XYConfigProvider ..> memoTheme : 仅 props.theme 时挂载 index.tsx:222
+  renderEmptyComponent ..> DefaultRenderEmpty : 第四级兜底 index.tsx (92)
+  XYConfigProvider ..> memoTheme : 仅 props.theme 时挂载 index.tsx (222)
   memoTheme ..> DesignTokenProvider
-  XYConfigProvider ..> LocaleProvider : index.tsx:225
-  XYConfigProvider ..> LocaleReceiver : 根渲染 index.tsx:243
-  XYConfigProvider ..> globalConfigBySet : watch locale 写入 index.tsx:102
+  XYConfigProvider ..> LocaleProvider : index.tsx (225)
+  XYConfigProvider ..> LocaleReceiver : 根渲染 index.tsx (243)
+  XYConfigProvider ..> globalConfigBySet : watch locale 写入 index.tsx (102)
   XYConfigProvider ..> messageAndNotification : watchEffect 写 rtl
 ```
 

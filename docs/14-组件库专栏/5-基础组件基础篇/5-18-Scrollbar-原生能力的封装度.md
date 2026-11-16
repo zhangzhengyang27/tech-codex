@@ -139,7 +139,7 @@ function updateThumbState() {
 ```mermaid
 flowchart LR
     S["wrap 上的原生 scroll 事件<br/>handleScroll (L243)"] --> M["getVerticalMetrics (L123)<br/>clientHeight / scrollHeight"]
-    M --> O{"scrollHeight &gt; clientHeight + 1 ?"}
+    M --> O{"scrollHeight &#62; clientHeight + 1 ?"}
     O -- "否" --> Z["verticalVisible = false<br/>thumb 隐藏"]
     O -- "是" --> T["trackSize = clientHeight - 4<br/>thumbSize = max(track²/scrollSize, minSize)<br/>再 min(thumbSize, trackSize)"]
     T --> R["thumbTravel = trackSize - thumbSize<br/>scrollTravel = scrollSize - clientHeight"]

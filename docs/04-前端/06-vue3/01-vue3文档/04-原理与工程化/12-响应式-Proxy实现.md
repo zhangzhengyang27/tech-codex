@@ -1210,15 +1210,15 @@ function cleanupDeps(sub: Subscriber) {
 sequenceDiagram
     participant Effect as ReactiveEffect
     participant Dep as Dep(version)
-    participant Link as Link
+    participant LinkRef as Link
 
     Note over Effect: effect.run() 开始
-    Effect->>Link: prepareDeps: 所有 link.version = -1
+    Effect->>LinkRef: prepareDeps: 所有 link.version = -1
     Effect->>Effect: 执行 fn()
-    Note over Dep,Link: fn() 中访问响应式属性
-    Dep->>Link: dep.track(): link.version = dep.version
+    Note over Dep,LinkRef: fn() 中访问响应式属性
+    Dep->>LinkRef: dep.track(): link.version = dep.version
     Note over Effect: fn() 执行完毕
-    Effect->>Link: cleanupDeps: 移除 version == -1 的 link
+    Effect->>LinkRef: cleanupDeps: 移除 version == -1 的 link
     Note over Effect: effect.run() 结束
 ```
 

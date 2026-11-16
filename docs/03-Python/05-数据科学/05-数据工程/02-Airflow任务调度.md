@@ -429,8 +429,8 @@ flowchart TD
     start[start] --> branch[branch 分支判断]
     branch -->|工作日| weekday[weekday_process 全量ETL]
     branch -->|周末| weekend[weekend_process 增量汇总]
-    weekday --> end[end]
-    weekend --> end[end]
+    weekday --> en0[en0]
+    weekend --> en0[en0]
 
 ```
 
@@ -920,7 +920,7 @@ flowchart TD
     extract --> transform[transform 清洗转换]
     transform --> validate[quality_check 质量校验]
     validate --> load[load 加载到仓库]
-    load --> end[end]
+    load --> en0[en0]
 
     extract -.-> cleanup[cleanup 清理临时文件]
     transform -.-> cleanup
@@ -1070,7 +1070,7 @@ flowchart TD
     daily --> notify[send_notification]
     weekly --> notify
     monthly --> notify
-    notify --> end[end]
+    notify --> en0[en0]
 
 ```
 

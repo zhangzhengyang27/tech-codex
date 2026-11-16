@@ -984,7 +984,7 @@ if __name__ == "__main__":
 
 ```mermaid
 flowchart LR
-    subgraph 阶段一: ThreadPoolExecutor
+    subgraph sg1["阶段一: ThreadPoolExecutor"]
         IO1[fetch_data<br/>api-0]
         IO2[fetch_data<br/>api-1]
         IO3[fetch_data<br/>api-2]
@@ -993,7 +993,7 @@ flowchart LR
         IO6[fetch_data<br/>api-5]
     end
 
-    subgraph 阶段二: ProcessPoolExecutor
+    subgraph sg2["阶段二: ProcessPoolExecutor"]
         CPU1[compute_hash<br/>数据0]
         CPU2[compute_hash<br/>数据1]
         CPU3[compute_hash<br/>数据2]

@@ -333,13 +333,13 @@ const displayLabel = computed(() => selectedOption.value?.label ?? props.placeho
 ```mermaid
 flowchart TD
     U["使用点<br/>options 与 v-model 同时出现<br/>（模板写不了显式泛型实参，只能推断）"]
-    U --> P["T 在调用点被实例化<br/>SelectProps&lt;T&gt;：modelValue + options 两个注入口"]
-    P --> A1["变形一：allOptions / optionMap<br/>select.vue:116-147<br/>入口联合摊平为 FlatSelectOption&lt;T&gt;，Map&lt;T,...&gt; 建索引"]
+    U --> P["T 在调用点被实例化<br/>SelectProps&#60;T&#62;：modelValue + options 两个注入口"]
+    P --> A1["变形一：allOptions / optionMap<br/>select.vue:116-147<br/>入口联合摊平为 FlatSelectOption&#60;T&#62;，Map&#60;T,...&#62; 建索引"]
     A1 --> A2["变形二：groupedOptions / filteredOptions<br/>select.vue:204-262<br/>过滤 + 分组 + flatIndex 渲染序号"]
     A2 --> A3["变形三：selectedOptions<br/>select.vue:264-268<br/>值反查选项，Map 未命中时 String(value) 兜底"]
     A3 --> A4["变形四：displayLabel<br/>select.vue:268<br/>投影为触发器文案"]
     A2 --> E1["出口一：事件载荷<br/>emitValue → change: T 或 T[] 或 null<br/>select.vue:418-422"]
-    A2 --> E2["出口二：插槽作用域<br/>SelectOptionSlotProps&lt;T&gt;<br/>select.vue:796-801"]
+    A2 --> E2["出口二：插槽作用域<br/>SelectOptionSlotProps&#60;T&#62;<br/>select.vue:796-801"]
     P -.->|"modelValue 类型标注反向约束 T"| U
 ```
 
@@ -731,11 +731,11 @@ export function withInstall<T>(component: T, name: string) {
 ```mermaid
 flowchart LR
     A["select.vue 源码<br/>generic=T 贯穿四链路"] -->|"vue-tsc 编译"| B["select.vue.d.ts<br/>泛型函数签名，T 保真"]
-    A -->|"tsc 编译"| C["select.d.ts<br/>SelectProps&lt;T&gt; 等类型面"]
+    A -->|"tsc 编译"| C["select.d.ts<br/>SelectProps&#60;T&#62; 等类型面"]
     B --> D["prepare-package.mjs 三刀<br/>118 / 306-313 / 409-424"]
     C --> D
-    D --> E["公开入口 index.d.ts<br/>XySelect: SFCWithInstall&lt;any&gt;<br/>TreeSelectInstance: any"]
-    D --> F["类型面原样幸存<br/>SelectProps&lt;T&gt; / SelectInstance"]
+    D --> E["公开入口 index.d.ts<br/>XySelect: SFCWithInstall&#60;any&#62;<br/>TreeSelectInstance: any"]
+    D --> F["类型面原样幸存<br/>SelectProps&#60;T&#62; / SelectInstance"]
     G["源码态双轨<br/>tsconfig paths → packages/components/index.ts"] -.-> A
     E -.->|"npm 消费者"| H["组件值模板检查失去 T<br/>类型标注通道仍然完整"]
     F -.->|"npm 消费者"| I["手工标注 props/回调类型仍然收窄"]

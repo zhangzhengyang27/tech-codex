@@ -205,10 +205,9 @@ graph TD
         B4["分支 → C2"] --- S4["暂存区 = C2\n（重置）"] --- W4["工作区 = C2\n（重置）"]
     end
 
-    reset前 --> "--soft → C2"
-    reset前 --> "--mixed → C2"
-    reset前 --> "--hard → C2"
-```
+    reset前 -->QN1["--soft → C2"]
+    reset前 -->QN2["--mixed → C2"]
+    reset前 -->QN3["--hard → C2"]```
 
 
 

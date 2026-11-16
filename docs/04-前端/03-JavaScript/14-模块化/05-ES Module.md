@@ -15,7 +15,7 @@ tags: [JavaScript, 模块化, ESM, import]
 
 ```mermaid
 flowchart TB
-    A["浏览器遇到 &lt;script type=module&gt;"] --> B["1. 构建 Construction<br/>下载并解析模块文件<br/>建立模块依赖图"]
+    A["浏览器遇到 &#60;script type=module&#62;"] --> B["1. 构建 Construction<br/>下载并解析模块文件<br/>建立模块依赖图"]
     B --> C["2. 实例化 Instantiation<br/>为 export 分配内存空间<br/>建立 import/export 绑定"]
     C --> D["3. 求值 Evaluation<br/>执行模块顶层代码<br/>填充 export 值"]
 

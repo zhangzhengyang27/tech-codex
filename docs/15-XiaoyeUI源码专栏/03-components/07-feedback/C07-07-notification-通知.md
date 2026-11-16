@@ -48,7 +48,7 @@ graph TD
   NEW --> P["pendingInstance 先占位<br/>:110-112"]
   NEW --> CB["回调替换为真实例<br/>:138-141"]
   N --> NN["notification.notice(...)<br/>:178-221"]
-  H["useNotification()"] --> HD["&lt;Holder&gt;<br/>useNotification.tsx:135-143"]
+  H["useNotification()"] --> HD["&#60;Holder&#62;<br/>useNotification.tsx:135-143"]
   HD --> UVC["useVcNotification<br/>:52"]
   HD -.->|"props.top / bottom / maxCount / rtl<br/>恒 undefined（论点 1）"| DEAD["配置通道断裂"]
 ```

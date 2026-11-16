@@ -317,10 +317,10 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph ROOT[location /conf/ → root /usr/local/nginx/]
-        A1[URI: /conf/nginx.conf] --> A2[/usr/local/nginx/conf/nginx.conf<br>root 前缀拼接 URI]
+        A1[URI: /conf/nginx.conf] --> A2["/usr/local/nginx/conf/nginx.conf<br>root 前缀拼接 URI"]
     end
     subgraph ALIAS[location /conf/ → alias /usr/local/nginx/conf/]
-        B1[URI: /conf/nginx.conf] --> B2[/usr/local/nginx/conf/nginx.conf<br>alias 替换 location 段后接文件]
+        B1[URI: /conf/nginx.conf] --> B2["/usr/local/nginx/conf/nginx.conf<br>alias 替换 location 段后接文件"]
     end
 ```
 

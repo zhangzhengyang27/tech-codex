@@ -885,7 +885,7 @@ Webpack 4 引入的 `ChunkGroup` 数据结构彻底解决了这个问题——�
 mindmap
   root((Chunk 体系))
     生命周期
-      seal() 入口
+      seal 入口
       Entry 创建
       Module 遍历关联
       buildChunkGraph
@@ -924,7 +924,7 @@ mindmap
       SplitChunksPlugin
         启发式分包
       code splitting
-        import()
+        import
         魔法注释
 ```
 

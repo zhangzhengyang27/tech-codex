@@ -370,8 +370,8 @@ flowchart TD
 
     subgraph 显式复制
         C[原始数组 arr] -->|arr.copy_| D[副本 Copy]
-        D -->|独立内存空间|
-        D -->|修改互不影响|
+        D -->|独立内存空间| C
+        D -->|修改互不影响| C
     end
 
 ```

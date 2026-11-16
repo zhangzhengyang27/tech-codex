@@ -158,7 +158,7 @@ sequenceDiagram
     Note right of C: GET /api/data HTTP/1.1<br/>Host: example.com<br/>User-Agent: Mozilla/5.0<br/>Cookie: session=abc123
 
     S-->>C: 6. 返回 HTTP 响应报文
-    Note left of S: HTTP/1.1 200 OK<br/>Content-Type: text/html<br/>Set-Cookie: token=xyz<br/>&lt;html&gt;...&lt;/html&gt;
+    Note left of S: HTTP/1.1 200 OK<br/>Content-Type: text/html<br/>Set-Cookie: token=xyz<br/>&#60；html&#62；...&#60；/html&#62；
 
     C->>C: 7. 解析响应内容
     C->>C: 8. 提取数据 + 发现新 URL

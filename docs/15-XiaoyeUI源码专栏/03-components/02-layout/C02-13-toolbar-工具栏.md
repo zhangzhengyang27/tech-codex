@@ -54,11 +54,11 @@ graph TD
 
 ```mermaid
 sequenceDiagram
-  participant PAR as 父级模板
+  participant PAR1 as 父级模板
   participant VP as Vue 属性归一
   participant T as Toolbar setup
   participant DOM as 根 div
-  PAR->>VP: prefixCls 与 aria-labelledby 与 class 与 style 与 on click 与 data x
+  PAR1->>VP: prefixCls 与 aria-labelledby 与 class 与 style 与 on click 与 data x
   VP->>T: 命中声明 prop 的进 props · 其余进 attrs
   T->>T: setup 仅解构 slots · attrs 被丢弃
   T->>DOM: class 只写 prefixCls 与 hashId

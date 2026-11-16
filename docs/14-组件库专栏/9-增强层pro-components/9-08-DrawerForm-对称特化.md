@@ -182,11 +182,11 @@ flowchart TB
     subgraph MIRROR["镜像对：两份 71 行源码（逐行同构，四处签名差异）"]
         direction LR
         subgraph DF["drawer-form（本篇）"]
-            DTS["drawer-form.ts:7<br/>DrawerFormProps =<br/>Omit&lt;OverlayFormProps,<br/>'container' | 'dialogProps'&gt;"]
+            DTS["drawer-form.ts:7<br/>DrawerFormProps =<br/>Omit&#60;OverlayFormProps,<br/>'container' | 'dialogProps'&#62;"]
             DVUE["drawer-form.vue:51<br/>container='drawer' 钉死<br/>:27 drawerProps 默认值<br/>:40-44 实例三动作转发<br/>:57-59 插槽 v-for 全转发"]
         end
         subgraph DGF["dialog-form（9-07）"]
-            GTS["dialog-form.ts:7<br/>DialogFormProps =<br/>Omit&lt;OverlayFormProps,<br/>'container' | 'drawerProps'&gt;"]
+            GTS["dialog-form.ts:7<br/>DialogFormProps =<br/>Omit&#60;OverlayFormProps,<br/>'container' | 'drawerProps'&#62;"]
             GVUE["dialog-form.vue:51<br/>container='modal' 钉死<br/>:27 dialogProps 默认值<br/>:40-44 实例三动作转发<br/>:57-59 插槽 v-for 全转发"]
         end
     end

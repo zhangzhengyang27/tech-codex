@@ -83,8 +83,8 @@ flowchart LR
     A["props.icon<br/>'mdi:magnify'"] --> B["icon.vue setup<br/>registerLocalMdiCollection()"]
     B --> C["mdi.ts<br/>IconifyVue.addCollection(icons.json)"]
     C --> D["@iconify/vue 内存图标存储<br/>按 name 查 body/path"]
-    D --> E["IconifyIcon 渲染<br/>&lt;svg viewBox&gt;+path"]
-    E --> F["DOM<br/>span.xy-icon &gt; svg"]
+    D --> E["IconifyIcon 渲染<br/>&#60;svg viewBox&#62;+path"]
+    E --> F["DOM<br/>span.xy-icon &#62; svg"]
     G["size / rotate<br/>内联 style"] --> E
     H["spin<br/>is-spin class"] --> F
 ```

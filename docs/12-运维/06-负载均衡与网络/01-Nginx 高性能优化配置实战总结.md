@@ -69,13 +69,13 @@ sequenceDiagram
     participant K as 内核态 Buffer Cache
     participant S as Socket 转发
 
-    Note over App,K,S: 未开启 sendfile（虚线折返路径）
+    Note over App,S: 未开启 sendfile（虚线折返路径）
     App->>K: 读入内核态文件
     K->>App: 传递到用户态
     App->>K: 经用户态 Buffer Cache 再传回内核态
     K->>S: 通过 Socket 转发
 
-    Note over App,K,S: 开启 sendfile on（实线直达路径）
+    Note over App,S: 开启 sendfile on（实线直达路径）
     K-->S: 静态文件直接在内核态完成转发
 ```
 

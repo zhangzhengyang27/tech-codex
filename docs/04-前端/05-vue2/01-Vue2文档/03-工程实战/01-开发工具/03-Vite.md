@@ -102,7 +102,7 @@ VueLoaderPlugin 的职责是将其它 loader 复制并应用到 `.vue` 文件的
 
 ```mermaid
 flowchart TD
-    A[".vue 文件中的 &lt;style lang='scss'&gt;"] --> B["vue-loader 解析出 style 块内容"]
+    A[".vue 文件中的 &#60;style lang='scss'&#62;"] --> B["vue-loader 解析出 style 块内容"]
     B --> C["VueLoaderPlugin<br/>将 scss 内容复制给 sass-loader 处理"]
     C --> D["css-loader"]
     D --> E["vue-style-loader"]

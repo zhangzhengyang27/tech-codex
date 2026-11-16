@@ -895,7 +895,7 @@ Django 模板引擎（DTL, Django Template Language）是一种**受限的模板
 flowchart TD
     subgraph Base["base.html 父模板"]
         direction TB
-        BaseHead["&lt;head&gt;"]
+        BaseHead["&#60;head&#62;"]
         BaseTitle["{% block title %}默认标题{% endblock %}"]
         BaseNav["导航栏（固定不变）"]
         BaseContent["{% block content %}{% endblock %}"]
@@ -905,13 +905,13 @@ flowchart TD
     subgraph Child1["topics.html 子模板A"]
         Extends1["{% extends 'base.html' %}"]
         BlockTitle1["{% block title %}主题列表{% endblock %}"]
-        BlockContent1["{% block content %}&lt;ul&gt;...主题列表&lt;/ul&gt;{% endblock %}"]
+        BlockContent1["{% block content %}&#60;ul&#62;...主题列表&#60;/ul&#62;{% endblock %}"]
     end
 
     subgraph Child2["topic.html 子模板B"]
         Extends2["{% extends 'base.html' %}"]
         BlockTitle2["{% block title %}{{ topic.text }}{% endblock %}"]
-        BlockContent2["{% block content %}&lt;h1&gt;...详情内容&lt;/h1&gt;{% endblock %}"]
+        BlockContent2["{% block content %}&#60;h1&#62;...详情内容&#60;/h1&#62;{% endblock %}"]
     end
 
     Child1 -.->|"继承并覆写"| Base

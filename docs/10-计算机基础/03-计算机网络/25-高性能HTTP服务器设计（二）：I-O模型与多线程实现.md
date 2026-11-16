@@ -132,6 +132,7 @@ sequenceDiagram
     participant Mutex as 互斥锁
     participant Cond as 条件变量
 
+    activate Main
     Main->>Mutex: pthread_mutex_lock
     Main->>Child: pthread_create (创建子线程)
     activate Child

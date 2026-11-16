@@ -421,16 +421,16 @@ sequenceDiagram
     participant PreInstantiate as preInstantiateSingletons()
     participant BD as BeanDefinition
     participant GetBean as getBean()
-    participant Create as createBean()
+    participant CreateStep as createBean()
     participant Populate as populateBean()
     participant Init as initializeBean()
     participant Post as BeanPostProcessor
 
     PreInstantiate->>BD: 遍历所有 BeanDefinition
     BD->>GetBean: getBean(beanName)
-    GetBean->>Create: createBean()
-    Create->>Create: 实例化（反射调用构造器）
-    Create->>Populate: populateBean() — 属性注入
+    GetBean->>CreateStep: createBean()
+    CreateStep->>CreateStep: 实例化（反射调用构造器）
+    CreateStep->>Populate: populateBean() — 属性注入
     Populate->>Post: InstantiationAwareBeanPostProcessor<br/>.postProcessProperties()
     Post->>Init: initializeBean()
     Init->>Post: BeanPostProcessor.postProcessBeforeInitialization()<br/>（@PostConstruct 在此处理）
@@ -1693,7 +1693,7 @@ flowchart TD
     E --> F["createApplicationContext()"]
     F --> G["prepareContext()"]
     G --> H["bootstrapContext.close()"]
-    Note over H: 生命周期结束<br/>ApplicationContext 已就绪
+    H -.- NOTE1["生命周期结束<br/>ApplicationContext 已就绪"]
 
 ```
 
@@ -2728,16 +2728,16 @@ sequenceDiagram
     participant PreInstantiate as preInstantiateSingletons()
     participant BD as BeanDefinition
     participant GetBean as getBean()
-    participant Create as createBean()
+    participant CreateStep as createBean()
     participant Populate as populateBean()
     participant Init as initializeBean()
     participant Post as BeanPostProcessor
 
     PreInstantiate->>BD: 遍历所有 BeanDefinition
     BD->>GetBean: getBean(beanName)
-    GetBean->>Create: createBean()
-    Create->>Create: 实例化（反射调用构造器）
-    Create->>Populate: populateBean() — 属性注入
+    GetBean->>CreateStep: createBean()
+    CreateStep->>CreateStep: 实例化（反射调用构造器）
+    CreateStep->>Populate: populateBean() — 属性注入
     Populate->>Post: InstantiationAwareBeanPostProcessor<br/>.postProcessProperties()
     Post->>Init: initializeBean()
     Init->>Post: BeanPostProcessor.postProcessBeforeInitialization()<br/>（@PostConstruct 在此处理）

@@ -296,7 +296,7 @@ graph LR
 
 ```mermaid
 graph LR
-    subgraph 合并后（fast-forward）
+    subgraph "合并后（fast-forward）"
         B1["C1"] --> B2["C2"]
         B2 --> B3["C3"]
         B3 --> B4["C4 (main, feature)"]

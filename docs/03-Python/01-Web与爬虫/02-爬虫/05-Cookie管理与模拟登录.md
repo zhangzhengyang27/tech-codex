@@ -58,16 +58,16 @@ sequenceDiagram
 
     Note over B,S: 【阶段1】首次访问 —— 建立初始连接
     B->>S: GET /login
-    S-->>B: 200 OK<br/>Set-Cookie: _gh_sess=abc123<br/>Path=/; HttpOnly
+    S-->>B: 200 OK<br/>Set-Cookie: _gh_sess=abc123<br/>Path=/； HttpOnly
     Note right of B: 浏览器保存 _gh_sess<br/>（会话级 Cookie）
 
     Note over B,S: 【阶段2】提交登录表单
     B->>S: POST /session<br/>Cookie: _gh_sess=abc123<br/>Form: username=zhang&password=xxx&authenticity_token=XYZ
     S->>S: 1. 验证 CSRF Token<br/>2. 验证用户名密码<br/>3. 创建服务端 Session
-    S-->>B: 302 Found<br/>Set-Cookie: logged_in=yes<br/>Set-Cookie: dotcom_user=zhang<br/>Set-Cookie: user_session=def456; Max-Age=1209600
+    S-->>B: 302 Found<br/>Set-Cookie: logged_in=yes<br/>Set-Cookie: dotcom_user=zhang<br/>Set-Cookie: user_session=def456； Max-Age=1209600
 
     Note over B,S: 【阶段3】访问受保护页面 —— 自动携带 Cookie
-    B->>S: GET /settings/profile<br/>Cookie: _gh_sess=abc123; logged_in=yes; user_session=def456
+    B->>S: GET /settings/profile<br/>Cookie: _gh_sess=abc123； logged_in=yes； user_session=def456
     S->>S: 1. 提取 user_session=def456<br/>2. 查找服务端 Session<br/>3. 验证未过期 → 返回用户数据
     S-->>B: 200 OK<br/>〘用户个人信息页面〙
 

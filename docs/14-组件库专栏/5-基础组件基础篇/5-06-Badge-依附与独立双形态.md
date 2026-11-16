@@ -50,8 +50,8 @@ const is = (state: string, active?: boolean) => (active ? `is-${state}` : "");
 
 ```mermaid
 flowchart TD
-    A["div.xy-badge<br/>position:relative · inline-block · fit-content<br/>（badge.css L1-6）"] --> B["&lt;slot /&gt;<br/>宿主内容：按钮 / 头像 / 标签 / 文本"]
-    A --> C["&lt;transition name='xy-zoom-in-center'&gt;<br/>（badge.vue L57）"]
+    A["div.xy-badge<br/>position:relative · inline-block · fit-content<br/>（badge.css L1-6）"] --> B["&#60;slot /&#62;<br/>宿主内容：按钮 / 头像 / 标签 / 文本"]
+    A --> C["&#60;transition name='xy-zoom-in-center'&#62;<br/>（badge.vue L57）"]
     C --> D{"v-if<br/>!hidden 且（content 或 isDot 或 content 插槽）<br/>（badge.vue L59）"}
     D -->|"条件成立"| E["sup.xy-badge__content<br/>（badge.vue L58-73）"]
     E --> F["类型类<br/>__content--primary/success/warning/info/danger<br/>（badge.css L57-85）"]

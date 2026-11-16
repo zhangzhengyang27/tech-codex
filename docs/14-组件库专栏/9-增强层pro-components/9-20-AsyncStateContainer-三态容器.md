@@ -206,7 +206,7 @@ sequenceDiagram
     U->>ASC: 点击「重新加载」
     ASC->>RF: emit("retry") — 无载荷
     RF->>LOAD: load("retry")
-    LOAD->>LOAD: loading=true; error=null (47-48 行)
+    LOAD->>LOAD: loading=true； error=null (47-48 行)
     LOAD->>API: createProRequestContext("retry",...)<br/>request-utils.ts:21-31
     API-->>LOAD: resolve / reject
     LOAD->>RF: loading=false (62 行) — error 随成败更新

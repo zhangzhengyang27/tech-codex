@@ -382,7 +382,7 @@ sequenceDiagram
 
     Note over S: 服务器开始处理请求<br/>（数据库查询、模板渲染等）
 
-    S-->>B: 103 Early Hints<br/>Link: </css/critical.css>; rel=preload; as=style<br/>Link: <https://cdn.example.com>; rel=preconnect
+    S-->>B: 103 Early Hints<br/>Link: </css/critical.css>； rel=preload； as=style<br/>Link: <https://cdn.example.com>； rel=preconnect
 
     Note over B: 收到 103 后立即开始<br/>1. 预连接 cdn.example.com<br/>2. 预加载 critical.css
 
@@ -490,7 +490,7 @@ sequenceDiagram
 
     Note over B,S: 首次连接
     B->>S: GET / （HTTP/2 over TCP）
-    S-->>B: 200 OK<br/>Alt-Svc: h3=":443"; ma=86400
+    S-->>B: 200 OK<br/>Alt-Svc: h3=":443"； ma=86400
 
     Note over B: 缓存 Alt-Svc 信息<br/>下次尝试 HTTP/3
 

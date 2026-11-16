@@ -319,7 +319,7 @@ margin 和负 margin 补丁消失了，`rowGap` / `columnGap` 上位，而且比
 ```mermaid
 flowchart TD
     S["props.size<br/>number | 'sm' | 'md' | 'lg'"] --> Q{"typeof size === 'number'？"}
-    Q -- "是：逃生舱" --> N["`${size}px` 直通<br/>space.vue:22-24"]
+    Q -- "是：逃生舱" --> N["&#96;${size}px&#96; 直通<br/>space.vue:22-24"]
     Q -- "否：语义档" --> L["查表 { sm: 8, md: 12, lg: 16 }<br/>space.vue:26-30"]
     L --> T["与刻度令牌同值不同源<br/>--xy-space-2/3/4 恰为 8/12/16"]
     N --> V["gap 写入容器行内样式<br/>space.vue:37"]

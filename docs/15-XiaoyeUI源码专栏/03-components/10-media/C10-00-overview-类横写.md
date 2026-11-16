@@ -116,7 +116,7 @@ sequenceDiagram
   CTX->>GRP: useMergedState 更新 isShowPreview
   GRP->>PRV: visible 与 src 等于 canPreviewUrls.get(current)
   PRV->>DLG: 透传 transitionName getContainer zIndex
-  DLG--->U: PortalWrapper 挂到 body 并锁滚动
+  DLG-->U: PortalWrapper 挂到 body 并锁滚动
   U->>PRV: 点击右箭头或按方向键
   PRV->>CTX: setCurrent previewUrlsKeys 的下一项
   CTX->>PRV: combinationSrc 重算 图片换源

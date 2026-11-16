@@ -70,9 +70,9 @@ category: XiaoyeUI源码专栏
 ```mermaid
 graph TD
   subgraph Bind["绑定层（发布面）"]
-    DJ["date-picker/dayjs.tsx:18 generatePicker&lt;Dayjs&gt;"]
-    MO["date-picker/moment.tsx:18 generatePicker&lt;Moment&gt;"]
-    DF["date-picker/date-fns.tsx:18 generatePicker&lt;Date&gt;"]
+    DJ["date-picker/dayjs.tsx:18 generatePicker&#60;Dayjs&#62;"]
+    MO["date-picker/moment.tsx:18 generatePicker&#60;Moment&#62;"]
+    DF["date-picker/date-fns.tsx:18 generatePicker&#60;Date&#62;"]
     IDX["date-picker/index.tsx:1 转发 ./dayjs"]
   end
   subgraph Factory["工厂层 generatePicker/index.tsx"]

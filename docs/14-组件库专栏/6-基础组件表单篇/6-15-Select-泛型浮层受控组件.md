@@ -73,11 +73,11 @@ const optionMap = computed(() => {
 
 ```mermaid
 flowchart TD
-    P["props.options<br/>SelectOptionItem&lt;T&gt;[]（平铺项或分组）"]
+    P["props.options<br/>SelectOptionItem&#60;T&#62;[]（平铺项或分组）"]
     P --> G{"isOptionGroup<br/>select.vue:116-118"}
     G -->|"分组：禁用 OR、groupLabel 下沉"| F1["allOptions 拍平（匹配层）<br/>select.vue:120-139"]
     G -->|"平铺：原样入表"| F1
-    F1 --> M["optionMap：Map&lt;T, 选项&gt; 反查索引<br/>select.vue:141-147"]
+    F1 --> M["optionMap：Map&#60;T, 选项&#62; 反查索引<br/>select.vue:141-147"]
     P --> F2["groupedOptions（渲染层）<br/>过滤 + 保分组 + flatIndex<br/>select.vue:204-260"]
     AC["createdOption（allowCreate）<br/>select.vue:178-202"] --> F2
     F2 --> FO["filteredOptions<br/>select.vue:262"]

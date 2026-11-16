@@ -28,8 +28,6 @@ API 优先的策略，在微服务架构的应用实现中，有着更加重要�
 
 在 API 实现中，首要的一个问题是选择 API 的实现方式。理论上来说，微服务的内部 API 对互操作性的要求不高，可以使用私有格式。不过，为了可以使用服务网格，推荐使用通用的标准格式，下表给出了常见的 API 格式。除了使用较少的 SOAP 之外，一般在 REST 和 gRPC 之间选择。两者的区别在于，REST 使用文本格式，gRPC 使用二进制格式；两者在流行程度、实现难度和性能上存在不同。简单来说，REST 相对更加流行，实现难度较低，但是性能不如 gRPC。
 
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__CgoCgV6ZTAOAe8LCAAAmZRAsEQw388.png)
-
 本系列的示例应用的 API 使用 REST 实现，不过会有一个节专门来介绍 gRPC。下面介绍与 REST API 相关的 OpenAPI 规范。
 
 ## OpenAPI 规范
@@ -44,13 +42,9 @@ OpenAPI 规范中定义了几种基本类型，分别是 integer、number、stri
 
 下表中给出了 OpenAPI 文档的根对象中可以出现的字段及其说明，写作时 OpenAPI 规范的最新版本是 3.0.3（截至 2026 年 9 月，现行版本为 OpenAPI 3.1 系列，本文示例所用的 3.0.x 语法仍然广泛使用）。
 
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__Ciqah16ZTAOAAwW0AACP-qu5xrk547.png)
-
 ### Info 对象
 
 Info 对象包含了 API 的元数据，可以帮助使用者更好的了解 API 的相关信息。下表给出了 Info 对象中可以包含的字段及其说明。
-
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__Cgq2xl6ZTAOAdpURAABX1Kfh-DM443.png)
 
 下面的代码是 Info 对象的使用示例。
 
@@ -69,8 +63,6 @@ version: 2.1.0
 ### Server 对象
 
 Server 对象表示 API 的服务器，下表给出了 Server 对象中可以包含的字段及其说明。
-
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__CgoCgV6ZTAOABcF1AAA-57NeBGQ901.png)
 
 下面代码是 Server 对象的使用示例，其中服务器的 URL 中包含了 port 和 basePath 两个参数，port 是枚举类型，可选值是 80 和 8080。
 
@@ -93,13 +85,9 @@ Paths 对象中的字段是动态的。每个字段表示一个路径，以“/�
 
 在 Paths 对象中，HTTP 方法对应的字段的值的类型是 Operation 对象，表示 HTTP 操作。下表给出了 Operation 对象中可以包含的字段及其说明，在这些字段中，比较常用的是 parameters、requestBody 和 responses。
 
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__Ciqah16ZTAOAC-XoAAC9Yc_U9FY508.png)
-
 ### Parameter 对象
 
 Parameter 对象表示操作的参数。下表给出了 Parameter 对象中可以包含的字段及其说明。
-
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__Cgq2xl6ZTAOANejbAADhE2FZLo4096.png)
 
 下面的代码是 Parameter 对象的使用示例，参数 id 出现在路径中，类型是 string。
 
@@ -114,13 +102,9 @@ schema:
 
 RequestBody 对象表示 HTTP 请求的内容，下表给出了 RequestBody 对象中可以包含的字段及其说明。
 
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__CgoCgV6ZTAOAU9XxAAA4YbmwX3A208.png)
-
 ### Responses 对象
 
 Responses 对象表示 HTTP 请求的响应，该对象中的字段是动态的。字段的名称是 HTTP 响应的状态码，对应的值的类型是 Response 或 Reference 对象。下表给出了 Response 对象中可以包含的字段及其说明。
-
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__Ciqah16ZTAOAHz9LAAB3y1Wy79M022.png)
 
 ### Reference 对象
 
@@ -279,8 +263,6 @@ docker run -d -p 8000:8080 swaggerapi/swagger-editor
 
 下图是 Swagger 编辑器的界面。
 
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__Cgq2xl6ZTASABJOwAAFARz_LfhM630.png)
-
 ### Swagger 界面
 
 Swagger 界面提供了一种直观的方式来查看 API 文档，并进行交互。通过该界面，可以直接发送 HTTP 请求到 API 服务器，并查看响应结果。
@@ -294,8 +276,6 @@ docker run -d -p 8010:8080 swaggerapi/swagger-ui
 docker run -p 8010:8080 -e SWAGGER_JSON=/api/openapi.yml -v $PWD:/api swaggerapi/swagger-ui
 
 下图是 Swagger 界面的截图。
-
-![](/cloud-native-images/10-使用_OpenAPI_和_Swagger_实现_API_优先设计__CgoCgV6ZTASAXGi3AAH17b7200I115.png)
 
 ### 代码生成
 

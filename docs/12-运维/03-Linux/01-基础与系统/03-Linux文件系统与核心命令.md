@@ -52,7 +52,7 @@ graph TB
 | 目录 | 用途 | 典型操作 |
 |------|------|---------|
 | `/home/user/` | 用户主目录 | 项目代码、.ssh 密钥 |
-| `/etc/11-Nginx基础概述/` | Nginx 配置 | 修改站点配置、反向代理 |
+| `/etc/nginx/` | Nginx 配置 | 修改站点配置、反向代理 |
 | `/var/log/` | 系统/应用日志 | 排查部署问题 |
 | `/var/www/` | Web 根目录 | 前端构建产物部署 |
 | `/usr/local/bin/` | 用户级可执行文件 | Node.js、pnpm 安装位置 |
@@ -136,7 +136,7 @@ flowchart TD
 
 ```bash
 # 实时监控 Nginx 访问日志
-tail -f /var/log/11-Nginx基础概述/access.log
+tail -f /var/log/nginx/access.log
 
 # 查看 SSH 配置（分页）
 less /etc/ssh/sshd_config
@@ -149,10 +149,10 @@ head -n 5 package.json
 
 ```bash
 # 在文件中搜索
-grep "listen" /etc/11-Nginx基础概述/11-Nginx基础概述.conf
+grep "listen" /etc/nginx/nginx.conf
 
 # 递归搜索目录
-grep -r "proxy_pass" /etc/11-Nginx基础概述/
+grep -r "proxy_pass" /etc/nginx/
 
 # 忽略大小写 + 显示行号
 grep -in "error" /var/log/syslog
@@ -240,9 +240,9 @@ cat /proc/filesystems # 支持的文件系统类型
 ```bash
 # 标准工作流
 sudo apt update                    # 更新源索引
-sudo apt install -y 11-Nginx基础概述          # 安装
-sudo apt remove 11-Nginx基础概述              # 卸载（保留配置）
-sudo apt purge 11-Nginx基础概述               # 卸载（删除配置）
+sudo apt install -y nginx          # 安装
+sudo apt remove nginx              # 卸载（保留配置）
+sudo apt purge nginx               # 卸载（删除配置）
 sudo apt autoremove                # 清理孤立依赖
 sudo apt upgrade                   # 升级所有包
 
@@ -257,8 +257,8 @@ apt list --installed
 ```bash
 # 标准工作流
 sudo yum makecache                 # 更新源缓存
-sudo yum install -y 11-Nginx基础概述          # 安装
-sudo yum remove 11-Nginx基础概述              # 卸载
+sudo yum install -y nginx          # 安装
+sudo yum remove nginx              # 卸载
 sudo yum update                    # 升级所有包
 
 # 搜索与查看

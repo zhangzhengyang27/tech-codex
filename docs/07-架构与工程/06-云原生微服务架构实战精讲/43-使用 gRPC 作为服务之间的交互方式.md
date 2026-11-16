@@ -364,12 +364,8 @@ finishLatch.await(1, TimeUnit.MINUTES);
 
 ```
 
-在本地开发和调试中，直接使用 Java 客户端不太方便，推荐使用单独的 gRPC 工具，如 BloomRPC（注：BloomRPC 已停止维护，现行的替代包括 Postman 与 Insomnia 的 gRPC 支持以及 grpcurl 等命令行工具）。BloomRPC 可以导入 Protobuf 文件并调用 gRPC 服务，如下图所示。
-
-![](/cloud-native-images/43-使用_gRPC_作为服务之间的交互方式__Ciqc1F8zqeKARFX7AAJaspyUGxw904.png)
+在本地开发和调试中，直接使用 Java 客户端不太方便，推荐使用单独的 gRPC 工具，如 BloomRPC（注：BloomRPC 已停止维护，现行的替代包括 Postman 与 Insomnia 的 gRPC 支持以及 grpcurl 等命令行工具）。BloomRPC 可以导入 Protobuf 文件并调用 gRPC 服务。
 
 ## 总结
 
 相对于 REST API，gRPC 提供了更灵活的交互方式、更好的性能和更少的带宽占用，适用于云原生应用中微服务之间的交互。通过本节的学习，你可以对 gRPC 和 Protocol Buffers 有基本的了解，以及如何在应用中创建 gRPC 服务，并通过客户端来调用 gRPC 服务。
-
-

@@ -275,7 +275,7 @@ Java 11 HttpClient 默认优先协商 HTTP/2。HTTP/2 的多路复用机制在�
 
 **Nginx 配置**:
 
-```11-Nginx基础概述
+```nginx
 http {
     keepalive_timeout  65;    # 空闲超时(秒)
     keepalive_requests 100;   # 最大请求数
@@ -1574,7 +1574,7 @@ public class IMHeartbeatHandler extends ChannelInboundHandlerAdapter {
 
 **Nginx 完整配置示例**:
 
-```11-Nginx基础概述
+```nginx
 http {
     # === 第一段:客户端 ↔ Nginx ===
     keepalive_timeout  65;     # 客户端连接空闲超时(秒)
@@ -1716,7 +1716,7 @@ httpClient = HttpClients.custom()
 
 **Nginx 配置排查**:
 
-```11-Nginx基础概述
+```nginx
 http {
     # 连接超时配置
     keepalive_timeout  65;    # 保持连接超时(秒)
@@ -2042,7 +2042,7 @@ System.out.println("响应超时:" + config.getResponseTimeout());
 ```bash
 # 查看服务端 Keep-Alive 配置
 # Tomcat:查看 server.xml 中的 keepAliveTimeout
-# Nginx:查看 11-Nginx基础概述.conf 中的 keepalive_timeout
+# Nginx:查看 nginx.conf 中的 keepalive_timeout
 
 # 抓包分析
 tcpdump -i eth0 port 8080 -w http.pcap

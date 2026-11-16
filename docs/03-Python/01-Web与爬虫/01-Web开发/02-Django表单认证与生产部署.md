@@ -1451,8 +1451,8 @@ python manage.py collectstatic --noinput
 
 **方案二：Nginx 反向代理（传统部署）**
 
-```11-Nginx基础概述
-# 11-Nginx基础概述.conf 片段
+```nginx
+# nginx.conf 片段
 location /static/ {
     alias /var/www/your_app/staticfiles/;
     expires 30d;  # 浏览器缓存 30 天

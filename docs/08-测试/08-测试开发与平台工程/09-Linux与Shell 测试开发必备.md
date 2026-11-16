@@ -147,11 +147,11 @@ kubectl version --client && helm version
 `grep` 负责正则匹配与过滤，是日志排查的入口。常用参数：`-i` 忽略大小写、`-v` 反向、`-n` 显示行号、`-E` 扩展正则、`-A/-B/-C` 上下文。
 
 ```bash
-# 在 11-Nginx基础概述 日志中查找 5xx 错误，并显示后 3 行上下文
-grep -E " 5[0-9]{2} " /var/log/11-Nginx基础概述/access.log -A 3
+# 在 nginx 日志中查找 5xx 错误，并显示后 3 行上下文
+grep -E " 5[0-9]{2} " /var/log/nginx/access.log -A 3
 
 # 排除健康检查流量后统计错误数
-grep -v "/healthcheck" /var/log/11-Nginx基础概述/access.log | grep -cE " 5[0-9]{2} "
+grep -v "/healthcheck" /var/log/nginx/access.log | grep -cE " 5[0-9]{2} "
 
 # 同时匹配多个关键词
 grep -E "ERROR|FATAL|panic" app.log
@@ -162,8 +162,8 @@ grep -E "ERROR|FATAL|panic" app.log
 `awk` 是一门迷你语言，内置 `NR`（行号）、`NF`（字段数）、`$1`（第一列）等变量，擅长做字段提取与聚合统计。
 
 ```bash
-# 提取 11-Nginx基础概述 日志中第 9 列（HTTP 状态码），统计每个状态码出现次数
-awk '{print $9}' /var/log/11-Nginx基础概述/access.log | sort | uniq -c | sort -rn
+# 提取 nginx 日志中第 9 列（HTTP 状态码），统计每个状态码出现次数
+awk '{print $9}' /var/log/nginx/access.log | sort | uniq -c | sort -rn
 
 # 收集每个接口的耗时样本（假设 $7 是路径、最后一列是耗时）
 awk '{path=$7; t=$NF; arr[path]=arr[path] t ","} END {for (p in arr) print p, arr[p]}' access.log

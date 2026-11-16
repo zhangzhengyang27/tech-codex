@@ -8,6 +8,11 @@ tags: [HTTPS, TLS, 数字证书]
 
 # HTTPS：浏览器如何验证数字证书
 
+::: tip 分工声明
+HTTPS/TLS 在站内有多个视角:[HTTPS](</docs/fullstack/04-网络协议与Web接口/01-HTTPS>)(全栈配置视角)·[浏览器安全体系：同源策略、攻击防御与加密传输](</docs/security/20-浏览器安全：同源策略与加密传输>)(浏览器视角)。
+本篇=证书机制视角:证书链验证、吊销检查(CRL/OCSP/Stapling)与 Certificate Transparency。
+:::
+
 ## 0. 引言
 
 HTTPS 的安全性建立在 TLS 协议和数字证书之上。**浏览器验证数字证书的真实性和有效性，是防止中间人攻击的关键环节**。本文将阐述证书验证的完整流程，涵盖证书链、CRL/OCSP 和 Certificate Transparency。

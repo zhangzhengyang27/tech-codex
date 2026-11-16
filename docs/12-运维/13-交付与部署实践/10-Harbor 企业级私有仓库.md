@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # Harbor 企业级私有仓库
 
 ## 概述
@@ -117,16 +121,16 @@ docker compose ps
 docker login 192.168.1.100
 
 # 打标签（格式：harbor地址/项目名/镜像名:标签）
-docker tag 11-Nginx基础概述:latest 192.168.1.100/myproject/11-Nginx基础概述:v1.0
+docker tag nginx:latest 192.168.1.100/myproject/nginx:v1.0
 
 # 推送
-docker push 192.168.1.100/myproject/11-Nginx基础概述:v1.0
+docker push 192.168.1.100/myproject/nginx:v1.0
 ```
 
 ### 拉取镜像
 
 ```bash
-docker pull 192.168.1.100/myproject/11-Nginx基础概述:v1.0
+docker pull 192.168.1.100/myproject/nginx:v1.0
 ```
 
 ### 配置非 HTTPS

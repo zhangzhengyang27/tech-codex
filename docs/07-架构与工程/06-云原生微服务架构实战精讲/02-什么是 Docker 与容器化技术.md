@@ -16,8 +16,6 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 下面我将首先介绍应用部署方面的技术发展。下图给出了应用部署发展的阶段，即从传统部署到硬件虚拟化，再到容器化。这里我们首先介绍其中的硬件虚拟化技术。
 
-![](/cloud-native-images/02-什么是_Docker_与容器化技术__CgpOIF5zkHKAQY_0AAA1lF7QpB8143.png)
-
 应用部署技术的发展
 
 ## 硬件虚拟化技术
@@ -46,8 +44,6 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 下图是传统的部署方式，可以看出，最大的问题在于手动维护安装文档，任何手动维护的文档从根本上来说都是不可信的，文档可能与代码失去同步。
 
-![](/cloud-native-images/02-什么是_Docker_与容器化技术__Cgq2xl5zkHKAU5lwAABTrPBwwW8852.png)
-
 传统部署方式
 
 开发和生产环境的这种不一致性，会随着应用的复杂性而加剧。从单体应用迁移到微服务架构，对应用部署的要求更高，需要部署的应用数量从一个变成多个，而且每个服务所使用的技术栈和依赖的外部服务都可能千差万别。如果以硬件虚拟化来实现，还需要为每个服务创建独立的操作系统镜像，这些镜像的管理、更新和维护都是一个巨大的挑战。
@@ -58,9 +54,7 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 使用容器化技术所创建的镜像包含了应用所依赖的全部内容。一个 Java 应用的镜像，除了包含应用本身的 JAR 文件之外，还包含所需的 JDK 和如何启动应用的信息。**容器的镜像是自包含的，同时也是可运行的。**运维团队所做的仅仅是从镜像中创建容器并运行。这就进一步明确开发和运维团队的职责，开发团队负责创建应用对应的镜像，而运维团队只负责管理基础设施和容器的运行。
 
-如下图所示，在容器化的部署方式中，应用镜像是开发团队和运维团队的唯一交集。
-
-![](/cloud-native-images/02-什么是_Docker_与容器化技术__CgpOIF5zkHKAM9yCAABEUV3eqZc348.png)
+如下，在容器化的部署方式中，应用镜像是开发团队和运维团队的唯一交集。
 
 容器化部署方式
 
@@ -86,30 +80,28 @@ Docker 的安装很简单。在本地开发环境中，Windows 和 macOS 可以�
 
 ### 运行容器
 
-当使用 docker run 命令运行容器时需要指定镜像的名称。下面的代码是运行 Nginx 对应的镜像，11-Nginx基础概述 是镜像的名称；镜像名称前面没有注册表的地址，默认从 Docker Hub 获取，镜像名称之后的 1.17 是镜像的标签，用来区分不同的版本；--name 参数用来指定容器的名称。
+当使用 docker run 命令运行容器时需要指定镜像的名称。下面的代码是运行 Nginx 对应的镜像，nginx 是镜像的名称；镜像名称前面没有注册表的地址，默认从 Docker Hub 获取，镜像名称之后的 1.17 是镜像的标签，用来区分不同的版本；--name 参数用来指定容器的名称。
 
-$ docker run --name 11-Nginx基础概述 11-Nginx基础概述:1.17
+$ docker run --name nginx nginx:1.17
 
-docker run 运行的容器默认在前台运行，我们也可以使用 -d 参数让容器在后台运行。容器启动之后，可通过 docker ps 命令来查看运行容器的状态，容器运行之后，我们可以使用 docker exec 在容器中执行命令。下面的命令在名为 11-Nginx基础概述 的容器中执行 hostname 命令。
+docker run 运行的容器默认在前台运行，我们也可以使用 -d 参数让容器在后台运行。容器启动之后，可通过 docker ps 命令来查看运行容器的状态，容器运行之后，我们可以使用 docker exec 在容器中执行命令。下面的命令在名为 nginx 的容器中执行 hostname 命令。
 
-$ docker exec 11-Nginx基础概述 hostname
+$ docker exec nginx hostname
 
 上述命令在执行 hostname 之后就会退出。在开发中，可能需要在运行的容器上执行很多命令，这个时候可以运行一个交互式的 shell。
 
-$ docker exec -it 11-Nginx基础概述 sh
+$ docker exec -it nginx sh
 
-我们分别使用 docker start、docker pause、docker stop 和 docker rm 来启动、暂停、停止和删除容器。Docker Desktop 提供了图形化界面来管理容器，如下图所示。
-
-![](/cloud-native-images/02-什么是_Docker_与容器化技术__Cgq2xl5zkHOAOZK8AAUQn1gHep8162.png)
+我们分别使用 docker start、docker pause、docker stop 和 docker rm 来启动、暂停、停止和删除容器。Docker Desktop 提供了图形化界面来管理容器。
 
 Docker Desktop
 
 容器通常可以对外提供服务，为了在本地访问容器中的服务，我们需要把容器中开放的端口暴露到本地机器上。Nginx 容器暴露了 80 端口，可以使用 -p 参数来暴露端口。在下面的代码中，我们使用 -p 参数把容器的 80 端口暴露在本地机器上的 10080 端口，再使用 curl 来访问。
 
-$ docker run --name 11-Nginx基础概述 -p 10080:80 11-Nginx基础概述:1.17
+$ docker run --name nginx -p 10080:80 nginx:1.17
 $ curl http://localhost:10080
 
-对于运行的容器，则可以通过 docker logs 命令来查看日志，如 docker logs 11-Nginx基础概述。
+对于运行的容器，则可以通过 docker logs 命令来查看日志，如 docker logs nginx。
 
 有些镜像在创建时提供了可以进行配置的环境变量。在运行容器时，可以使用 -e 参数来传递环境变量。下面的命令运行的是 MySQL 8 容器，并指定了 root 用户的密码和数据库名称。
 

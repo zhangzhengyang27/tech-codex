@@ -947,7 +947,7 @@ window.addEventListener("scroll", () => {
 
 **解决方案**：服务器端配置回退到入口页面。
 
-```11-Nginx基础概述
+```nginx
 # Nginx 配置
 location / {
   try_files $uri $uri/ /index.html;

@@ -72,7 +72,7 @@ sequenceDiagram
 
 ### 4.1 Nginx 基础负载均衡配置回顾
 
-```11-Nginx基础概述
+```nginx
 http {
     # ...
     upstream app_servers {
@@ -101,7 +101,7 @@ http {
 
 **解决办法（两种）**：
 
-```11-Nginx基础概述
+```nginx
 # 方式一：X-Forwarded-For（传递标准头）
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
@@ -115,7 +115,7 @@ proxy_set_header X-Real-IP $remote_addr;
 
 用户直接用 IP 而非域名请求时，Host 头为该 IP（早期 HTTP/1.0 客户端甚至不带 Host），若后端校验域名则需要在 Nginx 改写：
 
-```11-Nginx基础概述
+```nginx
 http {
     # ...
     upstream app_servers {
@@ -141,7 +141,7 @@ Nginx 默认开启轮询（Round Robin）策略，用户两次请求可能分发
 
 1. **Session 保持（推荐 Nginx 侧）**：改用 `ip_hash` / URL_hash，让同一用户固定落到同一台后端。
 
-```11-Nginx基础概述
+```nginx
 http {
     # ...
     upstream app_servers {
@@ -160,7 +160,7 @@ http {
 }
 ```
 
-```11-Nginx基础概述
+```nginx
 http {
     # ...
     upstream app_servers {
@@ -187,9 +187,9 @@ http {
 
 **默认机制局限**：Nginx 默认基于 TCP（Transmission Control Protocol，传输控制协议）端口与连接方式检测，即只在前端 ping 不通、无法建立 TCP 连接、端口服务完全不可用时才判定不可用；对响应状态/返回状态异常缺乏有效容错。`proxy_next_upstream` 能检测到后端返回的状态码，但无法自动摘除故障节点。
 
-**依赖第三方模块**：`11-Nginx基础概述_upstream_check_module`（淘宝技术团队开发开源，可编译进 Nginx，或直接使用基于 Nginx 1.6 开源的 Tengine）：
+**依赖第三方模块**：`nginx_upstream_check_module`（淘宝技术团队开发开源，可编译进 Nginx，或直接使用基于 Nginx 1.6 开源的 Tengine）：
 
-```11-Nginx基础概述
+```nginx
 check interval=3000 rise=2 fall=5 timeout=1000 type=http;  # 检查间隔/周期/超时时间
 check_keepalive_requests 100;                               # 一个连接发送的请求数
 check_http_send "HEAD / HTTP/1.1\r\nConnection: keep-alive\r\n\r\n";  # 定义健康检查方式
@@ -203,10 +203,10 @@ check_http_expect_alive http_2xx http_3xx;                 # 判断后端返回�
 - **`X-Forwarded-For` 可被伪造**：用户可篡改请求头，导致后端采集到的"用户 IP"不真实；多级代理场景下单靠该头难以还原真实来源。
 - **`remote_addr` 多级代理失效**：存在中间 n 层代理时，`remote_addr` 只取最近一层代理的 IP，取不到真实用户 IP。二者常需组合使用。
 - **Session 丢失**：默认轮询会把同一用户打到不同后端，需用 ip_hash/URL_hash 或 Session 复制/共享。
-- **默认健康检测有遗漏**：Nginx 仅按 TCP 端口/连接判定，对 HTTP 业务层异常（非 200/300）失效，需引入 `11-Nginx基础概述_upstream_check_module` 做真实状态检测。
+- **默认健康检测有遗漏**：Nginx 仅按 TCP 端口/连接判定，对 HTTP 业务层异常（非 200/300）失效，需引入 `nginx_upstream_check_module` 做真实状态检测。
 
 ## ⑥ 进阶扩展与参考
 
-- **动态负载均衡**：服务注册发现架构中的「动态 upstream」实现（OpenResty + Lua / confd / 11-Nginx基础概述-upsync / Kong / Traefik），见本目录《03-入口网关服务注册发现-OpenResty 动态 upstream》。
+- **动态负载均衡**：服务注册发现架构中的「动态 upstream」实现（OpenResty + Lua / confd / nginx-upsync / Kong / Traefik），见本目录《03-入口网关服务注册发现-OpenResty 动态 upstream》。
 - **4/7 层入口 SLB 设计**：LVS 四种模式（DR/NAT/TUNNEL/FULLNAT）与 OSPF+ECMP、DPDK 优化方向，见本目录《04-4、7 层入口负载均衡 SLB 如何作才是最佳姿势》。
 - **基础配置与性能优化**：本目录聚焦「优化/负载均衡/网关/网络专项」，Nginx 基础配置参考相邻 Nginx 专题，见本库 `docs/运维/04-Nginx/`。

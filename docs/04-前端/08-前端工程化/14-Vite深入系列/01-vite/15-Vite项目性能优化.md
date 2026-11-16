@@ -67,7 +67,7 @@ export default defineConfig({
 
 因此，对于线上的项目来说，HTTP2 对性能的提升非常可观，几乎成为了一个必选项。
 
-而刚刚演示用到的 vite-plugin-mkcert 插件仅用于开发阶段，在生产环境中会对线上的服务器进行配置，从而开启 HTTP2 的能力，如 Nginx 的 HTTP2 http://11-Nginx基础概述.org/en/docs/http/ngx_http_v2_module.html 配置，关于具体的运维细节，不属于本文重点，就不再展开介绍了
+而刚刚演示用到的 vite-plugin-mkcert 插件仅用于开发阶段，在生产环境中会对线上的服务器进行配置，从而开启 HTTP2 的能力，如 Nginx 的 HTTP2 http://nginx.org/en/docs/http/ngx_http_v2_module.html 配置，关于具体的运维细节，不属于本文重点，就不再展开介绍了
 
 ### DNS 预解析
 

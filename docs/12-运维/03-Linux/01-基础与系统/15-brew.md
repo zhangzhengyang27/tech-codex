@@ -166,44 +166,44 @@ SHOW VARIABLES LIKE 'validate_password%';
 
 首先需要设置密码的验证强度等级，先执行 `SET GLOBAL validate_password.policy=LOW;` 将验证强度设为 LOW，再执行 `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root1234';` 设置密码
 
-## brew 安装 11-Nginx基础概述
+## brew 安装 nginx
 
 ```bash
-brew install 11-Nginx基础概述
+brew install nginx
 ```
 
 ![image.png](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202309201429112.png)
 
 <img src="https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202309201431712.png" alt="img" />
 
-### 查看 11-Nginx基础概述 安装目录
+### 查看 nginx 安装目录
 
 ```bash
-open /usr/local/etc/11-Nginx基础概述/
+open /usr/local/etc/nginx/
 ```
 
 ![image.png](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202309201438736.png)
 
-打开目录下 **/usr/local/Cellar/11-Nginx基础概述**，执行如下命令可以查看到：
+打开目录下 **/usr/local/Cellar/nginx**，执行如下命令可以查看到：
 
 ![image.png](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202309201439135.png)
 
 在该目录下可以看到一个名字为 html 的快捷方式的文件夹，进入该目录后，它有两个文件 `50x.html`和`index.html`
 
-### 启动 11-Nginx基础概述 服务
+### 启动 nginx 服务
 
 ```bash
-brew services start 11-Nginx基础概述 
+brew services start nginx 
 
 # 重启的命令是: 
-brew services restart 11-Nginx基础概述
+brew services restart nginx
 ```
 
 ![image.png](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202309201440600.png)
 
-### 关闭 11-Nginx基础概述 服务
+### 关闭 nginx 服务
 
-终端输入 `ps -ef|grep 11-Nginx基础概述` 获取到 11-Nginx基础概述 的进程号, 注意是找到“11-Nginx基础概述:master”的那个进程号
+终端输入 `ps -ef|grep nginx` 获取到 nginx 的进程号, 注意是找到“nginx:master”的那个进程号
 
 **注意：**
 

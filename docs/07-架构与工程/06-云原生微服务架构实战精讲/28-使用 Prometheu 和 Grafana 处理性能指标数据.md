@@ -301,11 +301,7 @@ kubectl port-forward -n monitoring svc/prometheus-operated 9090:9090
 
 在下图所展示的 Prometheus 的抓取目标界面中，可以看到新添加的地址管理服务。
 
-![](/cloud-native-images/28-使用_Prometheu_和_Grafana_处理性能指标数据__CgqCHl7sZxyATTFdAAFwKlrVwNk076.png)
-
 通过 Grafana 的界面可以创建出各种类型的图表。下图是地址管理服务的搜索操作的请求处理速度。
-
-![](/cloud-native-images/28-使用_Prometheu_和_Grafana_处理性能指标数据__Ciqc1F7sZyOALneTAADTwktOkp4086.png)
 
 ## 总结
 

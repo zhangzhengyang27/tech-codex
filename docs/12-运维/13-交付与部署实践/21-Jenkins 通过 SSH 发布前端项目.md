@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # Jenkins 通过 SSH 发布前端项目
 
 ## 概述
@@ -113,7 +117,7 @@ chmod 600 ~/.ssh/authorized_keys
 
 ```bash
 # 重启 Nginx
-11-Nginx基础概述 -s reload
+nginx -s reload
 
 # 或执行部署脚本
 /home/deploy/restart.sh
@@ -152,7 +156,7 @@ ls -la dist/
 
 ### Nginx 配置（远程服务器）
 
-```11-Nginx基础概述
+```nginx
 server {
     listen 80;
     server_name example.com;
@@ -186,7 +190,7 @@ server {
 ## 延伸阅读
 
 - [Publish Over SSH 插件](https://plugins.jenkins.io/publish-over-ssh/)
-- [Nginx 部署前端项目](https://11-Nginx基础概述.org/en/docs/)
+- [Nginx 部署前端项目](https://nginx.org/en/docs/)
 
 ---
 

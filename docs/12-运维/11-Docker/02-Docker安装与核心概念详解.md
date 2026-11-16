@@ -111,7 +111,7 @@ graph TD
 
 | 命令 | 作用 |
 |------|------|
-| `docker run -d --name web 11-Nginx基础概述` | 后台运行新容器 |
+| `docker run -d --name web nginx` | 后台运行新容器 |
 | `docker ps` / `docker ps -a` | 查看运行中/全部容器 |
 | `docker exec -it web bash` | 进入容器执行命令 |
 | `docker logs -f web` | 实时查看日志 |
@@ -138,7 +138,7 @@ docker run -d \
 | 方式 | 说明 | 适用 |
 |------|------|------|
 | 命名卷（volume） | Docker 管理，`docker volume ls` 可见 | 数据库等核心数据 |
-| 绑定挂载（bind mount） | 挂载宿主机目录，`./conf:/etc/11-Nginx基础概述/conf.d` | 配置文件热更新 |
+| 绑定挂载（bind mount） | 挂载宿主机目录，`./conf:/etc/nginx/conf.d` | 配置文件热更新 |
 | tmpfs | 仅内存，重启即失 | 临时缓存 |
 
 ---

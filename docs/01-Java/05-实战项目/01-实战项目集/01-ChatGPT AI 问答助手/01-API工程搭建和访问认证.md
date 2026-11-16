@@ -61,9 +61,9 @@ public class Application {
 
 #### Nginx 配置
 
-这里需要改动 11-Nginx基础概述 的 default.conf 配置文件，添加 auth 认证模块；
+这里需要改动 nginx 的 default.conf 配置文件，添加 auth 认证模块；
 
-```11-Nginx基础概述
+```nginx
 server {
 
   listen       80;
@@ -73,7 +73,7 @@ server {
   index index.html;
 
   location / {
-    root   /usr/share/11-Nginx基础概述/html;
+    root   /usr/share/nginx/html;
     index  index.html index.htm;
   }
 
@@ -113,13 +113,13 @@ server {
 用户访问 http://localhost/api 目标是到 `http://192.168.1.101:8080/success`  但这里添加了 auth 模块，所以会先进入 auth 的处理。
 
 1. `= auth 是绝对匹配，没有 = 号就是前缀匹配。在 auth 中把请求 api 的参数获取到在访问到验证地址 http://192.168.1.101:8080/verify?$query`  如果接口返回一个 200 的码就通过，其他的码就失败
-2. 注意：每次修改 11-Nginx基础概述 配置后，需要重启或者 reload 才会生效
+2. 注意：每次修改 nginx 配置后，需要重启或者 reload 才会生效
 
 ### 功能验证
 
 启动 chatgpt-api SpringBoot 服务
 
-命令：`docker restart 11-Nginx基础概述`  或者在 portainer 页面重启 http://localhost:9000/#!/2/docker/containers
+命令：`docker restart nginx`  或者在 portainer 页面重启 http://localhost:9000/#!/2/docker/containers
 
 访问测试
 

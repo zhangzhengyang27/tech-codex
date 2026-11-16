@@ -1,10 +1,14 @@
 ---
 title: 使用 Kubernetes 部署访问你的第一个应用
-description: 部署第一个 Kubernetes 应用：Deployment/Pod/Service 概念、YAML 配置清单编写、kubectl apply 部署、NodePort 访问及 ingress-11-Nginx基础概述 路径分流（networking.k8s.io/v1）。
+description: 部署第一个 Kubernetes 应用：Deployment/Pod/Service 概念、YAML 配置清单编写、kubectl apply 部署、NodePort 访问及 ingress-nginx 路径分流（networking.k8s.io/v1）。
 keywords: [Kubernetes, Deployment, Service, NodePort, Ingress, kubectl]
 category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
+
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
 
 # 使用 Kubernetes 部署访问你的第一个应用
 
@@ -52,15 +56,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: 11-Nginx基础概述-v1
+      app: nginx-v1
   replicas: 3
   template:
     metadata:
       labels:
-        app: 11-Nginx基础概述-v1
+        app: nginx-v1
     spec:
       containers:
-      - name: 11-Nginx基础概述
+      - name: nginx
         image: registry.cn-hangzhou.aliyuncs.com/janlay/k8s_test:v1
         ports:
         - containerPort: 80
@@ -135,7 +139,7 @@ Pod 是 K8S 中最小的可调度单元（可操作/可部署单元），它里�
    - ports.containerPort：Pod 内容器映射的端口
 
 
-**这里的镜像，我使用了自己编译的一份 11-Nginx基础概述 镜像作为演示，也可以换成你自己的镜像**
+**这里的镜像，我使用了自己编译的一份 nginx 镜像作为演示，也可以换成你自己的镜像**
 
 
 ## 启动第一个应用
@@ -210,7 +214,7 @@ metadata:
   name: front-service-v1
 spec:
   selector:
-    app: 11-Nginx基础概述-v1
+    app: nginx-v1
   ports:
   - protocol: TCP
     port: 80
@@ -276,7 +280,7 @@ kubectl get svc
 在日常开发中，我们经常会遇到**路径分流**问题。例如当我们访问 `/a` 时，需要返回A服务的页面。访问 `/b`，需要返回服务B的页面。这时候，我们就可以使用 `k8s` 中的 `ingress` 去实现。
 
 
-在这里，我们选择 `ingress-11-Nginx基础概述`。 `ingress-11-Nginx基础概述` 是基于 `11-Nginx基础概述` 的一个 `ingress` 实现。当然也可以实现正则匹配路径，流量转发，基于 `cookie header` 切分流量（灰度发布）。
+在这里，我们选择 `ingress-nginx`。 `ingress-nginx` 是基于 `nginx` 的一个 `ingress` 实现。当然也可以实现正则匹配路径，流量转发，基于 `cookie header` 切分流量（灰度发布）。
 
 
 ## 部署 ingress
@@ -284,7 +288,7 @@ kubectl get svc
 
 首先进入 `master` 节点，下载 `ingress`  配置文件：
 ```shell
-wget https://raw.githubusercontent.com/kubernetes/ingress-11-Nginx基础概述/controller-v1.0.4/deploy/static/provider/baremetal/deploy.yaml
+wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.4/deploy/static/provider/baremetal/deploy.yaml
 ```
 
 
@@ -305,14 +309,14 @@ kubectl apply -f deploy.yaml
 
 接下来会自动拉取 `ingress` 镜像，自动部署 `ingress` 。可以使用 `kubectl` 命令查看部署状态：
 ```shell
-kubectl get pods -n ingress-11-Nginx基础概述 -l app.kubernetes.io/name=ingress-11-Nginx基础概述 --watch
+kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx --watch
 ```
 如果 Pod 状态变为 `Running`，则代表部署成功。
 
 
 输入以下命令，检查配置是否生效：
 ```shell
-kubectl -n ingress-11-Nginx基础概述 get svc
+kubectl -n ingress-nginx get svc
 ```
 
 
@@ -339,10 +343,10 @@ mkdir ingress && cd ingress && vim base.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: 11-Nginx基础概述-demo
+  name: nginx-demo
   annotations:
-    11-Nginx基础概述.ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: 11-Nginx基础概述
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
   - http:
@@ -366,10 +370,10 @@ spec:
 `annotations` 是 `ingress` 的主要配置项目，可以通过修改这些配置来调整 `ingress` 的行为。我们可以通过修改这些配置来实现灰度发布，跨域资源，甚至将 `www.abc.com` 重定向到 `abc.com` 。
 
 
-具体详细配置解释，可以翻阅官网文档：[https://kubernetes.github.io/ingress-11-Nginx基础概述/user-guide/11-Nginx基础概述-configuration/annotations/](https://kubernetes.github.io/ingress-11-Nginx基础概述/user-guide/11-Nginx基础概述-configuration/annotations/)
+具体详细配置解释，可以翻阅官网文档：[https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/)
 ```yaml
 annotations:
-    11-Nginx基础概述.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /
 ```
 
 #### rules

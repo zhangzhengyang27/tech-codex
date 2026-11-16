@@ -225,7 +225,7 @@ server.on("upgrade", (req, socket, head) => {
 
 需要开启 Upgrade 头：
 
-```11-Nginx基础概述
+```nginx
 location /ws {
     proxy_pass http://node_app;
     proxy_http_version 1.1;

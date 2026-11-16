@@ -131,8 +131,8 @@ graph LR
 
 ```yaml
 services:
-  11-Nginx基础概述:
-    image: 11-Nginx基础概述:alpine
+  nginx:
+    image: nginx:alpine
     ports: ["80:80"]
     depends_on: [app]
     networks: [frontend]
@@ -160,7 +160,7 @@ networks:
 
 ```mermaid
 graph TD
-    U["外部请求 :80"] --> N["11-Nginx基础概述<br/>frontend 网络"]
+    U["外部请求 :80"] --> N["nginx<br/>frontend 网络"]
     N --> A["node app<br/>frontend + backend"]
     A --> D["mysql<br/>backend 网络"]
     A --> R["redis<br/>backend 网络"]

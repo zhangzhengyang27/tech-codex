@@ -108,7 +108,7 @@ SpringBoot 默认使用内嵌的 tomcat 作为 Web 容器，使用典型的 MVC 
 
 这个参数可以在 Nginx 的配置文件中进行设置。
 
-```11-Nginx基础概述
+```nginx
 location ~* ^.+\.(ico|gif|jpg|jpeg|png)$ {
             # 缓存 1 年
             add_header Cache-Control "public, max-age=31536000";
@@ -125,9 +125,9 @@ DNS 有多层缓存，比如浏览器会缓存一份、本地主机会缓存、I
 
 开启 gzip，可以先把内容压缩后，浏览器再进行解压。由于减少了传输的大小，会减少带宽的使用，提高传输效率。
 
-在 11-Nginx基础概述 中可以很容易地开启，配置如下：
+在 nginx 中可以很容易地开启，配置如下：
 
-```11-Nginx基础概述
+```nginx
 gzip on;
 gzip_min_length 1k;
 gzip_buffers 4 16k;
@@ -144,18 +144,18 @@ gzip_types text/plain application/javascript text/css;
 
 由于连接的创建和关闭，都需要耗费资源。用户访问我们的服务后，后续也会有更多的互动，所以保持长连接可以显著减少网络交互，提高性能。
 
-11-Nginx基础概述 默认开启了对客户端的 keepalive 支持，你可以通过下面两个参数来调整它的行为。
+nginx 默认开启了对客户端的 keepalive 支持，你可以通过下面两个参数来调整它的行为。
 
-```11-Nginx基础概述
+```nginx
 http {
     keepalive_timeout  120s 120s;
     keepalive_requests 10000;
 }
 ```
 
-11-Nginx基础概述 与后端 upstream 的长连接，需要手工开启，参考配置如下：
+nginx 与后端 upstream 的长连接，需要手工开启，参考配置如下：
 
-```11-Nginx基础概述
+```nginx
 location ~ /{
        proxy_pass http://backend;
        proxy_http_version 1.1;

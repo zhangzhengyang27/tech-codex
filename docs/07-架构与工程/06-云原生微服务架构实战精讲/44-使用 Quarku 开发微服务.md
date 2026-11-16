@@ -342,5 +342,3 @@ quarkus/happyride-address-service-quarkus-jvm      533MB
 ## 总结
 
 在云原生微服务架构应用的开发中，我们可以使用不同的 Java 微服务开发框架，并不仅限于 Spring Boot。通过本节的学习，你可以了解到微服务开发框架 Quarkus，以及如何用 Quarkus 来开发和测试微服务，并构建出原生镜像，从而提高微服务的启动速度。
-
-

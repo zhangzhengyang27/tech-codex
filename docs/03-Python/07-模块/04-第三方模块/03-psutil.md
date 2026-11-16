@@ -59,7 +59,7 @@ psutil 在上层提供统一的 Python API，底层根据不同操作系统自�
 ```mermaid
 flowchart LR
     A["process_iter()"] --> B{"按条件过滤"}
-    B -->|名称| C["p.name() == '11-Nginx基础概述'"]
+    B -->|名称| C["p.name() == 'nginx'"]
     B -->|用户| D["p.username() == 'root'"]
     B -->|端口| E["p.net_connections()"]
     B -->|CPU| F["p.cpu_percent() > 80"]
@@ -349,8 +349,8 @@ def find_process(name: str) -> list[psutil.Process]:
             pass
     return result
 
-11-Nginx基础概述_procs = find_process('11-Nginx基础概述')
-print(f"找到 {len(11-Nginx基础概述_procs)} 个 11-Nginx基础概述 进程")
+nginx_procs = find_process('nginx')
+print(f"找到 {len(nginx_procs)} 个 nginx 进程")
 ```
 
 ### 单个进程详细信息
@@ -907,9 +907,9 @@ class ProcessManager:
 if __name__ == "__main__":
     pm = ProcessManager()
 
-    # 查找 11-Nginx基础概述 进程
-    procs = pm.find(name="11-Nginx基础概述")
-    print(f"11-Nginx基础概述 进程: {[p.pid for p in procs]}")
+    # 查找 nginx 进程
+    procs = pm.find(name="nginx")
+    print(f"nginx 进程: {[p.pid for p in procs]}")
 
     # 查找占用 8080 端口的进程
     port_procs = pm.find(port=8080)

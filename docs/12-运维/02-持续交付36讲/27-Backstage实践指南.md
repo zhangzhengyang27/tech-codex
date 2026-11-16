@@ -672,11 +672,11 @@ postgresql:
 # Ingress 配置
 ingress:
   enabled: true
-  className: 11-Nginx基础概述
+  className: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    11-Nginx基础概述.ingress.kubernetes.io/ssl-redirect: "true"
-    11-Nginx基础概述.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
   hosts:
     - host: idp.acme.com
       paths:

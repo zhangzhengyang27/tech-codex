@@ -91,8 +91,6 @@ Link link = Link.of(uriTemplate, "order")
 
 下面是 RepresentationModel 类及其子类的结构图。
 
-![](/cloud-native-images/42-使用_Spring_HATEOAS_增强_REST_服务的语义__CgqCHl8tFzaAcnP-AAA8DI88jKY723.png)
-
 这些模型的说明如下表所示。
 
 | 模型 | 说明 |
@@ -326,5 +324,3 @@ public class AreaProcessor implements
 ## 总结
 
 HATEOAS 可以增强 REST 服务的语义，从而方便客户端更好地使用服务，自动发现服务所提供的功能。通过本节的学习，你可以了解 REST 成熟度模型、HATEOAS 的基本概念，以及如何使用 Spring HATEOAS 为 Spring Boot 微服务增加 HATEOAS 支持。
-
-

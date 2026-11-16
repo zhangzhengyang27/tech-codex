@@ -279,7 +279,7 @@ ingress:
   enabled: true
   hostname: selenium-grid.example.com
   annotations:
-    11-Nginx基础概述.ingress.kubernetes.io/proxy-body-size: 100m
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
 
 # 启用 HPA 弹性伸缩
 autoscaling:

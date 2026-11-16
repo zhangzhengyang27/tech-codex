@@ -147,11 +147,7 @@ Istio 通过 JWT 来进行请求认证，可以与 OpenID Connect 提供者进�
 
 Keycloak 部署运行之后，通过 Keycloak 的界面可以创建新的用户和客户端。这里使用的是默认的领域 master，客户端表示的是进行访问的实体。下图是标识符为 web 的客户端的创建页面。在客户端的设置中，访问类型要设置为 confidential。
 
-![](/cloud-native-images/38-如何实现服务访问控制与双向_TLS__CgqCHl8am_SAAZHcAAFsOM4k-N8853.png)
-
-在客户端的凭据标签页中，可以查看产生的客户端的密钥，如下图所示：
-
-![](/cloud-native-images/38-如何实现服务访问控制与双向_TLS__Ciqc1F8am_qAdPHqAAD0H2zpDVc201.png)
+在客户端的凭据标签页中，可以查看产生的客户端的密钥。
 
 在正常的流程中，当用户在应用界面登录之后，应用后台通过调用 Keycloak 的 API 来获取到表示当前用户身份的 JWT 令牌，并发送给客户端。客户端使用该 JWT 令牌进行后续的请求。本节中只对与 Keycloak 交互的 HTTP 请求进行介绍。
 
@@ -167,8 +163,6 @@ Keycloak 中获取令牌的 API 的路径是 /auth/realms/{realm}/protocol/openi
 | password | 密码 | 创建的用户的密码 |
 
 该 API 的返回值是一个 JSON 对象，其中的 id_token 字段中包含了用户的 JWT 令牌。下图给出了 API 调用的请求和响应的示例。
-
-![](/cloud-native-images/38-如何实现服务访问控制与双向_TLS__CgqCHl8anBOAIVamAAN9OU2igQM578.png)
 
 下面的代码给出了 Keycloak 产生的 JWT 令牌的示例，从中可以看到 iss 和 aud 声明的值。
 

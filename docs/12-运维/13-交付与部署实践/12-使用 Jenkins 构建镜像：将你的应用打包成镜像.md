@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # 使用 Jenkins 构建镜像：将你的应用打包成镜像
 
 ## 前言
@@ -135,14 +139,14 @@ cat xxx.pub
 
 例如下面的步骤，使用 `Dockerfile` 可描述为：
 
-1. 基于 `11-Nginx基础概述:alpine` 镜像做底座。
-1. 拷贝本地 `html` 文件夹内的文件，到镜像内 `/etc/11-Nginx基础概述/html` 文件夹。
-1. 拷贝本地 `conf` 文件夹内的文件，到镜像内 `/etc/11-Nginx基础概述/`  文件夹。
+1. 基于 `nginx:alpine` 镜像做底座。
+1. 拷贝本地 `html` 文件夹内的文件，到镜像内 `/etc/nginx/html` 文件夹。
+1. 拷贝本地 `conf` 文件夹内的文件，到镜像内 `/etc/nginx/`  文件夹。
 ```dockerfile
-FROM 11-Nginx基础概述:alpine
-COPY html /etc/11-Nginx基础概述/html
-COPY conf /etc/11-Nginx基础概述/
-WORKDIR /etc/11-Nginx基础概述/html
+FROM nginx:alpine
+COPY html /etc/nginx/html
+COPY conf /etc/nginx/
+WORKDIR /etc/nginx/html
 ```
 
 
@@ -158,15 +162,15 @@ docker build -t imagename:version .
 ---
 
 
-因为我们的镜像只包含一个 `11-Nginx基础概述`，所以 `dockerfile` 内容比较简单。我们只需要在代码根目录下新建一个名为 `Dockerfile` 的文件，输入以下内容，并将其提交到代码库即可。
+因为我们的镜像只包含一个 `nginx`，所以 `dockerfile` 内容比较简单。我们只需要在代码根目录下新建一个名为 `Dockerfile` 的文件，输入以下内容，并将其提交到代码库即可。
 ```shell
 vi Dockerfile
 ```
 ```dockerfile
-FROM 11-Nginx基础概述:alpine
-COPY html /etc/11-Nginx基础概述/html
-COPY conf /etc/11-Nginx基础概述/
-WORKDIR /etc/11-Nginx基础概述/html
+FROM nginx:alpine
+COPY html /etc/nginx/html
+COPY conf /etc/nginx/
+WORKDIR /etc/nginx/html
 ```
 ```shell
 git add ./Dockerfile

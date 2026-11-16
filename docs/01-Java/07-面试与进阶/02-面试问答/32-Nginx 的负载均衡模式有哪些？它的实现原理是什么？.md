@@ -41,7 +41,7 @@ Nginx 主要的负载均衡策略（内置的负载均衡）有以下四种：
 
 轮询负载策略是指每次将请求按顺序轮流发送至相应的服务器上，它的配置示例如下所示：
 
-```11-Nginx基础概述
+```nginx
 http {
     upstream myapp1 {
         server srv1.example.com;
@@ -64,7 +64,7 @@ Nginx 可以实现 HTTP、HTTPS、FastCGI、uwsgi、SCGI、memcached 和 gRPC �
 
 此策略是指每次将请求分发到当前连接数最少的服务器上，也就是 Nginx 会将请求试图转发给相对空闲的服务器以实现负载平衡，它的配置示例如下：
 
-```11-Nginx基础概述
+```nginx
 upstream myapp1 {
     least_conn;
     server srv1.example.com;
@@ -77,7 +77,7 @@ upstream myapp1 {
 
 此配置方式是指每次会按照服务器配置的权重进行请求分发，权重高的服务器会收到更多的请求，这就相当于给 Nginx 在请求分发时加了一个参考的权重选项，并且这个权重值是可以人工配置的。因此我们就可以将硬件配置高，以及并发能力强的服务器的权重设置高一点，以更合理地利用服务器的资源，它配置示例如下：
 
-```11-Nginx基础概述
+```nginx
 upstream myapp1 {
     server srv1.example.com weight=3;
     server srv2.example.com;
@@ -93,7 +93,7 @@ upstream myapp1 {
 
 ip-hash 负载均衡策略可以根据客户端的 IP，将其固定的分配到相应的服务器上，它的配置示例如下：
 
-```11-Nginx基础概述
+```nginx
 upstream myapp1 {
     ip_hash;
     server srv1.example.com;
@@ -128,7 +128,7 @@ Nginx 的实现原理是，首先客户端通过访问域名地址发出 HTTP �
 
 fail_timeout 定义了健康检查的执行时长，而 max_fails 表示服务不可用的最大尝试次数，当一定时间内（此时间由 fail_timeout 定义），发生了一定次数的服务器不响应的事件（此次数由 max_fails 定义），那么 Nginx 就会将该服务器标识为不可用的服务器，并且在一定时间内禁止请求分发到该服务器。默认情况下 max_fails 设置为 1，当它设置为 0 时表示禁用此服务器的运行状况检查，它的配置示例如下：
 
-```11-Nginx基础概述
+```nginx
 upstream cluster{
     server srv1.example.com max_fails=2 fail_timeout=10s;
     server srv2.example.com max_fails=2 fail_timeout=10s;
@@ -138,11 +138,11 @@ upstream cluster{
 以上配置表示，如果 10s 内发生了两次服务不可用的情况就会将该服务器标识为不可用的状态。
 当服务器被标识为不可用时，只有达到了 fail_timeout 定义的时间后，才会进行再一次的健康请求检测。
 
-而主动健康检测的实现方案有两种，一种是使用商用的 Nginx Plus 来配置主动健康检测，另一种是使用开源的第三方模块 11-Nginx基础概述_upstream_check_module 来实现主动健康检测。
+而主动健康检测的实现方案有两种，一种是使用商用的 Nginx Plus 来配置主动健康检测，另一种是使用开源的第三方模块 nginx_upstream_check_module 来实现主动健康检测。
 
-Nginx Plus 和 11-Nginx基础概述_upstream_check_module 模块的主动健康检查配置大体都是一样的，它的配置示例如下：
+Nginx Plus 和 nginx_upstream_check_module 模块的主动健康检查配置大体都是一样的，它的配置示例如下：
 
-```11-Nginx基础概述
+```nginx
 upstream backend {
     server srv1.example.com;
     server srv2.example.com;
@@ -160,11 +160,11 @@ upstream backend {
 
 Nginx 开启缓存需要在 http 节点中配置 proxy_cache_path 信息，以及 server 节点中配置要缓存资源的后缀名，它的配置示例如下：
 
-```11-Nginx基础概述
+```nginx
 http {
   # 忽略其他的配置信息......
   proxy_cache_path  /data/cache levels=1:2 keys_zone=nuget-cache:20m max_size=50g inactive=1d;
-  include 11-Nginx基础概述_proxy.conf;
+  include nginx_proxy.conf;
   server {
     listen  80;
     server_name  srv1.example.com;
@@ -192,9 +192,9 @@ http {
 | 特性 | 旧版（1.1x） | 当前（1.26.x/1.28.x） |
 |------|--------------|------------------------|
 | 调度算法 | 轮询/权重/IP hash/最少连接 | 不变；算法稳定 |
-| 健康检查 | 被动 | 主动健康检查（11-Nginx基础概述 plus/开源补丁） |
+| 健康检查 | 被动 | 主动健康检查（nginx plus/开源补丁） |
 | 会话保持 | ip_hash | 不变；sticky 模块可选 |
 | 性能 | HTTP/2 | HTTP/3（QUIC）支持（1.25+） |
-| 部署 | 编译/apt | 官方源 + docker 镜像（11-Nginx基础概述:alpine） |
+| 部署 | 编译/apt | 官方源 + docker 镜像（nginx:alpine） |
 
 > Nginx 负载均衡算法（轮询、权重、ip_hash、least_conn、url_hash）与 upstream 配置不随版本变化。

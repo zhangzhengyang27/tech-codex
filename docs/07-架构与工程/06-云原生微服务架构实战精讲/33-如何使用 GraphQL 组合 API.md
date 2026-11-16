@@ -200,8 +200,6 @@ input CreateUserAddressRequest {
 
 下面介绍如何使用 GraphQL 来实现乘客管理界面的 API。后台实现使用的是 Java 语言，基于 GraphQL 的 Java 实现库 graphql-java，以及相应的 Spring Boot 集成库 graphql-spring-boot（注：graphql-spring-boot 集成库已停止维护，Spring 官方的 Spring for GraphQL（spring-boot-starter-graphql）是现行的推荐方案）。在实际的数据获取时，使用的是不同微服务 API 的 Java 客户端。完整的实现请参考 GitHub 上源代码中示例应用的 happyride-passenger-web-api-graphql 模块。下图是 GraphQL 服务的架构示意图。
 
-![](/cloud-native-images/33-如何使用_GraphQL_组合_API__Ciqc1F8Fpv-AZk1NAABk0f47qTs188.png)
-
 ### 模式
 
 在实现之前，需要先定义服务的 GraphQL 模式，下面的代码是 API 的 GraphQL 模式文件的内容。在模式中，首先定义了乘客、用户地址、地址和区域等 4 个对象类型，对应于 API 所提供的数据中的实体；接下来的 Query 类型中定义了 API 所提供的查询操作，包括查询乘客列表、查询单个乘客和地址，以及搜索地址；最后的 Mutation 类型中定义了 API 所提供的修改操作，即添加新的用户地址。Query 和 Mutation 类型中定义的字段，是整个 GraphQL 服务的入口。
@@ -408,8 +406,6 @@ public class SchemaConfig {
 在启动 Spring Boot 应用之后，通过路径 /graphql 可以访问 GraphQL 服务。除此之外，如果添加了对 GraphQL 的工具 GraphiQL 的依赖，还可以通过路径 /graphiql 来访问该工具。很多工具都提供了对 GraphQL 的支持，可以在开发中使用，包括 Postman 和 Insomnia。
 
 下图是使用 Insomnia 查询 GraphQL 时的截图。
-
-![](/cloud-native-images/33-如何使用_GraphQL_组合_API__Ciqc1F8Fp3yAHFszAAMallAEM2s704.png)
 
 ## 总结
 

@@ -3529,7 +3529,7 @@ pm2 startup
 
 ### Nginx 反向代理
 
-```11-Nginx基础概述
+```nginx
 upstream blog_api {
     server 127.0.0.1:3000;
     keepalive 64;

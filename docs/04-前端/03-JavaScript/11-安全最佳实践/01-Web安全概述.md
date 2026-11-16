@@ -279,7 +279,7 @@ app.use(
 
 #### Nginx 配置
 
-```11-Nginx基础概述
+```nginx
 server {
     # HTTPS 配置
     listen 443 ssl http2;

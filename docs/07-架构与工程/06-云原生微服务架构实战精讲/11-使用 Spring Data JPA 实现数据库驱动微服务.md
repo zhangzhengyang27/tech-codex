@@ -185,9 +185,7 @@ public class PassengerController {
 
 不过需要注意两个问题。首先是 Swagger 代码生成工具创建的项目是基于 Spring Boot 1.5 的。如果你期望使用 Spring Boot 2，那么需要先自己进行升级（注：截至 2026 年 9 月，Spring Boot 1.5 与 2.x 均已结束开源维护，现行主流为 Spring Boot 3.x/4.x，使用生成代码时需自行完成相应升级）；其次是通过工具生成的代码并不一定符合你的团队的开发规范，代码生成过程是单向不可逆的。如果 OpenAPI 文档发生了改变，再次生成会覆盖掉之前所做的手动修改。因此，建议的做法是仅在测试中使用自动生成的服务器实现。实际的产品代码应该手动创建和维护。
 
-在开发中的一个常见需求是发送 HTTP 请求来测试 REST API，如果使用 Postman 或其他工具，可以直接导入 OpenAPI 文档来生成 HTTP 请求的模板，如下图所示，Postman 自动生成了 POST 请求的内容。
-
-![](/cloud-native-images/11-使用_Spring_Data_JPA_实现数据库驱动微服务__Ciqah16f2byAMICiAADnG6dPSdw777.png)
+在开发中的一个常见需求是发送 HTTP 请求来测试 REST API，如果使用 Postman 或其他工具，可以直接导入 OpenAPI 文档来生成 HTTP 请求的模板，Postman 自动生成了 POST 请求的内容。
 
 ## 总结
 

@@ -1,10 +1,14 @@
 ---
 title: Kubernetes 灰度发布与滚动发布：零宕机发布的奥秘
-description: Kubernetes 灰度发布与滚动发布实战：ingress-11-Nginx基础概述 canary 注解按 Cookie/Header/权重切流、优先级规则、Deployment 滚动更新策略（maxSurge/maxUnavailable/minReadySeconds）与 kubectl rollout 管理。
-keywords: [Kubernetes, 灰度发布, 金丝雀, 滚动发布, ingress-11-Nginx基础概述, kubectl rollout]
+description: Kubernetes 灰度发布与滚动发布实战：ingress-nginx canary 注解按 Cookie/Header/权重切流、优先级规则、Deployment 滚动更新策略（maxSurge/maxUnavailable/minReadySeconds）与 kubectl rollout 管理。
+keywords: [Kubernetes, 灰度发布, 金丝雀, 滚动发布, ingress-nginx, kubectl rollout]
 category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
+
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
 
 # Kubernetes 灰度发布与滚动发布：零宕机发布的奥秘
 
@@ -58,15 +62,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: 11-Nginx基础概述-v2
+      app: nginx-v2
   replicas: 3
   template:
     metadata:
       labels:
-        app: 11-Nginx基础概述-v2
+        app: nginx-v2
     spec:
       containers:
-      - name: 11-Nginx基础概述
+      - name: nginx
         image: registry.cn-hangzhou.aliyuncs.com/janlay/k8s_test:v2
         ports:
         - containerPort: 80
@@ -77,7 +81,7 @@ metadata:
   name: front-service-v2
 spec:
   selector:
-    app: 11-Nginx基础概述-v2
+    app: nginx-v2
   ports:
   - protocol: TCP
     port: 80
@@ -113,12 +117,12 @@ cd ./ingress && vim ./gray.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: 11-Nginx基础概述-demo-canary
+  name: nginx-demo-canary
   annotations:
-    kubernetes.io/ingress.class: 11-Nginx基础概述
-    11-Nginx基础概述.ingress.kubernetes.io/rewrite-target: /
-    11-Nginx基础概述.ingress.kubernetes.io/canary: "true"
-    11-Nginx基础概述.ingress.kubernetes.io/canary-by-cookie: "users_from_Beijing"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-cookie: "users_from_Beijing"
 spec:
   rules:
   - http:
@@ -136,8 +140,8 @@ spec:
 我们可以看到，在 `annotations` 这里，有两个关于灰度的配置项。分别是：
 
 
-- 11-Nginx基础概述.ingress.kubernetes.io/canary：可选值为 `true / false` 。代表是否开启灰度功能
-- 11-Nginx基础概述.ingress.kubernetes.io/canary-by-cookie：灰度发布 `cookie` 的 `key`。当 `key` 值等于 `always` 时，灰度触发生效。等于其他值时，则不会走灰度环境。
+- nginx.ingress.kubernetes.io/canary：可选值为 `true / false` 。代表是否开启灰度功能
+- nginx.ingress.kubernetes.io/canary-by-cookie：灰度发布 `cookie` 的 `key`。当 `key` 值等于 `always` 时，灰度触发生效。等于其他值时，则不会走灰度环境。
 
 
 保存后，使用 `kubectl apply` 生效配置文件查看效果：
@@ -148,7 +152,7 @@ kubectl apply -f ./gray.yaml
 
 执行成功后，可以使用 `kubectl get svc` 命令来获取 `ingress` 的外部端口：
 ```shell
-kubectl -n ingress-11-Nginx基础概述 get svc
+kubectl -n ingress-nginx get svc
 ```
 > -n: 指定命名空间（namespace）查询
 
@@ -173,8 +177,8 @@ kubectl -n ingress-11-Nginx基础概述 get svc
 当然配置也很简单，只需要修改 `annotations` 配置项即可：
 
 
-- 11-Nginx基础概述.ingress.kubernetes.io/canary-by-header：要灰度 `header` 的 `key` 值
-- 11-Nginx基础概述.ingress.kubernetes.io/canary-by-header-value: 要灰度 `header` 的 `value` 值
+- nginx.ingress.kubernetes.io/canary-by-header：要灰度 `header` 的 `key` 值
+- nginx.ingress.kubernetes.io/canary-by-header-value: 要灰度 `header` 的 `value` 值
 
 
 保存后，使用 `kubectl apply` 生效配置文件：
@@ -202,7 +206,7 @@ curl --header 'header的key:header的value' 127.0.0.1:端口值
 在这里，我们修改 `annotations` 配置项即可：
 
 
-- 11-Nginx基础概述.ingress.kubernetes.io/canary-weight：值是字符串，为 `0-100` 的数字，代表灰度环境命中概率。如果值为 0，则表示不会走灰度。值越大命中概率越大。当值 = `100` 时，代表全走灰度。
+- nginx.ingress.kubernetes.io/canary-weight：值是字符串，为 `0-100` 的数字，代表灰度环境命中概率。如果值为 0，则表示不会走灰度。值越大命中概率越大。当值 = `100` 时，代表全走灰度。
 
 
 保存后，使用 `kubectl apply` 生效配置文件：
@@ -398,7 +402,7 @@ kubectl rollout status deployment/名称
 ## 参考链接
 
 
-- kubernetes ingress 官方文档：[https://kubernetes.github.io/ingress-11-Nginx基础概述/user-guide/11-Nginx基础概述-configuration/annotations/#canary](https://kubernetes.github.io/ingress-11-Nginx基础概述/user-guide/11-Nginx基础概述-configuration/annotations/#canary)
+- kubernetes ingress 官方文档：[https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#canary](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#canary)
 
 ## 本章小结
 

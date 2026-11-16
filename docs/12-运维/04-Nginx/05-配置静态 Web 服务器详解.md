@@ -35,7 +35,7 @@ Nginx 配置完整的静态 Web 服务器包含以下 8 类配置：
 
 **`listen` 监听端口**（默认 `listen 80;`）：
 
-```11-Nginx基础概述
+```nginx
 # IPv4 地址
 listen 127.0.0.1:8000;
 listen 127.0.0.1;        # 默认监听 80 端口
@@ -96,7 +96,7 @@ listen 127.0.0.1 default_server accept_filter=dataready backlog=1024;
 
 **`root` 方式**（语法 `root path;` 默认 `root html;`，作用域 http/server/location/if）：定义资源文件相对于 HTTP 请求的根目录，路径 = `root + URI`。
 
-```11-Nginx基础概述
+```nginx
 location /download/ {
   root /opt/web/html/;
 }
@@ -108,30 +108,30 @@ location /download/ {
 
 **`alias` 方式**（作用域 location）：别名，直接把 location 后的一段 URI「替换」为指定路径。
 
-```11-Nginx基础概述
-location /conf { alias /usr/local/11-Nginx基础概述/conf/; }
-location /conf { root  /usr/local/11-Nginx基础概述/; }
+```nginx
+location /conf { alias /usr/local/nginx/conf/; }
+location /conf { root  /usr/local/nginx/; }
 ```
 
 `root` vs `alias` 对比：
 
 | 配置 | URI | root 结果 | alias 结果 |
 |------|-----|-----------|------------|
-| `location /conf/ { root /usr/local/11-Nginx基础概述/; }` | `/conf/11-Nginx基础概述.conf` | `/usr/local/11-Nginx基础概述/conf/11-Nginx基础概述.conf` | - |
-| `location /conf/ { alias /usr/local/11-Nginx基础概述/conf/; }` | `/conf/11-Nginx基础概述.conf` | - | `/usr/local/11-Nginx基础概述/conf/11-Nginx基础概述.conf` |
+| `location /conf/ { root /usr/local/nginx/; }` | `/conf/nginx.conf` | `/usr/local/nginx/conf/nginx.conf` | - |
+| `location /conf/ { alias /usr/local/nginx/conf/; }` | `/conf/nginx.conf` | - | `/usr/local/nginx/conf/nginx.conf` |
 
 `alias` 与正则结合（用捕获组重排路径）：
 
-```11-Nginx基础概述
+```nginx
 location ~ ^/test/(\w+)\.(\w+)$ {
-  alias /usr/local/11-Nginx基础概述/$2/$1.$2;
+  alias /usr/local/nginx/$2/$1.$2;
 }
 ```
-请求 `/test/11-Nginx基础概述.conf` → 返回 `/usr/local/11-Nginx基础概述/conf/11-Nginx基础概述.conf`。
+请求 `/test/nginx.conf` → 返回 `/usr/local/nginx/conf/nginx.conf`。
 
 **`index` 首页**（默认 `index index.html;`，作用域 http/server/location）：访问 `/` 时按顺序尝试返回首页文件。
 
-```11-Nginx基础概述
+```nginx
 location / {
   root   /var/www;
   index  index.html index.htm index.php;
@@ -140,7 +140,7 @@ location / {
 
 **`error_page` 错误页**（语法 `error_page code[code...] [=|=answer-code] uri|@named_location`，作用域 http/server/location/if）：请求返回指定错误码时重定向到新 URI。
 
-```11-Nginx基础概述
+```nginx
 error_page   404          /404.html;
 error_page   502 503 504  /50x.html;
 error_page   403          http://example.com/forbidden.html;
@@ -149,7 +149,7 @@ error_page   404          = @fetch;
 
 **更改返回码**：
 
-```11-Nginx基础概述
+```nginx
 error_page 404 =200 /empty.gif;      # 返回 200
 error_page 404 =403 /forbidden.gif;  # 返回 403
 error_page 404 = /empty.gif;         # 由实际结果决定
@@ -157,7 +157,7 @@ error_page 404 = /empty.gif;         # 由实际结果决定
 
 **重定向到命名 location**：
 
-```11-Nginx基础概述
+```nginx
 location / {
     error_page 404 @fallback;
 }
@@ -168,7 +168,7 @@ location @fallback {
 
 **`try_files`**（作用域 server/location）：按顺序尝试访问路径，找到文件直接返回，否则重定向到最后参数。
 
-```11-Nginx基础概述
+```nginx
 try_files /system/maintenance.html $uri $uri/index.html $uri.html @other;
 
 location @other {
@@ -196,8 +196,8 @@ location @other {
 | 代理临时文件 | `proxy_temp_path path [level1 [level2 [level3]]];` | 存放代理响应临时文件 |
 | FastCGI 临时文件 | `fastcgi_temp_path path [level1 [level2 [level3]]];` | 存放 FastCGI 响应临时文件 |
 
-```11-Nginx基础概述
-client_body_temp_path /tmp/11-Nginx基础概述/client_body 1 2;
+```nginx
+client_body_temp_path /tmp/nginx/client_body 1 2;
 ```
 
 ### 5. 网络连接设置
@@ -222,7 +222,7 @@ client_body_temp_path /tmp/11-Nginx基础概述/client_body 1 2;
 
 文件类型映射（`include mime.types;` 或手动 `types { ... }`）：
 
-```11-Nginx基础概述
+```nginx
 include mime.types;
 # 或手动定义
 types {
@@ -240,7 +240,7 @@ types {
 
 请求速率限制（`limit_req_zone` + `limit_req`）：
 
-```11-Nginx基础概述
+```nginx
 http {
     limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
     server {
@@ -274,7 +274,7 @@ http {
 
 语法 `rewrite regex replacement [flag];`（作用域 server/location/if）：
 
-```11-Nginx基础概述
+```nginx
 rewrite ^/old/(.*)$ /new/$1 permanent;   # 将旧 URL 永久重定向到新 URL
 rewrite ^/(.*)\.php$ /$1 last;           # 去除 .php
 ```
@@ -299,7 +299,7 @@ flowchart TD
     SN -->|3. 请求 URI| LOC{location 匹配<br>= > ^~ > ~ > ~* > 前缀 > /}
     LOC -->|4a. 命中匿名 location| UR{路径解析}
     UR -->|root + URI| R1[例: /opt/web/html/download/index/test.html]
-    UR -->|alias 替换 location 段| R2[例: /usr/local/11-Nginx基础概述/conf/11-Nginx基础概述.conf]
+    UR -->|alias 替换 location 段| R2[例: /usr/local/nginx/conf/nginx.conf]
     LOC -->|4b. 命中命名 location @| NAMED[进入 named location<br>error_page / try_files 兜底]
     R1 --> ERR{文件存在?}
     R2 --> ERR
@@ -316,11 +316,11 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    subgraph ROOT[location /conf/ → root /usr/local/11-Nginx基础概述/]
-        A1[URI: /conf/11-Nginx基础概述.conf] --> A2[/usr/local/11-Nginx基础概述/conf/11-Nginx基础概述.conf<br>root 前缀拼接 URI]
+    subgraph ROOT[location /conf/ → root /usr/local/nginx/]
+        A1[URI: /conf/nginx.conf] --> A2[/usr/local/nginx/conf/nginx.conf<br>root 前缀拼接 URI]
     end
-    subgraph ALIAS[location /conf/ → alias /usr/local/11-Nginx基础概述/conf/]
-        B1[URI: /conf/11-Nginx基础概述.conf] --> B2[/usr/local/11-Nginx基础概述/conf/11-Nginx基础概述.conf<br>alias 替换 location 段后接文件]
+    subgraph ALIAS[location /conf/ → alias /usr/local/nginx/conf/]
+        B1[URI: /conf/nginx.conf] --> B2[/usr/local/nginx/conf/nginx.conf<br>alias 替换 location 段后接文件]
     end
 ```
 
@@ -330,7 +330,7 @@ flowchart LR
 
 ### 完整静态服务器配置（可直接复用）
 
-```11-Nginx基础概述
+```nginx
 http {
     include mime.types;
     default_type application/octet-stream;
@@ -393,9 +393,9 @@ http {
 ### 常用验证与生效步骤
 
 ```bash
-11-Nginx基础概述 -t                 # 检查配置语法
-11-Nginx基础概述 -s reload          # 语法正确后重载
-curl -I http://example.com/conf/11-Nginx基础概述.conf   # 验证 HEAD 头/状态
+nginx -t                 # 检查配置语法
+nginx -s reload          # 语法正确后重载
+curl -I http://example.com/conf/nginx.conf   # 验证 HEAD 头/状态
 ```
 
 ### 站点管理模式：sites-available / sites-enabled
@@ -403,9 +403,9 @@ curl -I http://example.com/conf/11-Nginx基础概述.conf   # 验证 HEAD 头/�
 生产环境推荐用「可用 + 启用」软链接的站点管理方式，便于临时下线站点：
 
 ```bash
-sudo ln -s /etc/11-Nginx基础概述/sites-available/static.example.com.conf /etc/11-Nginx基础概述/sites-enabled/
-sudo 11-Nginx基础概述 -t                                  # 语法测试
-sudo systemctl reload 11-Nginx基础概述                    # 或 sudo 11-Nginx基础概述 -s reload
+sudo ln -s /etc/nginx/sites-available/static.example.com.conf /etc/nginx/sites-enabled/
+sudo nginx -t                                  # 语法测试
+sudo systemctl reload nginx                    # 或 sudo nginx -s reload
 curl -I http://localhost
 curl http://localhost/health                   # 健康检查
 ```
@@ -442,4 +442,4 @@ ab -n 10000 -c 200 -k -H "Accept-Encoding: gzip" http://localhost/index.html
 - **与反向代理结合**：静态命中直接返回、动态/接口命中 `proxy_pass`，典型 SPA 工程（前端 `location /static/` 服务静态，`location /api/` 转后端）。
 - **URL 重写与跳转**：`rewrite`/`return 30x`、`try_files` 的组合可承接迁移与优雅降级（维护页）。
 - **监控与日志**：结合 GoAccess 分析访问日志；`stub_status` 观察连接数。
-- **参考**：官方模块 `ngx_http_core_module`：https://11-Nginx基础概述.org/en/docs/http/ngx_http_core_module.html
+- **参考**：官方模块 `ngx_http_core_module`：https://nginx.org/en/docs/http/ngx_http_core_module.html

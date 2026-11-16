@@ -1,6 +1,6 @@
 ---
 title: Shell 脚本如何作日志分析
-description: 用 grep、awk、ag 三个工具构建日志分析脚本：grep 选项与正则、awk 的 BEGIN/END 结构与响应时间统计、ag 高效查找，并给出完整 11-Nginx基础概述_check.sh 脚本结构
+description: 用 grep、awk、ag 三个工具构建日志分析脚本：grep 选项与正则、awk 的 BEGIN/END 结构与响应时间统计、ag 高效查找，并给出完整 nginx_check.sh 脚本结构
 keywords: [Shell, 日志分析, grep, awk, ag]
 category: Linux 系统
 tags: [DevOps, Linux, Shell, 日志分析]
@@ -159,9 +159,9 @@ END {print "Average = ", sum/count; print "Max = ", max; print "Min", min}'
 
 Shell 脚本中大部分对文件关键字的查找可以基于 `ag` 命令实现。
 
-### 4.3 完整 Nginx 日志分析脚本（11-Nginx基础概述_check.sh）
+### 4.3 完整 Nginx 日志分析脚本（nginx_check.sh）
 
-下面是一个典型 `11-Nginx基础概述_check.sh` 的整体结构。脚本开头先清理输出目录，再校验日志路径与系统版本，随后逐项执行日志分析并将结果通过 `tee` 输出到 `/tmp/logs` 目录。
+下面是一个典型 `nginx_check.sh` 的整体结构。脚本开头先清理输出目录，再校验日志路径与系统版本，随后逐项执行日志分析并将结果通过 `tee` 输出到 `/tmp/logs` 目录。
 
 ```bash
 #!/bin/bash
@@ -172,7 +172,7 @@ fi
 mkdir -p /tmp/logs
 
 # 2. 配置 Nginx access 日志路径，路径不存在则退出
-LOG=/var/log/11-Nginx基础概述/access.log
+LOG=/var/log/nginx/access.log
 if [ ! -f "$LOG" ]; then
   echo "日志文件不存在: $LOG"
   exit 1
@@ -210,7 +210,7 @@ ag -o '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' "$LOG" \
 - 寻找罕见的脚本文件访问
 - 寻找 302 跳转的脚本文件
 
-执行 `bash 11-Nginx基础概述_check.sh`，在终端关注执行过程与进度，再在结果目录中详细分析 `ag` 得到的日志结果。
+执行 `bash nginx_check.sh`，在终端关注执行过程与进度，再在结果目录中详细分析 `ag` 得到的日志结果。
 
 ---
 

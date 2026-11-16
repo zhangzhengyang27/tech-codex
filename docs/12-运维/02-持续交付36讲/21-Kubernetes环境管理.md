@@ -672,7 +672,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          app.kubernetes.io/name: ingress-11-Nginx基础概述
+          app.kubernetes.io/name: ingress-nginx
     ports:
     - protocol: TCP
       port: 8080

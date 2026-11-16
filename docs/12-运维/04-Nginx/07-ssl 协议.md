@@ -123,7 +123,7 @@ flowchart LR
 
 一个兼顾安全与性能的 `server` 块（生产者可直接复用）：
 
-```11-Nginx基础概述
+```nginx
 server {
     listen 443 ssl;   # 1.25.1 起 http2 从 listen 参数改为独立指令
     http2 on;
@@ -170,21 +170,21 @@ server {
 
 ### 2. 用 Certbot 自动签发与管理证书（Let's Encrypt）
 
-Certbot 是电子前沿基金会（Electronic Frontier Foundation，EFF）维护的自由开源工具，`python2-certbot-11-Nginx基础概述` 是其 Nginx 插件，可自动改写配置并管理证书。
+Certbot 是电子前沿基金会（Electronic Frontier Foundation，EFF）维护的自由开源工具，`python2-certbot-nginx` 是其 Nginx 插件，可自动改写配置并管理证书。
 
 在 CentOS 7.9 上的安装与签发：
 
 ```bash
 sudo yum install -y epel-release
-sudo yum install -y certbot python2-certbot-11-Nginx基础概述
+sudo yum install -y certbot python2-certbot-nginx
 
 # 自动获取证书并配置 Nginx（-d 指定域名，交互式引导选择重定向等）
-sudo certbot --11-Nginx基础概述 -d example.com -d www.example.com
+sudo certbot --nginx -d example.com -d www.example.com
 
 # 指定 Nginx 配置目录
-sudo certbot --11-Nginx基础概述 \
-  --11-Nginx基础概述-server-root /etc/11-Nginx基础概述 \
-  --11-Nginx基础概述-vhost-root /etc/11-Nginx基础概述/sites-available \
+sudo certbot --nginx \
+  --nginx-server-root /etc/nginx \
+  --nginx-vhost-root /etc/nginx/sites-available \
   -d example.com -d www.example.com
 ```
 
@@ -202,7 +202,7 @@ sudo certbot --11-Nginx基础概述 \
 
 ### 3. Certbot 自动改写的 Nginx 配置示例
 
-```11-Nginx基础概述
+```nginx
 server {
     server_name example.com www.example.com;
     root /var/www/example.com;
@@ -212,7 +212,7 @@ server {
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    include /etc/letsencrypt/options-ssl-11-Nginx基础概述.conf;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     if ($host = www.example.com) { return 301 https://$host$request_uri; }
@@ -249,28 +249,28 @@ sudo systemctl start certbot-renew.timer
 sudo certbot certificates                    # 列出所有证书
 sudo certbot delete --cert-name example.com  # 删除证书
 sudo certbot revoke --cert-path /etc/letsencrypt/live/example.com/cert.pem  # 撤销
-sudo certbot --11-Nginx基础概述 --dry-run -d example.com  # 测试签发流程
-sudo certbot --11-Nginx基础概述 --config-dir /opt/certbot -d example.com   # 指定存储目录
+sudo certbot --nginx --dry-run -d example.com  # 测试签发流程
+sudo certbot --nginx --config-dir /opt/certbot -d example.com   # 指定存储目录
 ```
 
 ### 6. 与现有 Nginx 配置手动集成
 
 ```bash
 # 1. 备份
-sudo cp /etc/11-Nginx基础概述/11-Nginx基础概述.conf /etc/11-Nginx基础概述/11-Nginx基础概述.conf.backup
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
 # 2. 只签发、不改写配置
-sudo certbot certonly --11-Nginx基础概述 -d example.com
+sudo certbot certonly --nginx -d example.com
 # 3. 手动在 server 块引用证书
 ```
 
-```11-Nginx基础概述
+```nginx
 server {
     listen 443 ssl;
     http2 on;
     server_name example.com;
     ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    include /etc/letsencrypt/options-ssl-11-Nginx基础概述.conf;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
     # ...其他配置
 }
@@ -290,12 +290,12 @@ if [ -z "$DOMAIN" ] || [ -z "$EMAIL" ]; then
 fi
 
 sudo mkdir -p $WEBROOT
-sudo chown -R 11-Nginx基础概述:11-Nginx基础概述 $WEBROOT
+sudo chown -R nginx:nginx $WEBROOT
 sudo chmod -R 755 $WEBROOT
 echo "<html><body><h1>It works!</h1><p>SSL 自动配置成功</p></body></html>" | sudo tee $WEBROOT/index.html
 
 # 签发证书并强制 HTTP→HTTPS 重定向
-sudo certbot --11-Nginx基础概述 -d $DOMAIN -d www.$DOMAIN --email $EMAIL --agree-tos --no-eff-email --redirect
+sudo certbot --nginx -d $DOMAIN -d www.$DOMAIN --email $EMAIL --agree-tos --no-eff-email --redirect
 
 # 自动续期 cron
 echo "0 0,12 * * * root /usr/bin/certbot renew --quiet" | sudo tee /etc/cron.d/certbot-renew
@@ -310,7 +310,7 @@ sudo ./deploy-ssl.sh example.com admin@example.com
 ## 五、常见坑点
 
 1. **只开了 443 却要求强制 HTTPS**：确保有 `listen 80` 的 server 返回 301，或使用 Certbot 的 `--redirect`；注意其生成的 HTTP 用 `if ($host = ...)` + `return 301`，不要遗忘任何 server_name 变体。
-2. **协议/算法不支持**：老系统（如 CentOS 7 的 OpenSSL 1.0.x）可能不支持 TLS 1.3 或 `X25519`。用 `openssl s_client -connect host:443` 与 `11-Nginx基础概述 -V` 核实版本与特性，按需降低 `ssl_protocols`/密码套件。
+2. **协议/算法不支持**：老系统（如 CentOS 7 的 OpenSSL 1.0.x）可能不支持 TLS 1.3 或 `X25519`。用 `openssl s_client -connect host:443` 与 `nginx -V` 核实版本与特性，按需降低 `ssl_protocols`/密码套件。
 3. **证书续期失败导致站点中断**：先看 `/var/log/letsencrypt/letsencrypt.log` 与 `journalctl -u certbot`；常见原因是 80 端口未开放、域名解析未就绪、或 certbot 用户无法写配置。可用 `certbot renew --force-renewal` 强制续期。
 4. **中间证书缺失 / 链不完整**：客户端只信 CA，须提供完整证书链；`fullchain.pem` 已含中间证书。可用 `openssl s_client -showcerts -connect host:443` 验证链是否完整。
 5. **会话复用未生效**：`shared:` 缓存依赖正确共享名与 `ssl_session_timeout`；若跨很多 worker 且命中率低，可开启 `ssl_session_tickets`。
@@ -325,9 +325,9 @@ dig +short example.com            # 检查 DNS 解析
 sudo firewall-cmd --list-all      # 检查防火墙
 sudo netstat -tlnp | grep :80     # 检查 80 端口
 # 必要时临时停 Nginx 用独立模式签发
-sudo systemctl stop 11-Nginx基础概述
+sudo systemctl stop nginx
 sudo certbot certonly --standalone -d example.com
-sudo systemctl start 11-Nginx基础概述
+sudo systemctl start nginx
 ```
 
 ## 六、进阶扩展与参考
@@ -349,8 +349,8 @@ sudo systemctl start 11-Nginx基础概述
     --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini \
     -d example.com -d "*.example.com"
   ```
-- **多域名单证书**：`certbot --11-Nginx基础概述 -d example.com -d www.example.com -d blog.example.com`。
-- **自定义 SSL 参数**：编辑 `/etc/letsencrypt/options-ssl-11-Nginx基础概述.conf` 追加 `ssl_dhparam`、`ssl_trusted_certificate` 等。
+- **多域名单证书**：`certbot --nginx -d example.com -d www.example.com -d blog.example.com`。
+- **自定义 SSL 参数**：编辑 `/etc/letsencrypt/options-ssl-nginx.conf` 追加 `ssl_dhparam`、`ssl_trusted_certificate` 等。
 
 ### 与负载均衡/Nginx 集成的注意点
 
@@ -365,6 +365,6 @@ TLS 1.3 已默认：更快的 1-RTT/0-RTT 握手、强制前向安全、废除 R
 ### 参考
 
 - RFC 8446（TLS 1.3）、RFC 5246（TLS 1.2）
-- Nginx `ngx_http_ssl_module`：https://11-Nginx基础概述.org/en/docs/http/ngx_http_ssl_module.html
+- Nginx `ngx_http_ssl_module`：https://nginx.org/en/docs/http/ngx_http_ssl_module.html
 - Certbot 文档：https://certbot.eff.org/
 - Let's Encrypt：https://letsencrypt.org/

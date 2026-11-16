@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [Node.js, 部署运维]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # GitHub Actions
 
 ## 介绍
@@ -723,12 +727,12 @@ services:
     ports:
       - 3000:3000
 
-  11-Nginx基础概述:
-    image: 11-Nginx基础概述:latest
+  nginx:
+    image: nginx:latest
     ports:
       - 80:80
     volumes:
-      - ./11-Nginx基础概述.conf:/etc/11-Nginx基础概述/11-Nginx基础概述.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
 ```
 
 ## 条件执行

@@ -347,5 +347,3 @@ DOCKER_BUILDKIT=1 docker build
 ## 总结
 
 在微服务架构中，持续集成可以保证每一个代码提交都可以有与之对应的容器镜像，容器镜像是不可变的，而且构建的过程是可重复的。通过本节的学习，你可以了解如何从 Dockerfile 中创建出 Docker 容器镜像，以及如何使用 Spring Boot 插件和 Google 的 Jib 工具来创建 Java 应用的容器镜像，还可以了解如何使用 Jenkins 来进行持续集成。
-
-

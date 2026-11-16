@@ -76,8 +76,6 @@ ELK 是一套完整的日志系统解决方案，它提供了从日志收集、�
 
 现在也会使用 Filebeat 来代替 Logstash 完成数据采集工作。Filebeat 可以轻量化地部署在每一个服务容器中，使用较少的资源就可以实现数据采集的工作，并将其通过自定义的协议发送到 Logstash 中对数据进行更细致的处理。
 
-![](/tracing-images/15-日志收集_ELK_如何更高效地收集日志___CgqCHl9jGXCAfpR6AAHIsybiU8I217.png)
-
 ELK 部署架构图
 
 这张图展现了一个比较主流的部署架构图，其中最左侧的就是在每台机器上部署的 Filebeat。
@@ -93,8 +91,6 @@ ELK 部署架构图
 ### Kibana 的使用方式
 
 **Kibana 是一个针对 Elasticsearch 的数据分析与可视化平台，用来搜索、查看存储在 Elasticsearch 中的数据**。如果你感兴趣，可以点击这里，前往官网体验提供的 demo。
-
-![](/tracing-images/15-日志收集_ELK_如何更高效地收集日志___Ciqc1F9gjhSAAQLeAAUetyp06UA251.png)
 
 图中是一个比较典型的日志检索界面。
 

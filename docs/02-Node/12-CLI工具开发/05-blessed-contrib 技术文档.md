@@ -240,7 +240,7 @@ table.setData({
   headers: ["Process", "CPU", "Memory"],
   data: [
     ["node", "1.5%", "20MB"],
-    ["11-Nginx基础概述", "0.3%", "5MB"],
+    ["nginx", "0.3%", "5MB"],
     ["redis", "0.8%", "15MB"]
   ]
 })

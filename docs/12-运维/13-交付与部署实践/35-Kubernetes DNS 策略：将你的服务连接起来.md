@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, Kubernetes, 网络]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # Kubernetes DNS 策略：将你的服务连接起来
 
 ## 0. 引言

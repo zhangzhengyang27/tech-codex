@@ -117,6 +117,8 @@ exports.handler = (event, context, callback) => {
 
 ## 开发 Serverless 应用的基础知识
 
+> 🖼️ 原文配图未随迁移入库
+
 ### 入口函数
 
 我们开发传统应用时，编写的第一行代码一般都是入口函数，比如 Java 的 main 函数，而 Serverless 应用是由一个个函数组成的，与 main 函数对应的就是 FaaS 中的入口函数。

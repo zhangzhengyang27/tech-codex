@@ -72,7 +72,7 @@ Master 进程是 Nginx 的"管理者"，通常以 root 权限运行，负责整�
 
 | 职责 | 说明 |
 |------|------|
-| **配置解析** | 读取并解析 11-Nginx基础概述.conf 配置文件，验证语法正确性 |
+| **配置解析** | 读取并解析 nginx.conf 配置文件，验证语法正确性 |
 | **进程管理** | fork() 创建指定数量的 Worker 进程 |
 | **进程监控** | 监控 Worker 进程健康状态，异常退出时自动重启 |
 | **信号处理** | 接收和处理系统信号（HUP、TERM、QUIT 等） |
@@ -87,10 +87,10 @@ Master 进程是 Nginx 的"管理者"，通常以 root 权限运行，负责整�
 
 | 信号 | 命令 | 作用 |
 |------|------|------|
-| TERM | 11-Nginx基础概述 -s stop | 立即停止服务 |
-| QUIT | 11-Nginx基础概述 -s quit | 优雅停止（处理完当前请求） |
-| HUP  | 11-Nginx基础概述 -s reload | 平滑重载配置文件 |
-| USR1 | 11-Nginx基础概述 -s reopen | 重新打开日志文件（日志切割） |
+| TERM | nginx -s stop | 立即停止服务 |
+| QUIT | nginx -s quit | 优雅停止（处理完当前请求） |
+| HUP  | nginx -s reload | 平滑重载配置文件 |
+| USR1 | nginx -s reopen | 重新打开日志文件（日志切割） |
 | USR2 | - | 平滑升级可执行文件 |
 | WINCH | - | 优雅关闭旧版本 Worker 进程 |
 
@@ -351,7 +351,7 @@ void ngx_process_events_and_timers(ngx_cycle_t *cycle) {
 
 ### 1. Worker 数量与连接数配置
 
-```11-Nginx基础概述
+```nginx
 # 通常设置为 CPU 核心数
 worker_processes auto;  # 自动检测 CPU 核心数
 # 或手动指定：worker_processes 4;
@@ -369,7 +369,7 @@ events {
 
 ### 2. 零拷贝与连接优化
 
-```11-Nginx基础概述
+```nginx
 http {
     # sendfile 零拷贝
     sendfile on;
@@ -484,5 +484,5 @@ siege -c 100 -t 60S http://your-domain.com/
 
 ### 参考
 
-- 官方文档：https://11-Nginx基础概述.org/en/docs/
+- 官方文档：https://nginx.org/en/docs/
 - Nginx 事件模块源码注释（`src/event/` 下的 `ngx_event_actions_t`、`ngx_process_events_and_timers` 等）

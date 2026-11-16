@@ -108,7 +108,7 @@ Created → Running → Paused → Stopped → Deleted
 |----------|------|------|
 | 公共仓库 | 对外公开的镜像仓库 | Docker Hub、GitHub Container Registry |
 | 私有仓库 | 企业内部镜像仓库 | Harbor、Nexus、AWS ECR |
-| 官方镜像 | 经过 Docker 验证的镜像 | `node:22-alpine`、`11-Nginx基础概述:alpine` |
+| 官方镜像 | 经过 Docker 验证的镜像 | `node:22-alpine`、`nginx:alpine` |
 
 ## 安装 Docker
 
@@ -630,17 +630,17 @@ services:
       retries: 3
 
   # Nginx 反向代理
-  11-Nginx基础概述:
-    image: 11-Nginx基础概述:alpine
-    container_name: myapp-11-Nginx基础概述
+  nginx:
+    image: nginx:alpine
+    container_name: myapp-nginx
     restart: unless-stopped
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      - ./11-Nginx基础概述/11-Nginx基础概述.conf:/etc/11-Nginx基础概述/11-Nginx基础概述.conf:ro
-      - ./11-Nginx基础概述/ssl:/etc/11-Nginx基础概述/ssl:ro
-      - 11-Nginx基础概述_logs:/var/log/11-Nginx基础概述
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
     depends_on:
       api:
         condition: service_healthy
@@ -652,7 +652,7 @@ volumes:
     driver: local
   redis_data:
     driver: local
-  11-Nginx基础概述_logs:
+  nginx_logs:
     driver: local
 
 networks:
@@ -756,7 +756,7 @@ services:
     networks:
       - backend
 
-  11-Nginx基础概述:
+  nginx:
     networks:
       - frontend
 

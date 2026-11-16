@@ -1,12 +1,12 @@
 ---
-title: "11-Nginx基础概述"
+title: "Nginx 基础概述"
 description: "Nginx 核心特性与典型配置：事件驱动/异步非阻塞模型、静态文件服务、反向代理、upstream 负载均衡（权重/最少连接/IP 哈希/backup）、SSL/TLS 终端与 HTTP/2，以及典型应用场景与版本演进（HTTP/3、动态模块、官方源与容器部署）。"
 keywords: [Nginx, 反向代理, 负载均衡, upstream, TLS]
 category: Nginx
 tags: [Java, 架构与运维]
 ---
 
-# 11-Nginx基础概述
+# Nginx 基础概述
 
 ## Nginx
 
@@ -99,6 +99,6 @@ server {
 | 性能 | HTTP/2 支持 | 新增 HTTP/3（QUIC）支持（1.25+） |
 | TLS | 1.2/1.3 基础 | TLS 1.3 默认优化，主线引入 ACME 自动证书（1.29+，实验特性） |
 | 模块 | 静态编译 | 动态模块加载（load_module）成为主流 |
-| 运维 | 手动编译安装 | 官方 yum/apt 源 + docker 镜像（11-Nginx基础概述:alpine） |
+| 运维 | 手动编译安装 | 官方 yum/apt 源 + docker 镜像（nginx:alpine） |
 
 > 反向代理、负载均衡（upstream）、静态资源、gzip、rewrite 等核心配置语法在 1.2x 中完全兼容，本文示例可直接复用。

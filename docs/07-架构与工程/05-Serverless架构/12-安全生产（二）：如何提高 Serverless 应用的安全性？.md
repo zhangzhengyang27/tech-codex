@@ -201,4 +201,3 @@ module.exports.handler = async function (event, context, callback) {
 今天，我针对 11 讲提及的 10 个主要风险，分享了一些实践经验，希望让你有所收获。因为 11 讲和 12 讲的信息偏多，建议你自行梳理一张思维导图，回顾上两讲的重点内容。
 
 由于国外 Serverless 技术起步比较早，大家对安全性也比较重视，所以国外已经有一些第三方的 Serverless 安全性相关的产品，比如 [Prisma Cloud](https://www.paloaltonetworks.com/prisma/cloud/cloud-workload-protection-platform)、[CloudGuard](https://www.checkpoint.com/products/cloudguard-serverless-security/)、[Aquasec](https://www.aquasec.com/products/serverless-container-functions/)，而国内目前几乎是一片空白，很多安全防护方案都需要开发者自己建设，所以“怎么提高 Serverless 应用的安全性？”在我看来，就是多了解云厂商 Serverless 相关产品的功能和使用方式，**用好、用对才是最重要的。**
-

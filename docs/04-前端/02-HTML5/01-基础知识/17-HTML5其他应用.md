@@ -5301,7 +5301,7 @@ function navigateTo(url) {
 这是因为服务器没有配置处理客户端路由。需要配置服务器将所有路由请求返回同一个 HTML 文件。
 
 **Nginx 配置示例：**
-```11-Nginx基础概述
+```nginx
 location / {
   try_files $uri $uri/ /index.html;
 }

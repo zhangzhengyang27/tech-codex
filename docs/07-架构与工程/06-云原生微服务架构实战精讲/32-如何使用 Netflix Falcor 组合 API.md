@@ -40,6 +40,8 @@ Falcor 使用 JSON 来描述数据。由于 JSON 实际上是一种树形结构�
 
 ## JSON 图
 
+> 🖼️ 原文配图未随迁移入库
+
 ### 路径
 
 JSON 图（JSON Graph）中的每个实体都有唯一的**路径**（Path），这个路径是实体唯一的保存路径，也是其他实体进行引用时的路径，这个路径称为该实体的身份路径（Identity Path）。
@@ -139,8 +141,6 @@ JSON 图支持 3 种不同的抽象操作，即读取（Get）、设置（Set）
 | paths | 执行结果的 JSON 图的子集中包含的全部路径 |
 
 JSON 图是一个抽象的结构，在实际的开发中，需要使用的是具体的数据源、模型和路由器。接下来我会对这三者展开讲解。下图是 Falcor 中不同组成部分的架构图。
-
-![](/cloud-native-images/32-如何使用_Netflix_Falcor_组合_API__CgqCHl7-6leAYwDZAABWO8EqY4w340.png)
 
 ## 数据源
 

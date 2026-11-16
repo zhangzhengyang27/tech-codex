@@ -115,7 +115,7 @@ docker unpause container_id       # 恢复容器
 # 镜像仓库操作
 docker pull eclipse-temurin:21-jre-alpine     # 从仓库拉取镜像
 docker push registry.example.com/myapp:1.0    # 推送镜像到仓库
-docker search 11-Nginx基础概述                           # 搜索公共镜像
+docker search nginx                           # 搜索公共镜像
 docker login registry.example.com             # 登录私有仓库
 docker logout registry.example.com            # 登出仓库
 ```
@@ -897,8 +897,8 @@ services:
       - backend
     # 仅后端网络可访问
 
-  11-Nginx基础概述:
-    image: 11-Nginx基础概述:alpine
+  nginx:
+    image: nginx:alpine
     ports:
       - "80:80"
     networks:
@@ -1510,11 +1510,11 @@ kind: Ingress
 metadata:
   name: myapp-ingress
   annotations:
-    11-Nginx基础概述.ingress.kubernetes.io/rewrite-target: /
-    11-Nginx基础概述.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
-  ingressClassName: 11-Nginx基础概述
+  ingressClassName: nginx
   tls:
   - hosts:
     - api.example.com
@@ -1536,7 +1536,7 @@ spec:
 graph TB
     subgraph "Kubernetes 流量路由"
         User["用户请求"]
-        Ingress["Ingress Controller<br/>11-Nginx基础概述-ingress"]
+        Ingress["Ingress Controller<br/>nginx-ingress"]
         Service["Service<br/>ClusterIP"]
         Pod1["Pod 1<br/>myapp-xxx-aaa"]
         Pod2["Pod 2<br/>myapp-xxx-bbb"]
@@ -2596,7 +2596,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          name: ingress-11-Nginx基础概述
+          name: ingress-nginx
     ports:
     - protocol: TCP
       port: 8080
@@ -2650,7 +2650,7 @@ spec:
 ```mermaid
 graph TB
     subgraph "网络策略示例"
-        Ingress["Ingress Controller<br/>namespace: ingress-11-Nginx基础概述"]
+        Ingress["Ingress Controller<br/>namespace: ingress-nginx"]
         App["myapp Pod<br/>namespace: production"]
         MySQL["MySQL Pod<br/>namespace: production"]
         External["外部 API<br/>HTTPS:443"]

@@ -4888,7 +4888,7 @@ worker.onerror = (error) => {
 
 **方案 A：服务器配置 CORS 响应头（推荐）**
 
-```11-Nginx基础概述
+```nginx
 # Nginx 配置
 location /workers/ {
   add_header Access-Control-Allow-Origin * always;

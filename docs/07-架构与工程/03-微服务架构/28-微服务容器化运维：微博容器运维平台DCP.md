@@ -26,7 +26,7 @@ DCP 的四层架构——基础设施层、主机层、调度层、编排层—�
 | 维度 | DCP 原始方案 | 局限性 |
 |------|-------------|--------|
 | 容器调度 | Swarm + 自研 Roam | Swarm 已停止维护，社区生态萎缩 |
-| 服务发现 | Consul + 自研 11-Nginx基础概述-upsync-module | 与 Kubernetes Service/Endpoint 体系割裂 |
+| 服务发现 | Consul + 自研 nginx-upsync-module | 与 Kubernetes Service/Endpoint 体系割裂 |
 | 配置管理 | Ansible 批量下发 | 无声明式语义，缺乏版本追溯与 drift detection |
 | 多云管理 | 手动适配阿里云 API | 硬编码云厂商逻辑，扩展新云困难 |
 | 自动扩缩容 | 自研容量决策 + CronTrigger | 无事件驱动机制，响应延迟高 |
@@ -650,7 +650,7 @@ ArgoCD 的 SyncWave 机制替代了 DCP 的任务依赖模板，优势在于：
 
 ### 5.2 服务发现：从 Consul 到 Kubernetes Service + Istio
 
-DCP 使用 Consul + 11-Nginx基础概述-upsync-module 实现服务发现。2025 年，服务发现已深度融入 Kubernetes 原生体系：
+DCP 使用 Consul + nginx-upsync-module 实现服务发现。2025 年，服务发现已深度融入 Kubernetes 原生体系：
 
 ```mermaid
 graph TB
@@ -1014,7 +1014,7 @@ spec:
 
 | 年份 | 调度层 | 编排层 | 服务发现 | 镜像分发 | 可观测性 | 平台入口 |
 |------|--------|--------|---------|---------|---------|---------|
-| 2015 | Docker Swarm | 自研 CronTrigger | Consul + 11-Nginx基础概述-upsync | Harbor 1.x + LVS | 自研监控 | 自研运维 UI |
+| 2015 | Docker Swarm | 自研 CronTrigger | Consul + nginx-upsync | Harbor 1.x + LVS | 自研监控 | 自研运维 UI |
 | 2017 | Kubernetes 1.7+ | Helm 2 | K8s Service + CoreDNS | Harbor 1.x | Prometheus | 自研运维 UI |
 | 2019 | Kubernetes 1.16+ | Helm 3 + ArgoCD | Istio Sidecar | Harbor 2.0 | Prometheus + ELK | 自研运维 UI |
 | 2021 | Kubernetes 1.22+ | ArgoCD + Flux | Istio 1.10+ | Harbor 2.x + Dragonfly | LGTM Stack 初版 | 自研 + Backstage |
@@ -1093,7 +1093,7 @@ sequenceDiagram
 | 容器调度 | Swarm Manager + Consul | Karmada 多集群调度 |
 | 镜像拉取 | Harbor + LVS 负载均衡 | Harbor + Dragonfly P2P 分发 |
 | 服务编排 | 模板引擎 + 任务依赖 | ArgoCD SyncWave + GitOps |
-| 服务发现 | Consul + 11-Nginx基础概述-upsync | K8s EndpointSlice + Istio Ambient |
+| 服务发现 | Consul + nginx-upsync | K8s EndpointSlice + Istio Ambient |
 | 扩容反馈 | DB 状态记录 | Grafana Stack 可观测闭环 |
 
 ## 小结

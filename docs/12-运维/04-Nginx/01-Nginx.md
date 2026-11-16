@@ -106,7 +106,7 @@ flowchart TD
 
 ### 负载均衡基础配置（upstream）
 
-```11-Nginx基础概述
+```nginx
 upstream myapp_backend {
     server backend1.example.com:8001 weight=3; # 权重为 3
     server backend2.example.com:8002;          # 默认权重 1
@@ -124,7 +124,7 @@ server {
 
 ### 反向代理核心头设置
 
-```11-Nginx基础概述
+```nginx
 server {
     location / {
         proxy_pass http://127.0.0.1:8080;
@@ -140,7 +140,7 @@ server {
 
 ### 静态内容服务与缓存
 
-```11-Nginx基础概述
+```nginx
 server {
     location /static/ {
         root /var/www;                 # root + URI 拼出实际路径
@@ -159,46 +159,46 @@ Nginx 基于 C 语言开发，源码编译需先准备编译环境与正则、�
 ```bash
 yum -y install gcc pcre-devel zlib-devel openssl openssl-devel
 yum install wget -y
-wget https://11-Nginx基础概述.org/download/11-Nginx基础概述-1.30.4.tar.gz
-tar -zxvf 11-Nginx基础概述-1.30.4.tar.gz
-cd 11-Nginx基础概述-1.30.4
-./configure --prefix=/usr/local/11-Nginx基础概述   # --prefix 指定安装目录
+wget https://nginx.org/download/nginx-1.30.4.tar.gz
+tar -zxvf nginx-1.30.4.tar.gz
+cd nginx-1.30.4
+./configure --prefix=/usr/local/nginx   # --prefix 指定安装目录
 make && make install
 ```
 
-默认安装到 `/usr/local/11-Nginx基础概述` 后的重点目录：
+默认安装到 `/usr/local/nginx` 后的重点目录：
 
 | 目录/文件 | 说明 | 备注 |
 |-----------|------|------|
 | **conf** | 配置文件的存放目录 | |
-| **conf/11-Nginx基础概述.conf** | Nginx 的核心配置文件 | 最常操作的配置文件 |
+| **conf/nginx.conf** | Nginx 的核心配置文件 | 最常操作的配置文件 |
 | **html** | 存放静态资源（html、css 等） | 部署的静态资源可放入该目录 |
 | **logs** | 存放 Nginx 日志（访问日志、错误日志等） | |
-| **sbin/11-Nginx基础概述** | 二进制文件，用于启动、停止 Nginx | |
+| **sbin/nginx** | 二进制文件，用于启动、停止 Nginx | |
 
 ### 常用命令
 
-在 `/usr/local/11-Nginx基础概述/sbin/` 目录下执行：
+在 `/usr/local/nginx/sbin/` 目录下执行：
 
 ```bash
-./11-Nginx基础概述 -v          # 查看版本
-./11-Nginx基础概述 -t          # 检查配置文件语法
-./11-Nginx基础概述             # 启动
-./11-Nginx基础概述 -s stop     # 停止
-./11-Nginx基础概述 -s reload   # 重新加载配置（修改配置文件后生效）
+./nginx -v          # 查看版本
+./nginx -t          # 检查配置文件语法
+./nginx             # 启动
+./nginx -s stop     # 停止
+./nginx -s reload   # 重新加载配置（修改配置文件后生效）
 ```
 
-Nginx 启动后默认有 master + worker 两个进程；也可编辑 `/etc/profile` 将 `sbin` 加入 `PATH` 以在任意目录使用 `11-Nginx基础概述` 命令。
+Nginx 启动后默认有 master + worker 两个进程；也可编辑 `/etc/profile` 将 `sbin` 加入 `PATH` 以在任意目录使用 `nginx` 命令。
 
 ### 阿里云综合实战配置
 
 一个集「静态资源 + FastDFS 文件服务 + 多个反向代理」于一身的 server 示例：
 
-```11-Nginx基础概述
+```nginx
 user  root;
 worker_processes  1;
 
-pid  /usr/local/11-Nginx基础概述/logs/11-Nginx基础概述.pid;
+pid  /usr/local/nginx/logs/nginx.pid;
 
 events {
   worker_connections  1024;
@@ -275,9 +275,9 @@ http {
 ## 六、进阶扩展与参考
 
 - **主要 Nginx 版本分支**：
-  - **Nginx 开源版（11-Nginx基础概述.org）**：官方免费开源版，分主线版（Mainline）与稳定版（Stable），可通过源码编译或官方仓库安装，适合大多数标准场景。
+  - **Nginx 开源版（nginx.org）**：官方免费开源版，分主线版（Mainline）与稳定版（Stable），可通过源码编译或官方仓库安装，适合大多数标准场景。
   - **Nginx Plus（商业版）**：F5 提供，含 SLA 技术支持、高级负载均衡算法（最少时间、会话持久性）、实时监控仪表板、配置管理 API、JWT 校验与动态限流等，适合企业关键业务。
-  - **操作系统发行版自带版本**：Debian/Ubuntu 用 `apt install 11-Nginx基础概述`，RHEL/CentOS 用 `yum install 11-Nginx基础概述`，版本较旧但测试充分、与系统深度集成。
+  - **操作系统发行版自带版本**：Debian/Ubuntu 用 `apt install nginx`，RHEL/CentOS 用 `yum install nginx`，版本较旧但测试充分、与系统深度集成。
   - **OpenResty**：基于 Nginx 核心的增强平台，集成 LuaJIT 虚拟机，可用 Lua 脚本扩展，适合 API 网关、Web 应用防火墙等复杂逻辑。
   - **Tengine**：阿里巴巴基于 Nginx 的分支，提供动态模块加载（DSO）、增强负载均衡算法、请求合并、动态 upstream 与更细的状态监控。
 
@@ -293,4 +293,4 @@ http {
 - **模块系统要点**：核心模块（`ngx_core_module` 定义 `worker_processes`/`error_log`/`pid`，`ngx_events_module` 事件模型，`ngx_errlog_module` 日志）；标准 HTTP 模块（`ngx_http_core_module`、`ngx_http_proxy_module`、`ngx_http_upstream_module`、`ngx_http_rewrite_module`、`ngx_http_gzip_module`）；可选模块需编译时启用（`ngx_http_ssl_module`、`ngx_http_realip_module`、`ngx_http_geoip_module`、`ngx_http_brotli_module`）。
 - **配置系统**：声明式、嵌套上下文结构。上下文（Context）包括 `main`、`events`、`http`、`server`、`location`、`upstream`、`stream`；指令以分号 `;` 结尾。
 - **事件驱动模型**：根据操作系统自动选择最高效机制，Linux 下为 `epoll`，FreeBSD/macOS 为 `kqueue`，Windows 为 `IOCP`。
-- **参考**：官方文档 https://11-Nginx基础概述.org/ ；深入阅读《深入理解 Nginx》可了解模块解析与事件循环的实现细节。
+- **参考**：官方文档 https://nginx.org/ ；深入阅读《深入理解 Nginx》可了解模块解析与事件循环的实现细节。

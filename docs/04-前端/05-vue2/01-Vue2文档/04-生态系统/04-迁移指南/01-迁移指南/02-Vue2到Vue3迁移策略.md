@@ -897,7 +897,7 @@ npx lighthouse http://localhost:8080 --view
 #### 1. 灰度发布策略
 
 ```yaml
-# 11-Nginx基础概述 配置示例
+# nginx 配置示例
 upstream vue2_backend {
   server 127.0.0.1:8080;
 }

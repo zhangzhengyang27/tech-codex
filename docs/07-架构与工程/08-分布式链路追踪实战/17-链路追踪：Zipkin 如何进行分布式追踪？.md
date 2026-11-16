@@ -54,8 +54,6 @@ tags: [架构, 08-分布式链路追踪实战]
 
 你可以通过下图更直观地看到二者之间的差别。
 
-![](/tracing-images/17-链路追踪_Zipkin_如何进行分布式追踪___Ciqc1F9sMXOAKAomAAB5R_3zHyM553.png)
-
 这两种链路采集方案没有绝对的好坏之分，还要考虑项目的具体使用场景上。如果是使用开源或者商业方案时，还要考虑到与整个链路追踪系统的集成程度、支持的组件等。
 
 ### 数据收集
@@ -95,8 +93,6 @@ Zipkin 是一款开源的链路追踪系统，它是基于我们之前提到的*
 ### 系统架构
 
 我们先来看 Zipkin 的系统架构图，它展现了 Zipkin 的整体工作流程：
-
-![](/tracing-images/17-链路追踪_Zipkin_如何进行分布式追踪___Ciqc1F9sMZyAE2w1AAFoissS5jA558.png)
 
 这一部分对应我在原理中讲到的链路采集、数据收集和数据查看的步骤，我们从上往下依次来看。
 
@@ -144,8 +140,6 @@ public OkHttpClient buildOkHttpClient(HttpTracing tracing) {
 
 以刚才的 OkHttp 框架为例，我们尝试发送一个请求，然后通过 Wireshark 工具观测数据内容，就可以获取到如下信息：
 
-![](/tracing-images/17-链路追踪_Zipkin_如何进行分布式追踪___CgqCHl9sMaqATYvXAADJK-NCV7U599.png)
-
 在这张图中，我们可以清楚地看到请求时的详细数据。
 
 请求头中除了基础的 Header 信息以外，还会有很多以“X-B3”开头的内容，比如TraceId、SpanId 等关键信息，就是经由 Zipkin 产生的链路上下文信息。
@@ -153,8 +147,6 @@ public OkHttpClient buildOkHttpClient(HttpTracing tracing) {
 ### 数据展示
 
 我们来看一张相对简单的链路数据展示图。图中主要模拟就是如项目架构图中类似的 client 端发送请求，server 端接收请求的链路逻辑。
-
-![](/tracing-images/17-链路追踪_Zipkin_如何进行分布式追踪___Ciqc1F9sMbOABg6OAAXsVfGd0-Q188.png)
 
 左侧部分展示的是 client 端接收到了上游的请求，然后交由 server 获取数据内容的链路信息。
 

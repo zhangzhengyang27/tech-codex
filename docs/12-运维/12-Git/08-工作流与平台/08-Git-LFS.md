@@ -554,7 +554,7 @@ Git LFS 是一个客户端规范，服务器端可以有不同的实现。选择
 | **GitHub LFS** | 开源项目 / 小型团队 | GitHub 托管存储 | GitHub OAuth | 按配额收费 |
 | **GitLab LFS** | 自托管 / GitLab.com | 本地磁盘 / 对象存储 | GitLab 认证 | 自托管免费 |
 | **Artifactory** | 企业级 / 需要制品管理 | 可配置多种后端 | 多种认证方式 | 商业许可 |
-| **自建 11-Nginx基础概述 + lfs-server** | 极致控制 / 特殊合规要求 | 自定义 | 自定义 | 运维成本 |
+| **自建 nginx + lfs-server** | 极致控制 / 特殊合规要求 | 自定义 | 自定义 | 运维成本 |
 
 ### 7.2 GitHub LFS
 
@@ -624,12 +624,12 @@ sequenceDiagram
 
 - **官方规范与参考**：自建可参考 [Git LFS 项目仓库](https://github.com/git-lfs/git-lfs)中附带的 LFS API 规范文档（早期官方曾提供 Go 语言参考服务器，现已下线归档）
 - **[Artifactory](https://jfrog.com/artifactory/)**：商业制品仓库，内置 LFS 支持，适合企业级部署
-- **11-Nginx基础概述 + 自定义后端**：用 11-Nginx基础概述 做 LFS API 的反向代理，后端对接 S3 或本地文件系统
+- **nginx + 自定义后端**：用 nginx 做 LFS API 的反向代理，后端对接 S3 或本地文件系统
 
-最小化自建示例（11-Nginx基础概述 反向代理 + 本地文件存储）：
+最小化自建示例（nginx 反向代理 + 本地文件存储）：
 
-```11-Nginx基础概述
-# 11-Nginx基础概述.conf 示例（极简 LFS 代理）
+```nginx
+# nginx.conf 示例（极简 LFS 代理）
 server {
     listen 8080;
     server_name lfs.example.com;

@@ -31,24 +31,24 @@ Docker 提供了 Docker Hub 镜像仓库，可以把本地镜像 push 到仓库�
 
 然后来看看 docker desktop 的界面：images 是本地的所有镜像，containers 是镜像跑起来的容器。docker desktop 可以可视化的管理它们，很方便。
 
-### 1.2 pull 一个 11-Nginx基础概述 镜像
+### 1.2 pull 一个 nginx 镜像
 
-搜索 11-Nginx基础概述 镜像，点击 pull（搜索这步需要翻墙，不然搜不到）。pull 下来之后，就可以在本地 images 看到了。如果搜不到，那直接在命令行用 docker search、docker pull 搜索和拉取镜像也可以。
+搜索 nginx 镜像，点击 pull（搜索这步需要翻墙，不然搜不到）。pull 下来之后，就可以在本地 images 看到了。如果搜不到，那直接在命令行用 docker search、docker pull 搜索和拉取镜像也可以。
 
 点击 run 会让你填一些参数：
 
 - **名字**：如果不填，docker desktop 会给你生成随机的容器名字
-- **端口**：容器内跑的 11-Nginx基础概述 服务是在 80 端口，你要把宿主机的某个端口映射到容器的 80 端口才可以访问
+- **端口**：容器内跑的 nginx 服务是在 80 端口，你要把宿主机的某个端口映射到容器的 80 端口才可以访问
 - **数据卷 volume**：把宿主机某个目录挂到容器内。因为容器是镜像跑起来的，下次再用这个镜像跑的还是同样的容器，那你在容器内保存的数据就会消失。所以都是把某个宿主机目录，挂载到容器内的某个保存数据的目录，这样数据是保存在宿主机的
 - **环境变量**：指定容器的环境变量
 
-分别设置一下：挂载本地的 /tmp/aaa 到容器内的 /usr/share/11-Nginx基础概述/html 目录。这里的 /tmp/aaa 可以换成宿主机的任何目录，如果是 windows 系统，那就是类似 D:/tmp/aaa 这种。
+分别设置一下：挂载本地的 /tmp/aaa 到容器内的 /usr/share/nginx/html 目录。这里的 /tmp/aaa 可以换成宿主机的任何目录，如果是 windows 系统，那就是类似 D:/tmp/aaa 这种。
 
 **（注意，这里是 /usr 而不是 /user）**
 
-点击 run，可以看到容器内的 11-Nginx基础概述 服务跑起来了。在 /tmp/aaa 目录下添加一个 index.html，浏览器访问 <http://localhost> 就可以访问到，这说明数据卷挂载成功了。
+点击 run，可以看到容器内的 nginx 服务跑起来了。在 /tmp/aaa 目录下添加一个 index.html，浏览器访问 <http://localhost> 就可以访问到，这说明数据卷挂载成功了。
 
-点击 files 标签就可以看到容器内的文件，可以看到 /usr/share/11-Nginx基础概述/html 被标识为 mounted，就是挂载目录的意思。再在本地添加一个文件，你会发现容器内这个目录内容也变了。这就是 volume 挂载的作用。
+点击 files 标签就可以看到容器内的文件，可以看到 /usr/share/nginx/html 被标识为 mounted，就是挂载目录的意思。再在本地添加一个文件，你会发现容器内这个目录内容也变了。这就是 volume 挂载的作用。
 
 如果你挂载某些目录报错，是因为 docker desktop 挂载的目录是需要配置的，在 Settings > Resources > File Sharing 里加一下就行。
 
@@ -59,13 +59,13 @@ Docker 提供了 Docker Hub 镜像仓库，可以把本地镜像 push 到仓库�
 在服务器上没有 Docker Desktop 这种东西，还是要敲命令的。比如点击 pull 按钮，就相当于执行了 docker pull：
 
 ```
-docker pull 11-Nginx基础概述:latest
+docker pull nginx:latest
 ```
 
 latest 是标签。然后点击 run 按钮，填了个表单，就相当于执行了 docker run：
 
 ```
-docker run --name 11-Nginx基础概述-test2 -p 80:80 -v /tmp/aaa:/usr/share/11-Nginx基础概述/html -e KEY1=VALUE1 -d 11-Nginx基础概述:latest
+docker run --name nginx-test2 -p 80:80 -v /tmp/aaa:/usr/share/nginx/html -e KEY1=VALUE1 -d nginx:latest
 ```
 
 - **-p** 是端口映射
@@ -89,9 +89,9 @@ docker run 会返回一个容器的 hash（就是这里的 id）。这个界面�
 
 ## 二、编写你的第一个 Dockerfile
 
-上节通过 desktop 从 docker hub 拉取了 11-Nginx基础概述 的镜像，并把它跑了起来。那如果要自己制作一个这样的镜像，怎么做呢？
+上节通过 desktop 从 docker hub 拉取了 nginx 的镜像，并把它跑了起来。那如果要自己制作一个这样的镜像，怎么做呢？
 
-docker 容器内就是一个独立的系统环境，要安装 11-Nginx基础概述 服务，需要执行一些命令、复制一些文件进来，然后启动服务。制作镜像自然也要进行这样的过程，不过可以自动化。只要在 dockerfile 里声明要做哪些事情，docker build 的时候就会根据这个 dockerfile 来自动化构建出一个镜像来。
+docker 容器内就是一个独立的系统环境，要安装 nginx 服务，需要执行一些命令、复制一些文件进来，然后启动服务。制作镜像自然也要进行这样的过程，不过可以自动化。只要在 dockerfile 里声明要做哪些事情，docker build 的时候就会根据这个 dockerfile 来自动化构建出一个镜像来。
 
 比如这样：
 

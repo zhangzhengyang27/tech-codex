@@ -5,6 +5,11 @@ keywords: [Kubernetes, Jenkins 高可用, Pipeline, Jenkins API, 多分支]
 category: 部署与运维实践
 tags: [DevOps, 运维]
 ---
+
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # 基于 K8S 架构下打造 CICD 平台的核心思路
 
 本文讲解一套在 K8s 环境下打造 CI/CD 平台的核心思路。

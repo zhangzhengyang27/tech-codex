@@ -374,8 +374,6 @@ spec:
 
 在首次使用 Kibana 时，需要配置索引的模式，使用 logstash-* 作为模式即可。下图是 Kibana 查询日志的界面，可以通过标签来快速对日志消息进行过滤。
 
-![](/cloud-native-images/29-使用_Fluentd_ElaticSearch_和_Kibana_管理日志__Ciqc1F7y-cuAFBf_AAJiFWEnj7g432.png)
-
 ## 总结
 
 应用的开发和维护都离不开日志的支持，对于微服务架构的云原生应用来说，完整的日志聚合、分析和查询的技术栈是必不可少的。通过本节的学习，你可以掌握 Java 应用中记录日志的方式和最佳实践，还可以了解如何基于 Fluentd、Elasticsearch 和 Kibana，在 Kubernetes 上构建自己的日志聚合、分析和查询的完整技术栈。

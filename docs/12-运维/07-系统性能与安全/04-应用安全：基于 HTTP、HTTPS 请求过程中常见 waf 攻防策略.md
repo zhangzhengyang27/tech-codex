@@ -51,7 +51,7 @@ tags: [DevOps, 运维]
 
 接下来为你举一个例子，我们以 Nginx 的设置为例，如果 Nginx 作为你公司服务架构的代理网关，那么在 Nginx 来做一些防范策略，具体包含： Nginx 实现管理后台的白名单控制，限流配置。
 
-```11-Nginx基础概述
+```nginx
 limit_req_zone $binary_remote_addr zone=limiter:10m rate=20r/s;
 server {
     # ...（其他配置）
@@ -70,7 +70,7 @@ server {
 
 第二个方式就是基于控制访问的白名单来进行限制。只允许符合条件的 IP 访问，其他的一概不允许，也就是加入了一个访问控制的配置模块。allow 一个网段，允许内网是 10.1.1.0/16 的网段来访问 /admin 路径，其他的客户端 IP 过来访问一概拒绝。这就是基于 Nginx 的配置来进行访问白名单的控制。
 
-```11-Nginx基础概述
+```nginx
 server {
     # ...（其他配置）
     location /admin {
@@ -115,7 +115,7 @@ server {
 
 第一点，需要验证 HTTP Referer 字段。HTTP Referer 记录了用户本次访问的 URL 的上一个来源地址，这个信息可以溯源出它的上一级来源 URL 地址。这个时候我们可以在网站 A 里面添加一个 Referer 的头的控制。如果是拿 Nginx 进行配置，它是这样来进行配置：
 
-```11-Nginx基础概述
+```nginx
 valid_referers none blocked server_names www.example.com;
 if ($invalid_referer) {
     return 403;

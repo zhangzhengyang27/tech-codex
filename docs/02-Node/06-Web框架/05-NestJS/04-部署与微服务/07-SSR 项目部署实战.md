@@ -210,7 +210,7 @@ npm run build
 
 ```
 必须文件：dist/（构建产物）、package.json、pnpm-lock.yaml、.env（环境变量）、.npmrc（可选）
-可选文件：ecosystem.config.js、11-Nginx基础概述.conf、README.md
+可选文件：ecosystem.config.js、nginx.conf、README.md
 不需要上传：src/（源代码）、test/、node_modules/、.git/
 ```
 

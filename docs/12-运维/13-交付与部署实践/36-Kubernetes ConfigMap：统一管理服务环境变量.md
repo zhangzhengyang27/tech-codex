@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # Kubernetes ConfigMap：统一管理服务环境变量
 
 ## 前言
@@ -95,7 +99,7 @@ kubectl apply -f ./mysql-config-file.yaml
 ### 文件创建
 
 
-另一种方式是将文件加载进去，这种方式适合挂载配置文件（例如 11-Nginx基础概述 配置文件等等）。这种方式，我们直接使用 `kubectl create configmap` 命令行创建即可。格式如下：
+另一种方式是将文件加载进去，这种方式适合挂载配置文件（例如 nginx 配置文件等等）。这种方式，我们直接使用 `kubectl create configmap` 命令行创建即可。格式如下：
 ```shell
 kubectl create configmap [configname] --from-file=[key]=[file_path]
 ```

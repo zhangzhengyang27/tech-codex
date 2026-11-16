@@ -59,7 +59,7 @@ sequenceDiagram
 
 **前提条件**：Nginx 版本大于 1.10，openssl 库版本大于 1.0.2（现代版本建议直接使用 1.25+，其对 TLS 1.3 与 HTTP/3 的支持更完善）。早期配置方式是在监听端口后加 `http2`；Nginx 1.25.1 起推荐使用 `http2 on;` 指令，旧的 `listen ... http2` 写法已被标记废弃：
 
-```11-Nginx基础概述
+```nginx
 server {
     listen       443 ssl;
     http2        on;                     # Nginx 1.25.1+ 推荐写法（等价于旧的 listen 443 ssl http2）
@@ -88,7 +88,7 @@ server {
 HTTP/2 Server Push 已被主流浏览器移除支持（Chrome 自 106 起移除），Nginx 自 1.25.1 起也将 `http2_push` 及相关指令标记为 obsolete（官方建议改用 early_hints 指令，基于 103 Early Hints 响应码）。以下配置仅适用于老版本 Nginx 与仍支持推送的客户端，作为原理演示保留。
 :::
 
-```11-Nginx基础概述
+```nginx
 server_name  www.example.com;
 root /test;
 index index.html index.htm;

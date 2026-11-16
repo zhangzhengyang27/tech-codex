@@ -767,14 +767,14 @@ services:
     environment:
       - ENVIRONMENT=production
 
-  11-Nginx基础概述:
-    image: 11-Nginx基础概述:alpine
+  nginx:
+    image: nginx:alpine
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./11-Nginx基础概述.conf:/etc/11-Nginx基础概述/11-Nginx基础概述.conf:ro
-      - ./ssl:/etc/11-Nginx基础概述/ssl:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
     depends_on:
       - web
     networks:

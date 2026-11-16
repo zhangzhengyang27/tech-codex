@@ -358,7 +358,7 @@ ssh -D 1080 dev
 scp -P 2222 dist.tar.gz dev:/var/www/
 
 # 下载文件
-scp -P 2222 dev:/var/log/11-Nginx基础概述/error.log ./
+scp -P 2222 dev:/var/log/nginx/error.log ./
 
 # 递归上传目录
 scp -r -P 2222 ./build/ dev:/var/www/app/

@@ -22,11 +22,7 @@ Saga 定义可以看成是一个状态机的描述，状态机中的状态来自
 
 创建 Saga 的第一步是了解所要描述的业务事务，典型的做法是使用流程图来描述。下图是创建行程的流程图。
 
-![](/cloud-native-images/21-如何使用_Saga_模式实现行程验证__CgqCHl7OSFqARzPPAAC45ZQTzF4617.png)
-
 从这个流程图中，可以识别出创建行程的 Saga 中的参与者，以及每个参与者需要支持的命令，如下表所示。
-
-![](/cloud-native-images/21-如何使用_Saga_模式实现行程验证__CgqCHl7OSHKAT3JYAAEPGTDnuyw247.png)
 
 ### 处理命令
 
@@ -130,8 +126,6 @@ public class CreateTripSaga implements SimpleSaga<CreateTripSagaState> {
 ```
 
 StepBuilder 类中的方法用来描述 Saga 定义的每个步骤中可以执行的操作，如下表所示。
-
-![](/cloud-native-images/21-如何使用_Saga_模式实现行程验证__CgqCHl7OSGmAY_GCAAG83v8YNKo399.png)
 
 invokeParticipant 和 withCompensation 方法描述的操作以发送命令的形式来完成。在 Saga 定义中，只需要描述如何创建命令对象即可，命令以 CommandWithDestination 对象来表示。在 Saga 实例执行到对应的步骤时，框架会负责发送相应的命令。
 

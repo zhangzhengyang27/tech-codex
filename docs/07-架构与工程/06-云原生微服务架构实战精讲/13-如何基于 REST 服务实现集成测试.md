@@ -146,8 +146,6 @@ private final String baseUri = "/api/v1";
 
 下表给出了该插件的配置项说明。
 
-![](/cloud-native-images/13-如何基于_REST_服务实现集成测试__CgqCHl6pNKGAakEHAAC2a0ntw3I633.png)
-
 Swagger 的代码生成工具可以从 OpenAPI 文档的模式声明中产生对应的 Java 模型类。示例应用已经定义了相关的模型类，因此把配置项 generateModels 的值设置为 false 来禁用模型类的生成，同时使用 importMappings 来声明映射关系。
 
 当需要编写 REST API 测试时，我们只需要依赖这个 API 客户端模块即可。下面代码中的 PassengerControllerClientTest 类是使用 API 客户端的测试类。由于 API 服务器的端口是随机的，构造器中的 @LocalServerPort 注解的作用是获取到实际运行时的端口，该端口用来构建 API 客户端访问的服务器地址。
@@ -243,8 +241,6 @@ BDD 的出发点是提供了一种自然语言的方式来描述应用的行为�
 BDD 一般使用自然语言来描述行为，业务人员使用自然语言来描述行为，形成 BDD 文档，这个文档是业务知识的具体化。我们只需要把这个文档转换成可执行的测试用例，就可以验证代码实现是否满足业务的需求。这个转换的过程需要工具的支持，本节介绍的工具是 Cucumber。
 
 Cucumber 使用名为 Gherkin 的语言来描述行为，Gherkin 语言使用半结构化的形式。下表给出了 Gherkin 语言中的常用结构。
-
-![](/cloud-native-images/13-如何基于_REST_服务实现集成测试__CgqCHl6pNRKAMlt_AABWRPxiWY4472.png)
 
 下面的代码给出了乘客管理服务的 BDD 文档示例，其中的第一个场景描述的是添加地址的行为。前置条件是乘客有 1 个地址，动作是添加一个新的地址，期望的结果是乘客有 2 个地址。第二个场景描述的是删除地址的行为，与第一个场景有类似的描述。
 

@@ -481,7 +481,7 @@ await cdnClient.refreshObjectCaches({
 
 ### 静态资源缓存
 
-```11-Nginx基础概述
+```nginx
 server {
     listen 80;
     server_name static.example.com;
@@ -506,9 +506,9 @@ server {
 
 ### 代理缓存（Nginx 作为 CDN）
 
-```11-Nginx基础概述
+```nginx
 # 缓存路径配置
-proxy_cache_path /var/cache/11-Nginx基础概述
+proxy_cache_path /var/cache/nginx
     levels=1:2                    # 两级目录结构
     keys_zone=api_cache:10m      # 共享内存区域，10MB 存储键
     max_size=1g                   # 磁盘最大 1GB

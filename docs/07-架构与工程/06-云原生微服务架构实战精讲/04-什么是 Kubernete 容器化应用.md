@@ -20,17 +20,11 @@ Kubernetes 是一个可移植和可扩展的开源平台，用来管理容器化
 
 控制平面组件分类中的组件如下表所示：
 
-![](/cloud-native-images/04-什么是_Kubernete_容器化应用__Ciqah1595s2ANX-fAABk4rHlqxA992.png)
-
 节点组件如下表所示：
-
-![](/cloud-native-images/04-什么是_Kubernete_容器化应用__Ciqah1595vqAHKWMAAA0p9KyiHI337.png)
 
 除了这些核心组件之外，还可以安装一些附加组件，如 DNS 服务器、Web 界面、容器资源监控和日志管理等。
 
 下图给出了 Kubernetes 中各个组件之间的交互关系。
-
-![](/cloud-native-images/04-什么是_Kubernete_容器化应用__Ciqah159xA6AU1_bAAC_2Bqc9uM667.png)
 
 在实际的集群中，控制平面组件和工作节点组件通常部署在不同的机器上，包含控制平面组件的机器称为**集群的主控节点**（Master），包含节点组件的机器称为**工作节点**（Worker）。生产环境的集群中应该至少有 1 个主控节点和 3 个工作节点。
 
@@ -58,25 +52,25 @@ Pod 是 Kubernetes 中调度和运行的基本单元，但在 Kubernetes 上并�
 
 副本集（ReplicaSet）保证在任何时候都有给定数量的 Pod 副本。当创建副本集时需要指定一个创建 Pod 的模板，同时确定 Pod 的选择器，并给出期望的 Pod 副本数量。在运行时，副本集根据指定的 Pod 选择器来监控当前 Pod 副本的数量，如果副本数量小于期望值，则根据 Pod 模板来创建新的 Pod。一般用标签作为 Pod 的选择器。
 
-下面代码中的 YAML 文件描述了包含 3 个 Pod 副本的副本集，每个 Pod 中只有一个 Nginx 容器，每个 Pod 上都添加了名称为 app、值为 11-Nginx基础概述 的标签。副本集使用这个标签作为包含的 Pod 的选择器，在 spec.selector.matchLabels 中指定。spec.containers 指定的是创建 Pod 的模板。
+下面代码中的 YAML 文件描述了包含 3 个 Pod 副本的副本集，每个 Pod 中只有一个 Nginx 容器，每个 Pod 上都添加了名称为 app、值为 nginx 的标签。副本集使用这个标签作为包含的 Pod 的选择器，在 spec.selector.matchLabels 中指定。spec.containers 指定的是创建 Pod 的模板。
 
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: 11-Nginx基础概述
+  name: nginx
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: 11-Nginx基础概述
+      app: nginx
   template:
     metadata:
       labels:
-        app: 11-Nginx基础概述
+        app: nginx
     spec:
       containers:
-        - name: 11-Nginx基础概述
-          image: 11-Nginx基础概述:1.17
+        - name: nginx
+          image: nginx:1.17
           ports:
             - containerPort: 80
 
@@ -91,20 +85,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 11-Nginx基础概述
+  name: nginx
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: 11-Nginx基础概述
+      app: nginx
   template:
     metadata:
       labels:
-        app: 11-Nginx基础概述
+        app: nginx
     spec:
       containers:
-        - name: 11-Nginx基础概述
-          image: 11-Nginx基础概述:1.17
+        - name: nginx
+          image: nginx:1.17
           ports:
             - containerPort: 80
 
@@ -121,34 +115,34 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 11-Nginx基础概述
+  name: nginx
   labels:
-    app: 11-Nginx基础概述
+    app: nginx
 spec:
   ports:
     - port: 80
       name: web
   clusterIP: None
   selector:
-    app: 11-Nginx基础概述
+    app: nginx
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: 11-Nginx基础概述
+  name: nginx
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: 11-Nginx基础概述
-  serviceName: 11-Nginx基础概述
+      app: nginx
+  serviceName: nginx
   template:
     metadata:
       labels:
-        app: 11-Nginx基础概述
+        app: nginx
     spec:
       containers:
-        - name: 11-Nginx基础概述
-          image: 11-Nginx基础概述:1.17
+        - name: nginx
+          image: nginx:1.17
           ports:
             - containerPort: 80
               name: web
@@ -156,9 +150,9 @@ spec:
 在下面的 Pod 列表中你可以看到 Pod 的名称。
 
 NAME      READY   STATUS    RESTARTS   AGE
-11-Nginx基础概述-0   1/1     Running   0          35m
-11-Nginx基础概述-1   1/1     Running   0          35m
-11-Nginx基础概述-2   1/1     Running   0          35m
+nginx-0   1/1     Running   0          35m
+nginx-1   1/1     Running   0          35m
+nginx-2   1/1     Running   0          35m
 
 ### 守护程序集
 
@@ -169,21 +163,21 @@ NAME      READY   STATUS    RESTARTS   AGE
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: 11-Nginx基础概述
+  name: nginx
   labels:
-    app: 11-Nginx基础概述
+    app: nginx
 spec:
   selector:
     matchLabels:
-      app: 11-Nginx基础概述
+      app: nginx
   template:
     metadata:
       labels:
-        app: 11-Nginx基础概述
+        app: nginx
     spec:
       containers:
-      - name: 11-Nginx基础概述
-        image: 11-Nginx基础概述:1.17
+      - name: nginx
+        image: nginx:1.17
         ports:
           - containerPort: 80
 
@@ -195,14 +189,12 @@ spec:
 
 下表给出了服务的几种类型。
 
-![](/cloud-native-images/04-什么是_Kubernete_容器化应用__Ciqah1595zWAa7SbAABbO7aQF0w788.png)
-
 下面代码中的 YAML 描述了一个类型为 NodePort 的服务。
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: 11-Nginx基础概述
+  name: nginx
 spec:
   type: NodePort
   ports:
@@ -211,7 +203,7 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: 11-Nginx基础概述
+    app: nginx
 
 在服务创建之后，服务的使用者可以有两种方式来发现服务。
 
@@ -265,30 +257,30 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 11-Nginx基础概述
+  name: nginx
   labels:
-    app: 11-Nginx基础概述
+    app: nginx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 11-Nginx基础概述
+      app: nginx
   template:
     metadata:
       labels:
-        app: 11-Nginx基础概述
+        app: nginx
     spec:
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: pvc
       containers:
-      - name: 11-Nginx基础概述
-        image: 11-Nginx基础概述:1.17
+      - name: nginx
+        image: nginx:1.17
         ports:
           - containerPort: 80
         volumeMounts:
-          - mountPath: "/usr/share/11-Nginx基础概述/html"
+          - mountPath: "/usr/share/nginx/html"
             name: data
 
 ## 任务和定时任务

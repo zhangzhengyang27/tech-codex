@@ -18,7 +18,7 @@ GoAccess 的核心价值在于：
 - **实时性**：能持续读取不断增长的访问日志（Access Log）并近乎实时地刷新统计。
 - **零依赖部署**：只需一个二进制与配置文件，即可在终端查看或导出 HTML/JSON 报告。
 - **字段级解析**：通过「日志格式（Log Format）」声明把日志行中的各段映射到指标，从而得到访客、页面、状态码、地理位置等维度统计。
-- **可嵌入 Nginx**：常配合 Nginx 以只读方式读取 `/var/log/11-Nginx基础概述/access.log`，并把报告通过 Nginx 对外提供访问。
+- **可嵌入 Nginx**：常配合 Nginx 以只读方式读取 `/var/log/nginx/access.log`，并把报告通过 Nginx 对外提供访问。
 
 > 定位说明：GoAccess 是接入 Nginx 访问日志做可视化分析的轻量工具，属于日志分析（Log Analysis）范畴；它与 ELK 这类完整日志平台的区别会在「进阶扩展」中说明。
 
@@ -68,7 +68,7 @@ access.log → 格式解析（log-format/date-format/time-format）
 
 ```mermaid
 flowchart TD
-    NGX[Nginx 工作进程<br>写访问日志 log_format] -->|追加写入| LOG[/var/log/11-Nginx基础概述/access.log<br>或 access.log.*.gz]
+    NGX[Nginx 工作进程<br>写访问日志 log_format] -->|追加写入| LOG[/var/log/nginx/access.log<br>或 access.log.*.gz]
     LOG -->|读取解析| GZP{CLI 调用 goaccess}
     GZP -->|log-format/date-format/time-format| PARSE[逐行按占位符解析<br>%h %t %r %s %b 等]
     PARSE --> AGG[内存聚合<br>IP/页面/状态码/时长/地理位置]
@@ -100,12 +100,12 @@ goaccess -V
 先确认 Nginx 当前使用的日志格式：
 
 ```bash
-cat /etc/11-Nginx基础概述/11-Nginx基础概述.conf | grep -A 5 log_format
+cat /etc/nginx/nginx.conf | grep -A 5 log_format
 ```
 
 COMBINED（默认）与自定义格式的 Nginx 声明：
 
-```11-Nginx基础概述
+```nginx
 # COMBINED 格式（默认，与 --log-format=COMBINED 对应）
 log_format combined '$remote_addr - $remote_user [$time_local] '
                     '"$request" $status $body_bytes_sent '
@@ -122,10 +122,10 @@ log_format custom '$remote_addr - $remote_user [$time_local] '
 
 ```bash
 # 使用预定义 COMBINED 格式
-goaccess /var/log/11-Nginx基础概述/access.log --log-format=COMBINED
+goaccess /var/log/nginx/access.log --log-format=COMBINED
 
 # 使用自定义格式（与上面 custom 对齐）
-goaccess /var/log/11-Nginx基础概述/access.log \
+goaccess /var/log/nginx/access.log \
   --log-format='$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent"' \
   --date-format='%d/%b/%Y' \
   --time-format='%H:%M:%S'
@@ -179,8 +179,8 @@ goaccess access.log -o report.json --json
 goaccess access.log.*.gz -o report.html --log-format=COMBINED
 
 # 实时监控并托管到 Nginx 目录
-goaccess /var/log/11-Nginx基础概述/access.log \
-  -o /usr/share/11-Nginx基础概述/html/goaccess.html \
+goaccess /var/log/nginx/access.log \
+  -o /usr/share/nginx/html/goaccess.html \
   --real-time-html --daemonize --pid-file=/var/run/goaccess.pid
 ```
 
@@ -188,7 +188,7 @@ goaccess /var/log/11-Nginx基础概述/access.log \
 
 ### 5. 通过 Nginx 提供报告并做访问控制
 
-```11-Nginx基础概述
+```nginx
 server {
     listen 80;
     server_name logs.example.com;
@@ -204,7 +204,7 @@ server {
 
         # 可选：基本认证
         auth_basic "Restricted";
-        auth_basic_user_file /etc/11-Nginx基础概述/.htpasswd;
+        auth_basic_user_file /etc/nginx/.htpasswd;
     }
 }
 ```
@@ -212,7 +212,7 @@ server {
 ```bash
 # 生成认证用户（需 httpd-tools）
 sudo yum install -y httpd-tools
-sudo htpasswd -c /etc/11-Nginx基础概述/.htpasswd admin
+sudo htpasswd -c /etc/nginx/.htpasswd admin
 ```
 
 ### 6. systemd 守护与日志轮转
@@ -226,9 +226,9 @@ After=network.target
 
 [Service]
 Type=forking
-User=11-Nginx基础概述
-Group=11-Nginx基础概述
-ExecStart=/usr/bin/goaccess /var/log/11-Nginx基础概述/access.log \
+User=nginx
+Group=nginx
+ExecStart=/usr/bin/goaccess /var/log/nginx/access.log \
   -o /var/www/goaccess/index.html \
   --real-time-html \
   --daemonize \
@@ -242,7 +242,7 @@ WantedBy=multi-user.target
 
 ```bash
 sudo mkdir -p /var/www/goaccess
-sudo chown -R 11-Nginx基础概述:11-Nginx基础概述 /var/www/goaccess
+sudo chown -R nginx:nginx /var/www/goaccess
 sudo systemctl daemon-reload
 sudo systemctl enable --now goaccess
 sudo systemctl status goaccess
@@ -252,14 +252,14 @@ sudo systemctl status goaccess
 
 ```bash
 sudo tee /etc/logrotate.d/goaccess << 'EOF'
-/var/log/11-Nginx基础概述/access.log {
+/var/log/nginx/access.log {
     daily
     missingok
     rotate 52
     compress
     delaycompress
     notifempty
-    create 640 11-Nginx基础概述 adm
+    create 640 nginx adm
     sharedscripts
     postrotate
         if [ -f /var/run/goaccess.pid ]; then
@@ -276,7 +276,7 @@ EOF
 #!/bin/bash
 # 生成每日报告并做保留/压缩策略
 DATE=$(date +%Y-%m-%d)
-goaccess /var/log/11-Nginx基础概述/access.log \
+goaccess /var/log/nginx/access.log \
   -o /var/www/goaccess/daily/daily-${DATE}.html \
   --no-global-config
 find /var/www/goaccess/daily/ -name "daily-*.html" -mtime +7 -exec gzip {} \;
@@ -293,7 +293,7 @@ crontab -e
 ## 五、常见坑点
 
 1. **日志解析失败 / 指标全为空**
-   最常见原因是 `log-format` 与 Nginx `log_format` 不一致（字段数量、顺序、日期时间占位符不符）。先 `cat /etc/11-Nginx基础概述/11-Nginx基础概述.conf | grep -A 5 log_format` 确认真实格式，再使 GoAccess 的 `%d` `%t` `%r` 等与之对齐。
+   最常见原因是 `log-format` 与 Nginx `log_format` 不一致（字段数量、顺序、日期时间占位符不符）。先 `cat /etc/nginx/nginx.conf | grep -A 5 log_format` 确认真实格式，再使 GoAccess 的 `%d` `%t` `%r` 等与之对齐。
 
 2. **时间/日期对不上**
    Nginx 默认时间用 `[%d/%b/%Y:%H:%M:%S %z]` 风格，需用 `--date-format='%d/%b/%Y' --time-format='%H:%M:%S'` 声明，否则月份/年份解析错位。
@@ -316,17 +316,17 @@ crontab -e
 # 校验格式是否与日志实际匹配（直接喂入 stdin 并开启 debug）
 goaccess --date-format='%d/%b/%Y' --time-format='%H:%M:%S' \
   --log-format='%h - %^ [%d:%t %^] "%r" %s %b "%R" "%u"' \
-  --debug < /var/log/11-Nginx基础概述/access.log
+  --debug < /var/log/nginx/access.log
 
 # 跳过全局配置文件，仅按参数解析以定位问题
-goaccess --debug --no-global-config < /var/log/11-Nginx基础概述/access.log
+goaccess --debug --no-global-config < /var/log/nginx/access.log
 ```
 
 ## 六、进阶扩展与参考
 
 ### 多维度分析技巧
 
-- **多域名合并**：`goaccess /var/log/11-Nginx基础概述/site1-access.log /var/log/11-Nginx基础概述/site2-access.log -o multi.html` 汇总分析。
+- **多域名合并**：`goaccess /var/log/nginx/site1-access.log /var/log/nginx/site2-access.log -o multi.html` 汇总分析。
 - **时间段/状态码/路径过滤**：先用 `sed`/`grep`/`awk` 预过滤再喂给 GoAccess，例如只分析 404、只分析 `/api/`、排除爬虫。
 - **慢请求关注**：在自定义格式中加入 `$request_time`/`$upstream_response_time`，配合报告里的时间维度定位拖慢接口。
 
@@ -335,8 +335,8 @@ goaccess --debug --no-global-config < /var/log/11-Nginx基础概述/access.log
 GoAccess 可输出 JSON 对接 ELK（Elasticsearch, Logstash, Kibana）或自建面板：
 
 ```bash
-goaccess /var/log/11-Nginx基础概述/access.log -o - --json \
-  | curl -XPOST http://localhost:9200/11-Nginx基础概述-logs/_bulk \
+goaccess /var/log/nginx/access.log -o - --json \
+  | curl -XPOST http://localhost:9200/nginx-logs/_bulk \
      --header 'Content-Type: application/x-ndjson' --data-binary @-
 ```
 
@@ -352,4 +352,4 @@ goaccess /var/log/11-Nginx基础概述/access.log -o - --json \
 ### 参考
 
 - 官方文档与日志格式说明：https://goaccess.io/
-- Nginx `log_format` 变量参考：https://11-Nginx基础概述.org/en/docs/http/ngx_http_log_module.html
+- Nginx `log_format` 变量参考：https://nginx.org/en/docs/http/ngx_http_log_module.html

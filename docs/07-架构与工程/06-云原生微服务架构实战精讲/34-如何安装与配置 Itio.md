@@ -300,8 +300,6 @@ address-service-5ffbd7cb4-nkbnv   2/2     Running   0          4m41s
 
 由于对示例应用所部署的名称空间启用了 Istio 的边车容器的自动注入，示例应用中的不同服务都会自动添加服务代理。当示例应用部署在 Kubernetes 上之后，Istio 的服务代理及相关功能会自动生效。下图中的 Kiali 界面展示了乘客界面的 GraphQL API 服务、乘客管理服务和地址管理服务之间的依赖关系。这些信息由 Istio 的服务代理自动进行收集，并不需要对应用本身进行修改。
 
-![](/cloud-native-images/34-如何安装与配置_Itio__CgqCHl8IKP2AawFqAAHOP8AB5dg709.png)
-
 通过下面的命令可以访问 Kiali 的界面。
 
 ```

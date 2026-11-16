@@ -85,7 +85,7 @@ sequenceDiagram
 
 ### 4.1 CPU 亲和性配置
 
-```11-Nginx基础概述
+```nginx
 # 推荐使用 auto，Nginx 自动识别 CPU 核心数并按推荐策略绑定 worker 线程
 worker_processes 8;          # 与 CPU 核心数对应
 worker_cpu_affinity auto;
@@ -93,7 +93,7 @@ worker_cpu_affinity auto;
 
 ### 4.2 IO 流事件模型与连接数
 
-```11-Nginx基础概述
+```nginx
 events {
     use epoll;               # 使用 epoll 事件驱动模型
     worker_connections 1024; # Nginx 默认 512，高并发场景建议按峰值调大
@@ -109,7 +109,7 @@ events {
 
 ### 4.3 零拷贝配置
 
-```11-Nginx基础概述
+```nginx
 http {
     sendfile on;     # 开启内核对静态文件的内核态零拷贝转发
 }
@@ -117,7 +117,7 @@ http {
 
 ### 4.4 gzip 文件压缩典型配置（按需调整）
 
-```11-Nginx基础概述
+```nginx
 gzip                on;                          # 开启压缩功能
 gzip_buffer         16 8k;                       # 压缩时使用的内容内存空间
 gzip_comp_level     6;                           # 压缩等级，推荐 6（过高影响性能、过低无效果）
@@ -133,7 +133,7 @@ gzip_disable        "msie6";                     # 关闭 IE6 的压缩
 
 **浏览器缓存**（静态元素缓存到客户端，可配合 Chrome 开发者工具分析请求头/响应头与 body）：
 
-```11-Nginx基础概述
+```nginx
 # expires 设置 Expires 与 Cache-Control 响应头，控制浏览器缓存周期
 # -1 表示不缓存（Cache-Control: no-cache）；max 表示最长周期缓存（10 年）；也可写具体分钟/天
 location ~* \.(css|js|png|jpg)$ {
@@ -144,21 +144,21 @@ location ~* \.(css|js|png|jpg)$ {
 
 **HTTPS SSL 会话缓存**（减少客户端与服务的重复建连）：
 
-```11-Nginx基础概述
+```nginx
 ssl_session_cache shared:SSL:10m;   # 共享内存 10MB，用于缓存 SSL 会话
 ssl_session_timeout 10m;            # SessionKey 超时 10 分钟，到期重新建连
 ```
 
 **打开文件缓存**（缓存静态元素的元数据，如文件路径等索引信息）：
 
-```11-Nginx基础概述
+```nginx
 open_file_cache        max=1000 inactive=20s;  # 最多缓存 1000 个文件；20 秒内未被访问的条目会被移出
 open_file_cache_valid  30s;                    # 每 30 秒主动检查缓存元信息是否有更新
 ```
 
 **代理缓存**（反向代理后端动态数据）：
 
-```11-Nginx基础概述
+```nginx
 proxy_cache_path /path/to/cache levels=1:2 keys_zone=my_cache:10m max_size=10g inactive=60m;
 
 location / {

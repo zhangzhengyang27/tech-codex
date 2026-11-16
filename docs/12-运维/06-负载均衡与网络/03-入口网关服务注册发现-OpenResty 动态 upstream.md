@@ -31,7 +31,7 @@ Nginx 的 upstream（上游服务器组）配置本质是**静态的**：后台�
 | 方式 | 说明 |
 |------|------|
 | Nginx + Lua（OpenResty） | 用 Lua 开发动态调用接口 |
-| 开源组件 | confd 工具、11-Nginx基础概述-upsync-module 模块 |
+| 开源组件 | confd 工具、nginx-upsync-module 模块 |
 | 独立入口网关替换 | Kong、Traefik 等云原生网关 |
 
 Nginx 默认配置模块对动态 upstream 支持有限，本文演示基于 OpenResty 的方案。
@@ -59,7 +59,7 @@ flowchart LR
 ```mermaid
 flowchart TB
     subgraph GW["OpenResty 网关（800 端口）"]
-        CONF[11-Nginx基础概述.conf]
+        CONF[nginx.conf]
         CONF --> LOS["upsops.lua（动态调节 upstream 节点接口）"]
         CONF --> LUP["upstream.lua（负载均衡策略 / balancer_by_lua_file）"]
         CONF --> LGET["节点信息获取脚本"]
@@ -70,7 +70,7 @@ flowchart TB
     LGET --> UPS["location = /ups（动态更新接口）"]
 ```
 
-文字说明：OpenResty 主配置 11-Nginx基础概述.conf 引用 ngx_lua 目录下的三个 Lua 脚本——`upsops.lua`（提供动态调节 upstream 节点信息的接口）、`upstream.lua`（负载均衡策略）、节点信息获取脚本。对外同时提供根访问路径（反向代理到 81/82/83 三份虚拟主机，用 `balancer_by_lua_file` 修改默认负载均衡策略）与 `location=/ups`（动态更新 upstream 节点信息）两类入口。
+文字说明：OpenResty 主配置 nginx.conf 引用 ngx_lua 目录下的三个 Lua 脚本——`upsops.lua`（提供动态调节 upstream 节点信息的接口）、`upstream.lua`（负载均衡策略）、节点信息获取脚本。对外同时提供根访问路径（反向代理到 81/82/83 三份虚拟主机，用 `balancer_by_lua_file` 修改默认负载均衡策略）与 `location=/ups`（动态更新 upstream 节点信息）两类入口。
 
 ## ④ 工具与实践
 
@@ -78,7 +78,7 @@ flowchart TB
 
 - 参考官方文档安装 Nginx 与 OpenResty；
 - Nginx 在此演示中作为 real server 节点：配置 81、82、83 三个端口的三份虚拟主机配置，启动后分别显示 Server 1/2/3 页面，模拟三个后台 HTTP 服务；
-- OpenResty 作为代理网关做负载均衡：主配置文件 11-Nginx基础概述.conf 引用 ngx_lua 目录下的三个 Lua 脚本——`upsops.lua`、`upstream.lua`、节点信息获取脚本；
+- OpenResty 作为代理网关做负载均衡：主配置文件 nginx.conf 引用 ngx_lua 目录下的三个 Lua 脚本——`upsops.lua`、`upstream.lua`、节点信息获取脚本；
 - 对外提供根访问路径（反向代理到三台虚拟主机，`balancer_by_lua_file` 修改默认负载均衡策略）和 `location=/ups`（动态更新 upstream 节点信息的接口）。
 
 ### 4.2 upsops.lua 核心逻辑
@@ -102,7 +102,7 @@ flowchart TB
 - **静态配置无法实时跟随**：手工改配置 + 重启的方式无法做到自动化与实时触发，扩容缩容滞后。
 - **节点删到零的边界**：通过 `down_server` 函数约束后台 real server 至少保留一台主机，避免误删导致后端整体不可用。
 - **接口调用要有状态反馈**：add / del 成功与失败均需返回明确提示（如删除成功返回 200），便于管理中心确认操作结果。
-- **选型误区**：不是所有场景都必须自研；已有 Nginx 体系且需定制接口才选 OpenResty + Lua，快速接入可用 confd / 11-Nginx基础概述-upsync，云原生新建场景选 Kong / Traefik。
+- **选型误区**：不是所有场景都必须自研；已有 Nginx 体系且需定制接口才选 OpenResty + Lua，快速接入可用 confd / nginx-upsync，云原生新建场景选 Kong / Traefik。
 
 ## ⑥ 进阶扩展与参考
 

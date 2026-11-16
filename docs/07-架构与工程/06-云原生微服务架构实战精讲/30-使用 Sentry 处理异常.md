@@ -18,9 +18,7 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 ### 异常的类型
 
-Java 中的异常可以分成 3 类，分别是检查异常（Checked Exception）、非检查异常（Unchecked Exception）和错误（Error）。这三种异常都是 Throwable 的子类型，类层次结构如下图所示。
-
-![](/cloud-native-images/30-使用_Sentry_处理异常__CgqCHl714nqAF02gAABfHmw5Su8570.png)
+Java 中的异常可以分成 3 类，分别是检查异常（Checked Exception）、非检查异常（Unchecked Exception）和错误（Error）。这三种异常都是 Throwable 的子类型，类层次结构如下。
 
 只有 Throwable 类或者其子类的实例，才能被 Java 虚拟机以错误来抛出，或是作为 throw 语句的对象。同样的，只有 Throwable 类及其子类才能作为 catch 子句的类型。
 
@@ -211,11 +209,7 @@ Sentry.capture("A message with breadcrumb");
 
 捕获的事件可以通过 Sentry 的界面来查看，下图给出了 Sentry 中查看问题列表的界面。
 
-![](/cloud-native-images/30-使用_Sentry_处理异常__CgqCHl7y-reAPzbkAADpk0eyBgI056.png)
-
-对于每个问题，可以查看详细信息，如下图所示。
-
-![](/cloud-native-images/30-使用_Sentry_处理异常__CgqCHl7y-r-AdEmEAAHmAQ4V61I139.png)
+对于每个问题，可以查看详细信息。
 
 Sentry 界面所提供的功能很强大，可以帮助开发人员快速获取相关信息。
 

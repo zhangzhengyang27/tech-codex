@@ -51,7 +51,7 @@ graph TD
 
 以 Nginx 为例：
 
-```11-Nginx基础概述
+```nginx
 keepalive_timeout 0;      # 关闭长连接，仅支持短连接
 keepalive_timeout 120s;   # 支持 2 分钟的长连接
 ```

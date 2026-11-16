@@ -30,18 +30,18 @@ tags: [Node.js, Express, Koa, 服务端]
 
 ```yaml
 services:
-  11-Nginx基础概述:
+  nginx:
     restart: always
-    image: 11-Nginx基础概述
-    container_name: frontend-11-Nginx基础概述
+    image: nginx
+    container_name: frontend-nginx
     environment:
       - TZ=Asia/Shanghai
     ports:
       - "4080:80"       # 宿主机端口:容器端口
     volumes:
-      - /home/website:/usr/share/11-Nginx基础概述/html      # 网站目录
-      - /etc/11-Nginx基础概述/conf.d:/etc/11-Nginx基础概述/conf.d      # Nginx 配置
-      - /var/log/11-Nginx基础概述:/var/log/11-Nginx基础概述            # 日志目录
+      - /home/website:/usr/share/nginx/html      # 网站目录
+      - /etc/nginx/conf.d:/etc/nginx/conf.d      # Nginx 配置
+      - /var/log/nginx:/var/log/nginx            # 日志目录
 ```
 
 **端口映射原理**：
@@ -55,18 +55,18 @@ services:
 关键规则：
 - 宿主机端口不能冲突
 - 容器端口必须与 Nginx `listen` 配置一致
-- 修改 Nginx 配置后需重启容器：`docker restart frontend-11-Nginx基础概述`
+- 修改 Nginx 配置后需重启容器：`docker restart frontend-nginx`
 
 **Nginx 配置示例**：
 
-```11-Nginx基础概述
-# /etc/11-Nginx基础概述/conf.d/site.conf
+```nginx
+# /etc/nginx/conf.d/site.conf
 server {
     listen 80;
     server_name example.com;
 
     location / {
-        root /usr/share/11-Nginx基础概述/html/my-app;
+        root /usr/share/nginx/html/my-app;
         index index.html;
         try_files $uri $uri/ /index.html;  # SPA 路由支持
     }
@@ -87,7 +87,7 @@ docker compose up -d
 
 # 4. 更新部署（无需重建容器）
 rsync -avz dist/ user@server:/home/website/my-app/
-docker exec frontend-11-Nginx基础概述 11-Nginx基础概述 -s reload
+docker exec frontend-nginx nginx -s reload
 ```
 
 ### 1.3 方式二：构建 Docker 镜像（推荐）
@@ -116,11 +116,11 @@ COPY . .
 RUN npm run build
 
 # 生产阶段
-FROM 11-Nginx基础概述:alpine
-COPY --from=builder /app/dist /usr/share/11-Nginx基础概述/html
-COPY 11-Nginx基础概述.conf /etc/11-Nginx基础概述/conf.d/default.conf
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-CMD ["11-Nginx基础概述", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
 ```
 
 **多阶段构建 Dockerfile（Nuxt3 SSR）**：

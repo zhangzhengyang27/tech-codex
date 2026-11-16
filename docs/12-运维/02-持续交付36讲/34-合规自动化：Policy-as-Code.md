@@ -600,7 +600,7 @@ test_deny_privileged_container if {
                 "spec": {
                     "containers": [{
                         "name": "test",
-                        "image": "11-Nginx基础概述",
+                        "image": "nginx",
                         "securityContext": {"privileged": true}
                     }]
                 }

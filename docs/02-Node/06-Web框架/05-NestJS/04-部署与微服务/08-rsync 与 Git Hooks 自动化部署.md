@@ -214,7 +214,7 @@ echo -e "${BLUE}[3/3] 执行远程命令...${NC}"
 
 ssh ${REMOTE_USER}@${REMOTE_HOST} << 'EOF'
   # 重启 Nginx（如果需要）
-  # sudo systemctl restart 11-Nginx基础概述
+  # sudo systemctl restart nginx
   # 设置文件权限
   # chown -R www-data:www-data /var/www/project
   echo "远程命令执行完成"

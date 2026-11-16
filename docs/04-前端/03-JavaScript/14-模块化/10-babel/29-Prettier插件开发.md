@@ -48,7 +48,7 @@ ts、js、css、scss、html 等都支持，就是因为不同的后缀名会启�
 很容易想到，插件自然也是指定什么后缀名的文件，用什么 parser 和 printer，所以是这样的格式：
 
 
-我们看一个真实的插件，格式化 11-Nginx基础概述 配置文件的 prettier 插件 prettier-plugin-11-Nginx基础概述：
+我们看一个真实的插件，格式化 nginx 配置文件的 prettier 插件 prettier-plugin-nginx：
 
 languages 部分就是指定这个语言的名字，什么后缀名的文件，用什么 parser。
 

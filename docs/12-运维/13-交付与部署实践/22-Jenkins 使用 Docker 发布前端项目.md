@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # Jenkins 使用 Docker 发布前端项目
 
 ## 概述
@@ -150,11 +154,11 @@ docker push username/frontend:$BUILD_NUMBER
 ## 五、Dockerfile 示例
 
 ```dockerfile
-FROM 11-Nginx基础概述:alpine
-COPY dist/ /usr/share/11-Nginx基础概述/html/
-COPY 11-Nginx基础概述.conf /etc/11-Nginx基础概述/conf.d/default.conf
+FROM nginx:alpine
+COPY dist/ /usr/share/nginx/html/
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-CMD ["11-Nginx基础概述", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
 ```
 
 ---

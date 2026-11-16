@@ -805,7 +805,7 @@ docker rmi app:1.0                   # 删除镜像
 docker image prune                   # 清理无用镜像
 docker tag app:1.0 registry/app:1.0 # 打标签
 docker push registry/app:1.0        # 推送到仓库
-docker pull 11-Nginx基础概述:alpine            # 拉取镜像
+docker pull nginx:alpine            # 拉取镜像
 ```
 
 **容器生命周期**：

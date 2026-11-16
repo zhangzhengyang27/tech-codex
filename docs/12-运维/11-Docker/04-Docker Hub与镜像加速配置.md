@@ -20,8 +20,8 @@ tags: [DevOps, Docker, 镜像仓库]
 
 | 镜像类型 | 特征 | 示例 |
 |----------|------|------|
-| 官方镜像 | 无命名空间前缀 | `11-Nginx基础概述`、`mysql`、`redis` |
-| 社区镜像 | 带用户/组织前缀 | `bitnami/11-Nginx基础概述`、`grafana/grafana` |
+| 官方镜像 | 无命名空间前缀 | `nginx`、`mysql`、`redis` |
+| 社区镜像 | 带用户/组织前缀 | `bitnami/nginx`、`grafana/grafana` |
 | 企业镜像 | 厂商认证 | `mcr.microsoft.com/dotnet/aspnet` |
 
 规则：**名字里只有一个 `/` 且前面不是域名时，前面的部分就是命名空间**；`library/` 是官方镜像的隐藏命名空间，所以 `ubuntu` 等价于 `library/ubuntu`。
@@ -31,7 +31,7 @@ tags: [DevOps, Docker, 镜像仓库]
 ```
 [仓库地址/]命名空间/镜像名:标签
     ↓            ↓       ↓
-docker.io       bitnami  11-Nginx基础概述:1.25-alpine
+docker.io       bitnami  nginx:1.25-alpine
 ```
 
 - 省略仓库地址时默认 `docker.io`（Docker Hub）；
@@ -53,9 +53,9 @@ docker.io       bitnami  11-Nginx基础概述:1.25-alpine
 
 ### 2.2 标签最佳实践
 
-- **生产锁定精确版本**：`11-Nginx基础概述:1.25.3`，升级时显式改标签并走发布流程；
+- **生产锁定精确版本**：`nginx:1.25.3`，升级时显式改标签并走发布流程；
 - **区分基础镜像变体**：`-alpine`（小）、`-slim`（中等）、`-bookworm`/`-jammy`（Debian/Ubuntu 系）；
-- **用 SHA-256 摘要做最终锁定**：`11-Nginx基础概述@sha256:xxxx…`，镜像内容不可变，杜绝标签被覆盖的风险。
+- **用 SHA-256 摘要做最终锁定**：`nginx@sha256:xxxx…`，镜像内容不可变，杜绝标签被覆盖的风险。
 
 ---
 

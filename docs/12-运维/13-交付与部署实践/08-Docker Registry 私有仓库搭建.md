@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # Docker Registry 私有仓库搭建
 
 ## 概述
@@ -61,20 +65,20 @@ curl http://127.0.0.1:5000/v2/_catalog
 
 ```bash
 # 1. 打标签
-docker tag 11-Nginx基础概述:latest 192.168.1.100:5000/11-Nginx基础概述:latest
+docker tag nginx:latest 192.168.1.100:5000/nginx:latest
 
 # 2. 推送
-docker push 192.168.1.100:5000/11-Nginx基础概述:latest
+docker push 192.168.1.100:5000/nginx:latest
 
 # 3. 验证
 curl http://192.168.1.100:5000/v2/_catalog
-# {"repositories":["11-Nginx基础概述"]}
+# {"repositories":["nginx"]}
 ```
 
 ### 拉取镜像
 
 ```bash
-docker pull 192.168.1.100:5000/11-Nginx基础概述:latest
+docker pull 192.168.1.100:5000/nginx:latest
 ```
 
 ### API 接口

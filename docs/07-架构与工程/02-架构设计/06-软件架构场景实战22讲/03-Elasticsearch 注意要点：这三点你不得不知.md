@@ -20,8 +20,6 @@ tags: [架构, 02-架构设计]
 
 比如 MySQL 中有一个订单数据，使用 ES 查询时，我们会把每条主数据及关联子表数据全部整合在下表中：
 
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__Cip5yF_XTrmATHezAACvlXmMIMk086.png)
-
 从上表中，我们发现：使用 ES 存储数据时并不会设计多个表，而是将所有表的相关字段数据汇集在一个 Document 中，即一个完整的文档结构，类似这样（此处我使用 JSON），代码示例如下：
 
 ```
@@ -60,8 +58,6 @@ ES 是一个分布式的查询系统，它的每一个节点都是一个基于 L
 
 Lucene 是一个索引系统，通过从易到难的方式，我们把 Lucene 与 MySQL 的一些概念简单做映射：
 
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__Cip5yF_XTsqAELYYAACD5X8OJ7g432.png)
-
 通过表中相关概念的对比，相信你已经理解了 Lucene 中每个概念的作用，这部分内容也是对上面内容的一个补充。
 
 到这你可能还有一个疑问：Lucene 的索引 Index 到底是什么？我们继续讨论。
@@ -72,11 +68,7 @@ Lucene 是一个索引系统，通过从易到难的方式，我们把 Lucene �
 
 假如我们有一个无结构的文档，如下表所示：
 
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__CgpVE1_XTtaAVMWOAAB_YVCx8-M455.png)
-
 简单倒排索引后，显示的结果如下表所示：
-
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__Cip5yF_XTuKAFnIVAABnsgtxCto959.png)
 
 我们发现：无结构的文档经过简单的倒排索引后，字典表主要存放关键字，而倒排表存放该关键字所在的文档 id。
 
@@ -84,9 +76,7 @@ Lucene 是一个索引系统，通过从易到难的方式，我们把 Lucene �
 
 **（3）有结构文档的倒排索引（Index）**
 
-再来举一个更复杂的例子，比如每个 Doc 都有多个 Field，Field 有不同的值（包含不同的 Term），倒排索引的结构参考如下图所示：
-
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__Cip5yF_XTuyAAhgIAAC3_agm9VY246.png)
+再来举一个更复杂的例子，比如每个 Doc 都有多个 Field，Field 有不同的值（包含不同的 Term），倒排索引的结构参考如下。
 
 倒排索引结构示意图
 
@@ -211,19 +201,17 @@ PUT trips
 
 ## ES 的坑有哪些？
 
+> 🖼️ 原文配图未随迁移入库
+
 ### 坑一：ES 是准实时的？
 
 当你更新数据至 ES 且返回成功提示（注意这一瞬间），你会发现通过 ES 查询返回的数据仍然不是最新的，背后的原因究竟是什么？这就要求我们对数据索引的整个过程有所了解，且待我们一步步揭开真实的面纱。
 
 数据索引整个过程因涉及 ES 的分片，Lucene Index、Segment、 Document 的三者之间关系等知识点，所以我们有必要先把这部分内容串起来说明。
 
-ES 的一个分片（这里跳过 ES 分片相关介绍）就是一个 Lucene Index，每一个 Lucene Index 由多个 Segment 构成，即 Lucene Index 的子集就是 Segment，如下图所示：
+ES 的一个分片（这里跳过 ES 分片相关介绍）就是一个 Lucene Index，每一个 Lucene Index 由多个 Segment 构成，即 Lucene Index 的子集就是 Segment。
 
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__CgpVE1_XTxGALFDFAABxnb4yW-c693.png)
-
-关于 Lucene Index、Segment、 Document 三者之间的关系，你看完下面这张图就一目了然了，如下图所示：
-
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__CgpVE1_XTxmAbLEnAADVolK6oxw604.png)
+关于 Lucene Index、Segment、 Document 三者之间的关系，你看完下面这张图就一目了然了。
 
 通过上面这个图，我们知道一个 Lucene Index 可以存放多个 Segment，而每个 Segment 又可以存放多个 Document。
 
@@ -233,11 +221,7 @@ ES 的一个分片（这里跳过 ES 分片相关介绍）就是一个 Lucene In
 
 第二步：Shard 收到写请求时，请求会被写入 Translog 中，然后 Document 被存放 memory buffer （注意：memory buffer 的数据并不能被搜索到）中，最终 Translog 保存所有修改记录。
 
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__CgpVE1_XTziAVw8DAACGRqLAefs016.png)
-
-第三步：每隔 1 秒（默认设置），refresh 操作被执行一次，且 memory buffer 中的数据会被写入一个 Segment 并存放 filesystem cache 中，这时新的数据就可以被搜索到了，如下图所示：
-
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__CgpVE1_XT0eAC-oyAACRs7zj19g709.png)
+第三步：每隔 1 秒（默认设置），refresh 操作被执行一次，且 memory buffer 中的数据会被写入一个 Segment 并存放 filesystem cache 中，这时新的数据就可以被搜索到了。
 
 通过以上数据索引过程的说明，我们发现 ES 并不是实时的，而是有 1 秒延时，因延时问题的解决方案我们在 02 讲中介绍过，提示用户查询的数据会有一定延时即可。
 
@@ -247,9 +231,7 @@ ES 的一个分片（这里跳过 ES 分片相关介绍）就是一个 Lucene In
 
 在数据索引的过程这部分内容，我们提及了每隔 1 秒（根据配置），memory buffer 中的数据会被写入 Segment 中，此时这部分数据可被用户搜索到，但没有被持久化，一旦系统宕机了，数据就会丢失。
 
-比如下图中灰色的桶，目前它可被搜索到，但还没有持久化，一旦 ES 宕机，数据将会丢失。
-
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__CgpVE1_XT1KAfzzWAACRs7zj19g995.png)
+比灰色的桶，目前它可被搜索到，但还没有持久化，一旦 ES 宕机，数据将会丢失。
 
 如何防止数据丢失呢？使用 Lucene 中的 commit 操作就能轻松解决这个问题。
 
@@ -267,9 +249,7 @@ commit 具体操作：先将多个 Segment 合并保存到磁盘中，再将灰�
 
 ### 坑三：分页越深，查询效率越慢
 
-ES 分页这个坑的出现，与 ES 的读操作请求的处理流程密切关联，为此我们有必要先深度剖析下 ES 的读操作请求的处理流程，如下图所示：
-
-![](/arch-course-images/03-Elasticsearch_注意要点_这三点你不得不知__CgpVE1_XT2GAUqfhAAFpYjDxkE0550.png)
+ES 分页这个坑的出现，与 ES 的读操作请求的处理流程密切关联，为此我们有必要先深度剖析下 ES 的读操作请求的处理流程。
 
 ES 的读操作请求的处理流程示意图
 

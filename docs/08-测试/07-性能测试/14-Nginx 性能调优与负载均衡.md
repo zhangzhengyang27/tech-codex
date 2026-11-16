@@ -40,8 +40,8 @@ Nginx 在现代架构中通常作为**统一流量入口**，对外暴露少量�
 
 Nginx 采用**多进程 + 异步非阻塞**模型：master 进程负责管理 worker、加载配置、绑定端口；worker 进程处理实际请求，每个 worker 可承载数万并发连接。
 
-```11-Nginx基础概述
-# 11-Nginx基础概述.conf 全局段
+```nginx
+# nginx.conf 全局段
 # worker 进程数：建议等于 CPU 物理核心数（不含超线程）
 # 可通过 nproc 查看，或 auto 自动匹配
 worker_processes auto;
@@ -60,7 +60,7 @@ worker_rlimit_nofile 65535;
 
 ### 2.2 连接优化与 IO 模型
 
-```11-Nginx基础概述
+```nginx
 events {
     # Linux 必选 epoll，FreeBSD 选 kqueue，兼容默认 select 性能极差
     use epoll;
@@ -80,7 +80,7 @@ events {
 
 这三个指令对静态资源吞吐与延迟有显著影响：
 
-```11-Nginx基础概述
+```nginx
 http {
     # 启用 sendfile：内核态直接拷贝文件到 socket，跳过用户态缓冲
     # 对静态资源服务提升明显，动态代理场景下意义不大
@@ -105,7 +105,7 @@ http {
 
 反向代理场景下，**upstream keepalive** 是降低后端连接开销的关键：
 
-```11-Nginx基础概述
+```nginx
 http {
     upstream backend {
         server 10.0.0.1:8080 max_fails=3 fail_timeout=30s;
@@ -146,7 +146,7 @@ http {
 
 ### 2.5 压缩：gzip 与 brotli
 
-```11-Nginx基础概述
+```nginx
 http {
     # gzip：兼容性最好，CPU 开销低
     gzip on;
@@ -222,7 +222,7 @@ flowchart TB
 
 ### 3.3 配置示例
 
-```11-Nginx基础概述
+```nginx
 http {
     # 1. 加权轮询：按服务器能力分配
     upstream weighted_backend {
@@ -269,9 +269,9 @@ http {
 
 ### 3.4 健康检查
 
-Nginx 开源版默认提供**被动健康检查**：当请求失败达到 `max_fails` 次后，将该后端标记为不可用，持续 `fail_timeout` 时间。**主动健康检查**需 Nginx Plus 或第三方模块（`11-Nginx基础概述_upstream_check_module`）：
+Nginx 开源版默认提供**被动健康检查**：当请求失败达到 `max_fails` 次后，将该后端标记为不可用，持续 `fail_timeout` 时间。**主动健康检查**需 Nginx Plus 或第三方模块（`nginx_upstream_check_module`）：
 
-```11-Nginx基础概述
+```nginx
 # 被动健康检查（开源版内置）
 upstream backend {
     server 10.0.0.1:8080 max_fails=3 fail_timeout=30s;
@@ -295,7 +295,7 @@ upstream backend {
 
 Nginx 从 1.25.0 开始在主线支持 HTTP/3 与 QUIC，到 1.27.x 已进入稳定可用阶段。HTTP/3 基于 UDP 的 QUIC 协议，相比 HTTP/2 解决了 TCP 队头阻塞、连接迁移、TLS 握手延迟等核心问题。
 
-```11-Nginx基础概述
+```nginx
 server {
     # 同时监听 TCP（HTTP/2 兼容）与 UDP（HTTP/3）
     listen 443 ssl;
@@ -305,8 +305,8 @@ server {
     
     server_name api.example.com;
     
-    ssl_certificate     /etc/11-Nginx基础概述/ssl/fullchain.pem;
-    ssl_certificate_key /etc/11-Nginx基础概述/ssl/privkey.pem;
+    ssl_certificate     /etc/nginx/ssl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/privkey.pem;
     ssl_protocols       TLSv1.3;        # HTTP/3 强制要求 TLS 1.3
     
     # 通告客户端可升级到 HTTP/3
@@ -333,7 +333,7 @@ HTTP/3 对性能测试的影响需要重点关注：
 
 ### 5.1 限流：limit_req 与 limit_conn
 
-```11-Nginx基础概述
+```nginx
 http {
     # 限流区域定义：基于客户端 IP，每秒 100 请求，突发 50
     # zone=api_rl:10m 表示用 10MB 内存存 IP 状态，约可记录 16 万个 IP
@@ -375,7 +375,7 @@ http {
 
 开源版 Nginx 可通过 `proxy_next_upstream` + `max_fails` 实现简单熔断，复杂场景需配合 Lua：
 
-```11-Nginx基础概述
+```nginx
 upstream backend {
     server 10.0.0.1:8080 max_fails=5 fail_timeout=30s;
     server 10.0.0.2:8080 max_fails=5 fail_timeout=30s;
@@ -396,7 +396,7 @@ server {
         # 后端全部失败时的兜底页面
         error_page 502 503 504 /fallback.html;
         location = /fallback.html {
-            root /usr/share/11-Nginx基础概述/html;
+            root /usr/share/nginx/html;
             internal;
         }
     }
@@ -407,7 +407,7 @@ server {
 
 基于请求头、Cookie、URI 参数的灰度分流是 Nginx 网关场景的常见需求：
 
-```11-Nginx基础概述
+```nginx
 # 通过 split_clients 按比例分流
 split_clients "${remote_addr}${http_user_agent}" $upstream_pool {
     10%  canary;          # 10% 流量到灰度集群
@@ -464,7 +464,7 @@ flowchart LR
 
 ### 6.2 动态路由与限流增强
 
-```11-Nginx基础概述
+```nginx
 # 通过 Lua 访问 Redis 实现动态路由
 location /api/ {
     access_by_lua_block {
@@ -492,7 +492,7 @@ location /api/ {
 }
 ```
 
-### 6.3 11-Nginx基础概述-plus vs 开源版
+### 6.3 nginx-plus vs 开源版
 
 Nginx Plus 是商业版本，在以下场景有显著优势：
 
@@ -531,8 +531,8 @@ Nginx Plus 是商业版本，在以下场景有显著优势：
 ### 7.4 最佳实践清单
 
 1. **版本锁定**：生产环境使用 1.27.x 稳定分支，避免使用 mainline 主线版本（注：截至 2026-09，1.27 分支已从官网下架停止维护，当前 stable 为 1.30.x，新部署建议评估升级）；
-2. **配置即代码**：11-Nginx基础概述.conf 纳入 Git 管理，CI 自动校验 `11-Nginx基础概述 -t`，变更通过 CI/CD 滚动 reload；
-3. **监控指标**：`active connections`、`accepts/handled/requests`、`reading/writing/waiting`、`upstream_response_time` 等指标接入 Prometheus，配合 `11-Nginx基础概述_exporter`；
+2. **配置即代码**：nginx.conf 纳入 Git 管理，CI 自动校验 `nginx -t`，变更通过 CI/CD 滚动 reload；
+3. **监控指标**：`active connections`、`accepts/handled/requests`、`reading/writing/waiting`、`upstream_response_time` 等指标接入 Prometheus，配合 `nginx_exporter`；
 4. **日志结构化**：使用 `log_format` 输出 JSON，便于 ELK/Loki 解析，关键字段：`$request_time`、`$upstream_response_time`、`$upstream_addr`、`$status`；
 5. **压测前预热**：worker 进程冷启动时 epoll 尚未填充连接池，首秒 QPS 会偏低，压测前用低强度流量预热 30s；
 6. **TLS 优化**：启用 `ssl_session_cache`、`ssl_early_data on`（0-RTT）、`ssl_stapling on`（OCSP 装订），可降低 TLS 握手开销 30% 以上；

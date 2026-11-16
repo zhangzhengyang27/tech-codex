@@ -448,7 +448,7 @@ uncss page1.html page2.html page3.html > output.css
 
 ### Gzip / Brotli 压缩
 
-```11-Nginx基础概述
+```nginx
 # Nginx 配置 - Gzip
 gzip on;
 gzip_types text/css text/plain application/javascript;

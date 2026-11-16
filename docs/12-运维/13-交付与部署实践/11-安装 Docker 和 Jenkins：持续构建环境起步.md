@@ -6,6 +6,10 @@ category: 部署与运维实践
 tags: [DevOps, CI/CD]
 ---
 
+::: warning 版本提示
+本系列环境基于 Kubernetes 1.23 与 CentOS 7 编写：K8s 1.23 已 EOL，Kubernetes 自 1.24 起移除 dockershim，CentOS 7 已于 2024-06 EOL。本文流程适用于对应年代环境，新环境请参照 K8s 官方文档与容器化方案。
+:::
+
 # 安装 Docker 和 Jenkins：持续构建环境起步
 
 在第一章，我们已经大致了解过 `CI/CD` 的作用和历史。从这一章起，我们将正式开启搭建一套 `CI/CD` 流程。在开始之前，首先要学习下贯穿本系列全程的一个技术：`Docker 和 Jenkins`。

@@ -84,8 +84,6 @@ Prometheus 是一个开源的服务监控系统和时间序列数据库，它是
 
 我们先来看一张 Prometheus 的架构图：
 
-![](/tracing-images/16-指标体系_Prometheu_如何更完美地显示指标体系___Ciqc1F9pyTGATVArAAFB6U7Uslw981.png)
-
 根据我在原理中讲到的数据收集、指标聚合、指标查询和规则告警，我们也可以通过这 4 个步骤来了解 Prometheus。
 
 我们可以从图中看到，Prometheus 主要是采取拉取模式获取数据的，它提供了完善的服务发现机制，结合 K8s 的 API 可以动态感知服务的创建与销毁。通过可配置的方式，定期拉取服务列表的数据。对于一些短期存在的任务，Prometheus 同样提供了 PushGateway，让业务程序能够推送数据，再由收集系统来收集。
@@ -175,9 +173,7 @@ PromQL 还支持很多的计算函数，这里你可以参考官网的教程进�
 
 ### Grafana
 
-最后我简单介绍一下 Grafana，它是**一个通过可视化的形式查看指标数据的展示系统**。通过它，你可以快速构建出 dashboard。其数据源就是依赖 Prometheus，通过 PromQL 的查询实现的。如下图所示：
-
-![](/tracing-images/16-指标体系_Prometheu_如何更完美地显示指标体系___CgqCHl9pyVSAaRiNAAFaF113VPU106.png)
+最后我简单介绍一下 Grafana，它是**一个通过可视化的形式查看指标数据的展示系统**。通过它，你可以快速构建出 dashboard。其数据源就是依赖 Prometheus，通过 PromQL 的查询实现的。
 
 这张图是官方 demo 所提供的展示内容，可以访问官方提供的 Demo 体验。
 

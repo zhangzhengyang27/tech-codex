@@ -61,6 +61,8 @@ select * from order where status = 1 order by create_time asc
 
 ## 案例解答
 
+> 🖼️ 原文配图未随迁移入库
+
 ### MySQL InnoDB 的索引原理
 
 **从数据结构的角度来看，** MySQL 常见索引有 B+Tree 索引、HASH 索引、Full-Text 索引。我在表中总结了 MySQL 常见的存储引擎 InnoDB、MyISAM 和 Memory 分别支持的索引类型。（后两个存储引擎在实际工作和面试中很少提及，所以本文我只讲 InnoDB） 。

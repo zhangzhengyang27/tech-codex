@@ -215,7 +215,7 @@ async count(@Req() req: Request, @Res({ passthrough: true}) res: Response) {
 
 这样，自己实现的 session 就生效了，在 Redis Insight 里可以看到 session 的值，而且这个 session 是支持分布式的。
 
-用 11-Nginx基础概述 做网关层，使用轮询的负载均衡策略，那请求可能到任何一台服务器上。如果是之前的 session，当前机器没有对应的 session 对象，就拿不到登录状态。而现在基于 redis 存储的 session，不管请求到了哪台服务器，都能从 redis 中取出对应的 session 从而拿到登录状态、用户数据。这就是分布式 session。
+用 nginx 做网关层，使用轮询的负载均衡策略，那请求可能到任何一台服务器上。如果是之前的 session，当前机器没有对应的 session 对象，就拿不到登录状态。而现在基于 redis 存储的 session，不管请求到了哪台服务器，都能从 redis 中取出对应的 session 从而拿到登录状态、用户数据。这就是分布式 session。
 
 ## Redis + 高德地图，实现附近的充电宝
 

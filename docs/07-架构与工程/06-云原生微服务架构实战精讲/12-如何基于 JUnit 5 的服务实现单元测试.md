@@ -18,11 +18,7 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 JUnit 是 Java 单元测试领域中的事实标准，写作时的最新版本是 JUnit 5，该版本由 JUnit Platform、JUnit Jupiter 和 JUnit Vintage 组成，这 3 个组件的说明如下表所示（截至 2026 年 9 月，JUnit 6 已成为当前主版本，要求 Java 17 及以上，JUnit 5 仍在大量项目中使用）：
 
-![](/cloud-native-images/12-如何基于_JUnit_5_的服务实现单元测试__CgoCgV6iXLqAfqVwAABV7M2QOBM600.png)
-
 JUnit Jupiter 的编程模型相比于 JUnit 4 有了很大的改进，推荐在新的项目中使用。下面是一些重要的注解：
-
-![](/cloud-native-images/12-如何基于_JUnit_5_的服务实现单元测试__Ciqah16iXMmAEiJ7AACRoHzs3ew474.png)
 
 下面代码中的 JUnit5Sample 类展示了 @ParameterizedTest、@RepeatedTest 和 @TestFactory 的用法。stringLength 方法用来验证字符串的长度，@ValueSource 注解用来提供参数化的测试方法的实际参数。repeatedTest 方法会被重复执行 3 次。dynamicTests 方法返回了一个 DynamicTest 数组作为动态创建的测试。
 
@@ -56,8 +52,6 @@ public class JUnit5Sample {
 ```
 
 下面给出了 JUnit5Sample 测试的运行结果。
-
-![](/cloud-native-images/12-如何基于_JUnit_5_的服务实现单元测试__CgoCgV6iXOuAZf2mAABIdHZQLEg187.png)
 
 Spring Boot 已经提供了对 JUnit 5 的集成，在项目中可以直接使用。关于 JUnit 5 的更多内容，请参考其他相关资料。
 
@@ -230,9 +224,7 @@ public class EmbeddedPostgresConfiguration {
 
 ## 使用 mock 对象
 
-一个对象通常有很多依赖的对象，这些被依赖的对象又有各自的依赖对象。在对当前对象进行单元测试时，我们希望仅测试当前对象的行为，比如，对象 A 依赖对象 B、C，而对象 B、C 则分别依赖对象 D、E，如下图所示。在编写对象 A 的单元测试用例时，我们希望可以模拟对象 B、C 的行为，从而测试对象 A 在不同情况下的行为，这就需要用到 mock 对象。
-
-![](/cloud-native-images/12-如何基于_JUnit_5_的服务实现单元测试__CgoCgV6iXWyAEWGPAAArkcc--wE091.png)
+一个对象通常有很多依赖的对象，这些被依赖的对象又有各自的依赖对象。在对当前对象进行单元测试时，我们希望仅测试当前对象的行为，比如，对象 A 依赖对象 B、C，而对象 B、C 则分别依赖对象 D、E。在编写对象 A 的单元测试用例时，我们希望可以模拟对象 B、C 的行为，从而测试对象 A 在不同情况下的行为，这就需要用到 mock 对象。
 
 mock 对象可以模拟一个对象的行为。举例来说，对象 A 的方法 methodA 调用了对象 B 中的方法 methodB，并根据 methodB 的返回值进行不同的操作。在编写对象 A 的 methodA 方法的测试用例时，则需要覆盖不同的代码路径。对象 B 的 mock 可以很好的解决这个问题。在创建了对象 B 的 mock 之后，就可以直接指定 methodB 的返回值了，从而验证 methodA 在不同情况下的行为。
 

@@ -3,7 +3,7 @@ title: GitHub-Pages官方工作流与动态base路径
 description: "最小可发布工作流跑通之后，下一步是从“推 gh-pages 分支”升级到 GitHub Pages 官方推荐的工作流链路，并解决仓库子路径部署下的 base 问题。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, CI/CD, 依赖治理, GitHub Pages]
 ---
 
 # GitHub Pages 官方工作流与动态 base 路径

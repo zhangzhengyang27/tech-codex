@@ -3,7 +3,7 @@ title: Vue-Macros宏与语法糖扩展实践
 description: "Vue Macros 是一个扩展 Vue SFC 语法的插件集合，提供 defineModels、defineProp、defineRender 等实验性宏，让组件编写更简洁。本文介绍核心宏的用法及集成方式。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化]
 ---
 
 # Vue Macros 宏与语法糖扩展实践

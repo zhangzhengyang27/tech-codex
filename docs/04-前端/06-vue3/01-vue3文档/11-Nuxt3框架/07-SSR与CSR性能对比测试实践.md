@@ -3,7 +3,7 @@ title: SSR与CSR性能对比测试实践
 description: "通过 Lighthouse 对同一应用的 SSR 与 CSR 版本做 FCP / LCP / TTI / CLS 量化对比，涵盖公平对比原则、Preview 环境（4173）跨域代理配置与测试结果解读边界。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Nuxt3, SSR/CSR]
 ---
 
 # SSR 与 CSR 性能对比测试实践

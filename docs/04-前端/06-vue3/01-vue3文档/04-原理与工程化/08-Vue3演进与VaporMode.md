@@ -3,7 +3,7 @@ title: Vue3演进与VaporMode
 description: "Vue 3 演进路线与 Vapor Mode 前瞻：全景架构与性能优化体系、3.3/3.4/3.5 各版本特性（defineModel、响应式重构、Props 解构、useTemplateRef）、Vapor Mode 无虚拟 DOM 渲染模式的思路与设计约束。"
 keywords: [Vapor Mode, Vue3 演进]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, Vapor Mode]
 ---
 
 # Vue 3 演进与 Vapor Mode

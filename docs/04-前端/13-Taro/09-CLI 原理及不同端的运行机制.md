@@ -6,6 +6,10 @@ category: Taro
 tags: [Taro, 小程序, 跨端, React]
 ---
 
+::: warning 版本提示
+Taro 4.x 已发布,本文基于 Taro 1.x/2.x,API 与编译机制已有重大变化,仅作架构与思路参考。
+:::
+
 # CLI 原理及不同端的运行机制
 
 > Taro 4.x 的 CLI 支持 Webpack 5 + SWC 和 Vite 双编译引擎。本文原理部分仍具参考价值，但具体实现已升级为 SWC 替代 Babel 进行代码转换。

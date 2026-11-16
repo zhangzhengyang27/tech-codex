@@ -3,7 +3,7 @@ title: Slot插槽实现原理
 description: "剖析 Vue 插槽实现原理：defineSlots 宏、插槽内容编译与 normalizeChildren/initSlots 挂载、renderSlot 出口渲染、withCtx 上下文保持、作用域插槽与 SlotFlags 优化标记。"
 keywords: [Slot插槽实现原理]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, 插槽]
 ---
 
 # Slot插槽实现原理

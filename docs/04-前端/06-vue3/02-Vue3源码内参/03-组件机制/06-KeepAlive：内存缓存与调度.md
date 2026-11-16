@@ -1,8 +1,10 @@
 ---
 title: KeepAlive：内存缓存与调度
+description: "Vue3 源码解析：KeepAlive 组件的内存缓存与调度机制。"
 order: 4
 group: 组件机制
 category: Vue
+tags: [Vue3, 源码, 组件系统, KeepAlive]
 keywords:
   - Vue3
   - KeepAlive

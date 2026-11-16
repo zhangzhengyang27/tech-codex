@@ -3,7 +3,7 @@ title: Text
 description: "文本节点 Text 代表元素节点 Element 和属性节点 Attribute 的文本内容。如果一个节点只包含一段文本，那么它就有一个文本子节点，代表该节点的文本内容。"
 keywords: [Text]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, Text]
 ---
 
 

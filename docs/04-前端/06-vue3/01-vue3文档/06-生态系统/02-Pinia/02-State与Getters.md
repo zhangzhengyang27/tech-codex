@@ -3,7 +3,7 @@ title: State与Getters
 description: "Pinia State 与 Getters：两种 Store 风格中定义 State、$patch/$reset/$subscribe 用法、storeToRefs 响应式解构、getter 传参与缓存机制及持久化实践。"
 keywords: [Pinia, State, Getters, storeToRefs]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Pinia, 状态管理]
 ---
 
 # State

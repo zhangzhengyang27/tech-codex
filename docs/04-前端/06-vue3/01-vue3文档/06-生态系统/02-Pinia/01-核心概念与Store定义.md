@@ -3,7 +3,7 @@ title: 核心概念与Store定义
 description: "Pinia 核心概念：为什么需要状态管理、与 Vuex 对比、createPinia 安装配置、defineStore 定义 Option Store 与 Setup Store 两种风格及源码简析。"
 keywords: [Pinia, 状态管理, defineStore]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Pinia, 状态管理]
 ---
 
 # Pinia 概述

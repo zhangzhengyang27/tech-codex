@@ -3,7 +3,7 @@ title: 二级菜单折叠图标策略与mixTop布局修正
 description: "这一节继续收口 mixedBar 与 mixTop 两种混合模式：二级菜单折叠后能否保留 icon-only 形态，不再只看布局模式，而要看菜单数据是否完整；mixTop 则要明确拆成「顶部一级 + 左侧二级」的结构，并让左侧二级菜单回归正常宽度。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 菜单]
 ---
 
 # 二级菜单折叠图标策略与 mixTop 布局修正

@@ -1,6 +1,9 @@
 ---
 title: "多页面"
+description: "使用 Vue CLI 的 pages 选项构建多页应用:多页配置写法、多页路由与模版解析。"
+keywords: [Vue CLI, 多页应用, pages 配置]
 category: Vue
+tags: [Vue2, Vue CLI, 多页应用]
 
 ---
 

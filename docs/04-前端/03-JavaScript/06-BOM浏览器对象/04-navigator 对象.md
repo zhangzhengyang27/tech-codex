@@ -3,7 +3,7 @@ title: navigator 对象
 description: "navigator 对象是 BOM（浏览器对象模型）的核心组成部分，用于获取浏览器和运行环境的信息。它实现了多个标准接口，提供了丰富的属性和方法，是前端开发中进行浏览器检测、功能检测和设备检测的重要工具。"
 keywords: [navigator, 对象]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, BOM, navigator]
 ---
 
 

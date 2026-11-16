@@ -3,7 +3,7 @@ title: Electron-MessagePort隔离环境实践、window-postMessage桥接与安�
 description: "上一节把双窗口 MessagePort 的最小链路跑起来了。这一节继续往下挖一个更难、但更贴近真实工程的问题：同样都是 MessagePort，在 contextIsolation: false 和 contextIsolation: true 两种安全配置下，页面层的接法并不一样。课程先后演示了宽松环境下的“端口直接挂到 window”写法，以及隔离环境下的“preload 用 window.postMessage 转交端口、页面用 window.onmessage 接端口”的折中方案，并解释了为什么 contextBridge 不能直接原样转交 port。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, IPC 通信]
 ---
 
 # Electron MessagePort 隔离环境实践、window.postMessage 桥接与安全取舍

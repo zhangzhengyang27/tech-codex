@@ -3,7 +3,7 @@ title: delete运算符与销毁机制
 description: "从 delete 运算符切入，剖析 JavaScript 中值、引用与表达式求值结果（Result）的区别：delete 0、delete x、delete obj.x 各自删除的是什么，以及 GetValue 与引用在方法调用中的作用。"
 keywords: [delete, 引用, 表达式]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, 操作符, 内存管理]
 ---
 
 

@@ -3,7 +3,7 @@ title: TypeScript集成
 description: "Vue 3 TypeScript 集成指南：create-vue 项目配置、defineProps/defineEmits 类型声明、泛型组件、组合式函数与 provide/inject 类型、useTemplateRef 模板引用类型，以及 Vue Loader 与 Webpack 的 SFC 编译配置与迁移实践。"
 keywords: [TypeScript, Vue]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, TypeScript]
 ---
 
 # TypeScript 支持

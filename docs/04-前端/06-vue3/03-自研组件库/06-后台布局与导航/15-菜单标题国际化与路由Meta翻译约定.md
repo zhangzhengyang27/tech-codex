@@ -3,7 +3,7 @@ title: 菜单标题国际化与路由Meta翻译约定
 description: "切换语言后左侧/顶部菜单不刷新，根因通常不是 Menu 组件坏了，而是路由来源的 meta.title 没有稳定的国际化 key。本节建立一条清晰的菜单国际化链路：路由层存 key、组件层做翻译、插件辅助提取与补全文案。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 菜单]
 ---
 
 # 菜单标题国际化与路由 Meta 翻译约定

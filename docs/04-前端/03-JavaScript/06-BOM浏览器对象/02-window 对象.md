@@ -3,7 +3,7 @@ title: window 对象
 description: "BOM 核心对象是 window，表示浏览器的一个实例。在浏览器中，window 对象有双重角色，它既是通过 JavaScript 访问浏览器窗口的一个接口，又是 ECMAScript 规定的 Global 对象。"
 keywords: [window, 对象]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, BOM, window]
 ---
 
 

@@ -3,7 +3,7 @@ title: IconPicker封装与动态加载优化
 description: "IconList 只负责把图标铺出来，IconPicker 则把\"选择 → 回传\"流程抽象成可复用组件：输入是当前值与图标集，输出是选中的图标名。核心纪律是输入输出边界清晰——图标展示与图标选择职责分层，展示组件可被选择器复用，选择器只对外暴露 v-model 与少量配置。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 图标, IconPicker]
 ---
 
 # IconPicker 封装与动态加载优化
@@ -114,5 +114,5 @@ const loadCollection = async (name: string) => {
 
 - 上一篇：[图标资源接入与复制能力](01-图标资源接入与复制能力.md) — Iconify / SVG / IconFont 接入
 - 下一篇：[主题切换与全屏控制](../03-通用功能组件/01-主题切换与全屏控制.md) — 进入通用功能组件模块
-- 相关：[自研组件库](..) — 组件库模块总览
+- 相关：[自研组件库](../00-自研组件库导览.md) — 组件库模块总览
 - 相关：[Vue 组件 v-model](https://cn.vuejs.org/guide/components/v-model.html) · [MDN 动态 import()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/import)

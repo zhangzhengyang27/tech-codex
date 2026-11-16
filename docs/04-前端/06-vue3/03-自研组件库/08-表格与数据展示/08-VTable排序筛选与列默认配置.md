@@ -3,7 +3,7 @@ title: VTable排序筛选与列默认配置
 description: "沿 Element Plus Table 官方案例继续推进，重点从固定列、流体高度、多级表头切到了更贴近业务列表页的能力：排序与筛选。这两项在后台页面出现频率极高，直接关系到数据查找与对比效率。本章落地默认排序、标签列筛选、指定列筛选重置，并引入项目内部的列默认配置对象 columnDefaults 来减少重复。同时厘清几个易混点：default-sort 依赖列 sortable、clearFilter 吃的是 column-key 而非 row-key、filter-multiple 默认就是 true。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # VTable 排序筛选与列默认配置

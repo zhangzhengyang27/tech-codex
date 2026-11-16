@@ -3,7 +3,7 @@ title: vite-plugin-vue-layouts布局系统实践
 description: "vite-plugin-vue-layouts 为文件系统路由提供布局系统支持，通过约定式目录将布局组件与页面组件解耦。页面可通过 <route> 块声明使用的布局，实现多布局切换而无需嵌套路由。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, 布局]
 ---
 
 # vite-plugin-vue-layouts 布局系统实践

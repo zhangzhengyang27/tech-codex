@@ -3,7 +3,7 @@ title: WebSocket
 description: "WebSocket 协议（RFC 6455）提供了一种在客户端和服务器之间建立持久化双向通信通道的方式。与传统的 HTTP 请求-响应模式不同，WebSocket 允许服务器主动向客户端推送数据。"
 keywords: [WebSocket]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, WebSocket]
 ---
 
 

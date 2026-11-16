@@ -3,7 +3,7 @@ title: Electron主进程app生命周期、平台差异与核心方法
 description: "在 Electron 里，页面有页面的生命周期，窗口有窗口的生命周期，但更外层还有“整个应用”的生命周期，这一层主要由 app 管。课程把 app 作为主进程模块讲解的第一站非常合理，因为后面课程都会围绕它去看：应用什么时候准备好了、什么时候将要退出、什么时候所有窗口都关了、在不同平台上退出行为是否一样。app 的定位不是“普通对象”，而是整个主进程侧最基础的状态总线之一；学 Electron 时，app 和 BrowserWindow 是最该优先熟悉的两个主线 API。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 生命周期]
 ---
 
 # Electron 主进程 app 生命周期、平台差异与核心方法

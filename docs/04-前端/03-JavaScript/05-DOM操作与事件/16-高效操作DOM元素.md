@@ -3,7 +3,7 @@ title: "如何高效操作 DOM 元素？"
 description: "从浏览器线程互斥与重排重绘的角度解释 DOM 操作为什么耗时，并给出高效操作 DOM 的实践：在循环外操作元素、批量操作元素（字符串拼接/合并样式微任务）、缓存元素集合，附 Chrome Performance 面板验证。"
 keywords: [DOM 性能, 重排, 重绘]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, 性能优化]
 ---
 
 # 如何高效操作 DOM 元素？

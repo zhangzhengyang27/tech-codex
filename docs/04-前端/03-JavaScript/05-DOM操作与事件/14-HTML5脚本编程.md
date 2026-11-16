@@ -3,7 +3,7 @@ title: "HTML5脚本编程"
 description: "介绍 HTML5 脚本编程相关 API：跨文档消息传递 postMessage 与 message 事件、原生拖放（拖放事件、dataTransfer、dropEffect/effectAllowed、draggable）、audio/video 媒体元素属性与事件、canPlayType 检测与 Audio 类型。"
 keywords: [postMessage, dataTransfer, audio, video]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, HTML5, DOM]
 ---
 
 # HTML5脚本编程

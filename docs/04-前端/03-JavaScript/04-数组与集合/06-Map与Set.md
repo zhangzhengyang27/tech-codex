@@ -3,7 +3,7 @@ title: Map与Set
 description: "ES6 引入了 Map 和 Set 两种新的数据结构，弥补了传统对象和数组在某些场景下的不足。"
 keywords: [Map与Set]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Map, Set, 集合]
 ---
 
 

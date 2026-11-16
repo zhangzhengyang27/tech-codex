@@ -1,6 +1,6 @@
 ---
 title: "IndexedDB"
-description: "浏览器端 NoSQL 数据库 IndexedDB 教程：基本概念、增删改查操作流程与 IDBDatabase/IDBObjectStore/IDBTransaction/IDBIndex/IDBCursor/IDBKeyRange 各对象 API。"
+description: "浏览器端 NoSQL 数据库 IndexedDB 教程：基本概念、增删改查操作流程与 IDBDatabase/IDBObjectStore/IDBTransaction/IDBIndex/IDBCursor/IDBKeyRange 各对象 API，以及并发问题、配额限制与 idb 库封装。"
 keywords: [IndexedDB, 本地存储, 事务]
 category: JavaScript
 tags: [JavaScript, IndexedDB, 浏览器]
@@ -1096,4 +1096,78 @@ var keyRangeValue = IDBKeyRange.bound('A', 'K', false, false);
 
 keyRangeValue.includes('F') // true
 keyRangeValue.includes('W') // false
+```
+
+## 并发问题
+
+IndexedDB 虽然是网页中的异步 API，但仍存在并发问题。如果两个不同的浏览器标签页同时打开了同一个网页，则有可能出现一个网页尝试升级数据库而另一个尚未就绪的情形。有问题的操作是设置数据库为新版本，而版本变化只能在浏览器只有一个标签页使用数据库时才能完成。
+
+第一次打开数据库时，添加 onversionchange 事件处理程序非常重要。另一个同源标签页将数据库打开到新版本时，将执行此回调。对这个事件最好的回应是立即关闭数据库，以便完成版本升级。例如：
+
+```javascript
+let request, database;
+request = indexedDB.open("admin", 1);
+
+request.onsuccess = (event) => {
+  database = event.target.result;
+  database.onversionchange = () => database.close();
+};
+```
+
+应该在每次成功打开数据库后都指定 onversionchange 事件处理程序。记住，onversionchange 有可能会被其他标签页触发。通过始终都指定这些事件处理程序，可以保证 Web 应用程序能够更好地处理与 IndexedDB 相关的并发问题。
+
+## 限制
+
+IndexedDB 的很多限制实际上与 Web Storage 一样。首先，IndexedDB 数据库是与页面源（协议、域和端口）绑定的，因此信息不能跨域共享。这意味着 www.wrox.com 和 p2p.wrox.com 会对应不同的数据存储。
+
+其次，每个源都有可以存储的空间限制。早期实现中配额较小（如 Chrome 曾为每源 5MB、Firefox 为 50MB），现代浏览器的配额已大幅放宽并按磁盘可用空间动态分配，可通过 `navigator.storage.estimate()` 查询实际配额；超出配额时，浏览器会请求用户许可或抛出 QuotaExceededError。
+
+本地文件（file:// 协议）下的 IndexedDB 支持并不可靠：现代浏览器普遍将 file:// 页面视为不透明源（opaque origin），Chrome 中即使 `indexedDB.open()` 成功、事务也可能失败（Chromium 自 2011 年起在 crbug 108840 跟踪此问题），Firefox 也对本地文件的存储访问做了限制。因此在本地运行示例时，建议使用本地 HTTP 服务器（如 `python -m http.server` 或 `npx serve`）访问，而不是直接打开 HTML 文件。
+
+## 使用 idb 库简化操作
+
+原生 IndexedDB API 基于事件回调，使用不便。推荐使用 [idb](https://www.npmjs.com/package/idb) 库，将 API 转为 Promise 风格：
+
+```javascript
+import { openDB } from 'idb'
+
+const db = await openDB('myDatabase', 1, {
+  upgrade(db) {
+    db.createObjectStore('users', { keyPath: 'id' })
+  }
+})
+
+// 写入
+await db.add('users', { id: 1, name: '张三', email: 'zhangsan@example.com' })
+
+// 读取
+const user = await db.get('users', 1)
+
+// 更新
+await db.put('users', { id: 1, name: '李四', email: 'lisi@example.com' })
+
+// 删除
+await db.delete('users', 1)
+
+// 遍历
+const allUsers = await db.getAll('users')
+```
+
+## 应用场景
+
+| 场景 | 说明 |
+|------|------|
+| 离线应用 | PWA 中存储离线所需的大量结构化数据 |
+| 大文件管理 | 存储 Blob 数据（图片、视频、文档等） |
+| 复杂状态 | 需要索引和查询的复杂数据模型 |
+| 缓存层 | 作为 Service Worker 的持久化缓存后端 |
+| 草稿保存 | 富文本编辑器内容自动保存 |
+
+使用时应遵循**渐进增强**原则，先检测支持情况，不支持时降级到 Web Storage：
+
+```javascript
+if (!('indexedDB' in window)) {
+  console.log('浏览器不支持 IndexedDB')
+  // 降级到 Web Storage
+}
 ```

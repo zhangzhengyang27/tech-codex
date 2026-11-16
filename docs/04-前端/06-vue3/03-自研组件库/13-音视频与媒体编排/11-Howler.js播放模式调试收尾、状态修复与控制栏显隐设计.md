@@ -3,7 +3,7 @@ title: Howler.js播放模式调试收尾、状态修复与控制栏显隐设计
 description: "功能写完不代表播放器行为正确。这一节对前面完成的播放模式做系统调试：单曲循环模式下切歌按钮应失效；自然播放结束应通过 onend 驱动外层切歌；把 onload / onplay / onend 的默认回调兼容收敛成 runDefault()；随机模式进入时初始化历史栈、离开时清空；切歌重建实例时保留当前音量和静音状态，并修正 volume = 0 被 || 1 误判的边界 bug。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 音视频, 音频播放器]
 ---
 
 # Howler.js 播放模式调试收尾、状态修复与控制栏显隐设计

@@ -3,7 +3,7 @@ title: DocumentFragment
 description: "DocumentFragment 是 DOM 中一个特殊的轻量级容器节点，它本身不属于主文档树，却可以承载一组真实的 DOM 节点。借助这个\"离屏容器\"，开发者可以将多次 DOM 读写压缩成一次提交，大幅降低重排与重绘的次数。"
 keywords: []
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, DocumentFragment]
 ---
 
 

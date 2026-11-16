@@ -3,7 +3,7 @@ title: useWorker消息分发与路由映射
 description: "上一篇完成了 useWorker() 的发送侧封装与 Worker 转发逻辑。但光能\"发\"还不够——当 SharedWorker 把消息发回页面后，页面侧必须知道：这条消息属于哪种类型、应该更新哪些本地状态、应该触发哪些监听回调。"
 keywords: [useWorker, 消息分发, Vue Router, 事件总线]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Web Worker, React Hooks]
 ---
 
 

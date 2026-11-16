@@ -3,7 +3,7 @@ title: UI框架与CSS框架选型实践
 description: "CSS 框架选型直接影响开发效率和产物性能。本文对比 Tailwind CSS、UnoCSS、Windi CSS 等主流方案，重点讲解 UnoCSS 的安装配置、预设系统和样式重置集成。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化]
 ---
 
 # UI 框架与 CSS 框架选型实践

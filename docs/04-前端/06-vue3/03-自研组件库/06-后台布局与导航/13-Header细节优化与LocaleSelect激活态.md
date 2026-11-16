@@ -3,7 +3,7 @@ title: Header细节优化与LocaleSelect激活态
 description: "这一节处理两个高频细节：一是项目里图标/按钮默认样式整体被改掉，根因是 UnoCSS reset 与 UI 组件库样式冲突，改用 tailwind-compat 兼容版即可；二是 LocaleSelect 这类状态型入口组件，除了能触发语言切换，还应稳定显示「当前已选语言」的激活态，涉及 class + :deep() 穿透、用 findIndex 反查索引、以及外层 locales 数组顺序对首屏高亮的影响。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局]
 ---
 
 # Header 细节优化与 LocaleSelect 激活态

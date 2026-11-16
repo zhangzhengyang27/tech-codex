@@ -3,7 +3,7 @@ title: GitHub-Pages自定义域名与DNS验证
 description: "GitHub Pages 支持绑定自己的自定义域名，真正的门槛不在 GitHub 页面，而在 DNS 记录配置。本节讲清自定义域名接入链路、TXT 验证、子域名 CNAME 解析、自定义域名下 base 与 BASE_PATH 注入的回收，以及 HTTPS 自动启用的等待过程，强调“部署路径模型切换”要连带改对 CI 与构建配置。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, CI/CD, 依赖治理, GitHub Pages]
 ---
 
 # GitHub Pages 自定义域名与 DNS 验证

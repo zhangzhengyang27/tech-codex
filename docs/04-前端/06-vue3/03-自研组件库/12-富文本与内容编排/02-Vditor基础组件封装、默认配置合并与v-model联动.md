@@ -3,7 +3,7 @@ title: Vditor基础组件封装、默认配置合并与v-model联动
 description: "选定 Vditor 后，下一步是把这个第三方实例型编辑器封装成 Vue 组件。Vditor 本质上和 ECharts、地图类库一样，是\"DOM 容器 + 第三方实例\"模式：模板留一个挂载节点，在 `onMounted()` 里手动 `new Vditor()`，在 `onBeforeUnmount()` 销毁实例。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 富文本, Vditor]
 ---
 
 # Vditor 基础组件封装、默认配置合并与 v-model 联动

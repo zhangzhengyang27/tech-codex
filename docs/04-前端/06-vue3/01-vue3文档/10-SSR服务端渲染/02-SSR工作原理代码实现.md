@@ -3,7 +3,7 @@ title: SSR工作原理代码实现
 description: "从零实现最小 Vue3 SSR 应用：服务端 createSSRApp + renderToString 生成 HTML，客户端 Hydration 接管已有 DOM，并通过 window.__INITIAL_STATE__ 序列化传递服务端状态、避免 Hydration Mismatch。"
 keywords: [SSR工作原理代码实现]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, SSR]
 ---
 
 # SSR 工作原理代码实现

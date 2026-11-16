@@ -1,8 +1,10 @@
 ---
 title: 开篇：为什么要读 Vue.js 3 源码
+description: "Vue3 源码解析开篇：解析 Vue.js 源码的设计思想与源码学习方法路径。"
 order: 0
 group: 响应式系统
 category: Vue
+tags: [Vue3, 源码, 响应式原理]
 keywords:
   - Vue3
   - 源码

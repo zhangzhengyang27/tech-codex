@@ -3,7 +3,7 @@ title: Vitest现代测试
 description: "Vitest 是基于 Vite 的下一代测试框架，与 Vite 共享配置和插件，提供极速的测试体验。它兼容 Jest API，是 Vite 项目的首选测试方案。"
 keywords: [Vitest现代测试]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, 测试, Vitest]
 ---
 
 

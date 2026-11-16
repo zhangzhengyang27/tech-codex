@@ -3,7 +3,7 @@ title: Vue-ECharts按需注册解析、组件能力增强与实例透传
 description: "上一篇把 echarts + vue-echarts 封装成了一个能传 option 出图的基础组件。但基础组件里通常把 use([...]) 写死固定模块列表，业务每加一种图表类型就要回来改组件。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 图表, ECharts]
 ---
 
 # Vue-ECharts 按需注册解析、组件能力增强与实例透传

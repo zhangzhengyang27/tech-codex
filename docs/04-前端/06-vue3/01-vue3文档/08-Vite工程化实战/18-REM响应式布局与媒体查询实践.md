@@ -3,7 +3,7 @@ title: REM响应式布局与媒体查询实践
 description: "REM 适配是移动端经典方案，通过动态设置根字体大小实现等比缩放。本文讲解 REM 原理、postcss-pxtorem 自动化转换，以及媒体查询断点设计。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, 布局, 移动端适配]
 ---
 
 # REM 响应式布局与媒体查询实践

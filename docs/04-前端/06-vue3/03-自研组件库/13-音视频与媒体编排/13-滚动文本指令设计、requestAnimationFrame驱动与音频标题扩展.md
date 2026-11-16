@@ -3,7 +3,7 @@ title: 滚动文本指令设计、requestAnimationFrame驱动与音频标题扩�
 description: "课程把功能做成自定义指令 `v-scroll-text`，用 `requestAnimationFrame()` 驱动 `scrollLeft` 而非纯 CSS 平移，先算 `maxScrollLeft` 判断是否需要滚动，再用「方向变量 + 起始时间重置」的状态机实现到边界后反向滚动。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 音视频, 自定义指令]
 ---
 
 # 滚动文本指令设计、requestAnimationFrame 驱动与音频标题扩展

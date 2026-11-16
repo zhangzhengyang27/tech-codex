@@ -1,7 +1,10 @@
 ---
 title: Render表格组件
+description: "手写 Vue2 Render 表格组件:需求分析、基础表格搭建与渲染函数列定制。"
+keywords: [Vue2, 组件设计, 表格, Render 函数]
 order: 5
 category: Vue
+tags: [Vue2, 组件设计, 表格, Render 函数]
 
 ---
 

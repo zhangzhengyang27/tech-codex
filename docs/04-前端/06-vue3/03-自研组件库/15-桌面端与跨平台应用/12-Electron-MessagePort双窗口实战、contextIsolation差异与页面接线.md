@@ -3,7 +3,7 @@ title: Electron-MessagePort双窗口实战、contextIsolation差异与页面接�
 description: "上一节把 MessagePort 的概念讲清楚了：适合后台任务、是成对端口、通过主进程转交。这一节进入真正的代码落地，最关键的问题是——这对 port1 / port2 到底怎么在 Electron 里交给两个窗口。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, IPC 通信]
 ---
 
 # Electron MessagePort 双窗口实战、contextIsolation 差异与页面接线

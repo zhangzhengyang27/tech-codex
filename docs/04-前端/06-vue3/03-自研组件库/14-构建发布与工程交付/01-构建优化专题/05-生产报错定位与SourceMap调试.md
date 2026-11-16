@@ -3,7 +3,7 @@ title: 生产报错定位与SourceMap调试
 description: "生产环境报错最怕“只看到控制台红字，却不知道哪个组件炸了”。本节先用 app.config.errorHandler 把错误上下文打全、锁定出错组件，再临时打开 build.sourcemap 把报错映射回源码位置，结合“图表仍能渲染但控制台报错”的现象，反推出 vue-echarts 的按需 use() 注册在生产环境已失去必要性，并用 mode !== \"production\" 把它裁掉。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 构建优化, SourceMap]
 ---
 
 # 生产报错定位与 SourceMap 调试

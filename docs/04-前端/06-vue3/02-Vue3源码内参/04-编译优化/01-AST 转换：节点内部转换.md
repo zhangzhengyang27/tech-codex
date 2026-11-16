@@ -1,8 +1,10 @@
 ---
 title: AST 转换：节点内部转换
+description: "Vue3 源码解析：编译优化之 AST 转换与节点内部转换。"
 order: 1
 group: 编译优化
 category: Vue
+tags: [Vue3, 源码, 编译器, AST]
 keywords:
   - Vue3
   - 编译

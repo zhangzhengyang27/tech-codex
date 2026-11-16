@@ -3,7 +3,7 @@ title: Howler.js控制栏显隐配置、移动端适配与useAudioPlayer逻辑�
 description: "主功能完成后，真正影响复用价值的是适配与可配置，而不是再加更多按钮。这一节做三件事收尾：补齐移动端控制栏（结构重排、样式重排、逻辑复用桌面端已完成的模式/倍率/快进快退）；把控制栏显隐从写死模板改为 controls 数组配置驱动；把页面里越来越长的歌单与模式逻辑抽成 useAudioPlayer() 组合式函数。 这是把音频播放器从「课程示例」收束成「更接近真实组件库产物」的关键一步。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 音视频, 音频播放器]
 ---
 
 # Howler.js 控制栏显隐配置、移动端适配与 useAudioPlayer 逻辑抽离

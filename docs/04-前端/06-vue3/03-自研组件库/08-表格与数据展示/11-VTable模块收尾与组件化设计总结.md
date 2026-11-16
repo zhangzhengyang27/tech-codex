@@ -3,7 +3,7 @@ title: VTable模块收尾与组件化设计总结
 description: "这一节不做新的表格能力，而是回头收尾与总结：回顾整个 VTable 模块，真正完成的不是\"把官方示例抄完\"，而是把官方 el-table 收口成了一个项目自己的 VTable 组件体系。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # VTable 模块收尾与组件化设计总结

@@ -3,7 +3,7 @@ title: Router3 API 参考
 description: Vue Router 3.x 完整 API 速查：router-link/router-view 属性、路由对象、构造选项与实例方法
 keywords: [Vue Router, API 参考, router-link, router-view, 路由对象, 导航故障]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue2, Vue Router, 路由, API 参考]
 ---
 
 # Router3 API 参考

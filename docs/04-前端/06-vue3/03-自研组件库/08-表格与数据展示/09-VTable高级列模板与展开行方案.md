@@ -3,7 +3,7 @@ title: VTable高级列模板与展开行方案
 description: "把表格继续往官方高级案例推进，重点落在自定义列模板、自定义表头、展开行三类能力上。它们看起来像三个不同示例，但核心其实是同一个：某一列不再只是简单地渲染 row[prop]，而是需要一套定制化 DOM 结构。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # VTable 高级列模板与展开行方案

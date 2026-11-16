@@ -1,7 +1,9 @@
 ---
 title: "Router 构建选项"
+keywords: [vue-router3, Router 构建选项, 导航守卫, Vue2]
 description: "vue-router 3（Vue 2）Router 构建选项、实例属性与实例方法参考：routes/mode/base、动态路由 addRoute、导航守卫、onReady 与 onError。"
-category: 前端
+category: Vue
+tags: [Vue2, Vue Router, Router API]
 
 ---
 

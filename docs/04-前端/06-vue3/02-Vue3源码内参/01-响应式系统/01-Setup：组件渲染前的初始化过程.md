@@ -1,8 +1,10 @@
 ---
 title: Setup：组件渲染前的初始化过程
+description: "Vue3 源码解析：Setup 在组件渲染前的初始化过程与执行时序。"
 order: 1
 group: 响应式系统
 category: Vue
+tags: [Vue3, 源码, 响应式原理, Setup]
 keywords:
   - Vue3
   - Setup

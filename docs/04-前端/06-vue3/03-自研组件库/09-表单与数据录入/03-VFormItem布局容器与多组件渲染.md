@@ -3,7 +3,7 @@ title: VFormItem布局容器与多组件渲染
 description: "单字段渲染跑通后，真实业务表单立刻会提出布局需求：一个字段里可能要并排放日期选择器加时间选择器，或者一组联动的选择控件。本章引入 VFormCol 作为布局层，把\"字段级渲染\"再拆出一层\"列布局\"，并通过在 FormSchema 上加 children 描述选项型控件的子节点。最终形成 VForm / VFormItem / VFormCol 三层结构，让\"一个逻辑字段\"和\"一行里的多个物理控件\"可以清晰分离。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 动态表单, Schema]
 ---
 
 # VFormItem 布局容器与多组件渲染

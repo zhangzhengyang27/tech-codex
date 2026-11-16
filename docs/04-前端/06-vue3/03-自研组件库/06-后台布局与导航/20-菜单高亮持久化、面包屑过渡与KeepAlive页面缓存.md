@@ -3,7 +3,7 @@ title: 菜单高亮持久化、面包屑过渡与KeepAlive页面缓存
 description: "这一节把后台布局的导航体验收口到“一套路由上下文、多种表现层”的层次上：左侧菜单刷新后保持高亮、Header 接入带过渡的面包屑、面包屑下方增加标签页式快速切换区、内容区加轻量切换动画，并对高频页面启用 KeepAlive 缓存。"
 keywords: [菜单高亮持久化]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, KeepAlive]
 ---
 
 # 菜单高亮持久化、面包屑过渡与 KeepAlive 页面缓存

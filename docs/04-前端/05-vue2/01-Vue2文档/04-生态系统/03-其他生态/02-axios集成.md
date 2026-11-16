@@ -3,7 +3,7 @@ title: axios集成
 description: "在 Vue 2 项目中集成 axios：从安装配置、请求实例封装、拦截器到错误处理、请求取消、重试与缓存的最佳实践。"
 keywords: [axios集成]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue2, axios, HTTP 请求, 生态]
 ---
 
 # axios 集成

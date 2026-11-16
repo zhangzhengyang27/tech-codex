@@ -3,7 +3,7 @@ title: 桌面端GUI框架横向对比、Electron优势与前端技术选型
 description: "选型最怕只知道自己熟悉的那一个，然后误以为是唯一答案。课程把市面方案按语言与特征罗列，大致包括：Qt、PyQt、WPF、WinForms、Swing、NW.js、Electron、CEF、Tauri、Flutter。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 技术选型]
 ---
 
 # 桌面端 GUI 框架横向对比、Electron 优势与前端技术选型

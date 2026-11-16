@@ -1,8 +1,10 @@
 ---
 title: Vue Router：实现一个前端路由
+description: "Vue3 源码解析：借鉴 Vue Router 的思路实现一个前端路由。"
 order: 0
 group: 路由与工程
 category: Vue
+tags: [Vue3, 源码, Vue Router, 前端路由]
 keywords:
   - Vue Router
   - 前端路由

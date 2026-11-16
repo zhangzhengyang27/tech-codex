@@ -3,7 +3,7 @@ title: vite-plugin-pages自动路由方案
 description: "vite-plugin-pages 是基于文件系统自动生成路由的 Vite 插件，通过扫描指定目录下的 .vue 文件，自动映射为路由配置，消除手动维护路由表的重复工作。本文讲解其目录映射规则、重定向配置和路由扩展机制。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, 路由]
 ---
 
 # vite-plugin-pages 自动路由方案

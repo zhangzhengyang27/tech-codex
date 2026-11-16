@@ -3,7 +3,7 @@ title: 组件库Vite插件配置导出：setupDirectives补链、auto-import封�
 description: "这一节做了两件容易被混在一起的事：先补了宿主遗漏的 setupDirectives(app) 调用链路，再把原本写在宿主 vite.config.ts 里的 auto-import 和 components 配置，抽成组件库自己导出的公共方法。宿主项目虽已能消费组件库包，但接入成本仍偏高——要自己写 resolver、维护 hooks 列表，内容一更新宿主配置也要跟着改。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 自动导入, unplugin, Vite 插件]
 ---
 
 # 组件库 Vite 插件配置导出：setupDirectives 补链、auto-import 封装与 components resolver 生成

@@ -3,7 +3,7 @@ title: SharedWorker端口池转发机制
 description: "postMessage 依赖窗口引用关系，BroadcastChannel 只能简单广播且限同源。SharedWorker 提供了第三种可能：多个同源页面共享同一个 Worker 线程，由 Worker 维护端口池并自定义转发规则，实现广播、点对多、按 ID 定向发送等灵活的消息路由。"
 keywords: [SharedWorker, MessagePort, 端口池, 多标签页通信]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, SharedWorker, 通信]
 ---
 
 

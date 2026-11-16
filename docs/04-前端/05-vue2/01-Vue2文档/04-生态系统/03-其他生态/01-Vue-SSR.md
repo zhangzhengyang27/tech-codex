@@ -3,7 +3,7 @@ title: Vue-SSR
 description: "搜索引擎爬虫在抓取页面时，往往不会执行 JavaScript。对于 CSR 应用，爬虫只能获取到空白的 HTML，导致内容无法被索引。SSR 直接返回渲染后的 HTML，确保内容可被搜索引擎识别。"
 keywords: [Vue-SSR]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue2, SSR, 生态]
 ---
 
 

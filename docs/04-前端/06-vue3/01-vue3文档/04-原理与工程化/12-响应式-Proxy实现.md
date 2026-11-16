@@ -3,7 +3,7 @@ title: 响应式-Proxy实现
 description: "Vue 3 响应式之 Proxy 实现：reactive/createReactiveObject 源码、BaseReactiveHandler 与 MutableReactiveHandler 拦截器、track/trigger 与 Dep/Link 双向链表、数组方法拦截，以及 Vue 3.4/3.5 响应式系统演进对比。"
 keywords: [响应式-Proxy实现]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, 响应式原理]
 ---
 
 # 响应式-Proxy实现

@@ -3,7 +3,7 @@ title: NPM包更新实践
 description: "依赖更新是项目维护的常规工作，涉及安全修复、功能增强和兼容性保持。本文讲解语义化版本规则、主流更新工具的使用，以及版本更新导致项目异常时的排查与回退策略。"
 keywords: [NPM包更新实践]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化]
 ---
 
 # NPM 包更新实践

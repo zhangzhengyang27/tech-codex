@@ -6,6 +6,14 @@ category: Taro
 tags: [Taro, 小程序, 跨端, React]
 ---
 
+::: warning 版本提示
+Taro 4.x 已发布,本文基于 Taro 1.x/2.x,API 与编译机制已有重大变化,仅作架构与思路参考。
+:::
+
+::: warning 存根声明
+本文为存根篇目:仅简要记录打包发布流程与参考链接,未展开完整实操步骤,React Native 端打包发布请以 Expo 官方文档为准。
+:::
+
 
 # React Native 端打包与发布
 

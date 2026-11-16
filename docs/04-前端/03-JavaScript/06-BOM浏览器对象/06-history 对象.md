@@ -3,7 +3,7 @@ title: history 对象
 description: "history 对象是浏览器对象模型（BOM）的核心组成部分，表示当前窗口自创建以来的导航历史记录栈。它提供了一组属性和方法，允许脚本在不直接暴露完整 URL 列表的前提下，控制浏览器的前进与后退行为。"
 keywords: [history, 对象]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, BOM, history, 会话历史]
 ---
 
 

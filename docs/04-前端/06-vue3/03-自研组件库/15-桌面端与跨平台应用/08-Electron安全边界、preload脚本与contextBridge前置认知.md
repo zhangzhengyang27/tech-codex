@@ -3,7 +3,7 @@ title: Electron安全边界、preload脚本与contextBridge前置认知
 description: "webPreferences.nodeIntegration 的默认值其实是 false，这不是“保守默认”，而是非常重要的安全设计。原因很简单：Node.js 拿到的权限太大了，它可以读写文件、操作数据库、调系统 API、接触更底层的运行时能力。如果渲染进程页面能直接 require(\"fs\")、require(\"path\")，那就意味着你的页面脚本拥有了远超普通浏览器页面的能力，安全边界会被瞬间打穿。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 安全]
 ---
 
 # Electron 安全边界、preload 脚本与 contextBridge 前置认知

@@ -3,7 +3,7 @@ title: 虚拟DOM与渲染器
 description: "虚拟 DOM 与渲染器原理：VNode 结构与 ShapeFlag、patch 渲染流程、Vue 2 双端比较与 Vue 3 最长递增子序列 Diff、调度器与 nextTick、PatchFlag/Block Tree/静态提升等编译优化，以及 Vue 3.5 渲染器从 createApp 到真实 DOM 的全链路源码解析。"
 keywords: [虚拟DOM与渲染器]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, 渲染器, 虚拟DOM]
 ---
 
 # 虚拟 DOM 与渲染器

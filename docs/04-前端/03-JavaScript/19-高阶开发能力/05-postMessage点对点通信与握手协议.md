@@ -3,7 +3,7 @@ title: postMessage点对点通信与握手协议
 description: "上一篇介绍了 postMessage 的基础收发模型。但在真实业务中，\"旧页面何时向新页面发消息\"是一个时序问题——新页面可能还没注册监听器，消息就已经发出了。本文详解基于 \"ready 握手\"的可靠通信协议设计、结构化消息规范，以及在 Vue 组件中管理消息监听的工程实践。"
 keywords: [postMessage, 握手协议, 消息监听, Vue3]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, postMessage, 通信协议]
 ---
 
 

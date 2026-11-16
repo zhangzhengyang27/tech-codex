@@ -3,7 +3,7 @@ title: KeepAlive源码分析
 description: "基于 Vue 3.5 源码分析内置组件 KeepAlive：render 函数的缓存流程、LRU 缓存与 include/exclude/max、COMPONENT_KEPT_ALIVE/COMPONENT_SHOULD_KEEP_ALIVE 双标记、activate/deactivate 实现与卸载时的缓存清理。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, KeepAlive]
 ---
 
 # KeepAlive源码分析

@@ -3,7 +3,7 @@ title: Vditor配置面板联动、动态表单扩展与响应式示例页
 description: "前两篇完成了 Vditor 选型与基础组件封装。本文做一个非常实用的\"编辑器演示页\"：上方一组响应式配置表单，中间是编辑器实例，当表单值变化时实时修改编辑器配置。它的核心价值不止是演示，更是把前面封装的 Schema 动态表单在真实业务里落地——表单配置驱动组件 props，props 再驱动第三方实例行为。本文覆盖动态表单对 radio-group/checkbox-group 的扩展、组组件用动态组件渲染子节点、响应式布局能力（rowClass/columnProps），以及配置变化时深度监听的坑与 useDebounceFn 稳定重建。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 富文本, Vditor]
 ---
 
 # Vditor 配置面板联动、动态表单扩展与响应式示例页

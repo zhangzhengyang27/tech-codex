@@ -3,7 +3,7 @@ title: Electron菜单系统、角色菜单、快捷键与动态菜单项更新
 description: "这一节正式进入 Electron 的原生菜单系统。课程先把菜单的几种形态铺开——顶部应用菜单、macOS 的 Dock 菜单、页面内的右键菜单，并指出它们都属于菜单系统的一部分。随后用最常见、也最好理解的应用菜单入手，给出创建菜单的最小链路：先写 template，再 buildFromTemplate()，最后 setApplicationMenu()。课程还重点讲了内置 role 的省事之处、自定义项的 click 边界、accelerator 的快捷键礼仪，以及用 id + getMenuItemById() 动态改 visible / enabled / checked 的状态更新方式。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 菜单]
 ---
 
 # Electron 菜单系统、角色菜单、快捷键与动态菜单项更新

@@ -3,7 +3,7 @@ title: SortableJS列拖拽实现与拖拽事件透传
 description: "正式落地拖拽功能时，先从列拖拽入手更合理：它操作的是 columns，不会马上影响整行数据语义，更适合先验证拖拽库接入、索引计算和状态回写是否成立。实现上继续采用成熟的 SortableJS，先用本地 localColumns 承接可变的列顺序（绝不直接改 props），再把拖拽目标精确锁定到表头的 tr，通过 onEnd 拿到的 oldIndex / newIndex 配合 splice 完成重排。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable, SortableJS 拖拽]
 ---
 
 # SortableJS 列拖拽实现与拖拽事件透传

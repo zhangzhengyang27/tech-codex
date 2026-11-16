@@ -3,7 +3,7 @@ title: Schema表单双向绑定与嵌套结构初始化
 description: "Schema 是一个字段数组，深层可能还有 schema 子结构（子表单）。启动时需要根据这份结构生成初始 model：setForm 遍历每一项，如果该项有 schema 子结构，就递归生成子对象；否则把 item.value 作为初值写入对应 field 的 key。递归保证了无论表单嵌套多少层，初始数据对象都能一次性建好，页面层拿到的就是一个完整、可直接 v-model 绑定的对象。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 动态表单, Schema]
 ---
 
 # Schema 表单双向绑定与嵌套结构初始化

@@ -3,7 +3,7 @@ title: Electron打包工具选型、Forge与Builder对比及跨平台构建策�
 description: "这一节把关注点从“Electron 怎么集成到前端工程”转到了“应用最终怎么打包和分发”。这一步非常关键，因为桌面端项目和 Web 项目不一样：Web 项目多数时候只打一个 dist 部署到服务器即可，但 Electron 应用后面通常还要面对 Windows 安装包、macOS .dmg、Linux 产物、自动更新、代码签名。到这一步，技术问题已经从“写代码”变成了“把产品交付出去”。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 技术选型]
 ---
 
 # Electron 打包工具选型、Forge 与 Builder 对比及跨平台构建策略

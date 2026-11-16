@@ -3,7 +3,7 @@ title: Ajax基础
 description: "XMLHttpRequest（简称 XHR）是实现 Ajax 的核心 API，用于在浏览器与服务器之间传输数据。"
 keywords: [Ajax基础]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Ajax, HTTP]
 ---
 
 

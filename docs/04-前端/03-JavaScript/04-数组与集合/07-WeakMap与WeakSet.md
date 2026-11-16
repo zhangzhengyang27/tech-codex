@@ -3,7 +3,7 @@ title: WeakMap与WeakSet
 description: "WeakMap 和 WeakSet 是 ES6（ECMAScript 2015）引入的两种弱引用集合类型。它们与 Map 和 Set 类似，但具有独特的弱引用特性，使其在特定场景下能够有效避免内存泄漏问题。"
 keywords: []
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, WeakMap, WeakSet, 内存管理]
 ---
 
 

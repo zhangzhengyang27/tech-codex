@@ -3,7 +3,7 @@ title: this关键字
 description: "this 是 JavaScript 中最核心也是最令人困惑的概念之一。它的值不是在函数定义时确定的，而是在函数调用时确定的。理解 this 的工作原理对于编写可靠、可维护的 JavaScript 代码至关重要。"
 keywords: [this关键字]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, this]
 ---
 
 

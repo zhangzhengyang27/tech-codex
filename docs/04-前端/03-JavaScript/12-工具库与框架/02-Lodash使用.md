@@ -3,7 +3,7 @@ title: Lodash使用
 description: Lodash使用的核心概念与实践要点
 keywords: [Lodash使用]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Lodash, 工具库]
 ---
 
 # Lodash 使用

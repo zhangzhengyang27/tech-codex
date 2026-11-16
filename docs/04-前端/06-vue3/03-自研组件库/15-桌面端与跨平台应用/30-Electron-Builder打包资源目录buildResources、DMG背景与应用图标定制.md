@@ -3,7 +3,7 @@ title: Electron-Builder打包资源目录buildResources、DMG背景与应用图�
 description: "应用能跑起来不等于能交付。这一节集中在“交付外观与元信息”的定制：打包资源目录 buildResources、macOS 安装镜像背景、产品名与 appId、三端图标。这些配置大多不改变业务逻辑，却直接影响用户对产品专业度的判断。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 打包发布]
 ---
 
 # Electron Builder 打包资源目录、DMG 背景与应用图标定制

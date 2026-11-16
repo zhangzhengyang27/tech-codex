@@ -3,7 +3,7 @@ title: Dropdown通用封装与LocaleSelect泛型改造
 description: "这一节把服务于 LocaleSelect 的下拉结构进一步抽象成通用 Dropdown 容器：接收任意类型列表、渲染菜单项、支持激活态高亮、对外回调 item + index、并通过 trigger / item 插槽把显示层交给调用方。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局]
 ---
 
 # Dropdown 通用封装与 LocaleSelect 泛型改造

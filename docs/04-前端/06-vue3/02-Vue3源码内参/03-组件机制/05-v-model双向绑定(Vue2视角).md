@@ -1,6 +1,8 @@
 ---
 title: "v-model 双向绑定实现（Vue2 视角）"
+description: "从 Vue2 视角解析 v-model 双向绑定的实现，并与 Vue3 的实现差异对比。"
 category: Vue
+tags: [Vue3, 源码, 组件系统, v-model]
 keywords: [v-model, 双向绑定, Object.defineProperty, Vue2]
 ---
 

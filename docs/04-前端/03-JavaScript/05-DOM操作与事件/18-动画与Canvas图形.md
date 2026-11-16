@@ -3,7 +3,7 @@ title: "动画与 Canvas 图形"
 description: "讲解 JavaScript 动画的演进：早期 setInterval 定时动画的精度问题，requestAnimationFrame/cancelAnimationFrame 的原理与用法（重绘前回调、DOMHighResTimeStamp 时间戳），以及利用回调队列实现滚动事件节流。"
 keywords: [requestAnimationFrame, 动画]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Canvas, 动画]
 ---
 
 # 动画与 Canvas 图形

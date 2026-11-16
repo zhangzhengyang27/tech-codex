@@ -3,7 +3,7 @@ title: 移动端适配viewport方案实践
 description: "viewport 方案（vw/vh）是现代移动端适配的主流选择，通过 postcss-px-to-viewport 将设计稿 px 自动转换为 vw 单位，无需 JavaScript 干预。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, 移动端适配]
 ---
 
 # 移动端适配 viewport 方案实践

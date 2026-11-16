@@ -3,7 +3,7 @@ title: CollapseTransition基础组件封装、滚动状态恢复与可配置折�
 description: "组件基于 Vue 的 <Transition> 与 JavaScript 钩子实现，完整管理 height、padding、overflow 三类状态的接力，并通过 dataset 缓存旧值以便动画结束后恢复。"
 keywords: [CollapseTransition基础组件封装、滚动状态恢复与可配置折叠动画]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 过渡动画]
 ---
 
 # CollapseTransition 基础组件封装、滚动状态恢复与可配置折叠动画

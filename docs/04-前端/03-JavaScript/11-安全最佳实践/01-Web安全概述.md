@@ -3,7 +3,7 @@ title: Web安全概述
 description: "Web 安全总览：常见威胁（XSS/CSRF/点击劫持/MITM）、前端安全原则、安全响应头配置与安全开发实践、检测工具。"
 keywords: [Web安全概述]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Web安全]
 ---
 
 

@@ -3,7 +3,7 @@ title: 组件库局部引入方案：Element-Plus自动按需解析
 description: "上一节靠「消费方全局 `app.use(ElementPlus)`」打通了链路，这一节把第二条路线真正跑通：让组件库内部按需解析并带出自己用到的 Element Plus 组件和样式，从而 Playground 不必再全局安装 Element Plus。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 组件库抽离, Element Plus]
 ---
 
 # 组件库局部引入方案：Element-Plus 自动按需解析

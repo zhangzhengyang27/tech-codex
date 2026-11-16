@@ -1,8 +1,10 @@
 ---
 title: Transition：过渡动画原理
+description: "Vue3 源码解析：Transition 过渡动画的实现原理。"
 order: 5
 group: 组件机制
 category: Vue
+tags: [Vue3, 源码, 组件系统, 过渡动画]
 keywords:
   - Vue3
   - Transition

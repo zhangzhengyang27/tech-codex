@@ -3,7 +3,7 @@ title: Transition动画与UnoCSS主题配置
 description: "Vue 的 Transition 组件为路由切换和元素显隐提供声明式动画能力，配合 UnoCSS 的主题系统可以实现一致的设计令牌管理。本文讲解路由过渡动画配置和 UnoCSS 主题变量定制。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, UnoCSS]
 ---
 
 # Transition 动画与 UnoCSS 主题配置

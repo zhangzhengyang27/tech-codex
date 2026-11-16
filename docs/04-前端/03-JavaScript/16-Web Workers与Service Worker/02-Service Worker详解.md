@@ -3,7 +3,7 @@ title: Service Worker详解
 description: "Service Worker 是浏览器和网络之间的代理层，可以拦截所有请求、管理缓存、处理推送通知。它是 PWA（Progressive Web App）的核心技术，赋予 Web 应用离线访问和原生级体验。"
 keywords: [Service, Worker详解]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Service Worker, PWA]
 ---
 
 

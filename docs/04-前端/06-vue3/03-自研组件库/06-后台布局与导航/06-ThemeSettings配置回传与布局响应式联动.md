@@ -3,7 +3,7 @@ title: ThemeSettings配置回传与布局响应式联动
 description: "ThemeSettings 面板搭好抽屉、表单与模式卡片后，真正的分水岭是「配置值能不能驱动外层布局」。如果抽屉里改了菜单宽度、背景色、导航模式，外层 DefaultLayout 却纹丝不动，那面板只是个摆设。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局]
 ---
 
 # ThemeSettings 配置回传与布局响应式联动

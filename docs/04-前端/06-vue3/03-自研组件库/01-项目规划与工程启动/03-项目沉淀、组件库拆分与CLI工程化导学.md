@@ -3,7 +3,7 @@ title: 项目沉淀、组件库拆分与CLI工程化导学
 description: "当一个组件化或功能性项目完成后，真正产生复利价值的不是代码量，而是稳定复用的模式。沉淀方向通常是：提炼共性 → 沉淀模板（template-app）→ 抽离组件库（ui-library）→ 封装 CLI（create-app）→ 形成团队工程资产。"
 keywords: [项目沉淀]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 项目规划, 工程启动, CLI 工程化]
 ---
 
 # 项目沉淀、组件库拆分与 CLI 工程化导学
@@ -124,5 +124,5 @@ packages:
 
 - 上一篇：[文档站与项目初始化](02-文档站与项目初始化.md) — VitePress 与 Git 高级克隆
 - 下一篇：[图标资源接入与复制能力](../02-图标体系/01-图标资源接入与复制能力.md) — 进入图标体系模块
-- 相关：[自研组件库](..) — 组件库模块总览
+- 相关：[自研组件库](../00-自研组件库导览.md) — 组件库模块总览
 - 相关：[create-vue 仓库](https://github.com/vuejs/create-vue) · [Vite Library Mode](https://vite.dev/guide/build.html#library-mode) · [pnpm Workspaces](https://pnpm.io/workspaces)

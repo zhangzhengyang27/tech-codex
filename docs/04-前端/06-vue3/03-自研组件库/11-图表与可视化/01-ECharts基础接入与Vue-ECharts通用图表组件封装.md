@@ -3,7 +3,7 @@ title: ECharts基础接入与Vue-ECharts通用图表组件封装
 description: "数据可视化是后台系统的高频需求，而 Apache ECharts 是国内最成熟的图表引擎之一，文档完善、图表类型齐全。在 Vue 3 项目里接入 ECharts，最稳妥的组合是 echarts + vue-echarts：echarts 提供图表引擎与渲染能力，vue-echarts 提供 Vue 包装层（响应式 option、主题注入、自动 resize、事件绑定）。本文聚焦\"把这套组合封装成一个通用图表组件\"，覆盖按需引入、默认开启自动缩放、option 类型选择、theme 语义与背景色分离、尺寸样式统一收口等工程要点。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 图表, ECharts]
 ---
 
 # ECharts 基础接入与 Vue-ECharts 通用图表组件封装

@@ -3,7 +3,7 @@ title: location 对象
 description: "location 对象是浏览器对象模型（BOM）中的核心对象之一，提供当前窗口中加载文档的信息以及导航功能。它既是 window 对象的属性，也是 document 对象的属性，"
 keywords: [location, 对象]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, BOM, location, URL]
 ---
 
 

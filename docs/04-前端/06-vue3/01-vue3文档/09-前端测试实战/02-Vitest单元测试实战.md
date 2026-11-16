@@ -3,7 +3,7 @@ title: Vitest单元测试实战
 description: "Vitest 是 Vite 生态的原生测试框架，共享 Vite 配置（插件、别名、环境变量），具备极速冷启动和毫秒级 Watch 热更新。本文讲解 Vitest 的安装配置、测试用例编写、组件测试、Mock 机制与覆盖率报告。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 测试, Vitest]
 ---
 
 # Vitest 单元测试实战

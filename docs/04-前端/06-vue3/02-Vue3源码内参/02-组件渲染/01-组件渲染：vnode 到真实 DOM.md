@@ -1,8 +1,10 @@
 ---
 title: 组件渲染：vnode 到真实 DOM
+description: "Vue3 源码解析：组件渲染从 vnode 到真实 DOM 的完整流程。"
 order: 0
 group: 组件渲染
 category: Vue
+tags: [Vue3, 源码, 渲染器, 虚拟DOM]
 keywords:
   - Vue3
   - vnode

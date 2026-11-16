@@ -3,7 +3,7 @@ title: XSS攻击防护
 description: "XSS 是一种代码注入攻击，攻击者将恶意脚本注入到受信任的网站中。当用户浏览该网站时，嵌入的恶意脚本会被执行，从而窃取用户信息或执行恶意操作。"
 keywords: [XSS攻击防护]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, XSS, Web安全]
 ---
 
 

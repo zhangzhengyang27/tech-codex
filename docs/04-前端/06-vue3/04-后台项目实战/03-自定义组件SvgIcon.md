@@ -2,6 +2,7 @@
 description: SvgIcon 自定义组件的设计与实现，支持 SVG 精灵与按需加载
 keywords: [后台前端, SvgIcon, 自定义组件]
 category: Vue
+tags: [Vue3, 后台项目, SVG 组件]
 title: "自定义组件SvgIcon"
 ---
 # 自定义组件SvgIcon

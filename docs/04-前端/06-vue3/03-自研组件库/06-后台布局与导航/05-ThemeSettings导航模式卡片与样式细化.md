@@ -3,7 +3,7 @@ title: ThemeSettings导航模式卡片与样式细化
 description: "ThemeSettings 里大多数配置（Logo 显示、菜单宽度、主题色、暗黑模式）仍是挂在统一 form 上的标准表单项，复杂度主要在组织而非控件本身。但导航模式不同——它切换的是左侧菜单、顶部菜单或混合布局的整体形态，属于布局级配置，本节把它升级为可视化卡片选择器。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局]
 ---
 
 # ThemeSettings 导航模式卡片与样式细化

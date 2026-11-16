@@ -3,7 +3,7 @@ title: Electron双窗口IPC中转通信与preload安全暴露
 description: "这一节正式进入“渲染进程与渲染进程之间怎么通信”的实践。课程没有直接上更复杂的 MessagePort，而是先带大家用最容易理解的方式做出来：让主进程充当消息中转站。通过一个双窗口互发消息的示例，它把几个关键能力串在了一起：主进程里真正持有多个 BrowserWindow 实例、用两组 ipcMain.on 做消息路由、再用目标窗口的 webContents.send 把消息转发出去，最后还演示了 preload 层如何从“通用 send/receive”收口到“点对点 API”。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, IPC 通信]
 ---
 
 # Electron 双窗口 IPC 中转通信与 preload 安全暴露

@@ -3,7 +3,7 @@ title: Object.create
 description: "Object.create() 是一个静态方法，用于创建一个新对象，并将其原型链接到指定的对象。这是 JavaScript 中实现原型继承的核心方法之一。"
 keywords: []
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, 对象, 原型链]
 ---
 
 
@@ -1025,7 +1025,7 @@ const obj = Object.create(source)  // 设置原型，不是复制属性
 规范中 `[[Construct]]` 的关键步骤：
 
 ```
-[[Construct](argumentsList,%20newTarget)]
+[[Construct](argumentsList, newTarget)]
 1. callerContext = 当前执行上下文
 2. kind = F.[[ConstructorKind]]  // base 或 derived
 3. 如果 kind 是 'base':

@@ -3,7 +3,7 @@ title: VForm基础封装与Schema渲染起步
 description: "确定用 Schema 驱动表单后，下一步是把这套思路落地成真正能跑的组件。本章从 VForm 与 VFormItem 的初步拆分讲起，定义 FormSchema 的核心字段，并对比\"模板 v-if 分发\"与\"纯 TSX 渲染\"两条路线。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 动态表单, Schema]
 ---
 
 # VForm 基础封装与 Schema 渲染起步

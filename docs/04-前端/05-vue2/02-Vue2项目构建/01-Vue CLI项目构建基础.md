@@ -1,6 +1,9 @@
 ---
 title: "Vue CLI 项目构建"
+description: "Vue CLI 项目构建基础:环境准备(node/npm 版本检查)、脚手架安装与项目创建、目录结构与 serve/build 常用命令。"
+keywords: [Vue CLI, 脚手架, Vue2]
 category: Vue
+tags: [Vue2, Vue CLI, 脚手架]
 
 ---
 

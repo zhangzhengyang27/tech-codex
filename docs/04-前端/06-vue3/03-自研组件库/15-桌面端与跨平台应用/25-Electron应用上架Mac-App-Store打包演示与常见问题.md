@@ -3,7 +3,7 @@ title: Electron应用上架Mac-App-Store打包演示与常见问题
 description: "配置就绪之后，真正的考验是“能不能稳定打出一个能被 Apple 接收的包”。这一节把 MAS 打包的实操步骤串起来：从清理旧产物、执行专用构建脚本，到理解 .app 与 .pkg 的区别、通过 Transporter 上传、处理版本号冲突，再到常见打包失败的系统排查。目标是让你在遇到报错时，能快速定位是配置问题、证书问题还是产物结构问题。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 签名上架]
 ---
 
 # Electron 应用上架 Mac App Store：打包演示与常见问题

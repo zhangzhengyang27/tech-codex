@@ -3,7 +3,7 @@ title: 组件库可用性验证：纯净Playground联调
 description: "这一节第一次把「构建成功」和「真正可用」明确区分开。组件库已经能打包了，但一个完全独立的项目真的能把它用起来吗？课程强调要用一个「单纯的基础环境」来验证，而不是直接回到原模板项目——因为原模板里天然已有 Element Plus、i18n、样式系统、全局注册等，会掩盖组件库的隐式依赖。本文讲清纯净 Playground 的价值、npm link 联调缓存、optimizeDeps.force 强制重预构建、Source Map 跳源码，以及 $t is not a function 暴露的宿主 i18n 隐式依赖问题。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 组件库抽离, Element Plus]
 ---
 
 # 组件库可用性验证：纯净 Playground 联调

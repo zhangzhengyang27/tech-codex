@@ -3,7 +3,7 @@ title: VFormItem事件透传与实例暴露
 description: "表单渲染、绑定、校验都就绪后，下一个复杂度来自\"表单项级别的事件和实例能力怎么向外暴露\"。本章把表格里做过的事件透传、实例方法透传思路迁移到表单：整表级事件（validate）直接手写 defineEmits 更合适；单项级用 FormItemInstance 暴露 clearValidate 等局部能力；用回调式 itemRef 把单个实例主动上交页面层；并讨论插槽扁平化、watch 持续同步实例的鲁棒性细节。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 动态表单, Schema]
 ---
 
 # VFormItem 事件透传与实例暴露

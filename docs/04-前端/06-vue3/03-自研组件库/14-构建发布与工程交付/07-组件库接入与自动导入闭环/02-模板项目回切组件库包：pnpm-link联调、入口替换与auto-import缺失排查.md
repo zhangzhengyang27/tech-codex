@@ -3,7 +3,7 @@ title: 模板项目回切组件库包：pnpm-link联调、入口替换与auto-im
 description: "组件库做完之后最有价值的验证，不是继续在 Playground 里加页面，而是让原模板项目真正“吃回”这个包。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 自动导入, unplugin, Vite 插件]
 ---
 
 # 模板项目回切组件库包：pnpm link 联调、入口替换与 auto-import 缺失排查

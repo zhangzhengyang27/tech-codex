@@ -3,7 +3,7 @@ title: 原生ECharts组件封装、shallowRef实例管理与自适应更新
 description: "除了用 vue-echarts 包装层，也可以不依赖它、直接在组件里接管 ECharts 原生实例。这条路线尤其适用于：计划把 ECharts 作为 CDN external 掉、希望完全控制初始化与更新时机、或只需要项目内部一套自定义图表包装层。本文聚焦原生封装的 init/setOption/resize/dispose 四个核心动作、shallowRef 管理实例、尺寸自适应与实例暴露。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 图表, ECharts]
 ---
 
 # 原生 ECharts 组件封装、shallowRef 实例管理与自适应更新

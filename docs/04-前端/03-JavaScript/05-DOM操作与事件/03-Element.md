@@ -3,7 +3,7 @@ title: Element
 description: "Element 节点对象对应网页的 HTML 元素。每一个 HTML 元素，在 DOM 树上都会转化成一个 Element 节点对象（以下简称元素节点）。元素节点的 nodeType 属性都是 1。"
 keywords: [Element]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, Element]
 ---
 
 

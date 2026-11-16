@@ -3,7 +3,7 @@ title: CSRF防护
 description: "CSRF 是一种挟持用户在已登录网站上执行非预期操作的攻击方式。攻击者诱导用户访问恶意网站，利用用户已认证的身份，向目标网站发送伪造请求。"
 keywords: [CSRF防护]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, CSRF, Web安全]
 ---
 
 

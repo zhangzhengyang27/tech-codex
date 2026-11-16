@@ -1,6 +1,9 @@
 ---
 title: "Vue API 盲点解析"
+description: "Vue API 盲点解析:逐一梳理容易被忽略的 Vue API 细节与使用场景。"
+keywords: [Vue2, Vue API, 盲点解析]
 category: Vue
+tags: [Vue2, Vue API, 开发技巧]
 
 ---
 

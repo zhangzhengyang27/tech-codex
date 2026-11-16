@@ -3,7 +3,7 @@ title: VTable插槽扩展与操作列渲染
 description: "基础 VTable 跑通后，最先遇到的真实需求不是分页问题，而是\"某一列要怎么自定义显示\"——有些列不是简单文本，有些列要显示按钮，有些列表右侧要固定一列操作列。本章把扩展粒度从表格级下沉到列级：区分表格级插槽与列级插槽，在 columns 配置上扩展 defaultSlot 与 headerSlot，用 <component :is v-bind=\"scope\"> 把列级上下文透传给自定义渲染组件，并强调 scope 是操作列拿到当前行数据的关键入口。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # VTable 插槽扩展与操作列渲染

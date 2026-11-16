@@ -3,7 +3,7 @@ title: VForm模块收尾与动态组件扩展方向
 description: "VForm 已经具备渲染、布局、校验、实例暴露和插槽这些核心能力，模块进入收尾阶段：重点不再是堆功能，而是思考\"怎么让它更轻、更好扩展\"。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 动态表单, Schema]
 ---
 
 # VForm 模块收尾与动态组件扩展方向

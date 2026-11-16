@@ -3,7 +3,7 @@ title: "3 个使用场景助你用好 DOM 事件"
 description: "以搜索输入、大纲高亮、列表操作 3 个场景讲解 DOM 事件的实战应用：手写防抖与节流函数、基于事件流三阶段实现事件委托（事件代理），并对比 DOM0 与 DOM2 两种事件监听方式。"
 keywords: [防抖, 节流, 事件委托]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, 事件]
 ---
 
 # 3 个使用场景助你用好 DOM 事件

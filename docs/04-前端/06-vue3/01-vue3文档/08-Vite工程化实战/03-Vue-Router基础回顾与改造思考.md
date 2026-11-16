@@ -3,7 +3,7 @@ title: Vue-Router基础回顾与改造思考
 description: "Vue Router 是 Vue3 官方路由方案，支持动态匹配、嵌套路由、导航守卫等核心能力。本文回顾路由基础用法，并引出工程化改造的思考：当页面数量增长后，手动维护路由配置的成本如何优化。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化]
 ---
 
 # Vue Router 基础回顾与改造思考

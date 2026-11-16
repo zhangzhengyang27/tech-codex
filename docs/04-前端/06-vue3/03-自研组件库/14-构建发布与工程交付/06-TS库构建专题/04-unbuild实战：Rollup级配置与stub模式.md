@@ -3,7 +3,7 @@ title: unbuild实战：Rollup级配置与stub模式
 description: "这一节是上一节 tsup 实战的自然延伸，重点不是「换一个命令名」，而是理解为什么有些项目会从 tsup 转向 unbuild。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, TS 库构建, unbuild]
 ---
 
 # unbuild 实战：Rollup 级配置与 stub 模式

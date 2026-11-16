@@ -3,7 +3,7 @@ title: GitHub-Actions实操配置、前置准备与构建测试
 description: "上一节建立了 CI/CD 的认知框架，这一节落地到具体动作。我们会从推送代码前的本地准备讲起，依次覆盖 Personal Access Token 的申请与 Secrets 配置、代码推送到远程、工作流文件的修改、构建流程的执行，以及最后如何把草稿 Release 发布出去。目标是在你第一次跑通自动化发布前，知道每一步在防什么坑。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, GitHub Actions]
 ---
 
 # GitHub Actions 实操配置：前置准备与构建测试

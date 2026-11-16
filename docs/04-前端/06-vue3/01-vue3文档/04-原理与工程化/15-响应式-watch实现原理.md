@@ -3,7 +3,7 @@ title: 响应式-watch实现原理
 description: "Vue 3 watch 实现原理：doWatch 标准化 source 构造 getter、traverse 深度遍历、scheduler 与 flush 三种调度时机、cleanup/onWatcherCleanup 清理机制，以及 Vue 3.5 响应式 Props 解构下的 watch 用法。"
 keywords: [watch, Vue]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, 响应式原理]
 ---
 
 # 响应式-watch实现原理

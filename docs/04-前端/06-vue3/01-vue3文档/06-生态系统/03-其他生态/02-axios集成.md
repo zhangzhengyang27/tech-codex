@@ -3,7 +3,7 @@ title: axios集成
 description: "Vue 3 项目 axios 集成：实例创建与拦截器配置、TypeScript 类型定义、API 模块化、useRequest/usePagination 封装、Token 无感刷新及 Axios 与 fetch 选型对比。"
 keywords: [axios集成]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, axios, HTTP 请求, 生态]
 ---
 
 # axios 集成

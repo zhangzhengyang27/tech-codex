@@ -3,7 +3,7 @@ title: KeepAlive与Transition联动的缓存失效、Key策略与动画切换坑
 description: "这一节处理页面切换动画接入 KeepAlive 之后暴露出来的三个联动坑点：key 层级放错会破坏缓存边界、动态组件 key 的粒度决定缓存命中、全局动画切换后旧缓存页面延迟生效。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, KeepAlive]
 ---
 
 # KeepAlive 与 Transition 联动的缓存失效、Key 策略与动画切换坑点

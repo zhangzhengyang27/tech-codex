@@ -3,7 +3,7 @@ title: "DOM2和DOM3"
 description: "介绍 DOM2 和 DOM3 级在 DOM1 基础上扩展的模块（核心/视图/事件/样式/遍历和范围/HTML），重点讲解 DOM2 级样式 API：style 对象、cssText、getComputedStyle、样式表操作与 CSSRule，以及元素偏移、客户区和滚动大小。"
 keywords: [DOM2, DOM3, CSSStyleDeclaration]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM]
 ---
 
 # DOM2和DOM3

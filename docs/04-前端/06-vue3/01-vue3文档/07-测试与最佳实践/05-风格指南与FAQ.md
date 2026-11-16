@@ -3,7 +3,7 @@ title: 风格指南与FAQ
 description: "Vue 3 官方风格指南要点（组件/文件/Props/事件/插槽命名、模板与脚本规范、目录结构）与常见问题解答：响应式、组件通信、路由、Pinia、生命周期、性能与调试。"
 keywords: [风格指南与FAQ]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 最佳实践, 风格指南]
 ---
 
 # 风格指南与FAQ

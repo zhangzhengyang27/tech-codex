@@ -3,7 +3,7 @@ title: eval与严格模式
 description: "剖析 eval 的动态执行机制：eval 执行什么、在哪儿执行，词法环境与变量环境的分离，直接调用与间接调用 (0, eval) 的区别，以及严格模式为何拦不住间接 eval。"
 keywords: [eval与严格模式]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, 严格模式, eval]
 ---
 
 

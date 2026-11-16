@@ -3,7 +3,7 @@ title: Electron-Dock菜单、右键菜单与菜单事件回传
 description: "上一节解决了顶部应用菜单，这一节继续把菜单系统往更贴近真实桌面软件的地方扩展：macOS Dock 菜单和页面内右键菜单。课程先说明 Dock 菜单和顶部菜单思路几乎一样，只是挂载入口换成 app.dock.setMenu()；接着提醒 Dock 菜单不适合做快捷键入口，而 Windows 上对应概念更接近 Jump List，平台差异要尊重。后半段讲右键菜单时，再次印证了 Electron 的核心分层：页面触发意图、主进程负责 popup() 原生菜单、preload 做受控桥接，且菜单点击回传页面仍然走 IPC 那条熟链路。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 菜单]
 ---
 
 # Electron Dock 菜单、右键菜单与菜单事件回传

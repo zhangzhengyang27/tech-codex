@@ -3,7 +3,7 @@ title: ThemeSettings抽屉与配置面板
 description: "主题设置图标和全屏、暗黑、语言切换一样属于 Header 右侧工具区，但职责略有不同：它不是直接完成某个动作，而是点击后打开右侧抽屉，再在抽屉里承载大量配置项。因此它本质上是一个「面板入口」，而不是单步操作按钮。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局]
 ---
 
 # ThemeSettings 抽屉与配置面板

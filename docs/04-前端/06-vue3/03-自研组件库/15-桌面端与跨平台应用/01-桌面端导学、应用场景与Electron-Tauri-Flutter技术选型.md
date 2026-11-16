@@ -3,7 +3,7 @@ title: 桌面端导学、应用场景与Electron-Tauri-Flutter技术选型
 description: "桌面端开发是前端能力向离线工具、大资源场景和高权限终端的自然延伸。本节先做概念导学，明确“桌面端应用”的产品边界——它不等于所有能在电脑上运行的脚本；再从前端团队的视角出发，横向比较 Electron、Tauri、Flutter 三条主流路线，说明为什么在“语言一致性、工程化路径、生态成熟度、团队维护成本”这组维度上，Electron 是更平衡的起点。最后把选型落成一张可复用的维度矩阵，方便在团队内陈述与复盘。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 技术选型]
 ---
 
 # 桌面端导学、应用场景与 Electron / Tauri / Flutter 技术选型

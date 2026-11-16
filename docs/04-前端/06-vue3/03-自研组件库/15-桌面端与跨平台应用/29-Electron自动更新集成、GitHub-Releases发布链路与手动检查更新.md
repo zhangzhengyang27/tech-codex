@@ -3,7 +3,7 @@ title: Electron自动更新集成、GitHub-Releases发布链路与手动检查�
 description: "electron-updater 不是简单比较本地 `package.json` 的版本号，而是去读取发布服务器上的更新元数据。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 自动更新]
 ---
 
 # Electron 自动更新集成、GitHub Releases 发布链路与手动检查更新

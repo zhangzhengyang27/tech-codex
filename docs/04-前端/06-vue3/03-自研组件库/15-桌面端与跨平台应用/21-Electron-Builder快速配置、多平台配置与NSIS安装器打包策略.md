@@ -3,7 +3,7 @@ title: Electron-Builder快速配置、多平台配置与NSIS安装器打包策�
 description: "这两节定位是快速上手版、基础认知版，而不是字段精读版。课程真正想解决的不是“把所有配置背下来”，而是让你先搞清 Builder 配置长什么样、多平台配置怎么分层、macOS / Windows / Linux 最常见目标格式分别是什么、Windows 安装器体验是怎么被配置项直接影响的。最有效的方法始终是“公共层 + 平台层”：公共层放共用信息，mac / win / linux 在其上叠加平台差异。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 打包发布]
 ---
 
 # Electron Builder 快速配置、多平台配置与 NSIS 安装器打包策略

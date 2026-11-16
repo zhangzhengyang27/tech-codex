@@ -3,7 +3,7 @@ title: GitHub-Actions接入macOS公证签名、Linux构建与打包问题修复
 description: "基础发布闭环打通后，真正的工程难点才浮现：macOS 既要签名又要公证，认证凭证在云端无法直接读取本地钥匙串，Linux 虽简单但也有自己的坑。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 签名上架]
 ---
 
 # GitHub Actions 接入 macOS 公证签名、Linux 构建与打包问题修复

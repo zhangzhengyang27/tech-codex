@@ -1,8 +1,10 @@
 ---
 title: 依赖注入：provide 与 inject 原理
+description: "Vue3 源码解析：provide/inject 依赖注入的实现原理。"
 order: 6
 group: 响应式系统
 category: Vue
+tags: [Vue3, 源码, 响应式原理, 依赖注入]
 keywords:
   - Vue3
   - provide

@@ -51,93 +51,16 @@ graph TB
 
 ---
 
-## 2 Service Worker 架构
+## 2 Service Worker 与推送能力（已并入 JavaScript 模块）
 
-### 2.1 运行模型
+Service Worker 的运行模型与生命周期、请求拦截与缓存策略（Cache First / Network First / Stale While Revalidate 及 Workbox 用法）、Navigation Preload，以及推送通知与后台同步，已与本仓库 JavaScript 模块的 Service Worker 专题合并。为避免同源重复，本文不再重复展开，请直接阅读：
 
-Service Worker 运行于独立线程，生命周期与页面分离：
+- [Service Worker 详解](/docs/javascript/16-Web%20Workers与Service%20Worker/02-Service%20Worker详解) — 生命周期、注册、Cache API、请求拦截与离线页面
+- [离线与缓存策略](/docs/javascript/16-Web%20Workers与Service%20Worker/03-离线与缓存策略) — 五大缓存策略与 Workbox 实战
+- [推送通知与后台同步](/docs/javascript/16-Web%20Workers与Service%20Worker/04-推送通知与后台同步) — Push API、通知点击处理与 Background Sync
+- [导航流程 · Navigation Preload](/docs/javascript/18-浏览器原理/08-导航流程) — SW 拦截导航请求时并行预取的机制
 
-```mermaid
-stateDiagram-v2
-    [*] --> Installing: 注册
-    Installing --> Installed: 安装完成
-    Installing --> Redundant: 安装失败
-    Installed --> Activating: 无旧 SW / 旧 SW 释放控制权
-    Activating --> Activated: 激活完成
-    Activating --> Redundant: 激活失败
-    Activated --> Redundant: 被新 SW 替换
-    Activated --> Fetching: 拦截请求
-    Fetching --> Activated: 请求处理完成
-```
-
-### 2.2 请求拦截机制
-
-Service Worker 在页面与网络之间充当代理：
-
-```mermaid
-graph LR
-    PAGE["页面"] -->|"请求"| SW["Service Worker"]
-    SW -->|"缓存命中"| CACHE["Cache Storage"]
-    SW -->|"缓存未命中"| NET["网络"]
-    NET -->|"响应"| SW
-    CACHE -->|"响应"| SW
-    SW -->|"响应"| PAGE
-```
-
-### 2.3 缓存策略
-
-| 策略 | 行为 | 适用场景 |
-|------|------|----------|
-| **Cache First** | 优先缓存，失败回退网络 | 静态资源（JS/CSS/字体/图片） |
-| **Network First** | 优先网络，失败回退缓存 | API 请求（需最新数据但离线可用） |
-| **Stale While Revalidate** | 立即返回缓存，后台更新 | 非关键 API（如配置信息） |
-| **Cache Only** | 仅从缓存获取 | 预缓存的 App Shell |
-| **Network Only** | 仅从网络获取 | 非 GET 请求、实时数据 |
-
-Workbox 库封装了这些策略的完整实现：
-
-```javascript
-import { registerRoute } from 'workbox-routing';
-import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
-
-// 静态资源：Cache First
-registerRoute(
-    ({ request }) => request.destination === 'style' || request.destination === 'script',
-    new CacheFirst({ cacheName: 'static-resources' })
-);
-
-// API：Network First
-registerRoute(
-    ({ url }) => url.pathname.startsWith('/api/'),
-    new NetworkFirst({ cacheName: 'api-data' })
-);
-
-// 字体：Stale While Revalidate
-registerRoute(
-    ({ request }) => request.destination === 'font',
-    new StaleWhileRevalidate({ cacheName: 'fonts' })
-);
-```
-
-### 2.4 Navigation Preload
-
-Navigation Preload 允许 Service Worker 拦截导航请求的同时，并行发起网络请求：
-
-```javascript
-// 激活时启用
-self.addEventListener('activate', (event) => {
-    event.waitUntil(self.registration.navigationPreload.enable());
-});
-
-// 使用预加载响应
-self.addEventListener('fetch', (event) => {
-    event.respondWith(async () => {
-        const preload = await event.preloadResponse;
-        if (preload) return preload;
-        return caches.match(event.request) || fetch(event.request);
-    })();
-});
-```
+本篇后续聚焦 PWA 特有的部分：Web App Manifest 与 2026 年 Web 应用的最新进展。
 
 ---
 
@@ -177,49 +100,9 @@ self.addEventListener('fetch', (event) => {
 
 ---
 
-## 4 Push API 与后台同步
+## 4 Web 应用的最新进展
 
-### 4.1 推送通知
-
-```mermaid
-sequenceDiagram
-    participant S as 应用服务器
-    participant PS as Push 服务
-    participant SW as Service Worker
-    participant U as 用户
-
-    S->>PS: POST /push<br/>(订阅端点 + 加密载荷)
-    PS->>SW: Push 事件
-    SW->>SW: 解密载荷
-    SW->>U: showNotification()
-    U->>U: 点击通知
-    U->>SW: notificationclick 事件
-    SW->>SW: 打开/聚焦页面
-```
-
-### 4.2 Background Sync
-
-Background Sync 允许在用户离线时延迟发送请求，网络恢复后自动执行：
-
-```javascript
-// 注册同步
-navigator.serviceWorker.ready.then(reg => {
-    reg.sync.register('submit-form');
-});
-
-// Service Worker 中处理
-self.addEventListener('sync', (event) => {
-    if (event.tag === 'submit-form') {
-        event.waitUntil(submitFormData());
-    }
-});
-```
-
----
-
-## 5 Web 应用的最新进展
-
-### 5.1 Isolated Web Apps（IWA）
+### 4.1 Isolated Web Apps（IWA）
 
 2023—2024 年 Chrome 推出 IWA 模型，提供更强的隔离和权限：
 
@@ -228,7 +111,7 @@ self.addEventListener('sync', (event) => {
 - 扩展的文件系统和设备 API 访问
 - 强制 CSP 和内容完整性校验
 
-### 5.2 WebGPU
+### 4.2 WebGPU
 
 WebGPU 是 WebGL 的继任者，提供现代 GPU API 访问能力：
 
@@ -240,7 +123,7 @@ const shaderModule = device.createShaderModule({ code: wgslCode });
 
 WebGPU 对 PWA 的意义：Web 应用可实现接近原生的图形渲染和计算性能，为游戏、3D 建模、AI 推理等场景打开大门。
 
-### 5.3 View Transitions API
+### 4.3 View Transitions API
 
 View Transitions API 实现页面/视图切换时的平滑过渡动画：
 
@@ -264,7 +147,7 @@ CSS 可自定义过渡效果：
 
 ---
 
-## 6 总结
+## 5 总结
 
 PWA 的演进体现了 **渐进式增强** 的设计哲学：
 

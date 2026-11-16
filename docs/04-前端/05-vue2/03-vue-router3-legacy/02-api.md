@@ -1,7 +1,9 @@
 ---
 title: "API"
+keywords: [vue-router3, API 参考, router-link, router-view]
 description: "vue-router 3（Vue 2）组件 API 参考：router-link 的 props 与 v-slot、router-view、路由对象属性与组件注入。"
-category: 前端
+category: Vue
+tags: [Vue2, Vue Router, API 参考]
 
 ---
 

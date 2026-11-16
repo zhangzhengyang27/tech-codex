@@ -3,7 +3,7 @@ title: NoticeMenu组件设计与样式演进
 description: "通知中心是后台系统头部的标配能力，但成熟的组件不会一上来就做完整中心。更合理的演进路径是：先用 Badge + Dropdown 搭出头部通知入口，再逐步补齐角标样式扩展、整体缩放、弹出层面板与列表数据化。本文沿着这条主线，拆解 NoticeMenu 从静态入口走向可复用组件的关键决策点。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 通知中心]
 ---
 
 # NoticeMenu 组件设计与样式演进

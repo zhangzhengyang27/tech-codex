@@ -3,7 +3,7 @@ title: "CSS 操作"
 description: "讲解用 JavaScript 操作 CSS：Element.style 与 CSSStyleDeclaration 接口（cssText/length/getPropertyValue/setProperty 等）、CSS 模块侦测、CSS.escape 与 CSS.supports、getComputedStyle、StyleSheet/CSSRule/CSSMediaRule 接口及 window.matchMedia() 的用法。"
 keywords: [CSSStyleDeclaration, getComputedStyle, matchMedia]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, CSS]
 ---
 
 # CSS 操作

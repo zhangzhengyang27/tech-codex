@@ -1,8 +1,10 @@
 ---
 title: 模板解析：构造 AST 流程
+description: "Vue3 源码解析：模板编译的解析阶段，从模板字符串构造 AST 的流程。"
 order: 0
 group: 编译优化
 category: Vue
+tags: [Vue3, 源码, 编译器, AST]
 keywords:
   - Vue3
   - 编译

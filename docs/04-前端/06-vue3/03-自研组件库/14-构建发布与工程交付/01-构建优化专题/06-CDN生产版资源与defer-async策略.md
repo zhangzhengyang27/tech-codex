@@ -3,7 +3,7 @@ title: CDN生产版资源与defer-async策略
 description: "CDN external 不只是“把包丢到外面去”，还要继续优化到底加载哪个文件、以什么时序加载。本节在 external 基础上，把核心库替换成对应的生产版 CDN 文件，根据资源性质给不同脚本补 defer / async，并明确自动路由这类构建期生成能力不适合粗暴 external，把 external 策略从“粗粒度减包”推进到资源版本选择、加载时序优化与 external 边界控制。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 构建优化, CDN]
 ---
 
 # CDN 生产版资源与 defer-async 策略

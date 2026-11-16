@@ -3,7 +3,7 @@ title: VTable拖拽限制分析与树形拖拽扩展思路
 description: "做完行拖拽和列拖拽后，这一节回过头给拖拽能力划定真实边界：它们在基础平铺表格里能成立，不代表天然兼容所有复杂表格场景。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable, SortableJS 拖拽]
 ---
 
 # VTable 拖拽限制分析与树形拖拽扩展思路

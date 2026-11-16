@@ -3,7 +3,7 @@ title: 组件库指令导出与依赖外置优化：directives接入、peerDepen
 description: "组件、hooks、types、i18n 这些主链路打通之后，组件库的“公共能力面”还需要继续扩展。这一节把 directives 作为正式公共能力导出、把 video.js / vditor / vue-echarts 等大依赖从产物里 external 掉并收进 peerDependencies、用 bundle 可视化工具实际验证 external 是否生效。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 自动导入, unplugin, Vite 插件]
 ---
 
 # 组件库指令导出与依赖外置优化：directives 接入、peerDependencies 收敛与 bundle 分析

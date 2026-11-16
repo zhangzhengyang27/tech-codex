@@ -3,7 +3,7 @@ title: Howler.js播放模式策略、随机歌单回退与单曲循环实例控�
 description: "关键纠偏有两点：随机模式一旦要支持上一曲，就必须引入历史索引栈，不能只写 `Math.random()`；单曲循环不应通过改 `options.loop` 触发实例重建，而应直接调用当前实例的 `loop()` 方法。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 音视频, 音频播放器]
 ---
 
 # Howler.js 播放模式策略、随机歌单回退与单曲循环实例控制

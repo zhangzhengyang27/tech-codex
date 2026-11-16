@@ -3,7 +3,7 @@ title: 表格页移动端滚动兼容与Safe-Area取舍
 description: "表格页放到移动端后，暴露的问题往往不是表格 API，而是整个页面的\"双重滚动\"——中间内容区自己滚、页面外层容器也滚。本章从滚动容器设计切入，强调桌面模拟不能替代真机验证，safe-area 只解决安全区边缘补偿而非滚动策略总开关；更推荐回归浏览器原生滚动（外层 overflow-hidden + 内容区 overflow-y-auto）。进阶部分把 fixHeader 视作滚动策略开关，用动态组件在 div 与 ElScrollbar 间切换，并补全固定头下的内容补偿。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # 表格页移动端滚动兼容与 Safe-Area 取舍

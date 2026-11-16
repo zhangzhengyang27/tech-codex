@@ -3,7 +3,7 @@ title: 顶部Tabs持久化、切换联动与样式优化
 description: "这一节把顶部 Tabs 从“能显示”推进到“能真正使用”。核心补齐三件事：用 pinia-plugin-persistedstate 让 Tabs 刷新后仍在；把 tab-click 从基础组件透传到外层，通过命名路由实现点击切换；让 el-tabs 的 v-model 与 tabsStore.current 成为同一份状态源，保证激活态、路由、store 三处一致。"
 keywords: [顶部Tabs持久化, 切换联动与样式优化]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 顶部导航]
 ---
 
 # 顶部 Tabs 持久化、切换联动与样式优化

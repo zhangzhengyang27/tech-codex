@@ -3,7 +3,7 @@ title: SharedWorker与Vue消息机制封装
 description: "裸用 SharedWorker 意味着每个页面都要重复编写端口注册、消息监听、ID 维护等逻辑。将其封装为 Vue Composition API（useWorker()），可以统一输入输出、隐藏 Worker 细节，让业务页面只关心 emit / on / broadcast 这套事件语义。"
 keywords: [SharedWorker, Vue3, Composable, 事件总线]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, SharedWorker, Vue]
 ---
 
 

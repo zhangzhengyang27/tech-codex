@@ -3,7 +3,7 @@ title: Nuxt3-PWA配置问题排查与修复实践
 description: "Nuxt3 通过 @vite-pwa/nuxt 模块集成 PWA 能力，但实际配置中常遇到 Service Worker 未注册、缓存不完整、更新不生效等问题。本文记录完整的排查清单与 Workbox 缓存优化方案。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Nuxt3, PWA]
 ---
 
 # Nuxt3 PWA 配置问题排查与修复实践

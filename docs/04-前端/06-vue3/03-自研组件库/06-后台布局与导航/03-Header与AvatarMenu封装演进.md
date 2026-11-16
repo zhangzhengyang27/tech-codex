@@ -3,7 +3,7 @@ title: Header与AvatarMenu封装演进
 description: "头部是 DefaultLayout 真正成型的起点。本节把 Header 拆成左侧导航区与右侧工具区，处理折叠事件的归属、语言数据的来源、工具栏对齐与图标扩展统一；再围绕用户头像菜单，解决复合组件（Dropdown + Avatar）的 props 类型冲突、触发方式覆盖顺序、command 事件透传，以及头像加载失败的内容回退。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局]
 ---
 
 # Header 与 AvatarMenu 封装演进

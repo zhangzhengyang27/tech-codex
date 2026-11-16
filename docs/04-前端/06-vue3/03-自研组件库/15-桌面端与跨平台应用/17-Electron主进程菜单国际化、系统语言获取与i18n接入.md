@@ -3,7 +3,7 @@ title: Electron主进程菜单国际化、系统语言获取与i18n接入
 description: "这一节解决一个容易被忽略的问题：Electron 应用的国际化至少有两层，渲染进程里的前端框架国际化，和主进程里原生菜单 / 系统交互的国际化，两者不能混为一谈。课程主张主进程侧直接用 Node 可运行的轻量 i18n 库，而不是把前端页面那套 i18n 搬过来。随后演示了 locales 语言包结构、i18n.configure() 初始化、setLocale() + __() 取文案，并用 app.getLocale() 从系统取语言、.toLowerCase() 与本地命名对齐。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 菜单]
 ---
 
 # Electron 主进程菜单国际化、系统语言获取与 i18n 接入

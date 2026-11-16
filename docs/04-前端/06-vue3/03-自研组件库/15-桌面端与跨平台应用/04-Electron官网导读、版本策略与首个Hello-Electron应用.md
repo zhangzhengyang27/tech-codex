@@ -3,7 +3,7 @@ title: Electron官网导读、版本策略与首个Hello-Electron应用
 description: "打开 Electron 官网，最醒目的一句定位就是“用 JavaScript、HTML、CSS 构建跨平台桌面应用”。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron]
 ---
 
 # Electron 官网导读、版本策略与首个 Hello-Electron 应用

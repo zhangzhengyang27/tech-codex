@@ -3,7 +3,7 @@ title: 第三方库TypeScript集成问题排查
 description: "集成第三方库时，TypeScript 模块解析策略（moduleResolution）的差异是类型报错的首要原因。本文以 unplugin-vue-router 的类型识别问题为案例，系统讲解 Classic / Node / Bundler 三种解析策略的原理与排查方法。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, TypeScript]
 ---
 
 # 第三方库 TypeScript 集成问题排查

@@ -3,7 +3,7 @@ title: 宿主项目指令自动导入：directives导出扩展、unplugin-resolv
 description: "这一节在“导出组件库 Vite 接入配置”之后，继续把自动导入能力从组件和 hooks 扩展到 directives：在组件库里把每条指令单独导出，而不只保留统一的 setupDirectives(app) 入口；在宿主 unplugin-vue-components resolver 中增加 directive 分支，让页面里的指令也能按统一规则被自动解析。到这里，组件库的“自动接入能力”终于从组件、hooks 扩展到了指令，宿主接入协议开始更完整。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 自动导入, unplugin, Vite 插件]
 ---
 
 # 宿主项目指令自动导入：directives 导出扩展、unplugin resolver 接入与页面回归验证

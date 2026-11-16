@@ -3,7 +3,7 @@ title: Renovate安装接入与配置校验
 description: "作为 Dependabot 之外的另一套依赖治理方案，Renovate 更像“可高度编排的依赖自动化引擎”。本节从 GitHub App 安装接入讲起，说明为什么推荐把配置放在 .github/renovate.json5，如何用 config:recommended 最小起步，如何通过 Dashboard 或 CLI 校验配置，以及 silent 与 interactive 状态对是否创建 PR 的决定性影响，最后理解其节流与分组策略。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, CI/CD, 依赖治理, Renovate]
 ---
 
 # Renovate 安装接入与配置校验

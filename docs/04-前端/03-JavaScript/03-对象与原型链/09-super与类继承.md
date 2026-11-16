@@ -3,7 +3,7 @@ title: super与类继承
 description: "从 JavaScript 1.1「类抄写 + 原型继承」的历史设计讲起，剖析 super 关键字：为什么需要 super、[[HomeObject]] 如何确定 super 的指向、super.xxx() 中的 this 绑定与 super() 调用父类构造方法的机制。"
 keywords: [super与类继承]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, super, 继承]
 ---
 
 

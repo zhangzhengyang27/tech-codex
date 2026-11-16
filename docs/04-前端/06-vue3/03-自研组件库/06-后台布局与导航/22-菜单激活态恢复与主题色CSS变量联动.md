@@ -3,7 +3,7 @@ title: 菜单激活态恢复与主题色CSS变量联动
 description: "这一节修复了两个后台布局体验问题。其一，左侧菜单刷新后激活态丢失——根因不是样式没写，而是 el-menu 的 default-active 没有在首屏根据当前路由重新对齐。其二，主题色选择器改了值页面却没反应——根因不是色值没选中，而是状态没有真正下发到 Element Plus 的 CSS 变量系统。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 暗黑模式]
 ---
 
 # 菜单激活态恢复与主题色 CSS 变量联动

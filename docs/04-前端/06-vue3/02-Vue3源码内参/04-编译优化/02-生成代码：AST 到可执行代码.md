@@ -1,8 +1,10 @@
 ---
 title: 生成代码：AST 到可执行代码
+description: "Vue3 源码解析：从 AST 生成可执行渲染函数代码的过程。"
 order: 2
 group: 编译优化
 category: Vue
+tags: [Vue3, 源码, 编译器, AST]
 keywords:
   - Vue3
   - 编译

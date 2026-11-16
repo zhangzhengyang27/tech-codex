@@ -3,7 +3,7 @@ title: VTable基础封装与分页国际化接入
 description: "技术选型确定后，第一版基础表格组件的目标不是支持所有高级能力，而是先抽出\"表格主体 + 分页\"的最小复用单元。本章基于 el-table 封装 VTable，把 columns、表格本体 props、分页 props 分开设计，用 withDefaults 建立开箱即用的基线，并通过 ConfigProvider.locale 接入 Element Plus 内置分页国际化。进阶部分则处理分页插槽与事件透传，重点解决分页与表格同名事件（如 current-change）的冲突。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # VTable 基础封装与分页国际化接入

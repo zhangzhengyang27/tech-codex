@@ -3,7 +3,7 @@ title: 第三方登录入口与LoginForm组件封装
 description: "补齐第三方登录入口后，登录页的基础交互结构才算完整：主路径是账号密码登录，辅助路径是注册与忘记密码，补充路径是第三方登录。本章把 LoginForm 正式抽离成独立组件，用 el-divider 切开主表单区与其他登录方式区，把第三方入口做成 loginItems 数组驱动，并通过 defineEmits 输出 submit 与 click-icon 两个事件，让页面层接管真正的业务行为。"
 keywords: [第三方登录入口与LoginForm组件封装]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 登录认证]
 ---
 
 # 第三方登录入口与 LoginForm 组件封装

@@ -3,7 +3,7 @@ title: PWA渐进式Web应用基础
 description: "PWA（Progressive Web App）通过 Service Worker、Web App Manifest 和 HTTPS 三大技术，让 Web 应用具备离线访问、可安装、推送通知等原生应用能力。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, PWA]
 ---
 
 # PWA 渐进式 Web 应用基础

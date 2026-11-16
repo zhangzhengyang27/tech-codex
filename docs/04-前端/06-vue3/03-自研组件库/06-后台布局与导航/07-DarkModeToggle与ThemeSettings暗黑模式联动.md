@@ -3,7 +3,7 @@ title: DarkModeToggle与ThemeSettings暗黑模式联动
 description: "暗黑模式开关看似只是个布尔值切换，真正的工程难点在于「局部控件吐出的值，如何干净地进入布局层的主题系统」。本节以 DarkModeToggle 为入口，讲清它只做状态输出、Header 作为中间层把事件汇总回写整份 settings、用深度 watch 统一往外同步替代逐字段 emit，以及工具栏开关与 ThemeSettings 抽屉必须共享同一份 settings.darkMode。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 暗黑模式]
 ---
 
 # DarkModeToggle 与 ThemeSettings 暗黑模式联动

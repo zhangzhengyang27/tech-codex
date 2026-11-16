@@ -3,7 +3,7 @@ title: Node 接口
 description: "DOM（Document Object Model，文档对象模型）是浏览器提供的编程接口，用于在内存中表示和操作文档结构。本文讲解 Node 接口——所有节点的基类：nodeType/nodeName 等属性、appendChild/insertBefore/removeChild 等方法，以及遍历、克隆与性能优化要点。"
 keywords: [Node, 接口]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, Node 接口]
 ---
 
 

@@ -3,7 +3,7 @@ title: video.js基础集成、播放器组件封装与默认配置合并
 description: "官方 Guides 展示了三类嵌入方式：直接在原生 video 标签上增强、player div ingest、使用 <video-js> 自定义元素。在 Vue 组件里更推荐第二种——用容器包裹 video 节点，自己控制 ref、生命周期与实例获取。这是一种“容器交给 Vue 管，播放器内部增强交给 video.js”的集成方式，和图表、编辑器这类实例型组件的封装思路一致。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 音视频, 视频播放器]
 ---
 
 # video.js 基础集成、播放器组件封装与默认配置合并

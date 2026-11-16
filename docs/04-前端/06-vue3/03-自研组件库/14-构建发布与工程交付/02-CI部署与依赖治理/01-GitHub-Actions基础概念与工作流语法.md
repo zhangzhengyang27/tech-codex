@@ -3,7 +3,7 @@ title: GitHub-Actions基础概念与工作流语法
 description: "项目能本地构建之后，下一步是把“拉代码、装依赖、跑构建、发产物”这套流程交给云端 CI/CD 平台自动执行。本节从 GitHub Actions 的本质讲起，读懂 YAML 的层级结构，掌握 `on` / `jobs` / `steps` 三大概念，写一个最小可运行的前端工作流，并学会在 GitHub 页面里手动触发与查看日志。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, CI/CD, 依赖治理, GitHub Actions]
 ---
 
 # GitHub Actions 基础概念与工作流语法

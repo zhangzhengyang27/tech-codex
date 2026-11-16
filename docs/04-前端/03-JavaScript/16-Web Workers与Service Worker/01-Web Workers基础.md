@@ -3,7 +3,7 @@ title: Web Workers基础
 description: "JavaScript 是单线程语言，所有任务（DOM 渲染、事件处理、网络请求、计算）都在主线程执行。当计算密集型任务占用主线程时，UI 会冻结——用户无法点击、滚动或输入。"
 keywords: [Web, Workers基础]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Web Worker, 多线程]
 ---
 
 
@@ -466,3 +466,12 @@ function processData(data) {
 | 网络请求管理 | ✅ | 长连接、重连逻辑 |
 
 > 💡 **经验法则**：如果操作耗时超过 50ms（一帧约 16.7ms，50ms 已接近三帧），就应该考虑使用 Worker。
+
+## 延伸阅读
+
+本目录另有四篇 Worker 深入专题（由 HTML5 模块《Web Workers 处理线程》专题并入）：
+
+- [Worker 线程模型与通信机制](/docs/javascript/16-Web Workers与Service Worker/05-Worker线程模型与通信机制) — 线程模型、选型、通信协议、SharedArrayBuffer、Worker 池
+- [Worker 高级应用与工程化](/docs/javascript/16-Web Workers与Service Worker/06-Worker高级应用与工程化) — Inline/Blob Worker、加密压缩、WebAssembly、Vite/Webpack 集成
+- [OffscreenCanvas 与 Worker 渲染](/docs/javascript/16-Web Workers与Service Worker/07-OffscreenCanvas与Worker渲染) — 渲染管线 Worker 化实战
+- [Worker 安全调试与最佳实践](/docs/javascript/16-Web Workers与Service Worker/08-Worker安全调试与最佳实践) — 安全、生命周期、调试与 FAQ

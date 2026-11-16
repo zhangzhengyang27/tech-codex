@@ -3,7 +3,7 @@ title: Howler.js实例初始化、播放进度同步与时间格式化
 description: "前几节把进度条、音量条和控制区都做成了纯 UI 状态。本节开始真正把这些状态接到 Howler.js 的播放逻辑上：先把全局对象 Howler 和实例对象 Howl 的职责分清，再用默认配置合并与全局字段白名单完成初始化，最后通过 onload、seek() 和 requestAnimationFrame() 把时长、播放状态和进度接通到 UI。 这一节的产出是播放器的「基础闭环」：能加载、能播放、能暂停、能显示时长、能同步进度。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 音视频, 音频播放器]
 ---
 
 # Howler.js 实例初始化、播放进度同步与时间格式化

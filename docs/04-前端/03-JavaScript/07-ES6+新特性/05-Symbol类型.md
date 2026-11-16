@@ -531,7 +531,7 @@ const matcher = {
   [Symbol.match](str) {
     return str.split('').reverse().join('');
   },
-  [Symbol.replace](str,%20replacement) {
+  [Symbol.replace](str, replacement) {
     return str + replacement;
   },
   [Symbol.search](str) {

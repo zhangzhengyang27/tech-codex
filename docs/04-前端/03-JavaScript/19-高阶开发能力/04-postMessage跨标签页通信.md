@@ -3,7 +3,7 @@ title: postMessage跨标签页通信
 description: "在后台管理系统、统一登录、支付跳转、第三方授权、单点登录等场景中，页面之间经常需要交换状态或通知结果。window.postMessage 是浏览器原生提供的跨窗口消息通道，也是唯一能安全跨越同源限制的标签页通信方案。"
 keywords: [postMessage, 跨标签页通信, window.open, 同源策略]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, postMessage, 跨标签页通信]
 ---
 
 

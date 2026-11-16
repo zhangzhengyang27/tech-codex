@@ -3,7 +3,7 @@ title: screen 对象
 description: "screen 对象是 window 对象的属性，可以通过 window.screen 或直接使用 screen 访问。它实现了 Screen 接口，提供了访问屏幕信息的属性和方法。虽然不同浏览器中的 screen 对象可能包含不同的属性，"
 keywords: [screen, 对象]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, BOM, screen]
 ---
 
 

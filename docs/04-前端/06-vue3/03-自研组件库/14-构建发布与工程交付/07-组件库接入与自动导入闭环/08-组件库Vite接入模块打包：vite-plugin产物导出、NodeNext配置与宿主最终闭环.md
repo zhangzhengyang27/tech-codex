@@ -3,7 +3,7 @@ title: 组件库Vite接入模块打包：vite-plugin产物导出、NodeNext配�
 description: "这一节的重点不是再发明新的接入协议，而是把上一节生成的 vite-plugin.ts 真正变成可发布、可安装、可被宿主导入的产物。组件库内部已具备运行时入口、组件自动注册插件、hooks / types / directives 导出，以及 VPAutoImports 和 VPComponentsResolver，但这些“Vite 接入辅助能力”若只留在源码目录，还不算真正对外可用。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 自动导入, unplugin, Vite 插件]
 ---
 
 # 组件库 Vite 接入模块打包：vite-plugin 产物导出、NodeNext 配置与宿主最终闭环

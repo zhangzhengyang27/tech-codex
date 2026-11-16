@@ -3,7 +3,7 @@ title: package-json脚本扩展与发包流程
 description: "这一节从 Electron 打包链路切回「TypeScript 库模板项目的工程脚本扩展」。课程主线包含四部分：给 package.json 增加 lint / lint:fix；用 simple-git-hooks + lint-staged 在提交前自动修复；用 tsx 增加 TypeScript 运行时脚本；增加发包脚本并切换 npm 源。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, TS 库构建, npm 发包]
 ---
 
 # package.json 脚本扩展与发包流程

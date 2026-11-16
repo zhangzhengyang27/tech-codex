@@ -3,7 +3,7 @@ title: 生命周期与上下文API
 description: "Vue 3 内部维护一个全局变量 currentInstance，在 setup() 执行期间指向当前组件实例。onMounted 等函数正是通过这个变量把回调注入组件的生命周期队列。"
 keywords: [生命周期与上下文API]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组合式 API, 生命周期]
 ---
 
 # 生命周期钩子

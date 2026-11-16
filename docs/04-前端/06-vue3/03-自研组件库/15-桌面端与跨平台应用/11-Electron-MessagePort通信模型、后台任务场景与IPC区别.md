@@ -3,7 +3,7 @@ title: Electron-MessagePort通信模型、后台任务场景与IPC区别
 description: "这一节进入渲染进程间通信的第二种方案：MessagePort。但课程并没有急着上代码，而是先把“它解决什么问题、和普通 IPC 有什么区别、适合什么场景”讲透。核心结论是：MessagePort 不是要取代 IPC，而是在 IPC 之上再搭一层“专门的消息通道”；它用一对绑定端口（port1 / port2）替代大量人工频道对齐，因此特别适合后台音视频处理、多请求聚合、Canvas 渲染这类“主界面保持流畅、后台持续处理并多次回传结果”的长链路场景。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, IPC 通信]
 ---
 
 # Electron MessagePort 通信模型、后台任务场景与 IPC 区别

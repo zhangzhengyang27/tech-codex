@@ -3,7 +3,7 @@ title: Actions
 description: "Pinia Actions：Option/Setup Store 中定义同步与异步 Action、跨 Store 调用、$onAction 订阅、乐观更新/重试/竞态处理及与 Vuex Actions 的迁移对照。"
 keywords: [Actions]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Pinia, 状态管理]
 ---
 
 # Actions

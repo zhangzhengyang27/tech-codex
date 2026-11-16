@@ -3,7 +3,7 @@ title: Header折叠状态透传与双菜单交互预留
 description: "这一节把布局状态透传与交互状态建模两类能力往前推进：collapse 这类布局级状态可以穿过 Header，但不应该沉淀在 Header；同时双菜单摆出来之后，二级菜单不再只是静态区域，而是一个具备 collapsed / pinned 独立行为的导航面板。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 菜单]
 ---
 
 # Header 折叠状态透传与双菜单交互预留

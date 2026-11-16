@@ -3,7 +3,7 @@ title: useWorker测试与生命周期维护
 description: "消息机制写完不等于能用——协议结构不匹配、Worker 日志不可见、连接状态过期等问题都会在联调阶段暴露。本文记录 useWorker() 的完整测试过程：从广播消息收到 undefined 的排查，到 SharedWorker 的调试方法，再到 routeIds 在 update/close 生命周期中的持续维护，以及多标签页同路由冲突的设计边界。"
 keywords: [SharedWorker 调试, 消息协议, 生命周期, routeIds]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Web Worker, 测试]
 ---
 
 

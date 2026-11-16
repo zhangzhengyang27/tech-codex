@@ -3,7 +3,7 @@ title: 响应式-nextTick实现原理
 description: "Vue 3 nextTick 实现原理：从 proxy setter 到 ReactiveEffect 调度器、queueJob 去重与按 id 有序插入、queueFlush 微任务调度、flushJobs 三阶段刷新（pre/update/post），以及 nextTick 基于currentFlushPromise 的实现。"
 keywords: [nextTick, 调度器, Vue]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, 响应式原理]
 ---
 
 # 响应式-nextTick实现原理

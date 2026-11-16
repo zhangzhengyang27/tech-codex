@@ -3,7 +3,7 @@ title: 宿主项目自动导入回接：VP组件custom-resolver、hooks-auto-imp
 description: "宿主项目切换到组件库包之后，如果不重新配置自动导入链路，页面虽能跑，开发体验会明显退化。这一节把宿主项目的开发体验恢复到接近原模板的状态：给 unplugin-vue-components 增加自定义 resolver，让 VP* 组件自动从组件库包解析；给 unplugin-auto-import 增加自定义 imports，让 useForm、useMenu 这类 hooks 自动解析。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 自动导入, unplugin, Vite 插件]
 ---
 
 # 宿主项目自动导入回接：VP 组件 custom resolver、hooks auto-import 与缓存排查

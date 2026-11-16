@@ -3,7 +3,7 @@ title: ThemeSettings抽屉响应式宽度与Drawer样式定制
 description: "ThemeSettings 作为后台配置的集中入口，内部控件密度很高（导航模式卡片、菜单宽度滑块、各种开关）。当抽屉宽度不合适时，这些控件会变得几乎不可操作。这一节的主题是：抽屉的宽度问题应该先看容器、后看内部控件；第三方组件的根节点样式优先走官方推荐的类挂载方式；响应式宽度规则尽量写成显式断点策略，而不是事后靠 :deep() 选择器补丁去救。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局]
 ---
 
 # ThemeSettings 抽屉响应式宽度与 Drawer 样式定制

@@ -3,7 +3,7 @@ title: 极验GT4的Vue组件封装与动态脚本加载
 description: "将极验 GT4 封装为可复用的 Vue 3 组件，是工程化落地的关键一步。本文详解组件的输入输出设计、动态脚本加载方案、生命周期管理、事件透传机制，以及 props 变化后的实例重建策略。"
 keywords: [极验, GT4, Vue3 组件, 动态脚本加载]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, 极验, Vue]
 ---
 
 

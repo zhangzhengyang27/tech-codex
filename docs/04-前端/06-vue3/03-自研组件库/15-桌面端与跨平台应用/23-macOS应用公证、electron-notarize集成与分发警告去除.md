@@ -3,7 +3,7 @@ title: macOS应用公证、electron-notarize集成与分发警告去除
 description: "这一节解决签名之后的下一关：应用公证（Notarization）。它专门针对非 App Store 分发的应用，目的是把应用上传到 Apple 进行安全扫描，通过后获得 Apple 的“分发许可”，让用户安装时不再看到“未经过 Apple 公证”的警告。公证有两种方式：手动用 xcrun notarytool 上传，或集成 electron-notarize 自动化完成（推荐，接入 afterSign 钩子）。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 签名上架]
 ---
 
 # macOS 应用公证、electron-notarize 集成与分发警告去除

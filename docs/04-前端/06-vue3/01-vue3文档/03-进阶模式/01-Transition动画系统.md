@@ -3,7 +3,7 @@ title: Transition动画系统
 description: "系统讲解 Vue 3 Transition 动画系统：CSS 过渡与动画、JavaScript 钩子、TransitionGroup 列表过渡与 FLIP 原理、状态过渡，以及 GSAP/WAAPI 集成、性能优化与 Vue 2 迁移差异。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, 过渡动画]
 ---
 
 # Transition动画系统

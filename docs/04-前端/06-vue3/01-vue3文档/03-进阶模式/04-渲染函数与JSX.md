@@ -3,7 +3,7 @@ title: 渲染函数与JSX
 description: "系统讲解 Vue 3 渲染函数与 JSX：h()/createVNode 参数形态与 VNode 结构、JSX 编译产物与模板编译优化对比、函数式组件、renderSlot 插槽处理、Tree 实战，以及 Vue 2 → Vue 3 渲染函数迁移差异。"
 keywords: [渲染函数与JSX]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, 渲染函数与 JSX]
 ---
 
 # 渲染函数与 JSX

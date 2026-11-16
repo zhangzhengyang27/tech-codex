@@ -3,7 +3,7 @@ title: Cypress端到端测试基础
 description: "Cypress 是运行在浏览器内部的 E2E 测试框架，提供时间旅行调试、实时重载、自动等待等开发体验优势。本文讲解 Cypress 的安装配置、断言语法、用户操作模拟与网络拦截。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 测试, Cypress]
 ---
 
 # Cypress 端到端测试基础

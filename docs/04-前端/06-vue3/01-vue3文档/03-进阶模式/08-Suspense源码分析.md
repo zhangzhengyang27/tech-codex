@@ -3,7 +3,7 @@ title: Suspense源码分析
 description: "<Suspense> 是一个内置组件，用来在组件树中协调对异步依赖的处理。可以帮助我们更好地完成组件树父组件对子组件的多个嵌套异步依赖关系的管理，当父组件处于等待中时，允许我们自定义挂载一个加载中状态。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, Suspense]
 ---
 
 # Suspense源码分析

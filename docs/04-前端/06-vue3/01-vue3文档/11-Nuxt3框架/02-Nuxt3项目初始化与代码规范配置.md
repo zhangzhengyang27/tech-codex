@@ -3,7 +3,7 @@ title: Nuxt3项目初始化与代码规范配置
 description: "使用 nuxi CLI 创建 Nuxt3 项目，配置 VS Code 保存自动格式化，集成 Prettier + ESLint（eslint-config-prettier 消除格式规则冲突）与 Sass 全局样式注入，建立团队统一的开发基线。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Nuxt3, 代码规范]
 ---
 
 # Nuxt3 项目初始化与代码规范配置

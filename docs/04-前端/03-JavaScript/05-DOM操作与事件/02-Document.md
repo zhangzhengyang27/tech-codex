@@ -3,7 +3,7 @@ title: Document
 description: "Document 是浏览器中 DOM 树的根节点，代表当前已被解析或加载的文档。几乎所有的 DOM 操作都以 document 为入口：查找元素、创建节点、挂载到页面、注册事件、读取元信息等。"
 keywords: [Document]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM, Document]
 ---
 
 
@@ -1807,7 +1807,7 @@ element.appendChild(p)
 
 ### 相关文档
 
-- [Node 接口](01-Node%20接口.md) - 节点基础接口
+- [Node 接口](01-Node 接口.md) - 节点基础接口
 - [Element 接口](03-Element.md) - 元素节点详解
 - [事件处理](07-事件机制.md) - 事件机制深入
 - [性能优化最佳实践](10-性能优化最佳实践.md) - DOM 性能优化

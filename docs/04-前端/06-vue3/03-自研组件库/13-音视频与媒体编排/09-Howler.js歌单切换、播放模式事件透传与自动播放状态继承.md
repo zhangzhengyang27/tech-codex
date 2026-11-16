@@ -3,7 +3,7 @@ title: Howler.js歌单切换、播放模式事件透传与自动播放状态继�
 description: "这一节播放器正式和外层歌单联动。第一步不是写切歌逻辑，而是先把组件会向外抛的事件定义清楚（preview / next / mode / init），再用「意图上抛」模式把内部按钮和外层列表解耦。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 音视频, 音频播放器]
 ---
 
 # Howler.js 歌单切换、播放模式事件透传与自动播放状态继承

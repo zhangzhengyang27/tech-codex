@@ -3,7 +3,7 @@ title: 响应式-computed与依赖注入
 description: "Vue 3 computed 与依赖注入实现原理：ComputedRefImpl 的 _dirty 缓存机制、computed 执行顺序与 computed 优先触发、computed 重触发优化（Vue 3.4+）、provide/inject 的原型链实现与响应式保持、InjectionKey 类型安全。"
 keywords: [computed, 依赖注入, Vue]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, 响应式原理]
 ---
 
 # 响应式-computed与依赖注入

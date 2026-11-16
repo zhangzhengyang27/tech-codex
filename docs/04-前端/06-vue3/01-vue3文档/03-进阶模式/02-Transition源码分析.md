@@ -3,7 +3,7 @@ title: Transition源码分析
 description: "Vue 内置了 Transition 组件，可以帮助我们快速简单地实现基于状态变换的动画效果。该组件支持 CSS 过渡动画、CSS 动画、JavaScript 钩子 几种模式，接下来我们将逐步介绍这几种模式的实现原理。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, 过渡动画]
 ---
 
 # Transition源码分析

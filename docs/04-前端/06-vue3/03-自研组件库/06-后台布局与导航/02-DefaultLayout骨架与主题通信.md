@@ -3,7 +3,7 @@ title: DefaultLayout骨架与主题通信
 description: "基础组件是否真的可复用，不在单独能不能跑，而在放进完整布局后能否协同工作。本节进入后台整体布局层：把菜单、头部工具栏、内容区、主题抽屉组织到同一个 DefaultLayout 中，并解决一个关键工程问题——主题配置到底存在哪一层最合理。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 暗黑模式]
 ---
 
 # DefaultLayout 骨架与主题通信

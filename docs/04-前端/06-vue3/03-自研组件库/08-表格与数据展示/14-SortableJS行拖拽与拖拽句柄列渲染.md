@@ -3,7 +3,7 @@ title: SortableJS行拖拽与拖拽句柄列渲染
 description: "从列拖拽继续推进到行拖拽，两者共用同一套拖拽库，但真正操作的数据源完全不同：列拖拽改 columns，行拖拽改 data，因此必须先建立独立的 localData。行拖拽的绑定目标从表头 tr 切换到 tbody 里的行列表，并多出一个关键产品化细节——拖拽句柄 handle，避免误触单元格点击。句柄列最好继续走\"列模板组件\"路线（新建 DragIcon 通过 defaultSlot 插进第一列），且必须兼容用户已有的 defaultSlot：在拖拽图标后面继续渲染原有列模板，而不是覆盖它。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable, SortableJS 拖拽]
 ---
 
 # SortableJS 行拖拽与拖拽句柄列渲染

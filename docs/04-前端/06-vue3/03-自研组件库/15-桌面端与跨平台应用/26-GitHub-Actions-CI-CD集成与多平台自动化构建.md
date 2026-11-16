@@ -3,7 +3,7 @@ title: GitHub-Actions-CI-CD集成与多平台自动化构建
 description: "当应用需要在 Windows、macOS、Linux 三端交付时，靠本地一台机器手动打包很快就会成为瓶颈：环境不一致、签名证书难管理、耗时且容易漏步骤。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, GitHub Actions]
 ---
 
 # GitHub Actions CI/CD 集成与多平台自动化构建

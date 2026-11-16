@@ -3,7 +3,7 @@ title: 菜单递归查询重构与刷新态SubMenu自动展开
 description: "这一节修复混合模式与多级菜单的两个关键问题：深层子路由进入时左侧二级菜单不显示，以及刷新页面后父级 SubMenu 没自动展开。根因都在菜单派生与状态恢复逻辑——getSubMenus 不能直接拿完整叶子路径当根路径；刷新恢复不能只靠模板初值，要命令式调用 menu.open()。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 菜单]
 ---
 
 # 菜单递归查询重构与刷新态 SubMenu 自动展开

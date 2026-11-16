@@ -3,7 +3,7 @@ title: 渲染器-组件更新与diff算法
 description: "Vue 3.5 渲染器之组件更新与 diff 算法：ReactiveEffect/Lazy Effect 驱动更新、next 机制与 updateComponentPreRender、shouldUpdateComponent 更新判断、patchChildren 三类子节点策略，以及 Block Tree 靶向更新与五步 diff（含最长递增子序列）逐行解析。"
 keywords: [diff 算法, 渲染器]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, 渲染器, 虚拟DOM]
 ---
 
 # 渲染器-组件更新与diff算法

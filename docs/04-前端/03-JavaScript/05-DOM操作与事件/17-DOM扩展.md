@@ -3,7 +3,7 @@ title: "DOM 扩展"
 description: "介绍 DOM 扩展相关 API：动态脚本与样式、Selectors API（querySelector/querySelectorAll/matches）、元素遍历、MutationObserver（观察范围/记录队列/性能）、HTML5 扩展（classList、焦点管理、dataset、innerHTML/outerHTML、scrollIntoView）与专有扩展。"
 keywords: [querySelector, MutationObserver, classList, dataset]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, DOM]
 ---
 
 # DOM 扩展

@@ -3,7 +3,7 @@ title: axios请求库
 description: "拦截器是 Axios 最核心的特性，允许在请求或响应被处理前进行拦截和修改。"
 keywords: [axios请求库]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, axios, HTTP]
 ---
 
 

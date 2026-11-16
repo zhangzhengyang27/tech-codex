@@ -3,7 +3,7 @@ title: Nuxt3框架概览与核心概念
 description: "Nuxt 是基于 Vue 的全栈框架，提供 SSR / SSG / CSR / 混合渲染等多种模式，内置文件路由、自动导入、服务端引擎（Nitro）等能力。本文梳理 Nuxt3 的定位、渲染模式与核心架构。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Nuxt3]
 ---
 
 # Nuxt3 框架概览与核心概念

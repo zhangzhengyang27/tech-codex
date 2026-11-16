@@ -1,8 +1,10 @@
 ---
 title: v-model：双向绑定实现
+description: "Vue3 源码解析：v-model 双向绑定的编译与运行时实现。"
 order: 2
 group: 组件机制
 category: Vue
+tags: [Vue3, 源码, 组件系统, v-model]
 keywords:
   - Vue3
   - v-model

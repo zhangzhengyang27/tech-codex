@@ -3,7 +3,7 @@ title: tsup实战：零配置打包与工程初始化
 description: "这一节是「TS 库工程化」子线的真正起点。课程目标不是炫耀 tsup 命令有多短，而是让你体会：纯 TS 库的最小构建链路其实可以很轻。它先打通 tsup + tsconfig + Lint 的基础工程，下一节再扩展脚本、Git Hooks 和发包流程。tsup 的核心价值不是「又一个打包工具」，而是让纯 TS 库在几乎零配置的前提下快速从 src/index.ts 出到 dist，并顺带产出类型声明、支持 ESM / CJS 两种格式——非常适合工具库、SDK、辅助库。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, TS 库构建, tsup]
 ---
 
 # tsup 实战：零配置打包与工程初始化

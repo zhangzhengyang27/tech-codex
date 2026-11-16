@@ -3,7 +3,7 @@ title: UnoCSS图标集成方案
 description: "UnoCSS 通过 preset-icons 预设实现 CSS 类名形式的图标使用，无需注册组件即可在模板中通过 class=\"i-mdi-home\" 引用任意图标。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, UnoCSS, 图标]
 ---
 
 # UnoCSS 图标集成方案

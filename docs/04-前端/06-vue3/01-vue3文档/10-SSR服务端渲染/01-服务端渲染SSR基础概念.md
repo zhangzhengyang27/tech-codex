@@ -3,7 +3,7 @@ title: 服务端渲染SSR基础概念
 description: "服务端渲染（Server-Side Rendering）指 HTML 在服务器端生成并返回给浏览器，解决 CSR 应用首屏白屏和 SEO 不友好两大痛点。本文梳理 CSR / SSR / SSG 三种渲染模式的原理、优劣与选型依据。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, SSR]
 ---
 
 # 服务端渲染 SSR 基础概念

@@ -3,7 +3,7 @@ title: Jest基础
 description: "Jest 是 Facebook 开源的 JavaScript 测试框架，以\"零配置\"著称，内置断言、Mock、覆盖率报告等功能，是 React 生态的默认测试工具。"
 keywords: [Jest基础]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, 测试, Jest]
 ---
 
 

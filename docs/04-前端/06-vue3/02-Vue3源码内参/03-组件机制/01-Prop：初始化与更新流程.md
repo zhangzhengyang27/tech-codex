@@ -1,8 +1,10 @@
 ---
 title: Prop：初始化与更新流程
+description: "Vue3 源码解析：Props 的初始化与响应式更新流程。"
 order: 0
 group: 组件机制
 category: Vue
+tags: [Vue3, 源码, 组件系统, Props]
 keywords:
   - Vue3
   - props

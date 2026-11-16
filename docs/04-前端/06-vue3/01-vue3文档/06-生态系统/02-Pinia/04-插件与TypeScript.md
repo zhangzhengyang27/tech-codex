@@ -3,7 +3,7 @@ title: 插件与TypeScript
 description: "Pinia 插件与 TypeScript：PiniaPluginContext 与插件生命周期、持久化/日志/防抖等常见插件模式、declare module 类型扩展与泛型 Store 工厂实践。"
 keywords: [Pinia, 插件, TypeScript, PiniaPluginContext]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Pinia, 状态管理, TypeScript]
 ---
 
 # 插件

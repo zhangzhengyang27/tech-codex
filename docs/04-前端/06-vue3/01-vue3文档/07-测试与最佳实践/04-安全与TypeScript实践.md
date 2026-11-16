@@ -3,7 +3,7 @@ title: 安全与TypeScript实践
 description: "Vue 3 安全防护（XSS/CSRF/点击劫持、DOMPurify、CSP、敏感数据与依赖安全）与 TypeScript 最佳实践：defineProps/withDefaults 类型定义、泛型组件、组合式函数返回值类型与常用类型工具。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 最佳实践, 安全]
 ---
 
 # 安全与TypeScript实践

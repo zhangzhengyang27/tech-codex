@@ -3,7 +3,7 @@ title: 组件库包名规范与本地Link调试
 description: "上一节通过相对路径导入 dist 文件、再改消费方 TS 配置跑通了 Playground，但这只是教学演示。真实组件库开发应该让「包名、产物命名、入口字段和消费方式」形成一整套闭环：组件库打包后本身就像一个规范包，使用方按包名安装、按包名导入，类型声明和样式导出都由包自身负责说明。本文围绕这个闭环，讲清三个容易混淆的命名概念、build.sourcemap 与 .d.ts 两类产物、package.json 入口字段的正确写法，以及本地联调时 npm link、pnpm link 与 file: 的差异。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 库模式, Vite]
 ---
 
 # 组件库包名规范与本地 Link 调试

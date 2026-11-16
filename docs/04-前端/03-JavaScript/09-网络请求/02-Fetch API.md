@@ -3,7 +3,7 @@ title: Fetch API
 description: "Fetch API 是现代浏览器提供的网络请求接口,能够执行 XMLHttpRequest 对象的所有任务,但更容易使用,接口也更现代化,能够在 Web 工作线程等现代 Web 工具中使用。"
 keywords: [Fetch, API]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, Fetch, HTTP]
 ---
 
 
@@ -2256,3 +2256,51 @@ window.addEventListener('beforeunload', () => {
   fetchManager.abortAll()
 })
 ```
+
+## 完整可运行示例
+
+以下 HTML 文件可直接保存为 `.html` 后在浏览器打开，向公开测试 API 发起 GET/POST 请求，用于快速验证 `fetch` 行为：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Fetch API 实战</title>
+</head>
+<body>
+  <button id="getBtn">GET 请求</button>
+  <button id="postBtn">POST 请求</button>
+  <pre id="output">// 结果将显示在这里</pre>
+
+  <script>
+    const output = document.getElementById('output');
+
+    document.getElementById('getBtn').onclick = async () => {
+      try {
+        const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        output.textContent = JSON.stringify(await res.json(), null, 2);
+      } catch (e) {
+        output.textContent = '请求失败: ' + e.message;
+      }
+    };
+
+    document.getElementById('postBtn').onclick = async () => {
+      try {
+        const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: 'hello', body: 'world', userId: 1 })
+        });
+        output.textContent = JSON.stringify(await res.json(), null, 2);
+      } catch (e) {
+        output.textContent = '请求失败: ' + e.message;
+      }
+    };
+  </script>
+</body>
+</html>
+```
+
+> 本节由 HTML5 模块《Fetch API》篇并入（该篇其余内容与本文重合，已去重删除）。

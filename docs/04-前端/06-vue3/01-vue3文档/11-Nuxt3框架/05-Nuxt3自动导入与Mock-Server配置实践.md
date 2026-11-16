@@ -3,7 +3,7 @@ title: Nuxt3自动导入与Mock-Server配置实践
 description: "Nuxt3 内置组件、组合式函数和 Vue API 的自动导入能力，并通过 Nitro Server API 替代传统 Mock 方案。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Nuxt3, 自动导入]
 ---
 
 # Nuxt3 自动导入与 Mock Server 配置实践

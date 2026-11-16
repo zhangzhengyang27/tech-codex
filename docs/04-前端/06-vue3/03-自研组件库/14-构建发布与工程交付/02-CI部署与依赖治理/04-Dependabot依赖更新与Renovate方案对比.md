@@ -3,7 +3,7 @@ title: Dependabot依赖更新与Renovate方案对比
 description: "项目能自动构建发布之后，自然要顺手把依赖更新也自动化。本节把视角从“怎么发布”切换到“后续怎么维护”，对比 GitHub 官方 Dependabot 与第三方 Renovate 两条依赖治理路线，讲清 Dependabot 的安全更新与版本更新两层能力、最小 dependabot.yml 配置、自动审批/合并的权限边界，以及“发现更新 → 创建 PR → 审批/合并 → 重新部署”的可控流水线闭环。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, CI/CD, 依赖治理, Renovate]
 ---
 
 # Dependabot 依赖更新与 Renovate 方案对比

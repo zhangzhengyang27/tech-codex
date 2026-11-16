@@ -3,7 +3,7 @@ title: Electron应用上架Mac-App-Store、证书申请与构建配置
 description: "把 Electron 应用送进 Mac App Store（MAS），和走 Developer ID 直接分发是两条完全不同的路径。前者要接受 Apple 审核、遵循沙盒规则、使用专用证书；后者自由度高，但需要自己处理签名与公证。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 签名上架]
 ---
 
 # Electron 应用上架 Mac App Store：证书申请与构建配置

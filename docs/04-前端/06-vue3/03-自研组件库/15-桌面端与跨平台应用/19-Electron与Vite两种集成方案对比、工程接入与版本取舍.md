@@ -3,7 +3,7 @@ title: Electron与Vite两种集成方案对比、工程接入与版本取舍
 description: "这一节开始把 Electron 和前端工程真正接到一起。课程里重点对比了两条和 Vite 相关的主流路线：一条是 electron-vite 这类“桌面端脚手架”，另一条是 vite-plugin-electron 这类“Vite 插件”。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 技术选型]
 ---
 
 # Electron 与 Vite 两种集成方案对比、工程接入与版本取舍

@@ -3,7 +3,7 @@ title: 组件库拆分与重用：el-admin-components抽离
 description: "真正把模板项目里的业务组件抽离成独立组件库，第一步不是「复制文件」，而是先决定组件库对 Element Plus 的依赖策略——这个决定会一路影响是否 external element-plus、是否把样式打进产物、包体积大小和能否脱离 admin 模板单独复用。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 组件库抽离, Element Plus]
 ---
 
 # 组件库拆分与重用：el-admin-components 抽离

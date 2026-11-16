@@ -3,7 +3,7 @@ title: v-model双向绑定原理
 description: "剖析 v-model 双向绑定原理：表单元素编译为 vModelText/vModelSelect 指令、组件编译为 modelValue + onUpdate:modelValue、emit 事件派发机制，以及 Vue 3.4 稳定的 defineModel 宏（含修饰符处理与编译转换）。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, v-model]
 ---
 
 # v-model双向绑定原理

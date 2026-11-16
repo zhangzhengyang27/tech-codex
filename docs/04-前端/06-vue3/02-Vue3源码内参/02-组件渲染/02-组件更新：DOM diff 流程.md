@@ -1,8 +1,10 @@
 ---
 title: 组件更新：DOM diff 流程
+description: "Vue3 源码解析：组件更新时 DOM diff 的比对流程与优化策略。"
 order: 1
 group: 组件渲染
 category: Vue
+tags: [Vue3, 源码, 渲染器, 虚拟DOM, diff算法]
 keywords:
   - Vue3
   - diff

@@ -3,7 +3,7 @@ title: SSR与Nuxt
 description: "服务端渲染是指页面的 HTML 在服务器端生成，然后发送到客户端。与之相对的是客户端渲染（CSR），页面的 HTML 在浏览器中通过 JavaScript 动态生成。"
 keywords: [SSR与Nuxt]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, SSR, Nuxt, 生态]
 ---
 
 # SSR 与 Nuxt

@@ -3,7 +3,7 @@ title: VTable事件透传与高级案例接线
 description: "沿 Element Plus Table 官方案例逐步扩展 VTable 时，样式类能力（斑马线、边框、固定列、流体高度）大多靠 props 透传就能接住；但当案例走到单选行高亮、row-click、current-change 这类交互时，问题就从\"props 能不能透传\"变成了\"这些事件怎样在外层也能拿到，并且还有类型提示\"。本章把 VTable 从\"样式壳\"推进到\"交互壳\"，先收口事件名列表与事件类型，再用 forwardEventsUtils 批量生成回调，最后通过 v-on=\"events\" 落到 el-table。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # VTable 事件透传与高级案例接线

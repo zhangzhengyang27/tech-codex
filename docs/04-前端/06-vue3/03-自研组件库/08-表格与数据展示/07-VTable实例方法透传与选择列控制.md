@@ -3,7 +3,7 @@ title: VTable实例方法透传与选择列控制
 description: "沿官方案例扩展表格时，前一节解决的是 row-click、current-change、selection-change 这类\"事件怎么向外透传\"；这一节开始处理另一类需求：页面层想主动控制表格，例如切换某行选中、清空选中。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 表格, VTable]
 ---
 
 # VTable 实例方法透传与选择列控制

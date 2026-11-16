@@ -3,7 +3,7 @@ title: LoginForm组件抽象与SinglePage布局
 description: "登录页正式落地时，与其把所有表单结构硬写在页面里，不如先抽出一个独立的 LoginForm 组件，再由页面决定它摆在左、中、右哪个位置。配套地，认证页不应沿用后台三段式主布局，而是用 SinglePage 这类轻布局承载。"
 keywords: [LoginForm组件抽象与SinglePage布局]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 登录认证]
 ---
 
 # LoginForm 组件抽象与 SinglePage 布局

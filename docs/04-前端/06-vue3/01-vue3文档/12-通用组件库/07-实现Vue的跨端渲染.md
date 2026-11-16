@@ -1,7 +1,9 @@
 ---
 title: "实现 Vue 跨端渲染"
+keywords: [Vue3, 自定义渲染器, 跨端, Canvas 渲染器]
 description: "基于 runtime-core 的 createRenderer 实现 Vue 3 自定义渲染器：nodeOps 平台操作抽离原理、Canvas 渲染器、three.js 渲染器与 Pixi.js 封装等跨端实践。"
 category: Vue
+tags: [Vue3, 自定义渲染器, 跨端]
 
 ---
 

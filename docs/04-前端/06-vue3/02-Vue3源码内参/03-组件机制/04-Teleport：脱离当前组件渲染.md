@@ -1,8 +1,10 @@
 ---
 title: Teleport：脱离当前组件渲染
+description: "Vue3 源码解析：Teleport 脱离当前组件树渲染的实现原理。"
 order: 3
 group: 组件机制
 category: Vue
+tags: [Vue3, 源码, 组件系统, Teleport]
 keywords:
   - Vue3
   - Teleport

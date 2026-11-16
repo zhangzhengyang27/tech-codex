@@ -3,7 +3,7 @@ title: Vite库模式与Playground验证
 description: "把现有业务项目里的 components 直接打包成组件库，技术上可行，但不建议在已经很复杂的业务工程里硬改。一个真实业务项目的 vite.config.ts 往往同时承担 Web 应用、桌面端、环境变量分支等多种构建职责，再把组件库构建逻辑塞进去只会让配置越来越难维护。更合理的路径是先独立出一个轻量、纯粹的组件库基础工程，再在这个工程里学习 Vite Library Mode、导出方式和打包流程。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 库模式, Vite]
 ---
 
 # Vite 库模式与 Playground 验证

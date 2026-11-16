@@ -3,7 +3,7 @@ title: vite-plugin-ssr实战集成
 description: "以 Pinia 为例讲解 vite-plugin-ssr 的状态集成：服务端创建 Store 并渲染，经 pinia.state.value 序列化与 passToClient 传递，客户端在 mount 前恢复状态，完成 SSR 状态闭环；并涵盖应用工厂与 data() 数据预取。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, SSR, vite-plugin-ssr]
 ---
 
 # vite-plugin-ssr 实战集成

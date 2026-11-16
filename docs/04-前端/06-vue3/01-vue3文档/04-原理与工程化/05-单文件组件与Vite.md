@@ -3,7 +3,7 @@ title: 单文件组件与Vite
 description: "Vue 3 单文件组件（SFC）语法全解：template/script setup/style 三块结构、编译器宏（defineProps/defineModel/defineOptions 等）、scoped 样式与 v-bind in CSS，以及 Vite 构建工具的配置详解、插件生态、环境变量与常见问题。"
 keywords: [单文件组件与Vite]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 原理, 组件系统]
 ---
 
 # 单文件组件与Vite

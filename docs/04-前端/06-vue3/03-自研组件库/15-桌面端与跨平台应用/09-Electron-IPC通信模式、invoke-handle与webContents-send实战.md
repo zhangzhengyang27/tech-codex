@@ -3,7 +3,7 @@ title: Electron-IPC通信模式、invoke-handle与webContents-send实战
 description: "这一节一开始就点中了 Electron IPC 学习中最容易卡住的地方：官方文档虽然完整，但模式分法一多，很容易越看越晕。课程给出的简化思路非常值得记。第一步先分方向：渲染进程 → 主进程、主进程 → 渲染进程；第二步再分通信风格：事件驱动式、异步请求 / 响应式。这样一来，很多 API 就不再是零碎的名字，而是能自动归位：send / on、invoke / handle、reply、webContents.send。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, IPC 通信]
 ---
 
 # Electron IPC 通信模式、invoke-handle 与 webContents send 实战

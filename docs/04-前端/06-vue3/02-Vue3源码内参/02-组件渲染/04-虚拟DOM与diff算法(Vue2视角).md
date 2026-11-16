@@ -1,6 +1,8 @@
 ---
 title: "虚拟 DOM 与 diff 算法（Vue2 视角）"
+description: "从 Vue2 视角解析虚拟 DOM 与 diff 算法，为理解 Vue3 渲染优化打基础。"
 category: Vue
+tags: [Vue3, 源码, 渲染器, 虚拟DOM, diff算法]
 keywords: [虚拟DOM, diff, snabbdom, patch, Vue2]
 ---
 

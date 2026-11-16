@@ -3,7 +3,7 @@ title: User-Agent设备判断与移动端适配
 description: "移动端适配的第一步是准确判断设备类型。本文讲解 User Agent 解析方法、VueUse 的 useMediaQuery 等检测工具，以及基于设备判断的路由分发策略。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Vite, 工程化, 移动端适配]
 ---
 
 # User Agent 设备判断与移动端适配

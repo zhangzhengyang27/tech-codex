@@ -3,7 +3,7 @@ title: useForm封装与Schema数据扁平化
 description: "上一章把初始化和绑定逻辑直接写在 VForm 里，随着规则、扁平化等能力加入，组件会变重。本章把数据相关能力收口到一个 useForm composable：setForm 负责初始化值，setRules 负责初始化规则（规则部分留到下一章），flatObj 负责把嵌套 model 扁平化成提交所需的单层结构。重点讲清 setForm 与 flatObj 的职责分离、Date 对象扁平化的边界判断，以及\"formValue（对外扁平值）\"与\"model（内部嵌套值）\"的数据分层。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 动态表单, Schema]
 ---
 
 # useForm 封装与 Schema 数据扁平化

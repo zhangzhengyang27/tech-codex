@@ -3,7 +3,7 @@ title: Electron全局快捷键、按键映射与全屏控制
 description: "这一节开始讲比菜单项 accelerator 更强一层的能力：globalShortcut。课程先把快捷键体系分成两层——菜单内快捷键和应用级全局快捷键，并强调官方文档里那张“可配置按键映射表”才是查字符串写法的标准字典。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, Electron, 快捷键]
 ---
 
 # Electron 全局快捷键、按键映射与全屏控制

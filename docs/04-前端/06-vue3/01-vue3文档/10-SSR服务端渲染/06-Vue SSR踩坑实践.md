@@ -1,6 +1,8 @@
 ---
 title: "Vue SSR 踩坑实践"
+description: "Vue SSR 踩坑实践：服务端渲染的概念与优缺点、vue-ssr demo 拆解及常见坑位的解决。"
 category: Vue
+tags: [Vue3, SSR, 踩坑实践]
 keywords: [SSR, 服务端渲染, Nuxt, element-ui, echarts]
 ---
 # Vue SSR 踩坑实践

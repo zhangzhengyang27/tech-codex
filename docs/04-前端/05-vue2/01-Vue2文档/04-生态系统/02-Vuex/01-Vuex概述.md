@@ -3,7 +3,7 @@ title: Vuex概述
 description: "Vuex 3（Vue 2 官方状态管理）概述：什么是状态管理、为什么需要 Vuex、单向数据流核心概念与基本用法。"
 keywords: [Vuex概述]
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue2, Vuex, 状态管理]
 ---
 
 

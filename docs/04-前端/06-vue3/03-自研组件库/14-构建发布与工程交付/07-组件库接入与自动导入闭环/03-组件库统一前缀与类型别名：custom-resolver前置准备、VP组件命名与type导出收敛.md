@@ -3,7 +3,7 @@ title: 组件库统一前缀与类型别名：custom-resolver前置准备、VP�
 description: "unplugin-vue-components 官方自定义 resolver 的典型写法，就是判断组件名前缀再决定从哪个包导入。这意味着 resolver 的工作前提是组件名必须有模式，而不是杂乱无章。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 自动导入, unplugin, Vite 插件]
 ---
 
 # 组件库统一前缀与类型别名：custom resolver 前置准备、VP 组件命名与 type 导出收敛

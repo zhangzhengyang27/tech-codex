@@ -3,7 +3,7 @@ title: 顶部Tabs快捷导航与Pinia路由状态管理
 description: "这一节在 Header 下方增加一组顶部 Tabs 快速导航，定位是“已访问页面集合”的快速切换入口（类似 TagsView），而不是重复一份左侧菜单。核心架构动作不是渲染一个 Tabs 组件，而是把“当前访问过哪些页面”从视图局部状态提升为全局 Pinia store 状态，再由路由变化统一驱动收集。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 后台布局, 顶部导航]
 ---
 
 # 顶部 Tabs 快捷导航与 Pinia 路由状态管理

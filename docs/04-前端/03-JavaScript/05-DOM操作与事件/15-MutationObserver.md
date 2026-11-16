@@ -3,7 +3,7 @@ title: "Mutation Observer API"
 description: "Mutation Observer API 用来监视 DOM 变动（节点增减、属性变动、文本变动），异步触发、批量处理变动记录。本文讲解 MutationObserver 构造函数、observe/disconnect/takeRecords 方法、MutationRecord 对象与监听 DOM 生成的应用示例。"
 keywords: [MutationObserver, MutationRecord]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, MutationObserver, DOM]
 ---
 
 # Mutation Observer API

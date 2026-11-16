@@ -3,7 +3,7 @@ title: Element-Plus样式外部化与CDN样式注入
 description: "打包优化不能只盯 JS，CSS 也可能是体积大户。本节发现 index.css 比主入口 JS 还大，主体来自 element-plus 样式；接着用 import.meta.env.MODE 配合动态 import() 按环境拆分入口样式，并在生产环境 HTML 中注入对应的 CDN 样式，把“不打包”与“运行时仍可用”连成闭环。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 组件库, 构建优化, CDN, 样式外部化]
 ---
 
 # Element-Plus 样式外部化与 CDN 样式注入

@@ -1,7 +1,9 @@
 ---
 title: "基础"
+keywords: [Vue CLI, 脚手架, vue create, preset]
 description: "Vue CLI（@vue/cli）基础：系统组成、安装与 vue create/vue ui 创建项目、插件与 preset、vue-cli-service serve/build/inspect 命令。"
-category: 前端
+category: Vue
+tags: [Vue2, Vue CLI, 脚手架]
 
 ---
 

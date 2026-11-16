@@ -2,6 +2,7 @@
 description: Element Plus 组件库基础使用与按需引入
 keywords: [Element Plus, 组件库, Vue]
 category: Vue
+tags: [Vue3, Element Plus, 后台项目]
 title: "Element-plus"
 ---
 # Element-plus

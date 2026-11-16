@@ -3,7 +3,7 @@ title: BOM 概述
 description: "浏览器对象模型（BOM）提供了与浏览器窗口交互的对象和方法。BOM 的核心是 window 对象，它既是访问浏览器窗口的接口，又是 ECMAScript 规定的 Global 对象。本文概述 window、location、navigator、screen、history 各对象的职责与学习路径。"
 keywords: [BOM, 概述]
 category: JavaScript
-tags: [JavaScript, ES6, 异步, DOM]
+tags: [JavaScript, BOM, 浏览器]
 ---
 
 
@@ -45,7 +45,7 @@ window
 - 系统对话框（alert、confirm、prompt）
 - 窗口事件（load、resize、scroll 等）
 
-👉 详细内容请参阅 [window 对象](02-window%20对象.md)
+👉 详细内容请参阅 [window 对象](02-window 对象.md)
 
 ### screen 对象
 
@@ -55,7 +55,7 @@ window
 - `screen.availWidth` / `screen.availHeight`：去掉任务栏等系统部件后的可用宽高
 - `screen.orientation`：屏幕方向信息
 
-👉 详细内容请参阅 [screen 对象](05-screen%20对象.md)
+👉 详细内容请参阅 [screen 对象](05-screen 对象.md)
 
 ### navigator 对象
 
@@ -66,7 +66,7 @@ window
 - `navigator.onLine`：网络连接状态
 - `navigator.clipboard`：剪贴板访问
 
-👉 详细内容请参阅 [navigator 对象](04-navigator%20对象.md)
+👉 详细内容请参阅 [navigator 对象](04-navigator 对象.md)
 
 ### history 对象
 
@@ -77,7 +77,7 @@ window
 - `history.pushState()` / `history.replaceState()`：修改历史记录（SPA 路由核心）
 - 滚动恢复控制（scrollRestoration）
 
-👉 详细内容请参阅 [history 对象](06-history%20对象.md)
+👉 详细内容请参阅 [history 对象](06-history 对象.md)
 
 ## BOM 对象关系图
 

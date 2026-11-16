@@ -3,7 +3,7 @@ title: Teleport源码分析
 description: "基于 Vue 3.5 源码分析内置组件 Teleport：process 的挂载与更新逻辑、双锚点 targetStart/targetAnchor、disabled 与 to 的处理、remove 卸载流程，以及 Vue 3.5 新增的 Deferred Teleport（defer prop）。"
 keywords: []
 category: Vue
-tags: [Vue, 组件化, 响应式, 路由]
+tags: [Vue3, 进阶特性, Teleport]
 ---
 
 # Teleport源码分析

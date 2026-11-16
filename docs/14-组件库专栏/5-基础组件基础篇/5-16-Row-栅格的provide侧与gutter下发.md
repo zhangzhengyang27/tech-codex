@@ -1,3 +1,9 @@
+---
+title: "5-16 · Row：栅格的 provide 侧与 gutter 下发"
+description: "本篇源码坐标（均为当前工作区实态）："
+category: 组件库专栏
+
+---
 # 5-16 · Row：栅格的 provide 侧与 gutter 下发
 
 > 本篇源码坐标（均为当前工作区实态）：

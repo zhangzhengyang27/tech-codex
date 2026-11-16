@@ -1,3 +1,9 @@
+---
+title: "I15 icons 包生成链与兼容层"
+description: "本篇解决：@xiaoye-ui/icons 里那 722 个文件到底是谁生成谁的、index.js 顶部那句 Auto-Generated 是不是真的、xyicon 这个类名从哪来又为什么和 iconPrefixCls 脱钩、加一个图标要动"
+category: XiaoyeUI源码专栏
+
+---
 # I15 icons 包生成链与兼容层
 
 > **本篇解决**：`@xiaoye-ui/icons` 里那 722 个文件到底是谁生成谁的、`index.js` 顶部那句 `Auto-Generated` 是不是真的、`xyicon` 这个类名从哪来又为什么和 `iconPrefixCls` 脱钩、加一个图标要动几处、漏一处会以什么姿势报错。

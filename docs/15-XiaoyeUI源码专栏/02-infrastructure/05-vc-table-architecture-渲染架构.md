@@ -1,8 +1,14 @@
+---
+title: "I05 vc-table 渲染架构与固定列"
+description: "本篇解决：一张表格从 columns 数组到页面上那一到三张 <table> 之间，经历了哪几次量化与回流；固定列的 offset 究竟是谁算的、隐藏测量行为什么必须存在、量不到的时候靠什么兜底、改哪一行会让表头和表体错开半像素。"
+category: XiaoyeUI源码专栏
+
+---
 # I05 vc-table 渲染架构与固定列
 
 > **本篇解决**：一张表格从 `columns` 数组到页面上那一到三张 `<table>` 之间，经历了哪几次量化与回流；固定列的 `offset` 究竟是谁算的、隐藏测量行为什么必须存在、量不到的时候靠什么兜底、改哪一行会让表头和表体错开半像素。
 > **前置**：C08-00 类横写：table / data-table / tree-table 三代表格的分层与选型（尚未撰写，本篇不依赖其结论）　**读者坐标**：`02-infrastructure` 第 5/16 篇
-> 边界：排序/筛选/选择/展开的**状态机**归 I06 table-core 状态机；`table` 组件的业务 props 归 C08-01 Table 表格；虚拟滚动本体归 I08 虚拟化双实现，本篇只给接口接缝。属性清单见用法手册 [apps/docs/components/table.md](../../../apps/docs/components/table.md)，本篇不重复。
+> 边界：排序/筛选/选择/展开的**状态机**归 I06 table-core 状态机；`table` 组件的业务 props 归 C08-01 Table 表格；虚拟滚动本体归 I08 虚拟化双实现，本篇只给接口接缝。属性清单见用法手册 `apps/docs/components/table.md`，本篇不重复。
 
 ---
 

@@ -1,3 +1,9 @@
+---
+title: "C11-07 Descriptions 描述列表"
+description: "本篇解决：column 的响应式到底在哪一层被翻译成「一行几格」——它为什么在服务端恒等于 3、xxxl 档位为什么写了也没用、Descriptions.Item 为什么是一个从不被实例化的空壳、以及 bordered 如何把同一份 spa"
+category: XiaoyeUI源码专栏
+
+---
 # C11-07 Descriptions 描述列表
 
 > **本篇解决**：`column` 的响应式到底在哪一层被翻译成「一行几格」——它为什么在服务端恒等于 3、`xxxl` 档位为什么写了也没用、`Descriptions.Item` 为什么是一个从不被实例化的空壳、以及 `bordered` 如何把同一份 `span` 算术改成双量纲。

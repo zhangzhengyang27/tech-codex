@@ -1,3 +1,9 @@
+---
+title: "9-33 · ApprovalFlowPanel：审批流"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第 33 篇。大纲给本篇的核心问题只有一行——节点面板的状态映射——前置依赖标注 8-04 steps，理由是审批流的\"节点链\"与 steps 的\"步骤链\"形态相近。本篇先给实码定论"
+category: 组件库专栏
+
+---
 # 9-33 · ApprovalFlowPanel：审批流
 
 > 本篇是 9 卷"增强层（pro-components）"的第 33 篇。大纲给本篇的核心问题只有一行——**节点面板的状态映射**——前置依赖标注 8-04 steps，理由是审批流的"节点链"与 steps 的"步骤链"形态相近。本篇先给实码定论：`approval-flow-panel.vue:28-36` 消费的正是基础层 `xy-steps`/`xy-step`，不是 timeline，也不是全自绘。旧考据一共四条在这里交汇：9-02 引过 `approval-flow-panel.ts:1` 的 import 段（全组件只借 `ProPageAction` 一条 core 条款）；9-23 数过根入口 `packages/pro-components/index.ts:115-118` 抬了两个类型，把它立为"主 Props 之外还有什么该出根入口"的决策样本之一；5-05 引过 `approval-flow-panel.vue:46-47` 的 `xy-text` 消费（办理人 `type="default"`、时间 `size="sm"`）；9-30 的 `statusConfigMap` 与 7-10 的 `RESULT_STATUS_TONE_MAP` 各自立过一种"状态→视觉"的收口设计，本篇的状态映射恰好是第三种——**不查表的借词恒等映射**。本篇全部结论以当前工作区实码为准，行号逐一核对，测试实跑通过（`vitest run approval-flow-panel`：2 passed）；开篇先勘误一条大纲考据：所谓"5-03 引过 approval-flow-panel.vue:147-155 的 xy-link 段"与实态不符——该组件全文只有 63 行、无一处 xy-link，147-155 的 xy-link 段实际位于 `audit-timeline.vue`（详见文末核对说明）。

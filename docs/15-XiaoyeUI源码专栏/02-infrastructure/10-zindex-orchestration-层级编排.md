@@ -1,3 +1,9 @@
+---
+title: "I10 z-index 层级编排"
+description: "本篇解决：一个 <xy-context-menu> 打开时它身上的 z-index: 1 是从哪几行算出来的；为什么同一个包里 <xy-notification> 和 <xy-dropdown> 会压不住彼此；为什么改 zIndexPopu"
+category: XiaoyeUI源码专栏
+
+---
 # I10 z-index 层级编排
 
 > **本篇解决**：一个 `<xy-context-menu>` 打开时它身上的 `z-index: 1` 是从哪几行算出来的；为什么同一个包里 `<xy-notification>` 和 `<xy-dropdown>` 会压不住彼此；为什么改 `zIndexPopupBase` 对四类受管组件毫无效果；以及仓库里**两套** z-index 分配器同时存在时，谁写的行内样式会覆盖谁。

@@ -1,3 +1,9 @@
+---
+title: "A08 消费侧集成：自动导入、Nuxt 模块与文档生成链"
+description: "本篇解决：库外部的人到底怎么把 XiaoyeUI 装进自己的工程？@xiaoye-ui/auto-import-resolver、@xiaoye-ui/vite-plugin、@xiaoye-ui/nuxt-module 三条消费链各自实际"
+category: XiaoyeUI源码专栏
+
+---
 # A08 消费侧集成：自动导入、Nuxt 模块与文档生成链
 
 > **本篇解决**：库外部的人到底怎么把 XiaoyeUI 装进自己的工程？`@xiaoye-ui/auto-import-resolver`、`@xiaoye-ui/vite-plugin`、`@xiaoye-ui/nuxt-module` 三条消费链各自实际生成了什么代码？`@xiaoye-ui/metadata` 那份清单里有多少条 `from` 指向不存在的路径、错的东西会不会真的进入用户的 bundle？`llms.txt` 和文档站的 demo 机制从哪取数据、为什么它们都不能替自动导入背书？

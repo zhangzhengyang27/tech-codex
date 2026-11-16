@@ -1,3 +1,9 @@
+---
+title: "C04-03 Checkbox 多选框"
+description: "本篇解决：<xy-checkbox> 与 <xy-checkbox-group> 之间到底交换了什么？为什么组件层只有 147 行却能让 checked、onChange、disabled 三个 prop 在不同分支下走向四种结局？inde"
+category: XiaoyeUI源码专栏
+
+---
 # C04-03 Checkbox 多选框
 
 > **本篇解决**：`<xy-checkbox>` 与 `<xy-checkbox-group>` 之间到底交换了什么？为什么组件层只有 147 行却能让 `checked`、`onChange`、`disabled` 三个 prop 在不同分支下走向四种结局？`indeterminate` 为什么改不了原生控件只改类名？Group 的选中数组为什么要经过一次「注册表过滤 + options 下标重排」两阶段的改写？以及：给 `<xy-checkbox>` 传 `@input`、`title`、`isGroup` 之后，它们各自在哪一行消失（三条互不相同的通路）。
@@ -528,7 +534,7 @@ flowchart LR
 
 ## 五、对外契约如何生效
 
-属性清单见 [apps/docs/components/checkbox.md](../../../apps/docs/components/checkbox.md)（`## API` 起于该文件 `:58`）。本节只讲**一份 prop 声明如何变成 DOM 或变成一次回调**，以及在哪一步断掉。
+属性清单见 `apps/docs/components/checkbox.md`（`## API` 起于该文件 `:58`）。本节只讲**一份 prop 声明如何变成 DOM 或变成一次回调**，以及在哪一步断掉。
 
 ### 5.1 props 面的四种去向
 

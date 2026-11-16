@@ -1,3 +1,9 @@
+---
+title: "C08-05 List 列表"
+description: "本篇解决：List 的分页、栅格、加载与空态四套状态分别在哪一行决定结果，以及为什么 <xy-list> 上有几个看起来能用的属性（extra、Item.grid）实际一行代码都没读它。"
+category: XiaoyeUI源码专栏
+
+---
 # C08-05 List 列表
 
 > **本篇解决**：`List` 的分页、栅格、加载与空态四套状态分别在哪一行决定结果，以及为什么 `<xy-list>` 上有几个看起来能用的属性（`extra`、`Item.grid`）实际一行代码都没读它。

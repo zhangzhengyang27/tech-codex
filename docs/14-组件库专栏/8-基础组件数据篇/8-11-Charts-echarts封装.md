@@ -1,3 +1,9 @@
+---
+title: "8-11 · Charts：echarts 封装"
+description: "数据展示卷写到 charts，撞上了这个系列至今最特殊的一个组件：前面所有的组件，无论多复杂，渲染的最终形态都是 DOM——而 charts 的最终形态是 canvas。这一字之差把两件根深蒂固的约定同时打破了：CSS 变量喂不进 canv"
+category: 组件库专栏
+
+---
 # 8-11 · Charts：echarts 封装
 
 数据展示卷写到 charts，撞上了这个系列至今最特殊的一个组件：前面所有的组件，无论多复杂，渲染的最终形态都是 DOM——而 charts 的最终形态是 canvas。这一字之差把两件根深蒂固的约定同时打破了：CSS 变量喂不进 canvas，`ResizeObserver` 的意义从"观察自己的内容"变成"替引擎做重排"。第三卷精心搭建的三层令牌体系，在这里走到了它的物理边界。

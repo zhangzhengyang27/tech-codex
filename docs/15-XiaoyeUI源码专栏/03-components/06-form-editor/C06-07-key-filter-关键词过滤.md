@@ -1,3 +1,9 @@
+---
+title: "C06-07 KeyFilter 关键词过滤"
+description: "本篇解决：key-filter 这一对外只有 350 行源码的模块，为什么同时存在「组件壳 <xy-key-filter>」和「组合式函数 useKeyFilter」两个出口；它的按键过滤到底拦在哪一层事件上、preset 与 patter"
+category: XiaoyeUI源码专栏
+
+---
 # C06-07 KeyFilter 关键词过滤
 
 > **本篇解决**：`key-filter` 这一对外只有 350 行源码的模块，为什么同时存在「组件壳 `<xy-key-filter>`」和「组合式函数 `useKeyFilter`」两个出口；它的按键过滤到底拦在哪一层事件上、`preset` 与 `pattern` 谁优先、`validateOnly` 改了整条判定链的哪一步；以及为什么把它套在 `<xy-input>` 外面会造成同一 DOM 节点被绑定两次。

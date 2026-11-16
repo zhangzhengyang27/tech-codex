@@ -1,3 +1,9 @@
+---
+title: "I13 响应式内核 hooks"
+description: "本篇解决：packages/xiaoye-ui/src/_util/hooks/ 里那 11 个文件到底各自管哪一段响应式时机；useMergedState 与 useState 两套受控实现的分界线在哪、谁真的在用；useId 在服务端给"
+category: XiaoyeUI源码专栏
+
+---
 # I13 响应式内核 hooks
 
 > **本篇解决**：`packages/xiaoye-ui/src/_util/hooks/` 里那 11 个文件到底各自管哪一段响应式时机；`useMergedState` 与 `useState` 两套受控实现的分界线在哪、谁真的在用；`useId` 在服务端给出的 id 和客户端是否一致；以及改哪一行会同时影响 21 个受控调用点。

@@ -1,3 +1,9 @@
+---
+title: "C12-05 Ripple 涟漪"
+description: "本篇解决：ripple 为什么用模块级单变量 timeout 给所有宿主共用、onMouseDown 的坐标换算里那处轴向互换会造成什么后果、宿主 <span> 的 class 为什么会同时被 Vue 与 removeClass 两个所有者"
+category: XiaoyeUI源码专栏
+
+---
 # C12-05 Ripple 涟漪
 
 > **本篇解决**：`ripple` 为什么用模块级单变量 `timeout` 给所有宿主共用、`onMouseDown` 的坐标换算里那处轴向互换会造成什么后果、宿主 `<span>` 的 `class` 为什么会同时被 Vue 与 `removeClass` 两个所有者书写、以及这套「JS 401ms 定时器 + CSS 0.4s 关键帧」的双时钟耦合点在哪一行。

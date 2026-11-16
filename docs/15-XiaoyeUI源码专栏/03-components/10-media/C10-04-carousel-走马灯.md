@@ -1,3 +1,9 @@
+---
+title: "C10-04 Carousel 走马灯"
+description: "本篇解决：Carousel 的轮播状态机与自动播放定时器到底活在哪一层、多实例与卸载会互相踩到什么、以及从 carousel/ 到 vc-slick/ 的哪些 props 是「API 面存活、实现死亡」。"
+category: XiaoyeUI源码专栏
+
+---
 # C10-04 Carousel 走马灯
 
 > **本篇解决**：Carousel 的轮播状态机与自动播放定时器到底活在哪一层、多实例与卸载会互相踩到什么、以及从 `carousel/` 到 `vc-slick/` 的哪些 props 是「API 面存活、实现死亡」。

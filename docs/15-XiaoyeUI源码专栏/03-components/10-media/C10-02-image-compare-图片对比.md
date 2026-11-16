@@ -1,3 +1,9 @@
+---
+title: "C10-02 ImageCompare 图片对比"
+description: "本篇解决：ImageCompare 只有 85 行主实现，它的「拖拽对比」到底靠什么机制工作——滑块是不是自研、裁剪变量是不是死代码、change 事件在什么时机发、disabled 为什么可能是断链。"
+category: XiaoyeUI源码专栏
+
+---
 # C10-02 ImageCompare 图片对比
 
 > **本篇解决**：ImageCompare 只有 85 行主实现，它的「拖拽对比」到底靠什么机制工作——滑块是不是自研、裁剪变量是不是死代码、change 事件在什么时机发、disabled 为什么可能是断链。

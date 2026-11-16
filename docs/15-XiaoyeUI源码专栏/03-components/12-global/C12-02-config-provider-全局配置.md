@@ -1,3 +1,9 @@
+---
+title: "C12-02 ConfigProvider 全局配置"
+description: "本篇解决：<xy-config-provider> 这一个组件文件里到底发生了什么——25 个 props 怎么被折算成注入对象、locale / renderEmpty / direction / componentSize 四条消费路径"
+category: XiaoyeUI源码专栏
+
+---
 # C12-02 ConfigProvider 全局配置
 
 > **本篇解决**：`<xy-config-provider>` 这一个组件文件里到底发生了什么——25 个 props 怎么被折算成注入对象、`locale` / `renderEmpty` / `direction` / `componentSize` 四条消费路径各自的取值时机与优先级、它为什么必须同时写三份模块级状态，以及嵌套第二层时哪些字段会**静默丢掉**父层值。

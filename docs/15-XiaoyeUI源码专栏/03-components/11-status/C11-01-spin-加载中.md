@@ -1,3 +1,9 @@
+---
+title: "C11-01 Spin 加载中"
+description: "本篇解决：Spin 作为「包裹容器」时到底给被包裹内容造了怎样的一层 DOM，这层 DOM 在遮罩开合时如何影响内容的布局、可交互性与焦点？以及它与独立指示器模式的分支边界在哪。"
+category: XiaoyeUI源码专栏
+
+---
 # C11-01 Spin 加载中
 
 > **本篇解决**：Spin 作为「包裹容器」时到底给被包裹内容造了怎样的一层 DOM，这层 DOM 在遮罩开合时如何影响内容的布局、可交互性与焦点？以及它与独立指示器模式的分支边界在哪。
@@ -298,7 +304,7 @@ sequenceDiagram
 
 ## 五、对外契约如何生效
 
-本节只追「契约从入口到 DOM 的路径」，属性清单见 [apps/docs/components/spin.md](../../../apps/docs/components/spin.md)。Spin 没有对外事件（`setup` 里没有 `emit`，`spinProps` 里也没有 `onClick` 之类的事件 prop，`packages/xiaoye-ui/src/spin/Spin.tsx:11-19`），所以契约面只剩 props 入、slots 入、context 入、expose 出四条。
+本节只追「契约从入口到 DOM 的路径」，属性清单见 `apps/docs/components/spin.md`。Spin 没有对外事件（`setup` 里没有 `emit`，`spinProps` 里也没有 `onClick` 之类的事件 prop，`packages/xiaoye-ui/src/spin/Spin.tsx:11-19`），所以契约面只剩 props 入、slots 入、context 入、expose 出四条。
 
 `spinning` 是唯一直接决定 DOM 形态的 prop，但它在渲染前被复制进一个内部 `shallowRef`：初值 `props.spinning && !shouldDelay(props.spinning, props.delay)`（`packages/xiaoye-ui/src/spin/Spin.tsx:44`），随后由一个 `immediate + flush: 'post'` 的 `watch` 持续同步（`packages/xiaoye-ui/src/spin/Spin.tsx:46-63`）。渲染函数读的全是 `sSpinning.value`（类名 `:85`、`:127` 与 loading 挂载条件 `:131`），从不读 `props.spinning`——所以「带 `delay` 时 DOM 反映延迟态」这条语义完全靠这层 shallowRef 落地。`delay` 只在 `watch` 里参与 debounce 判定（`packages/xiaoye-ui/src/spin/Spin.tsx:50-54`），到点即弃，这条路径的机制归 `C11-00` 论点 2 末段，本篇不重述。
 

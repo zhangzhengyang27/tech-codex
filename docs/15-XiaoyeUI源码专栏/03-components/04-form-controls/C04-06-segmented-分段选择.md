@@ -1,3 +1,9 @@
+---
+title: "C04-06 Segmented 分段选择"
+description: "本篇解决：<xy-segmented> 的选中块为什么会「跑位」——它的受控值、选项归一化与指示条位移三套状态如何交汇，以及 required: true 这条声明把它的受控模型推到了哪个极端。"
+category: XiaoyeUI源码专栏
+
+---
 # C04-06 Segmented 分段选择
 
 > **本篇解决**：`<xy-segmented>` 的选中块为什么会「跑位」——它的受控值、选项归一化与指示条位移三套状态如何交汇，以及 `required: true` 这条声明把它的受控模型推到了哪个极端。

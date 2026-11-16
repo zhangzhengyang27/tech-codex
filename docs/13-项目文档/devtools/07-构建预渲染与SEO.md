@@ -1,3 +1,9 @@
+---
+title: "07 · 构建、预渲染与 SEO"
+description: "一句话摘要：从 pnpm build 到可部署 dist 的全流水线——自研 seo-prerender 插件如何产出 152 页静态 HTML 与 sitemap/robots/llms.txt，以及静态托管的部署契约。"
+category: 项目文档
+
+---
 # 07 · 构建、预渲染与 SEO
 
 > **一句话摘要**：从 `pnpm build` 到可部署 dist 的全流水线——自研 seo-prerender 插件如何产出 152 页静态 HTML 与 sitemap/robots/llms.txt，以及静态托管的部署契约。

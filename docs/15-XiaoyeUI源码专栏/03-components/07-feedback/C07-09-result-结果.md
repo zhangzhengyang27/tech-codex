@@ -1,3 +1,9 @@
+---
+title: "C07-09 Result 结果"
+description: "本篇解决：Result 的图标/状态/extra 究竟由哪一段源码拼装、status 的默认与推导逻辑在哪里落地、哪些声明是活的哪些是死的。"
+category: XiaoyeUI源码专栏
+
+---
 # C07-09 Result 结果
 
 > **本篇解决**：Result 的图标/状态/extra 究竟由哪一段源码拼装、`status` 的默认与推导逻辑在哪里落地、哪些声明是活的哪些是死的。

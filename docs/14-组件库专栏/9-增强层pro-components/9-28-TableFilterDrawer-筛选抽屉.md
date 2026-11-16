@@ -1,3 +1,9 @@
+---
+title: "9-28 · TableFilterDrawer：筛选抽屉"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第二十八篇，按大纲（column/02-分卷大纲.md:182）回答的核心问题只有一句话——schema 驱动的复杂筛选。前置篇有三块：9-03 拆完了 ProFieldSchema"
+category: 组件库专栏
+
+---
 # 9-28 · TableFilterDrawer：筛选抽屉
 
 > 本篇是 9 卷"增强层（pro-components）"的第二十八篇，按大纲（`column/02-分卷大纲.md:182`）回答的核心问题只有一句话——**schema 驱动的复杂筛选**。前置篇有三块：9-03 拆完了 `ProFieldSchema` 的三形态，在"现场 B"预埋了本篇主角的消费链（`table-filter-drawer.ts:4-10` 的 import 段与 `table-filter-drawer.vue:39-44` 的转交段）；9-04 拆了三条筛选路线的第一条（`xy-search-form`，横条 + 查询语义）；9-12 拆了第二条（`xy-filter-panel`，零语义卡片），并在第六节末尾把本篇主角的模板段预演了一遍——那是"生效时机三策略"里的"直绑快照制"。知识点矩阵给本篇的条目是 I28（`column/01-知识点全集矩阵.md:203`）："schema 驱动筛选抽屉（**直绑无草稿** + **四件套筛选家族终表**）"——两个加粗词就是本篇的两张欠条：前者要用实码把"筛选值怎么流"钉死，后者要把 9-04、9-12 分散立起来的版图收成一张终表。下一篇 9-29《ImportResultTable：导入回显》在大纲里排在本篇正后方（`column/02-分卷大纲.md:183`），文末预告。

@@ -1,3 +1,9 @@
+---
+title: "C07-07 Notification 通知"
+description: "本篇解决：notification 为什么同时存在两套挂载体系（静态 API 的 Notification.newInstance 与 useNotification 的 Holder）；两套之间的配置通道为什么一边能用一边失效；实例缓存键"
+category: XiaoyeUI源码专栏
+
+---
 # C07-07 Notification 通知
 
 > **本篇解决**：`notification` 为什么同时存在两套挂载体系（静态 API 的 `Notification.newInstance` 与 `useNotification` 的 `Holder`）；两套之间的配置通道为什么一边能用一边失效；实例缓存键为什么决定了偏移量的生效方式；以及 `destroy()` 里那行自带 `lgtm` 注释的删除为什么是竞态。

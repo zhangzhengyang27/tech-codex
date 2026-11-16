@@ -1,3 +1,9 @@
+---
+title: "2-02 · 构建体系：ES-only 与 createLibraryConfig 工厂"
+description: "上一篇我们把仓库的地基（xiaoye-primitives）翻了个底朝天。这一篇往上走一层，回答两个在评审和面试里被问得最多的问题："
+category: 组件库专栏
+
+---
 # 2-02 · 构建体系：ES-only 与 createLibraryConfig 工厂
 
 上一篇我们把仓库的地基（xiaoye-primitives）翻了个底朝天。这一篇往上走一层，回答两个在评审和面试里被问得最多的问题：

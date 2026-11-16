@@ -1,3 +1,9 @@
+---
+title: "C08-00 类横写：table / data-table / tree-table 三代表格的分层与选型"
+description: "本篇解决：仓库里为什么同时存在 table/、data-table/、tree-table/ 三个表格目录，它们各自站在哪一层、彼此到底共享了什么（以及没共享什么），接手代码或做技术选型时该按什么顺序读、改哪一层会同时波及谁。读完能回答：「"
+category: XiaoyeUI源码专栏
+
+---
 # C08-00 类横写：table / data-table / tree-table 三代表格的分层与选型
 
 > **本篇解决**：仓库里为什么同时存在 `table/`、`data-table/`、`tree-table/` 三个表格目录，它们各自站在哪一层、彼此到底共享了什么（以及没共享什么），接手代码或做技术选型时该按什么顺序读、改哪一层会同时波及谁。读完能回答：「固定列 + 虚拟滚动该用哪个组件」「给表格加一种能力要动几个目录」「为什么 `@change` 只在 `table` 上存在、而 `data-table` 上要写 `@page`」。

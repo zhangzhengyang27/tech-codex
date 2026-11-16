@@ -1,3 +1,9 @@
+---
+title: "C07-06 Message 全局消息"
+description: "本篇解决：message 与 notification 明明共用 vc-notification 内核，为什么一个的配置通道通、另一个不通；Holder 的 expose 为什么必须依赖 Vue 的 expose 代理才会正确；以及「只能从"
+category: XiaoyeUI源码专栏
+
+---
 # C07-06 Message 全局消息
 
 > **本篇解决**：`message` 与 `notification` 明明共用 `vc-notification` 内核，为什么一个的配置通道通、另一个不通；`Holder` 的 `expose` 为什么必须依赖 Vue 的 expose 代理才会正确；以及「只能从顶部出现」这件事在源码里是哪几行决定的。

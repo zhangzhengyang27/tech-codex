@@ -1,3 +1,9 @@
+---
+title: "I03 vc-util 工具层：被十几个组件复用的 DOM 底座"
+description: "本篇解决：packages/xiaoye-ui/src/vc-util/ 这 14 个文件到底提供了什么能力、被谁调用、调用了几处；它和主库 _util/ 下的同名能力是不是重复实现；改 dynamicCSS / addEventListe"
+category: XiaoyeUI源码专栏
+
+---
 # I03 vc-util 工具层：被十几个组件复用的 DOM 底座
 
 > **本篇解决**：`packages/xiaoye-ui/src/vc-util/` 这 14 个文件到底提供了什么能力、被谁调用、调用了几处；它和主库 `_util/` 下的同名能力是不是重复实现；改 `dynamicCSS` / `addEventListener` / `scrollLocker` 里任何一行会波及哪些组件。

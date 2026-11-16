@@ -1,3 +1,9 @@
+---
+title: "9-07 · DialogForm：Omit 派生类型的封装范式"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第七篇。9-06 拆完了 OverlayForm 的多态容器——一个 container prop 在抽屉与弹窗两种形态之间切换的整套实现；本篇顺着它的产品线往下走半步，看两个\"单态"
+category: 组件库专栏
+
+---
 # 9-07 · DialogForm：Omit 派生类型的封装范式
 
 > 本篇是 9 卷"增强层（pro-components）"的第七篇。9-06 拆完了 OverlayForm 的多态容器——一个 `container` prop 在抽屉与弹窗两种形态之间切换的整套实现；本篇顺着它的产品线往下走半步，看两个"单态特化"里的第一个：`XyDialogForm`。核心问题按大纲只有一句话——Omit 派生类型的封装范式——但这九个字里至少压着五道题：`DialogFormProps` 到底从哪里派生、用什么运算符派生、派生的时候屏蔽了什么又留下了什么、派生出来的契约由谁二次声明、以及这个"特化薄壳"到底有多薄——它是 overlay-form 的 `container="modal"` 薄壳，还是一套平行实现。本篇照旧全部给实码定论：dialog-form 自己的两个源文件一共 71 行，加上镜像的 drawer-form 两个文件也不过 142 行，却装下了本库类型派生体系里最完整的一条链，并为下一篇 9-08《DrawerForm：对称特化》埋好引线。

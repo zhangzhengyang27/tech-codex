@@ -1,3 +1,9 @@
+---
+title: "C01-02 Icon 图标"
+description: "本篇解决：packages/xiaoye-ui/src/icon/ 只有 11 行且渲染 null，那「Icon 组件」到底在哪儿？图标名字、属性、类名三条通道各自从哪个文件流到 DOM，改哪一处会让 96 个引用点同时出问题。"
+category: XiaoyeUI源码专栏
+
+---
 # C01-02 Icon 图标
 
 > **本篇解决**：`packages/xiaoye-ui/src/icon/` 只有 11 行且渲染 `null`，那「Icon 组件」到底在哪儿？图标名字、属性、类名三条通道各自从哪个文件流到 DOM，改哪一处会让 96 个引用点同时出问题。

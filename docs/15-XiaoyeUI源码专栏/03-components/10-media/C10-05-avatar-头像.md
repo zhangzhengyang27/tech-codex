@@ -1,3 +1,9 @@
+---
+title: "C10-05 Avatar 头像"
+description: "本篇解决：Avatar 的三层图片回退链在 jsdom/SSR 下如何退化；Group 通过 provide 下发 shape 时为什么把子件的 shape 静默吃掉；文字自适应缩放为什么在初次渲染时必须靠 opacity: 0 藏一帧；改"
+category: XiaoyeUI源码专栏
+
+---
 # C10-05 Avatar 头像
 
 > **本篇解决**：Avatar 的三层图片回退链在 jsdom/SSR 下如何退化；Group 通过 provide 下发 shape 时为什么把子件的 `shape` 静默吃掉；文字自适应缩放为什么在初次渲染时必须靠 `opacity: 0` 藏一帧；改哪一行会同时打破以上三条。
@@ -276,7 +282,7 @@ const componentInfo = computed(() => {
 
 ## 五、对外契约如何生效
 
-属性清单见 [apps/docs/components/avatar.md](../../../apps/docs/components/avatar.md)。本节只讲「声明的契约如何流到渲染/回调」，以及哪些声明其实不通。
+属性清单见 `apps/docs/components/avatar.md`。本节只讲「声明的契约如何流到渲染/回调」，以及哪些声明其实不通。
 
 - **`src`/`srcset`/`alt`/`crossOrigin`/`draggable`**：从 `props` 解构（`packages/xiaoye-ui/src/avatar/Avatar.tsx:137`）→ 只在 `src && isImgExist` 分支落到 `<img>`（`packages/xiaoye-ui/src/avatar/Avatar.tsx:164-174`）。一旦回退到文字/图标支，这些属性整体消失——`alt` 不产生 `aria-label`，`crossOrigin`（渲染成小写 `crossorigin`，`packages/xiaoye-ui/src/avatar/Avatar.tsx:172`）也随之丢失。
 - **`icon`**：既走 prop 也走 slot，经 `getPropsSlot(slots, props, 'icon')` 合并（`packages/xiaoye-ui/src/avatar/Avatar.tsx:139`）→ 命中图标支（`packages/xiaoye-ui/src/avatar/Avatar.tsx:175-176`），并在 `classString` 里打 `-icon`（`packages/xiaoye-ui/src/avatar/Avatar.tsx:148`）。

@@ -1,3 +1,9 @@
+---
+title: "9-10 · RequestForm：请求表单"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第十篇。9-05 拆了表单族的渲染引擎 XyProForm，9-06 到 9-09 依次过了它四个容器变体——overlay-form 的多态外壳、dialog-form 与 dra"
+category: 组件库专栏
+
+---
 # 9-10 · RequestForm：请求表单
 
 > 本篇是 9 卷"增强层（pro-components）"的第十篇。9-05 拆了表单族的渲染引擎 `XyProForm`，9-06 到 9-09 依次过了它四个容器变体——overlay-form 的多态外壳、dialog-form 与 drawer-form 的 Omit 特化、steps-form 的分步编排。本篇拆第五个、也是最后一个容器变体：`XyRequestForm`。它是五兄弟里唯一一个**把"异步"写进协议**的：前四个变体解决的是"表单放在哪里、长什么样"，request-form 解决的是"表单的数据从哪来、到哪去"——初始加载（fetch）把服务端数据回填进 model，提交（submit）把用户输入送回接口，一进一出构成"读一次、改一次"的异步闭环。核心问题按大纲只有一句话——**初始加载与提交的异步协议**——但这句话里至少藏着五道题：fetch/submit 为什么被设计成一进一出的两个回调而不是一个通用 request；回填为什么用 `Object.assign` 合并而不是整体替换、快照在什么时机定格；提交后行为（成功提示、重置、关闭）为什么一件都不内建、全部归属页面层；`page/pageSize` 这对分页刚性税在表单场景如何现身；以及它与 9-25 pro-table 请求段共享同一个 `request-utils.ts`，严谨度为什么差出一个竞态令牌。本篇全部给实码定论，并为 9-11《LoginForm：登录预设》埋好引线。

@@ -1,3 +1,9 @@
+---
+title: "C07-08 Alert 警告提示"
+description: "本篇解决：Alert 的「关闭」到底由谁持有、动画结束回调 afterClose 与 close 事件在真实浏览器与测试环境里分别走哪条路径、onClose 的类型声明与运行时 emit 差在哪、折叠时那套内联高度写法为什么会出现两遍——读"
+category: XiaoyeUI源码专栏
+
+---
 # C07-08 Alert 警告提示
 
 > **本篇解决**：Alert 的「关闭」到底由谁持有、动画结束回调 `afterClose` 与 `close` 事件在真实浏览器与测试环境里分别走哪条路径、`onClose` 的类型声明与运行时 `emit` 差在哪、折叠时那套内联高度写法为什么会出现两遍——读者读完能回答「改哪一行会让 Alert 的关闭动画或回调失效」。

@@ -1,3 +1,9 @@
+---
+title: "C02-00 类横写：栅格/flex/space 三代布局的取舍"
+description: "本篇解决：为什么 XiaoyeUI 里同时存在 grid（栅格）、flex、space（间距）三代布局组件，它们各自的机制边界在哪里、共享哪些抽象、改哪一层会波及谁。"
+category: XiaoyeUI源码专栏
+
+---
 # C02-00 类横写：栅格/flex/space 三代布局的取舍
 
 > **本篇解决**：为什么 XiaoyeUI 里同时存在 `grid`（栅格）、`flex`、`space`（间距）三代布局组件，它们各自的机制边界在哪里、共享哪些抽象、改哪一层会波及谁。

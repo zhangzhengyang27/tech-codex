@@ -1,3 +1,9 @@
+---
+title: "C10-09 Comment 评论"
+description: "本篇解决：Comment 这个 118 行的复合件里，「头像 / 内容 / 操作区 / 嵌套列表」四条线各自接没接上——特别是它对 Avatar 的依赖为什么在代码层为零、嵌套的终止条件写在哪一行、以及它的 12 个 Design Toke"
+category: XiaoyeUI源码专栏
+
+---
 # C10-09 Comment 评论
 
 > **本篇解决**：Comment 这个 118 行的复合件里，「头像 / 内容 / 操作区 / 嵌套列表」四条线各自接没接上——特别是它对 Avatar 的依赖为什么在代码层为零、嵌套的终止条件写在哪一行、以及它的 12 个 Design Token 为什么一个都覆盖不了。改 `comment/style/index.ts` 的任意一行会连带打破哪些跨组件规则，本篇给出行号。

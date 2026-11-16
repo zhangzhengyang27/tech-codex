@@ -1,3 +1,9 @@
+---
+title: "4-12 · 命令式服务（下）：dialog 队列与 loading 双形态"
+description: "本篇是「组件机制」章节的收官篇，回答一个贯穿性问题：alert/confirm/prompt 这类模态对话框服务，如何做到同屏只有一个、后续排队、还支持中途 update？ 答案藏在 packages/components/dialog/s"
+category: 组件库专栏
+
+---
 # 4-12 · 命令式服务（下）：dialog 队列与 loading 双形态
 
 > 本篇是「组件机制」章节的收官篇，回答一个贯穿性问题：**alert/confirm/prompt 这类模态对话框服务，如何做到同屏只有一个、后续排队、还支持中途 update？** 答案藏在 `packages/components/dialog/src/service-state.ts` 里一个仅 321 行的模块中：`reactive({ current, queue })` 加一个挂在每个条目上的 Promise resolver。与它对读的是 loading——同一个"命令式服务"的名目下，loading 选择了完全相反的调度哲学：全屏单例、分组复用、指令与服务双注册（`component-manifest.json` 里唯一一个 `kind: directive + kind: globalProperty` 双检查的组件）。两种哲学放在一起，正好构成命令式服务调度的两个极点；再加上 4-11 讲过的 message 治理术和本篇将抽出的 notification 分桶并发模型，四种服务四种调度，收束整个章节。文中还收录 2026-09-16 遮罩三处理器迁绑 `__overlay` 的修复实态（当前工作区未提交改动，本篇按实码叙述）。所有路径与行号均在当前工作区逐一核对。

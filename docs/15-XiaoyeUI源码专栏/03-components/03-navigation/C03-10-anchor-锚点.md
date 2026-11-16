@@ -1,3 +1,9 @@
+---
+title: "C03-10 Anchor 锚点"
+description: "本篇解决：Anchor 的高亮态到底是怎么从一次 scroll 事件里算出来的——判定算法、两套坐标系的换算、链接注册表，以及它把滚动容器交给 Affix 的方式。"
+category: XiaoyeUI源码专栏
+
+---
 # C03-10 Anchor 锚点
 
 > **本篇解决**：Anchor 的高亮态到底是怎么从一次 `scroll` 事件里算出来的——判定算法、两套坐标系的换算、链接注册表，以及它把滚动容器交给 Affix 的方式。
@@ -493,7 +499,7 @@ URL 侧的写入完全交给浏览器：`href` 经过 `_util/safeUrl.ts:40-42` �
 
 ## 五、对外契约如何生效
 
-属性清单见 [apps/docs/components/anchor.md](../../../apps/docs/components/anchor.md)，此处只走通路。
+属性清单见 `apps/docs/components/anchor.md`，此处只走通路。
 
 **props 的分流。** `anchorProps()` 声明在 `Anchor.tsx:60-75`，14 个键里只有 4 个真正被组件读成「行为」：`offsetTop`（四处消费，见论点 6）、`bounds`（`Anchor.tsx:196`）、`targetOffset`（`Anchor.tsx:176`、`Anchor.tsx:195`）、`getContainer`（`Anchor.tsx:121`）。`items` 决定渲染走递归还是插槽（`Anchor.tsx:313`），`direction` 只喂 `anchorDirection`（`Anchor.tsx:93`）并被塞进 context 供链接与样式分流（`Anchor.tsx:237`、`AnchorLink.tsx` 侧的 `direction` 目前不参与渲染判断）。`prefixCls` 是 `String` 无默认值（`Anchor.tsx:61`），真正的默认前缀由 `useConfigInject('anchor', props)`（`Anchor.tsx:92`）产出——直接 `import Anchor` 而不套 ConfigProvider 也能拿到 `xy-anchor`，这是本库所有组件的统一路径。
 

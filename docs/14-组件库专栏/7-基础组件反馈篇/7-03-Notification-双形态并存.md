@@ -1,3 +1,9 @@
+---
+title: "7-03 · Notification：双形态并存"
+description: "前置：7-02《Message：命令式消息治理》。与 4-11、4-12 的分工：4-11 以 message 为解剖台讲命令式服务的通用机制（选项归一、targetKey 作用域、grouping 合并、max 上限），4-12 抽过 n"
+category: 组件库专栏
+
+---
 # 7-03 · Notification：双形态并存
 
 > 前置：7-02《Message：命令式消息治理》。与 4-11、4-12 的分工：4-11 以 message 为解剖台讲命令式服务的通用机制（选项归一、targetKey 作用域、grouping 合并、max 上限），4-12 抽过 notification 的分桶并发对照段；本篇回到 notification 自身，回答标题里的核心问题——**组件式 `<xy-notification>` 与服务式 `XyNotification()`，如何共享实现？**

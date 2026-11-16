@@ -1,3 +1,9 @@
+---
+title: "9-22 · CrudPage：整页 CRUD"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第二十二篇。9-21 拆了金字塔中层的 XyListPage——一个把 pro-table 的十八个 prop 裁成九个的薄预设；本篇上探顶层，拆 XyCrudPage：整条页面级产"
+category: 组件库专栏
+
+---
 # 9-22 · CrudPage：整页 CRUD
 
 > 本篇是 9 卷"增强层（pro-components）"的第二十二篇。9-21 拆了金字塔中层的 `XyListPage`——一个把 pro-table 的十八个 prop 裁成九个的薄预设；本篇上探顶层，拆 `XyCrudPage`：整条页面级产品线的封顶之作。核心问题按大纲只有一句话——**三级金字塔的顶层如何组装**——但这句话里至少藏着六道题：顶层凭什么"厚"过中层的薄预设（表单编排加 CRUD 动作，具体厚在哪几行实码）；为什么组装 `XyListPage` 不走模板包裹、而要在一个 `<script setup>` 里再定义一个 render 函数组件；编辑回显为什么是同步 `Object.assign(formModel, row)` 一步到位、而不是 9-10 的 request-form 那条异步 fetch 协议（两条回显路线的取舍在本篇定论）；删除确认为什么金字塔三层都没有内建——popconfirm、message、dialog 三件确认原语全在库里，选型却交还业务；批量操作到底是顶层新增的能力还是底座穿透上来的旧能力；以及顶层为什么连一个 `defineExpose` 都没有、数据刷新为什么只能靠 props 回流。本篇全部给实码定论，并为 9-23《SplitLayoutPage：分栏页面》埋好引线。

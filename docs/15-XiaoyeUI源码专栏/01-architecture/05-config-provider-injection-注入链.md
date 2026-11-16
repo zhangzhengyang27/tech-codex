@@ -1,3 +1,9 @@
+---
+title: "A05 ConfigProvider 注入链与 Size/Disabled Context"
+description: "本篇解决：一个组件写 size=\"large\"、disabled、prefixCls 时，值到底从哪一层来、被哪一层拦下；ConfigProvider.config() 为什么能绕开组件树生效。"
+category: XiaoyeUI源码专栏
+
+---
 # A05 ConfigProvider 注入链与 Size/Disabled Context
 
 > **本篇解决**：一个组件写 `size="large"`、`disabled`、`prefixCls` 时，值到底从哪一层来、被哪一层拦下；`ConfigProvider.config()` 为什么能绕开组件树生效。

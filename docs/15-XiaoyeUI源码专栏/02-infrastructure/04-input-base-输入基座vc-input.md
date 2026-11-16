@@ -1,3 +1,9 @@
+---
+title: "I04 输入基座：vc-input 与 BaseInput"
+description: "本篇解决：<xy-input v-model:value=\"x\"> 里，中文拼音还没上屏时 x 为什么不跟着变？为什么父组件把值改回去、输入框里的字却还停在原地？自动高度的 textarea 到底在测量什么、谁在触发重测？"
+category: XiaoyeUI源码专栏
+
+---
 # I04 输入基座：vc-input 与 BaseInput
 
 > **本篇解决**：`<xy-input v-model:value="x">` 里，中文拼音还没上屏时 `x` 为什么不跟着变？为什么父组件把值改回去、输入框里的字却还停在原地？自动高度的 textarea 到底在测量什么、谁在触发重测？

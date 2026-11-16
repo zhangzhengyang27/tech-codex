@@ -1,3 +1,9 @@
+---
+title: "C07-04 Popover 气泡卡片"
+description: "本篇解决：只有 80 行的 popover/index.tsx 到底接管了 Tooltip 的哪些点，剩下的浮层行为又归谁。"
+category: XiaoyeUI源码专栏
+
+---
 # C07-04 Popover 气泡卡片
 
 > **本篇解决**：只有 80 行的 `popover/index.tsx` 到底接管了 Tooltip 的哪些点，剩下的浮层行为又归谁。
@@ -32,7 +38,7 @@
 | `packages/xiaoye-ui/src/tooltip/style/index.ts` | 157 | 可被 Popover 关掉的样式 | `injectStyle` 短路（`:128-135`） |
 | `packages/xiaoye-ui/src/vc-tooltip/src/Content.tsx` | 29 | 提供 `-inner` 外壳与 `role` | `-inner`（`:20`）、`role="tooltip"`（`:22`） |
 
-组件目录里**没有** `popoverTypes.ts`、没有 `usePopover.ts`、没有 `demo/`。`popoverProps` 就地定义在 `index.tsx:15-19`，两行 spread 加两个 `anyType()` 字段，这是本组件全部的类型面；属性清单见 [apps/docs/components/popover.md](../../../apps/docs/components/popover.md)，本篇不复述。主实现入口的渲染函数在 `packages/xiaoye-ui/src/popover/index.tsx:62-76`，其中 `:65` 那一行 `<Tooltip` 就是本篇全部讨论的支点。
+组件目录里**没有** `popoverTypes.ts`、没有 `usePopover.ts`、没有 `demo/`。`popoverProps` 就地定义在 `index.tsx:15-19`，两行 spread 加两个 `anyType()` 字段，这是本组件全部的类型面；属性清单见 `apps/docs/components/popover.md`，本篇不复述。主实现入口的渲染函数在 `packages/xiaoye-ui/src/popover/index.tsx:62-76`，其中 `:65` 那一行 `<Tooltip` 就是本篇全部讨论的支点。
 
 ## 三、架构与数据流
 

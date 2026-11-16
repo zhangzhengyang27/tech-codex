@@ -1,8 +1,14 @@
+---
+title: "A02 组件目录契约与 gen:entries 生成物链路"
+description: "本篇解决：packages/xiaoye-ui 的三份生成物各自按什么规则产出？「哪些目录算组件」这个判断到底写在哪几处、它们是否等价？两个组件目录暴露同名导出时谁赢、为什么赢、改一行源码写法会不会让公开 API 换主人？为什么 check"
+category: XiaoyeUI源码专栏
+
+---
 # A02 组件目录契约与 gen:entries 生成物链路
 
 > **本篇解决**：`packages/xiaoye-ui` 的三份生成物各自按什么规则产出？「哪些目录算组件」这个判断到底写在哪几处、它们是否等价？两个组件目录暴露同名导出时谁赢、为什么赢、改一行源码写法会不会让公开 API 换主人？为什么 `check:entries` 全绿仍然不能说明生成物是对的？
 > **前置**：A01 monorepo 拓扑与发布链路　**读者坐标**：`01-architecture` 第 2/8 篇
-> **主题边界**：本篇只讲三个生成物与归属定主机制。包边界、构建顺序、发布期 manifest 换算归 [A01](./01-monorepo-topology.md)；Token 定义与派生归 [A03](./03-design-token.md)；自动导入解析器与文档站消费面归 A08。
+> **主题边界**：本篇只讲三个生成物与归属定主机制。包边界、构建顺序、发布期 manifest 换算归 [A01](./01-monorepo-topology-拓扑与发布链路.md)；Token 定义与派生归 [A03](./03-design-token-四层体系.md)；自动导入解析器与文档站消费面归 A08。
 
 ---
 

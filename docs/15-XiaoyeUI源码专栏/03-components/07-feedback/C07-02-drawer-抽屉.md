@@ -1,3 +1,9 @@
+---
+title: "C07-02 Drawer 抽屉"
+description: "本篇解决：Drawer 和 Modal 同为浮层容器，为什么关闭后 Modal 能把焦点还回来而 Drawer 不能？为什么 scrollLocker 这条锁滚动的路径在两个组件里都是死分支？push、level、handler 三套 Dr"
+category: XiaoyeUI源码专栏
+
+---
 # C07-02 Drawer 抽屉
 
 > **本篇解决**：Drawer 和 Modal 同为浮层容器，为什么关闭后 Modal 能把焦点还回来而 Drawer 不能？为什么 `scrollLocker` 这条锁滚动的路径在两个组件里**都**是死分支？`push`、`level`、`handler` 三套 Drawer 独有能力各自靠什么实现？

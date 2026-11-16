@@ -1,3 +1,9 @@
+---
+title: "2-03 · prepare-package：808 行 d.ts 后处理管线"
+description: "核心问题：vite-plugin-dts 的产物，离\"可发布\"还差多远？"
+category: 组件库专栏
+
+---
 # 2-03 · prepare-package：808 行 d.ts 后处理管线
 
 > 核心问题：**vite-plugin-dts 的产物，离"可发布"还差多远？**

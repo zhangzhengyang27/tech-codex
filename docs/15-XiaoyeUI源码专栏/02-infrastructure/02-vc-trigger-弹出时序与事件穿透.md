@@ -1,3 +1,9 @@
+---
+title: "I02 vc-trigger 弹出时序与事件穿透"
+description: "本篇解决：一个 tooltip 从「鼠标进入」到「带动画出现在正确位置」，中间到底经过几层状态？hover / click / focus / contextmenu 四种 action 各自绑了哪些 DOM 事件、状态怎么迁移？鼠标移到浮"
+category: XiaoyeUI源码专栏
+
+---
 # I02 vc-trigger 弹出时序与事件穿透
 
 > **本篇解决**：一个 tooltip 从「鼠标进入」到「带动画出现在正确位置」，中间到底经过几层状态？`hover / click / focus / contextmenu` 四种 action 各自绑了哪些 DOM 事件、状态怎么迁移？鼠标移到浮层上为什么不关闭？受控与非受控的分歧点到底落在哪一行？嵌套浮层（子菜单、面板里的面板）点外面时「该谁关」是怎么裁决的？`forceRender` / `autoDestroy` / `destroyPopupOnHide` / `popupRender` 这几个开关的真实语义与副作用是什么？

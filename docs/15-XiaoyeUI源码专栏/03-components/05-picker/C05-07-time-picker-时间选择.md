@@ -1,3 +1,9 @@
+---
+title: "C05-07 TimePicker 时间选择"
+description: "本篇解决：<xy-time-picker> 这一形态相对 date-picker 工厂独有的三件事——format 子串反推开关到底何时真正触发、hourStep/minuteStep/use12Hours 这类 step 与面板参数被哪一"
+category: XiaoyeUI源码专栏
+
+---
 # C05-07 TimePicker 时间选择
 
 > **本篇解决**：`<xy-time-picker>` 这一形态相对 `date-picker` 工厂独有的三件事——`format` 子串反推开关到底何时真正触发、`hourStep`/`minuteStep`/`use12Hours` 这类 step 与面板参数被哪一层读取、以及 `order` 这类「范围独活、单选全死」的开关；外层 `createTimePicker` 把工厂再包一层后，props 与事件的两层转发在哪里对不齐。

@@ -1,3 +1,9 @@
+---
+title: "C03-08 Dropdown 下拉菜单"
+description: "本篇解决：overlay 插槽里的那棵 Menu 到底被改写了几次、被谁改写；arrow、trigger、placement、menu、size 这几个写在类型上的开关，各自的写入点与死亡点在哪一行；为什么浮层里的菜单不再有自己的样式；点菜"
+category: XiaoyeUI源码专栏
+
+---
 # C03-08 Dropdown 下拉菜单
 
 > **本篇解决**：`overlay` 插槽里的那棵 `Menu` 到底被改写了几次、被谁改写；`arrow`、`trigger`、`placement`、`menu`、`size` 这几个写在类型上的开关，各自的写入点与死亡点在哪一行；为什么浮层里的菜单不再有自己的样式；点菜单项把浮层关掉时为什么一个事件都不发。

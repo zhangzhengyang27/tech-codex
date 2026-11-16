@@ -1,3 +1,9 @@
+---
+title: "C02-08 Panel 面板"
+description: "本篇解决：Panel 为什么没有一行自己的 DOM——它的类名、样式与折叠状态分别由谁产出，以及改 _shared/CardLike 或 panel/style/index.ts 里的哪一行会让 Panel 的整体外观塌掉。"
+category: XiaoyeUI源码专栏
+
+---
 # C02-08 Panel 面板
 
 > **本篇解决**：Panel 为什么没有一行自己的 DOM——它的类名、样式与折叠状态分别由谁产出，以及改 `_shared/CardLike` 或 `panel/style/index.ts` 里的哪一行会让 Panel 的整体外观塌掉。
@@ -414,7 +420,7 @@ export default genComponentStyleHook('Panel', token => {
 
 ## 五、对外契约如何生效
 
-Panel 的 props 只有 8 个（`packages/xiaoye-ui/src/panel/panelTypes.ts:4-15`），但它们分成的三类命运值得说清楚——属性清单见 [apps/docs/components/panel.md](../../../../apps/docs/components/panel.md)，这里只走通路。
+Panel 的 props 只有 8 个（`packages/xiaoye-ui/src/panel/panelTypes.ts:4-15`），但它们分成的三类命运值得说清楚——属性清单见 `apps/docs/components/panel.md`，这里只走通路。
 
 **第一类：真的流到 DOM。** `bordered`、`loading`、`hoverable` 三个从 `Panel.tsx:64-66` 原样传给 CardLike，在 `CardLike.tsx:53-55` 变成 `-bordered` / `-loading` / `-hoverable` 三个后缀类，再由 `genCardLikeStyle.ts:41`、`:51`、`:43` 各自的规则接住。这条链是全组件最干净的一条，也是唯一一条「prop → 类名 → 规则」三段同源的链。注意它们的挂法是**只在真值时挂类名**（对象写法，`CardLike.tsx:52-58`），`bordered=false` 时 DOM 上没有任何负向标记，想写「无边框时怎样」的选择器只能靠 `:not(.xy-panel-bordered)`。
 

@@ -1,3 +1,9 @@
+---
+title: "C02-04 Space 间距"
+description: "本篇解决：src/space/ 如何把「子节点之间的间距」拆成可维护的实现——children 拆分与拍平、对齐（align）计算、分隔符（split）注入，以及 flex gap 原生能力与「逐 child 包 div」两条路线的取舍。"
+category: XiaoyeUI源码专栏
+
+---
 # C02-04 Space 间距
 
 > **本篇解决**：`src/space/` 如何把「子节点之间的间距」拆成可维护的实现——children 拆分与拍平、对齐（align）计算、分隔符（split）注入，以及 flex gap 原生能力与「逐 child 包 div」两条路线的取舍。

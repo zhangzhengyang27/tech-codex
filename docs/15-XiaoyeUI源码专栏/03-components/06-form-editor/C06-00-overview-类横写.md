@@ -1,3 +1,9 @@
+---
+title: "C06-00 类横写：Form 的字段注册、校验与上下文下发"
+description: "本篇解决：Form 类组件的「字段身份与注册」「值 / 校验规则 / 错误回显如何经 provide-inject 串起来」「async-validator 接缝」「控件被 FormItem 收集与触发的时机」这四件事的共性机制。"
+category: XiaoyeUI源码专栏
+
+---
 # C06-00 类横写：Form 的字段注册、校验与上下文下发
 
 > **本篇解决**：Form 类组件的「字段身份与注册」「值 / 校验规则 / 错误回显如何经 provide-inject 串起来」「async-validator 接缝」「控件被 FormItem 收集与触发的时机」这四件事的共性机制。

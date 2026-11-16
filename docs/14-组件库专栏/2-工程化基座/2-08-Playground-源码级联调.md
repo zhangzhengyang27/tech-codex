@@ -1,3 +1,9 @@
+---
+title: "2-08 · Playground：源码级联调"
+description: "核心问题：改一行组件源码，为什么 playground 能即时热更？"
+category: 组件库专栏
+
+---
 # 2-08 · Playground：源码级联调
 
 > 核心问题：**改一行组件源码，为什么 playground 能即时热更？**

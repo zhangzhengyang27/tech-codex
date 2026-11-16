@@ -1,3 +1,9 @@
+---
+title: "C03-04 Breadcrumb 面包屑"
+description: "本篇解决：Breadcrumb 的两条渲染通路（routes 数据驱动 / 默认插槽手写）为什么行为不等价；defaultItemRender 写死的 #/ 前缀把路由模式钉在了哪里；三级 itemRender 优先级的判定顺序；以及为了「"
+category: XiaoyeUI源码专栏
+
+---
 # C03-04 Breadcrumb 面包屑
 
 > **本篇解决**：`Breadcrumb` 的两条渲染通路（`routes` 数据驱动 / 默认插槽手写）为什么行为不等价；`defaultItemRender` 写死的 `#/` 前缀把路由模式钉在了哪里；三级 `itemRender` 优先级的判定顺序；以及为了「一个可展开的父级」这一件事，本组件把 `Menu` 与 `Dropdown` 两棵子树整个拖了进来，代价落在哪一行。

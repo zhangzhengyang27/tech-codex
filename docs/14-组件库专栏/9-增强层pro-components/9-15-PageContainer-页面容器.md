@@ -1,3 +1,9 @@
+---
+title: "9-15 · PageContainer：页面容器"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第十五篇，按大纲（column/02-分卷大纲.md:169）回答的核心问题只有一句话——loading 视觉的内聚。前置篇是 9-13《PageToolbar：工具条》与 9-14"
+category: 组件库专栏
+
+---
 # 9-15 · PageContainer：页面容器
 
 > 本篇是 9 卷"增强层（pro-components）"的第十五篇，按大纲（`column/02-分卷大纲.md:169`）回答的核心问题只有一句话——**loading 视觉的内聚**。前置篇是 9-13《PageToolbar：工具条》与 9-14《PageHeader：页头》：工具条立完了"纯布局件"的纪律，页头拆完了 meta 区与动作区的结构，本篇把页面壳三件套的最后一口气补上——`xy-page-container`，页面壳本壳。知识点矩阵给本篇的条目（`column/01-知识点全集矩阵.md:190`）写得更直白："loading 视觉内聚（组件级内嵌 XyLoadingIndicator + 内容区替换语义）"——前半句是手段，后半句是定论，本篇的全部戏份都围着这两句转。

@@ -1,3 +1,9 @@
+---
+title: "C10-07 QRCode 二维码"
+description: "本篇解决：QRCode 的二维码生成内核到底是自家实现还是第三方封装，选项被仓内谁读取，渲染为什么走 canvas 与 SVG 两条路径以及分支判据是什么。"
+category: XiaoyeUI源码专栏
+
+---
 # C10-07 QRCode 二维码
 
 > **本篇解决**：QRCode 的二维码生成内核到底是自家实现还是第三方封装，选项被仓内谁读取，渲染为什么走 canvas 与 SVG 两条路径以及分支判据是什么。

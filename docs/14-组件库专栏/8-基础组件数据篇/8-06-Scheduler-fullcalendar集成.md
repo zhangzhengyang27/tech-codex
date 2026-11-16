@@ -1,3 +1,9 @@
+---
+title: "8-06 · Scheduler：fullcalendar 集成"
+description: "数据展示卷写到第六篇，第一次遇到一个绕不开的问题：第三方库的组件化封装边界。前五篇的 statistic、countdown、progress、steps、timeline，核心逻辑都在自己手里——SVG 是自己画的，定时器是自己管的，时间"
+category: 组件库专栏
+
+---
 # 8-06 · Scheduler：fullcalendar 集成
 
 数据展示卷写到第六篇，第一次遇到一个绕不开的问题：**第三方库的组件化封装边界**。前五篇的 statistic、countdown、progress、steps、timeline，核心逻辑都在自己手里——SVG 是自己画的，定时器是自己管的，时间引擎是自己写的。而 scheduler（排期日历）不一样：日历网格、拖拽命中、事件布局算法、跨日事件跨越渲染，这些是 years of engineering 的硬骨头，自研不现实，也没有必要。于是 `xy-scheduler` 做了一个全仓库最重的"二次封装"决定：把网格引擎外包给 FullCalendar v6，自己只做壳。

@@ -1,3 +1,9 @@
+---
+title: "6-16 · TreeSelect：树与多选映射"
+description: "本篇源码坐标（均为当前工作区实态）："
+category: 组件库专栏
+
+---
 # 6-16 · TreeSelect：树与多选映射
 
 > 本篇源码坐标（均为当前工作区实态）：

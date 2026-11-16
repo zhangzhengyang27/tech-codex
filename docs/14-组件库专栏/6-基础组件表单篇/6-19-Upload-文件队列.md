@@ -1,3 +1,9 @@
+---
+title: "6-19 · Upload：文件队列"
+description: "本篇是「表单组件」章节的第十九篇，研究对象是 upload——表单家族里唯一一个真正在网络上传输字节的组件，也因此是全仓库协议面最宽的一个：它要同时定义\"文件长什么样\"（UploadFileItem）、\"请求长什么样\"（UploadRequ"
+category: 组件库专栏
+
+---
 # 6-19 · Upload：文件队列
 
 > 本篇是「表单组件」章节的第十九篇，研究对象是 `upload`——表单家族里唯一一个真正在网络上传输字节的组件，也因此是全仓库协议面最宽的一个：它要同时定义"文件长什么样"（`UploadFileItem`）、"请求长什么样"（`UploadRequestOptions`）、"进度长什么样"（`UploadProgressEvent`）与"中断长什么样"（`abort` 语义）。本篇围绕核心问题展开：**自定义请求与进度回调的协议设计**——默认的 XMLHttpRequest 封装（`ajaxUpload`）与用户覆盖的 `http-request` 之间靠什么契约握手；一次 progress 事件如何从 `xhr.upload` 一路走到进度条的 `width`；`abort` 如何让 xhr 与 Promise 两种请求风格共用一个中断协议。沿途收进三笔工程账：完全受控的文件队列（对照 EP 的内部队列）、`before-upload` 的四态裁决协议，以及 Object URL 的精确回收。所有路径与行号均在当前工作区逐一核对（`upload.vue` 实态 541 行、`upload-content.vue` 357 行、`upload-list.vue` 204 行、`upload.ts` 176 行、`upload.css` 401 行、测试 573 行 15 用例、类型夹具 34 行、文档示例 15 个）；三张核心 mermaid 图，一张三件套数据流，一张文件状态机，一张上传时序。

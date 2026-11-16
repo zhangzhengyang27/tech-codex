@@ -1,3 +1,9 @@
+---
+title: "C03-00 类横写：menu/tabs/steps/breadcrumb 的选中态模型"
+description: "本篇解决：menu / tabs / steps / breadcrumb 四个导航组件的「当前选中项」到底存在哪里、由谁计算、如何回流，以及四者在哪一层共用同一套选中态机制、在哪一层分道扬镳。"
+category: XiaoyeUI源码专栏
+
+---
 # C03-00 类横写：menu/tabs/steps/breadcrumb 的选中态模型
 
 > **本篇解决**：menu / tabs / steps / breadcrumb 四个导航组件的「当前选中项」到底存在哪里、由谁计算、如何回流，以及四者在哪一层共用同一套选中态机制、在哪一层分道扬镳。

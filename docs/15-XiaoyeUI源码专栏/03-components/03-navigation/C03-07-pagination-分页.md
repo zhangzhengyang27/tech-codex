@@ -1,3 +1,9 @@
+---
+title: "C03-07 Pagination 分页"
+description: "本篇解决：<xy-pagination> 的公开组件只有一百七十五行、真正的分页状态机全部住在 vc-pagination 里——这条分层让哪些 prop 变成死 API、事件为什么不走 Vue 的 emit、页码窗口算法动一行会出什么事故"
+category: XiaoyeUI源码专栏
+
+---
 # C03-07 Pagination 分页
 
 > **本篇解决**：`<xy-pagination>` 的公开组件只有一百七十五行、真正的分页状态机全部住在 `vc-pagination` 里——这条分层让哪些 prop 变成死 API、事件为什么不走 Vue 的 `emit`、页码窗口算法动一行会出什么事故。

@@ -1,3 +1,9 @@
+---
+title: "C03-09 ContextMenu 右键菜单"
+description: "本篇解决：一个右键菜单为什么在本库里不接 vc-trigger、不接 vc-align，而是自己用 Portal + Transition + pageX/pageY 手写一套浮层；多级展开的全部状态为什么能被压缩成一条 key 路径；ba"
+category: XiaoyeUI源码专栏
+
+---
 # C03-09 ContextMenu 右键菜单
 
 > **本篇解决**：一个右键菜单为什么在本库里不接 `vc-trigger`、不接 `vc-align`，而是自己用 `Portal` + `Transition` + `pageX/pageY` 手写一套浮层；多级展开的全部状态为什么能被压缩成一条 key 路径；`baseZIndex` 在什么条件下才会被读到；改哪一行会让菜单弹不出来、错位、或样式整体失效。

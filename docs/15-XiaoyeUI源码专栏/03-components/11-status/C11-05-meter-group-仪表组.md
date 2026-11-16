@@ -1,3 +1,9 @@
+---
+title: "C11-05 MeterGroup 仪表组"
+description: "本篇解决：values 里的数字到底经过哪几步才变成屏幕上的一段宽度；min、max、四舍五入与夹取分别在哪些出口产生分歧；子件 MeterGroupLabel 从父件拿到了什么、没拿到什么；以及改哪一行会让整组指标静默消失。"
+category: XiaoyeUI源码专栏
+
+---
 # C11-05 MeterGroup 仪表组
 
 > **本篇解决**：`values` 里的数字到底经过哪几步才变成屏幕上的一段宽度；`min`、`max`、四舍五入与夹取分别在哪些出口产生分歧；子件 `MeterGroupLabel` 从父件拿到了什么、没拿到什么；以及改哪一行会让整组指标静默消失。

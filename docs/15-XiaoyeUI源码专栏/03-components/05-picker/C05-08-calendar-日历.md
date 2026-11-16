@@ -1,3 +1,9 @@
+---
+title: "C05-08 Calendar 日历"
+description: "本篇解决：Calendar 与 DatePicker 共用 vc-picker 内核，但它作为「常驻面板组件」到底从内核里取用了什么、又自己搭了什么——value/defaultValue/onSelect 的受控形状在 Calendar "
+category: XiaoyeUI源码专栏
+
+---
 # C05-08 Calendar 日历
 
 > **本篇解决**：Calendar 与 DatePicker 共用 `vc-picker` 内核，但它作为「常驻面板组件」到底从内核里取用了什么、又自己搭了什么——`value`/`defaultValue`/`onSelect` 的受控形状在 Calendar 里是否成立、全屏与卡片两种 mode 的样式归属边界在哪里。

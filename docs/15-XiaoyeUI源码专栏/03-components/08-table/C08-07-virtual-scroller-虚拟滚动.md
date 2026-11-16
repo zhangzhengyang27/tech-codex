@@ -1,3 +1,9 @@
+---
+title: "C08-07 VirtualScroller 虚拟滚动"
+description: "本篇解决：virtual-scroller 这份实现到底是什么、被谁真正使用、它和同仓孪生拷贝 virtual-list 的能力面差在哪、对外契约里哪些声明真正落地、改它要注意什么。"
+category: XiaoyeUI源码专栏
+
+---
 # C08-07 VirtualScroller 虚拟滚动
 
 > **本篇解决**：`virtual-scroller` 这份实现到底是什么、被谁真正使用、它和同仓孪生拷贝 `virtual-list` 的能力面差在哪、对外契约里哪些声明真正落地、改它要注意什么。

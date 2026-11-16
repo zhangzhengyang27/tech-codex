@@ -1,3 +1,9 @@
+---
+title: "C06-06 Inplace 原地编辑"
+description: "本篇解决：XYInplace 与 XYInlineEdit 是同一台「展示态/编辑态」状态机的两份拷贝，本篇用逐字行比对量化它们的重复度、列出三条已经漂移的分歧点，并逐条核对 C06-05 在 InlineEdit 上证过的三条结论（失焦不"
+category: XiaoyeUI源码专栏
+
+---
 # C06-06 Inplace 原地编辑
 
 > **本篇解决**：`XYInplace` 与 `XYInlineEdit` 是同一台「展示态/编辑态」状态机的两份拷贝，本篇用逐字行比对量化它们的重复度、列出三条已经漂移的分歧点，并逐条核对 `C06-05` 在 InlineEdit 上证过的三条结论（失焦不是退出路径、先落状态后 emit 所以宿主无法回退、`disabled` 断链）在 Inplace 上是复发还是能力差异。

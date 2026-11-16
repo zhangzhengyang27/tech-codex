@@ -1,3 +1,9 @@
+---
+title: "C01-07 Empty 空状态"
+description: "本篇解决：Empty 组件自身的 image / preset 描述符是如何被解析成最终渲染物的；PRESENTED_IMAGE_SIMPLE / PRESENTED_IMAGE_DEFAULT 作为公开常量到底暴露了什么；以及 Confi"
+category: XiaoyeUI源码专栏
+
+---
 # C01-07 Empty 空状态
 
 > **本篇解决**：Empty 组件自身的 `image` / `preset` 描述符是如何被解析成最终渲染物的；`PRESENTED_IMAGE_SIMPLE` / `PRESENTED_IMAGE_DEFAULT` 作为公开常量到底暴露了什么；以及 ConfigProvider 的 `renderEmpty` 覆盖在 Empty 内部究竟从哪一行落地。

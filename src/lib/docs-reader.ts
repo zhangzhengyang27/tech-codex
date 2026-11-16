@@ -36,8 +36,19 @@ function extractSectionTitle(name: string): string {
 }
 
 /** 分组索引文件名：作为目录/章节的说明页，不计入侧边栏文件列表。
- *  仅排除 index.md——README.md 在全站多被用作真实正文文件名，不可排除。 */
+ *  仅排除 index.md——README.md 在全站多被用作真实正文文件名，不可排除。
+ *  `*_` 前缀文件（如 AI 写作指令 _PROMPT.md、写作队列 _OUTLINE.md）为仓库工作区
+ *  元文件，不属于站点内容，同样不进侧边栏。 */
 const INDEX_FILES = new Set(['index.md']);
+
+/** 工作区元文件前缀：以下划线开头的 md 文件只在仓库内使用，不作为站点文章渲染 */
+const WORKSPACE_FILE_PREFIX = '_';
+
+function isRenderableDoc(name: string): boolean {
+  return (
+    name.endsWith('.md') && !INDEX_FILES.has(name) && !name.startsWith(WORKSPACE_FILE_PREFIX)
+  );
+}
 
 /** 读取单文件 frontmatter 的 title（用于目录标题回退） */
 function readFrontmatterTitle(relativePath: string): string | null {
@@ -72,7 +83,7 @@ export function getSections(categorySlug: string): DocSection[] {
 
   // 根目录下的 md 文件作为“概述”章节（排除 index/README 索引文件）
   const rootFiles = entries
-    .filter((e) => e.isFile() && e.name.endsWith('.md') && !INDEX_FILES.has(e.name))
+    .filter((e) => e.isFile() && isRenderableDoc(e.name))
     .map((e) => e.name)
     .sort(sortByName);
 
@@ -112,7 +123,7 @@ function buildSection(absDir: string, relDir: string, relSlug: string): DocSecti
   const entries = fs.readdirSync(absDir, { withFileTypes: true });
 
   const mdFiles = entries
-    .filter((e) => e.isFile() && e.name.endsWith('.md') && !INDEX_FILES.has(e.name))
+    .filter((e) => e.isFile() && isRenderableDoc(e.name))
     .map((e) => e.name)
     .sort(sortByName);
 
@@ -154,6 +165,8 @@ function buildSection(absDir: string, relDir: string, relSlug: string): DocSecti
 
 /** 读取单篇文档内容 */
 export function getDocContent(relativePath: string): { title: string; content: string } | null {
+  // 工作区元文件（_* 前缀）不作为站点内容对外渲染
+  if (path.basename(relativePath).startsWith(WORKSPACE_FILE_PREFIX)) return null;
   const filePath = path.join(DOCS_ROOT, relativePath);
   if (!fs.existsSync(filePath)) return null;
 
@@ -188,7 +201,7 @@ export function getAllDocPaths(categorySlug: string): string[] {
     for (const entry of entries) {
       if (entry.isDirectory() && !entry.name.startsWith('.')) {
         walk(path.join(dir, entry.name), `${prefix}${entry.name}/`);
-      } else if (entry.isFile() && entry.name.endsWith('.md') && !INDEX_FILES.has(entry.name)) {
+      } else if (entry.isFile() && isRenderableDoc(entry.name)) {
         paths.push(`${prefix}${entry.name.replace(/\.md$/, '')}`);
       }
     }
@@ -248,7 +261,7 @@ function buildIndex(): DocsIndex {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (entry.isDirectory() && !entry.name.startsWith('.')) {
         walk(path.join(dir, entry.name), `${prefix}${entry.name}/`, false);
-      } else if (!isRoot && entry.isFile() && entry.name.endsWith('.md')) {
+      } else if (!isRoot && entry.isFile() && isRenderableDoc(entry.name)) {
         files.push(`${prefix}${entry.name.replace(/\.md$/, '')}`);
       }
     }

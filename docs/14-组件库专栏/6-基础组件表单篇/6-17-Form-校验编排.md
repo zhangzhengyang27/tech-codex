@@ -1,3 +1,9 @@
+---
+title: "6-17 · Form：校验编排"
+description: "本篇是表单协议系列的第二篇。4-08《表单联动与全局配置链》讲的是机制层——provide/inject 用什么管道、四层配置按什么顺序传；本篇下沉到语义层，回答另一个问题：当你点下\"提交\"，从 formRef.validate() 到 i"
+category: 组件库专栏
+
+---
 # 6-17 · Form：校验编排
 
 > 本篇是表单协议系列的第二篇。4-08《表单联动与全局配置链》讲的是机制层——provide/inject 用什么管道、四层配置按什么顺序传；本篇下沉到语义层，回答另一个问题：**当你点下"提交"，从 `formRef.validate()` 到 input 上亮起 `is-error`，中间发生了一次怎样的编排？** 顺着这条线，我们会拆开 form.vue 的并行 Promise 编排、form-item 的 async-validator 执行体、两级规则的合并策略、`validateOnRuleChange` 的 watch 守卫，以及 2026-09-16 那次 `size: undefined` 修复的完整上下文。form-item 的消息渲染与 aria 关联留给下一篇 6-18，本篇讲到 `validateMessage` 这个 ref 为止。

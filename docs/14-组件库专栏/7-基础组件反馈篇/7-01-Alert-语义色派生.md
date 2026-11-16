@@ -1,3 +1,9 @@
+---
+title: "7-01 · Alert：语义色派生"
+description: "反馈篇开篇的 Alert，是全库少有的\"样式比逻辑更值得写\"的组件。它的视图层 486 行、测试 585 行、类型层 120 行，都算不上特别；但 packages/theme/src/components/alert.css 一份 398"
+category: 组件库专栏
+
+---
 # 7-01 · Alert：语义色派生
 
 ## 核心问题：组件变量头的标准写法

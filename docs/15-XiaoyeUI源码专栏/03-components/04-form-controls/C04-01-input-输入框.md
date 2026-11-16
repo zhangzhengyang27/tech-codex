@@ -1,3 +1,9 @@
+---
+title: "C04-01 Input 输入框"
+description: "本篇解决：<xy-input> 这一层到底算了什么、把类名放进了哪个盒子？为什么 allow-clear、prefix、addon、status 这几个开关互相看不见对方？Search 的按钮和 Password 的眼睛是怎么「挤」进同一个"
+category: XiaoyeUI源码专栏
+
+---
 # C04-01 Input 输入框
 
 > **本篇解决**：`<xy-input>` 这一层到底算了什么、把类名放进了哪个盒子？为什么 `allow-clear`、`prefix`、`addon`、`status` 这几个开关互相看不见对方？`Search` 的按钮和 `Password` 的眼睛是怎么「挤」进同一个输入框的？改 `Input.tsx` 的哪一行会让 `xy-input-group` 或 `xy-input-search` 一起崩？

@@ -1,3 +1,9 @@
+---
+title: "XSearch FAQ 与故障排查"
+description: "项目：XSearch ｜ 版本：v1.1 ｜ 生成日期：2026-10-06 ｜ 依据：源码分析"
+category: 项目文档
+
+---
 # XSearch FAQ 与故障排查
 
 > 项目：XSearch ｜ 版本：v1.1 ｜ 生成日期：2026-10-06 ｜ 依据：源码分析

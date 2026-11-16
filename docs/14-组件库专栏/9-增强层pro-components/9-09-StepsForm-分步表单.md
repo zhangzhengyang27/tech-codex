@@ -1,3 +1,9 @@
+---
+title: "9-09 · StepsForm：分步表单"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第九篇。9-05 拆完装配车间 XyProForm 时留过一张清单：overlay-form、dialog-form、drawer-form、steps-form、request-f"
+category: 组件库专栏
+
+---
 # 9-09 · StepsForm：分步表单
 
 > 本篇是 9 卷"增强层（pro-components）"的第九篇。9-05 拆完装配车间 `XyProForm` 时留过一张清单：overlay-form、dialog-form、drawer-form、steps-form、request-form 五个"容器变体"共享同一台渲染引擎——前三个已在 9-06/9-07/9-08 里过堂完毕，本篇轮到第四个：`XyStepsForm`。核心问题按大纲只有一句话——**跨步骤模型共享与分步校验**——但这句话里至少压着五道题：所有步骤的字段值放在哪里、步骤切换时谁负责搬运；"下一步"之前的校验到底校验哪一部分字段，基础层 `xy-form` 的 `validateField` 范围限定用上了没有；步间导航的状态在受控与非受控之间怎么桥接；最后一步提交时抛出去的模型快照是怎么做出来的；以及它和 8-04 的 `Steps`、和 9-34 要写的 `ImportWizard` 各自分什么工。本篇照旧全部给实码定论：steps-form 自己的账面不大——src 两个文件共 257 行、样式 16 行、测试 98 行——但"分步"两个字背后的校验范围问题，会一路追问到基础层 form 的字段注册表，顺带在 git 里挖出一个 8-04 废弃战役遗留的违约现场。

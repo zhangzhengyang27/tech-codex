@@ -1,3 +1,9 @@
+---
+title: "C02-05 Divider 分割线"
+description: "本篇解决：一条看起来最没有技术含量的分割线，为什么需要两份文件共 264 行、8 个类名开关、10 处伪元素声明才能画出来；改哪一行会让水平/垂直/虚线/带文字这四种形态同时错位。"
+category: XiaoyeUI源码专栏
+
+---
 # C02-05 Divider 分割线
 
 > **本篇解决**：一条看起来最没有技术含量的分割线，为什么需要两份文件共 264 行、8 个类名开关、10 处伪元素声明才能画出来；改哪一行会让水平/垂直/虚线/带文字这四种形态同时错位。
@@ -421,7 +427,7 @@ export default genComponentStyleHook(
 
 ## 五、对外契约如何生效
 
-这一节讲「契约的传导链路」，不讲参数清单（属性清单见 [apps/docs/components/divider.md](../../../apps/docs/components/divider.md)）。
+这一节讲「契约的传导链路」，不讲参数清单（属性清单见 `apps/docs/components/divider.md`）。
 
 **前缀链路：一个 `Ref` 同时喂给类名与样式**。`dividerProps` 声明了一个公开的 `prefixCls`（`packages/xiaoye-ui/src/divider/index.tsx:9`），它被 `useConfigInject('divider', props)` 消费（`packages/xiaoye-ui/src/divider/index.tsx:36`），后者内部只做一件事：`configProvider.getPrefixCls(name, props.prefixCls)`（`packages/xiaoye-ui/src/config-provider/hooks/useConfigInject.ts:14`）。`getPrefixCls` 的实现是「有后缀就拼 `xy-<suffix>`，没后缀返回 `xy`」（`packages/xiaoye-ui/src/config-provider/context.ts:168`，默认值定义在 `packages/xiaoye-ui/src/config-provider/globalConfig.ts:8`）。关键在于这个返回值是 `computed`：它既被 `classString` 读成字符串（`packages/xiaoye-ui/src/divider/index.tsx:46`），又被原样传给样式 hook（`packages/xiaoye-ui/src/divider/index.tsx:37` 的 `useStyle(prefixClsRef)` 传的是 Ref 而不是 `.value`），样式侧再把它转成选择器 `componentCls`（`packages/xiaoye-ui/src/theme/util/genComponentStyleHook.ts:87`）。因此 `prefixCls` 定制是**双向一致**的：不存在「类名改了但生成的 CSS 还指向旧选择器」的错配。这是本组件契约面最扎实的一环。
 

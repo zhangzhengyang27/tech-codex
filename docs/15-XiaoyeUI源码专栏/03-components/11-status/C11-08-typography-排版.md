@@ -1,3 +1,9 @@
+---
+title: "C11-08 Typography 排版"
+description: "本篇解决：Typography 把「文本呈现」与「文本操作」揉在同一棵树上，本篇给出四个开关（editable/copyable/ellipsis/type）各自的实现落点、走 CSS 还是走 JS、哪一条是自家写的、哪一条已经名存实亡。"
+category: XiaoyeUI源码专栏
+
+---
 # C11-08 Typography 排版
 
 > **本篇解决**：Typography 把「文本呈现」与「文本操作」揉在同一棵树上，本篇给出四个开关（`editable`/`copyable`/`ellipsis`/`type`）各自的实现落点、走 CSS 还是走 JS、哪一条是自家写的、哪一条已经名存实亡。

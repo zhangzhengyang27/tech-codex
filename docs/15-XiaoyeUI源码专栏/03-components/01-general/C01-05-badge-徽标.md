@@ -1,3 +1,9 @@
+---
+title: "C01-05 Badge 徽标"
+description: "本篇解决：<xy-badge> 只有一行用法，源码里为什么需要 4 个组件文件、3 层可见性计算和 3 个缓存 ref；数字滚动到底由谁驱动；改 count/status/offset 的哪一行会让样式静默失效。"
+category: XiaoyeUI源码专栏
+
+---
 # C01-05 Badge 徽标
 
 > **本篇解决**：`<xy-badge>` 只有一行用法，源码里为什么需要 4 个组件文件、3 层可见性计算和 3 个缓存 ref；数字滚动到底由谁驱动；改 `count`/`status`/`offset` 的哪一行会让样式静默失效。
@@ -538,7 +544,7 @@ export const getTransitionProps = (transitionName: string, opt: TransitionProps 
 
 ## 五、对外契约如何生效
 
-属性清单见 [apps/docs/components/badge.md](../../../apps/docs/components/badge.md)。这里只走「一个值进来后经过哪些手」这条路。
+属性清单见 `apps/docs/components/badge.md`。这里只走「一个值进来后经过哪些手」这条路。
 
 **props 的默认值不走 `initDefaultProps`。** `Badge.tsx:44` 直接 `props: badgeProps()`，与根目录 `AGENTS.md` 里「Props 必须经 `initDefaultProps` 初始化」的写法不同（这套 props 工具链本身归 A06《Props 体系与类型工具》）：默认值内联在声明里，`:23` 的 `overflowCount: { type: Number, default: 99 }`、`:29` 的 `size: { ..., default: 'default' }` 由 Vue 自己补，而 `:21` `showZero`、`:25` `dot`、`:33` `numberStyle` 的默认是 `undefined`——这三项因此保留**三态**（未传 / 真 / 假），`:66` 的 `!props.showZero` 与 `:74` 的 `props.dot &&` 都建立在这个三态上。`count` 的默认 `null` 来自 `PropTypes.any.def(null)`（`:20`），是「不传计数就整体隐藏」这条契约的实现点（`:66` → `:78-82`）。
 

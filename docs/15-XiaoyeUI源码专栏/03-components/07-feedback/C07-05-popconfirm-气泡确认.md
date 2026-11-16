@@ -1,3 +1,9 @@
+---
+title: "C07-05 Popconfirm 气泡确认"
+description: "本篇解决：Popconfirm 的「确认」与「取消」语义由哪几段代码共同决定——为什么 content 写了没用、为什么 okButtonProps 里的 onClick 会让按钮失灵、改哪一行会让 ESC 与禁用态出错。"
+category: XiaoyeUI源码专栏
+
+---
 # C07-05 Popconfirm 气泡确认
 
 > **本篇解决**：Popconfirm 的「确认」与「取消」语义由哪几段代码共同决定——为什么 `content` 写了没用、为什么 `okButtonProps` 里的 `onClick` 会让按钮失灵、改哪一行会让 ESC 与禁用态出错。

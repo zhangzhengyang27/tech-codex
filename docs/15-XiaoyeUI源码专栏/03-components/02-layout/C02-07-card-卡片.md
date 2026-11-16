@@ -1,3 +1,9 @@
+---
+title: "C02-07 Card 卡片"
+description: "本篇解决：<xy-card> 的 tabs / extra / actions / cover 四类异构内容凭什么按那个次序长出来，bordered 与 hoverable 的视觉到底来自哪一层 Token，以及 Card、Grid、Met"
+category: XiaoyeUI源码专栏
+
+---
 # C02-07 Card 卡片
 
 > **本篇解决**：`<xy-card>` 的 tabs / extra / actions / cover 四类异构内容凭什么按那个次序长出来，`bordered` 与 `hoverable` 的视觉到底来自哪一层 Token，以及 Card、Grid、Meta 三件与 `_shared/CardLike` 之间那条**没接上**的继承线。

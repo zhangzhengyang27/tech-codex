@@ -1,3 +1,9 @@
+---
+title: "C06-03 Upload 上传"
+description: "本篇解决：Upload 的一次「选择文件 → 发出请求 → 回流到列表」到底在 upload/ 与 vc-upload/ 两层之间怎样流动，哪些状态归调用方管、哪些归组件管。"
+category: XiaoyeUI源码专栏
+
+---
 # C06-03 Upload 上传
 
 > **本篇解决**：Upload 的一次「选择文件 → 发出请求 → 回流到列表」到底在 `upload/` 与 `vc-upload/` 两层之间怎样流动，哪些状态归调用方管、哪些归组件管。

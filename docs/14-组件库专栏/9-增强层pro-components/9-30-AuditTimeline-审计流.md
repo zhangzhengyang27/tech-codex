@@ -1,3 +1,9 @@
+---
+title: "9-30 · AuditTimeline：审计流"
+description: "8-05 解剖基础层 Timeline 时留过一句交接话：xy-timeline 用 slot 扫描和 cloneVNode 把\"最后一项判定\"做成了通用能力，但业务里真正高频出现的不是手写 xy-timeline-item，而是\"给我一组"
+category: 组件库专栏
+
+---
 # 9-30 · AuditTimeline：审计流
 
 8-05 解剖基础层 Timeline 时留过一句交接话：`xy-timeline` 用 slot 扫描和 `cloneVNode` 把"最后一项判定"做成了通用能力，但业务里真正高频出现的不是手写 `xy-timeline-item`，而是"给我一组审计日志，帮我渲染成时间线"——数据在接口里，语义在业务侧，谁来把这两样东西翻译成 timeline 的插槽语言？这篇的主角就是答案：`XyAuditTimeline`（`packages/pro-components/audit-timeline/`）。核心问题只有一个：**时间线的业务特化**——当一个通用展示组件（timeline）遇上一个具体业务场景（审计流），特化层应该做多厚、做多薄、哪些事坚决不做。

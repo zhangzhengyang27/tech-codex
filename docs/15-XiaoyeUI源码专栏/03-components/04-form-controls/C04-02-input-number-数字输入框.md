@@ -1,3 +1,9 @@
+---
+title: "C04-02 InputNumber 数字输入框"
+description: "本篇解决：InputNumber 把「字符串输入」与「数字值」之间的一次往返拆开落在哪几层、精度/步进/夹取各自的执行时机，以及 value 的对外契约究竟是字符串还是数字。"
+category: XiaoyeUI源码专栏
+
+---
 # C04-02 InputNumber 数字输入框
 
 > **本篇解决**：InputNumber 把「字符串输入」与「数字值」之间的一次往返拆开落在哪几层、精度/步进/夹取各自的执行时机，以及 `value` 的对外契约究竟是字符串还是数字。

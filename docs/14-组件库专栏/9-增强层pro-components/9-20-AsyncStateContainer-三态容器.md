@@ -1,3 +1,9 @@
+---
+title: "9-20 · AsyncStateContainer：三态容器"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第二十篇，按大纲（column/02-分卷大纲.md:174）回答的核心问题只有一句话——loading/empty/error 的统一协议。前置篇是 9-19《StatCard：指"
+category: 组件库专栏
+
+---
 # 9-20 · AsyncStateContainer：三态容器
 
 > 本篇是 9 卷"增强层（pro-components）"的第二十篇，按大纲（`column/02-分卷大纲.md:174`）回答的核心问题只有一句话——**loading/empty/error 的统一协议**。前置篇是 9-19《StatCard：指标卡》：骨架态在指标卡里是单组件的内嵌小戏，本篇把镜头拉远，看状态在"容器"这个层级怎么被协议化。知识点矩阵给本篇的条目（`column/01-知识点全集矩阵.md:195`）写得极其凝练："loading/empty/error 三态容器协议（v-if 裁决链 + 两消费壳插槽收缩为零）"——前半句是结构，后半句是效果，本篇的全部戏份都围着这两句转。

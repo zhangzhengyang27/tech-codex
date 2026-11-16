@@ -1,3 +1,9 @@
+---
+title: "C08-02 DataTable 数据表格"
+description: "本篇解决：DataTable 这一层到底在 table / vc-table 之上做了什么、又重复了什么；列定义从用户输入到 DOM 类名要经过几次改写；哪些 props 与事件是声明了但从未被读取或触发的死契约。"
+category: XiaoyeUI源码专栏
+
+---
 # C08-02 DataTable 数据表格
 
 > **本篇解决**：DataTable 这一层到底在 `table` / `vc-table` 之上做了什么、又重复了什么；列定义从用户输入到 DOM 类名要经过几次改写；哪些 props 与事件是声明了但从未被读取或触发的死契约。

@@ -1,3 +1,9 @@
+---
+title: "C03-01 Menu 导航菜单"
+description: "本篇解决：Menu 的水平、垂直、内联三种形态各自的状态从哪里来、弹层在哪里装配"
+category: XiaoyeUI源码专栏
+
+---
 # C03-01 Menu 导航菜单
 
 > **本篇解决**：Menu 的水平、垂直、内联三种形态各自的状态从哪里来、弹层在哪里装配，
@@ -859,7 +865,7 @@ const popupPlacementMap = {
 
 ## 五、对外契约如何生效
 
-这一节把「调用方写的东西」按它实际走过的文件排序，而不是按 prop 名字罗列（属性清单见 [apps/docs/components/menu.md](../../../apps/docs/components/menu.md)）。
+这一节把「调用方写的东西」按它实际走过的文件排序，而不是按 prop 名字罗列（属性清单见 `apps/docs/components/menu.md`）。
 
 **形态类契约（`mode` / `inlineCollapsed` / `disabledOverflow`）走「改写 → context → 消费点清单」**。`props.mode`（`packages/xiaoye-ui/src/menu/src/Menu.tsx:67`，类型 `MenuMode` 见 `packages/xiaoye-ui/src/menu/src/interface.ts:75`）先被 `Menu.tsx:283-294` 归一成 `mergedMode`，再由 `Menu.tsx:430` 放进 context。此后没有任何组件回头看 `props.mode`：`Menu.tsx:462` 决定要不要包 provider、`Menu.tsx:518` 决定 `maxCount`、`SubMenu.tsx:250` 决定子树 context、`SubMenu.tsx:295` 决定走不走浮层、`SubMenu.tsx:334` 决定形态类名、`InlineSubMenuList.tsx:18` 决定要不要建 DOM、`useDirectionStyle.ts:9` 决定缩进——七个读取点、两份就地改写（`SubMenu.tsx:250` 与 `SubMenu.tsx:247`），这就是「加一个形态」一定要动 `vc-overflow` 之外六个文件的原因。`disabledOverflow`（`Menu.tsx:58`）只出现在 `Menu.tsx:458`、`Menu.tsx:462`、`Menu.tsx:518` 三处，全是渲染期的即时判断，没有进入 context，因此子组件无法感知它。
 

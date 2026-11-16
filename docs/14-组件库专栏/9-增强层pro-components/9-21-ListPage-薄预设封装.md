@@ -1,3 +1,9 @@
+---
+title: "9-21 · ListPage：薄预设封装"
+description: "先报一个实态核对结果：大纲里这篇的核心问题写的是\"127 行如何完整透传所有插槽\"，而实测 wc -l 与逐行读取都确认，packages/pro-components/list-page/src/list-page.vue 当前是 126"
+category: 组件库专栏
+
+---
 # 9-21 · ListPage：薄预设封装
 
 先报一个实态核对结果：大纲里这篇的核心问题写的是"127 行如何完整透传所有插槽"，而实测 `wc -l` 与逐行读取都确认，`packages/pro-components/list-page/src/list-page.vue` 当前是 **126 行**——53 行 `<script setup>` 加 73 行 `<template>`，文件以换行结尾，没有第 127 行。127 应当是早期统计口径的残影。本篇以 126 行为准，但问题本身不变：一个 126 行的组件，凭什么敢自称"列表页容器"，把搜索区、工具栏、批量操作条、分页、加载态、空态、列级插槽全部承接下来，却不写一行属于这些能力的逻辑？

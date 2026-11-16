@@ -1,3 +1,9 @@
+---
+title: "I14 运行时约束与静态检查"
+description: "本篇解决：packages/xiaoye-ui/src/_util/ 里那五个「不成体系但谁都在用」的运行时约束文件——开发期告警到底有几条通道、为什么同一条通道会打出 undefined、styleChecker 的探测结果缓存在哪里、s"
+category: XiaoyeUI源码专栏
+
+---
 # I14 运行时约束与静态检查
 
 > **本篇解决**：`packages/xiaoye-ui/src/_util/` 里那五个「不成体系但谁都在用」的运行时约束文件——开发期告警到底有几条通道、为什么同一条通道会打出 `undefined`、`styleChecker` 的探测结果缓存在哪里、`safeUrl` / `sanitizeSvg` 的白名单与黑名单各自漏在哪、`static-style-extract` 这个「全组件抽一遍样式」的构建期校验器现在被谁调用、以及新增一个组件时这五处会怎么绊你一下。

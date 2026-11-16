@@ -1,3 +1,9 @@
+---
+title: "C06-08 SortableList 可排序列表"
+description: "本篇解决：拖拽排序的结果落在哪里、谁负责回写、axis/disabled/handle 三个开关各自的生效路径走到哪一步就断了。"
+category: XiaoyeUI源码专栏
+
+---
 # C06-08 SortableList 可排序列表
 
 > **本篇解决**：拖拽排序的结果落在哪里、谁负责回写、`axis`/`disabled`/`handle` 三个开关各自的生效路径走到哪一步就断了。

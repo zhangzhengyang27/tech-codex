@@ -1,3 +1,9 @@
+---
+title: "9-08 · DrawerForm：对称特化"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第八篇。9-07 把镜像的另一半——XyDialogForm——摆上了解剖台，结尾留了四个承诺：Omit<..., \"dialogProps\"> 那一侧的默认值差异（为什么 over"
+category: 组件库专栏
+
+---
 # 9-08 · DrawerForm：对称特化
 
 > 本篇是 9 卷"增强层（pro-components）"的第八篇。9-07 把镜像的另一半——`XyDialogForm`——摆上了解剖台，结尾留了四个承诺：`Omit<..., "dialogProps">` 那一侧的默认值差异（为什么 overlay-form 的默认 container 是 drawer）、抽屉分支独有的 `size ?? 560` 宽度兜底与 loading 占位渲染、`drawerProps` 通道与 `DrawerProps` 的对接细节、以及"这对镜像什么时候值得合并成一个泛型化的 facade"。本篇全部兑现。核心问题按大纲只有一句话——**与 dialog-form 的镜像关系**——但"镜像"这个词里至少压着四道题：两个源文件逐行同构到什么程度、类型层那对互为倒影的 Omit 各自拿走了什么、运行时镜像在哪些地方故意不对称（9-06 考据的三条缝隙在 drawer 侧是坑还是优势）、以及维护一对镜像与合并成一个抽象之间的账怎么算。全部给实码定论。

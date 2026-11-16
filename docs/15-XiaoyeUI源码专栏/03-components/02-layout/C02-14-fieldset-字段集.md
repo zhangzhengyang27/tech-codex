@@ -1,3 +1,9 @@
+---
+title: "C02-14 Fieldset 字段集"
+description: "本篇解决：为什么 <xy-fieldset> 上的 class 会消失、为什么「折叠动画」只有淡入淡出、为什么用了 legend 插槽之后 aria-labelledby 就成了悬空引用——121 行的小组件里藏着 4 处「声明了但不生效」"
+category: XiaoyeUI源码专栏
+
+---
 # C02-14 Fieldset 字段集
 
 > **本篇解决**：为什么 `<xy-fieldset>` 上的 `class` 会消失、为什么「折叠动画」只有淡入淡出、为什么用了 `legend` 插槽之后 `aria-labelledby` 就成了悬空引用——121 行的小组件里藏着 4 处「声明了但不生效」的实现。
@@ -457,7 +463,7 @@ export default function useId(id = ref('')) {
 
 ## 五、对外契约如何生效
 
-这一节按「一个外部输入如何变成 DOM」的流向讲，而不是把 API 罗列一遍；属性清单见 [apps/docs/components/fieldset.md](../../../apps/docs/components/fieldset.md)。
+这一节按「一个外部输入如何变成 DOM」的流向讲，而不是把 API 罗列一遍；属性清单见 `apps/docs/components/fieldset.md`。
 
 **`prefixCls` 是唯一有双头效应的 prop。** 它不直接出现在 DOM 上，而是分两路生效：一路进 `useConfigInject('fieldset', props)`，在 `packages/xiaoye-ui/src/config-provider/hooks/useConfigInject.ts:14` 变成 computed，再被渲染函数读成类名（`packages/xiaoye-ui/src/fieldset/Fieldset.tsx:53`、`:76`、`:80`、`:90`、`:104`、`:112`、`:116`、`:117`）；另一路作为参数交给样式 hook（`:27`），在 `packages/xiaoye-ui/src/theme/util/genComponentStyleHook.ts:47-48` 被包成 computed、在 `:87` 变成 `componentCls = .${prefixCls.value}`。也就是说改一次 `prefixCls`，**选择器和类名同时换**，这是它和 `hashId`（只出现在 `:63` 根类名里）的分工差异。但这条链路对图标类名失效（论点 4），也对 `xy-collapsible` 失效（`packages/xiaoye-ui/src/fieldset/Fieldset.tsx:99` 与 `packages/xiaoye-ui/src/fieldset/style/index.ts:114-129` 都是字面量）。
 

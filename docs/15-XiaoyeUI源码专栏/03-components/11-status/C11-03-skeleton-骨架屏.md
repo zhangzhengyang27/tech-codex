@@ -1,3 +1,9 @@
+---
+title: "C11-03 Skeleton 骨架屏"
+description: "本篇解决：avatar / title / paragraph 三个「布尔或对象」配置到底经过哪几层函数才变成 DOM 上的类名与内联宽度；loading=false 时子内容的渲染分支少了哪些东西；以及 Skeleton 目录里哪几条样式"
+category: XiaoyeUI源码专栏
+
+---
 # C11-03 Skeleton 骨架屏
 
 > **本篇解决**：`avatar` / `title` / `paragraph` 三个「布尔或对象」配置到底经过哪几层函数才变成 DOM 上的类名与内联宽度；`loading=false` 时子内容的渲染分支少了哪些东西；以及 Skeleton 目录里哪几条样式规则永远查不到、哪个 prop 从声明到渲染就断了。
@@ -446,7 +452,7 @@ export default Skeleton as typeof Skeleton &
 
 ## 五、对外契约如何生效
 
-> 属性清单见 [apps/docs/components/skeleton.md](../../../apps/docs/components/skeleton.md)，本节不重复；这里只写「契约从哪儿进、在哪儿断」。
+> 属性清单见 `apps/docs/components/skeleton.md`，本节不重复；这里只写「契约从哪儿进、在哪儿断」。
 
 Skeleton 的对外面只有 props 与一个 `default` 插槽：**没有 `emit`、没有 `expose`、没有任何具名插槽**——`slots` 在整个目录里只出现两次（`packages/xiaoye-ui/src/skeleton/Skeleton.tsx:91` 的解构与 `:168` 的调用），子件全部是空元素（`packages/xiaoye-ui/src/skeleton/Title.tsx:19`、`packages/xiaoye-ui/src/skeleton/Paragraph.tsx:39`、`packages/xiaoye-ui/src/skeleton/Element.tsx:38` 渲染的都是无内容标签）。这个选择本身是合理的：占位物不产生交互，也就没有回流通道；代价是调用方无法在骨架内部塞任何真实节点，只能用 `paragraph.rows` 这一维调形。
 

@@ -1,3 +1,9 @@
+---
+title: "C12-07 FocusTrap 焦点陷阱"
+description: "本篇解决：packages/xiaoye-ui/src/focus-trap/ 这 340 行到底靠什么机制把焦点圈在子树里——它不拦 Tab 键，那它拦的是什么；可聚焦元素的选择器在哪、边界哨兵怎么算、disabled 切换时代码里留下的"
+category: XiaoyeUI源码专栏
+
+---
 # C12-07 FocusTrap 焦点陷阱
 
 > **本篇解决**：`packages/xiaoye-ui/src/focus-trap/` 这 340 行到底靠什么机制把焦点圈在子树里——它不拦 Tab 键，那它拦的是什么；可聚焦元素的选择器在哪、边界哨兵怎么算、`disabled` 切换时代码里留下的状态是什么；以及为什么全库只有一个消费者。
@@ -598,7 +604,7 @@ pnpm typecheck
 pnpm gen:entries && pnpm check:entries   # 未增删组件目录时应当无漂移
 ```
 
-> 属性清单见 [apps/docs/components/focus-trap.md](../../../apps/docs/components/focus-trap.md)，本篇不重复。
+> 属性清单见 `apps/docs/components/focus-trap.md`，本篇不重复。
 
 ## 附：本篇可证伪的三个检查点
 

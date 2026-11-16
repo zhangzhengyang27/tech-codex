@@ -1,3 +1,9 @@
+---
+title: "C05-02 AutoComplete 自动完成"
+description: "本篇解决：<xy-auto-complete> 声称「把 Select 的下拉与 Input 的输入拼起来」，本篇查清它到底改了哪一层——它自己没有任何状态，全部行为差异压缩在一次渲染期对象拼装里；两份删除清单（声明期与运行期）力度不同，导"
+category: XiaoyeUI源码专栏
+
+---
 # C05-02 AutoComplete 自动完成
 
 > **本篇解决**：`<xy-auto-complete>` 声称「把 Select 的下拉与 Input 的输入拼起来」，本篇查清它到底改了哪一层——它自己没有任何状态，全部行为差异压缩在一次渲染期对象拼装里；两份删除清单（声明期与运行期）力度不同，导致四个被删的名字里只有两个真死；自定义输入框的接缝不在 AutoComplete 目录内，而在内核的 `Input.tsx` 里。

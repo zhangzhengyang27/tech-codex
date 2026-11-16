@@ -1,3 +1,9 @@
+---
+title: "6-05 · Radio：三形态一个 context"
+description: "本篇源码坐标（均为当前工作区实态）："
+category: 组件库专栏
+
+---
 # 6-05 · Radio：三形态一个 context
 
 > 本篇源码坐标（均为当前工作区实态）：

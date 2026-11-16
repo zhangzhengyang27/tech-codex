@@ -1,3 +1,9 @@
+---
+title: "9-27 · SavedViewTabs：保存视图"
+description: "先报实态核对结果。大纲给这篇的核心问题是\"视图持久化的 key 设计\"，而实测的第一个事实就有点反讽：packages/pro-components/saved-view-tabs/src/ 下两个文件合计 70 行——saved-view"
+category: 组件库专栏
+
+---
 # 9-27 · SavedViewTabs：保存视图
 
 先报实态核对结果。大纲给这篇的核心问题是"视图持久化的 key 设计"，而实测的第一个事实就有点反讽：`packages/pro-components/saved-view-tabs/src/` 下两个文件合计 70 行——`saved-view-tabs.vue` 58 行、`saved-view-tabs.ts` 12 行——**全部检索之后确认，组件里没有一行存储代码**。没有 localStorage，没有 IndexedDB，没有 save 回调，没有防抖写盘。一个名叫"保存视图"的组件，自己一个字节都不保存。这不是偷懒，是本篇第一个需要立住的结论：**持久化被完整地推出了组件边界，组件只保留"视图集合的呈现与切换语义"**。于是"key 设计"这个题眼也换了个问法——组件自己不生成 key、不存储 key，那它对 key 到底约束了什么？答案是三件事：key 是唯一身份（label 与 count 都不是）、key 的翻译与守卫（不存在的 key 拒绝上抛）、key 的下游语义（经 pro-table 进入请求参数）。围绕这三件事，本篇还要讲清 2026-09-16 修复战役在本组件留下的一处改动——`:editable="props.addable"`（`saved-view-tabs.vue:44`），一个硬编码布尔值如何造成权限面错乱，以及修复后"单旋钮 + 逐项豁免"的权限模型。

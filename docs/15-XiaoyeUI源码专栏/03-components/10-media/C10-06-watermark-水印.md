@@ -1,3 +1,9 @@
+---
+title: "C10-06 Watermark 水印"
+description: "本篇解决：Watermark 的「防篡改」到底由哪几段代码保证，观察配置与写入方式不匹配时会在哪一行失守。"
+category: XiaoyeUI源码专栏
+
+---
 # C10-06 Watermark 水印
 
 > **本篇解决**：Watermark 的「防篡改」到底由哪几段代码保证，观察配置与写入方式不匹配时会在哪一行失守。

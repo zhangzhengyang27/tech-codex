@@ -1,3 +1,9 @@
+---
+title: "C02-11 ScrollPanel 滚动面板"
+description: "本篇解决：ScrollPanel 为什么不用本仓库的 vc-resize-observer、它的两条自绘滚动条如何靠几何反算同步到原生 scroll、以及 prefixCls/事件/透传属性这三条对外契约为什么在这个组件上集体失效。"
+category: XiaoyeUI源码专栏
+
+---
 # C02-11 ScrollPanel 滚动面板
 
 > **本篇解决**：ScrollPanel 为什么不用本仓库的 `vc-resize-observer`、它的两条自绘滚动条如何靠几何反算同步到原生 scroll、以及 `prefixCls`/事件/透传属性这三条对外契约为什么在这个组件上集体失效。

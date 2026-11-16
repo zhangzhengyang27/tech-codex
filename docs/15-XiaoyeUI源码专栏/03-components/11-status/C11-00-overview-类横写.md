@@ -1,3 +1,9 @@
+---
+title: "C11-00 类横写：占位、进度与统计三类的更新频率取舍"
+description: "本篇解决：占位（Skeleton/Empty）、进度（Progress/Spin）、统计（Statistic/Countdown）这三类组件都在「呈现一个会变的值或状态」，但它们的更新驱动方式为什么分别是 CSS 关键帧、requestAn"
+category: XiaoyeUI源码专栏
+
+---
 # C11-00 类横写：占位、进度与统计三类的更新频率取舍
 
 > **本篇解决**：占位（Skeleton/Empty）、进度（Progress/Spin）、统计（Statistic/Countdown）这三类组件都在「呈现一个会变的值或状态」，但它们的更新驱动方式为什么分别是 CSS 关键帧、requestAnimationFrame、setInterval 三种？这条「更新频率」轴决定了各自的漂移、精度、reduced-motion 与 SSR 约束边界。
@@ -342,7 +348,7 @@ const genSkeletonColor = (token: SkeletonToken): CSSObject => ({
 
 ## 五、对外契约如何生效
 
-本节只回答一个问题：调用方能通过契约触达「更新频率」的哪一部分。三档给的答案完全不同，且都不是 Props 表能看出来的（属性清单见 [apps/docs/components/skeleton.md](../../../apps/docs/components/skeleton.md) 等手册篇目）。
+本节只回答一个问题：调用方能通过契约触达「更新频率」的哪一部分。三档给的答案完全不同，且都不是 Props 表能看出来的（属性清单见 `apps/docs/components/skeleton.md` 等手册篇目）。
 
 第一档（Skeleton、Spin、Empty）的契约面**只能决定动画是否存在，不能决定动画多快**。Skeleton 的三个内容开关与 `active`、`loading` 都是 `Boolean` 且默认 `undefined`（`packages/xiaoye-ui/src/skeleton/Skeleton.tsx:17-19`），渲染函数直接把它们变成两件事：子树是否存在（`:98`）与类名集合（`:153-159`），中间没有任何计算层。值得一提的是契约与频率的**并发条数耦合**：`title`、`paragraph`、`avatar` 决定同时有几个块命中 `-active` 下的选择器组（`packages/xiaoye-ui/src/skeleton/style/index.ts:341-348` 把六类子块并列列出），而 `paragraph` 传对象时会展开成多行 `li`（行宽算法在 `packages/xiaoye-ui/src/skeleton/Paragraph.tsx:20`），每行都自带一条独立的 1.4s 无限循环——一个带 avatar、标题与四行段落的骨架屏会同时跑六条独立循环，调用方对此毫无可控手段。Empty 连这一层都没有，它的 `image` 只决定插画内容（`packages/xiaoye-ui/src/empty/index.tsx:40`），两幅内置插画是纯静态 SVG（`packages/xiaoye-ui/src/empty/empty.tsx:74`、`packages/xiaoye-ui/src/empty/simple.tsx:40` 是它们的静态标记位）。Spin 的 `delay` 是唯一带时间的契约，但它只在**开始那一刻**生效：`shouldDelay` 判定后交给 `debounce`（`packages/xiaoye-ui/src/spin/Spin.tsx:26-28`、`:54-57`），到点即弃，不参与之后的任何节奏；组件把 `updateSpinning`（含 `cancel`）与 `spinning` getter 通过 `expose` 交出去（`packages/xiaoye-ui/src/spin/Spin.tsx:67-72`），这是三档里唯一对外暴露的「计时句柄」，但它能取消的只有那一次延迟。
 

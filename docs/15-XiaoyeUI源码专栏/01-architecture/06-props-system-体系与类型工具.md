@@ -1,3 +1,9 @@
+---
+title: "A06 Props 体系与类型工具"
+description: "本篇解决：为什么这个库的 props 一律写成工厂函数 buttonProps() 而不是常量对象；一个键从 xProps() 出发到变成 DOM 属性，中间要过几道筛；emit('close') 和 props.onClose 到底谁在调"
+category: XiaoyeUI源码专栏
+
+---
 # A06 Props 体系与类型工具
 
 > **本篇解决**：为什么这个库的 props 一律写成工厂函数 `buttonProps()` 而不是常量对象；一个键从 `xProps()` 出发到变成 DOM 属性，中间要过几道筛；`emit('close')` 和 `props.onClose` 到底谁在调用用户传的函数；`initDefaultProps` 与 Vue 自己的 `default` 是叠加还是覆盖。

@@ -1,3 +1,9 @@
+---
+title: "C02-06 Splitter 分隔面板"
+description: "本篇解决：Splitter 的面板尺寸如何在「百分比」与「像素」两套坐标系之间归一，拖拽期间的即时更新与松手提交分别走哪条路径，键盘 resize 与 collapsible 边界在源码里由哪几行守住。"
+category: XiaoyeUI源码专栏
+
+---
 # C02-06 Splitter 分隔面板
 
 > **本篇解决**：Splitter 的面板尺寸如何在「百分比」与「像素」两套坐标系之间归一，拖拽期间的即时更新与松手提交分别走哪条路径，键盘 resize 与 collapsible 边界在源码里由哪几行守住。

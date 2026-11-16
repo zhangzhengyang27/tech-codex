@@ -1,3 +1,9 @@
+---
+title: "9-29 · ImportResultTable：导入回显"
+description: "先报实态核对结果。大纲给这篇的核心问题是\"结果表格的成功/失败汇总\"，而实测的第一组事实有三条，条条都值得在动笔前立住。第一条：packages/pro-components/import-result-table/src/ 下两个文件合计"
+category: 组件库专栏
+
+---
 # 9-29 · ImportResultTable：导入回显
 
 先报实态核对结果。大纲给这篇的核心问题是"结果表格的成功/失败汇总"，而实测的第一组事实有三条，条条都值得在动笔前立住。第一条：`packages/pro-components/import-result-table/src/` 下两个文件合计 62 行——`import-result-table.vue` 48 行、`import-result-table.ts` 14 行——**全文件检索之后确认，组件里没有一行汇总计算**。没有 `reduce`，没有 `filter`，没有 `computed(() => data.filter(...))`，没有"从数据里数出成功几条失败几条"的任何代码。一个负责"成功/失败汇总"的组件，自己一个数字都不算。这不是偷懒，是本篇第一个需要立住的结论，知识点矩阵把它记作"summary 外置零派生"（`column/01-知识点全集矩阵.md:204`）。第二条：大纲预设"import-wizard 的第三步结果页消费 import-result-table"，而实码定论恰恰相反——在 `packages/pro-components/import-wizard/` 全目录检索 `import-result-table`、`ImportResultTable`、`import_result`，**零命中**；两者之间没有任何 import 边，组合靠的是插槽协商。第三条：它消费的也不是 8-09 的基础层 `xy-table`，而是隔了一层的 `XyProTable`（9-24/9-25）——一张 1779 行引擎驱动的增强表格，被六个 props 裁剪成静态只读预览。围绕这三条事实，本篇要讲清四个问题：三个数字的产品语义与"零派生"的得失；部分成功的 UX 为什么收敛成"一条汇总条 + 一张全量表"；插槽协商式组合的代价与收益；以及全功能表格被裁剪时，哪些是运行时裁掉的、哪些只是类型上还活着的"死字段"。

@@ -1,3 +1,9 @@
+---
+title: "C02-10 BlockUI 区块容器"
+description: "本篇解决：BlockUI 的遮罩到底挂在哪儿、什么时候才真正从 DOM 上消失、blocked 这个 prop 与组件内部状态谁是真相、以及为什么「区块内阻塞」有样式而「全屏阻塞」可能没有样式。"
+category: XiaoyeUI源码专栏
+
+---
 # C02-10 BlockUI 区块容器
 
 > **本篇解决**：BlockUI 的遮罩到底挂在哪儿、什么时候才真正从 DOM 上消失、`blocked` 这个 prop 与组件内部状态谁是真相、以及为什么「区块内阻塞」有样式而「全屏阻塞」可能没有样式。

@@ -1,3 +1,9 @@
+---
+title: "7-12 · Popover：触发策略全集"
+description: "核心问题：hover/click/focus/manual 四个触发态，各自的守卫差异是什么——hover 的延迟对与面板豁免、click 的 toggle 语义与双击窗口、focus 的进出判定及其夺焦副作用、manual 的三层拦截；以"
+category: 组件库专栏
+
+---
 # 7-12 · Popover：触发策略全集
 
 > 核心问题：hover/click/focus/manual 四个触发态，各自的守卫差异是什么——hover 的延迟对与面板豁免、click 的 toggle 语义与双击窗口、focus 的进出判定及其夺焦副作用、manual 的三层拦截；以及被类型层明确拒绝的第五态：contextmenu。

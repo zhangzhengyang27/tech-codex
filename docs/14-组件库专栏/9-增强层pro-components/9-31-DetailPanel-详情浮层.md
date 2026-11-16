@@ -1,3 +1,9 @@
+---
+title: "9-31 · DetailPanel：详情浮层"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第 31 篇。大纲给本篇的核心问题只有一行——schema → descriptions 的转换——但这一行站在三条旧考据的交点上：9-03 把 field-schema.ts 讲成"
+category: 组件库专栏
+
+---
 # 9-31 · DetailPanel：详情浮层
 
 > 本篇是 9 卷"增强层（pro-components）"的第 31 篇。大纲给本篇的核心问题只有一行——**schema → descriptions 的转换**——但这一行站在三条旧考据的交点上：9-03 把 `field-schema.ts` 讲成"一份 schema 三形态"，其中详情态的承运者 `resolveProDescriptionsItems` 只服务 descriptions 系消费方，本篇展开它的主消费方；9-22 在 crud-page 的详情段引用过 `detail-panel.vue` 的 104-114 与 145-155 两段，并立案了"detail 插槽与 descriptions **并存追加（不互斥）**"的结论，本篇把这份协议从组件本体展开；8-07 把基础层 `xy-descriptions` 讲成"schema 化渲染"，本篇的 detail-panel 就住在那套 `DescriptionsDataItem` 协议的正上方一层。本篇全部结论以当前工作区实码为准，行号逐一核对，测试实跑通过。

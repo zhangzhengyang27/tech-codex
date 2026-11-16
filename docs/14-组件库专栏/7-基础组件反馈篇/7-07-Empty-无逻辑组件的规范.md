@@ -1,3 +1,9 @@
+---
+title: "7-07 · Empty：无逻辑组件的规范"
+description: "本篇是第 7 卷\"反馈与浮层\"的第七篇。核心问题：纯展示组件的 API 纪律。xy-empty 是全库最接近\"零逻辑\"的组件：83 行 SFC（packages/components/empty/src/empty.vue），没有 ref "
+category: 组件库专栏
+
+---
 # 7-07 · Empty：无逻辑组件的规范
 
 > 本篇是第 7 卷"反馈与浮层"的第七篇。核心问题：**纯展示组件的 API 纪律**。`xy-empty` 是全库最接近"零逻辑"的组件：83 行 SFC（`packages/components/empty/src/empty.vue`），没有 `ref` 可写状态，没有 `defineEmits`，没有暴露任何实例方法，没有一条 `watch`——但它是全库下游消费次数最多的组件之一：`XyTable`、`XyTree`、`XyTransfer`、`XyCard`、`XyNoticeCenter`、`XyAuditTimeline`、`XyAsyncStateContainer` 八处下游都把空态渲染委托给它。正因为被这么多人依赖，它的 5 个 props、4 个插槽、8 个 CSS 变量、两层文案回退，每一处都是"发布即契约"。本篇逐行拆解：83 行源码全文、image 的尺寸协商（画框而非画）、locale 三层默认文案链（6-01 引过的 `empty.vue:28-41` 消费段在此展开）、`empty.css` 全文的令牌消费、八处消费实证的三种接入模式，以及与 7-10 `result` 的分工边界。所有代码摘自当前工作区实态，行号逐一核对过。

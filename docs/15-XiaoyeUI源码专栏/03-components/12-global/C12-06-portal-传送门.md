@@ -1,3 +1,9 @@
+---
+title: "C12-06 Portal 传送门"
+description: "本篇解决：xy-portal 这个公开组件、_util/Portal.tsx 这个内部组件、_util/PortalWrapper.tsx 这个容器编排器，三者到底是什么关系？谁在用谁、谁不在用谁？公开组件的 appendTo / disa"
+category: XiaoyeUI源码专栏
+
+---
 # C12-06 Portal 传送门
 
 > **本篇解决**：`xy-portal` 这个公开组件、`_util/Portal.tsx` 这个内部组件、`_util/PortalWrapper.tsx` 这个容器编排器，三者到底是什么关系？谁在用谁、谁不在用谁？公开组件的 `appendTo` / `disabled` 是怎么变成一次 `<Teleport>` 决策的？改哪一行会让浮层全家炸？

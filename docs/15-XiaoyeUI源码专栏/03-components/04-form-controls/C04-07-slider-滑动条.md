@@ -1,3 +1,9 @@
+---
+title: "C04-07 Slider 滑动条"
+description: "本篇解决：滑动条的真实状态机在哪一层？拖拽期间挂在 document 上的监听器是否成对注册/卸载、多实例并存会不会互相抢句柄？draggableTrack 与键盘 Range 导航这两条「看起来能用」的通路在源码里到底通不通？"
+category: XiaoyeUI源码专栏
+
+---
 # C04-07 Slider 滑动条
 
 > **本篇解决**：滑动条的真实状态机在哪一层？拖拽期间挂在 `document` 上的监听器是否成对注册/卸载、多实例并存会不会互相抢句柄？`draggableTrack` 与键盘 Range 导航这两条「看起来能用」的通路在源码里到底通不通？

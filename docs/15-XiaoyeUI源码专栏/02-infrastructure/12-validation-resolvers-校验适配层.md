@@ -1,3 +1,9 @@
+---
+title: "I12 校验适配层 resolvers：五种 schema 的归一化契约"
+description: "本篇解决：src/resolvers/ 里那五个目录到底把 zod / yup / joi / superstruct / valibot 归一成了什么形状；这个形状与 Form 真正执行的规则对象是不是同一种东西；为什么五个 resolv"
+category: XiaoyeUI源码专栏
+
+---
 # I12 校验适配层 resolvers：五种 schema 的归一化契约
 
 > **本篇解决**：`src/resolvers/` 里那五个目录到底把 zod / yup / joi / superstruct / valibot 归一成了什么形状；这个形状与 `Form` 真正执行的规则对象是不是同一种东西；为什么五个 resolver 一条测试都没有、也没进构建产物，却仍然留在源码树里；新增第六种 schema 要动哪几处登记点。
@@ -395,7 +401,7 @@ export interface ValidatorRule {
 
 从消费侧走一遍。第一道墙是包解析：`packages/xiaoye-ui/package.json:125` 起的 `exports` 映射里没有 `./resolvers` 也没有 `./resolvers/*`，按 Node 的 `exports` 语义，未列出的子路径一律不可解析，`import { zodResolver } from 'xiaoye-ui/resolvers/zod'` 直接失败；连在本仓库的 workspace 里都过不去，因为 `exports` 对 workspace 链接同样生效。第二道墙是发布物：`packages/xiaoye-ui/package.json:30-32` 只发 `dist`，`publishConfig.directory`（`packages/xiaoye-ui/package.json:76`）也指向 `dist`，而 `dist` 树内没有 `resolvers` 目录（第 3.3 节实测）。于是五份子目录 `package.json` 里的 `main`/`module`/`types` 指针（`resolvers/zod/package.json:2-4`）在生产环境是死字段——它们指向的相对路径在发布物里不存在。第三道墙是聚合面：`packages/xiaoye-ui/src/components.ts` 全文不含 `resolver` 字样，`src/index.ts:6` 的 `export * from './components'` 因此也带不出它们，`app.use` 的注册循环（`packages/xiaoye-ui/src/index.ts:15-22`）更与它们无关。第四道墙是文档：`apps/docs` 下 `zod`、`yup`、`joi`、`superstruct`、`valibot` 五个库名零命中，`resolver` 一词也只出现在自动导入解析器的语境里（唯一含 `resolvers:` 的 `apps/docs/guide/installation.md:87` 讲的是 `unplugin-vue-components` 的选项，与本层同名不同物）。`apps/docs/components/form.md:104` 与 `:388` 把用户直接引向 `async-validator` 的规则语法，`:385` 一行给出 `validator` 这条自定义入口，全程不提 schema 适配层。
 
-> 属性清单见 [apps/docs/components/form.md](../../../apps/docs/components/form.md)。
+> 属性清单见 `apps/docs/components/form.md`。
 
 契约里唯一在 Form 侧真实生效的部分，是**字段级与表单级共享一个 name 语义**这一思路：`validateRules` 把 `namePath` 拼成点字符串再交给校验器（`packages/xiaoye-ui/src/form/utils/validateUtil.ts:107`），`toValues` 也用点路径与 `name` 作字典键（`packages/xiaoye-ui/src/utils/forms.ts:2`），两边的键形态可以对接。除此之外没有任何共同语言：`RuleError.errors` 要求 `string[]`（`packages/xiaoye-ui/src/form/interface.ts:109-112`），`Form.validateFields` 汇总时按 `warningOnly` 把字符串分成 errors 与 warnings（`packages/xiaoye-ui/src/form/Form.tsx:293-299`），最终 `ErrorList` 拿 `VueNode[]` 直接文本插值渲染（`packages/xiaoye-ui/src/form/ErrorList.tsx:10`、`ErrorList.tsx:53-61`）。resolver 返回的是错误对象数组，塞进这条链的唯一后果是屏幕上出现 `[object Object]`。
 

@@ -1,3 +1,9 @@
+---
+title: "9-26 · ColumnSettingPanel：列设置"
+description: "本篇的核心问题是列显隐/固定/排序的状态同步。按惯例先报实态核对结果：大纲考据里把列设置描述为\"三组状态（显隐/固定/排序）\"的标准件，实测当前工作区实态比这更有意思——仓库里存在两条平行的列设置实现路径，各自只覆盖了一部分状态。第一条是独"
+category: 组件库专栏
+
+---
 # 9-26 · ColumnSettingPanel：列设置
 
 本篇的核心问题是**列显隐/固定/排序的状态同步**。按惯例先报实态核对结果：大纲考据里把列设置描述为"三组状态（显隐/固定/排序）"的标准件，实测当前工作区实态比这更有意思——仓库里存在**两条平行的列设置实现路径**，各自只覆盖了一部分状态。第一条是独立增强组件 `XyColumnSettingPanel`（`packages/pro-components/column-setting-panel/`），全文 76 行 Vue + 13 行类型，**只有显隐一组状态**，通过 `v-model: string[]` 受控；第二条是 ProTable 工具条里内嵌的列设置面板（`packages/pro-components/pro-table/src/pro-table.vue:1573-1609`），有显隐和固定两组状态，但**不消费独立组件**，而是直接读写自己的 `internalColumns`；至于排序，实码定论是：**面板内没有任何排序控件**，排序由 `draggableColumn` 开启的 Sortable.js 表头拖拽承担（`pro-table.vue:1249-1268`），文档自己也承认这条边界——`apps/docs/pro-components/column-setting-panel.md:24` 写着"当前不处理列顺序拖拽、持久化和复杂权限裁剪"。

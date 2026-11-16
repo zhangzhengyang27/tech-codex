@@ -1,3 +1,9 @@
+---
+title: "C09-02 DirectoryTree 目录树"
+description: "本篇解决：src/directory-tree/ 把 tree 装成「文件浏览器」这一预设形态时，props 透传链在哪一行被改写、被谁覆盖，以及为封装而硬编码的图标与 -directory-rtl 类在暗色 / RTL 语境下如何与下层样"
+category: XiaoyeUI源码专栏
+
+---
 # C09-02 DirectoryTree 目录树
 
 > **本篇解决**：`src/directory-tree/` 把 `tree` 装成「文件浏览器」这一预设形态时，props 透传链在哪一行被改写、被谁覆盖，以及为封装而硬编码的图标与 `-directory-rtl` 类在暗色 / RTL 语境下如何与下层样式脱节。

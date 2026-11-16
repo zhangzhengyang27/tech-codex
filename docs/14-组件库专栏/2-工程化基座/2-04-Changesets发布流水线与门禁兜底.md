@@ -1,3 +1,9 @@
+---
+title: "2-04 · Changesets 发布流水线与门禁兜底"
+description: "核心问题：从一条 changeset 到 npm publish，中间有几道闸门？"
+category: 组件库专栏
+
+---
 # 2-04 · Changesets 发布流水线与门禁兜底
 
 > 核心问题：**从一条 changeset 到 npm publish，中间有几道闸门？**

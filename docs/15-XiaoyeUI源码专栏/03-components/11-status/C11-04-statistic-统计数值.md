@@ -1,3 +1,9 @@
+---
+title: "C11-04 Statistic 统计数值"
+description: "本篇解决：<xy-statistic> 把一个数字变成界面上那行「标题 + 前缀 + 数值 + 后缀」，中间到底经过了哪些代码；precision 为什么不四舍五入、groupSeparator 跟语言包有没有关系、Countdown 靠什"
+category: XiaoyeUI源码专栏
+
+---
 # C11-04 Statistic 统计数值
 
 > **本篇解决**：`<xy-statistic>` 把一个数字变成界面上那行「标题 + 前缀 + 数值 + 后缀」，中间到底经过了哪些代码；`precision` 为什么不四舍五入、`groupSeparator` 跟语言包有没有关系、`Countdown` 靠什么每 33ms 刷新一次却不走响应式；以及仓库里那两个都叫 `statistic` 的文件到底是不是一回事。
@@ -7,8 +13,8 @@
 
 `statistic/` 是一个**纯展示、无内部状态**的组件目录，四个运行时文件构成全部实现：`Statistic.tsx` 负责 DOM 分层与 props/slots 归并，`Number.tsx` 负责把 `value` 变成字符串或两组 `<span>`，`utils.ts` 负责倒计时的时间差格式化，`Countdown.tsx` 负责定时驱动；样式与装配另算（见 §二 的七行地图）。它不做的事同样需要写清楚，因为文档站点的示例会让人误以为它做：
 
-- **不做数值过渡动画**。官方示例自己承认这一点：「Statistic 组件本身不内置数值过渡动画。本示例通过 requestAnimationFrame 自定义实现数值插值」，见 [apps/docs/examples/statistic/animation.vue:55](../../../apps/docs/examples/statistic/animation.vue)，插值逻辑 `tween` 全部写在示例的 `<script setup>` 里（`animation.vue:86`-`:99`）。组件源码里没有任何 `transition`、`animation`、`requestAnimationFrame` 字样。
-- **不做暂停/恢复**。`Countdown` 没有暴露任何方法，`setup` 的返回值就是渲染函数（`packages/xiaoye-ui/src/statistic/Countdown.tsx:86`），没有 `expose`。官方倒计时示例的「暂停」是靠 `v-if` 卸载组件实现的（[apps/docs/examples/statistic/countdown.vue:43](../../../apps/docs/examples/statistic/countdown.vue)：「Countdown 内部自动启动定时器，通过 v-if 卸载组件模拟暂停效果」）。
+- **不做数值过渡动画**。官方示例自己承认这一点：「Statistic 组件本身不内置数值过渡动画。本示例通过 requestAnimationFrame 自定义实现数值插值」，见 `apps/docs/examples/statistic/animation.vue:55`，插值逻辑 `tween` 全部写在示例的 `<script setup>` 里（`animation.vue:86`-`:99`）。组件源码里没有任何 `transition`、`animation`、`requestAnimationFrame` 字样。
+- **不做暂停/恢复**。`Countdown` 没有暴露任何方法，`setup` 的返回值就是渲染函数（`packages/xiaoye-ui/src/statistic/Countdown.tsx:86`），没有 `expose`。官方倒计时示例的「暂停」是靠 `v-if` 卸载组件实现的（`apps/docs/examples/statistic/countdown.vue:43`：「Countdown 内部自动启动定时器，通过 v-if 卸载组件模拟暂停效果」）。
 - **不做本地化数字格式**。组件不读 locale，也不调用 `Intl.NumberFormat`，详见 §四 论点 3。
 - **不做四舍五入**。`precision` 是字符串截断，详见 §四 论点 2。
 
@@ -16,7 +22,7 @@
 
 ## 二、源码地图
 
-> 属性清单与用法见 [apps/docs/components/statistic.md](../../../apps/docs/components/statistic.md)，本篇不重复。
+> 属性清单与用法见 `apps/docs/components/statistic.md`，本篇不重复。
 
 | 文件 | 行数 | 职责 | 关键导出 / 主入口 |
 | --- | --- | --- | --- |
@@ -218,7 +224,7 @@ flowchart TD
   }),
 ```
 
-也就是说 `decimalSeparator: '.'` 与 `groupSeparator: ','` 是**英文字区常量**，硬编码在组件里（`packages/xiaoye-ui/src/statistic/Statistic.tsx:37`-`:38`），不来自 `ConfigProvider`，也不来自 `navigator.language`。`statistic/` 目录里 `grep -rn "locale"` 命中数为 0、`grep -rn "statistic" packages/xiaoye-ui/src/config-provider` 命中数也为 0，两侧互不认识就是这件事的直接证据。德语、法语、俄语这类「小数点用逗号、千分位用点或空格」的语言环境要正确显示，只有一条路：每个 `<xy-statistic>` 手动传 `decimal-separator`/`group-separator`。这与 [I11 多语言体系](../../02-infrastructure/11-locale-system.md) 的结论是同一件事的两面：语言包解决的是「文案」（`renderEmpty`、`LocaleReceiver` 那条链），从来不覆盖数字格式化，本篇不重复展开。本地化通路缺失在同类组件里不是孤例，但 statistic 是暴露得最直接的一个，因为它整个职责就是显示数字。
+也就是说 `decimalSeparator: '.'` 与 `groupSeparator: ','` 是**英文字区常量**，硬编码在组件里（`packages/xiaoye-ui/src/statistic/Statistic.tsx:37`-`:38`），不来自 `ConfigProvider`，也不来自 `navigator.language`。`statistic/` 目录里 `grep -rn "locale"` 命中数为 0、`grep -rn "statistic" packages/xiaoye-ui/src/config-provider` 命中数也为 0，两侧互不认识就是这件事的直接证据。德语、法语、俄语这类「小数点用逗号、千分位用点或空格」的语言环境要正确显示，只有一条路：每个 `<xy-statistic>` 手动传 `decimal-separator`/`group-separator`。这与 [I11 多语言体系](../../02-infrastructure/11-locale-system-多语言体系.md) 的结论是同一件事的两面：语言包解决的是「文案」（`renderEmpty`、`LocaleReceiver` 那条链），从来不覆盖数字格式化，本篇不重复展开。本地化通路缺失在同类组件里不是孤例，但 statistic 是暴露得最直接的一个，因为它整个职责就是显示数字。
 
 **结论**：`<xy-config-provider locale="deDE">` 包住的 `<xy-statistic :value="1234.5">` 仍然显示 `1,234.5`。改这里的安全做法是在 `useConfigInject` 之外新增一层「数字格式配置」（例如 `ConfigProvider` 的 `locale.numberFormat`），让 `Statistic.tsx:36`-`:40` 的默认值变成兜底而非唯一来源，而不是在 `Number.tsx` 里塞 `Intl`——后者会让 `Number.tsx` 从纯函数变成依赖运行环境的行为不确定件，SSR 首屏与客户端 hydration 可能不一致。
 
@@ -381,7 +387,7 @@ export default genComponentStyleHook('Statistic', token => {
   Statistic?: {};
 ```
 
-空对象。同批占位还有 `Switch?: {}`（`:132`）、`Tree?: {}`（`:134`）、`TreeSelect?: {}`（`:135`）。它与已登记组件的差别在文件头部就能看到：`packages/xiaoye-ui/src/theme/interface/components.ts:1`-`:6` 那一串 `import type { ComponentToken as ButtonComponentToken } from '../../button/style'` 需要组件样式文件导出一个 `ComponentToken` 接口，而 `packages/xiaoye-ui/src/statistic/style/index.tsx:6` 只声明了一个**没有 `export`** 的 `interface StatisticToken extends FullToken<'Statistic'>`——所以注册表无内容可引，只能填 `{}`。后果是可验证的：`theme.components.Statistic` 这个覆盖入口在类型上存在但**不接受任何组件专属键**，`:64`-`:66` 造出的 `statisticTitleFontSize`/`statisticContentFontSize`/`statisticFontFamily` 无法从外部覆盖，只能覆盖它们各自的 Alias 来源（`fontSizeHeading3` 等）；而覆盖 Alias 会同时影响所有用该字段的组件。这是 [A03 论点 9/10](../../01-architecture/03-design-token.md) 所说「空对象占位」在 statistic 上的具体形态，本篇不重复展开其体系论证。
+空对象。同批占位还有 `Switch?: {}`（`:132`）、`Tree?: {}`（`:134`）、`TreeSelect?: {}`（`:135`）。它与已登记组件的差别在文件头部就能看到：`packages/xiaoye-ui/src/theme/interface/components.ts:1`-`:6` 那一串 `import type { ComponentToken as ButtonComponentToken } from '../../button/style'` 需要组件样式文件导出一个 `ComponentToken` 接口，而 `packages/xiaoye-ui/src/statistic/style/index.tsx:6` 只声明了一个**没有 `export`** 的 `interface StatisticToken extends FullToken<'Statistic'>`——所以注册表无内容可引，只能填 `{}`。后果是可验证的：`theme.components.Statistic` 这个覆盖入口在类型上存在但**不接受任何组件专属键**，`:64`-`:66` 造出的 `statisticTitleFontSize`/`statisticContentFontSize`/`statisticFontFamily` 无法从外部覆盖，只能覆盖它们各自的 Alias 来源（`fontSizeHeading3` 等）；而覆盖 Alias 会同时影响所有用该字段的组件。这是 [A03 论点 9/10](../../01-architecture/03-design-token-四层体系.md) 所说「空对象占位」在 statistic 上的具体形态，本篇不重复展开其体系论证。
 
 样式层还有两条**没有 DOM 对应**的选择器，改动时容易误判成有效：
 

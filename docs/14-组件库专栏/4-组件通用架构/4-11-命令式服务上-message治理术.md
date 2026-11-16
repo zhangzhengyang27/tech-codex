@@ -1,3 +1,9 @@
+---
+title: "4-11 · 命令式服务（上）：message 治理术"
+description: "4-02 讲清楚了 $message 是怎么被装到 app 上的：withInstallFunction 在 install 那一刻捕获 app._context，把 XyMessage 挂到 globalProperties.$messa"
+category: 组件库专栏
+
+---
 # 4-11 · 命令式服务（上）：message 治理术
 
 ## 三个真实的翻车现场

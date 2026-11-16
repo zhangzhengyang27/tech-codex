@@ -1,3 +1,9 @@
+---
+title: "A03 Design Token 四层体系"
+description: "本篇解决：改一个 colorPrimary 到底经过了哪几次函数转换才变成 CSS？为什么 theme.token 里写 colorLink 和写 colorPrimary 走的是两条路？dark/compact 算法为什么不重算圆角？"
+category: XiaoyeUI源码专栏
+
+---
 # A03 Design Token 四层体系
 
 > **本篇解决**：改一个 `colorPrimary` 到底经过了哪几次函数转换才变成 CSS？为什么 `theme.token` 里写 `colorLink` 和写 `colorPrimary` 走的是两条路？dark/compact 算法为什么不重算圆角？

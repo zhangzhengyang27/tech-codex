@@ -1,3 +1,9 @@
+---
+title: "C09-00 类横写：树数据的三种可视化形态"
+description: "本篇解决 同一份树数据在 tree / tree-select / 表格的树形展开三种形态里如何被规范化，展开与选中状态分别由谁持有，以及 vc-tree 与 table-core 两条展开路径为何并存。"
+category: XiaoyeUI源码专栏
+
+---
 # C09-00 类横写：树数据的三种可视化形态
 
 > **本篇解决** 同一份树数据在 `tree` / `tree-select` / 表格的树形展开三种形态里如何被规范化，展开与选中状态分别由谁持有，以及 `vc-tree` 与 `table-core` 两条展开路径为何并存。
@@ -17,7 +23,7 @@
 
 本篇**不负责**：
 
-- 单个组件的完整 props/事件/插槽清单（属各组件篇；`tree` 的属性清单见 [apps/docs/components/tree.md](../../../apps/docs/components/tree.md)）；
+- 单个组件的完整 props/事件/插槽清单（属各组件篇；`tree` 的属性清单见 `apps/docs/components/tree.md`）；
 - 虚拟列表自身的实现——已由 I08《虚拟化双实现：vc-virtual-list 与 virtual-scroller》论证，本篇只引用其「`vc-virtual-list` 仅被 `vc-select`/`vc-tree`/`vc-tree-select` 消费、`virtual-scroller` 仅被 `data-table/DataTable.tsx:47` 消费」这一结论；
 - 表格排序/过滤/分页内核——已由 I06《table-core 状态机》论证，本篇只补它的边界（无展开职责）；
 - 下拉浮层的开合时序与事件穿透——归 I02《vc-trigger 弹出时序与事件穿透》；
@@ -891,7 +897,7 @@ export function createTableEngine(options: TableEngineOptions): TableEngine {
 
 ## 五、对外契约如何生效
 
-本节只讲**一条契约从公开层流到渲染/回调的路径形状**，属性清单不在此重复（见 [apps/docs/components/tree.md](../../../apps/docs/components/tree.md) 与 [apps/docs/components/tree-select.md](../../../apps/docs/components/tree-select.md)）。
+本节只讲**一条契约从公开层流到渲染/回调的路径形状**，属性清单不在此重复（见 `apps/docs/components/tree.md` 与 `apps/docs/components/tree-select.md`）。
 
 **字段名契约（`fieldNames`）在三个形态里的落点不同。** 公开 `Tree` 支持一个已废弃的别名入口并做映射：
 

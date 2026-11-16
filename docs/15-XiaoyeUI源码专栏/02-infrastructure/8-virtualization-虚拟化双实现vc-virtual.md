@@ -1,3 +1,9 @@
+---
+title: "I08 虚拟化双实现：vc-virtual-list 与 virtual-scroller"
+description: "本篇解决：vc-virtual-list、virtual-list、virtual-scroller 三个目录到底是什么关系？各自用在哪里、可见窗口与高度怎么算、scrollTo 边界如何处理、为什么允许两套并存、选型该看哪几个维度。"
+category: XiaoyeUI源码专栏
+
+---
 # I08 虚拟化双实现：vc-virtual-list 与 virtual-scroller
 
 > **本篇解决**：`vc-virtual-list`、`virtual-list`、`virtual-scroller` 三个目录到底是什么关系？各自用在哪里、可见窗口与高度怎么算、`scrollTo` 边界如何处理、为什么允许两套并存、选型该看哪几个维度。

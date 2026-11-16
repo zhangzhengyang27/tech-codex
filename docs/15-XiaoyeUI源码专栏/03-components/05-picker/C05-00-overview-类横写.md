@@ -1,3 +1,9 @@
+---
+title: "C05-00 类横写：select/cascader/tree-select 共用的选项流水线"
+description: "本篇解决：select、cascader、tree-select 从 options/children/treeData 到下拉里可点击的那份数据，中间六段流水线里究竟哪几段真的共用代码、哪几段只是形状相似各写一遍，以及改哪一行会同时打到另"
+category: XiaoyeUI源码专栏
+
+---
 # C05-00 类横写：select/cascader/tree-select 共用的选项流水线
 
 > **本篇解决**：`select`、`cascader`、`tree-select` 从 `options`/`children`/`treeData` 到下拉里可点击的那份数据，中间六段流水线里究竟哪几段真的共用代码、哪几段只是形状相似各写一遍，以及改哪一行会同时打到另外两个组件。

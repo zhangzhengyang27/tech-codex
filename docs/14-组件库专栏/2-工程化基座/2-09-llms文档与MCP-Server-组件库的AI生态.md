@@ -1,3 +1,9 @@
+---
+title: "2-09 · llms 文档与 MCP Server：组件库的 AI 生态"
+description: "核心问题：让 AI 用对你的组件库，需要哪四层数据设施？"
+category: 组件库专栏
+
+---
 # 2-09 · llms 文档与 MCP Server：组件库的 AI 生态
 
 > 核心问题：**让 AI 用对你的组件库，需要哪四层数据设施？**
@@ -178,7 +184,7 @@ app.use(XyComponents)
 
 ## 完整 API 参考
 
-详见 [llms-full.txt](./llms-full.txt)，包含每个组件的完整 Props / Events / Slots / Exposes 定义。
+详见 `llms-full.txt`，包含每个组件的完整 Props / Events / Slots / Exposes 定义。
 ```
 
 先记下一笔，第五节要回来对账：这里手写的"全局尺寸：`xs` / `sm` / `md` / `lg` / `xl`"与运行时真实定义基本一致（`packages/xiaoye-primitives/src/composables/shared-context.ts:6` 的 `ComponentSize = "" | "xs" | "sm" | "md" | "lg" | "xl"`，默认值 `"md"` 在同文件 28 行），却与后面生成链和 MCP instructions 里的口径**不一致**——同一份"AI 界面"上，尺寸这一个知识点就有三种说法。

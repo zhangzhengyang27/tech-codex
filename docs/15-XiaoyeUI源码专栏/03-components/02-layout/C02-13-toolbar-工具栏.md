@@ -1,3 +1,9 @@
+---
+title: "C02-13 Toolbar 工具栏"
+description: "本篇解决：src/toolbar/ 到底依赖谁、又实际不依赖谁——一个只有 42 行的组件为何被队列登记为「底层 space」却在源码里与 Space 零耦合，它的 inheritAttrs: false 为什么反而让外部属性静默消失，ro"
+category: XiaoyeUI源码专栏
+
+---
 # C02-13 Toolbar 工具栏
 
 > **本篇解决**：`src/toolbar/` 到底依赖谁、又实际不依赖谁——一个只有 42 行的组件为何被队列登记为「底层 space」却在源码里与 Space 零耦合，它的 `inheritAttrs: false` 为什么反而让外部属性静默消失，`role="toolbar"` 兑现了 ARIA 契约的哪一半、又欠了哪一半。

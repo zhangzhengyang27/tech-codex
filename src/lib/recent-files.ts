@@ -70,7 +70,12 @@ function walk(dir: string, onFile: (abs: string) => void): void {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.isDirectory() && !entry.name.startsWith('.')) {
       walk(path.join(dir, entry.name), onFile);
-    } else if (entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'index.md') {
+    } else if (
+      entry.isFile() &&
+      entry.name.endsWith('.md') &&
+      entry.name !== 'index.md' &&
+      !entry.name.startsWith('_') // 工作区元文件不进最近更新列表
+    ) {
       onFile(path.join(dir, entry.name));
     }
   }

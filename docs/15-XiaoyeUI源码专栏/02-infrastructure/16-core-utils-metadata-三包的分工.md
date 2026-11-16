@@ -1,3 +1,9 @@
+---
+title: "I16 core / utils / metadata 三包的分工"
+description: "本篇解决：@xiaoye-ui/utils、@xiaoye-ui/core、@xiaoye-ui/metadata 三个「共享代码」包各自到底装了什么、被谁调用、能不能合并；以及主库内部为什么还要再长出 src/utils/forms.ts"
+category: XiaoyeUI源码专栏
+
+---
 # I16 core / utils / metadata 三包的分工
 
 > **本篇解决**：`@xiaoye-ui/utils`、`@xiaoye-ui/core`、`@xiaoye-ui/metadata` 三个「共享代码」包各自到底装了什么、被谁调用、能不能合并；以及主库内部为什么还要再长出 `src/utils/forms.ts` 与 `src/_shared/`。

@@ -1,3 +1,9 @@
+---
+title: "7-06 · CollapseTransition：height 过渡为何必须 JS 参与"
+description: "7-05 收尾时留了两处伏笔：一处是 collapse-item.vue:77 那个包着 v-show 内容区的 <xy-collapse-transition>，另一处是 collapse.css:105 那行 will-change: "
+category: 组件库专栏
+
+---
 # 7-06 · CollapseTransition：height 过渡为何必须 JS 参与
 
 7-05 收尾时留了两处伏笔：一处是 `collapse-item.vue:77` 那个包着 `v-show` 内容区的 `<xy-collapse-transition>`，另一处是 `collapse.css:105` 那行 `will-change: max-height`——一个纯 CSS 声明，却指向一个 CSS 自己完成不了的动画。这一篇就把这两处伏笔一并收掉：**height（以及它的代理属性 max-height）是少数几个"CSS 无法单方面平滑过渡"的属性，为什么补上这一环的必须是 JS 钩子，`scrollHeight` 的读取时机为什么卡在一帧之差，八个钩子各自守着哪条时序边界**。答案全部住在 `packages/components/collapse-transition/src/collapse-transition.vue` 这 73 行里——它与 space（42 行）、divider（59 行）同处全库最小组件梯队，却承担着 collapse、descriptions、tree 三个组件家族的展开动画协议。

@@ -1,3 +1,9 @@
+---
+title: "6-14 · TimeSelect：select 的特化"
+description: "本篇源码坐标（均为当前工作区实态）："
+category: 组件库专栏
+
+---
 # 6-14 · TimeSelect：select 的特化
 
 > 本篇源码坐标（均为当前工作区实态）：

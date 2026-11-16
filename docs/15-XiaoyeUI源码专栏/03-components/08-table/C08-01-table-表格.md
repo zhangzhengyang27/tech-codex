@@ -1,3 +1,9 @@
+---
+title: "C08-01 Table 表格"
+description: "本篇解决：Table 如何把用户声明的 column DSL 编译到 vc-table 的渲染单元，固定列与滚动如何同步，排序/筛选/选择的事件如何上抛、状态如何回落。"
+category: XiaoyeUI源码专栏
+
+---
 # C08-01 Table 表格
 
 > **本篇解决**：Table 如何把用户声明的 column DSL 编译到 `vc-table` 的渲染单元，固定列与滚动如何同步，排序/筛选/选择的事件如何上抛、状态如何回落。

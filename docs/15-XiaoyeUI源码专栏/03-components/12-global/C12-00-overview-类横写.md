@@ -1,3 +1,9 @@
+---
+title: "C12-00 类横写：应用级容器与全局能力（App/Portal/FocusTrap/Ripple）"
+description: "本篇解决：C12 这一类里为什么同时存在「容器型组件」（App / ConfigProvider）与「行为型组件」（Portal / FocusTrap / Ripple / DarkModeToggle）两种形状迥异的东西；同类内部如何分"
+category: XiaoyeUI源码专栏
+
+---
 # C12-00 类横写：应用级容器与全局能力（App/Portal/FocusTrap/Ripple）
 
 > **本篇解决**：C12 这一类里为什么同时存在「容器型组件」（App / ConfigProvider）与「行为型组件」（Portal / FocusTrap / Ripple / DarkModeToggle）两种形状迥异的东西；同类内部如何分工，哪些机制是这类共有的、哪些只属于某个组件；以及它们与 `config-provider`、`theme`、`_util` 传送门、浮层链路的边界到底画在哪一行。

@@ -1,3 +1,9 @@
+---
+title: "6-01 · ConfigProvider：全局配置源头"
+description: "本篇回答第六卷的第一个问题：组件库里的全局配置，到底是怎么从源头流到每一个组件、每一次服务调用里的？ <xy-config-provider> 对外只暴露八个配置项——namespace、size、zIndex、locale，加上 dial"
+category: 组件库专栏
+
+---
 # 6-01 · ConfigProvider：全局配置源头
 
 > 本篇回答第六卷的第一个问题：**组件库里的全局配置，到底是怎么从源头流到每一个组件、每一次服务调用里的？** `<xy-config-provider>` 对外只暴露八个配置项——`namespace`、`size`、`zIndex`、`locale`，加上 `dialog`、`loading`、`message`、`notification` 四项服务配置——但支撑这八个字段的，是一套双通道分发模型：组件树内的 provide/inject，组件树外的模块级 Registry 快照。前情有两处：4-02 从安装器视角讲过快照桥的"桥"是怎么搭起来的，4-08 从表单级联视角讲过 `useConfig` 的降级与 undefined 穿透；本篇把这两处引子展开成**完整的配置模型**——八个字段的类型层、两条通道的实现全文、四条降级链的消费实证，以及与 Element Plus 同类实现的逐点对照。

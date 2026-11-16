@@ -1,3 +1,9 @@
+---
+title: "7-13 · Popconfirm：确认语义"
+description: "本篇源码坐标（均为当前工作区实态）："
+category: 组件库专栏
+
+---
 # 7-13 · Popconfirm：确认语义
 
 > 本篇源码坐标（均为当前工作区实态）：

@@ -1,3 +1,9 @@
+---
+title: "C06-01 Form 表单"
+description: "本篇解决：<xy-form> 的模型（model/useForm）如何收集字段、规则如何解析与执行、提交与错误回显沿着哪条链路流动。"
+category: XiaoyeUI源码专栏
+
+---
 # C06-01 Form 表单
 
 > **本篇解决**：`<xy-form>` 的模型（model/`useForm`）如何收集字段、规则如何解析与执行、提交与错误回显沿着哪条链路流动。
@@ -487,7 +493,7 @@ id 的来源在 FormItem 侧：
 - **`colon` 只有两级且不落回内置默认**（`Form.tsx:143`）。`??` 使 `props.colon === false` 能压过 ConfigProvider（`Form.tsx:143`），但两级都是 `undefined` 时 `mergedColon` 就是 `undefined`，兜底推迟到 label 侧的 `colon === true || (contextColon?.value !== false && colon !== false)`（`packages/xiaoye-ui/src/form/FormItemLabel.tsx:58`）——「默认有冒号」这件事是**在 FormItemLabel 里靠 `!== false` 表达**的，而不是 Form 给的默认值。改 Form 的 `colon` 逻辑时必须同时看这一行。
 - **`validateMessages` 是浅展开**（`Form.tsx:145-151`），随后逐字段透传给 `field.validateRules({ validateMessages: validateMessages.value, ...options })`（`Form.tsx:280-283`），最终在 `validateRule` 里被再合一次：`setValues({}, defaultValidateMessages, options.validateMessages)`（`packages/xiaoye-ui/src/form/utils/validateUtil.ts:48`）。`setValues` 对纯对象键递归（`packages/xiaoye-ui/src/form/utils/valueUtil.ts:44-61`，`isObject` 判定在 `valueUtil.ts:36-38`）。两次合并叠加后的净效果是：内置模板的嵌套键（如 `string.len`）总能被补回来，但 **ConfigProvider 的嵌套模板会被组件级同名嵌套对象整块顶掉**——`validateMessages` 上展开的是顶层键，`string: { min }` 一出现就替换掉整个 `string`，`globalValidateMessages.string.max` 在第一步已经丢了，第二步只能从 `defaultValidateMessages` 恢复。所以「全局配一套中文文案、某个表单再补一条」这种写法在嵌套层上不成立，必须自己把对象合全。
 - **`size` 与 `disabled` 是二次 provide，且合并运算符不同**：`useProviderSize(size)`（`Form.tsx:141`）与 `useProviderDisabled(disabled)`（`Form.tsx:142`）分别落到 `packages/xiaoye-ui/src/config-provider/SizeContext.ts:9-16` 与 `packages/xiaoye-ui/src/config-provider/DisabledContext.ts:10-17`，前者用 `size.value || parentSize.value`（`SizeContext.ts:13`），后者用 `disabled.value ?? parentDisabled.value`（`DisabledContext.ts:14`）。而传进去的 `size`/`disabled` 本身已经是 `useConfigInject` 合过一遍的结果（`useConfigInject.ts:39` 的 `props.size || sizeContext.value`、`useConfigInject.ts:43` 的 `props.disabled ?? disabledContext.value`）。也就是说 Form 把同一对运算符执行了两次。对 `size` 而言这两个运算符**等价**，因为 `SizeType` 的三个合法值 `'small'|'middle'|'large'` 都是真值、唯一的假值就是 `undefined`（`SizeContext.ts:3`）；对 `disabled` 而言它们**不等价**，因为 `DisabledType` 允许 `false` 这个真值（`DisabledContext.ts:4`），`??` 让表单上显式写的 `:disabled="false"` 能覆盖父级的 `true`，一旦把 `DisabledContext.ts:14` 改成 `||` 就会被顶掉——**这是一条语义靠一个运算符撑着、却没有测试保护的链**（`form/__tests__` 里没有任何 `size`/`disabled` 相关用例，复现：`grep -rn "size\|disabled" packages/xiaoye-ui/src/form/__tests__` 返回空）。
-- 这两个 provider 的作用域**不限于 FormItem**：provide 覆盖 Form 默认插槽里的整棵子树（`Form.tsx:410-416` 渲染 `slots.default?.()`），所以表单末尾的 `<xy-button type="primary">` 也会吃到 Form 的 `size`/`disabled`。这是 Form 作为「布局容器」之外的第二重身份，也是「禁用整个表单」唯一可用的开关（Form 自身没有 `readOnly` 之类的 prop，`formProps` 全集见 `Form.tsx:48-75`；属性清单以手册为准，见 [apps/docs/components/form.md](../../../apps/docs/components/form.md)）。
+- 这两个 provider 的作用域**不限于 FormItem**：provide 覆盖 Form 默认插槽里的整棵子树（`Form.tsx:410-416` 渲染 `slots.default?.()`），所以表单末尾的 `<xy-button type="primary">` 也会吃到 Form 的 `size`/`disabled`。这是 Form 作为「布局容器」之外的第二重身份，也是「禁用整个表单」唯一可用的开关（Form 自身没有 `readOnly` 之类的 prop，`formProps` 全集见 `Form.tsx:48-75`；属性清单以手册为准，见 `apps/docs/components/form.md`）。
 
 结论回扣：`mergedRequiredMark`、`mergedColon`、`validateMessages`、`fields`、`useProviderSize/Disabled` 一起构成 Form 的「配置出口面」，它们经 `useProvideForm` 一次性下发 15 个成员（`Form.tsx:381-399`，类型 `FormContextProps` 见 `context.ts:9-30`，C06-00 第五节已数过成员）。本篇关心的是**这些合成规则彼此不成体系**：加第六个可配置项时，没有一处集中的「优先级定义」可参照，只能逐条抄最相近的那条链。
 

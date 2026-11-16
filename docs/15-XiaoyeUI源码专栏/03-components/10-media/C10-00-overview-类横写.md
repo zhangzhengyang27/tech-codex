@@ -1,3 +1,9 @@
+---
+title: "C10-00 类横写：图片组的预览与对比关系"
+description: "本篇解决：图片类组件（Image / PreviewGroup / ImageCompare / Carousel）共享的「预览层容器与层级从哪来、多图切换状态归属、加载/错误/骨架态取舍、transform 缩放拖拽实现位置」这四个横切问"
+category: XiaoyeUI源码专栏
+
+---
 # C10-00 类横写：图片组的预览与对比关系
 
 > **本篇解决**：图片类组件（Image / PreviewGroup / ImageCompare / Carousel）共享的「预览层容器与层级从哪来、多图切换状态归属、加载/错误/骨架态取舍、transform 缩放拖拽实现位置」这四个横切问题，在源码里分别落在哪一层。
@@ -19,7 +25,7 @@
 - 浮层基座本身（Trigger / Portal / 层级编排的内部实现）——见 A07《交互基础设施总览：一个浮层是怎么拼起来的》与 C12-06《Portal》。本篇只讲图片类**如何调用**它们，以及调用方式上的分歧。
 - FocusTrap 与 Ripple 的实现——归 C12-07《FocusTrap》与 C12-05《Ripple》，本篇不展开。（原画廊组件曾是库内唯一 focus-trap 运行时消费者，该组件已于 2026-10-02 移除，现全库没有 focus-trap 的运行时消费点。）
 - 虚拟滚动与动效系统本身——见 I08、I09。本篇只在图片类**是否**使用它们的层面上立论。
-- Props 清单与用法：`> 属性清单见 [apps/docs/components/image.md](../../../apps/docs/components/image.md)。`
+- Props 清单与用法：`> 属性清单见 `apps/docs/components/image.md`。`
 
 五个目录之间的实际依赖（不是想象出来的分层）：
 

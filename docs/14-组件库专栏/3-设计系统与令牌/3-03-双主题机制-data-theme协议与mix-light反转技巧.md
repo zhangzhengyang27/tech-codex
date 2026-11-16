@@ -1,3 +1,9 @@
+---
+title: "3-03 · 双主题机制：data-theme 协议与 --xy-mix-light 反转技巧"
+description: "核心问题：85 行暗色覆写，如何换掉整个库的皮肤？"
+category: 组件库专栏
+
+---
 # 3-03 · 双主题机制：data-theme 协议与 --xy-mix-light 反转技巧
 
 > 核心问题：85 行暗色覆写，如何换掉整个库的皮肤？

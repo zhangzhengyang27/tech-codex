@@ -1,3 +1,9 @@
+---
+title: "4-02 · 安装器体系：withInstall、Context 捕获与幂等锁"
+description: "先把这个系列核心问题里的主角请上台。在几乎每一个用本库的项目里，你都会见到这样的代码："
+category: 组件库专栏
+
+---
 # 4-02 · 安装器体系：withInstall、Context 捕获与幂等锁
 
 ## 一个"违反直觉"的现象

@@ -1,3 +1,9 @@
+---
+title: "C03-06 Steps 步骤条"
+description: "本篇解决：current 与 status 如何被折算成每个条目的四态，点与连接线在 direction × labelPlacement × type 的类名乘积下由哪个元素承担，以及子项集合如何在下标层面与父级同步。"
+category: XiaoyeUI源码专栏
+
+---
 # C03-06 Steps 步骤条
 
 > **本篇解决**：`current` 与 `status` 如何被折算成每个条目的四态，点与连接线在 `direction` × `labelPlacement` × `type` 的类名乘积下由哪个元素承担，以及子项集合如何在下标层面与父级同步。
@@ -616,7 +622,7 @@ flowchart TD
 
 ## 五、对外契约如何生效
 
-Steps 的对外面一共四条通道：props、slots、事件、样式与类型生成物。逐条走一遍路径，不列属性清单（清单见 [apps/docs/components/steps.md](../../../apps/docs/components/steps.md)）。
+Steps 的对外面一共四条通道：props、slots、事件、样式与类型生成物。逐条走一遍路径，不列属性清单（清单见 `apps/docs/components/steps.md`）。
 
 **props 的下发是「先全量摊平、再定点覆盖」。** 组件层把 `stepsProps()` 声明的 15 个键（`packages/xiaoye-ui/src/steps/index.tsx:23-39`）中除 `percent`、`responsive` 之外的全部用 `{...omit(props, ['percent', 'responsive'])}`（`:139`）摊给 `VcSteps`，随后在 JSX 上又显式重写 `items`、`direction`、`prefixCls`、`iconPrefix`（`:140-143`）——后写的生效，因为 JSX 展开是对象合并、后者覆盖前者。`prefixCls` 之所以必须重写，是因为组件层从 `useConfigInject('steps', props)` 拿到的是带前缀的完整类名 `xy-steps`（`:71`），而用户直接传进来的 `props.prefixCls` 只是裸片段；vendor 层自己的默认值 `vc-steps`（`packages/xiaoye-ui/src/vc-steps/Steps.tsx:17`）因此在公开路径下永远不出现，只有绕过组件层直接用 `vc-steps` 时才会。默认值分三处补齐：`initDefaultProps` 只给 `current: 0`、`responsive: true`、`labelPlacement: 'horizontal'`（`packages/xiaoye-ui/src/steps/index.tsx:59-63`），`status` 与 `direction`、`initial`、`type` 的默认全部依赖 vendor 层的 `PropTypes...def(...)`（`Steps.tsx:16-26`），而 `percent` 没有默认（`:28`），这正是 `:97` 与 `:127` 用 `!== undefined` 而非真值判断的原因。
 

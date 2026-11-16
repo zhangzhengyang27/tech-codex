@@ -1,3 +1,9 @@
+---
+title: "I09 动画与 motion 体系"
+description: "本篇解决：一个组件的进出场动画，类名是谁拼的、CSS 是谁生成的、这两串字符串在哪个函数上对齐；transition.ts 与 transition.tsx 为什么同时存在且其中一份是死代码；折叠高度动画在哪个帧测量、为什么必须测两次；以及"
+category: XiaoyeUI源码专栏
+
+---
 # I09 动画与 motion 体系
 
 > **本篇解决**：一个组件的进出场动画，类名是谁拼的、CSS 是谁生成的、这两串字符串在哪个函数上对齐；`transition.ts` 与 `transition.tsx` 为什么同时存在且其中一份是死代码；折叠高度动画在哪个帧测量、为什么必须测两次；以及本库对 `prefers-reduced-motion` 到底做了什么。

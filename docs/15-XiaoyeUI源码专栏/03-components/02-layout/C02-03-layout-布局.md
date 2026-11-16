@@ -1,3 +1,9 @@
+---
+title: "C02-03 Layout 布局"
+description: "本篇解决：xy-layout 家族（Layout / Sider / Header / Footer / Content）为什么离开 Layout 就完全没有样式、侧栏折叠状态如何经父子协商与两条 provide 通道流动、siderWid"
+category: XiaoyeUI源码专栏
+
+---
 # C02-03 Layout 布局
 
 > **本篇解决**：`xy-layout` 家族（Layout / Sider / Header / Footer / Content）为什么离开 `Layout` 就完全没有样式、侧栏折叠状态如何经父子协商与两条 provide 通道流动、`siderWidth` 相关 token 落在哪几行，以及受控与非受控 `collapsed` 在哪一处 `undefined` 判断上分岔。
@@ -635,7 +641,7 @@ flowchart TD
 
 **产物层**。生成聚合入口给这个组件写了三行——`packages/xiaoye-ui/src/components.ts:195-197`（`export * from './layout'`、`export { default as Layout }`、`import './layout/style'`），按需样式入口在 `packages/xiaoye-ui/package.json:340` 与 `packages/xiaoye-ui/package.json:344`（开发期指向 `src`）。`packages/xiaoye-ui/src/layout/index.ts:9` 的 `/* istanbul ignore next */` 则说明 `install` 分支被有意排除在覆盖率之外。
 
-Props 与事件清单见 [apps/docs/components/layout.md](../../../apps/docs/components/layout.md)；本篇只标记该文档与实现的两处偏差：文档的 `breakpoint` 取值列到 `xxl` 为止（`apps/docs/components/layout.md:155`），实现与类型都包含 `xxxl`（`packages/xiaoye-ui/src/layout/Sider.tsx:27`、`:45`）；文档对 `hasSider` 的说明是「可用于服务端渲染时避免样式闪动」（`apps/docs/components/layout.md:145`），这与论点 2 的异步注册结论一致，属于**实现把选择权交给了调用方**。
+Props 与事件清单见 `apps/docs/components/layout.md`；本篇只标记该文档与实现的两处偏差：文档的 `breakpoint` 取值列到 `xxl` 为止（`apps/docs/components/layout.md:155`），实现与类型都包含 `xxxl`（`packages/xiaoye-ui/src/layout/Sider.tsx:27`、`:45`）；文档对 `hasSider` 的说明是「可用于服务端渲染时避免样式闪动」（`apps/docs/components/layout.md:145`），这与论点 2 的异步注册结论一致，属于**实现把选择权交给了调用方**。
 
 ## 六、设计取舍
 

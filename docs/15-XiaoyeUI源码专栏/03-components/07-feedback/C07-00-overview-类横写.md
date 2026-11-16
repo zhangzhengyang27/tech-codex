@@ -1,3 +1,9 @@
+---
+title: "C07-00 类横写：Modal/Drawer/Popover/Tooltip 的浮层生命周期归一"
+description: "本篇解决：Modal、Drawer、Popover、Tooltip 四类浮层的\"打开 / 关闭 / 焦点 / 滚动锁 / 层叠\"五件事，分别落在源码的哪一层、用了哪几种互不相同的实现？如果要把它们归一，收敛点应该在业务层、底座层还是 _ut"
+category: XiaoyeUI源码专栏
+
+---
 # C07-00 类横写：Modal/Drawer/Popover/Tooltip 的浮层生命周期归一
 
 > **本篇解决**：Modal、Drawer、Popover、Tooltip 四类浮层的"打开 / 关闭 / 焦点 / 滚动锁 / 层叠"五件事，分别落在源码的哪一层、用了哪几种互不相同的实现？如果要把它们归一，收敛点应该在业务层、底座层还是 `_util`？

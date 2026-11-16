@@ -1,3 +1,9 @@
+---
+title: "6-18 · FormItem：消息与 aria 链路"
+description: "核心问题：错误态如何同时作用于样式与无障碍树。"
+category: 组件库专栏
+
+---
 # 6-18 · FormItem：消息与 aria 链路
 
 > **核心问题：错误态如何同时作用于样式与无障碍树。**

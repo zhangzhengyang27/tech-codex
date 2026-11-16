@@ -1,3 +1,9 @@
+---
+title: "C02-09 Collapse 折叠面板"
+description: "本篇解决：Collapse 的展开/收起为什么不能只靠 display: none，它的 activeKey 受控链路、_util/collapseMotion 与 style/motion/collapse.ts 各自负责什么、改哪一行会"
+category: XiaoyeUI源码专栏
+
+---
 # C02-09 Collapse 折叠面板
 
 > **本篇解决**：Collapse 的展开/收起为什么不能只靠 `display: none`，它的 activeKey 受控链路、`_util/collapseMotion` 与 `style/motion/collapse.ts` 各自负责什么、改哪一行会让动画或边框塌陷。

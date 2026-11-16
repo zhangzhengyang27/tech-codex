@@ -1,3 +1,9 @@
+---
+title: "C08-06 VirtualList 虚拟列表"
+description: "本篇解决：公开件 XYVirtualList（packages/xiaoye-ui/src/virtual-list/）作为虚拟滚动组件，它的高度缓存、切片区间计算、滚动位置往返一致性到底建立在哪些状态之上；这些状态是否存在模块作用域、会不"
+category: XiaoyeUI源码专栏
+
+---
 # C08-06 VirtualList 虚拟列表
 
 > **本篇解决**：公开件 `XYVirtualList`（`packages/xiaoye-ui/src/virtual-list/`）作为虚拟滚动组件，它的高度缓存、切片区间计算、滚动位置往返一致性到底建立在哪些状态之上；这些状态是否存在模块作用域、会不会在多实例与 SSR 下互相污染；对外契约（props/插槽/emits/expose）如何真正流到渲染。

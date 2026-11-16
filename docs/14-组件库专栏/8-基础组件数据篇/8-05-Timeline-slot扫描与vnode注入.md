@@ -1,3 +1,9 @@
+---
+title: "8-05 · Timeline：slot 扫描与 vnode 注入"
+description: "8-04 的结尾留了一个交接问题：steps 的子项靠注册表点名，timeline 的子项却常常是模板里手写的 xy-timeline-item 列表——它怎么知道\"最后一项\"是谁、怎么往插槽渲染出来的 vnode 里注入上下文？这篇就来还"
+category: 组件库专栏
+
+---
 # 8-05 · Timeline：slot 扫描与 vnode 注入
 
 8-04 的结尾留了一个交接问题：steps 的子项靠注册表点名，timeline 的子项却常常是模板里手写的 `xy-timeline-item` 列表——它怎么知道"最后一项"是谁、怎么往插槽渲染出来的 vnode 里注入上下文？这篇就来还这笔债。核心问题只有一个：**item/group 的"最后一项"判定**。看着小，背后牵出的是整个"列表型组件父子协作"的第二条路线——不走注册、不收实例，直接扫描 default slot 的 vnode 快照，再用 `cloneVNode` 把算好的位置信息塞回子节点。

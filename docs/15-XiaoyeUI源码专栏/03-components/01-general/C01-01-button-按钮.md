@@ -1,3 +1,9 @@
+---
+title: "C01-01 Button 按钮"
+description: "本篇解决：type/shape/size/danger/ghost 五个外观维度如何被折叠成一串类名、href 存在时组件为何换了标签、loading 的延迟与防抖由谁计时、点击涟漪（wave）在哪一行接到组件外——以及改这四处分别要付什么"
+category: XiaoyeUI源码专栏
+
+---
 # C01-01 Button 按钮
 
 > **本篇解决**：`type`/`shape`/`size`/`danger`/`ghost` 五个外观维度如何被折叠成一串类名、`href` 存在时组件为何换了标签、`loading` 的延迟与防抖由谁计时、点击涟漪（wave）在哪一行接到组件外——以及改这四处分别要付什么代价。
@@ -39,7 +45,7 @@
 
 主实现入口是 `packages/xiaoye-ui/src/button/button.tsx:35`；样式入口是 `packages/xiaoye-ui/src/button/style/index.ts:498`；涟漪接缝有两处，组件侧 `packages/xiaoye-ui/src/button/button.tsx:233` 与基础设施侧 `packages/xiaoye-ui/src/_util/wave/index.tsx:82`。
 
-组件目录内**没有** `demo/` 子目录——八个示例落在文档侧 `apps/docs/examples/button/`（`basic` `block` `button-group` `danger` `disabled` `ghost` `icon` `loading` `multiple` `size`），属性清单见 [apps/docs/components/button.md](../../../apps/docs/components/button.md)。测试执行与否按 `packages/xiaoye-ui/vitest.config.mts:33` 的 glob 判断，`index.test.js` 与 `wave.test.js` 都在 `src/**/*.test.js` 覆盖范围内。
+组件目录内**没有** `demo/` 子目录——八个示例落在文档侧 `apps/docs/examples/button/`（`basic` `block` `button-group` `danger` `disabled` `ghost` `icon` `loading` `multiple` `size`），属性清单见 `apps/docs/components/button.md`。测试执行与否按 `packages/xiaoye-ui/vitest.config.mts:33` 的 glob 判断，`index.test.js` 与 `wave.test.js` 都在 `src/**/*.test.js` 覆盖范围内。
 
 ## 三、架构与数据流
 

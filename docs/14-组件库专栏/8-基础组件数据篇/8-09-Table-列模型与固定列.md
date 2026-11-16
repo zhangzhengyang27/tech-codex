@@ -1,3 +1,9 @@
+---
+title: "8-09 · Table：列模型与固定列"
+description: "表格是组件库里最后一个\"怪兽级\"组件：它要把 <xy-table-column> 这种声明式子组件翻译成一棵真正的 <table> DOM 树，要在横向溢出时让一部分列钉死在左右两侧，还要在 72 个组件里唯一一个把 xy-scrollba"
+category: 组件库专栏
+
+---
 # 8-09 · Table：列模型与固定列
 
 表格是组件库里最后一个"怪兽级"组件：它要把 `<xy-table-column>` 这种**声明式子组件**翻译成一棵真正的 `<table>` DOM 树，要在横向溢出时让一部分列钉死在左右两侧，还要在 72 个组件里唯一一个把 `xy-scrollbar` 拉进自己肚子里当内部零件（5-18 的考据，本篇展开）。本篇的核心问题是任务书上那句"DOM 镜像的代价与替代方案"——但真正动笔前必须先纠正一个时代直觉：**CSS `position: sticky` 是现代正解、DOM 镜像（Element Plus 老方案）已淘汰**，这句话作为行业趋势成立，作为本库的实码描述**不成立**。本库的固定列恰恰是镜像方案，而且不是 element-ui 那种"双表同步"，而是升级版的"三段式镜像面板"：表头、表体、合计各三份，共九张 `<table>`。全库搜索 `position: sticky` 在 `packages/components/table/` 与 `packages/theme/src/components/table.css` 中零命中。为什么 2026 年新写的组件库还要选镜像？这篇从列模型讲到同步管线，把这笔账算清楚。

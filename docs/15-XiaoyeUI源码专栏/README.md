@@ -1,28 +1,14 @@
-# XiaoyeUI 源码专栏
+---
+title: XiaoyeUI 源码专栏概述
+description: 面向源码维护者的原理手册入口：专栏定位、阅读顺序与全书 134 篇结构地图——架构分层、基座模块与 12 组组件深读
+category: XiaoyeUI源码专栏
+
+---
+
+# XiaoyeUI 源码专栏概述
 
 面向**要改这套源码的人**的维护者原理手册：讲架构分层、模块边界、状态如何流动、改哪一行会炸。
-它不重复 [apps/docs](../apps/docs) 那 98 篇用法手册——那 98 篇回答"怎么用"，本专栏回答"为什么这样设计 + 源码怎么实现 + 改动要注意什么"。
-
-> **落点状态**：本目录被 `.gitignore` 显式排除（`.gitignore:89`），**只存在于本地、不进版本控制**。
-> 因此别用 `git status` 自查本目录的产物（恒为空），用 `ls docs/column/**` 或直接读文件。
-
-## 进度
-
-| 状态 | 篇数 |
-| --- | --- |
-| 已完成 | 132 |
-| 已审（样稿） | 1 |
-| 已审（样稿，前置未写见上方偏差说明） | 1 |
-| **合计** | **134** |
-
-已落盘 134 篇。每篇的达标判据由脚本机器校验：
-
-```bash
-node docs/column/tools/verify-refs.mjs --excerpt   # 每条 file:line 是否真存在、摘录是否与标注行吻合
-node docs/column/tools/check-doc.mjs              # 骨架完整性 + 篇幅/引用密度 + 禁止项
-node docs/column/tools/board.mjs                  # 全队列"落盘且达标"一览
-node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 + 坑索引 + 编号真实）
-```
+它不重复 `apps/docs` 里那 98 篇用法手册——那 98 篇回答"怎么用"，本专栏回答"为什么这样设计 + 源码怎么实现 + 改动要注意什么"。
 
 ## 怎么读
 
@@ -30,13 +16,13 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 2. **再读 `02-infrastructure`**：某个基座的深读（vc-align 定位、vc-trigger 时序、table-core 状态机、虚拟化、motion…）。
 3. **`03-components` 按需查**：12 个类别，每类一篇 `*-00-overview.md` 横写（该类的共性抽象与近义组件选型），再逐组件一篇深读。
 4. 每篇结构固定为七段（职责与边界 → 源码地图 → 架构与数据流 → 核心机制精读 → 对外契约 → 设计取舍 → 坑与改动指南）+ 附「三条可证伪检查点」。**只想解决具体问题就直奔第七段；想建立心智模型就读第三、四段。**
-5. **每个目录另有一篇「深导览」**（`导览.md`，全书入口是 [总导览.md](./总导览.md)）：不讲机制，只做跨篇路由——近义组件选型表 + 全类坑索引（症状 → 哪一篇的坑 N）+ 改动前最小阅读集。**第一次进某个类别先读它，能省掉在十几篇里翻的时间。**
+5. **每个目录另有一篇「深导览」**（`导览.md`，全书入口是 [总导览](./总导览.md)）：不讲机制，只做跨篇路由——近义组件选型表 + 全类坑索引（症状 → 哪一篇的坑 N）+ 改动前最小阅读集。**第一次进某个类别先读它，能省掉在十几篇里翻的时间。**
 
 ## 01-architecture（8 篇）
 
 架构与工程总览，专栏的词汇表。
 
-> 深导览（选型表 + 坑索引）：[01-architecture/导览.md](./01-architecture/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./01-architecture/导览.md)
 
 - [monorepo 拓扑与发布链路](./01-architecture/01-monorepo-topology-拓扑与发布链路.md) — `A01`
 - [组件目录契约与 `gen:entries` 生成物链路](./01-architecture/02-entry-generation-组件目录契约与生成物链路.md) — `A02`
@@ -51,7 +37,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 基座模块深读。
 
-> 深导览（选型表 + 坑索引）：[02-infrastructure/导览.md](./02-infrastructure/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./02-infrastructure/导览.md)
 
 - [vc-align 定位求解与碰撞检测](./02-infrastructure/01-vc-align-定位求解与碰撞检测.md) — `I01`
 - [vc-trigger 弹出时序与事件穿透](./02-infrastructure/02-vc-trigger-弹出时序与事件穿透.md) — `I02`
@@ -74,7 +60,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C01 通用基础（7 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/01-general/导览.md](./03-components/01-general/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/01-general/导览.md)
 
 - [类横写：button/icon/tag/chips/badge 的职责切分](./03-components/01-general/C01-00-overview-类横写.md) — `C01-00`
 - [Button 按钮](./03-components/01-general/C01-01-button-按钮.md) — `C01-01`
@@ -86,7 +72,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C02 布局与容器（14 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/02-layout/导览.md](./03-components/02-layout/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/02-layout/导览.md)
 
 - [类横写：栅格/flex/space 三代布局的取舍](./03-components/02-layout/C02-00-overview-类横写.md) — `C02-00`
 - [Grid 栅格](./03-components/02-layout/C02-01-grid-栅格.md) — `C02-01`
@@ -105,7 +91,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C03 导航（14 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/03-navigation/导览.md](./03-components/03-navigation/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/03-navigation/导览.md)
 
 - [类横写：menu/tabs/steps/breadcrumb 的选中态模型](./03-components/03-navigation/C03-00-overview-类横写.md) — `C03-00`
 - [Menu 导航菜单](./03-components/03-navigation/C03-01-menu-导航菜单.md) — `C03-01`
@@ -124,7 +110,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C04 基础表单控件（10 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/04-form-controls/导览.md](./03-components/04-form-controls/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/04-form-controls/导览.md)
 
 - [类横写：受控/非受控与 `useMergedState` 的一致实现](./03-components/04-form-controls/C04-00-overview-类横写.md) — `C04-00`
 - [Input 输入框](./03-components/04-form-controls/C04-01-input-输入框.md) — `C04-01`
@@ -139,7 +125,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C05 选择与日期（9 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/05-picker/导览.md](./03-components/05-picker/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/05-picker/导览.md)
 
 - [类横写：select/cascader/tree-select 共用的选项流水线](./03-components/05-picker/C05-00-overview-类横写.md) — `C05-00`
 - [Select 选择器](./03-components/05-picker/C05-01-select-选择器.md) — `C05-01`
@@ -153,7 +139,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C06 表单编排与编辑（9 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/06-form-editor/导览.md](./03-components/06-form-editor/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/06-form-editor/导览.md)
 
 - [类横写：Form 的字段注册、校验与上下文下发](./03-components/06-form-editor/C06-00-overview-类横写.md) — `C06-00`
 - [Form 表单](./03-components/06-form-editor/C06-01-form-表单.md) — `C06-01`
@@ -167,7 +153,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C07 反馈与浮层（10 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/07-feedback/导览.md](./03-components/07-feedback/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/07-feedback/导览.md)
 
 - [类横写：Modal/Drawer/Popover/Tooltip 的浮层生命周期归一](./03-components/07-feedback/C07-00-overview-类横写.md) — `C07-00`
 - [Modal 对话框](./03-components/07-feedback/C07-01-modal-对话框.md) — `C07-01`
@@ -182,7 +168,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C08 表格与虚拟化（7 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/08-table/导览.md](./03-components/08-table/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/08-table/导览.md)
 
 - [类横写：table / data-table / tree-table 三代表格的分层与选型](./03-components/08-table/C08-00-overview-类横写.md) — `C08-00`
 - [Table 表格](./03-components/08-table/C08-01-table-表格.md) — `C08-01`
@@ -194,7 +180,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C09 树与结构可视化（3 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/09-tree/导览.md](./03-components/09-tree/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/09-tree/导览.md)
 
 - [类横写：树数据的三种可视化形态](./03-components/09-tree/C09-00-overview-类横写.md) — `C09-00`
 - [Tree 树形控件](./03-components/09-tree/C09-01-tree-树形控件.md) — `C09-01`
@@ -202,7 +188,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C10 媒体与内容展示（9 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/10-media/导览.md](./03-components/10-media/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/10-media/导览.md)
 
 - [类横写：图片组的预览与对比关系](./03-components/10-media/C10-00-overview-类横写.md) — `C10-00`
 - [Image 图片](./03-components/10-media/C10-01-image-图片.md) — `C10-01`
@@ -216,7 +202,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C11 状态与信息呈现（9 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/11-status/导览.md](./03-components/11-status/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/11-status/导览.md)
 
 - [类横写：占位、进度与统计三类的更新频率取舍](./03-components/11-status/C11-00-overview-类横写.md) — `C11-00`
 - [Spin 加载中](./03-components/11-status/C11-01-spin-加载中.md) — `C11-01`
@@ -230,7 +216,7 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 
 ### C12 全局与应用级（9 篇）
 
-> 深导览（选型表 + 坑索引）：[03-components/12-global/导览.md](./03-components/12-global/导览.md)
+> 深导览（选型表 + 坑索引）：[导览](./03-components/12-global/导览.md)
 
 - [类横写：应用级容器与全局能力（App/Portal/FocusTrap/Ripple）](./03-components/12-global/C12-00-overview-类横写.md) — `C12-00`
 - [App 应用容器](./03-components/12-global/C12-01-app-应用容器.md) — `C12-01`
@@ -241,13 +227,3 @@ node docs/column/tools/check-guide.mjs            # 15 篇深导览（选型表 
 - [Portal 传送门](./03-components/12-global/C12-06-portal-传送门.md) — `C12-06`
 - [FocusTrap 焦点陷阱](./03-components/12-global/C12-07-focus-trap-焦点陷阱.md) — `C12-07`
 - [SplitButton 分裂按钮](./03-components/12-global/C12-08-split-button-分裂按钮.md) — `C12-08`
-
-## 维护这份专栏
-
-- 写作合同（红线、六步流程、七段骨架、硬指标、机器校验）：[PROMPT.md](./PROMPT.md)
-- 全书队列与主题边界（谁负责什么、避免两篇重复论证）：[OUTLINE.md](./OUTLINE.md)
-- 导览写法合同（第 5 道门）：[tools/GUIDE.md](./tools/GUIDE.md) 与 `node docs/column/tools/check-guide.mjs`
-- 派工与续写：`node docs/column/tools/make-brief.mjs <编号> [slug]` / `--resume <编号>`
-- 队列状态回填：`node docs/column/tools/set-status.mjs <编号>=已完成`，`--show` 看分布
-
-索引由 `docs/column/tools/gen-index.mjs` 生成，请勿手工编辑本文件。

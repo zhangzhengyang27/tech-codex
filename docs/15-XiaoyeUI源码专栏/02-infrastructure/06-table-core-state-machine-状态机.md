@@ -1,3 +1,9 @@
+---
+title: "I06 table-core 状态机：排序、筛选、选择与展开"
+description: "本篇解决：表格的排序/筛选/分页/选择/展开这五种能力，状态到底存在哪几个变量里、谁派生谁、filter 和 sort 谁先跑由谁决定、以及为什么「选择」和「展开」在 table-core 里一行都找不到。读完能回答：改 table-cor"
+category: XiaoyeUI源码专栏
+
+---
 # I06 table-core 状态机：排序、筛选、选择与展开
 
 > **本篇解决**：表格的排序/筛选/分页/选择/展开这五种能力，状态到底存在哪几个变量里、谁派生谁、`filter` 和 `sort` 谁先跑由谁决定、以及为什么「选择」和「展开」在 `table-core` 里一行都找不到。读完能回答：改 `table-core` 会影响哪几个组件，改 `data-table` 的排序会影响 `tree-table` 吗，想给 `data-table` 加半选要动哪几处。
@@ -535,7 +541,7 @@ grep -rn "getRowId" packages/xiaoye-ui/src --include='*.ts' --include='*.tsx' | 
 
 ## 五、对外契约如何生效
 
-`data-table` 的 props 定义在 `packages/xiaoye-ui/src/data-table/dataTableTypes.ts`（133 行），组件侧只写了 `props: initDefaultProps(dataTableProps(), {})`（`packages/xiaoye-ui/src/data-table/DataTable.tsx:70`，第二个参数为空对象，即默认值全部由 `dataTableProps()` 自己声明），组件名 `XYDataTable`（`packages/xiaoye-ui/src/data-table/DataTable.tsx:67`）与 `inheritAttrs: false`（`:68`）。契约从入口到渲染走的是**四条完全不同的通道**，这是本篇第五节要讲清的机制，而不是属性清单（属性清单见 [apps/docs/components/data-table.md](../../../apps/docs/components/data-table.md)）。
+`data-table` 的 props 定义在 `packages/xiaoye-ui/src/data-table/dataTableTypes.ts`（133 行），组件侧只写了 `props: initDefaultProps(dataTableProps(), {})`（`packages/xiaoye-ui/src/data-table/DataTable.tsx:70`，第二个参数为空对象，即默认值全部由 `dataTableProps()` 自己声明），组件名 `XYDataTable`（`packages/xiaoye-ui/src/data-table/DataTable.tsx:67`）与 `inheritAttrs: false`（`:68`）。契约从入口到渲染走的是**四条完全不同的通道**，这是本篇第五节要讲清的机制，而不是属性清单（属性清单见 `apps/docs/components/data-table.md`）。
 
 通道一是「props → `d_*` ref → computed → 渲染」。受控/非受控的判定没有集中函数，而是散在读写点上：读一律先取 ref（`packages/xiaoye-ui/src/data-table/DataTable.tsx:362` 用 `d_sortField.value`），写一律同时 emit（`packages/xiaoye-ui/src/data-table/DataTable.tsx:374`、`:375`），回流靠 watch（`packages/xiaoye-ui/src/data-table/DataTable.tsx:2326` 的 `props.first`、`:2353` 的 `props.multiSortMeta`、`:2360` 的 `props.selection`、`:2380` 的 `props.filters`）。所以「传了 prop 不生效」的排查方向是：**该 prop 有没有对应 watch**——`sortField`/`sortOrder`/`filters`/`selection`/`first`/`rows` 有，而 `expandedKeys` 在 `data-table` 根本不存在。
 

@@ -1,3 +1,9 @@
+---
+title: "C10-08 Chart 图表"
+description: "本篇解决：Chart 的渲染内核到底是谁、它声明在哪一块依赖里（结案：chart.js，在主库 dependencies 而不是 devDependencies，本层零绘制代码）；这层 180 行的套壳在 props、expose、事件、样"
+category: XiaoyeUI源码专栏
+
+---
 # C10-08 Chart 图表
 
 > **本篇解决**：Chart 的渲染内核到底是谁、它声明在哪一块依赖里（结案：`chart.js`，在主库 `dependencies` 而不是 `devDependencies`，本层零绘制代码）；这层 180 行的套壳在 props、`expose`、事件、样式四张契约上各自兑现到什么程度，`ConfigProvider` 的哪三个开关对它完全无效；以及接手前必须知道的十个静默失效点与三条一键证伪判据。

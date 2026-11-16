@@ -1,3 +1,9 @@
+---
+title: "6-06 · Checkbox：min/max 约束与 options 配置化"
+description: "本篇源码坐标（均为当前工作区实态）："
+category: 组件库专栏
+
+---
 # 6-06 · Checkbox：min/max 约束与 options 配置化
 
 > 本篇源码坐标（均为当前工作区实态）：

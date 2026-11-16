@@ -1,3 +1,9 @@
+---
+title: "C03-05 Tabs 标签页"
+description: "本篇解决：xy-tabs 里「哪个标签是活的」这件事在哪个实例被裁决、裁决结果如何变成 ink bar 与位移、面板内容何时挂载与销毁、溢出后「更多」下拉怎么装配出来，以及滚动与键盘导航的实现路径。"
+category: XiaoyeUI源码专栏
+
+---
 # C03-05 Tabs 标签页
 
 > **本篇解决**：`xy-tabs` 里「哪个标签是活的」这件事在哪个实例被裁决、裁决结果如何变成 ink bar 与位移、面板内容何时挂载与销毁、溢出后「更多」下拉怎么装配出来，以及滚动与键盘导航的实现路径。
@@ -717,7 +723,7 @@ export const useProvideOverride = (props: OverrideContextProps) => {
 
 **attrs 与样式哈希。** 两个组件都声明 `inheritAttrs: false`（`Tabs.tsx:366`、`Tabs.tsx:124`），`attrs` 只被挂到根节点（`Tabs.tsx:336`），并且 `attrs.class` 被显式并入类名数组末尾（`Tabs.tsx:351`），保证调用方类名能覆盖同权重的内部类名。CSS-in-JS 的 `hashId` 同时进根类名（`Tabs.tsx:342`）与浮层类名（`Tabs.tsx:319` 的 `classNames(props.popupClassName, hashId.value)`）——后者是必需的，因为下拉被 portal 移出根节点，不在 `wrapSSR` 的子树里，不带 hash 就命中不到样式。
 
-**暴露面与告警。** `Tabs` 没有 `expose`，`TabNode` 只暴露 `domRef`（`TabNode.tsx:46-48`）供测量取元素；真正的「命令式接口」不存在，全部状态由 `v-model:activeKey` 或 `defaultActiveKey` 驱动。无障碍 id 链是契约的一部分：`id` 缺省时在挂载后生成 `rc-tabs-${getCurrentInstance()?.uid}`（`Tabs.tsx:228-235`）——2026-09-29 之前这里用的是模块级 `let uuid`，跨请求会累积计数且服务端与客户端取值不一致，现已改成本实例 uid（不再有独立计数器行）；随后拼出 `${id}-tab-${key}`（`TabNode.tsx:91`）、`${id}-panel-${key}`（`TabPane.tsx:67`、`OperationNode.tsx:188`）、`${id}-more`（`OperationNode.tsx:220`）三组关系；`process.env.NODE_ENV === 'test'` 让测试环境固定成 `rc-tabs-test` 以稳住快照。已移除的 API 只留 `devWarning`：`onPrevClick`/`onNextClick`（`Tabs.tsx:150-154`）与 `tabBarExtraContent` prop（`Tabs.tsx:155-159`）。属性清单见 [apps/docs/components/tabs.md](../../../apps/docs/components/tabs.md)。
+**暴露面与告警。** `Tabs` 没有 `expose`，`TabNode` 只暴露 `domRef`（`TabNode.tsx:46-48`）供测量取元素；真正的「命令式接口」不存在，全部状态由 `v-model:activeKey` 或 `defaultActiveKey` 驱动。无障碍 id 链是契约的一部分：`id` 缺省时在挂载后生成 `rc-tabs-${getCurrentInstance()?.uid}`（`Tabs.tsx:228-235`）——2026-09-29 之前这里用的是模块级 `let uuid`，跨请求会累积计数且服务端与客户端取值不一致，现已改成本实例 uid（不再有独立计数器行）；随后拼出 `${id}-tab-${key}`（`TabNode.tsx:91`）、`${id}-panel-${key}`（`TabPane.tsx:67`、`OperationNode.tsx:188`）、`${id}-more`（`OperationNode.tsx:220`）三组关系；`process.env.NODE_ENV === 'test'` 让测试环境固定成 `rc-tabs-test` 以稳住快照。已移除的 API 只留 `devWarning`：`onPrevClick`/`onNextClick`（`Tabs.tsx:150-154`）与 `tabBarExtraContent` prop（`Tabs.tsx:155-159`）。属性清单见 `apps/docs/components/tabs.md`。
 
 ## 六、设计取舍
 

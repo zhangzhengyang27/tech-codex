@@ -1,3 +1,9 @@
+---
+title: "C11-02 Progress 进度"
+description: "本篇解决：Progress 的 line 与 circle 两套绘制路径分别怎么算出「完成度」、success/steps 各自改变的是语义还是画法、以及它的动画为什么不走 _util/motion。"
+category: XiaoyeUI源码专栏
+
+---
 # C11-02 Progress 进度
 
 > **本篇解决**：Progress 的 line 与 circle 两套绘制路径分别怎么算出「完成度」、`success`/`steps` 各自改变的是语义还是画法、以及它的动画为什么不走 `_util/motion`。

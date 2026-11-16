@@ -1,3 +1,9 @@
+---
+title: "6-20 · Editor：富文本桥接"
+description: "表单卷走到最后一篇，主角是 xy-editor——整个 packages/components 里身份最特殊的一个受控组件。前面十九篇里，无论是 input 的原生输入框还是 tree-select 的级联浮层，交互内核都长在库里自己手上"
+category: 组件库专栏
+
+---
 # 6-20 · Editor：富文本桥接
 
 表单卷走到最后一篇，主角是 `xy-editor`——整个 `packages/components` 里身份最特殊的一个受控组件。前面十九篇里，无论是 `input` 的原生输入框还是 `tree-select` 的级联浮层，交互内核都长在库里自己手上；而 editor 的输入、光标、撤销栈、Markdown 解析，全部外包给了一个 285KB 的第三方引擎 vditor。组件本体的全部源码只有 155 行 Vue 加 26 行 TypeScript，它存在的意义不是"实现一个编辑器"，而是**把一个自成体系的第三方世界翻译成本库的受控协议**——这就是标题里"桥接"两个字的分量。

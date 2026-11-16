@@ -1,3 +1,9 @@
+---
+title: "9-35 · ExportTaskPanel：导出任务"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第三十五篇，workflow 组（approval-flow-panel、import-wizard、export-task-panel）的收官之作。核心问题按大纲只有八个字——异步"
+category: 组件库专栏
+
+---
 # 9-35 · ExportTaskPanel：导出任务
 
 > 本篇是 9 卷"增强层（pro-components）"的第三十五篇，workflow 组（approval-flow-panel、import-wizard、export-task-panel）的收官之作。核心问题按大纲只有八个字——**异步任务的进度呈现**。但先亮底牌：把 `export-task-panel` 全部源码读完（组件包 105 行、主题 30 行），你会发现这个组件里**没有一行轮询代码、没有一毫秒定时器、没有一次网络请求**。大纲里"轮询机制"四个字的实码定论是：**轮询被外置了**——面板只做"任务状态数组 → UI"的纯投影，状态从哪来、多久刷一次、失败怎么重试，全部留给业务层。这个"没有"不是偷工减料，而是本篇要正面解剖的第一个设计决策；它同时是全库定时器治理系列（5-12 carousel、7-02 message、8-02 countdown、8-12 audio-player）的第五个样本——一个以"缺席"作答的样本。本篇沿四条线走：`ExportTaskItem` 六字段四态的状态契约（与 6-19 upload 文件状态机对照）、54 行视图层的容器形态与状态色分工、消费侧轮询参考实现的定时器治理、以及与 9-25 pro-table 前端导出收口成的"两条导出路线"。全部给实码定论，并为 10-01《测试金字塔：114 个 spec 的分工》埋好第十卷的引线。

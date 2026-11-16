@@ -1,3 +1,9 @@
+---
+title: "C12-04 FloatButton 浮动按钮"
+description: "本篇解决：<xy-float-button @click> 为什么在源码层面没有通路、FloatButton.BackTop 与包根 BackTop 为什么是两个不同组件、以及「分组展开态」的状态与事件究竟经过哪几行。"
+category: XiaoyeUI源码专栏
+
+---
 # C12-04 FloatButton 浮动按钮
 
 > **本篇解决**：`<xy-float-button @click>` 为什么在源码层面没有通路、`FloatButton.BackTop` 与包根 `BackTop` 为什么是两个不同组件、以及「分组展开态」的状态与事件究竟经过哪几行。
@@ -555,7 +561,7 @@ export interface ComponentToken {
 
 ## 五、对外契约如何生效
 
-属性清单见 [apps/docs/components/float-button.md](../../../apps/docs/components/float-button.md)。本节只讲契约从入口到 DOM 的路径，以及每条路径上的断点。
+属性清单见 `apps/docs/components/float-button.md`。本节只讲契约从入口到 DOM 的路径，以及每条路径上的断点。
 
 **前缀与样式。** 三个组件都用同一个 `floatButtonPrefixCls = 'float-btn'`（`FloatButton.tsx:16`）调 `useConfigInject`（`FloatButton.tsx:24`、`FloatButtonGroup.tsx:27`、`BackTop.tsx:38`），所以 `ConfigProvider` 改前缀时三者同步变化，这也是 `rootPrefixCls` 拼出的属性名前缀能对上测试断言的原因（`FloatButton.tsx:42` 对 `wave.test.js:23`）。样式 hook 的返回被拆成两种用法：单按钮把 `hashId` 塞进类名（`FloatButton.tsx:66`）并用 `wrapSSR` 包住返回值（`:109`），分组同样把 `hashId` 放进 `groupCls`（`FloatButtonGroup.tsx:101`）与 `wrapperCls`（`:107`），而 `BackTop.tsx:40` 只取 `wrapSSR`、丢掉 `hashId`——它的类名里没有 hash 令牌。这不影响样式生效（emotion 的 hash 规则由 `wrapSSR` 注入 `<style>`），但会让「按 hashId 定位某次渲染用了哪份样式」这类排查手段在 BackTop 上失效。
 

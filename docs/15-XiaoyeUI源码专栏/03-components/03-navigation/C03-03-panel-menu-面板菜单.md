@@ -1,3 +1,9 @@
+---
+title: "C03-03 PanelMenu 面板菜单"
+description: "本篇解决：PanelMenu 的面板展开与菜单项选中到底是同一份状态还是两份状态，以及它借用的折叠词汇在哪三处与 Collapse 的真实实现断裂。"
+category: XiaoyeUI源码专栏
+
+---
 # C03-03 PanelMenu 面板菜单
 
 > **本篇解决**：PanelMenu 的面板展开与菜单项选中到底是同一份状态还是两份状态，以及它借用的折叠词汇在哪三处与 Collapse 的真实实现断裂。

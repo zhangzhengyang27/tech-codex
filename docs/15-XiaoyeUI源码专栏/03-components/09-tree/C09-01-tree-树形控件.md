@@ -1,3 +1,9 @@
+---
+title: "C09-01 Tree 树形控件"
+description: "本篇解决：src/tree/ 组件层到底在 vc-tree 之上补了哪些能力（Draggable、Directory、checkStrictly、异步 loadData、虚拟滚动接线），以及这些能力各自的装配点在哪个文件哪一行。"
+category: XiaoyeUI源码专栏
+
+---
 # C09-01 Tree 树形控件
 
 > **本篇解决**：`src/tree/` 组件层到底在 `vc-tree` 之上补了哪些能力（Draggable、Directory、checkStrictly、异步 loadData、虚拟滚动接线），以及这些能力各自的装配点在哪个文件哪一行。

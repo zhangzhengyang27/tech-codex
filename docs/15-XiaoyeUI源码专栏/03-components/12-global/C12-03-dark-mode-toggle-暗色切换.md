@@ -1,3 +1,9 @@
+---
+title: "C12-03 DarkModeToggle 暗色切换"
+description: "DarkModeToggle 是组件库里唯一把「用户点一下」这件事翻译成「两套主题系统同时换档」的组件。它对外只暴露一个开关语义的控件（圆形按钮或 Switch 风格），内部却同时驱动三条互不相干的通道："
+category: XiaoyeUI源码专栏
+
+---
 # C12-03 DarkModeToggle 暗色切换
 
 ## 一、职责与边界

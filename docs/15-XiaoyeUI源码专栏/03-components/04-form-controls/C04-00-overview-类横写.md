@@ -1,3 +1,9 @@
+---
+title: "C04-00 类横写：受控/非受控与 useMergedState 的一致实现"
+description: "本篇解决：基础表单控件这一类里，value/defaultValue/checked/defaultChecked 到底有几条接入路径、同一类控件对外的受控 API 是否一致、新增一个表单控件该选哪条路。"
+category: XiaoyeUI源码专栏
+
+---
 # C04-00 类横写：受控/非受控与 `useMergedState` 的一致实现
 
 > **本篇解决**：基础表单控件这一类里，`value`/`defaultValue`/`checked`/`defaultChecked` 到底有几条接入路径、同一类控件对外的受控 API 是否一致、新增一个表单控件该选哪条路。
@@ -11,7 +17,7 @@
 
 - **不重复论证 `useMergedState` 内部机制**。该 hook 的返回值同构性、`value.value !== undefined` 判定、`mergedValue`/`innerValue` 双 ref、`watchEffect` 与 `watch(value)` 的双跑、`toRaw` 去重门槛、21 个调用点里只有 4 处传 `onChange`、`_util/hooks/` 无任何单测——这些结论全部由 **I13 响应式内核 hooks** 建立，本篇直接引用其结论，不再展开。I13 也已给出「全仓受控实现实为三套」的判定；本篇的增量是：**在 C04 这一个类里，套数比三套更多，而且分裂发生在类内部而非层之间**。
 - 不讲 `v-model` 的编译器语义、不讲 props 声明规范（归 A06）、不讲 Form 的校验流水线（归 C06-01）、不讲各控件的选项/日期流水线（归 C05-00）。
-- 不做单个控件的逐 API 讲解。属性清单见 [apps/docs/components/input.md](../../../apps/docs/components/input.md) 等手册篇。
+- 不做单个控件的逐 API 讲解。属性清单见 `apps/docs/components/input.md` 等手册篇。
 
 依赖清单（本篇取证涉及的全部文件，均相对 `packages/xiaoye-ui/src/`）：
 

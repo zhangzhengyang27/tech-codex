@@ -1,3 +1,9 @@
+---
+title: "9-32 · DetailPage：详情页"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第 32 篇。大纲给本篇的核心问题只有一行——异步态 + 描述 + 审计的组装——但这一行站在四条旧考据的交点上：9-14 考据过 detail-page \"不消费 page-hea"
+category: 组件库专栏
+
+---
 # 9-32 · DetailPage：详情页
 
 > 本篇是 9 卷"增强层（pro-components）"的第 32 篇。大纲给本篇的核心问题只有一行——**异步态 + 描述 + 审计的组装**——但这一行站在四条旧考据的交点上：9-14 考据过 detail-page "不消费 page-header、自绘头部（`detail-page.vue:61-108`）"，并在其类型层立过 `PageHeaderBreadcrumbItem` / `PageHeaderAction` 两个 `@deprecated` 命名遗迹，本篇把这两处从"一行定论"展开成"全景"；9-20 考据过 detail-page 消费 async-state-container（下称 ASC）的接线（110-114 行）与 retry 纯转发姿势，本篇展开这背后的 **2026-09-16 修复战役**——"retry 事件经 detail-page 转发给业务"这件事本身，就是第一轮修复战役在增强层留下的改动，修复后的实码此刻还躺在工作区里没进提交历史，与 6-09 篇的 precision 修复段同款"现场取证"；9-30 考据过 audit-timeline 被 detail-page 当内嵌件用（187-189 行），并立了"三段数据的排队"这道题，本篇正式作答；9-31 结尾预告的"sections 数组里 schema 优先、items 兜底的区块解析（43-49 行的 `resolveSectionItems`）"与"9-03 详情态通道的三号消费方，届时收口"，本篇一并兑现。本篇全部结论以当前工作区实码为准，行号逐一核对，测试实跑通过（`vitest run detail-page`：3 passed）。

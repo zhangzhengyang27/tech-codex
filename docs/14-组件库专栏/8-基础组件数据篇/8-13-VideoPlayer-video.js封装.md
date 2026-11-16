@@ -1,3 +1,9 @@
+---
+title: "8-13 · VideoPlayer：video.js 封装"
+description: "数据展示卷写到第十三篇，也是\"第三方封装\"三兄弟的收官。8-06 借 scheduler 立起了封装边界的四维框架——生命周期桥、props 映射层、事件桥、样式隔离；8-12 的 audio-player 用 howler 校验了前三维"
+category: 组件库专栏
+
+---
 # 8-13 · VideoPlayer：video.js 封装
 
 数据展示卷写到第十三篇，也是"第三方封装"三兄弟的收官。8-06 借 scheduler 立起了封装边界的四维框架——生命周期桥、props 映射层、事件桥、样式隔离；8-12 的 audio-player 用 howler 校验了前三维，而样式维度因为 howler 根本没有渲染层被"免考"。到了本篇的 video-player，三兄弟里唯一自带完整皮肤文件的引擎登场：video.js 不止给你一个播放器内核，还给你一份 2019 行的 CSS、181 个 `.vjs-*` 类、一段 base64 内联的图标字体。**第三方 CSS 隔离**——这个问题在 scheduler 那里因为 FullCalendar v6 运行时注入样式而无文件可引，在 audio-player 那里因为 UI 全自绘而根本不存在——在本篇第一次以完整形态出现。四维框架的第四维，在这里才算真正开考。这就是本篇的题眼：**皮肤令牌化与第三方 CSS 隔离**。

@@ -1,3 +1,9 @@
+---
+title: "C03-12 BackTop 返回顶部"
+description: "本篇解决：BackTop 的可见性从滚动事件到 CSS 类要经过几层、throttleByAnimationFrame 在首帧锁死参数意味着什么、target prop 变化时为什么旧容器上的监听器永远不会被摘掉、隐藏态只做 opacity"
+category: XiaoyeUI源码专栏
+
+---
 # C03-12 BackTop 返回顶部
 
 > **本篇解决**：`BackTop` 的可见性从滚动事件到 CSS 类要经过几层、`throttleByAnimationFrame` 在首帧锁死参数意味着什么、`target` prop 变化时为什么旧容器上的监听器永远不会被摘掉、隐藏态只做 `opacity: 0` 会带来什么后果，以及全仓 222 处 `compatConfig` 在没有任何 compat 依赖的构建里是不是死配置。

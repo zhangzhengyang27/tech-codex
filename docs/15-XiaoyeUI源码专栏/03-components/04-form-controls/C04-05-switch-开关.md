@@ -1,3 +1,9 @@
+---
+title: "C04-05 Switch 开关"
+description: "本篇解决：Switch 只有一个模式（受控），为什么它还留着 defaultChecked 的初值通路；loading 期间点击与键盘到底被哪一层挡住、少一层会怎样；以及改这 230 行里的哪一行会让 Form 校验、a11y 语义、DOM"
+category: XiaoyeUI源码专栏
+
+---
 # C04-05 Switch 开关
 
 > **本篇解决**：`Switch` 只有一个模式（受控），为什么它还留着 `defaultChecked` 的初值通路；`loading` 期间点击与键盘到底被哪一层挡住、少一层会怎样；以及改这 230 行里的哪一行会让 Form 校验、a11y 语义、DOM 属性三者同时出问题。
@@ -35,7 +41,7 @@
 | `packages/xiaoye-ui/src/config-provider/hooks/useConfigInject.ts` | — | 已合成好的 `disabled`（Switch 未取用） | `:43`、返回处 `:69` |
 | `packages/xiaoye-ui/src/theme/interface/components.ts` | — | Switch 的 Component Token 槽位 | `:132` 为 `Switch?: {}` |
 
-组件没有 `index.ts`、没有 `*Types.ts`，props 与实现同文件（`packages/xiaoye-ui/src/switch/index.tsx:19`），因此本篇所有「声明与实现分离」类问题都只能在同一文件内左右对照；聚合入口由生成器写入 `packages/xiaoye-ui/src/components.ts:334`-`368`（`export * from './switch'` + `Switch` 默认导出 + 样式副作用），不可手改。属性清单见 [apps/docs/components/switch.md](../../../apps/docs/components/switch.md)。
+组件没有 `index.ts`、没有 `*Types.ts`，props 与实现同文件（`packages/xiaoye-ui/src/switch/index.tsx:19`），因此本篇所有「声明与实现分离」类问题都只能在同一文件内左右对照；聚合入口由生成器写入 `packages/xiaoye-ui/src/components.ts:334`-`368`（`export * from './switch'` + `Switch` 默认导出 + 样式副作用），不可手改。属性清单见 `apps/docs/components/switch.md`。
 
 ## 三、架构与数据流
 
@@ -212,7 +218,7 @@ const setChecked = (check: CheckedType, e: MouseEvent | KeyboardEvent) => {
 
 顺带记录一处同源疏漏：`autofocus` 的自动聚焦判定只看禁用不看 loading（`packages/xiaoye-ui/src/switch/index.tsx:123`：`if (props.autofocus && !mergedDisabled.value)`），而 `loading` 下元素不可聚焦，浏览器会静默忽略 `focus()`；这条与 `:124` 的 `refSwitchNode.value.focus()`（无可选链，对照 `:113`、`:163` 都用了 `?.`）叠在一起时，症状从「没聚焦」变成「抛错」，见坑 6。
 
-> 属性清单见 [apps/docs/components/switch.md](../../../apps/docs/components/switch.md)；官方 loading 示例把重入防护写在调用方（`apps/docs/examples/switch/async-loading.vue:29`），且值要等异步成功才回写（`apps/docs/examples/switch/async-loading.vue:38`），正是论点 1 零回写的直接后果。
+> 属性清单见 `apps/docs/components/switch.md`；官方 loading 示例把重入防护写在调用方（`apps/docs/examples/switch/async-loading.vue:29`），且值要等异步成功才回写（`apps/docs/examples/switch/async-loading.vue:38`），正是论点 1 零回写的直接后果。
 
 ### 论点 3：判据「同名 computed 遮蔽同名 prop」在 Switch 上落空，但存在一个 `ref` 变体，代价落在 `aria-checked`
 
@@ -297,7 +303,7 @@ A 族与 B 族今天**结果相同**，这一点必须写清楚，否则就是�
 
 最后一条在 2026-09-29 之前是真正的改动陷阱，现已按族规则收口：`onClick`、`onKeydown`、`onBlur`、`onMouseup` 四个当时同样没进 omit 列表，只是它们在 `packages/xiaoye-ui/src/switch/index.tsx:200`-`199` 被显式属性**写在展开之后**顶掉了（`onKeydown={handleKeyDown}`、`onClick={handleClick}`、`onBlur={handleBlur}`、`onMouseup={handleMouseUp}`），而 `handleClick` 等内部又手工补调了 `props.onClick?.(…)`（`:149`）、`props.onKeydown?.(…)`（`:159`）、`props.onBlur?.(…)`（`:141`）、`props.onMouseup?.(…)`（`:165`）——四个都有「双份保险」。**`onFocus` 是这五兄弟里唯一没有 `handleFocus` 的**，也就是说它目前靠「漏覆盖」而正确工作。哪天有人为了补 Form 的 `onFieldBlur`（C04-00 论点 5 指出 Switch 只发 `onFieldChange` 不发 `onFieldBlur`，`packages/xiaoye-ui/src/form/FormItemContext.ts:18` 声明了这条契约而组件层无人调用）加上 `onFocus={handleFocus}` 却忘记在内部补一句 `props.onFocus?.(e)`，用户传入的 `@focus` 就会静默失效——类型检查与编译都不会响。唯一的拦截来自共享用例：`packages/xiaoye-ui/src/switch/index.test.js:11` 调的 `focusTest(Switch)` 在 `packages/xiaoye-ui/tests/shared/focusTest.js:17`-`31` 断言的正是「调用 expose 的 `focus()` 之后 `onFocus` 回调被触发」，它同时依赖 `:112`-`119` 的 `expose` 与这条意外生效的 spread。换言之，本组件最重要的一条 a11y 契约由**别的文件的通用用例**守着，本目录的 4 个用例里没有任何一条提到 `focus`。这正是「props 声明与运行时读取不一致」这一缺陷族在 Switch 里的具体形状。
 
-顺带把属性顺序链写全，因为它决定了调用方的覆盖能力。`:182` 的 props 展开在最前，`:194` 是 attrs 展开，之后 `:195` 的 `id`、`:196`-`:199` 的四个处理器、`:206` 的 `type="button"`、`:207` 的 `role="switch"`、`:208` 的 `aria-checked`、`:209` 的 `disabled`、`:210` 的 `class`、`:211` 的 `ref` 全部写在两个展开之后——因此这些键**不可被外部覆盖**（`type` / `role` / `disabled` 被锁死是有意为之，`aria-checked` 被锁死则让调用方连修正论点 3 那个非布尔值的机会都没有）。`class` 一项需要限定：`packages/xiaoye-ui/src/switch/index.tsx:215` 手工写了 `[attrs.class, classNames.value]`，而 Vue JSX 的展开合并对 `class` 是拼接语义（框架运行时行为，本仓无源码可引），所以这里是一次冗余登记而不是 bug。本仓至少 6 个组件用同一种 `[attrs.class, …]` 形状（`grep -rn "class={\[attrs.class" packages/xiaoye-ui/src --include=\*.tsx` 命中 `packages/xiaoye-ui/src/input/Input.tsx:189`、`packages/xiaoye-ui/src/alert/index.tsx:186`、`packages/xiaoye-ui/src/watermark/index.tsx:249`、`packages/xiaoye-ui/src/flex/index.tsx:49`、`packages/xiaoye-ui/src/float-button/FloatButtonContent.tsx:17` 与 Switch 自己），`packages/xiaoye-ui/src/checkbox/Checkbox.tsx:85` 走的是另一条路：它把 `class` 从 `attrs` 里解构摘走、不给根节点重复登记（口径见 C04-03）。
+顺带把属性顺序链写全，因为它决定了调用方的覆盖能力。`:182` 的 props 展开在最前，`:194` 是 attrs 展开，之后 `:195` 的 `id`、`:196`-`:199` 的四个处理器、`:206` 的 `type="button"`、`:207` 的 `role="switch"`、`:208` 的 `aria-checked`、`:209` 的 `disabled`、`:210` 的 `class`、`:211` 的 `ref` 全部写在两个展开之后——因此这些键**不可被外部覆盖**（`type` / `role` / `disabled` 被锁死是有意为之，`aria-checked` 被锁死则让调用方连修正论点 3 那个非布尔值的机会都没有）。`class` 一项需要限定：`packages/xiaoye-ui/src/switch/index.tsx:215` 手工写了 `[attrs.class, classNames.value]`，而 Vue JSX 的展开合并对 `class` 是拼接语义（框架运行时行为，本仓无源码可引），所以这里是一次冗余登记而不是 bug。本仓至少 6 个组件用同一种 `[attrs.class, …]` 形状（`grep -rn "class={\`attrs.class" packages/xiaoye-ui/src --include=\*.tsx` 命中 `packages/xiaoye-ui/src/input/Input.tsx:189`、`packages/xiaoye-ui/src/alert/index.tsx:186`、`packages/xiaoye-ui/src/watermark/index.tsx:249`、`packages/xiaoye-ui/src/flex/index.tsx:49`、`packages/xiaoye-ui/src/float-button/FloatButtonContent.tsx:17` 与 Switch 自己），`packages/xiaoye-ui/src/checkbox/Checkbox.tsx:85` 走的是另一条路：它把 `class` 从 `attrs` 里解构摘走、不给根节点重复登记（口径见 C04-03）。
 
 最后一个代价写在 `omit.ts:3`：它在**每次渲染**里拷贝并删除 10 个键，拷贝 `props` 代理会读遍全部 19 个声明键，于是渲染 effect 依赖了所有 props——只要任一 prop 变化（哪怕是与渲染无关的 `checkedChildren` 变化），整个按钮连 `aria`、`class`、事件绑定一起重算。这是「省一份白名单」换来的重渲染粒度损失，本组件的 230 行里没有任何 `memo` 或分段渲染来弥补。
 
@@ -339,7 +345,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
 
 ## 五、对外契约如何生效
 
-**声明面与生效面是两张表，本篇只写它们的差集。** 完整的属性清单不在这里，见 [apps/docs/components/switch.md](../../../apps/docs/components/switch.md)。
+**声明面与生效面是两张表，本篇只写它们的差集。** 完整的属性清单不在这里，见 [apps/docs/components/switch.md`。
 
 props 进入渲染有三条路：第一条是 `useConfigInject('switch', props)`（`packages/xiaoye-ui/src/switch/index.tsx:109`）与 `useStyle(prefixCls)`（`:110`），把 `prefixCls`、`size`、`direction` 变成类名成分，落点是 `classNames`（`:168`-`176`）的 7 个键——其中 `hashId.value`（`:175`）是 CSS-in-JS 的哈希类名，缺了它样式不命中，这是 `wrapSSR`（`:179`）之外的第二条样式依赖。第二条是 `getPropsSlot(slots, props, 'checkedChildren')`（`:218`、`:221`），插槽优先、props 兜底，两个内容分别包在 `-inner-checked` 与 `-inner-unchecked` 里（`:217`、`:220`），它们的可见性不由 JS 判断而由 `packages/xiaoye-ui/src/switch/style/index.ts:202`-`215` 与 `:218`-`233` 的 `margin-inline` 负值计算决定——也就是说**文案切换是纯 CSS 动画**，`:171` 的 `-checked` 类名是唯一的输入。第三条是 `omit` 展开（`:182`），已在论点 5 展开。
 

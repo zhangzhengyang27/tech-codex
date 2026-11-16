@@ -1,3 +1,9 @@
+---
+title: "C07-03 Tooltip 文字提示"
+description: "本篇解决：Tooltip 如何把「一行文案」变成一套带延迟、箭头、碰撞避让与受控/非受控语义的浮层，以及 tooltip/ 与 vc-tooltip/ 的职责切口究竟落在哪一行。"
+category: XiaoyeUI源码专栏
+
+---
 # C07-03 Tooltip 文字提示
 
 > **本篇解决**：Tooltip 如何把「一行文案」变成一套带延迟、箭头、碰撞避让与受控/非受控语义的浮层，以及 `tooltip/` 与 `vc-tooltip/` 的职责切口究竟落在哪一行。
@@ -32,7 +38,7 @@ Tooltip 负责把一段文案渲染成**跟随触发元素、带单向箭头、�
 
 主实现入口是 `packages/xiaoye-ui/src/tooltip/Tooltip.tsx:252` 的渲染函数返回；vendor 侧入口是 `packages/xiaoye-ui/src/vc-tooltip/src/Tooltip.tsx:87`。两份 12 方位表都在生效，但生效条件互斥（论点 3）。
 
-组件目录内没有 `demo/`，也没有 `__tests__/` 子目录——测试文件 `tooltip.test.js` 与被测文件同级，仍在 Vitest 的采集范围内（glob 见 `packages/xiaoye-ui/vitest.config.mts:33`）。用法面见 [apps/docs/components/tooltip.md](../../../apps/docs/components/tooltip.md)。
+组件目录内没有 `demo/`，也没有 `__tests__/` 子目录——测试文件 `tooltip.test.js` 与被测文件同级，仍在 Vitest 的采集范围内（glob 见 `packages/xiaoye-ui/vitest.config.mts:33`）。用法面见 `apps/docs/components/tooltip.md`。
 
 ## 三、架构与数据流
 

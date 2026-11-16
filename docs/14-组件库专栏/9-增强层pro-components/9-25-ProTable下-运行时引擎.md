@@ -1,3 +1,9 @@
+---
+title: "9-25 · ProTable（下）：运行时引擎"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第二十五篇，也是 pro-table 上下篇的下集。9-24 拆完了配置模型——一份 ProTableColumn 如何声明 14 种渲染与编辑器协议、显示管线 renderDisp"
+category: 组件库专栏
+
+---
 # 9-25 · ProTable（下）：运行时引擎
 
 > 本篇是 9 卷"增强层（pro-components）"的第二十五篇，也是 pro-table 上下篇的下集。9-24 拆完了配置模型——一份 `ProTableColumn` 如何声明 14 种渲染与编辑器协议、显示管线 `renderDisplayValue` 如何把单元格变成标签、进度条与富文本。但配置再漂亮，也只是让表格"长成什么样"；让表格"动起来"的是另外四段代码：请求怎么发、过期的响应怎么丢、导出怎么落盘、打印怎么开窗、行列怎么拖、全屏怎么铺。本篇按大纲的核心问题——**竞态防护、导出打印、拖拽与全屏的实现**——把 `pro-table.vue` 里这四段运行时引擎逐一拆到实码：一个 `latestRequestId` 数字令牌管住十一条触发线的竞态（9-02 与 9-10 两度引过它，本篇正式展开）；CSV 零依赖导出加 Excel 动态分包加新窗口打印的两条出口管道；sortablejs 直挂 tbody/thead 的"DOM 先动、数据追认"式拖拽；Fullscreen API 优先、CSS 铺满兜底的双保险全屏。全部给实码定论，并为 9-26《ColumnSettingPanel：列设置》埋好引线。

@@ -1,3 +1,9 @@
+---
+title: "C01-00 类横写：button/icon/tag/chips/badge 的职责切分"
+description: "本篇解决：通用基础这五个组件到底按什么维度切开——哪些能力属于「可点击的容器」、哪些属于「图形」、哪些属于「状态标记」，以及它们在源码层共用了什么、又在什么地方各走各的路。"
+category: XiaoyeUI源码专栏
+
+---
 # C01-00 类横写：button/icon/tag/chips/badge 的职责切分
 
 > **本篇解决**：通用基础这五个组件到底按什么维度切开——哪些能力属于「可点击的容器」、哪些属于「图形」、哪些属于「状态标记」，以及它们在源码层共用了什么、又在什么地方各走各的路。
@@ -614,7 +620,7 @@ grep -n "XYButtonGroup\|XYCheckableTag\|XYBadgeRibbon" packages/xiaoye-ui/typing
 
 ## 五、对外契约如何生效
 
-本节只讲四条契约在本类里的**流动路径**，属性清单见 [apps/docs/components/button.md](../../../apps/docs/components/button.md) 等手册页。
+本节只讲四条契约在本类里的**流动路径**，属性清单见 `apps/docs/components/button.md` 等手册页。
 
 **前缀契约**：四个组件都接受 `prefixCls`（`button/buttonTypes.ts:22`、`tag/index.tsx:20`、`chips/interface.ts:5`、`badge/Badge.tsx:26`），路径统一是「组件传入 → `useConfigInject` 第 14 行（`config-provider/hooks/useConfigInject.ts:14`）→ `getPrefixCls`（`config-provider/index.tsx:70-75`）→ 类名数组」。另有一处「合规但不一致」：ButtonGroup 的前缀写成 `btn-group`（`button/button-group.tsx:26`），与它自己的标签名 `xy-button-group` 由两套规则产出（`_util/registerComponent.ts:6-11`）。
 

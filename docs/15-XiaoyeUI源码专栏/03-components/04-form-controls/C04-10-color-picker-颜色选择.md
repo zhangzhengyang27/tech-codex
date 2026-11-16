@@ -1,3 +1,9 @@
+---
+title: "C04-10 ColorPicker 颜色选择"
+description: "本篇解决：ColorPicker 如何把「用户拖动出来的像素坐标」与「对外交换的颜色字符串」这两套坐标系对接起来，以及内部 HSB 三元组在其中承担的唯一真相角色——为什么改 hsbValue 不会移动把手、为什么 defaultValue"
+category: XiaoyeUI源码专栏
+
+---
 # C04-10 ColorPicker 颜色选择
 
 > **本篇解决**：ColorPicker 如何把「用户拖动出来的像素坐标」与「对外交换的颜色字符串」这两套坐标系对接起来，以及内部 HSB 三元组在其中承担的唯一真相角色——为什么改 `hsbValue` 不会移动把手、为什么 `defaultValue` 到不了面板、为什么一次拖拽会把 `#ff5252` 变成 `ff5252`。

@@ -1,3 +1,9 @@
+---
+title: "8-03 · Progress：SVG 描边"
+description: "核心问题：line/circle 双形态的几何"
+category: 组件库专栏
+
+---
 # 8-03 · Progress：SVG 描边
 
 > 核心问题：line/circle 双形态的几何

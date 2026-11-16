@@ -1,3 +1,9 @@
+---
+title: "9-05 · ProForm：schema 驱动表单"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第五篇。9-02 拆了协议层 core.ts，9-03 拆了翻译官 field-schema.ts——一份 ProFieldSchema 声明凭什么同时驱动表单态、展示态、详情态三种"
+category: 组件库专栏
+
+---
 # 9-05 · ProForm：schema 驱动表单
 
 > 本篇是 9 卷"增强层（pro-components）"的第五篇。9-02 拆了协议层 `core.ts`，9-03 拆了翻译官 `field-schema.ts`——一份 `ProFieldSchema` 声明凭什么同时驱动表单态、展示态、详情态三种形态，单个 `resolveProFieldXxx` 函数的机械已经逐个过堂。本篇往上抬一层，拆**装配车间**：`XyProForm`。它是增强层表单族的渲染引擎，9-06 到 9-10 的五个形态（overlay-form、dialog-form、drawer-form、steps-form、request-form）本质上都是它的容器变体——引擎只有一台，变的只是外壳。核心问题按大纲只有一句话——**Grid 布局与只读态整表切换**——但这句话里至少藏着四道题：schema 到基础组件的渲染管线长什么样、字段网格为什么自建 CSS grid 而不接 5-16/5-17 栅格的水、只读态为什么是"整表切换成 Descriptions"而不是"一组禁用输入框"、提交动作为什么要 validate 前置加深拷贝快照。本篇全部给实码定论，并为 9-06《OverlayForm：多态容器》埋好引线。

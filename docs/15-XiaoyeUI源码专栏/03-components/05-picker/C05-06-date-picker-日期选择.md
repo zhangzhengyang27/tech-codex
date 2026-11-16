@@ -1,3 +1,9 @@
+---
+title: "C05-06 DatePicker 日期选择"
+description: "本篇解决：<xy-date-picker> 这个公开组件是怎么被 generatePicker 工厂造出来的；valueFormat 的字符串↔日期双向转换到底落在哪几个函数里；presets / ranges 这两类\"快捷选项\"如何穿过组"
+category: XiaoyeUI源码专栏
+
+---
 # C05-06 DatePicker 日期选择
 
 > **本篇解决**：`<xy-date-picker>` 这个公开组件是怎么被 `generatePicker` 工厂造出来的；`valueFormat` 的字符串↔日期双向转换到底落在哪几个函数里；`presets` / `ranges` 这两类"快捷选项"如何穿过组件层；以及 Form 的校验态是通过哪两条互不相干的注入线染进类名与图标的。

@@ -1,3 +1,9 @@
+---
+title: "6-13 · TimePicker：时间面板"
+description: "核心问题：列表滚动选择与格式约束"
+category: 组件库专栏
+
+---
 # 6-13 · TimePicker：时间面板
 
 > 核心问题：列表滚动选择与格式约束

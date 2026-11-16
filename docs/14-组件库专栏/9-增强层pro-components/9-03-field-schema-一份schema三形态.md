@@ -1,3 +1,9 @@
+---
+title: "9-03 · field-schema：一份 schema 三形态"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第三篇。9-02 把 core.ts 这部\"宪法\"逐条读完，结尾埋了一条引线：宪法规定了词汇（23 个内置组件词表、17 个成员的字段协议），但\"语法和翻译官\"另有其人——它们住在 "
+category: 组件库专栏
+
+---
 # 9-03 · field-schema：一份 schema 三形态
 
 > 本篇是 9 卷"增强层（pro-components）"的第三篇。9-02 把 `core.ts` 这部"宪法"逐条读完，结尾埋了一条引线：宪法规定了词汇（23 个内置组件词表、17 个成员的字段协议），但"语法和翻译官"另有其人——它们住在 `packages/pro-components/field-schema.ts`，260 行，零组件、零模板，却是 `pro-form`、`detail-panel`、`table-filter-drawer`、`pro-table`、`detail-page` 五类页面级组件共同依赖的解析层。本篇回答核心问题：**23 个内建组件如何被字符串引用？**以及顺着这个问题长出来的下半句：同一份 `ProFieldSchema`，凭什么能同时驱动编辑态、展示态、详情态三种截然不同的渲染形态？全部结论以当前工作区实码为准，行号逐一核对。

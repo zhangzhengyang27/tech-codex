@@ -1,3 +1,9 @@
+---
+title: "9-06 · OverlayForm：多态容器"
+description: "本篇是 9 卷\"增强层（pro-components）\"的第六篇。9-05 讲完 ProForm——schema 驱动表单与\"只读态整表切换\"；本篇往上盖一层盖板：表单写好了，放在哪个容器里打开？后台系统里这个问题有个更俗的名字：这条编辑链"
+category: 组件库专栏
+
+---
 # 9-06 · OverlayForm：多态容器
 
 > 本篇是 9 卷"增强层（pro-components）"的第六篇。9-05 讲完 ProForm——schema 驱动表单与"只读态整表切换"；本篇往上盖一层盖板：表单写好了，**放在哪个容器里打开？**后台系统里这个问题有个更俗的名字：这条编辑链路，走抽屉还是走弹窗？传统做法是业务方自己二选一，然后各写一遍 `<xy-drawer><xy-form>...</xy-form></xy-drawer>` 和 `<xy-dialog><xy-form>...</xy-form></xy-dialog>`——校验、提交、关闭、重置、卸载五件事全在业务里复制两份。OverlayForm 的回答是把这段收口进一个组件：`container="drawer" | "modal"` 一个 prop 切换容器形态，五件事只写一次。核心问题按大纲只有一句话——drawer/modal 一个 prop 切换的实现——但这句话里至少藏着四道题：切换的机械是什么（动态组件还是条件分支）、两个容器 props 面的差异（drawer 的 `size` vs dialog 的 `width`）怎么抹平、内嵌的 ProForm 与提交/关闭的时序怎么治理、以及它和 9-07/9-08 两个"特化薄壳"的分工逻辑。本篇全部给实码定论。

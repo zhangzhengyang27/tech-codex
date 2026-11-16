@@ -1,3 +1,9 @@
+---
+title: "C05-04 TreeSelect 树选择"
+description: "本篇解决：TreeSelect 同时踩在 vc-select 与 vc-tree 两条链上，适配层到底把哪些键传给下层、哪些键改名或漏传，以及「树」的交互语义在哪一层被翻译成「选择」的数据语义。"
+category: XiaoyeUI源码专栏
+
+---
 # C05-04 TreeSelect 树选择
 
 > **本篇解决**：TreeSelect 同时踩在 `vc-select` 与 `vc-tree` 两条链上，适配层到底把哪些键传给下层、哪些键改名或漏传，以及「树」的交互语义在哪一层被翻译成「选择」的数据语义。

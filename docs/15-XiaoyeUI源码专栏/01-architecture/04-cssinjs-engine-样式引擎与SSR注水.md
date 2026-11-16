@@ -1,3 +1,9 @@
+---
+title: "A04 cssinjs 样式引擎与 SSR 注水"
+description: "本篇解决：一次 useStyle(prefixCls) 之后，CSSObject 经过哪几步变成 DOM 里的 <style>？缓存键由什么组成、去重靠什么？hashId 是谁算的、dev 与 prod 差在哪？服务端怎么把样式抽成字符串"
+category: XiaoyeUI源码专栏
+
+---
 # A04 cssinjs 样式引擎与 SSR 注水
 
 > **本篇解决**：一次 `useStyle(prefixCls)` 之后，CSSObject 经过哪几步变成 DOM 里的 `<style>`？缓存键由什么组成、去重靠什么？`hashId` 是谁算的、dev 与 prod 差在哪？服务端怎么把样式抽成字符串、客户端 hydrate 时凭什么不重复插入？

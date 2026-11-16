@@ -18,13 +18,7 @@ tags: [Webpack, 构建工具]
 - Node.js 异步编程（setTimeout、callback、Promise）
 - 参见：[tapable 核心库详解](34-tapable核心库.md)
 
-## 学习目标
-
-- 独立完成 SyncHook 多参数注册与调用
-- 掌握 AsyncSeriesHook 的 tapAsync/callAsync 与错误中断
-- 掌握 AsyncParallelHook 的并行执行与错误处理
-- 理解 tapPromise 与 tapAsync 的对应关系
-- 实践 Waterfall 值传递、Bail 截断、Loop 循环
+本章通过练习实践 SyncHook 的多参数注册与调用、AsyncSeriesHook 与 AsyncParallelHook 的执行与错误处理、tapPromise 与 tapAsync 的对应关系,以及 Waterfall 值传递、Bail 截断、Loop 循环等特性。
 
 ## 一、项目初始化
 

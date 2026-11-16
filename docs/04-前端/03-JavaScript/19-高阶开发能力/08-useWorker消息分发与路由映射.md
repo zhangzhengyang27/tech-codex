@@ -19,12 +19,7 @@ tags: [JavaScript, Web Worker, React Hooks]
 - 熟悉 Vue Router 的 `useRoute()`
 - 了解事件总线（Event Bus）模式
 
-## 学习目标
-
-- 理解页面侧三类消息（connected / update / 业务消息）的处理分工
-- 掌握 `localId` 与 `routeIds` 的初始化与用途
-- 实现 eventName 精确匹配 + route.path 路由级匹配的双层分发
-- 理解 handlers 空值兜底与生命周期清理
+本章讲解页面侧 connected/update/业务消息三类消息的处理分工、localId 与 routeIds 的初始化与用途,实现 eventName 精确匹配与 route.path 路由级匹配的双层分发,并完成 handlers 空值兜底与生命周期清理。
 
 ---
 

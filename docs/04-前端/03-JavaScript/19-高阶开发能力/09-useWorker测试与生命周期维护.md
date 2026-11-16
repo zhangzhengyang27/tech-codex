@@ -19,12 +19,7 @@ tags: [JavaScript, Web Worker, 测试]
 - 了解 Chrome DevTools 基本调试能力
 - 了解 `beforeunload` 事件
 
-## 学习目标
-
-- 掌握"消息能到但值不对"类问题的排查思路
-- 学会使用 chrome://inspect 调试 SharedWorker
-- 实现 routeIds 在连接、更新、关闭三个阶段的完整维护
-- 理解多标签页同路由场景的设计边界与演进方向
+本章梳理「消息能到但值不对」类问题的排查思路与 chrome://inspect 调试方法,实现 routeIds 在连接、更新、关闭三个阶段的完整维护,并讨论多标签页同路由场景的设计边界与演进方向。
 
 ---
 

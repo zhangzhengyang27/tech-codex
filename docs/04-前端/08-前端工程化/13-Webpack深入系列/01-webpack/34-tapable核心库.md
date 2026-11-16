@@ -19,13 +19,7 @@ tapable 是 Webpack 插件系统的基石，为 Compiler 和 Compilation 提供�
 - JavaScript 回调函数与 Promise
 - 参见：[Webpack CLI build 命令执行流程](32-build命令执行流程.md)
 
-## 学习目标
-
-- 理解 tapable 在 Webpack 架构中的定位
-- 掌握四种 Hook 行为类型（Basic/Waterfall/Bail/Loop）
-- 掌握同步与异步（串行/并行）执行机制
-- 熟练使用三组注册/调用方法（tap/call、tapAsync/callAsync、tapPromise/promise）
-- 了解拦截器（intercept）机制
+本章介绍 tapable 在 Webpack 架构中的定位,覆盖四种 Hook 行为类型(Basic/Waterfall/Bail/Loop)、同步与异步(串行/并行)执行机制、三组注册/调用方法(tap/call、tapAsync/callAsync、tapPromise/promise)以及拦截器(intercept)机制。
 
 ## 一、tapable 在 Webpack 中的定位
 

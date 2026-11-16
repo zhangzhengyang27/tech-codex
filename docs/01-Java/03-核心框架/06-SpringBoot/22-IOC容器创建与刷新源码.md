@@ -765,7 +765,7 @@ public static void registerBeanDefinition(
 
 在这里它就是这么把Bean的定义信息注册进IOC容器的。其中，Bean的名称和别名在这个方法也被分开处理。
 
-看到这里，小伙伴们可能会疑惑，这个 **BeanDefinition** 是个什么东西，它在IOC容器中起到了什么作用呢？
+看到这里，读者可能会疑惑，这个 **BeanDefinition** 是个什么东西，它在IOC容器中起到了什么作用呢？
 
 ###### 4.9.5 【重要】BeanDefinition
 
@@ -773,7 +773,7 @@ public static void registerBeanDefinition(
 
 > A BeanDefinition describes a bean instance, which has property values, constructor argument values, and further information supplied by concrete implementations. This is just a minimal interface: The main intention is to allow a BeanFactoryPostProcessor such as PropertyPlaceholderConfigurer to introspect and modify property values and other bean metadata.BeanDefinition 描述了一个bean实例，该实例具有属性值，构造函数参数值以及具体实现所提供的更多信息。这只是一个最小的接口：主要目的是允许 BeanFactoryPostProcessor （例如 PropertyPlaceholderConfigurer ）内省和修改属性值和其他bean元数据。
 
-从文档注释中可以看出，它是描述Bean的实例的一个定义信息，但它不是真正的Bean。这个接口还定义了很多方法，不一一列举，全部的方法定义小伙伴们可以自行从IDE中了解。
+从文档注释中可以看出，它是描述Bean的实例的一个定义信息，但它不是真正的Bean。这个接口还定义了很多方法，不一一列举，全部的方法定义读者可以自行从IDE中了解。
 
 - `String getBeanClassName();`
 - `String getScope();`
@@ -782,7 +782,7 @@ public static void registerBeanDefinition(
 - `boolean isSingleton();`
 - .....
 
-`SpringFramework` 设计的这种机制会在后续的Bean加载和创建时起到非常关键的作用，小伙伴们一定要留意。
+`SpringFramework` 设计的这种机制会在后续的Bean加载和创建时起到非常关键的作用，读者一定要留意。
 
 下面提到了一个 `BeanPostProcessor` ，这个概念我们到下一篇再了解。
 
@@ -796,7 +796,7 @@ public static void registerBeanDefinition(
 
 ### IOC：刷新容器-BeanFactory的预处理
 
-（接下来的几篇将会有非常多的干货，小伙伴们一定要好好理解好好消化）
+（接下来的几篇将会有非常多的干货，读者一定要好好理解好好消化）
 
 （因为IOC容器的刷新部分实在太多而且复杂，这部分将不延续之前文章的标号，单独成编号体系）
 
@@ -1729,7 +1729,7 @@ public static void registerWebApplicationScopes(ConfigurableListableBeanFactory 
 
 下一步是进行组件的包扫描。不过注意一点，在这个位置上打断点，Debug运行时发现 basePackages 为null，故此处不进，小伙伴不要觉得之前已经知道了 primarySource 就觉得这个地方 basePackages 就肯定有值了。
 
-咱先了解下这个包扫描，方便后续咱们看到时理解。
+咱先了解下这个包扫描，方便后续我们看到时理解。
 
 ##### 4.2 【重要】包扫描
 
@@ -2767,7 +2767,7 @@ candidates.clear();
 }
 ```
 
-源码中有几部分是比较复杂且重要的环节，咱们一一来看：
+源码中有几部分是比较复杂且重要的环节，我们一一来看：
 
 ###### 5.2.1 确定配置类和组件
 
@@ -3036,7 +3036,7 @@ if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 
 由此可知，在这一步，一个配置类的所有信息就已经被解析完成了。
 
-咱们以解析 `@ComponentScan` 为例：
+我们以解析 `@ComponentScan` 为例：
 
 ###### 5.2.3.1 解析 @ComponentScan
 
@@ -3068,7 +3068,7 @@ if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 
 ###### 5.2.3.2 ComponentScanAnnotationParser.parse
 
-（这里只记录重要的部分，中间省略的部分小伙伴们可借助IDE查看）
+（这里只记录重要的部分，中间省略的部分读者可借助IDE查看）
 
 ```java
 public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, final String declaringClass) {
@@ -3234,7 +3234,7 @@ if (configClass.isImported()) {
 
 由于在之前已经解析过这个 `configClass` 了，所以在这里可以很容易的解析出这里面的 `@Import` 、标注了 `@Bean` 的方法、`@ImportResource` 等，并进行相应处理。
 
-咱们以 读取 `@Bean` 注解标注的方法为例，看一眼它对Bean的解析和加载：（方法很长，关键注释已标注在源码中）
+我们以 读取 `@Bean` 注解标注的方法为例，看一眼它对Bean的解析和加载：（方法很长，关键注释已标注在源码中）
 
 ```java
 private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
@@ -4310,7 +4310,7 @@ private WebServer startWebServer() {
 
 这里调用了 `WebServer` 的start方法真正启动嵌入式Web容器。
 
-嵌入式Tomcat容器的更多原理解读和源码分析，在后面会有专门的篇章来读，此处不作过多解释，只希望小伙伴们知道在这个时机创建的嵌入式Tomcat即可。
+嵌入式Tomcat容器的更多原理解读和源码分析，在后面会有专门的篇章来读，此处不作过多解释，只希望读者知道在这个时机创建的嵌入式Tomcat即可。
 
 #### 回到原来SpringApplication.run的标号
 
@@ -4386,7 +4386,7 @@ protected void publishEvent(Object event, @Nullable ResolvableType eventType) {
 }
 ```
 
-上面的预处理部分咱们不关心，关键的看这两段if-else：
+上面的预处理部分我们不关心，关键的看这两段if-else：
 
 - 第一段if-else是在当前IOC容器发布 `ApplicationStartedEvent` 事件
 - 下面的if结构会向父容器发布 `ApplicationStartedEvent` 事件
@@ -4466,7 +4466,7 @@ private void callRunner(CommandLineRunner runner, ApplicationArguments args) {
 
 ### IOC：小结与收获
 
-小伙伴们，能走到这里，真的要恭喜你们，你们在文档的辅助下已经成功走完一遍 `SpringBoot` 的IOC容器启动原理了。咱暂且先不急继续前行，先回过头来看看咱读完IOC原理后，都有哪些归纳总结的，以及咱能有什么收获吧，毕竟温故而知新。
+读者，能走到这里，真的要恭喜你们，你们在文档的辅助下已经成功走完一遍 `SpringBoot` 的IOC容器启动原理了。咱暂且先不急继续前行，先回过头来看看咱读完IOC原理后，都有哪些归纳总结的，以及咱能有什么收获吧，毕竟温故而知新。
 
 #### 1. Web应用类型判定
 
@@ -4510,7 +4510,7 @@ Bean的初始化经过的步骤非常多，其中也包括AOP的部分。其中I
 
 `SpringBoot` 扩展的 `ServletWebServerApplicationContext` 会在IOC容器的模板方法 `onRefresh` 方法中创建嵌入式Web容器，这部分涉及到的内容会在后面专门的篇章中解析。
 
-【小伙伴们，IOC的部分到这里就全部完结了。下面咱来一起进入AOP的部分，来探究 `SpringFramework` 是如何实现AOP的吧】
+【读者，IOC的部分到这里就全部完结了。下面咱来一起进入AOP的部分，来探究 `SpringFramework` 是如何实现AOP的吧】
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 

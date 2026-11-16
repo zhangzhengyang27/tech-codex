@@ -19,12 +19,7 @@ tags: [JavaScript, SharedWorker, 通信]
 - 了解 Web Worker 基本概念
 - 了解 `MessagePort` 的 `postMessage` / `start` / `onmessage`
 
-## 学习目标
-
-- 理解 SharedWorker "一个 Worker，多个 Port" 的通信模型
-- 掌握 `onconnect` 入口与 `port.start()` 的调用时机
-- 实现端口池广播与基于 Map 的定向转发
-- 了解 SharedWorker 的兼容性边界与降级策略
+本章讲解 SharedWorker「一个 Worker,多个 Port」的通信模型与 onconnect、port.start() 的调用时机,实现端口池广播与基于 Map 的定向转发,并分析其兼容性边界与降级策略。
 
 ---
 

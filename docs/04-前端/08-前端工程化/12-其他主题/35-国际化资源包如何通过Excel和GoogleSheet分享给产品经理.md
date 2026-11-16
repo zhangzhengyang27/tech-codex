@@ -8,9 +8,7 @@ tags: [国际化, Excel, Google Sheet]
 
 # 国际化资源包如何通过Excel和GoogleSheet分享给产品经理
 
-## 学习目标
-
-- 理解并掌握 国际化资源包如何通过Excel和GoogleSheet分享给产品经理 的核心原理与工程实践
+本文介绍国际化资源包如何通过 Excel 和 GoogleSheet 分享给产品经理的核心原理与工程实践。
 
 ## 总结
 

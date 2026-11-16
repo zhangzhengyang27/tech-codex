@@ -7,7 +7,7 @@ tags: [Java, SpringCloudAlibaba实战]
 ---
 # 链路跟踪：基于 Sleuth+Zipkin 实施链路跟踪体系
 
-在前面几节我们主要讲解了基于 Sentinel 如何对微服务架构提供限流、熔断保护。从本文开始，我们继续完善微服务架构，介绍如何在 Spring Cloud 架构下基于 Sleuth+Zipkin 实现微服务链路追踪。本文咱们将学习以下三方面内容：
+在前面几节我们主要讲解了基于 Sentinel 如何对微服务架构提供限流、熔断保护。从本文开始，我们继续完善微服务架构，介绍如何在 Spring Cloud 架构下基于 Sleuth+Zipkin 实现微服务链路追踪。本文我们将学习以下三方面内容：
 
 - 介绍微服务链路追踪的原理；
 
@@ -15,7 +15,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 - 构建 Zipkin Server 实现链路追踪的可视化管理。
 
-下面咱们先来介绍什么是微服务链路追踪。
+下面我们先来介绍什么是微服务链路追踪。
 
 ## 微服务链路追踪
 
@@ -24,7 +24,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 如此复杂的消息传递过程，当系统发生故障的时候，就需要一种机制对故障点进行快速定位，确认是哪个服务出了问题，链路追踪技术由此而生。所谓的链路追踪，就是运行时通过某种方式记录下服务之间的调用过程，在通过可视化的 UI 界面帮研发运维人员快速定位到出错点。引入链路追踪，是微服务架构运维的底层基础，没有它，运维人员就像盲人摸象一样，根本无法了解服务间通信过程。
 
-在 Spring Cloud 标准生态下内置了 Sleuth 这个组件，它通过扩展 Logging 日志的方式实现微服务的链路追踪。说起来比较晦涩，咱们看一个实例就明白了，在标准的微服务下日志产生的格式是：
+在 Spring Cloud 标准生态下内置了 Sleuth 这个组件，它通过扩展 Logging 日志的方式实现微服务的链路追踪。说起来比较晦涩，我们看一个实例就明白了，在标准的微服务下日志产生的格式是：
 
 ```log
 2021-01-12 17:00:33.441 INFO [nio-7000-exec-2] c.netflix.config.ChainedDynamicProperty  : Flipping property: b-service.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
@@ -77,7 +77,7 @@ Zipkin 是推特的一个开源项目，它能收集各个服务实例上的链�
 
 通过这个图表可以非常直观的了解业务处理过程中服务间的依赖关系与处理时间、处理状态等信息，是开发运维人员进行故障分析时必要的工具。
 
-说到这，想必你对服务链路追踪与 Sleuth+Zipkin 组合已经有了初步认识，下面咱们通过实例讲解如何在微服务架构中进行链路追踪。这个过程分为两个阶段：
+说到这，想必你对服务链路追踪与 Sleuth+Zipkin 组合已经有了初步认识，下面我们通过实例讲解如何在微服务架构中进行链路追踪。这个过程分为两个阶段：
 
 - 在服务中加入 Spring Cloud Sleuth 生成链路追踪日志；
 
@@ -254,7 +254,7 @@ public class SampleController {
 Zipkin 是由推特开发的分布式链路追踪系统，用于对 Sleuth 产生的日志加以收集并采用可视化的数据对链路追踪进行分析与图表展示，Zipkin 是典型的 C/S（客户端与服务端）架构模式，需要独立部署 Zipkin 服务器，同时也需要在微服务内部持有Zipkin客户端才可以自动实现日志的推送与展示。
 
 
-在部署 Zipkin 服务端后，一旦微服务产生链路追踪日志，Zipkin 客户端便会自动以异步形式将日志数据推送至 Zipkin 服务端，Zipkin 服务端对数据进行组织整理，开发运维人员便可通过 Zipkin 服务端提供的 UI 界面进行查看。下面咱们来讲解 Zipkin 服务端与客户端的部署过程。
+在部署 Zipkin 服务端后，一旦微服务产生链路追踪日志，Zipkin 客户端便会自动以异步形式将日志数据推送至 Zipkin 服务端，Zipkin 服务端对数据进行组织整理，开发运维人员便可通过 Zipkin 服务端提供的 UI 界面进行查看。下面我们来讲解 Zipkin 服务端与客户端的部署过程。
 
 ## 部署 Zipkin 服务端
 
@@ -281,7 +281,7 @@ Armeria server started at ports: {/0:0:0:0:0:0:0:0:9411=ServerPort(/0:0:0:0:0:0:
 [http://localhost:9411/zipkin/](http://localhost:9411/zipkin/)
 
 
-此时映入眼帘的就是 Zipkin 内置的分析 UI 界面，当前因为没有任何服务接入，查询不到任何数据，下面咱们进行 Zipkin 客户端接入。
+此时映入眼帘的就是 Zipkin 内置的分析 UI 界面，当前因为没有任何服务接入，查询不到任何数据，下面我们进行 Zipkin 客户端接入。
 
 ### 在微服务安装 Zipkin 客户端
 
@@ -330,7 +330,7 @@ spring.zipkin.base-url 设置可用的 Zipkin 服务端IP端口即可。
 通过这个图可以直观了解到 ABC 三个服务的执行时间、执行顺序、访问地址、访问方式以及是否执行成功。如果你点击对应的色条，还可以看到更详细的内容。
 
 
-下面咱们做一个实验，将 C 服务停止，看链路图会产生什么变化。停止后再次访问 A 服务报 500 错误“java.net.SocketTimeoutException: Read timed out”。此时链路追踪图会显示错误。
+下面我们做一个实验，将 C 服务停止，看链路图会产生什么变化。停止后再次访问 A 服务报 500 错误“java.net.SocketTimeoutException: Read timed out”。此时链路追踪图会显示错误。
 
 
 通过图表发现最后 b-service 只有 6 纳秒执行时间肯定是有问题的，点击后查看明细。
@@ -342,9 +342,9 @@ spring.zipkin.base-url 设置可用的 Zipkin 服务端IP端口即可。
 
 ## 小结
 
-本文咱们学习了三方面内容，首先介绍了链路追踪的作用并分析了 Sleuth+Zipkin 基于日志追踪的原理；其次我们掌握了 Sleuth 的部署方法，只需要引入 Sleuth 的依赖即可；最后介绍了如何引入 Zipkin 实现可视化链路追踪，并模拟了异常情况。
+本文我们学习了三方面内容，首先介绍了链路追踪的作用并分析了 Sleuth+Zipkin 基于日志追踪的原理；其次我们掌握了 Sleuth 的部署方法，只需要引入 Sleuth 的依赖即可；最后介绍了如何引入 Zipkin 实现可视化链路追踪，并模拟了异常情况。
 
-这里咱们留一道讨论题：在日常的开发过程中，研发人员会开发各种不同功能的 RESTful 接口，如何将这些接口的文档化以及如何对这些接口进行版本管理呢？
+这里我们留一道讨论题：在日常的开发过程中，研发人员会开发各种不同功能的 RESTful 接口，如何将这些接口的文档化以及如何对这些接口进行版本管理呢？
 
 ## 版本差异（Spring Cloud Alibaba 旧版 → 2025.x）
 

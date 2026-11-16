@@ -19,12 +19,7 @@ Webpack CLI 使用 TypeScript 编写，直接调试编译后的 JavaScript 文�
 - Source Map 基本概念
 - 参见：[Webpack 源码调试环境搭建](29-源码调试环境搭建.md)
 
-## 学习目标
-
-- 理解 Source Map 在 TypeScript 调试中的作用
-- 配置 tsconfig.json 生成 Source Map
-- 掌握 VS Code launch.json 中 sourceMaps 和 outFiles 配置
-- 能够在 TypeScript 源码中直接打断点调试
+本章讲解 Webpack CLI 的 TypeScript 源码调试:配置 tsconfig.json 生成 Source Map,设置 VS Code launch.json 中的 sourceMaps 与 outFiles,从而在 TypeScript 源码中直接打断点调试。
 
 ## 一、Source Map 映射原理
 

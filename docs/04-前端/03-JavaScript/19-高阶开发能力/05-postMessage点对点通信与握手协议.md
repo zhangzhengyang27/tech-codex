@@ -18,12 +18,7 @@ tags: [JavaScript, postMessage, 通信协议]
 - 掌握 `postMessage` 基本收发与 origin 校验（参见 [04-postMessage跨标签页通信](04-postMessage跨标签页通信.md)）
 - 了解 Vue 3 生命周期钩子（onMounted / onUnmounted）
 
-## 学习目标
-
-- 理解 setTimeout 等待的缺陷与 ready 握手协议的设计思路
-- 掌握结构化消息格式设计（type + payload）
-- 实现完整的双向点对点通信闭环
-- 在 Vue 组件中正确管理 message 监听的生命周期
+本章分析 setTimeout 等待的缺陷与 ready 握手协议的设计思路,设计 type + payload 的结构化消息格式,实现双向点对点通信闭环,并在 Vue 组件中管理 message 监听的生命周期。
 
 ---
 

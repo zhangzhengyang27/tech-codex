@@ -9,7 +9,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 上一节我们掌握了基于 Sleuth+Zipkin 对微服务架构实施基于日志的链路追踪，通过 Sleuth 在微服务应用中附加链路数据，再通过 Zipkin 实现链路数据收集与可视化，从而保证开发与运维人员在生产环境了解微服务的执行过程与具体细节，为产品运维提供了有力的保障。
 
-本文咱们还是围绕链路追踪这个话题，介绍另一款著名的链路追踪产品 SkyWalking，掌握 SkyWalking 的使用方法。本文咱们将介绍三方面内容：
+本文我们还是围绕链路追踪这个话题，介绍另一款著名的链路追踪产品 SkyWalking，掌握 SkyWalking 的使用方法。本文我们将介绍三方面内容：
 
 - 介绍 APM 与 SkyWalking；
 
@@ -19,7 +19,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 ## APM 与 SkyWalking
 
-这些年随着微服务体系的不断完善，链路追踪已经不是什么新兴的概念与技术，很多厂商也提供了自己的链路追踪产品，例如 Spring Cloud Sleuth、Zipkin、阿里鹰眼、大众点评 Cat、SkyWalking 等。但这些产品都有一个共同的名字：APM（Application Performance Management），即应用性能管理系统。顾名思义这些产品的根本目的就是对应用程序单点性能与整个分布式应用进行监控，记录每一个环节程序执行状况，通过图表与报表的形式让运维人员随时掌握系统的运行状况，其中在这些著名的产品中我非常推荐各位掌握 SkyWalking 这款 APM 产品，理由很简单，它在简单易用的前提下实现了比 Zipkin 功能更强大的链路追踪、同时拥有更加友好、更详细的监控项，并能自动生成可视化图表。相比 Sleuth+Zipkin 这种不同厂商间混搭组合，SkyWalking 更符合国内软件业的“一站式解决方案”的设计理念，下面咱们来了解下 SkyWalking。
+这些年随着微服务体系的不断完善，链路追踪已经不是什么新兴的概念与技术，很多厂商也提供了自己的链路追踪产品，例如 Spring Cloud Sleuth、Zipkin、阿里鹰眼、大众点评 Cat、SkyWalking 等。但这些产品都有一个共同的名字：APM（Application Performance Management），即应用性能管理系统。顾名思义这些产品的根本目的就是对应用程序单点性能与整个分布式应用进行监控，记录每一个环节程序执行状况，通过图表与报表的形式让运维人员随时掌握系统的运行状况，其中在这些著名的产品中我非常推荐各位掌握 SkyWalking 这款 APM 产品，理由很简单，它在简单易用的前提下实现了比 Zipkin 功能更强大的链路追踪、同时拥有更加友好、更详细的监控项，并能自动生成可视化图表。相比 Sleuth+Zipkin 这种不同厂商间混搭组合，SkyWalking 更符合国内软件业的“一站式解决方案”的设计理念，下面我们来了解下 SkyWalking。
 
 SkyWalking 是中国人吴晟（华为）开源的应用性能管理系统（APM）工具，使用Java语言开发，后来吴晟将其贡献给 Apache，在 Apache 的背书下 SkyWalking 发展迅速，现在已属于 Apache 旗下顶级开源项目，它的官网：[http://skywalking.apache.org/](http://skywalking.apache.org/)。
 
@@ -33,16 +33,16 @@ SkyWalking 提供了分布式追踪、服务网格遥测分析、度量聚合和
 
 ## 部署 SkyWalking 服务端与 Java Agent
 
-在了解 SkyWalking 后，咱们正式进入 SkyWalking 的安装与使用吧。
+在了解 SkyWalking 后，我们正式进入 SkyWalking 的安装与使用吧。
 
 ### 部署 SkyWalking 服务端
 
-首先咱们来理解 SkyWalking 的架构组成。
+首先我们来理解 SkyWalking 的架构组成。
 
 
 SkyWalking 同样采用客户端与服务端架构模式，SkyWalking 服务端用于接收来自 Java Agent 客户端发来的链路跟踪与指标数据，汇总统计后由 SkyWalking UI 负责展现。SkyWalking 服务端同时支持 gRPC 与 HTTP 两种上报方式。其中 gRPC 默认监听服务器 11800 端口，HTTP 默认监听 12800 端口，而 SkyWalking UI 应用则默认监听 8080 端口，这三个端口在生产环境下要在防火墙做放行配置。在存储层面，SkyWalking 底层支持 ElasticSearch、MySQL、H2等多种数据源，官方优先推荐使用 ElasticSearch，如果此时你不会 ElasticSearch 也没关系，按文中步骤操作也能完成部署。
 
-首先咱们根据架构图部署 SkyWalking 服务端。
+首先我们根据架构图部署 SkyWalking 服务端。
 
 **第一步，安装 ElasticSearch 全文检索引擎。**
 
@@ -116,7 +116,7 @@ selector: ${SW_STORAGE:elasticsearch7}
 启动成功后，访问 [http://192.168.31.10:8080/](http://192.168.31.10:8080/)，如果看到 SkyWalking UI 首页，则说明服务端配置成功。
 
 
-到这里，SkyWalking 服务端启动完毕，下面咱们来说明如何通过 SkyWalking Java Agent 上报链路数据。
+到这里，SkyWalking 服务端启动完毕，下面我们来说明如何通过 SkyWalking Java Agent 上报链路数据。
 
 ### 安装 SkyWalking Java Agent
 
@@ -159,13 +159,13 @@ java -javaagent:agent.jar -jar oa.jar
 
 SkyWalking 也是利用 Java Agent 的特性，在 premain 中通过字节码增强技术对目标方法进行扩展，当目标方法执行时自动收集链路追踪及监控数据并发往 SkyWalking 服务端。
 
-下面咱们来讲解如何加载并使用 SkyWalking Java Agent，我们还是以实例进行讲解，因为 Java Agent 是无侵入的，并不需要源码，这里我就直接给出调用关系图帮助咱们理解。
+下面我们来讲解如何加载并使用 SkyWalking Java Agent，我们还是以实例进行讲解，因为 Java Agent 是无侵入的，并不需要源码，这里我就直接给出调用关系图帮助我们理解。
 
 调用关系图
 
 简单介绍下，用户访问 a 服务的 a 接口，a 服务通过 OpenFeign 远程调用 b 服务的 b 接口，b 服务通过 OpenFeign 调用 c 服务的 c 接口，最后 c 接口通过 JDBC 将业务数据存储到 MySQL 数据库。
 
-下面咱们演示 SkyWalking Java Agent 的用法，在 skywalking 的 agent 目录下存在 skywalking-agent.jar，这就是 skywalking 提供的 Java Agent 扩展类。
+下面我们演示 SkyWalking Java Agent 的用法，在 skywalking 的 agent 目录下存在 skywalking-agent.jar，这就是 skywalking 提供的 Java Agent 扩展类。
 
 
 如果是生产环境下在启动应用时附加 javaagent 参数即可。
@@ -221,11 +221,11 @@ SkyWalking 基于 Java Agent 对数据库的运行指标也进行收集，点击
 
 
 
-讲到这，咱们已经完成了 SkyWalking 的安装部署与应用接入，同时也对各种监控图表进行了介绍。因为篇幅有限，只能和大家对 SkyWalking 进行入门讲解。当然 SkyWalking 也不是全能的，在生产环境下 SkyWalking 还需要额外考虑很多问题，如 SkyWalking 的集群管理、访问权限控制、自监控、风险预警等都要逐步完善，因此很多互联网公司也基于 SkyWalking 做二次开发以满足自身的需求，你也能在使用过程中对 SkyWalking 的潜力进行挖掘、了解。
+讲到这，我们已经完成了 SkyWalking 的安装部署与应用接入，同时也对各种监控图表进行了介绍。因为篇幅有限，只能和大家对 SkyWalking 进行入门讲解。当然 SkyWalking 也不是全能的，在生产环境下 SkyWalking 还需要额外考虑很多问题，如 SkyWalking 的集群管理、访问权限控制、自监控、风险预警等都要逐步完善，因此很多互联网公司也基于 SkyWalking 做二次开发以满足自身的需求，你也能在使用过程中对 SkyWalking 的潜力进行挖掘、了解。
 
 ## 小结
 
-本文咱们学习了三方面内容，首先了解了 APM 与 SkyWalking 的作用；其次讲解了 SkyWalking 的部署过程与接入过程，介绍了 Java Agent 探针技术；最后对 SkyWalking UI 提供的各种图表进行了说明。
+本文我们学习了三方面内容，首先了解了 APM 与 SkyWalking 的作用；其次讲解了 SkyWalking 的部署过程与接入过程，介绍了 Java Agent 探针技术；最后对 SkyWalking UI 提供的各种图表进行了说明。
 
 在这里我为你准备了一个有趣的讨论题：你的领导希望项目使用 Sleuth+Zipkin 实现链路追踪，而你作为架构师更希望引入 SkyWalking，你有什么办法在不得罪领导的前提下让他改变想法呢？这是所有架构师都要面对的问题。
 

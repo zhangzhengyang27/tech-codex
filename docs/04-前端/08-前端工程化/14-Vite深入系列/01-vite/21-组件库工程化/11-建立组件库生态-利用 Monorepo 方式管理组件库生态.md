@@ -70,7 +70,7 @@ lernaJS 是由 Babel 团队编写的多包管理工具。因为 Babel 体系的�
 
 https://github.com/babel/babel/tree/main/packages
 
-小伙伴们可以欣赏一下，一眼望不到边。
+该目录下的包数量众多，一眼望不到边。
 
 
 无奈长江后浪推前浪，2021 年底 Pnpm 横空出世，闪电般的性能一下子征服了所有前端开发者。更重要的是它还附带 monorepo 方案。这个时候基本上没有任何开发者会抵挡这种诱惑，包括Vue3.0。

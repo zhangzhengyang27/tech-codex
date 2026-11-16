@@ -19,12 +19,7 @@ tags: [JavaScript, 极验, Vue]
 - 了解极验 GT4 基本接入流程（参见 [02-极验GT4行为验证接入与容灾](02-极验GT4行为验证接入与容灾.md)）
 - 了解动态 `<script>` 插入与 Promise 化加载
 
-## 学习目标
-
-- 设计验证码组件的 props/emits/expose 接口
-- 实现 Promise 化的动态脚本加载工具
-- 掌握组件生命周期中的初始化与销毁时机
-- 理解 bind 模式与 popup 模式的封装差异
+本章讲解验证码组件的 props/emits/expose 接口设计、Promise 化的动态脚本加载工具实现、组件生命周期中的初始化与销毁时机,以及 bind 模式与 popup 模式的封装差异。
 
 ---
 

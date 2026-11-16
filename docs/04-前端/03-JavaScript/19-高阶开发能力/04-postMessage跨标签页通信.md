@@ -19,12 +19,7 @@ tags: [JavaScript, postMessage, 跨标签页通信]
 - 熟悉 `window.open()` 的基本用法
 - 了解事件监听 `addEventListener`
 
-## 学习目标
-
-- 理解跨标签页通信的常见方案及其适用边界
-- 掌握 `postMessage` 的发送与接收完整流程
-- 理解 `window.opener` 与 `window.open()` 返回值的双向引用关系
-- 掌握 `targetOrigin` 与 `event.origin` 的安全设计
+本文梳理跨标签页通信的常见方案及其适用边界,讲解 postMessage 的发送与接收完整流程、window.opener 与 window.open() 返回值的双向引用关系,以及 targetOrigin 与 event.origin 的安全设计。
 
 ---
 

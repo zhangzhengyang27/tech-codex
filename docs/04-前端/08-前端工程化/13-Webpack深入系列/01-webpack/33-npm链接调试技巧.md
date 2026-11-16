@@ -18,11 +18,7 @@ tags: [Webpack, 构建工具]
 - 理解 Webpack CLI build 命令执行流程
 - 参见：[Webpack 源码调试环境搭建](29-源码调试环境搭建.md)、[Webpack CLI build 命令执行流程](32-build命令执行流程.md)
 
-## 学习目标
-
-- 理解 CLI 调试时 webpack 模块解析的问题
-- 掌握在 CLI 项目中链接 webpack 源码的操作
-- 能够在 webpack/lib/index.js 中设置断点并跟踪 Compiler 创建
+本章讲解 CLI 调试时 webpack 模块的解析问题,演示在 CLI 项目中链接 webpack 源码的操作,并在 webpack/lib/index.js 中设置断点跟踪 Compiler 的创建过程。
 
 ## 一、问题场景
 

@@ -33,7 +33,7 @@ tags: [Java, SpringBoot]
 
 ##### 1.2 AOP的重要概念
 
-在开始研究AOP原理之前，小伙伴们咱一起回顾下AOP的重要核心概念术语：
+在开始研究AOP原理之前，我们先一起回顾下AOP的重要核心概念术语：
 
 - **JoinPoint**（连接点）：可能被拦截到的点，在Spring中指的是类中的任意方法（SpringFramework 只支持方法类型的连接点）
 - **Pointcut**（切入点）：要对哪些 **JoinPoint** 进行拦截的定义（可以简单理解为已经被增强的方法）（哪些切入点要被增强，需要由切入点表达式来描述）
@@ -1416,7 +1416,7 @@ protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
 }
 ```
 
-创建好代理工厂，下一步就要创建真正的代理对象了。咱们以 jdk动态代理 为例，看一下它的创建原理：
+创建好代理工厂，下一步就要创建真正的代理对象了。我们以 jdk动态代理 为例，看一下它的创建原理：
 
 ###### 4.10.2.3 [jdk] getProxy
 
@@ -1787,7 +1787,7 @@ public Object proceed() throws Throwable {
 
 这段方法看上去逻辑有点复杂但又不太复杂。它提到了一个计数器的概念，用于记录当前拦截器链中调用的位置，以便拦截器链中的拦截器可以有序地调用。
 
-咱们来通过一个实例尝试模拟一下：
+我们来通过一个实例尝试模拟一下：
 
 ###### 5.1.2.1 proceed方法进入
 
@@ -2004,7 +2004,7 @@ public Object intercept(Object proxy, Method method, Object[] args, MethodProxy 
 }
 ```
 
-发现执行逻辑与jdk动态代理几乎完全一致，核心原理和使用的类也一致，不再赘述，小伙伴们可自行编写测试Demo来实际Debug一圈，体会AOP的执行机制。
+发现执行逻辑与jdk动态代理几乎完全一致，核心原理和使用的类也一致，不再赘述，读者可自行编写测试Demo来实际Debug一圈，体会AOP的执行机制。
 
 ##### 5.3 Aspect中的四种通知在源码中的实现
 

@@ -19,12 +19,7 @@ tags: [Webpack, 构建工具]
 - 递归函数与异步流程控制
 - 参见：[tapable 实践练习](35-tapable实践.md)
 
-## 学习目标
-
-- 实现 SyncHook 的 tap/call 核心逻辑
-- 实现 AsyncSeriesHook 的 tapAsync/tapPromise/callAsync/promise
-- 理解 next 函数控制串行执行的原理
-- 掌握 Bail/Waterfall/Loop 的扩展实现思路
+本章动手实现 tapable 的核心逻辑:SyncHook 的 tap/call、AsyncSeriesHook 的 tapAsync/tapPromise/callAsync/promise、next 函数控制串行执行的原理,以及 Bail/Waterfall/Loop 的扩展实现思路。
 
 ## 一、项目准备
 

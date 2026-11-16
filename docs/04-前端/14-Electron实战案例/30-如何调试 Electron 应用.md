@@ -175,7 +175,7 @@ SRV*d:\code\symbols\*https://msdl.microsoft.com/download/symbols;SRV*d:\code\sym
 
 接着再在命令窗口的底部输入`!analyze -v `指令开始分析崩溃报告（注意此时需要全程具备良好的网络环境）。
 
-加载完成后 WinDbg 会在窗口中显示崩溃报告内部的信息，这里我们截取一段供小伙伴们分析：
+加载完成后 WinDbg 会在窗口中显示崩溃报告内部的信息，这里我们截取一段供读者分析：
 
 ```bash
 EXCEPTION_RECORD:  (.exr -1)

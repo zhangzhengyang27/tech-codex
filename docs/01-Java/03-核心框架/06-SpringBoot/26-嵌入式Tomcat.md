@@ -112,7 +112,7 @@ public WebServer getWebServer(ServletContextInitializer... initializers) {
 
 ##### 2.1 prepareContext
 
-（注释均已在源码中标注好，小伙伴们对哪一步感兴趣可以借助IDE自己动手Debug体会一下实现）
+（注释均已在源码中标注好，读者对哪一步感兴趣可以借助IDE自己动手Debug体会一下实现）
 
 ```java
 protected void prepareContext(Host host, ServletContextInitializer[] initializers) {
@@ -888,7 +888,7 @@ protected synchronized void startInternal() throws LifecycleException {
 - StandardManager
 - LazySessionIdGenerator
 
-组件的 `startInternal` 方法就不一一列举了，文档把这些组件的核心功能列举一下，有兴趣的小伙伴可以深入研究一下，文档也只是引导小伙伴们对嵌入式 Tomcat 的底层原理有一个大概的认识和了解。
+组件的 `startInternal` 方法就不一一列举了，文档把这些组件的核心功能列举一下，有兴趣的小伙伴可以深入研究一下，文档也只是引导读者对嵌入式 Tomcat 的底层原理有一个大概的认识和了解。
 
 ###### 4.6.6 Executor#start
 

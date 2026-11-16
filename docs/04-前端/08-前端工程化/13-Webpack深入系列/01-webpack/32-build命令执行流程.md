@@ -18,12 +18,7 @@ tags: [Webpack, 构建工具]
 - Commander.js 命令注册机制
 - 参见：[Webpack CLI 执行流程深度解析](31-CLI执行流程.md)
 
-## 学习目标
-
-- 理解两次 parseAsync 的触发时机与各自职责
-- 掌握命令分发（dispatch）机制
-- 理解 createCompiler 的三步流程（loadConfig → buildConfig → webpack）
-- 掌握 Webpack 核心库的导入与 Compiler 实例创建
+本章拆解 build 命令的执行流程,包括两次 parseAsync 的触发时机与职责、命令分发(dispatch)机制、createCompiler 的三步流程(loadConfig → buildConfig → webpack),以及 Webpack 核心库导入与 Compiler 实例的创建。
 
 ## 一、两次 parseAsync 机制
 

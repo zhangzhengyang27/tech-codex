@@ -350,7 +350,7 @@ const { execFile, exec } = require('child_process')
 
 // 截图方法mac
 export const handleScreenShots = () => {
-  // 这里咱们设置-c将截图保存到剪切板上
+  // 这里我们设置-c将截图保存到剪切板上
   exec('screencapture -i -U -c', (error, stdout, stderr) => {
     // 从剪切板上取到图片
     const pngs = clipboard.readImage().toPNG()

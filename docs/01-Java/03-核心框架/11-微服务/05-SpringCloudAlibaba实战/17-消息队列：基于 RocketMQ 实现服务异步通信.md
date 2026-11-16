@@ -9,7 +9,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 上一节，我们讲解了分布式事务的解决方案以及 Seata 分布式事务中间件AT模式的实现原理，在后面的实战篇，我们还将围绕 Seata 进行进一步的学习。本文我们先来介绍分布式架构下另外一块重要拼图：消息队列 RocketMQ。
 
-本文咱们将学习以下三方面内容：
+本文我们将学习以下三方面内容：
 
 - 介绍消息队列与 Alibaba RocketMQ；
 
@@ -17,7 +17,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 - 讲解微服务接入 RocketMQ 的开发技巧；
 
-首先咱们先来认识什么是消息队列 MQ 呢？
+首先我们先来认识什么是消息队列 MQ 呢？
 
 ## 消息队列与 RocketMQ
 
@@ -55,7 +55,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 - RocketMQ
 
-每一种产品都有自己不同的设计与实现原理，但根本的目标都是相同的：为进程间通信提供可靠的异步传输机制。RocketMQ 作为阿里系产品天然被整合进 Spring Cloud Alibaba 生态，在经历过多次双 11 的考验后，RocketMQ 在性能、可靠性、易用性方面都是非常优秀的，下面咱们来了解下 RocketMQ 吧。
+每一种产品都有自己不同的设计与实现原理，但根本的目标都是相同的：为进程间通信提供可靠的异步传输机制。RocketMQ 作为阿里系产品天然被整合进 Spring Cloud Alibaba 生态，在经历过多次双 11 的考验后，RocketMQ 在性能、可靠性、易用性方面都是非常优秀的，下面我们来了解下 RocketMQ 吧。
 
 ### RocketMQ
 
@@ -63,7 +63,7 @@ RocketMQ 是一款分布式消息队列中间件，官方地址为[http://rocket
 
 RocketMQ 有很多优秀的特性，在可用性方面，RocketMQ 强调集群无单点，任意一点高可用，客户端具备负载均衡能力，可以轻松实现水平扩容；在性能方面，在天猫双 11 大促背后的亿级消息处理就是通过 RocketMQ 提供的保障；在 API 方面，提供了丰富的功能，可以实现异步消息、同步消息、顺序消息、事务消息等丰富的功能，能满足大多数应用场景；在可靠性方面，提供了消息持久化、失败重试机制、消息查询追溯的功能，进一步为可靠性提供保障。
 
-了解 RocketMQ 的诸多特性后，咱们来理解 RocketMQ 几个重要的概念：
+了解 RocketMQ 的诸多特性后，我们来理解 RocketMQ 几个重要的概念：
 
 - 消息 Message：消息在广义上就是进程间传递的业务数据，在狭义上不同的 MQ 产品对消息又附加了额外属性如：Topic（主题）、Tags（标签）等；
 
@@ -78,7 +78,7 @@ RocketMQ 有很多优秀的特性，在可用性方面，RocketMQ 强调集群�
 - 消费者组 Consumer Group：对于消费同一类消息的消费者，RocketMQ 对其分组，成为消费者组。
 
 
-在理解这些基本概念后，咱们正式进入 RocketMQ 的部署与使用环节，通过案例代码理解 RocketMQ 的执行过程。对于 RocketMQ 来说，使用它需要两个阶段：搭建 RocketMQ 服务器集群与应用接入 RocketMQ 队列，首先咱们来部署 RocketMQ 集群。
+在理解这些基本概念后，我们正式进入 RocketMQ 的部署与使用环节，通过案例代码理解 RocketMQ 的执行过程。对于 RocketMQ 来说，使用它需要两个阶段：搭建 RocketMQ 服务器集群与应用接入 RocketMQ 队列，首先我们来部署 RocketMQ 集群。
 
 ## 部署 RocketMQ 集群
 
@@ -266,7 +266,7 @@ ConsumeMessageThread_12 Receive New Messages: [MessageExt [brokerName=broker-b, 
 
 案例说明
 
-我们以前面的报税为例，利用 Spring Boot 集成 MQ 客户端实现消息收发，首先咱们模拟生产者 Producer。
+我们以前面的报税为例，利用 Spring Boot 集成 MQ 客户端实现消息收发，首先我们模拟生产者 Producer。
 
 ### 生产者 Producer 发送消息
 
@@ -349,7 +349,7 @@ public class ProviderController {
 消息已发送：MsgId:7F00000144E018B4AAC29F3B7B2A0063，发送状态:SEND_OK
 ```
 
-下面咱们开发消费者 Consumer。
+下面我们开发消费者 Consumer。
 
 ### 消费者 Consumer 接收消息
 
@@ -428,7 +428,7 @@ public class RocketmqConsumerApplication {
 
 ## 小结
 
-本文咱们学习了三方面内容，首先介绍了什么是 MQ 以及 Alibaba RocketMQ 的特性；其次详细讲解了 RocketMQ 双主集群的部署过程；最后通过 Spring Boot 应用中引入 RocketMQ-Client 实现消息的收发。
+本文我们学习了三方面内容，首先介绍了什么是 MQ 以及 Alibaba RocketMQ 的特性；其次详细讲解了 RocketMQ 双主集群的部署过程；最后通过 Spring Boot 应用中引入 RocketMQ-Client 实现消息的收发。
 
 这里为你留一道思考题：目前主流的 MQ 产品有 RocketMQ、RabbitMQ、Kafka、ActiveMQ、ZeroMQ……不同的产品有不同的设计，假设在银行的金融交易基于 MQ 实现，对 MQ 的可靠性与一致性要求较高，但对数据的响应时间不敏感，你会选择哪一款 MQ 产品呢？
 

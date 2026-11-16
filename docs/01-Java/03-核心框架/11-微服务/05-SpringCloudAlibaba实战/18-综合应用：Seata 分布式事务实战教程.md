@@ -11,7 +11,7 @@ tags: [Java, SpringCloudAlibaba实战]
 
 从本章开始，我们综合运用这些组件，再结合我多年来分布式开发的经验，为你分享一些成熟的组合搭配与案例，让你在分布式开发这条路上少走些弯路。
 
-本文咱们进入第一个话题：利用 Seata 与 Nacos 构建分布式事务架构。在第16节我们介绍了Seata 的使用原理及解决方案，但并未涉及落地的开发技巧。今天我们补上这一块内容，本文手把手搭建可用的 Seata 分布式事务架构。
+本文我们进入第一个话题：利用 Seata 与 Nacos 构建分布式事务架构。在第16节我们介绍了Seata 的使用原理及解决方案，但并未涉及落地的开发技巧。今天我们补上这一块内容，本文手把手搭建可用的 Seata 分布式事务架构。
 
 本文涉及的内容较多，按搭建顺序将分为以下几个阶段：
 
@@ -53,11 +53,11 @@ tags: [Java, SpringCloudAlibaba实战]
 
 其中所有 TM、RM、TC 实例在启动时都要向 Nacos 进行注册登记，以保证服务可以被发现。同时 TC(Seata-Server) 自身的配置信息也要托管在 Nacos 配置中心中，不再单独存储。所有 TM、RM 在启动时也要额外在 TC 中进行注册，以保证全局事务的完整性。
 
-下面咱们开始第一个阶段：部署 Nacos 注册中心与配置中心。
+下面我们开始第一个阶段：部署 Nacos 注册中心与配置中心。
 
 ## 部署 Nacos 注册中心与配置中心
 
-部署 Nacos 注册中心与配置中心与前面课程内容并无二致，咱们快速完成即可。
+部署 Nacos 注册中心与配置中心与前面课程内容并无二致，我们快速完成即可。
 
 第一步，下载 Nacos，上传到 192.168.31.103 节点解压缩。
 
@@ -93,7 +93,7 @@ sh /usr/local/nacos/bin/startup.sh
 ```
 
 至此，阶段一：Nacos 注册中心与配置中心部署完成，因为这些内容前面都讲过，所以不再赘述。
-下面咱们开始阶段二：部署 TC 组件 Seata-Server。
+下面我们开始阶段二：部署 TC 组件 Seata-Server。
 
 从部署 TC 组件 Seata-Server 开始就是全新的内容，我将更细致地为你介绍每一步操作过程。
 
@@ -168,7 +168,7 @@ Seata 官方也为我们提供了初始化配置脚本，请按我的步骤操�
 
 - 34 行 store.mode=file 改为 store.mode=db 代表采用数据库存储 Seata-Server 的全局事务数据
 
-- 44~46 行配置 Seata-Server 的全局事务数据库，数据库 URL 指向 107 节点 3309 端口。这个全局事务数据库是 Seata 维护分布式事务的关键所在，后面咱们马上就要创建这个数据库。
+- 44~46 行配置 Seata-Server 的全局事务数据库，数据库 URL 指向 107 节点 3309 端口。这个全局事务数据库是 Seata 维护分布式事务的关键所在，后面我们马上就要创建这个数据库。
 
 ```properties
 store.db.url=jdbc:mysql://192.168.31.103:3309/seata?useUnicode=true&rewriteBatchedStatements=true
@@ -530,7 +530,7 @@ public class DataSourceProxyConfig {
 
 以上是 rm-order 订单服务的开发过程，除了配置 Seata 选项与创建 DataSourceProxy 外，其他的开发要素与单机应用几乎是一样的，这使得新人也可以很快上手。
 
-下面咱们如法炮制开发 rm-points 积分服务与 rm-storage 库存服务。
+下面我们如法炮制开发 rm-points 积分服务与 rm-storage 库存服务。
 
 ### 积分服务 rm-points
 
@@ -776,7 +776,7 @@ public class StorageController {
 }
 ```
 
-到这里我们将**订单、积分、库存**三个 RM 示例都已开发完毕，这些服务都是独立运行，并没有形成整体，最后咱们还要开发商城应用 tm-mall，tm-mall 作为 TM 将服务串行调用，并形成分布式事务整体。
+到这里我们将**订单、积分、库存**三个 RM 示例都已开发完毕，这些服务都是独立运行，并没有形成整体，最后我们还要开发商城应用 tm-mall，tm-mall 作为 TM 将服务串行调用，并形成分布式事务整体。
 
 ## 开发 TM 事务管理器
 
@@ -967,7 +967,7 @@ public class DataSourceProxyConfig {
 }
 ```
 
-到这里所有 TM 与 RM 都已开发完毕，下面咱们来验证分布式事务的执行效果。
+到这里所有 TM 与 RM 都已开发完毕，下面我们来验证分布式事务的执行效果。
 
 ## 验证分布式事务
 
@@ -1006,7 +1006,7 @@ i.s.c.r.p.c.RmBranchCommitProcessor      : branch commit result:xid=192.168.31.1
 i.s.r.d.undo.mysql.MySQLUndoLogManager   : batch delete undo log size 1
 ```
 
-分析了提交过程，下面咱们再进行异常验证，将 quantity 设置为 200，这必将超出库存报错，看能否全局回滚。
+分析了提交过程，下面我们再进行异常验证，将 quantity 设置为 200，这必将超出库存报错，看能否全局回滚。
 [http://localhost:8001/sale?orderId=6&memberId=1&goodsId=2&points=20&quantity=200](http://localhost:8001/sale?orderId=6&memberId=1&goodsId=2&points=20&quantity=200)
 
 运行后程序报异常。
@@ -1032,7 +1032,7 @@ io.seata.rm.AbstractRMHandler            : Branch Rollbacking: 192.168.31.107:80
 i.s.r.d.undo.AbstractUndoLogManager      : xid 192.168.31.107:8091:100626590567763968 branch 100626590894919681, undo_log deleted with GlobalFinished
 ```
 
-到这里搭建 Seata 分布式事务架构的内容全部完成，最后咱们来做一下总结。
+到这里搭建 Seata 分布式事务架构的内容全部完成，最后我们来做一下总结。
 
 ## 小结
 

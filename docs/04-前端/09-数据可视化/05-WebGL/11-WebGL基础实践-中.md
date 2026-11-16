@@ -22,12 +22,7 @@ tags: [可视化, ECharts, D3, Canvas]
 
 ---
 
-#### **本章学习目标**
-
-- **掌握 WebGL 中三种线段图元的绘制方法：`LINES`、`LINE_STRIP` 和 `LINE_LOOP`。**
-- **理解这三种图元在顶点使用和连接方式上的核心区别。**
-- **学会根据不同需求选择合适的线段图元。**
-- **激发创意，思考如何利用基础图元创造出有趣的视觉效果。**
+本章掌握 WebGL 中三种线段图元（`LINES`、`LINE_STRIP`、`LINE_LOOP`）的绘制方法、它们在顶点使用和连接方式上的核心区别与选择依据，并思考如何利用基础图元创造有趣的视觉效果。
 
 ---
 
@@ -138,7 +133,7 @@ gl.drawArrays(gl.LINE_LOOP, 0, positions.length / 2)
 
 上节带领大家学习了基本三角形图元的绘制过程，以及如何使用`缓冲区`向着色器传递多个数据，但上节只演示了往着色器传递`坐标`这一种数据，本节通过绘制渐变三角形，讲解一下如何通过缓冲区向着色器传递多种数据。
 
-### 5.1 学习目标
+### 5.1 本节要点
 
 本节通过一个鼠标每点击三次便会绘制一个渐变三角形的示例，带大家深入理解缓冲区的用法，最终效果如下图所示：
 
@@ -147,13 +142,7 @@ gl.drawArrays(gl.LINE_LOOP, 0, positions.length / 2)
 - [演示地址](https://link.juejin.cn?target=http%3A%2F%2Fifanqi.top%2Fwebgl%2Fpages%2Flesson4.html%20"http://ifanqi.top/webgl/pages/lesson4.html")
 - [源码地址](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Flucefer%2Fwebgl%2Fblob%2Fmaster%2Fpages%2Flesson4.html%20"https://github.com/lucefer/webgl/blob/master/pages/lesson4.html")
 
-通过本节学习，你将会掌握如下内容：
-
-- 顶点数据在 `buffer` 中的排布方式。
-- 切换 `buffer` 时，`bindBuffer` 的重要性。
-- 使用多个 `buffer` 读取多种顶点数据。
-- 使用单个 `buffer` 读取多种顶点数据。
-- 如何实现渐变效果。
+顶点数据在 `buffer` 中的排布方式、切换 `buffer` 时 `bindBuffer` 的重要性、使用多个或单个 `buffer` 读取多种顶点数据，以及渐变效果的实现。
 
 #### 缓冲区数据组织方式对比
 
@@ -405,19 +394,13 @@ gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 24, 8)
 
 上节带领大家学习了基本三角形图元的绘制方法，并讲解了如何使用缓冲区向着色器传递多种数据，本节开始学习如何使用三角形构建矩形。
 
-### 6.1 学习目标
+### 6.1 本节要点
 
 上节我们通过创建多个 `buffer` 实现渐变三角形的绘制，本节以矩形为例，掌握用三角形构建平面的方法。
 
 > 本节示例较多，因此将`演示地址`和`源码地址`放在相应段落中，此处暂不列举。
 
-通过本节学习，你会掌握如下内容：
-
-- 通过基本三角形绘制矩形的思路。
-- 索引绘制的使用方法。
-- 使用三角带绘制矩形。
-- 使用三角扇绘制矩形。
-- 绘制圆形。
+通过基本三角形绘制矩形的思路、索引绘制的使用方法、三角带与三角扇绘制矩形，以及圆形的绘制。
 - 绘制环形。
 - 顶点顺序的不同有什么影响。
 
@@ -692,7 +675,7 @@ gl.drawArrays(gl.TRIANGLE_FAN, 0, 4)
 
 ### 6.5 TRIANGLE_FAN 进阶：绘制圆形与环形
 
-> **[补充说明]** 学习目标中提到的"绘制圆形"和"绘制环形"在此补充讲解。`TRIANGLE_FAN` 和 `TRIANGLE_STRIP` 不仅适用于矩形，更是绘制圆形和环形等曲面图形的利器。
+> **[补充说明]** 前文提到的"绘制圆形"和"绘制环形"在此补充讲解。`TRIANGLE_FAN` 和 `TRIANGLE_STRIP` 不仅适用于矩形，更是绘制圆形和环形等曲面图形的利器。
 
 #### 6.5.1 使用 TRIANGLE_FAN 绘制圆形
 

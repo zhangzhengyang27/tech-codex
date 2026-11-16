@@ -19,12 +19,7 @@ Webpack CLI 基于 Commander.js 构建，采用发布订阅模式实现命令注
 - 发布订阅模式概念
 - 参见：[Webpack CLI TypeScript 源码调试](30-CLI-TypeScript调试.md)
 
-## 学习目标
-
-- 掌握通过 package.json 定位程序入口的方法
-- 理解 CLI 入口调用链（bin → bootstrap → runCLI → run）
-- 掌握 run() 方法的四阶段执行流程
-- 理解 parseAsync 参数解析与发布订阅模式的应用
+本章讲解 Webpack CLI 的执行流程:通过 package.json 定位程序入口,梳理 bin → bootstrap → runCLI → run 的调用链,以及 run() 方法的四阶段执行与 parseAsync 参数解析、发布订阅模式的应用。
 
 ## 一、程序入口定位
 

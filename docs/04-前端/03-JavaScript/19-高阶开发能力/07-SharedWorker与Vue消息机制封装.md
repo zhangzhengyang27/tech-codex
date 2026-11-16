@@ -19,12 +19,7 @@ tags: [JavaScript, SharedWorker, Vue]
 - 熟悉 Vue 3 Composition API（ref、onUnmounted）
 - 了解事件订阅/发布模式
 
-## 学习目标
-
-- 设计 `useWorker()` 的对外 API（emit / on / broadcast / message / connections）
-- 理解"底层广播转发 + 上层按 eventName 过滤"的分发模型
-- 实现 Worker 侧连接池与 connected 握手机制
-- 掌握页面侧本地事件总线的封装方式
+本章设计 useWorker() 的对外 API(emit/on/broadcast/message/connections),讲解「底层广播转发 + 上层按 eventName 过滤」的分发模型、Worker 侧连接池与 connected 握手机制,以及页面侧本地事件总线的封装方式。
 
 ---
 

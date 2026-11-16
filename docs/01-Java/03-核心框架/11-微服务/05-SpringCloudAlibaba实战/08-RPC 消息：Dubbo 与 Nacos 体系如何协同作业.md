@@ -230,7 +230,7 @@ http://192.168.31.101:8848/nacos/#/serviceManagement?dataId=&group=&appName=&nam
 而查看 Provider详情后，你会得到更多信息，其中包含 Provider 的 IP、端口、接口、方法、pid、版本的明细，方便开发、运维人员对应用进行管理。
 
 
-到这里，仓储服务与 Dubbo Provider 的开发已完成。下面咱们开发Consumer消费者。
+到这里，仓储服务与 Dubbo Provider 的开发已完成。下面我们开发Consumer消费者。
 
 #### 开发 Consumer 订单服务
 
@@ -357,7 +357,7 @@ message: "商品库存数量不足"
 ```
 
 
-至此，Dubbo 与 Nacos 完整的接入流程与开发技巧我们通过案例方式进行了讲解，最后咱们来总结一下。
+至此，Dubbo 与 Nacos 完整的接入流程与开发技巧我们通过案例方式进行了讲解，最后我们来总结一下。
 
 ## 小结
 

@@ -545,6 +545,48 @@ export const docGroups: DocGroup[] = [
       },
     ],
   },
+  {
+    id: 'project-docs',
+    title: '项目文档',
+    description: '19 个实战项目的成套技术文档：架构、接口、数据模型、核心流程、部署运行与深读专项',
+    categories: [
+      {
+        slug: 'projects',
+        title: '项目文档',
+        description: 'publish 下 19 个实战项目的源码精读文档集（每项目 21 篇：总览、架构、页面、接口、数据模型、核心流程、部署运行、模块详解、安全、测试、性能、扩展指南、FAQ、技术债务、配置、接口参考、ADR、依赖全景、代码走读、数据契约、术语表）',
+        icon: '📦',
+        dir: '13-项目文档',
+      },
+    ],
+  },
+  {
+    id: 'component-library',
+    title: '组件库专栏',
+    description: 'xiaoye-components AI 协作组件库专栏：Monorepo 工程化、设计令牌、组件架构、逐组件解剖与 AI 协作方法论',
+    categories: [
+      {
+        slug: 'component-column',
+        title: '组件库专栏',
+        description: 'xiaoye-components（AI 协作研发的 Vue 3 组件库）专栏十一卷共 144 篇：全景开篇、工程化基座、设计系统与令牌、组件通用架构、基础组件逐个解剖（基础/表单/反馈/数据）、pro-components 增强层、质量保障与 AI 协作方法论',
+        icon: '🧩',
+        dir: '14-组件库专栏',
+      },
+    ],
+  },
+  {
+    id: 'xiaoye-ui-column',
+    title: 'XiaoyeUI 源码专栏',
+    description: '面向源码维护者的 XiaoyeUI 原理手册：架构分层、基座模块与 12 组组件深读，讲设计取舍、状态流动与改动风险',
+    categories: [
+      {
+        slug: 'xiaoye-ui-column',
+        title: 'XiaoyeUI 源码专栏',
+        description: 'XiaoyeUI（Vue 组件库）维护者原理手册：134 篇源码深读 + 15 篇导览——架构与工程（包拓扑、生成物契约、Token 派生、样式引擎）、基座模块（定位、表格状态机、虚拟化、动效）、12 组组件逐类深读（每篇含坑索引与改动边界）',
+        icon: '🔬',
+        dir: '15-XiaoyeUI源码专栏',
+      },
+    ],
+  },
 ];
 
 export const allCategories: DocCategory[] = docGroups.flatMap((g) => g.categories);

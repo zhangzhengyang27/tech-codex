@@ -3,7 +3,7 @@ title: Nest 微服务与 Monorepo
 description: "之前写了很多 Http 服务了，这些服务都是单体架构的。单体架构就是所有业务逻辑都在一个服务里实现。这样有个问题：项目越来越大之后，模块越来越多，代码会越来越难以维护。并且因为代码都在一个项目里，不好扩展。"
 keywords: [Nest, 微服务, TCP, Monorepo, Library]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, NestJS, 微服务, Monorepo]
 ---
 
 
@@ -163,7 +163,7 @@ this.userClient.emit('log', '求和')
 
 ## 二、Nest 的 Monorepo 和 Library
 
-上节学习微服务时创建了 2 个 Nest 项目，如果微服务多了，可能会创建更多项目。那如果有 10 个微服务，就创建 10 个 Nest 项目的 git 仓库么？那肯定不行，太难维护了。这时候就需要 monorepo 了。
+前面学习微服务时创建了 2 个 Nest 项目，如果微服务多了，可能会创建更多项目。那如果有 10 个微服务，就创建 10 个 Nest 项目的 git 仓库么？那肯定不行，太难维护了。这时候就需要 monorepo 了。
 
 这样，同一个 git 仓库中存放多个 Nest 项目，外层叫做 workspace。就算是 10 个微服务项目，也能在一个 Git 仓库里管理起来。
 

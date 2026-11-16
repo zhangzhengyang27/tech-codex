@@ -1,11 +1,9 @@
 ---
 title: JVM 性能分析（JFR 与 Arthas 4.3 与 async-profiler）
+description: 基于 JDK 17/21 LTS、Arthas 4.3.2、async-profiler 3.x 与 JFR，系统梳理 JVM 性能分析的方法论与实战路径，覆盖从表象到根因的可追溯链路：CPU/内存/GC/线程热点定位与火焰图分析。
+keywords: [JVM, 性能分析, JFR, Arthas, async-profiler]
 category: 性能测试
-tags:
-  - JVM
-  - Arthas
-  - 性能调优
-  - 火焰图
+tags: [JVM, Arthas, 性能调优, 火焰图]
 ---
 
 # JVM 性能分析（JFR 与 Arthas 4.3 与 async-profiler）

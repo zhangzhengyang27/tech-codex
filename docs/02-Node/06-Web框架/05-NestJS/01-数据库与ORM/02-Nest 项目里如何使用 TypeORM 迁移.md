@@ -3,13 +3,13 @@ title: Nest 项目里如何使用 TypeORM 迁移
 description: "在 Nest 项目中使用 TypeORM 迁移：生产环境关闭 synchronize，通过 data-source.ts + migration:generate/migration:run/migration:revert 管理建表、改表与种子数据，并用 dotenv 让 AppModule 与迁移共用一份 .env 配置。"
 keywords: [NestJS, TypeORM, 迁移, migration]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, NestJS, TypeORM, migration]
 ---
 
 
 # Nest 项目里如何使用 TypeORM 迁移
 
-上节学了 TypeORM 的 migration。
+前面学了 TypeORM 的 migration。
 
 在开发环境下，会开启 synchronize，自动同步 entities 到数据库表。
 
@@ -19,7 +19,7 @@ tags: [Node.js, Express, Koa, 服务端]
 
 通过 migration:run、migration:revert 命令来执行和撤销。
 
-在 Nest 项目里使用 migration 和上节的内容还有点不太一样。
+在 Nest 项目里使用 migration 和前面讲的内容还有点不太一样。
 
 这节来试一下：
 
@@ -300,7 +300,7 @@ mysql_server_database=nest-migration-test
 ```
 首先，AppModule 里的这些数据库配置都可以从 .env 里读取：
 
-用到 ConfigModule，这个是下节的内容，这里就不展开了：
+用到 ConfigModule，这个是后面篇章的内容，这里就不展开了：
 
 来看下在 data-source.ts 里怎么读取 .env 文件：
 

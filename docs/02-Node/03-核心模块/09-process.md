@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 核心模块]
 ---
 
-
-
-
-
-
-
 # Process 进程对象
 
 Node.js 提供了多个与进程相关的模块，用于管理和控制进程、创建子进程以及实现多进程架构。主要包括 `process`、`child_process` 和 `cluster` 三个核心模块。

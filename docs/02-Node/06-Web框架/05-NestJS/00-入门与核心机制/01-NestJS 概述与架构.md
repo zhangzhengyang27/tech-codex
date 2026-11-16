@@ -1,9 +1,9 @@
 ---
 title: NestJS 概述与架构
 description: "NestJS 是构建在 Express/Fastify 之上的渐进式 Node.js 服务端框架，借鉴 Angular 的模块化与依赖注入（DI）思想，将「企业级结构约束」带入 Node 生态。它本身不重新实现 HTTP 层，而是以平台适配器（默认 Express，可切换 Fastify）承载请求。"
-keywords: []
+keywords: [NestJS, 架构, 依赖注入, Express, Fastify]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, NestJS, 架构]
 ---
 
 
@@ -1857,9 +1857,4 @@ export class LoggerMiddleware implements NestMiddleware {
   }
 }
 ```
-
----
-
-**笔记整理完成时间**：2026-03-07  
-**下一章节预告**：NestJS 核心概念详解
 

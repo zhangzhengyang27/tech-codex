@@ -1,16 +1,10 @@
 ---
 title: Webpack 配置
 description: Webpack 的 entry/output、loader、plugin 与优化（分包/缓存）
-keywords: [Node.js, 构建, 脚手架, Webpack]
+keywords: [Node.js, 构建工具, Webpack]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Webpack 配置
 

@@ -3,7 +3,7 @@ title: SSR 项目部署实战
 description: "SSR 项目部署实战：NVM 安装 Node.js、PM2 基础与 ecosystem.config.js 配置（env_production 环境变量、集群模式、开机自启），NestJS 与 Nuxt.js 构建产物部署步骤和常见问题排查。"
 keywords: [SSR, 部署, NVM, Node.js, PM2, NestJS, Nuxt.js, 环境变量]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, SSR, 部署]
 ---
 
 

@@ -1,12 +1,9 @@
 ---
 title: 后端性能监控（Prometheus 与 Grafana 与 SkyWalking 10）
+description: 系统讲解后端性能监控体系：命令行监控要点（top/vmstat/iostat/sar/ss）、Prometheus + Grafana 指标监控、SkyWalking 10.4.0 分布式链路追踪、OpenTelemetry 统一可观测与告警体系建设，覆盖工具演进与常见陷阱。
+keywords: [后端性能监控, Prometheus, Grafana, SkyWalking, OpenTelemetry, APM]
 category: 性能测试
-tags:
-  - Prometheus
-  - Grafana
-  - SkyWalking
-  - APM
-  - OpenTelemetry
+tags: [Prometheus, Grafana, SkyWalking, APM, OpenTelemetry]
 ---
 
 # 后端性能监控（Prometheus 与 Grafana 与 SkyWalking 10）
@@ -106,7 +103,9 @@ CNCF 体系将 Metrics 与 Tracing 拆为两条主线：Prometheus 主导 Metric
 | 内存 | `free -m` | `available` | `available` < 总内存 15% 须关注 |
 | 磁盘 IO | `iostat -x 1` | `%util`、`await`、`aqu-sz` | `%util` > 80% 且 `await` > 10ms 视为瓶颈 |
 | 网络 | `iftop` / `sar -n DEV 1` | 收发带宽、丢包 | 接近网卡带宽 80% 须关注 |
+| 网络错误 | `netstat -s` | 丢包率、重传计数 | 丢包/重传持续增长须关注 |
 | 连接 | `ss -s` / `netstat -an` | `TIME_WAIT` 数量、`Recv-Q`/`Send-Q` | `Recv-Q`/`Send-Q` 长期非 0 表示拥塞 |
+| 磁盘空间 | `df -h` | 各分区使用率 | 使用率 > 80% 须关注 |
 
 典型命令组合示例：
 
@@ -129,6 +128,16 @@ vmstat 1
 iostat -x 1
 # Device  rrqm/s  wrqm/s  r/s  w/s  await  aqu-sz  %util
 # vda     0.00    0.29    0.57 5.30 11.53  0.07    0.69
+```
+
+性能测试现场的"一分钟初判"组合，可在监控体系介入前快速定位方向：
+
+```bash
+uptime                        # 系统负载速查
+top -bn1 | head -20           # CPU 与内存热点进程
+iostat -x 1 3                 # 磁盘 IO
+ss -s                         # 连接概览
+mysql -e "SHOW PROCESSLIST;"  # 数据库侧快速锁定慢查询会话（MySQL）
 ```
 
 > **注意**：旧文档提到的 CentOS 7.0 已于 2024-06 EOL，当前推荐使用 CentOS Stream 9 或 Ubuntu 22.04 LTS 作为监控目标与运行环境。

@@ -3,13 +3,13 @@ title: Prisma Client 多表 CRUD 的全部 api
 description: Prisma Client 多表 CRUD：include 关联查询、create/createMany、connect/connectOrCreate 关联插入与关联删除，以及 $queryRaw 执行原生 SQL
 keywords: [Prisma, Client, 多表, CRUD, 的全部]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, ORM]
 ---
 
 
 # Prisma Client 多表 CRUD 的全部 api
 
-上节过了一遍 Prisma Client 做 CRUD 的 api，但那只是针对单表的，这节把涉及到多表的 CRUD 的 api 过一遍。
+前面过了一遍 Prisma Client 做 CRUD 的 api，但那只是针对单表的，本篇把涉及到多表的 CRUD 的 api 过一遍。
 
 创建个新项目：
 

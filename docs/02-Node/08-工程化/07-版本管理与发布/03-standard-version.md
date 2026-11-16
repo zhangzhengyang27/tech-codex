@@ -1,16 +1,10 @@
 ---
 title: standard-version
 description: standard-version 的本地化 CHANGELOG 与版本号生成
-keywords: [Node.js, 构建, 脚手架, standard-version]
+keywords: [Node.js, 版本发布, standard-version]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # standard-version
 

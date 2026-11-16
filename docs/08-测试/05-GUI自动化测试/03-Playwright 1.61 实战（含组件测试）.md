@@ -1,13 +1,9 @@
 ---
 title: Playwright 1.61 实战（含组件测试）
+description: 基于 Playwright 1.61 系统讲解核心概念、环境搭建、定位器与断言、自动等待、网络拦截、组件测试与工程化实践，覆盖 Chromium/Firefox/WebKit 跨浏览器测试。
+keywords: [Playwright, E2E 测试, GUI 自动化, 组件测试, 跨浏览器]
 category: GUI自动化测试
-tags:
-  - Playwright
-  - E2E
-  - 组件测试
-  - TypeScript
-  - CI/CD
-  - Trace Viewer
+tags: [Playwright, E2E, 组件测试, TypeScript, CI/CD, Trace Viewer]
 ---
 
 # Playwright 1.61 实战（含组件测试）

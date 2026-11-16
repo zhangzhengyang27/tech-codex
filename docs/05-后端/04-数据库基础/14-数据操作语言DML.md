@@ -10,6 +10,8 @@ tags: [SQL, DML, 数据操作]
 
 DML（Data Manipulation Language，数据操作语言）用于**操作表中的数据**，即增、删、改。与 DDL 操作"结构"不同，DML 操作"数据"，通常**在事务内可回滚**。本文系统讲解 `INSERT`、`UPDATE`、`DELETE`、`REPLACE` 四大语句及进阶用法。
 
+> **本文定位（分工卡）**：本文是 **通用 SQL 基础视角**的 DML 讲解——覆盖四大语句语法、安全更新/删除铁律与性能优化。MySQL 视角的实操深化（INSERT IGNORE/ON DUPLICATE KEY/REPLACE 细节、CASE 表达式更新、多表更新与删除、实战示例）见《[SQL-DML与数据修改](../01-MySQL/05-SQL与实战/04-SQL-DML与数据修改.md)》。
+
 ## INSERT：插入数据
 
 ### 基本语法

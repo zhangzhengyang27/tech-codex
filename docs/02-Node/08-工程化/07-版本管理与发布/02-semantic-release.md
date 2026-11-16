@@ -1,16 +1,10 @@
 ---
 title: semantic-release
 description: 基于 Conventional Commits 的全自动版本与发布流水线
-keywords: [Node.js, 构建, 脚手架, semantic-release]
+keywords: [Node.js, 版本发布, semantic-release]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # semantic-release
 

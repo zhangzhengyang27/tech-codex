@@ -1,9 +1,9 @@
 ---
 title: HTTPS 协议
 description: 超文本传输安全协议（Hypertext Transfer Protocol Secure，简称：HTTPS）是一种通过计算机网络进行安全通信的传输协议。HTTPS 经由HTTP 进…
-keywords: [11-网络编程, HTTPS, 协议]
+keywords: [HTTPS, TLS, 证书, 加密]
 category: 计算机基础
-tags: [架构, 11-网络编程]
+tags: [HTTPS, TLS, 网络安全]
 ---
 
 # HTTPS 协议

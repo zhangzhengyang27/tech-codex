@@ -3,7 +3,7 @@ title: 在 Nest 里集成 Prisma
 description: "在 Nest 中集成 Prisma：schema 建模与 migrate 迁移，创建继承 PrismaClient 的 PrismaService 并在 onModuleInit 中 $connect，注入到业务 Service 后调用 client api 完成 CRUD。"
 keywords: [NestJS, Prisma, ORM, PrismaClient]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, NestJS, Prisma]
 ---
 
 

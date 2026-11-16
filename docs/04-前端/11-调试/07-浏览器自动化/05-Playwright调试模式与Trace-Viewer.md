@@ -12,6 +12,8 @@ Playwright 是 Microsoft 开发的自动化测试框架，相比 Puppeteer 支�
 
 > **2024-2026 更新**：Playwright v1.61+ 支持更强大的 Trace Viewer 和 VSCode 扩展：UI Mode / Trace Viewer 可在浏览器标签页中打开（`--ui-port 0`，v1.35+ 起支持）、新增 `on-all-retries` 等 Trace 录制模式。
 
+> **本文定位（分工卡）**：本文从**前端开发调试视角**使用 Playwright 调试工具——聚焦 Inspector、Trace Viewer、Codegen、VSCode 扩展的启动方式与调试工作流。测试视角的 Trace Viewer 落地（失败回放、报告体系中的定位实践）见《[GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）](../../../08-测试/05-GUI自动化测试/08-GUI%20测试报告（Allure%20与%20Trace%20Viewer%20与%20ReportPortal）.md)》。
+
 ## Playwright 的调试方式
 
 ```mermaid

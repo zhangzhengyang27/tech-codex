@@ -1,12 +1,9 @@
 ---
 title: Selenium 4 WebDriver 实战
+description: 基于 Selenium 4.42.0 系统梳理 Selenium 4 核心架构、WebDriver API 体系、W3C 协议标准化、Selenium Manager 自动驱动管理、Relative Locator 等 4.x 新特性与工程化实践。
+keywords: [Selenium, WebDriver, GUI 自动化, W3C, 浏览器测试]
 category: GUI自动化测试
-tags:
-  - Selenium
-  - WebDriver
-  - W3C
-  - BiDi
-  - RelativeLocators
+tags: [Selenium, WebDriver, W3C, BiDi, RelativeLocators]
 ---
 
 # Selenium 4 WebDriver 实战

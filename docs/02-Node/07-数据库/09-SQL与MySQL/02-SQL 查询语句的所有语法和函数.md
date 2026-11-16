@@ -3,19 +3,19 @@ title: SQL 查询语句的所有语法和函数
 description: 以 student 表为例过一遍 where/like/in/between/limit/order by/group by/having/distinct 与聚合、字符串、数值、日期、条件、类型转换等内置函数
 keywords: [SQL]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, SQL]
 ---
 
 
 # SQL 查询语句的所有语法和函数
 
-上节学了 mysql 的数据库、表的创建删除，单表的增删改查。
+前面学了 mysql 的数据库、表的创建删除，单表的增删改查。
 
 其实增删改查的 sql 语法还有很多，这节就来一起过一遍。
 
 用 docker 跑个 mysql 镜像。
 
-上节跑 mysql 镜像的时候，把数据保存在了一个目录下，这次把那个目录挂载到新容器的 /var/lib/mysql
+前面跑 mysql 镜像的时候，把数据保存在了一个目录下，这次把那个目录挂载到新容器的 /var/lib/mysql
 
 指定容器名、端口映射，点击 run。
 
@@ -23,7 +23,7 @@ tags: [Node.js, Express, Koa, 服务端]
 
 还是用之前的密码连接 mysql，然后 show databases 查看所有数据库。
 
-可以看到上节创建的 hello-mysql 数据库还在。
+可以看到前面创建的 hello-mysql 数据库还在。
 
 这就是数据卷挂载的用处，就算你跑了个新容器，那只要把数据卷挂上去，数据就能保存下来。
 

@@ -3,7 +3,7 @@ title: GraphQL 服务
 description: "作为前端开发，想必经常做的事情就是调接口、画页面。调用的接口大概率是 restful 的，url 代表资源，GET、POST、PUT、DELETE 请求代表对资源的增删改查。这种接口返回什么信息是服务端那边决定的，客户端只是传一下参数。"
 keywords: [GraphQL, Nest, Apollo, Prisma, React, schema, resolver, CRUD]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, GraphQL, NestJS]
 ---
 
 
@@ -472,7 +472,7 @@ type Mutation {
 }
 ```
 
-这里直接复制的上节的 schema 定义。语法高亮需要安装下 graphql 插件。
+这里直接复用的是前面给出的 schema 定义。语法高亮需要安装下 graphql 插件。
 
 然后定义它的 resolver：
 
@@ -606,7 +606,7 @@ query Xxx {
 }
 ```
 
-对新手来说，写 query language 还是有点难度的，因为不熟悉。上节那个 playground 就好很多，可以直接生成。换上节的 playground：
+对新手来说，写 query language 还是有点难度的，因为不熟悉。前面那个 playground 就好很多，可以直接生成。换回前面的 playground：
 
 ```javascript
 import { Module } from '@nestjs/common';

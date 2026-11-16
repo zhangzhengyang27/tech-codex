@@ -1,13 +1,9 @@
 ---
 title: iOS 自动化（XCUITest）
+description: 基于 Xcode 16 / Swift 6 系统梳理 iOS 自动化核心架构、XCUITest API 体系、手势与异步等待、Swift Testing 新框架与 Appium 集成方案。
+keywords: [iOS 测试, XCUITest, Swift Testing, Xcode, 自动化]
 category: 移动端测试
-tags:
-  - iOS
-  - XCUITest
-  - Swift Testing
-  - Xcode 16
-  - Appium
-  - Xcode Cloud
+tags: [iOS, XCUITest, Swift Testing, Xcode 16, Appium, Xcode Cloud]
 ---
 
 # iOS 自动化（XCUITest）

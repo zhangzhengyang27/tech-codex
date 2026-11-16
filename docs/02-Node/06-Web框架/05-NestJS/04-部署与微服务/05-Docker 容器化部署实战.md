@@ -3,7 +3,7 @@ title: Docker 容器化部署实战
 description: "Nuxt3 的 .output 目录通过 bundleDependencies 自动打包所有运行时依赖，生产阶段无需 npm install。"
 keywords: [Docker, 容器化部署, 前端, NestJS, Prisma, Docker Compose]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Docker, 部署实战]
 ---
 
 

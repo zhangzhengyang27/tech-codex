@@ -10,6 +10,8 @@ tags: [SQL, MySQL, DDL]
 
 DDL（Data Definition Language）是 DBMS 的核心组件，也是 SQL 的重要组成部分。面对同一个需求，不同的开发人员创建出来的数据库和数据表可能千差万别。
 
+> **本文定位（分工卡）**：本文是 **MySQL 视角**的 DDL 实操——表选项（引擎/字符集/行格式）、六类约束建表设计、设计数据表原则、外键使用争议与可视化工具。通用 SQL 基础视角的 DDL 语法速查与 DROP/TRUNCATE/DELETE 对比，见《[数据定义语言 DDL](../../04-数据库基础/13-数据定义语言DDL.md)》。
+
 ## DDL 基础语法
 
 DDL 中常用的功能是增删改，分别对应的命令是 CREATE、DROP 和 ALTER。在执行 DDL 的时候不需要 COMMIT。

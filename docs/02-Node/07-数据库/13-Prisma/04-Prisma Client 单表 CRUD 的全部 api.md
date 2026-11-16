@@ -3,7 +3,7 @@ title: Prisma Client 单表 CRUD 的全部 api
 description: 过一遍 Prisma Client 单表 CRUD 全部 API：findUnique/findMany/findFirst、create/update/upsert/delete、count/aggregate/groupBy
 keywords: [Prisma, Client, 单表, CRUD, api]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, ORM]
 ---
 
 

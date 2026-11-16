@@ -1,13 +1,9 @@
 ---
 title: Page Object 与 Screenplay 模式
+description: 系统讲解 Page Object、Component Object、Screenplay 三种 GUI 自动化设计模式，把"流水账脚本"重构为可读、可复用、可演进的工程化代码，并给出 2024-2026 现代框架下的落地实践。
+keywords: [Page Object, Screenplay, 设计模式, GUI 自动化, 可维护性]
 category: GUI自动化测试
-tags:
-  - Page Object
-  - Screenplay
-  - Component Object
-  - 设计模式
-  - Playwright
-  - Selenium
+tags: [Page Object, Screenplay, Component Object, 设计模式, Playwright, Selenium]
 ---
 
 # Page Object 与 Screenplay 模式

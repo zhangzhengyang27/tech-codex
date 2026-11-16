@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 核心模块]
 ---
 
-
-
-
-
-
-
 # URL 与 QueryString
 
 Node.js 提供 `url` 与 `querystring` 模块，用于解析、格式化、拼接 URL 以及处理查询字符串参数。自 Node.js v10 起新增了 WHATWG URL 标准接口，推荐在新项目中优先使用。

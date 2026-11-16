@@ -1,14 +1,9 @@
 ---
 title: Nginx 性能调优与负载均衡
-category: 性能测试
-tags:
-  - Nginx 1.27
-  - 负载均衡
-  - HTTP/3
-  - API 网关
-  - OpenResty
-  - 限流
 description: 基于 Nginx 1.27.x 稳定分支系统讲解 Nginx 性能调优（进程模型、连接优化、IO 模型、缓冲区、压缩）、六种负载均衡策略与主动/被动健康检查、HTTP/3（QUIC）支持、API 网关场景（限流、熔断、灰度发布）以及 OpenResty/Lua 扩展实践，并给出常见陷阱与最佳实践。
+keywords: [Nginx, 负载均衡, HTTP/3, API 网关, OpenResty]
+category: 性能测试
+tags: [Nginx, 负载均衡, HTTP/3, API 网关, OpenResty]
 ---
 
 # Nginx 性能调优与负载均衡

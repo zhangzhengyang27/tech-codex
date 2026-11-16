@@ -3,7 +3,7 @@ title: rsync 与 Git Hooks 自动化部署
 description: "rsync（remote sync）增量同步命令详解，配合 Git Hooks（Husky 管理 pre-commit）在提交时自动执行 deploy.sh 构建并用 rsync 上传服务器，含 SSH 免密登录、多环境部署与回滚方案。"
 keywords: [rsync, Git Hooks, Husky, SSH, 自动化部署, deploy.sh]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, rsync, 自动化部署]
 ---
 
 

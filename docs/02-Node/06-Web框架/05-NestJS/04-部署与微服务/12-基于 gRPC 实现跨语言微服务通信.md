@@ -3,7 +3,7 @@ title: 基于 gRPC 实现跨语言微服务通信
 description: "那么问题来了，多种语言实现的微服务之间如何通信呢？有的同学会说 http 不就行？但 http 是文本传输，通信效率低。更重要的是这些微服务并不会提供 http 接口，因为它们又不是直接面向客户端的。"
 keywords: [gRPC, 微服务, 通信, Protocol Buffer, proto, 跨语言]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, gRPC, 微服务]
 ---
 
 

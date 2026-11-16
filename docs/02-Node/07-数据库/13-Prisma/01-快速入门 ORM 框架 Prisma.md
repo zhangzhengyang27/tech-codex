@@ -3,7 +3,7 @@ title: 快速入门 ORM 框架 Prisma
 description: 对比 TypeORM 入门 Prisma：schema 定义 model、prisma init/migrate dev 生成 client，并用 findMany/create/update/delete 完成 CRUD
 keywords: [快速入门, ORM, 框架, Prisma]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, ORM]
 ---
 
 
@@ -271,4 +271,4 @@ prisma migrate dev 根据 schema 文件生成 sql 并执行，还会生成 clien
 
 之后就是 CRUD 了，涉及到 findMany、create、delete、update 等 api。
 
-这节只是入了个门，下节来更全面的掌握 prisma。
+本篇只是入了个门，下一篇来更全面地掌握 prisma。

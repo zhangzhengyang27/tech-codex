@@ -3,7 +3,7 @@ title: 子查询和 EXISTS
 description: 用子查询合并多步查询（MAX/AVG），掌握 EXISTS/NOT EXISTS 关联判断，并在 INSERT、UPDATE、DELETE 中使用子查询
 keywords: [子查询和, EXISTS]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, SQL]
 ---
 
 

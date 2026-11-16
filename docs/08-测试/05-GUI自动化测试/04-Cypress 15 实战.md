@@ -1,13 +1,9 @@
 ---
 title: Cypress 15 实战
+description: 基于 Cypress 15.x 系统讲解其核心架构、环境搭建、核心 API、网络拦截、自定义命令、组件测试、CI/CD 与 Cypress Cloud 集成以及常见陷阱。
+keywords: [Cypress, E2E 测试, GUI 自动化, 网络拦截, 组件测试]
 category: GUI自动化测试
-tags:
-  - Cypress
-  - E2E
-  - 同源运行
-  - Component Testing
-  - Cypress Cloud
-  - TypeScript
+tags: [Cypress, E2E, 同源运行, Component Testing, Cypress Cloud, TypeScript]
 ---
 
 # Cypress 15 实战

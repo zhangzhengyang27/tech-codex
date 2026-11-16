@@ -1,11 +1,14 @@
 ---
 title: 数据链路层与以太网：MAC、帧与交换
+description: 数据链路层的功能、MAC 地址、以太网帧结构、CSMA/CD 介质访问控制，以及交换机的转发与 VLAN。
+keywords: [数据链路层, MAC, 以太网, 交换机, VLAN]
 version: 1.0
 author: 文档维护组
 created: 2026-08-22
 updated: 2026-08-22
 status: 正式
 category: 计算机基础
+tags: [计算机网络, 数据链路层, 以太网, MAC]
 
 ---
 

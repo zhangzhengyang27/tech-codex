@@ -1,12 +1,9 @@
 ---
 title: Redis 8 性能调优（含 Vector Set）
+description: 基于 Redis 8.8 GA 系统讲解其架构、性能调优、Vector Set 等新特性实战与压测方法，覆盖命令延迟优化、内存节省与多模数据存储平台的性能测试场景。
+keywords: [Redis, 性能调优, Vector Set, 压测]
 category: 性能测试
-tags:
-  - Redis 8
-  - Vector Set
-  - 性能调优
-  - 缓存
-  - 限流
+tags: [Redis 8, Vector Set, 性能调优, 缓存, 限流]
 ---
 
 # Redis 8 性能调优（含 Vector Set）

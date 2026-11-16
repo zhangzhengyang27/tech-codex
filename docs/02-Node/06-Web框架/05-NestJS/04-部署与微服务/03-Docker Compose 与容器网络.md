@@ -3,7 +3,7 @@ title: Docker Compose 与容器网络
 description: "多个容器（Nest、Mysql、Redis）手动 docker run 部署麻烦、还要处理启动顺序，用 Docker Compose 编排批量启动，并通过桥接网络实现容器间按容器名直接通信。"
 keywords: [Docker, Compose, 桥接网络, 容器通信, depends_on]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Docker Compose, 部署]
 ---
 
 

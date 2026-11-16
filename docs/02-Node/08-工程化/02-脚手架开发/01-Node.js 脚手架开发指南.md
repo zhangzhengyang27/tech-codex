@@ -1,16 +1,10 @@
 ---
 title: Node.js 脚手架开发指南
 description: 从需求拆解到架构设计的脚手架开发总览与最佳实践
-keywords: [Node.js, 构建, 脚手架]
+keywords: [Node.js, 脚手架, 开发]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Node.js 脚手架开发指南
 

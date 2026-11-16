@@ -1,13 +1,9 @@
 ---
 title: JMeter 二次开发与 API 平台
+description: 基于 JMeter 5.6.3 + JDK 17 + Maven 3.9，系统讲解 JSR223 + Groovy 脚本开发、自定义组件（Java Sampler/函数助手/后置处理器）、JMeter Engine API 编程化压测，以及面向云原生的现代压测平台架构设计，帮助将 JMeter 从工具沉淀为平台能力。
+keywords: [JMeter, 二次开发, JSR223, Groovy, 压测平台]
 category: 性能测试
-tags:
-  - JMeter
-  - 二次开发
-  - JSR223
-  - Groovy
-  - 压测平台
-  - 云原生
+tags: [JMeter, 二次开发, JSR223, Groovy, 压测平台, 云原生]
 ---
 
 # JMeter 二次开发与 API 平台

@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 核心模块]
 ---
 
-
-
-
-
-
-
 # module 模块系统
 
 `module` 模块是 Node.js 模块系统的核心基础设施，实现了 CommonJS 规范的 `require()`、`module.exports`、模块缓存、路径解析等关键机制。通过该模块可以访问模块加载流程、查看和操作缓存、控制解析策略，并实现与 ES Module (`import/export`) 的协同工作。

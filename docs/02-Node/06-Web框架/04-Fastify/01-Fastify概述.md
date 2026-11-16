@@ -6,9 +6,6 @@ category: Node.js
 tags: [Node.js, Web框架]
 ---
 
-
-
-
 # Fastify 概述
 
 Fastify 是一个聚焦于**极低开销与高开发体验**的 Node.js Web 框架，在 v22 环境下单进程吞吐通常可达 Express 的 2–3 倍。其核心竞争力来自三条设计主线：基于 Radix Tree 的路由、基于 JSON Schema 的序列化层、以及借鉴于 hapi 的插件化封装模型。

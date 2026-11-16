@@ -1,13 +1,9 @@
 ---
 title: Appium 3 架构与实战
+description: 基于 Appium 3.5.0 系统梳理其架构原理、版本演进、环境搭建、核心 API、Desired Capabilities、3.x 新特性与实战示例，覆盖 iOS/Android/混合应用的跨平台自动化。
+keywords: [Appium, 移动端测试, 自动化, 跨平台, Desired Capabilities]
 category: 移动端测试
-tags:
-  - Appium
-  - 移动自动化
-  - WebDriver
-  - XCUITest
-  - UIAutomator2
-  - W3C
+tags: [Appium, 移动自动化, WebDriver, XCUITest, UIAutomator2, W3C]
 ---
 
 # Appium 3 架构与实战

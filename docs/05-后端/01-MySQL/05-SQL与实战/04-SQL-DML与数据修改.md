@@ -10,6 +10,8 @@ tags: [SQL, 数据操作]
 
 关系数据库的基本操作是增删改查（CRUD）：Create、Retrieve、Update、Delete。本章详细介绍 INSERT、UPDATE、DELETE 三种数据修改操作。
 
+> **本文定位（分工卡）**：本文是 **MySQL 视角**的 DML 实操——IGNORE/ON DUPLICATE KEY/REPLACE 细节、CASE 表达式更新、多表更新与删除、实战示例。通用 SQL 基础视角的四大语句语法、更新/删除安全铁律与性能优化，见《[数据操作语言 DML](../../04-数据库基础/14-数据操作语言DML.md)》。
+
 ## INSERT 插入数据
 
 ### 基本语法

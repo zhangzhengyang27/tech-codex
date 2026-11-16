@@ -3,7 +3,7 @@ title: Nacos 配置中心与服务注册
 description: "用 Nacos 做配置中心与注册中心：docker 单机启动 nacos/nacos-server，Node 客户端 NacosNamingClient 注册、注销、查询、监听服务实例，NacosConfigClient 管理配置的发布、查询与订阅。"
 keywords: [Nacos, 配置中心, 注册中心, 服务发现, 服务注册]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Nacos, 服务注册]
 ---
 
 

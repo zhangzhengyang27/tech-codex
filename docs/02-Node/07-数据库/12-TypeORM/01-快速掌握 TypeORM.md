@@ -3,13 +3,13 @@ title: 快速掌握 TypeORM
 description: 过一遍 TypeORM 的 DataSource 配置、Entity 装饰器映射与 EntityManager/Repository 的 save、find、delete、transaction 等核心 API
 keywords: [快速掌握, TypeORM]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, TypeORM, ORM]
 ---
 
 
 # 快速掌握 TypeORM
 
-上节简单用了下 TypeORM，这节把它全部的概念过一遍。
+前面简单用了下 TypeORM，本篇把它全部的概念过一遍。
 
 新建一个 TypeORM 项目：
 ```shell

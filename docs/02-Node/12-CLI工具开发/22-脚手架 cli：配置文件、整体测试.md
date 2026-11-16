@@ -6,15 +6,9 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # 脚手架 cli：配置文件、整体测试
 
-上节跑通了 AI 生成代码的流程，这节加上配置文件。
+上一篇跑通了 AI 生成代码的流程，本篇加上配置文件。
 
 babel 的[配置方式](https://babel.dev/docs/config-files)有很多种：
 

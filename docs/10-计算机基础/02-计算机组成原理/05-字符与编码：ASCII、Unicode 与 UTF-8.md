@@ -1,11 +1,14 @@
 ---
 title: 字符与编码：ASCII、Unicode 与 UTF-8
+description: 从 ASCII 到 Unicode、再到 UTF-8/UTF-16/UTF-32 的字符编码演进，重点说明 UTF-8 的变长原理与"码点 vs 编码单元"的区别。
+keywords: [ASCII, Unicode, UTF-8, 字符编码]
 version: 1.0
 author: 文档维护组
 created: 2026-08-22
 updated: 2026-09-10
 status: 正式
 category: 计算机基础
+tags: [计算机基础, 计算机组成原理, 字符编码, Unicode]
 
 ---
 

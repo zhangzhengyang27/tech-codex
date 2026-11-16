@@ -3,19 +3,14 @@ title: GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）
 description: 从受众差异化出发，系统讲解 Allure 报告（含 TestOps 企业版）、Playwright Trace Viewer v1.61、ReportPortal 实时报告与 AI 失败分析、HTML/自定义报告、CI/CD 集成与 2024-2026 AI 报告分析、Grafana 测试看板等新趋势
 keywords: [GUI测试报告, Allure, Allure TestOps, Playwright Trace Viewer, ReportPortal, AI失败分析, Grafana测试看板, CI/CD报告]
 category: GUI自动化测试
-tags:
-  - GUI自动化
-  - 测试报告
-  - Allure
-  - Trace Viewer
-  - ReportPortal
-  - AI分析
-  - CI/CD
+tags: [GUI自动化, 测试报告, Allure, Trace Viewer, ReportPortal, AI分析, CI/CD]
 ---
 
 # GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）
 
 GUI 自动化测试的最后一公里，是**把执行过程转化为可决策的信息**。一条用例失败后，团队需要在分钟级内回答三个问题：失败在哪一步、当时系统是什么状态、是脚本问题还是真实缺陷。测试报告正是回答这些问题的载体。本文从受众差异化出发，系统讲解 2026 年主流的 GUI 测试报告方案——Allure（含 TestOps 企业版）、Playwright Trace Viewer v1.61、ReportPortal，以及 CI/CD 集成与 AI 报告分析新趋势。
+
+> **本文定位（分工卡）**：本文从**GUI 测试视角**讲解测试报告体系——Trace Viewer 在失败回放与缺陷定位中的落地、Allure/ReportPortal 报告集成。前端开发调试视角的 Playwright 调试工具用法（Inspector、Trace Viewer 启动、Codegen、VSCode 扩展）见《[Playwright 调试模式与 Trace Viewer](../../04-前端/11-调试/07-浏览器自动化/05-Playwright调试模式与Trace-Viewer.md)》。
 
 ## 一、核心概念：测试报告的价值与受众差异化
 

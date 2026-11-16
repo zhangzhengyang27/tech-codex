@@ -1,21 +1,16 @@
 ---
 title: Mock Server 必杀技
+description: 从测试开发与平台工程视角系统讲解 Mock Server 工具实战：WireMock 3.x、MockServer 5.x、Mountebank、Prism 5.x 与 Postman Mock Server 的核心用法与选型决策树，覆盖 Schema 驱动 Mock、契约协同、AI 辅助生成、服务虚拟化与平台化治理。
+keywords: [Mock Server, WireMock, MockServer, Mountebank, Prism, OpenAPI, 契约测试]
 category: 测试开发与平台工程
-tags:
-  - Mock Server
-  - WireMock
-  - MockServer
-  - Mountebank
-  - Prism
-  - 契约测试
-  - OpenAPI
-  - 服务虚拟化
-  - AI 辅助 Mock
+tags: [Mock Server, WireMock, MockServer, Mountebank, Prism, 契约测试, OpenAPI, 服务虚拟化, AI 辅助 Mock]
 ---
 
 # Mock Server 必杀技
 
-在后端接口未就绪、第三方依赖收费限流、下游服务不稳定或联调环境稀缺的场景下，测试执行往往被"等接口"卡住。Mock Server 通过在网络层"伪装"被依赖服务的契约与行为，让前端联调、接口自动化、契约测试、性能压测能够独立、并行、可重复地推进。本文聚焦 Mock Server 主流工具的工程实战，覆盖 WireMock 3.x、MockServer 5.x、Mountebank、Prism 5.x 与 Postman Mock Server 的核心用法，并补充 2024–2026 年在 Schema 驱动 Mock、契约协同、AI 辅助生成与服务虚拟化方向上的新趋势。需要说明的是，本文聚焦 Mock Server 工具实战，**契约测试的体系化方法论与微服务架构层面的虚拟化治理**分别在《04-API 测试》与《06-服务虚拟化》中展开。
+在后端接口未就绪、第三方依赖收费限流、下游服务不稳定或联调环境稀缺的场景下，测试执行往往被"等接口"卡住。Mock Server 通过在网络层"伪装"被依赖服务的契约与行为，让前端联调、接口自动化、契约测试、性能压测能够独立、并行、可重复地推进。本文聚焦 Mock Server 主流工具的工程实战，覆盖 WireMock 3.x、MockServer 5.x、Mountebank、Prism 5.x 与 Postman Mock Server 的核心用法，并补充 2024–2026 年在 Schema 驱动 Mock、契约协同、AI 辅助生成与服务虚拟化方向上的新趋势。
+
+> **本文定位（分工卡）**：本文从 **测试开发与平台工程视角**讲解 Mock Server——聚焦工具横评与选型决策、Schema 驱动 Mock、契约协同、AI 辅助生成与平台化治理（规则版本化、GitOps、命中率审计）。WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、JUnit 集成）与契约测试的体系化方法论，见《[服务虚拟化与 Mock Server（Mountebank/WireMock）](../04-API测试/06-服务虚拟化与%20Mock%20Server（Mountebank-WireMock）.md)》。
 
 ## 一、核心概念
 
@@ -174,32 +169,7 @@ curl -X POST http://localhost:8080/__admin/recordings/stop
 
 ### 2.5 JUnit 5 集成
 
-```java
-// 使用 @WireMockTest 注解启动嵌入式 WireMock
-@WireMockTest(httpPort = 8089)
-class UserServiceTest {
-
-    @Autowired WireMock wireMock;
-
-    @Test
-    void shouldReturnMockedUser() {
-        // 注册桩：当 GET /api/users/1 时返回 200 + JSON
-        wireMock.register(WireMock.get(WireMock.urlEqualTo("/api/users/1"))
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"id\":1,\"name\":\"张三\"}")));
-
-        // 调用被测服务（其下游指向 8089）
-        User user = userService.getUser(1);
-        assertEquals("张三", user.getName());
-
-        // 验证 Mock 是否被按预期调用（Mock 而非 Stub 的关键）
-        wireMock.verifyThat(WireMock.getRequestedFor(WireMock.urlEqualTo("/api/users/1"))
-                .withHeader("Authorization", WireMock.matching("Bearer .*")));
-    }
-}
-```
+WireMock 通过 `@WireMockTest` 注解即可在测试中启动嵌入式实例并注册桩、执行 verify 断言。完整的接口测试级实战——JUnit 5 扩展写法、状态机场景（Scenario）、超时降级验证与调用次数断言——见《[服务虚拟化与 Mock Server](../04-API测试/06-服务虚拟化与%20Mock%20Server（Mountebank-WireMock）.md)》4.1 节，此处不再重复。平台侧要点是：嵌入式 WireMock 适合单测/集成测试；平台化场景应统一走独立部署（2.1 节）+ Git 管理的 mapping。
 
 ## 三、MockServer 5.x 实战
 
@@ -471,8 +441,8 @@ WireMock 3.x + 录制 + 状态机已能覆盖中小团队 80% 的 SV 需求；�
 
 ### 8.1 常见陷阱
 
-- **Mock 数据漂移**：接口已改但 Mock 未更新，导致联调通过、上线即炸。**对策**：Mock 规则与 OpenAPI 文档同源，CI 中校验 Mock 响应是否符合最新 Schema。
-- **过度 Mock**：把所有下游都 Mock 掉，集成测试变成"测 Mock 自己"。**对策**：分层策略——单测全 Mock、集成测试只 Mock 外部不可控依赖、端到端测试尽量少 Mock。
+> "Mock 与真实行为脱节""过度 Mock""Mock 数据与契约不同步""忽视负向场景"等接口测试视角的误区剖析，见《[服务虚拟化与 Mock Server](../04-API测试/06-服务虚拟化与%20Mock%20Server（Mountebank-WireMock）.md)》第五章，此处聚焦平台治理侧陷阱。
+
 - **硬编码敏感数据**：录制流量时把真实手机号、身份证号写进 mapping。**对策**：录制后强制脱敏流水线，禁止未脱敏 mapping 入库。
 - **Mock 状态泄漏**：状态机 Mock 在用例间未重置，导致用例间隐式依赖。**对策**：每个测试用例后调用 `__admin/reset` 或重建 imposter。
 - **延迟模拟缺失**：Mock 响应瞬时返回，掩盖了真实下游的延迟问题。**对策**：关键路径 Mock 必须配置 realistic delay，性能测试单独走真实服务。

@@ -3,7 +3,7 @@ title: 使用 Node 操作 MySQL 的两种方式
 description: 分别用 mysql2 连接/连接池与 TypeORM DataSource 操作 MySQL，理解 ORM 把表映射为 class、自动生成 SQL 的原理
 keywords: [使用, Node, 操作, MySQL, 的两种方式]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, mysql2]
 ---
 
 
@@ -321,4 +321,4 @@ find 方法会执行 select 来查询数据。
 
 一种是用 ORM 库，比如 typeorm，它是基于 class 和 class 上的装饰器来声明和表的映射关系的，然后对表的增删改查就变成了对象的操作以及 save、find 等方法的调用。它会自动生成对应的 sql。
 
-主流的方案还是 ORM 的方案，下节继续深入学习 typeorm。
+主流的方案还是 ORM 的方案，下一篇继续深入学习 typeorm。

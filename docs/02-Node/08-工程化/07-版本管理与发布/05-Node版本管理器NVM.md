@@ -14,7 +14,7 @@ tags: [Node.js, 工程化]
 
 ## 二、什么是nvm ?
 
-`nvm`全称`Node Version Manager`是 `Nodejs` 版本管理器，它让我们能方便的对 `Nodejs` 的版本进行切换。 `nvm` 的官方版本只支持 `Linux` 和 `Mac`。 `Windows` 用户，可以用 `nvm-windows`。
+`nvm`全称`Node Version Manager`是 `Nodejs` 版本管理器，它能方便地对 `Nodejs` 的版本进行切换。 `nvm` 的官方版本只支持 `Linux` 和 `Mac`。 `Windows` 用户，可以用 `nvm-windows`。
 
 ## 三、nvm下载安装配置
 
@@ -33,12 +33,9 @@ tags: [Node.js, 工程化]
 
 我们这里选择使用第一个`nvm-noinstall.zip`绿色免安装版本。
 
-
-
 ### 2、安装
 
 （1）`nvm-noinstall.zip`下载完成后进行解压缩，得到解压后的文件列表（其中包含 `install.cmd` 等文件）：
-
 
 （2）我们在E盘底下新建文件夹`E:/nvm`，将第（1）步解压缩得到的文件列表复制到该文件夹，新建文件夹`E:/nodejs`用于存放`node`的安装依赖
 
@@ -49,14 +46,11 @@ root: E:\nvm
 path: E:\nodejs
 ```
 
-
 ### 3、配置环境变量
 
 （1）第2步点击`install.cmd`文件后，会在环境变量的系统变量中，生成两个环境变量：`NVM_HOME` 和 `NVM_SYMLINK` 我们开始修改这两个变量名的变量值：`NVM_HOME`的变量值为：`E:\nvm`； `NVM_SYMLINK`的变量值为：`E:\nodejs`，然后在`Path`的最前面输入：`;%NVM_HOME%;%NVM_SYMLINK%;`
 
-
 （2）打开一个`cmd`窗口输入命令：`nvm v` ，那么我们会看到当前`nvm`的版本信息，说明`nvm`安装配置成功。
-
 
 ## 四、nvm常用命令
 
@@ -72,22 +66,15 @@ path: E:\nodejs
 
 > 注意：`nvm`（nvm-sh，Linux/Mac）与 `nvm-windows` 的命令略有差异，如 `nvm ls-remote` 在 `nvm-windows` 中对应 `nvm list available`，`nvm use` 在 Windows 下需要管理员权限。
 
-
-
 ## 五、使用nvm管理node版本
 
 ### 1、配置`npm`全局路径
 
 进入命令模式，输入`npm config set prefix "E:\nvm\npm"` 回车，然后新建变量名为：`NPM_HOME`，变量值为 ：`E:\nvm\npm`在`Path`的最前面添加;`%NPM_HOME%`，注意了，这个一定要添加在 `%NVM_SYMLINK%`之前，所以我们直接把它放到`Path`的最前面。
 
-
-
 ### 2、使用nvm管理node版本
 
 使用`nvm`管理`node`版本时，常用的组合如：先 `nvm install 20.11.0` 安装、再 `nvm use 20.11.0` 切换、用 `nvm ls` 查看已装版本。
-
-
-
 
 ## 六、注意点
 

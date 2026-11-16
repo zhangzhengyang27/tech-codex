@@ -3,7 +3,7 @@ title: TypeORM 一对一的映射和关联 CRUD
 description: 用 @OneToOne 与 @JoinColumn 映射一对一关系，讲解外键级联（CASCADE）、cascade 级联保存与 relations/QueryBuilder 关联增删改查
 keywords: [TypeORM, 一对一的映射和关联, CRUD]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, TypeORM, ORM]
 ---
 
 
@@ -345,4 +345,4 @@ TypeORM 里一对一关系的映射通过 @OneToOne 装饰器来声明，维持�
 
 增删改分别通过 save 和 delete 方法，查询可以通过 find 也可以通过 queryBuilder，不过要 find 的时候要指定 relations 才会关联查询。
 
-这就是 TypeORM 里一对一的映射和增删改查，下节继续学习一对多的映射。
+这就是 TypeORM 里一对一的映射和增删改查，下一篇继续学习一对多的映射。

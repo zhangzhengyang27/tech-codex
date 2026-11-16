@@ -1,18 +1,14 @@
 ---
 title: pytest 9 实战（fixtures 与参数化与插件）
+description: 基于 pytest 9.1.1 系统讲解 fixtures 依赖注入、参数化、mark 标记、插件体系与 conftest 工程实践，覆盖 FastAPI/PyTorch 等真实项目的测试底座用法。
+keywords: [pytest, Python 测试, fixtures, 参数化, 插件体系]
 category: 单元测试与代码级测试
-tags:
-  - pytest
-  - Python
-  - 单元测试
-  - fixtures
-  - 参数化
-  - 插件体系
+tags: [pytest, Python, 单元测试, fixtures, 参数化, 插件体系]
 ---
 
 # pytest 9 实战（fixtures 与参数化与插件）
 
-pytest 是 Python 生态中最主流的测试框架，凭借**简单的断言、显式的 fixture 依赖注入、灵活的参数化、可扩展的插件体系**，早已成为绝大多数 Python 项目（含 FastAPI、PyTorch、LangChain 等明星项目）的默认测试底座。本文基于 pytest **9.1.1**（2026 年最新稳定版）撰写，重点讲解 fixtures、参数化、mark、插件体系与 conftest.py 工程化用法，并系统梳理 pytest 9 相对 pytest 6/7/8 的破坏性变更与迁移指南。
+pytest 是 Python 生态中最主流的测试框架，凭借**简单的断言、显式的 fixture 依赖注入、灵活的参数化、可扩展的插件体系**，早已成为绝大多数 Python 项目（含 FastAPI、PyTorch、LangChain 等明星项目）的默认测试底座。本文基于 pytest **9.1.1**（2026 年最新稳定版）撰写，重点讲解 fixtures、参数化、mark、插件体系与 conftest.py 工程化用法，并系统梳理 pytest 9 相对 pytest 6/7/8 的破坏性变更与迁移指南。Python 工程化视角的 pytest 基础（夹具生命周期、Mock/Fake、覆盖率配置与 TDD 实践）见《[Python 工程化：测试](../../03-Python/03-工程化与运维/01-工程化/03-测试.md)》。
 
 ## 一、核心概念
 

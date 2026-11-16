@@ -1,11 +1,14 @@
 ---
 title: I/O 控制方式：查询、中断、DMA 与通道
+description: CPU 与 I/O 设备数据交换的四种方式演进：程序查询、程序中断、DMA 与 I/O 通道的原理、优缺点与适用场景。
+keywords: [I/O控制方式, 程序查询, 中断, DMA, 通道]
 version: 1.0
 author: 文档维护组
 created: 2026-08-22
 updated: 2026-08-22
 status: 正式
 category: 计算机基础
+tags: [计算机基础, 计算机组成原理, IO, DMA]
 
 ---
 

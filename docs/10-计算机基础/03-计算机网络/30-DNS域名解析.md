@@ -1,9 +1,9 @@
 ---
 title: DNS
 description: DNS 是域名系统 (Domain Name System) 的缩写，提供的是一种主机名到 IP 地址的转换服务，就是我们常说的域名系统。它是一个由分层的 DNS 服务器组成的分布…
-keywords: [11-网络编程, DNS]
+keywords: [DNS, 域名解析, DNS服务器, 递归查询, 迭代查询]
 category: 计算机基础
-tags: [架构, 11-网络编程]
+tags: [DNS, 域名解析, 应用层]
 ---
 
 # DNS

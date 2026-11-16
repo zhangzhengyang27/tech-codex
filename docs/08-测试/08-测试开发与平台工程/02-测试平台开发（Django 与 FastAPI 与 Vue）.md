@@ -1,15 +1,9 @@
 ---
 title: 测试平台开发（Django 与 FastAPI 与 Vue）
+description: 基于 Django 5.x LTS、FastAPI 0.115+ 与 Vue 3 系统讲解测试平台开发：用例管理、任务调度、执行引擎、报告展示与数据治理的中枢系统设计与实现。
+keywords: [测试平台, Django, FastAPI, Vue, 平台开发]
 category: 测试开发与平台工程
-tags:
-  - 测试平台
-  - FastAPI
-  - Django
-  - Vue3
-  - K8s
-  - WebSocket
-  - 低代码
-  - AI测试
+tags: [测试平台, FastAPI, Django, Vue3, K8s, WebSocket, 低代码, AI测试]
 ---
 
 # 测试平台开发（Django 与 FastAPI 与 Vue）

@@ -1,14 +1,9 @@
 ---
 title: Docker 与 K8s 在性能测试中的应用
-category: 性能测试
-tags:
-  - Docker
-  - Kubernetes
-  - 容器化压测
-  - 云原生
-  - Argo Workflows
-  - eBPF
 description: 从 Docker 镜像制作、Docker Compose 编排到 Kubernetes Job/HPA 调度压测 Worker，再到 Argo Workflows 与 Operator 编排云原生压测流水线，系统讲解容器化与云原生技术在性能测试中的应用，并覆盖 cAdvisor + Prometheus + Grafana + eBPF 监控方案。
+keywords: [Docker, Kubernetes, 容器化压测, 云原生, Argo Workflows, eBPF]
+category: 性能测试
+tags: [Docker, Kubernetes, 容器化压测, 云原生, Argo Workflows, eBPF]
 ---
 
 # Docker 与 K8s 在性能测试中的应用

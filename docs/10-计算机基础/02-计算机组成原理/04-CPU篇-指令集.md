@@ -1,11 +1,14 @@
 ---
 title: CPU篇-指令集
+description: 指令集架构（ISA）的角色与设计权衡：CISC 与 RISC 的取舍、指令的分类与寻址方式，理解 CPU 的"语言"。
+keywords: [指令集, ISA, CISC, RISC, 寻址方式]
 version: 1.0
 author: 文档维护组
 created: 2026-08-07
 updated: 2026-09-10
 status: 正式
 category: 计算机基础
+tags: [计算机基础, 计算机组成原理, 指令集, RISC]
 
 ---
 

@@ -1,11 +1,14 @@
 ---
 title: CPU 内部结构与指令系统
+description: CPU 的三大组成部件（运算器、控制器、寄存器组）、指令的执行过程，以及指令集架构与 RISC/CISC 的权衡。
+keywords: [CPU, 运算器, 控制器, 寄存器, 指令执行]
 version: 1.0
 author: 文档维护组
 created: 2026-08-22
 updated: 2026-09-10
 status: 正式
 category: 计算机基础
+tags: [计算机基础, 计算机组成原理, CPU, 指令系统]
 
 ---
 

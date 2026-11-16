@@ -3,7 +3,7 @@ title: Dockerfile 编写与优化
 description: "Dockerfile 编写与优化：.dockerignore 语法、Nest 项目 Dockerfile 的编写，以及多阶段构建、alpine 基础镜像、ARG/ENV、CMD 与 ENTRYPOINT、ADD 与 COPY、非 root 用户运行等镜像优化与安全技巧。"
 keywords: [Dockerfile, Nest, 多阶段构建, alpine, 优化, 安全]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Docker, Dockerfile]
 ---
 
 
@@ -686,7 +686,7 @@ docker build --no-cache -t app:1.0 .      # 排除缓存问题
 - 始终使用多阶段构建，最终镜像只包含运行时必需文件
 - 基础镜像锁定具体版本（`node:18-alpine`），避免 `latest`
 - 利用层缓存：不常变化的层（依赖安装）放前面
-- 生产镜像不以 root 运行（参见下节安全配置）
+- 生产镜像不以 root 运行（参见下文安全配置）
 - 镜像标签使用 Git SHA 或语义化版本，便于追溯和回滚
 
 ## 四、Docker 安全性与命令实践

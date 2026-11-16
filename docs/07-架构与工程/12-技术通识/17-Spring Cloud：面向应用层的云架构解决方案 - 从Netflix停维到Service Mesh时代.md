@@ -465,5 +465,3 @@ timeline
 - **Dubbo 3.x 文档**：Apache Dubbo 官方网站，关注 Proxyless Mesh 与 Triple 协议演进
 - **云原生 Java**：Micronaut、Quarkus 官方文档与 GraalVM Native Image 实践
 - **Dapr 项目**：多语言运行时与 Sidecar 模式的代表性方案
-
-如果今天的内容对你有帮助，也欢迎你分享给身边的朋友。

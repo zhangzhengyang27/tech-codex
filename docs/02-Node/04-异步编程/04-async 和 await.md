@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 异步编程]
 ---
 
-
-
-
-
-
-
 # async/await
 
 `async/await` 在 Node.js 中自 Node 8 起全面可用，并在后续版本中加入了顶层 `await`、原生模块 Promise 版本等配套能力，是处理异步操作的首选方式。

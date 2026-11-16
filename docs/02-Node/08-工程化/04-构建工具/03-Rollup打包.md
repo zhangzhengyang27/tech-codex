@@ -1,16 +1,10 @@
 ---
 title: Rollup 打包
 description: Rollup 的 Tree-shaking、多格式输出与库打包实践
-keywords: [Node.js, 构建, 脚手架, Rollup]
+keywords: [Node.js, 构建工具, Rollup]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Rollup 打包
 

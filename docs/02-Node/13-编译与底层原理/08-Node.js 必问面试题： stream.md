@@ -1,16 +1,10 @@
 ---
 title: Node.js 核心面试题：深入理解 Stream（流）
 description: Node.js Stream 的背压、pipe 机制与多种流类型的原理与高频面试题
-keywords: [Node.js, AST, 编译, Stream]
+keywords: [Node.js, Stream, 面试]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # Node.js 核心面试题：深入理解 Stream（流）
 

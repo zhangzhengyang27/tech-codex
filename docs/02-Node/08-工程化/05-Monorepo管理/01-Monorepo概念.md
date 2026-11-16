@@ -1,16 +1,10 @@
 ---
 title: Monorepo
 description: Monorepo 的动机、目录结构与依赖拓扑管理
-keywords: [Node.js, 构建, 脚手架, Monorepo]
+keywords: [Node.js, Monorepo, 工程化]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Monorepo
 

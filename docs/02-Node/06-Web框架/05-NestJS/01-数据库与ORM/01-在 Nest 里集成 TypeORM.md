@@ -3,7 +3,7 @@ title: 在 Nest 里集成 TypeORM
 description: "在 Nest 中集成 TypeORM：TypeOrmModule.forRoot 注册全局数据源（DataSource/EntityManager）、forFeature 注入指定 Entity 的 Repository，以及 @nestjs/typeorm 的封装实现原理。"
 keywords: [NestJS, TypeORM, ORM, DataSource]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, NestJS, TypeORM]
 ---
 
 

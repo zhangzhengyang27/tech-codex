@@ -6,17 +6,11 @@ category: Node.js
 tags: [Node.js, 网络编程]
 ---
 
-
-
-
-
-
-
 # RESTful API 设计规范
 
 ## 文档概述
 
-本规范从协议、域名、版本、路径命名等基础约定出发，逐项规定 HTTP 方法的语义与幂等性、查询参数（分页/排序/过滤）、统一响应与错误格式、状态码使用流程、JWT/OAuth/API Key 认证以及 CORS 跨域处理，并以用户管理 API 为例给出完整设计与实现示例。遵循这些规范可以确保 API 的一致性、可预测性和可用性。
+本规范从协议、域名、版本、路径命名等基础约定出发，逐项规定 HTTP 方法的语义与幂等性、查询参数（分页/排序/过滤）、统一响应与错误格式、状态码使用流程、JWT/OAuth/API Key 认证以及 CORS 跨域处理，并以用户管理 API 与博客系统 API 为例给出完整设计与实现示例。遵循这些规范可以确保 API 的一致性、可预测性和可用性。
 
 ### 适用范围
 
@@ -109,6 +103,14 @@ GET /users HTTP/1.1
 Host: api.example.com
 Accept: application/vnd.example.v1+json
 ```
+
+#### 查询参数版本控制
+
+```
+https://api.example.com/users?version=1
+```
+
+灵活但不够 RESTful，一般仅作为过渡方案。
 
 #### 版本策略建议
 
@@ -342,6 +344,16 @@ HTTP/1.1 204 No Content
 
 ## HTTP 状态码规范
 
+### 1xx 信息性状态码
+
+| 状态码 | 说明 | 使用场景 |
+|--------|------|----------|
+| **100 Continue** | 继续发送请求体 | 客户端先发 Expect: 100-continue 探测服务器是否接受请求体 |
+| **101 Switching Protocols** | 协议切换 | WebSocket 握手升级协议 |
+| **102 Processing** | 处理中 | 服务器已收到请求，正在处理 |
+
+API 设计中很少直接返回 1xx，主要由 HTTP 协议栈与基础设施处理。
+
 ### 2xx 成功状态码
 
 | 状态码 | 说明 | 使用场景 |
@@ -350,6 +362,7 @@ HTTP/1.1 204 No Content
 | **201 Created** | 创建成功 | POST 创建资源成功 |
 | **202 Accepted** | 已接受请求 | 异步处理任务 |
 | **204 No Content** | 无内容 | DELETE 成功 |
+| **206 Partial Content** | 部分内容 | Range 分段下载 |
 
 ### 3xx 重定向状态码
 
@@ -358,6 +371,7 @@ HTTP/1.1 204 No Content
 | **301 Moved Permanently** | 永久重定向 | 资源 URL 变更 |
 | **302 Found** | 临时重定向 | 临时资源转移 |
 | **304 Not Modified** | 未修改 | 缓存有效 |
+| **307 Temporary Redirect** | 临时重定向（保持请求方法） | POST 重定向 |
 
 ### 4xx 客户端错误
 
@@ -368,6 +382,7 @@ HTTP/1.1 204 No Content
 | **403 Forbidden** | 禁止访问 | 无权限访问该资源 |
 | **404 Not Found** | 资源不存在 | 请求的资源未找到 |
 | **405 Method Not Allowed** | 方法不允许 | 不支持的 HTTP 方法 |
+| **408 Request Timeout** | 请求超时 | 请求处理超时 |
 | **406 Not Acceptable** | 不可接受 | 请求格式不支持 |
 | **409 Conflict** | 冲突 | 资源状态冲突 |
 | **410 Gone** | 已删除 | 资源已被永久删除 |
@@ -391,6 +406,22 @@ HTTP/1.1 204 No Content
         ↓           ↓           ↓           ↓
       401         403         400/422      200/201/204
                                           或 500
+```
+
+### 状态码设计原则
+
+```
+状态码设计原则：
+├── 1. 与 HTTP 状态码保持一致
+│   └── 避免自定义状态码与 HTTP 状态码冲突
+├── 2. 语义准确
+│   ├── 创建成功返回 201，而非 200
+│   └── 删除成功返回 204，而非 200
+├── 3. 区分客户端错误和服务端错误
+│   ├── 4xx：客户端问题，不需要重试
+│   └── 5xx：服务端问题，可以重试
+└── 4. 提供详细的错误信息
+    └── 返回错误原因和建议解决方案
 ```
 
 ## 错误处理规范
@@ -735,6 +766,102 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 HTTP/1.1 204 No Content
 ```
 
+## 博客系统 API 案例（实战补充）
+
+### 场景：博客系统 API 完整设计
+
+```
+博客系统 RESTful API 完整设计：
+┌──────────────────────────────────────────────────┐
+│ 文章资源（Articles）                              │
+├──────────────────────────────────────────────────┤
+│ GET    /api/v1/articles          获取文章列表    │
+│ GET    /api/v1/articles/{id}     获取文章详情    │
+│ POST   /api/v1/articles          创建文章        │
+│ PUT    /api/v1/articles/{id}     更新文章        │
+│ DELETE /api/v1/articles/{id}     删除文章        │
+│                                                  │
+│ 评论资源（Comments）                             │
+├──────────────────────────────────────────────────┤
+│ GET    /api/v1/articles/{id}/comments           │
+│        获取文章评论列表                          │
+│ POST   /api/v1/articles/{id}/comments           │
+│        创建评论                                  │
+│ DELETE /api/v1/comments/{id}    删除评论        │
+│                                                  │
+│ 用户资源（Users）                                │
+├──────────────────────────────────────────────────┤
+│ POST   /api/v1/auth/register    用户注册        │
+│ POST   /api/v1/auth/login       用户登录        │
+│ GET    /api/v1/users/profile    获取个人信息    │
+│ PUT    /api/v1/users/profile    更新个人信息    │
+└──────────────────────────────────────────────────┘
+```
+
+
+
+### 请求与响应示例
+
+#### 创建文章接口（含嵌套资源与错误结构）
+
+**请求**：
+
+```http
+POST /api/v1/articles
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "title": "RESTful API 设计最佳实践",
+  "content": "本文介绍 RESTful API 的设计原则...",
+  "tags": ["API", "RESTful", "后端"],
+  "status": "published"
+}
+```
+
+**成功响应（201 Created）**：
+
+```json
+{
+  "code": 201,
+  "message": "文章创建成功",
+  "data": {
+    "id": 123,
+    "title": "RESTful API 设计最佳实践",
+    "content": "本文介绍 RESTful API 的设计原则...",
+    "tags": ["API", "RESTful", "后端"],
+    "status": "published",
+    "author": {
+      "id": 1,
+      "name": "张三"
+    },
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+**错误响应（400 Bad Request）**：
+
+```json
+{
+  "code": 400,
+  "message": "请求参数错误",
+  "error": {
+    "errors": [
+      {
+        "field": "title",
+        "message": "标题不能为空"
+      },
+      {
+        "field": "tags",
+        "message": "标签数量不能超过 5 个"
+      }
+    ]
+  }
+}
+```
+
 ## 最佳实践
 
 ### 1. API 命名规范
@@ -849,6 +976,28 @@ X-RateLimit-Reset: 1642234567 # 重置时间戳
 # 超限时返回 429
 HTTP/1.1 429 Too Many Requests
 Retry-After: 60
+```
+
+### 接口安全检查清单
+
+```
+接口安全检查清单：
+├── 传输安全
+│   ├── 强制使用 HTTPS
+│   ├── 禁用不安全的 TLS 版本
+│   └── 设置 HSTS 头
+├── 认证安全
+│   ├── Token 有效期控制
+│   ├── Token 刷新机制
+│   └── 敏感操作二次验证
+├── 输入验证
+│   ├── 参数类型验证
+│   ├── 参数范围验证
+│   └── SQL 注入防护
+└── 限流控制
+    ├── IP 限流
+    ├── 用户限流
+    └── 接口限流
 ```
 
 ## 常见问题（FAQ）
@@ -996,6 +1145,19 @@ Content-Type: application/json
   "role_ids": [1, 2, 3]
 }
 ```
+
+### 实施层面的常见问题 
+
+| 问题场景               | 问题描述                   | 解决方案                           |
+| ---------------------- | -------------------------- | ---------------------------------- |
+| **URL 命名不统一**     | 团队成员使用不同的命名风格 | 制定统一的 API 设计规范文档        |
+| **状态码使用不当**     | 所有响应都返回 200         | 根据实际情况使用正确的 HTTP 状态码 |
+| **错误信息不够详细**   | 只返回"请求失败"           | 提供错误原因、字段和建议解决方案   |
+| **缺少版本控制**       | 接口更新导致旧客户端失效   | 使用 URL 版本控制，保持向后兼容    |
+| **接口文档更新不及时** | 代码修改后文档未同步       | 使用 Swagger 等工具自动生成文档    |
+| **安全性不足**         | 敏感接口未做权限控制       | 实施身份认证和权限验证             |
+| **参数验证不完善**     | 后端未验证前端参数         | 添加参数类型、范围、格式验证       |
+| **缺少限流机制**       | 接口被恶意调用             | 实施限流策略（IP、用户、接口级别） |
 
 ## 参考资料
 

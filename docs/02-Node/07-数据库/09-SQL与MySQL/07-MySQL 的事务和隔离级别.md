@@ -3,7 +3,7 @@ title: MySQL 的事务和隔离级别
 description: 用 START TRANSACTION/COMMIT/ROLLBACK/SAVEPOINT 保证多表修改的一致性，并讲解 MySQL 四种隔离级别与脏读、不可重复读、幻读
 keywords: [MySQL, 的事务和隔离级别]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, 事务]
 ---
 
 

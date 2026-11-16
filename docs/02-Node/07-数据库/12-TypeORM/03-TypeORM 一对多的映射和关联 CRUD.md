@@ -3,7 +3,7 @@ title: TypeORM 一对多的映射和关联 CRUD
 description: 用 @ManyToOne/@OneToMany 映射一对多关系，讲解外键的自动维护、单侧 cascade 级联保存、relations 关联查询与删除顺序
 keywords: [TypeORM, 一对多的映射和关联, CRUD]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, TypeORM, ORM]
 ---
 
 

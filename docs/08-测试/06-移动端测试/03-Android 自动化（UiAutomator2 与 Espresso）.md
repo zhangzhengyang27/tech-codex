@@ -1,13 +1,9 @@
 ---
 title: Android 自动化（UiAutomator2 与 Espresso）
+description: 系统讲解 Android 自动化分层体系：Espresso 应用内白盒测试、UiAutomator2 系统级黑盒测试与 Compose Testing，覆盖环境搭建、API 实战与工程化最佳实践。
+keywords: [Android 测试, Espresso, UiAutomator2, Compose Testing, 自动化]
 category: 移动端测试
-tags:
-  - Android
-  - UiAutomator2
-  - Espresso
-  - Compose Testing
-  - Macrobenchmark
-  - Baseline Profiles
+tags: [Android, UiAutomator2, Espresso, Compose Testing, Macrobenchmark, Baseline Profiles]
 ---
 
 # Android 自动化（UiAutomator2 与 Espresso）

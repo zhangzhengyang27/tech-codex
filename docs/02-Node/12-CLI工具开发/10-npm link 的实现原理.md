@@ -6,15 +6,9 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # npm link 的实现原理
 
-上节测试 cli 的时候，通过 npm link 把这个包安装到了全局。
+上一篇测试 cli 的时候，通过 npm link 把这个包安装到了全局。
 
 那 npm link 是怎么实现的呢？
 
@@ -114,7 +108,7 @@ ls "$(npm get prefix)/lib/node_modules"
 ```
 
 
-可以看到，这个 my-nest-cli 就是上节全局安装的包。
+可以看到，这个 my-nest-cli 就是前文全局安装的包。
 
 进入 bin 目录，就是全局命令的目录。
 
@@ -165,7 +159,7 @@ ls "$(npm get prefix)/bin"
 
 确实都没 my-nest-cli 了。
 
-然后进入上节的项目目录，执行 npm link：
+然后进入前面创建的项目目录，执行 npm link：
 
 ```bash
 npm link
@@ -242,7 +236,7 @@ ls -al node_modules
 
 ## 总结
 
-上节通过 npm link 来把项目安装到了全局，并且注册了全局命令。
+前文通过 npm link 把项目安装到了全局，并且注册了全局命令。
 
 用起来很方便。
 

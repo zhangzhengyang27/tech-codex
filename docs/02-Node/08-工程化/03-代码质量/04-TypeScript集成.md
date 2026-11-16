@@ -1,16 +1,10 @@
 ---
 title: TypeScript 集成
 description: 在工程化链路中集成 TypeScript：tsconfig、类型检查与构建
-keywords: [Node.js, 构建, 脚手架, TypeScript]
+keywords: [Node.js, TypeScript, 构建工具]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # TypeScript 集成
 

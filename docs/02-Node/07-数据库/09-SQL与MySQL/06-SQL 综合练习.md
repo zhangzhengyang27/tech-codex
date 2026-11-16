@@ -3,7 +3,7 @@ title: SQL 综合练习
 description: 以 customers/orders/order_items 三表实战 JOIN、GROUP BY、SUM、GROUP_CONCAT、BETWEEN、LIMIT 与子查询、EXISTS/NOT EXISTS
 keywords: [SQL, 综合练习]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, SQL]
 ---
 
 

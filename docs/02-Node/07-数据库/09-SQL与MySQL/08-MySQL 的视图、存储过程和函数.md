@@ -3,7 +3,7 @@ title: MySQL 的视图、存储过程和函数
 description: 用 CREATE VIEW 简化查询与控制权限，用 CREATE PROCEDURE 与 CREATE FUNCTION（含 log_bin_trust_function_creators 开关）封装 SQL
 keywords: [MySQL, 的视图, 存储过程和函数]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, 视图]
 ---
 
 

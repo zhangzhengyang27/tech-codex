@@ -1,12 +1,9 @@
 ---
 title: JUnit 5 Jupiter 实战
+description: 基于 JUnit 5.13.4 系统梳理 JUnit 5 三大模块架构、环境搭建、Jupiter 核心 API、参数化测试、断言与假设、扩展模型、动态测试与 @Suite，并给出 JUnit 4 迁移指南与工程最佳实践。
+keywords: [JUnit, 单元测试, Jupiter, 参数化测试, Java 测试]
 category: 单元测试与代码级测试
-tags:
-  - JUnit5
-  - Jupiter
-  - 单元测试
-  - 参数化测试
-  - 扩展模型
+tags: [JUnit5, Jupiter, 单元测试, 参数化测试, 扩展模型]
 ---
 
 # JUnit 5 Jupiter 实战

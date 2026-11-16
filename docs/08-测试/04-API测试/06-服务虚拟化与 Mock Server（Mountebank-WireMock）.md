@@ -1,18 +1,13 @@
 ---
 title: 服务虚拟化与 Mock Server（Mountebank/WireMock）
+description: 从 API 测试视角系统讲解服务虚拟化与 Mock Server：核心原理与三层模型、WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、verify 断言、故障注入）、Mock 策略设计五步流程、常见误区与契约测试衔接。
+keywords: [服务虚拟化, Mock Server, WireMock, Mountebank, Hoverfly, 契约测试]
 category: API测试
-tags:
-  - 服务虚拟化
-  - Service Virtualization
-  - Mock Server
-  - WireMock
-  - Mountebank
-  - 契约测试
+tags: [服务虚拟化, Service Virtualization, Mock Server, WireMock, Mountebank, 契约测试]
 ---
 
 # 服务虚拟化与 Mock Server（Mountebank/WireMock）
 
-## 一、模块介绍
 
 **服务虚拟化**（Service Virtualization）是在测试环境中模拟被测系统所依赖的外部服务行为的技术。当被测系统需要与第三方 API、支付网关、短信平台、遗留系统等不可控或不可用的服务交互时，服务虚拟化通过**模拟这些依赖服务的响应**，让被测系统在"仿佛依赖真实存在"的环境中完成测试。
 
@@ -20,9 +15,11 @@ tags:
 
 本文系统阐述服务虚拟化的核心原理、WireMock 与 Mountebank 两大主流工具的实践、Mock 策略设计、以及与契约测试的关系。
 
-## 二、核心方法论
+> **本文定位（分工卡）**：本文从 **API 测试视角**讲解服务虚拟化与 Mock Server——聚焦依赖解耦的测试设计、WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、verify 断言、故障注入）与契约测试衔接。Mock Server 工具横评与选型决策树、Schema 驱动 Mock、平台化治理（规则版本化、GitOps、AI 辅助生成）等测试开发与平台工程视角的内容，见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》。
 
-### 2.1 服务虚拟化的价值场景
+## 一、服务虚拟化核心概念
+
+### 1.1 服务虚拟化的价值场景
 
 ```mermaid
 ---
@@ -56,7 +53,7 @@ mindmap
       资源争抢
 ```
 
-### 2.2 Mock 与 Stub 与虚拟化的层次
+### 1.2 Mock 与 Stub 与虚拟化的层次
 
 | 层次 | 实现方式 | 覆盖范围 | 典型工具 |
 | --- | --- | --- | --- |
@@ -65,7 +62,7 @@ mindmap
 | **Mock Server** | HTTP 服务器模拟 | 多个接口/服务 | WireMock、Mountebank |
 | **Service Virtualization** | 完整行为模拟 | 复杂业务流程 | Hoverfly、WireMock 高级模式 |
 
-### 2.3 服务虚拟化的三种模式
+### 1.3 服务虚拟化的三种模式
 
 ```mermaid
 ---
@@ -96,9 +93,9 @@ flowchart LR
     Record -->|"也可用于"| Inject
 ```
 
-## 三、关键流程
+## 二、工作流程与策略设计
 
-### 3.1 WireMock 工作流程
+### 2.1 WireMock 工作流程
 
 ```mermaid
 ---
@@ -141,7 +138,7 @@ flowchart TB
     C1 -.->|"测试后"| Verify
 ```
 
-### 3.2 Mountebank 多协议架构
+### 2.2 Mountebank 多协议架构
 
 ```mermaid
 ---
@@ -188,7 +185,7 @@ flowchart TB
 
 Mountebank 与 WireMock 的核心差异：**Mountebank 原生支持多协议**（HTTP/HTTPS/TCP/SMTP），WireMock 专注 HTTP/HTTPS。多协议场景（如金融系统中的 TCP 协议、邮件通知场景）下 Mountebank 更合适。（注：mountebank 2.0 起 TCP/SMTP 等非 HTTP 协议已从开源核心包拆分，由独立项目 mbjs 等承接，选型时需确认所用版本的协议支持范围。）
 
-### 3.3 Mock 策略设计流程
+### 2.3 Mock 策略设计流程
 
 ```mermaid
 ---
@@ -229,9 +226,9 @@ flowchart LR
     Maintain -.->|"循环"| Analyze
 ```
 
-## 四、工具与实践
+## 三、工具与实践
 
-### 4.1 WireMock Java 实战
+### 3.1 WireMock Java 实战
 
 ```java
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -382,7 +379,7 @@ class PaymentServiceMockTest {
 }
 ```
 
-### 4.2 WireMock 独立部署模式
+### 3.2 WireMock 独立部署模式
 
 ```yaml
 # docker-compose-wiremock.yml
@@ -464,85 +461,36 @@ services:
 }
 ```
 
-### 4.3 Mountebank 多协议实践
+### 3.3 Mountebank 多协议实践
 
-> 注：以下为示意伪代码（`mb.create` 等调用为教学示意）；Mountebank 实际通过 REST API（如 `POST /imposters`）或 `mb` 命令行创建 Imposter。
+Mountebank 通过 REST API 创建 Imposter（默认管理端口 2525）。以模拟支付 API 并注入延迟与故障为例：
 
-```javascript
-// Mountebank Imposter 配置（JavaScript）
-
-// 创建 HTTP Imposter：模拟支付 API
-mb.create({
-  port: 4545,
-  protocol: 'http',
-  stubs: [
+```bash
+curl -X POST http://localhost:2525/imposters -H 'Content-Type: application/json' -d '{
+  "port": 4545,
+  "protocol": "http",
+  "name": "支付网关 Mock",
+  "stubs": [
     {
-      predicates: [
+      "predicates": [{ "equals": { "method": "POST", "path": "/api/payments" } }],
+      "responses": [
         {
-          equals: {
-            method: 'POST',
-            path: '/api/payments'
-          }
-        },
-        {
-          matches: {
-            body: '{"amount":"[0-9]+\\.[0-9]{2}"}'
-          }
-        }
-      ],
-      responses: [
-        {
-          is: {
-            statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              paymentId: 'pay-{{request.body.orderId}}',
-              status: 'SUCCESS'
-            })
-          },
-          _behaviors: {
-            wait: 200,  // 延迟 200ms
-            decorate: '(response, request) => {' +
-              'const body = JSON.parse(response.body);' +
-              'body.paymentId = "pay-" + JSON.parse(request.body).orderId;' +
-              'response.body = JSON.stringify(body);' +
-              'return response;}'
-          }
+          "is": { "statusCode": 200, "body": "{ \"status\": \"SUCCESS\" }" },
+          "_behaviors": { "wait": 200 }
         }
       ]
     },
-    // 故障注入：随机返回 500
     {
-      predicates: [{ equals: { path: '/api/payments/force-error' } }],
-      responses: [
-        {
-          is: { statusCode: 500, body: '{"error":"INTERNAL_ERROR"}' },
-          _behaviors: { repeat: 1 }
-        }
-      ]
+      "predicates": [{ "equals": { "path": "/api/payments/force-error" } }],
+      "responses": [{ "is": { "statusCode": 500, "body": "{ \"error\": \"INTERNAL_ERROR\" }" } }]
     }
   ]
-});
-
-// 创建 SMTP Imposter：模拟邮件服务器
-mb.create({
-  port: 4546,
-  protocol: 'smtp',
-  stubs: [
-    {
-      responses: [{ is: { } }]
-    }
-  ]
-});
-
-// 测试后验证：检查发送的邮件
-mb.get('/smtp/4546/messages').then(messages => {
-  console.log(`收到 ${messages.length} 封邮件`);
-  console.log('第一封邮件主题:', messages[0].subject);
-});
+}'
 ```
 
-### 4.4 Hoverfly 录制与回放
+接口测试中 Mountebank 最有价值的场景是**非 HTTP 协议验证**：例如创建 SMTP Imposter 模拟邮件服务器，测试用例触发"告警邮件"流程后，通过 `GET /smtp/4546/messages` 断言"邮件确实发出、主题与收件人正确"——这是 WireMock 无法覆盖的邮件类集成测试。imposter/stubs 模型、行为注入（`inject` 状态机）等更多细节见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第四章。
+
+### 3.4 Hoverfly 录制与回放
 
 Hoverfly 是另一款流行的服务虚拟化工具，核心特色是 **录制与回放**模式：
 
@@ -565,52 +513,58 @@ hoverctl mode simulate
 curl https://real-api.example.com/users  # 实际返回录制的响应
 ```
 
-### 4.5 主流工具对比
+### 3.5 主流工具对比
 
 | 工具 | 语言 | 协议支持 | 核心特色 | 适用场景 |
 | --- | --- | --- | --- | --- |
 | **WireMock** | Java | HTTP/HTTPS | 模板响应、状态机、JUnit 集成 | Java 生态 API 测试 |
 | **Mountebank** | Node.js | HTTP/HTTPS/TCP/SMTP | 多协议、跨语言 | 多协议复杂场景 |
+| **MockServer** | Java | HTTP/HTTPS | verify 断言原生、流式 API | 复杂动态响应 |
+| **Prism** | Node.js | HTTP/HTTPS | OpenAPI 驱动、零手写规则、请求校验 | 契约即 Mock |
 | **Hoverfly** | Go | HTTP/HTTPS | 录制回放、代理模式 | 快速创建 Mock |
 | **Postman Mock** | SaaS | HTTP/HTTPS | 与 Postman 集成 | API 开发阶段 |
 | **Mockoon** | Electron | HTTP/HTTPS | 桌面 GUI、易用 | 本地开发调试 |
 | **Pact** | 多语言 | HTTP/HTTPS | 契约驱动 Mock | 微服务契约测试 |
 
-## 五、常见误区
+完整的选型决策树（含 Prism/MockServer/Postman 的分支判断）见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第五章。
 
-### 5.1 Mock 与真实行为脱节
+## 四、常见误区
+
+> Mock 规则版本化、GitOps 同步、命中率审计等**平台化治理**层面的最佳实践，见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第八章；本节聚焦接口测试视角的典型误区。
+
+### 4.1 Mock 与真实行为脱节
 
 **误区**：Mock 响应是凭空编造的，与真实服务的实际行为不一致。
 
 **纠正**：Mock 应基于**真实服务的行为契约**。推荐做法：通过 Hoverfly/WireMock 的代理模式录制真实请求作为 Mock 基础，或从 OpenAPI 规范生成 Mock。Mock 数据应定期与真实服务对账校准。
 
-### 5.2 过度 Mock
+### 4.2 过度 Mock
 
 **误区**：所有依赖都被 Mock，测试环境完全脱离真实。
 
 **纠正**：遵循 **"Mock 不可控依赖，保留可控依赖"** 原则。第三方支付网关应 Mock（不可控），但数据库应使用 Testcontainers 真实启动（可控）。过度 Mock 会让测试验证的是"Mock 是否正确"而非"系统是否正确"。
 
-### 5.3 Mock 配置散乱
+### 4.3 Mock 配置散乱
 
 **误区**：每个测试用例都内联编写 Mock 规则，重复且难维护。
 
 **纠正**：Mock 规则应**外置为 JSON/YAML 配置文件**，按场景组织（如 `payment-success.json`、`payment-timeout.json`）。测试代码引用配置文件，实现配置与代码分离。
 
-### 5.4 忽视 Mock 的负向场景
+### 4.4 忽视 Mock 的负向场景
 
 **误区**：Mock 只配置正常响应，不配置超时、错误、异常数据。
 
 **纠正**：Mock 的核心价值之一是**模拟难以在真实环境复现的异常场景**。应系统设计负向场景：超时、连接拒绝、500 错误、慢响应、脏数据、限流响应等。WireMock 的 `withFixedDelay`、Mountebank 的 `_behaviors.wait` 都是故障注入利器。
 
-### 5.5 Mock 数据与契约不同步
+### 4.5 Mock 数据与契约不同步
 
 **误区**：依赖服务接口变更后，Mock 配置未同步更新。
 
 **纠正**：将 Mock 配置纳入**契约测试**体系——Pact 等工具能在契约变更时自动检测 Mock 配置的不一致。CI 中应加入 Mock 配置的契约校验步骤。
 
-## 六、进阶扩展与参考
+## 五、进阶扩展与参考
 
-### 6.1 与契约测试的关系
+### 5.1 与契约测试的关系
 
 服务虚拟化与契约测试是互补关系：
 - **服务虚拟化**关注"被测系统视角"——模拟依赖服务的行为，让被测系统在隔离环境测试
@@ -618,11 +572,11 @@ curl https://real-api.example.com/users  # 实际返回录制的响应
 
 成熟实践：**用契约文件驱动 Mock 配置**——Pact 契约文件可直接转换为 WireMock 映射，确保 Mock 行为与契约一致。
 
-### 6.2 AI 辅助 Mock 生成
+### 5.2 AI 辅助 Mock 生成
 
-2025-2026 年趋势：LLM 能从 OpenAPI 规范自动生成 WireMock/Mountebank 配置，能基于历史真实请求学习响应模式生成智能 Mock。AI 生成的 Mock 仍需人工校准，但能将 Mock 配置编写时间从小时级压缩到分钟级。
+2025-2026 年趋势：LLM 能从 OpenAPI 规范自动生成 WireMock/Mountebank 配置，能基于历史真实请求学习响应模式生成智能 Mock。AI 生成的 Mock 仍需人工校准，但能将 Mock 配置编写时间从小时级压缩到分钟级。"LLM 生成 → Schema 校验 → 入库"的完整工程流程见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第七章。
 
-### 6.3 推荐参考
+### 5.3 推荐参考
 
 - 工具：WireMock（wiremock.org）
 - 工具：Mountebank（mbtest.org）

@@ -1,16 +1,10 @@
 ---
 title: Vite 构建
 description: Vite 的 pre-bundle、dev server 与 Rollup 生产构建的差异
-keywords: [Node.js, 构建, 脚手架, Vite]
+keywords: [Node.js, 构建工具, Vite]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Vite 构建
 

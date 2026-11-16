@@ -1,11 +1,14 @@
 ---
 title: 存储器分级
+description: 存储器分级体系（寄存器→Cache→内存→外存）的原理、各级速度差与命中率计算，回答"L1 Cache 为什么比内存快上百倍"。
+keywords: [存储器分级, Cache, L1, 命中率, 内存层次]
 version: 1.0
 author: 文档维护组
 created: 2026-08-09
 updated: 2026-09-10
 status: 正式
 category: 计算机基础
+tags: [计算机基础, 计算机组成原理, 存储器分级, Cache]
 
 ---
 

@@ -1,16 +1,10 @@
 ---
 title: 手写 WebSocket 协议：从理论到实战
 description: 剖析 WebSocket 握手、Sec-WebSocket-Accept 计算与帧格式编解码，手写解析器
-keywords: [Node.js, AST, 编译, WebSocket]
+keywords: [Node.js, WebSocket, 协议解析]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # 手写 WebSocket 协议：从理论到实战
 

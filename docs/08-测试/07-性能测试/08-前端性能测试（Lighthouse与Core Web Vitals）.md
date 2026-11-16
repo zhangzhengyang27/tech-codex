@@ -1,13 +1,9 @@
 ---
 title: 前端性能测试（Lighthouse 与 Core Web Vitals）
+description: 基于 Lighthouse v13.3 与 Core Web Vitals 2024 年变更（INP 替代 FID），系统讲解前端性能指标体系、工具链、CI/CD 集成与优化策略，覆盖页面渲染、资源加载与交互响应的用户感知体验优化。
+keywords: [前端性能, Lighthouse, Core Web Vitals, INP]
 category: 性能测试
-tags:
-  - 前端性能
-  - Lighthouse
-  - Core Web Vitals
-  - INP
-  - RUM
-  - CI/CD
+tags: [前端性能, Lighthouse, Core Web Vitals, INP, RUM, CI/CD]
 ---
 
 # 前端性能测试（Lighthouse 与 Core Web Vitals）

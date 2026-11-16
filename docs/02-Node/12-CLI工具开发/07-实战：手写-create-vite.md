@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # 手写 create-vite：从零到一打造自己的脚手架
 
 ## 1. 引言

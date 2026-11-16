@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 核心模块]
 ---
 
-
-
-
-
-
-
 # Events 模块
 
 ## 概述

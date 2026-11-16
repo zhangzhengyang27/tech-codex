@@ -1,9 +1,9 @@
 ---
 title: ORM对象关系映射详解
 description: ORM 的定义、优缺点与选型建议，对比 Sequelize、TypeORM、Prisma、Knex 四个主流库，含 NestJS 集成与迁移实战
-keywords: [2-系统课程, ORM对象关系映射详解]
+keywords: [Node.js, ORM, TypeORM, Prisma, Sequelize]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, ORM, TypeORM, Prisma]
 ---
 # ORM对象关系映射详解
 
@@ -1052,7 +1052,6 @@ ORM 学习路径：
 - Sequelize：https://sequelize.org/
 
 **视频教程**：
-- 慕课网：搜索 "TypeORM" 或 "Prisma"
 - B站：搜索 "NestJS ORM"
 
 **实战项目**：
@@ -1088,26 +1087,9 @@ ORM 核心概念：
     └── 性能要求高 → TypeORM 或 原生 SQL
 ```
 
-### 11.2 重点知识清单
+### 11.2 延伸思考
 
-| 知识点 | 重要程度 | 掌握程度 |
-|--------|---------|---------|
-| ORM 的定义和作用 |  |  未掌握 /  已掌握 |
-| ORM 的优缺点 |  |  未掌握 /  已掌握 |
-| TypeORM vs Prisma |  |  未掌握 /  已掌握 |
-| 实体定义 |  |  未掌握 /  已掌握 |
-| CRUD 操作 |  |  未掌握 /  已掌握 |
-| 关系映射 |  |  未掌握 /  已掌握 |
-| 查询优化 |  |  未掌握 /  已掌握 |
-| 事务处理 |  |  未掌握 /  已掌握 |
-
-### 11.3 课后思考题
-
-1. **什么是 ORM？它的核心作用是什么？**
-2. **ORM 的优缺点分别是什么？**
-3. **TypeORM 和 Prisma 有什么区别？应该如何选择？**
-4. **如何解决 ORM 的 N+1 查询问题？**
-5. **在 NestJS 项目中，如何集成 TypeORM？**
+ORM 屏蔽了 SQL 细节,但 N+1 查询、事务边界与复杂报表场景仍需要回到 SQL 层面思考——选型时除了 API 易用性,还应评估团队对 SQL 的掌控需求。
 
 ---
 

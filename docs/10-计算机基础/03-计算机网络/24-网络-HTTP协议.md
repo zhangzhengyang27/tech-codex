@@ -3,7 +3,7 @@ title: 网络-HTTP协议
 description: "HTTP（HyperText Transfer Protocol，超文本传输协议）正是应用层对这一问题的回答。正如许式伟在\"19-网络-协议与分层\"中所指出的：HTTP 协议因万维网而生，冲着传输静态网页而去，但由于设计上的开放性，"
 keywords: [网络-HTTP协议]
 category: 计算机基础
-tags: [计算机基础, 架构, 工程化]
+tags: [计算机网络, HTTP, 应用层]
 ---
 
 

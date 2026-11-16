@@ -1,16 +1,10 @@
 ---
 title: Node.js 线程池
 description: libuv 线程池的工作机制、任务队列与 I/O 密集型任务的底层调度
-keywords: [Node.js, AST, 编译]
+keywords: [Node.js, 线程池, libuv]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # Node.js 线程池
 

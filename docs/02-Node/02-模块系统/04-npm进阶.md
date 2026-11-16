@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 模块系统]
 ---
 
-
-
-
-
-
-
 # npm 进阶
 
 在掌握 npm 基本命令之后，本篇进入进阶主题：dependencies/devDependencies/peerDependencies 等依赖类型的深度辨析、npm scripts 的编排与参数传递、npx 执行机制、preinstall/postpublish 等生命周期钩子、package-lock.json 锁包机制与依赖解析算法，并以一个完整 CLI 工具（ltsn）贯穿包的开发、测试、发布与版本迭代全流程。

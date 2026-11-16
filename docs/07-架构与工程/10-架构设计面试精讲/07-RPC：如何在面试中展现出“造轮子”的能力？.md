@@ -193,7 +193,7 @@ public class ServerTaskThread implements Runnable {
 - Reactor 模型（即反应堆模式），以及 Reactor 的 3 种线程模型，分别是单线程 Reactor 线程模型、多线程 Reactor 线程模型，以及主从 Reactor 线程模型。
 - Java 中的高性能网络编程框架 Netty。
 
-可以这么说，在高性能网络编程中，大多数都是基于 Reactor 模式，其中最为典型的是 Java 的 Netty 框架，而 Reactor 模式是基于 I/O 多路复用的，所以，对于 Reactor 和 Netty 的考察也是避免不了的。因为相关资料很多，我就不展开了，你可以在课余补充这部分的知识，并在评论区与我交流。
+可以这么说，在高性能网络编程中，大多数都是基于 Reactor 模式，其中最为典型的是 Java 的 Netty 框架，而 Reactor 模式是基于 I/O 多路复用的，所以，对于 Reactor 和 Netty 的考察也是避免不了的。因为相关资料很多，我就不展开了，这部分知识可在课余补充。
 
 ## 总结
 

@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # 脚手架 cli：generate 命令（AI 加持版）
 
 这节来实现脚手架的 generate 命令。
@@ -182,7 +176,7 @@ npx tsc -w 会监听文件变化实时编译，就不用每次手动 npx tsc 编
 pnpm --filter generate add openai
 ```
 
-上节是用的 tools （也就是 function call）实现的代码提取，这次通过正则提取。
+上一篇是用的 tools（也就是 function call）实现的代码提取，这次通过正则提取。
 
 改下 src/index.ts
 
@@ -393,4 +387,4 @@ pnpm --filter generate add ora
 
 这样，就可以通过 AI 生成符合规范的代码了。
 
-当然，现在的很多内容都是写死的，比如 system 设置、API KEY、BASE URL,这些都应该是在配置文件里配置的，下节加上配置文件。
+当然，现在的很多内容都是写死的，比如 system 设置、API KEY、BASE URL,这些都应该是在配置文件里配置的，下一篇加上配置文件。

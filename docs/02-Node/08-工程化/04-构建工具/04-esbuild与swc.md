@@ -1,16 +1,10 @@
 ---
 title: esbuild 与 swc
 description: esbuild/swc 的 Go/Rust 极速编译原理与在构建链路中的定位
-keywords: [Node.js, 构建, 脚手架, esbuild, swc]
+keywords: [Node.js, 构建工具, esbuild, swc]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # esbuild 与 swc
 

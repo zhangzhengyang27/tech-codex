@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # Blessed 技术文档
 
 ## 基本介绍

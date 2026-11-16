@@ -1,16 +1,9 @@
 ---
 title: WebView 与混合应用测试
+description: 系统讲解混合应用 WebView 自动化测试：调试通道建立、原生与 Web 上下文切换、Chrome DevTools Protocol 远程调试与现代工具链下的实践方案。
+keywords: [WebView, 混合应用, 上下文切换, 移动测试, CDP]
 category: 移动端测试
-tags:
-  - WebView
-  - Hybrid App
-  - Appium
-  - Chrome DevTools Protocol
-  - CDP
-  - React Native
-  - Flutter
-  - Cordova
-  - 上下文切换
+tags: [WebView, Hybrid App, Appium, Chrome DevTools Protocol, CDP, React Native, Flutter, Cordova, 上下文切换]
 ---
 
 # WebView 与混合应用测试

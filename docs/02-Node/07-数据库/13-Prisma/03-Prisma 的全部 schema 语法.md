@@ -3,7 +3,7 @@ title: Prisma 的全部 schema 语法
 description: Prisma schema 语法详解：generator/datasource 配置，model 的 @id/@default/@unique/@map/@@map/@db.xx/@@index/@@id/@relation 与 enum 用法
 keywords: [Prisma, 的全部, schema, 语法]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, schema]
 ---
 
 

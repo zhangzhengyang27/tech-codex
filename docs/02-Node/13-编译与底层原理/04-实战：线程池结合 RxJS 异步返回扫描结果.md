@@ -1,16 +1,10 @@
 ---
 title: 线程池与 RxJS 高效实现 Node.js 异步文件扫描
 description: 将 worker_threads 扫描结果通过 RxJS Subject 流式聚合，展示多线程与响应式编程的协作模式
-keywords: [Node.js, AST, 编译, RxJS]
+keywords: [Node.js, 线程池, RxJS]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # 线程池与 RxJS 高效实现 Node.js 异步文件扫描
 

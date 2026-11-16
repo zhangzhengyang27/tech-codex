@@ -3,7 +3,7 @@ title: TypeORM 如何保存任意层级的关系？
 description: 用 TypeORM 的 Tree Entity（@Tree/@TreeParent/@TreeChildren，closure-table 或 materialized-path）存储与查询任意层级数据
 keywords: [TypeORM, 如何保存任意层级的关系]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, TypeORM, ORM, 树形结构]
 ---
 
 

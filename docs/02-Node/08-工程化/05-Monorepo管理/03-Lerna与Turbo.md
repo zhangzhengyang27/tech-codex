@@ -1,16 +1,10 @@
 ---
 title: Lerna 与 Turborepo 实战指南
 description: Lerna 的包版本管理与 Turbo 的任务编排/远程缓存对比
-keywords: [Node.js, 构建, 脚手架, Lerna, Turbo]
+keywords: [Node.js, Monorepo, Lerna, Turbo]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Lerna 与 Turborepo 实战指南
 

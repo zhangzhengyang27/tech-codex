@@ -500,7 +500,7 @@ async authCallback(@Req() req) {
 
 ## passport 实现 Google 三方账号登录
 
-上一节实现了 Github 登录，这节继续来实现下 Google 登录。
+前面实现了 Github 登录，本篇继续来实现 Google 登录。
 
 ### 获取 Google client id 和 secret
 

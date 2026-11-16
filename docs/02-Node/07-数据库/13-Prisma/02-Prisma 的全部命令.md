@@ -3,13 +3,13 @@ title: Prisma 的全部命令
 description: Prisma 全部命令详解：init/db pull/db push/seed/execute、migrate dev/reset、generate/studio/validate/format 的用法与场景
 keywords: [Prisma, 的全部命令]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, ORM]
 ---
 
 
 # Prisma 的全部命令
 
-上节入门了 prisma，定义了 model 和表的映射，并且做了 CRUD。
+前面入门了 prisma，定义了 model 和表的映射，并且做了 CRUD。
 
 这节来过一遍 Prisma 的全部命令。
 

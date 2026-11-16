@@ -1,16 +1,10 @@
 ---
 title: Prettier 代码格式化
 description: Prettier 的格式化模型、与 ESLint 的分工及冲突消解
-keywords: [Node.js, 构建, 脚手架, Prettier]
+keywords: [Node.js, 代码规范, Prettier]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Prettier 代码格式化
 

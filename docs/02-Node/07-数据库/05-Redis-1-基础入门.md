@@ -8,6 +8,10 @@ tags: [Node.js, 数据库]
 
 # Redis 基础入门
 
+::: tip 分工声明：Redis 专题
+本系列（01 基础入门 → 02 进阶特性 → 03 NodeJS 操作 → 04 最佳实践）覆盖 Redis 本身的原理与用法；在 Nest 框架中的集成与实战（缓存、Bull 队列、限流等），见 [06-Web框架/05-NestJS/03-基础设施/02-Nest 集成 Redis](../06-Web框架/05-NestJS/03-基础设施/02-Nest%20集成%20Redis.md) 与 [04-Redis 综合实战](../06-Web框架/05-NestJS/03-基础设施/04-Redis%20综合实战.md)。
+:::
+
 Redis（**RE**mote **DI**ctionary **S**erver，远程字典服务器）是一个使用 ANSI C 编写的、开源的、支持网络、基于内存且可选持久性的键值对存储数据库。自 2009 年发布以来，Redis 已成为最受欢迎的 NoSQL 数据库之一。
 
 ## 系统架构

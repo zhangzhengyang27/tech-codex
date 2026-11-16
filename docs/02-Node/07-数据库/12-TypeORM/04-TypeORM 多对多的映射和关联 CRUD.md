@@ -3,7 +3,7 @@ title: TypeORM 多对多的映射和关联 CRUD
 description: 用 @ManyToMany 与 @JoinTable 映射多对多关系（自动生成中间表），讲解双向引用、relations 关联查询与中间表的自动维护
 keywords: [TypeORM, 多对多的映射和关联, CRUD]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, TypeORM, ORM]
 ---
 
 

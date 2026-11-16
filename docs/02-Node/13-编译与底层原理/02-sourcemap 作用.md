@@ -1,16 +1,10 @@
 ---
 title: Sourcemap 应用
 description: Source Map 的映射格式、VLQ 编码与在调试/错误堆栈还原中的作用
-keywords: [Node.js, AST, 编译, Source Map]
+keywords: [Node.js, Source Map, 调试]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # Sourcemap 应用
 

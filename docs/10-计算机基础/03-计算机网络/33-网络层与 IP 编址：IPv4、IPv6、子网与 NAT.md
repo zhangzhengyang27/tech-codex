@@ -1,11 +1,14 @@
 ---
 title: 网络层与 IP 编址：IPv4、IPv6、子网与 NAT
+description: 网络层与 IP 协议：IPv4/IPv6 地址结构、子网划分与掩码、NAT 地址转换，以及 IP 数据报格式与分片。
+keywords: [IP, IPv4, IPv6, 子网, NAT, 数据报]
 version: 1.0
 author: 文档维护组
 created: 2026-08-22
 updated: 2026-08-22
 status: 正式
 category: 计算机基础
+tags: [计算机网络, 网络层, IP, NAT]
 
 ---
 

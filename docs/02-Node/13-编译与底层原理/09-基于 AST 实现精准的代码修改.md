@@ -1,16 +1,10 @@
 ---
 title: 基于 AST 实现精准的代码修改
 description: 使用 AST 解析与节点重写实现安全精准的代码转换，对比正则替换的局限
-keywords: [Node.js, AST, 编译]
+keywords: [Node.js, AST, 代码修改]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # 基于 AST 实现精准的代码修改
 

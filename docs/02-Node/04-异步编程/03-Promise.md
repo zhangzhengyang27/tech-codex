@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 异步编程]
 ---
 
-
-
-
-
-
-
 # Promise
 
 Node.js 完整支持 ES6 Promise，并在 Node.js 10+ 版本后逐步为核心模块补齐了 Promise 风格的 API，使得编写异步逻辑更加直观。

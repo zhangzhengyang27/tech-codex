@@ -3,14 +3,7 @@ title: Selenium Grid 4 与分布式执行
 description: 从分布式执行的内在驱动出发，系统讲解 Selenium Grid 4.41 的 Distributed Mode 架构（Router/Distributor/SessionMap/Node 四组件解耦）、Standalone 与 Docker Compose 部署、Kubernetes 原生 Helm Chart 部署与 HPA 弹性伸缩、Selenoid 轻量替代方案、BrowserStack/Sauce Labs/LambdaTest 云测平台对比、TaaS 测试基础架构设计与大型电商落地案例，并归纳常见陷阱与最佳实践
 keywords: [Selenium Grid 4, Distributed Mode, Kubernetes, Helm Chart, Selenoid, BrowserStack, Sauce Labs, LambdaTest, TaaS, 分布式执行, 测试基础架构]
 category: GUI自动化测试
-tags:
-  - GUI自动化
-  - Selenium Grid
-  - 分布式执行
-  - Kubernetes
-  - Selenoid
-  - 云测平台
-  - TaaS
+tags: [GUI自动化, Selenium Grid, 分布式执行, Kubernetes, Selenoid, 云测平台, TaaS]
 ---
 
 # Selenium Grid 4 与分布式执行

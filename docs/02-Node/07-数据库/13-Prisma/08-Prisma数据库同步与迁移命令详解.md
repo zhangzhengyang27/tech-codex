@@ -1,9 +1,9 @@
 ---
 title: Prisma 数据库同步与迁移命令详解
 description: Prisma 数据库同步与迁移命令详解：db pull/db push/db seed/db execute 与 migrate dev/deploy 的方向差异、适用场景和团队协作工作流
-keywords: []
+keywords: [Prisma, migration, db push, 迁移]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, migration]
 ---
 
 

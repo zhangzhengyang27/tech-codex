@@ -1,16 +1,10 @@
 ---
 title: Node.js 如何操作二进制数据？
 description: Buffer、TypedArray 与二进制协议的编解码，含大小端序与内存视图
-keywords: [Node.js, AST, 编译]
+keywords: [Node.js, Buffer, 二进制]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # Node.js 如何操作二进制数据？
 

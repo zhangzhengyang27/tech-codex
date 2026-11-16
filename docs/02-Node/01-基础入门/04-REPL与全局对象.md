@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 基础入门]
 ---
 
-
-
-
-
-
-
 # REPL 与全局对象
 
 ## 概述

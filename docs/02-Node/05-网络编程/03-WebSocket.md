@@ -6,8 +6,6 @@ category: Node.js
 tags: [Node.js, 网络编程]
 ---
 
-
-
 # WebSocket
 
 WebSocket 是在**单个 TCP 连接**上提供全双工通信的协议（RFC 6455）。它消除了 HTTP 请求-响应模型在实时场景下的轮询开销，是聊天、协作编辑、行情推送等场景的基石。

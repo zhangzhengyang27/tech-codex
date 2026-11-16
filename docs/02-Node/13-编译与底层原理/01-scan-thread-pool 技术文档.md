@@ -1,16 +1,10 @@
 ---
 title: "`scan-thread-pool` 技术文档"
 description: 基于 worker_threads 与 RxJS 的文件系统扫描器，剖析线程池轮询调度、MessageChannel 通信与 BFS 目录遍历
-keywords: [Node.js, AST, 编译, scan-thread-pool]
+keywords: [Node.js, 线程池, RxJS]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # `scan-thread-pool` 技术文档
 

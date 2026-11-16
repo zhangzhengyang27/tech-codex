@@ -3,7 +3,7 @@ title: Etcd 配置中心与服务注册
 description: "它其实是一个 key-value 的存储服务，k8s 就是用它来做的注册中心、配置中心。接下来会分别用 docker + etcdctl、Node（etcd3 客户端）、Nest（provider / 动态模块）三种方式走一遍。"
 keywords: [Etcd, 配置中心, 注册中心, Nest, etcd3, 服务注册, 服务发现]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Etcd, 服务注册]
 ---
 
 

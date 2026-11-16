@@ -6,17 +6,11 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # 脚手架 cli：monorepo、项目模版封装
 
 这节开始正式进入脚手架 cli 的开发。
 
-流程上节分析过了。
+流程前文分析过了。
 
 
 用 monorepo 的形式管理，分为 template-vue、template-react、cli、create 这四个包。
@@ -456,4 +450,4 @@ npx @guang-cli/cli create
 
 最后，本地 npx @guang-cli/cli create 试了下，整个流程是通的。
 
-下节继续实现 create 命令的逻辑。
+下一篇继续实现 create 命令的逻辑。

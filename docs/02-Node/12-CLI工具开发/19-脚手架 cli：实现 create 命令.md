@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # Node.js CLI 脚手架：create 命令实现指南
 
 ## 概述

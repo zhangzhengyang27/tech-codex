@@ -1,16 +1,10 @@
 ---
 title: 为什么组件库打包用 Rollup 而不是 Webpack？
 description: 从 ESM 静态分析、Tree-shaking 与产物体积角度解释组件库为何选 Rollup
-keywords: [Node.js, AST, 编译, Rollup, vs]
+keywords: [Node.js, Rollup, Webpack, 打包]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # 为什么组件库打包用 Rollup 而不是 Webpack？
 

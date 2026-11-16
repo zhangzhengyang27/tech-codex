@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, Web框架]
 ---
 
-
-
-
-
-
-
 # Express 基础
 
 Express.js 是基于 Node.js 平台，快速、开放、极简的 Web 开发框架。它封装了创建 Web 服务器和处理 HTTP 请求的底层细节，提供了一系列强大的特性来帮助开发者高效地构建 Web 应用和 API。

@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, 基础入门]
 ---
 
-
-
-
-
-
-
 # Node.js 与全栈
 
 提到 Node.js，相信大部分前端工程师都会想到基于它来开发服务端，只需要掌握 JavaScript 一门语言就可以成为全栈工程师，但其实 Node.js 的意义并不仅于此。

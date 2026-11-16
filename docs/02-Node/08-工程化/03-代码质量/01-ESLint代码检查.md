@@ -1,16 +1,10 @@
 ---
 title: ESLint 代码检查
 description: ESLint 的规则、插件、解析器与可共享配置的工程化落地
-keywords: [Node.js, 构建, 脚手架, ESLint]
+keywords: [Node.js, 代码规范, ESLint]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # ESLint 代码检查
 

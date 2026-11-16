@@ -3,7 +3,7 @@ title: Docker 入门与原理
 description: "后端系统会部署很多服务，包括自己开发的服务，还有 mysql、redis 等中间件的服务，部署它们需要一系列依赖的安装、环境变量的设置等等。"
 keywords: [Docker, Desktop, Dockerfile, 原理, Namespace]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Docker, 部署]
 ---
 
 
@@ -89,7 +89,7 @@ docker run 会返回一个容器的 hash（就是这里的 id）。这个界面�
 
 ## 二、编写你的第一个 Dockerfile
 
-上节通过 desktop 从 docker hub 拉取了 nginx 的镜像，并把它跑了起来。那如果要自己制作一个这样的镜像，怎么做呢？
+前面通过 desktop 从 docker hub 拉取了 nginx 的镜像，并把它跑了起来。那如果要自己制作一个这样的镜像，怎么做呢？
 
 docker 容器内就是一个独立的系统环境，要安装 nginx 服务，需要执行一些命令、复制一些文件进来，然后启动服务。制作镜像自然也要进行这样的过程，不过可以自动化。只要在 dockerfile 里声明要做哪些事情，docker build 的时候就会根据这个 dockerfile 来自动化构建出一个镜像来。
 

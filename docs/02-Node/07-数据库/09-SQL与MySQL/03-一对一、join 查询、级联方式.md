@@ -3,7 +3,7 @@ title: 一对一、join 查询、级联方式
 description: 用 user 与 id_card 表演示一对一外键设计，讲解 JOIN/INNER/LEFT/RIGHT JOIN 与 CASCADE、SET NULL、RESTRICT、NO ACTION 四种级联方式
 keywords: [一对一, join, 查询, 级联方式]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, 表设计]
 ---
 
 
@@ -309,4 +309,4 @@ from 后的是左表，join 后的是右表。
 
 有 3 种级联方式：CASCADE（关联删除或更新），SET NULL（关联外键设置为 null），RESTRICT 或者 NO ACTION（没有从表的关联记录才可以删除或更新）
 
-多表的连接是非常常用的操作，下节继续学习一对多和多对多的数据表设计。
+多表的连接是非常常用的操作，接下来继续学习一对多和多对多的数据表设计。

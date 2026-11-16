@@ -1,9 +1,9 @@
 ---
 title: Prisma 版本升级指南：从 4 到 5
 description: "Prisma 主版本升级涉及 Breaking Changes、依赖环境要求和 API 变更。本文以 Prisma 4 → 5 为例，系统讲解版本升级的完整流程、新特性、常见问题及回滚方案。"
-keywords: []
+keywords: [Prisma, 版本升级, 变更日志]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, 版本升级]
 ---
 
 

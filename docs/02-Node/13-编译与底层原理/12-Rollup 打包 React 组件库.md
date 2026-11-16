@@ -1,16 +1,10 @@
 ---
 title: "**使用 Rollup 打包 React 组件库：从零到一的完整指南**"
 description: 用 Rollup 打包 React 组件库的完整配置：多格式输出、类型声明与外部化
-keywords: [Node.js, AST, 编译, Rollup, React]
+keywords: [Node.js, Rollup, 组件库]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # **使用 Rollup 打包 React 组件库：从零到一的完整指南**
 
@@ -45,7 +39,7 @@ tags: [Node.js, 编译与底层原理]
 - **发布到 npm**：将你的组件库发布，供他人或跨项目使用。
 - **掌握最佳实践**：学习组件库开发中的高级技巧和注意事项。
 
-让我们开始吧！
+下面开始实战。
 
 ## **2. 环境准备**
 

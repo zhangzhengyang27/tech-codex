@@ -3,7 +3,7 @@ title: 为什么生产环境要用 TypeORM 的 migration 迁移功能？
 description: 生产环境应关闭 synchronize 改用 migration 管理：create/generate/run/revert 四个命令与 npm scripts 封装
 keywords: [为什么生产环境要用, TypeORM, migration, 迁移功能]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, TypeORM, migration]
 ---
 
 

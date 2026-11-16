@@ -1,16 +1,10 @@
 ---
 title: pnpm workspace 实战指南
 description: pnpm workspace 的软链接模型、依赖隔离与命令编排
-keywords: [Node.js, 构建, 脚手架, pnpm, Workspace]
+keywords: [Node.js, pnpm, Workspace]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # pnpm workspace 实战指南
 

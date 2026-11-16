@@ -6,15 +6,9 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # 本地注册全局命令、发布 npm 包
 
-上节实现了基于 AST 的代码修改，是直接用 node 跑的。
+上一篇实现了基于 AST 的代码修改，是直接用 node 跑的。
 
 
 而实际上 @nestjs/cli 是这样用的：
@@ -154,7 +148,7 @@ export async function transformFile(filePath: string) {
 }
 ```
 
-其实就是把上节的 src/index.ts 复制了过来封装了个方法：
+其实就是把上一篇的 src/index.ts 复制了过来封装了个方法：
 
 
 安装用到的包：
@@ -454,7 +448,7 @@ my-cli transform ./src/app.module.ts
 
 ## 总结
 
-这节把上节实现的 AST 修改功能封装成了 cli，并 link 到全局在 Nest 项目里测试了一下。
+本文把上一篇实现的 AST 修改功能封装成了 cli，并 link 到全局在 Nest 项目里测试了一下。
 
 和 nest cli 添加 controller 的功能一样。
 

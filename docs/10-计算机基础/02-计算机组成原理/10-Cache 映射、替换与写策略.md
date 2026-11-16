@@ -1,11 +1,14 @@
 ---
 title: Cache 映射、替换与写策略
+description: Cache 设计的三个核心问题：主存块到 Cache 行的映射方式（直接映射/组相联/全相联）、替换策略（LRU 等）与写策略（写直通/写回）。
+keywords: [Cache映射, 替换策略, 写策略, 组相联, LRU]
 version: 1.0
 author: 文档维护组
 created: 2026-08-22
 updated: 2026-09-10
 status: 正式
 category: 计算机基础
+tags: [计算机基础, 计算机组成原理, Cache, 映射]
 
 ---
 

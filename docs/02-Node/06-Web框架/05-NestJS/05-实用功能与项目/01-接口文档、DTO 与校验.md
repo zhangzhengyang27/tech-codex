@@ -3,7 +3,7 @@ title: 接口文档、DTO 与校验
 description: "Nest 接口文档与参数校验：@nestjs/swagger 自动生成 OpenAPI 文档（@ApiProperty、@ApiOperation 等装饰器）、compodoc 可视化项目依赖、@nestjs/mapped-types 的 PartialType/PickType 等复用 DTO、class-validator 校验装饰器，以及用 entity + ClassSerializerInterceptor 替代 VO。"
 keywords: [NestJS, Swagger, OpenAPI, DTO, VO, class-validator, class-transformer, compodoc]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, NestJS, Swagger, DTO]
 ---
 
 # 接口文档、DTO 与校验
@@ -986,7 +986,7 @@ postman 里访问下：
 
 加上之后就是可选的了：
 
-上节学的 PartialType 就是用的 IsOptional 装饰器实现的。
+前面学的 PartialType 就是用 IsOptional 装饰器实现的。
 
 @IsIn 可以限制属性只能是某些值：
 
@@ -1635,7 +1635,7 @@ Nest 文档里并没有提到 vo 对象，因为完全没有必要，可以直�
 ---
 
 
-上节学了用 class-transformer +  ClassSerializerInterceptor 来序列化 entity 对象，可以替代 vo。
+前面学了用 class-transformer + ClassSerializerInterceptor 来序列化 entity 对象，可以替代 vo。
 
 这节自己来实现一下 ClassSerializerInterceptor，深入理解它的实现原理。
 
@@ -1931,7 +1931,7 @@ transformToNewPlain 就是用 class-transformer 包的 instanceToPlain 根据对
 
 ## 总结
 
-上节学了用 entity 结合 class-transformer 的装饰器和 ClassSerializerInterceptor 拦截器实现复用 entity 做 vo 的功能。
+前面学了用 entity 结合 class-transformer 的装饰器和 ClassSerializerInterceptor 拦截器实现复用 entity 做 vo 的功能。
 
 这节自己实现了下。
 

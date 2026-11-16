@@ -1,9 +1,9 @@
 ---
 title: Prisma 实体关系定义详解
 description: "Prisma Schema 通过声明式语法定义数据库实体间的关系。本文覆盖一对一、一对多、多对多三种关系类型的定义方式、查询 API 及与 TypeORM 的对比。"
-keywords: []
+keywords: [Prisma, 关系映射, 一对多, 多对多]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, Prisma, 关系映射]
 ---
 
 

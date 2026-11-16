@@ -1,16 +1,10 @@
 ---
 title: Git Hooks 与自动化
 description: husky/lint-staged 在提交前校验中的集成与性能考量
-keywords: [Node.js, 构建, 脚手架, Git, Hooks]
+keywords: [Node.js, Git Hooks, 自动化]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # Git Hooks 与自动化
 

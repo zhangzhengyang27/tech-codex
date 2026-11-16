@@ -132,7 +132,7 @@ http://localhost:8080/vul/ssrf/ssrf_curl.php?url=http://192.168.x.x/vul.php?cmd=
 
 - **URL 欺骗方式**，如 http://127.1.1.1@127.2.2.2、http://evil$google.com、http://google.com#@evil.com……
 
-- **302 跳转切换协议**，如请求头注入"Location: dict://lagou.com"
+- **302 跳转切换协议**，如请求头注入"Location: dict://example.com"
 
 - **Unicode 转换**，如 http://evil.c ℀.office.com
 
@@ -290,7 +290,7 @@ SSRFmap 会有一些问题，比如 Pikachu 靶场中的 SSRF（curl）题目就
 
 这里介绍一些常用的 SSRF 防御方法：
 
-- 采用白名单限制，只允许访问特定的 IP 或域名，比如只允许访问招聘网站网域名 *.lagou.com；
+- 采用白名单限制，只允许访问特定的 IP 或域名，比如只允许访问企业自身的 API 域名 *.example.com；
 
 - 限制内网 IP 访问，常见的内网 IP 段有 10.0.0.0 - 10.255.255.255、172.16.0.0 - 172.31.255.255、192.168.0.0 - 192.168.255.255；
 

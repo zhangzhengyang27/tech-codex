@@ -3,7 +3,7 @@ title: 快速入门 MySQL
 description: 通过 Docker 部署 MySQL，用 Workbench 完成库表创建与 INSERT/UPDATE/DELETE/SELECT 增删改查，并区分 DDL/DML/DQL
 keywords: [快速入门, MySQL]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, MySQL, SQL]
 ---
 
 
@@ -274,7 +274,7 @@ DELETE FROM `hello-mysql`.`student` WHERE (`id` = '2');
 SELECT * FROM `hello-mysql`.student;
 ```
 
-增删改的 sql 都很简单，查询的 sql 可以写的很复杂，这个下节再讲。
+增删改的 sql 都很简单，查询的 sql 可以写的很复杂，这个下一篇再讲。
 
 最后再来学下删除和清空表的 sql。
 
@@ -336,4 +336,4 @@ mysql 分为 server 和 client，通过 docker 跑了一个 mysql server，指�
 
 增删改数据的 sql 叫做 DML，而查询数据的 sql 叫做 DQL。
 
-当然，这只是单表的操作，下一节来学习多表的关联以及复杂 sql 查询语句的编写。
+当然，这只是单表的操作，下一篇来学习多表的关联以及复杂 sql 查询语句的编写。

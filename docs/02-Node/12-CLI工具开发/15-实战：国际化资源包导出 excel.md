@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # 实战：国际化资源包导出 excel
 
 前面学过国际化，会把文案抽离出来，放在不同的资源包里维护。
@@ -28,7 +22,7 @@ tags: [Node.js, CLI工具开发]
 
 一般都是导出 excel。
 
-上节学了 excel 如何生成，这节就来实战一下：
+前面学了 excel 如何生成，本篇就来实战一下：
 
 
 ```bash

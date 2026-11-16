@@ -1,16 +1,10 @@
 ---
 title: 手写 DNS 服务：从入门到实践
 description: 从 UDP 报文解析到域名递归查询，手写一个最小可用的 DNS 解析服务
-keywords: [Node.js, AST, 编译, DNS]
+keywords: [Node.js, DNS, UDP, Buffer]
 category: Node.js
 tags: [Node.js, 编译与底层原理]
 ---
-
-
-
-
-
-
 
 # 手写 DNS 服务：从入门到实践
 
@@ -279,7 +273,7 @@ function resolve(msg, rinfo) {
   - `client.send(...)`: 将原始的 DNS 查询报文 `msg` 发送到指定的上游 DNS 服务器（这里以 `114.114.114.114` 为例）。
   - `client.on("message", ...)`: 监听上游服务器的响应 `fbMsg`，并使用 `server.send(...)` 将其原样转发给原始的客户端。
 - **`resolve` 函数**：
-  - 这是实现自定义解析的核心。在下一节中，将详细介绍如何构造一个合法的 DNS 响应报文。
+  - 这是实现自定义解析的核心。在下文中，将详细介绍如何构造一个合法的 DNS 响应报文。
 
 使用 nslookup 命令来查询某个域名的地址：
 
@@ -698,4 +692,4 @@ DNS 协议是基于 UDP 传输的，所以通过 dgram 模块启动了 UDP 服�
 
 这样，就用 Node.js 实现了本地 DNS 服务器。
 
-上节学完你可能觉得 Buffer api 不知道用在哪，当你读写二进制数据的时候，就能用到了。
+前面学完你可能觉得 Buffer api 不知道用在哪，当你读写二进制数据的时候，就能用到了。

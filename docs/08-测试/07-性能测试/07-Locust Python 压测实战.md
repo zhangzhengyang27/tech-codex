@@ -1,13 +1,9 @@
 ---
 title: Locust Python 压测实战
+description: 基于 Locust 2.44.x 系统讲解 Python 压测工具 Locust 的核心概念、脚本编写、进阶实战、分布式部署、Headless 与 CI/CD 集成，依托 gevent 协程模拟数万级并发用户，并梳理常见陷阱与最佳实践。
+keywords: [Locust, Python 压测, 分布式压测, gevent]
 category: 性能测试
-tags:
-  - Locust
-  - Python
-  - 性能测试
-  - 分布式压测
-  - gevent
-  - CI/CD
+tags: [Locust, Python, 性能测试, 分布式压测, gevent, CI/CD]
 ---
 
 # Locust Python 压测实战

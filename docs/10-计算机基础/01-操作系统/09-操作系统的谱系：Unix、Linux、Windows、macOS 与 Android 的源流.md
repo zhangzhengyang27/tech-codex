@@ -1,11 +1,14 @@
 ---
 title: 操作系统的谱系
+description: 从技术源流梳理主流操作系统的关系：IBM 大型机、Unix 及其分支、类 Unix 系统、Linux 发行版、Windows 家族、macOS 与 Android，并以 Debian 漏洞统计讨论开源与漏洞数量的关系。
+keywords: [操作系统谱系, Unix, Linux, Windows, macOS, Android]
 version: 1.0
 author: 文档维护组
 created: 2026-08-09
 updated: 2026-09-10
 status: 正式
 category: 计算机基础
+tags: [计算机基础, 操作系统, Unix, Linux]
 
 ---
 

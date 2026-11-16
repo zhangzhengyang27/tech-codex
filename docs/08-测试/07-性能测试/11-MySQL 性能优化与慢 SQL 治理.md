@@ -1,12 +1,9 @@
 ---
 title: MySQL 性能优化与慢 SQL 治理
+description: 基于 MySQL 8.4 LTS 与 9.x，系统梳理性能优化方法论、索引设计、执行计划分析、慢 SQL 治理全流程与架构层优化方案，定位性能测试中最容易暴露瓶颈的数据库环节。
+keywords: [MySQL, 性能优化, 慢SQL, 索引, 执行计划]
 category: 性能测试
-tags:
-  - MySQL
-  - 慢SQL
-  - 索引优化
-  - 执行计划
-  - 分库分表
+tags: [MySQL, 慢SQL, 索引优化, 执行计划, 分库分表]
 ---
 
 # MySQL 性能优化与慢 SQL 治理

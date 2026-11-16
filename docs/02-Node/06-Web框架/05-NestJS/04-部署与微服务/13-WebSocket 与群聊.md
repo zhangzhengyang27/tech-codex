@@ -3,7 +3,7 @@ title: WebSocket 与群聊
 description: "实时的双向数据通信，一般会用 WebSocket 来做。本文从 WebSocket 协议原理讲起，用 Node 手写一个协议解析，再讲 Nest 里如何开发 WebSocket 服务，最后基于 Socket.io 的 room 实现群聊功能。"
 keywords: [WebSocket, Socket.io, 协议, Nest, 群聊, room, 双向通信]
 category: Node.js
-tags: [Node.js, Express, Koa, 服务端]
+tags: [Node.js, WebSocket, NestJS]
 ---
 
 

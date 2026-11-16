@@ -1,14 +1,9 @@
 ---
 title: 数据驱动测试（DDT）与测试数据策略
+description: 系统梳理数据驱动测试（DDT）实现方式、测试数据准备与隔离策略、Faker v9 实战与统一测试数据平台（TDP）架构，解决前置数据失效、并行冲突等 GUI 测试稳定性瓶颈。
+keywords: [数据驱动测试, DDT, 测试数据, Faker, 测试数据平台]
 category: GUI自动化测试
-tags:
-  - DDT
-  - 测试数据
-  - Faker
-  - 参数化
-  - 测试数据平台
-  - Testcontainers
-  - 合成数据
+tags: [DDT, 测试数据, Faker, 参数化, 测试数据平台, Testcontainers, 合成数据]
 ---
 
 # 数据驱动测试（DDT）与测试数据策略

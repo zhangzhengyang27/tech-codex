@@ -1,16 +1,10 @@
 ---
 title: JSDoc 与 TypeDoc
 description: 用 JSDoc 注释与 TypeDoc 生成可维护的 API 文档
-keywords: [Node.js, 构建, 脚手架, JSDoc, TypeDoc]
+keywords: [Node.js, 文档工程, JSDoc, TypeDoc]
 category: Node.js
 tags: [Node.js, 工程化]
 ---
-
-
-
-
-
-
 
 # JSDoc 与 TypeDoc
 

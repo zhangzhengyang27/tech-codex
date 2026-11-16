@@ -6,12 +6,6 @@ category: Node.js
 tags: [Node.js, CLI工具开发]
 ---
 
-
-
-
-
-
-
 # 脚手架 CLI：版本号获取与 NPM 包下载
 
 ## 版本更新记录

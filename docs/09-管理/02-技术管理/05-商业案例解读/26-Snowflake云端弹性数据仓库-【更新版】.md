@@ -1,5 +1,5 @@
 ---
-title: "096-Snowflake云端弹性数据仓库-【更新版】"
+title: 028 | Snowflake：云端弹性数据仓库——从"最好被收购"到云数据平台巨头的逆袭之路
 date: 2024-06-30
 original_date: 2017-xx-xx
 category: 技术与商业案例解读

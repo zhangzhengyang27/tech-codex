@@ -1,6 +1,6 @@
 ---
-title: -谈谈CTO在商业战略中的定位
-description: 第12讲-谈谈CTO在商业战略中的定位的核心要点与实践方法论
+title: 谈谈CTO在商业战略中的定位
+description: CTO永远要为CEO的战略'吹牛'埋单，但这不等于被动承接：从技术实现者走向战略共创者，用技术视角参与战略制定、用AI重塑业务，才是CTO在商业战略中应有的定位。
 keywords: []
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]

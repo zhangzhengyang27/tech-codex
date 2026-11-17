@@ -1,6 +1,6 @@
 ---
-title: -CTO是商业思维和技术思维交汇的那个点
-description: 第9讲-CTO是商业思维和技术思维交汇的那个点的核心要点与实践方法论
+title: CTO是商业思维和技术思维交汇的那个点
+description: CTO这个岗位，在今天的任何一家互联网企业中显然都是不可缺少的，特别是处于创业阶段的企业。
 keywords: []
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]

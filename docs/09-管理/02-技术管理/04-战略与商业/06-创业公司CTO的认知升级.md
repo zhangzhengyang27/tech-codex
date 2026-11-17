@@ -1,6 +1,6 @@
 ---
-title: -创业公司CTO的认知升级
-description: 第10讲-创业公司CTO的认知升级的核心要点与实践方法论
+title: 创业公司CTO的认知升级
+description: 在不同的行业中，以及不同公司在不同阶段，对CTO的要求是非常不一样的。
 keywords: []
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]

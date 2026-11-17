@@ -1,5 +1,5 @@
 ---
-title: "042 | Groupon：团购鼻祖的兴衰（2024年全面重写版）"
+title: 042 | Groupon：团购鼻祖的兴衰（2024年全面更新版）
 date: 2024-06-07
 category: 技术与商业案例解读
 tags: [Groupon, 团购, 互联网, IPO, 创业, 商业模式, Andrew Mason, 美团]

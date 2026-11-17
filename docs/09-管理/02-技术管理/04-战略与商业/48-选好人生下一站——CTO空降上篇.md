@@ -1,6 +1,6 @@
 ---
-title: -选好人生下一站——CTO空降上篇
-description: 第45讲-选好人生下一站——CTO空降上篇的核心要点与实践方法论
+title: 选好人生下一站——CTO空降上篇
+description: 对于CTO（技术总监）来说，他们已经成为公司或部门技术的最高负责人，实现了人生一个小目标。
 keywords: []
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]

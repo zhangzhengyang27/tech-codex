@@ -1,6 +1,6 @@
 ---
-title: -CTO的三重境界
-description: 第5讲-CTO的三重境界的核心要点与实践方法论
+title: CTO的三重境界
+description: 要谈CTO的格局这个话题有些惶恐，毕竟扶墙老师也不是什么格局的CTO都做过，但CTO的格局不是由个人决定的，而是由组织的成长和所处的阶段决定的。
 keywords: []
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]

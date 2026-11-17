@@ -1,5 +1,6 @@
 ---
-title: "066-Hadoop三国之兴衰：Cloudera与Hortonworks的传奇与终章"
+title: Hadoop三国之兴衰：Cloudera与Hortonworks的传奇与终章
+description: Cloudera与Hortonworks十年缠斗的终章：从上市竞赛、52亿美元'对等合并'到53亿私有化退市，两家Hadoop发行商的真正敌人从来不是彼此，而是云原生时代对Hadoop范式的整体替代。
 date: 2024-06-07
 update_from: "066(2017) + 068(2017)"
 word_count: 8500+

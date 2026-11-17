@@ -1,5 +1,6 @@
 ---
 title: "Apache Flink崛起与大数据创业生存指南——从DataArtisans到实时计算时代"
+description: Flink从柏林工大学术项目到全球主流流计算引擎的逆袭：技术先进性为何没能立即转化为市场成功，被阿里收购后如何借'Streaming First'范式确立地位，以及大数据红海创业的生存启示。
 date: 2024-06-07
 original_date: 2017
 author: 极客时间专栏
@@ -22,7 +23,7 @@ info_deadline: 2024年6月
 
 当时，很少有人能预见到，这个来自德国的学术项目会在十年后成为**全球最主流的流计算引擎之一**，更不会想到它会被中国科技巨头阿里巴巴收购，并在中国市场全面超越Spark Streaming。
 
-2017年，当我在专栏中撰写DataArtisans和Flink的故事时，重点分析了：
+2017年，当原始专栏撰写DataArtisans和Flink的故事时，重点分析了：
 - Flink的技术先进性为何未能立即转化为市场成功
 - DataArtisans作为创业公司面临的困境（Databricks的先发优势、欧洲公司的地域劣势）
 - 阿里巴巴和Capital One等大客户的支持对Flink的重要性

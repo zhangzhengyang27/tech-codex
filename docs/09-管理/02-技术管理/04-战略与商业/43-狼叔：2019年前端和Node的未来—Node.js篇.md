@@ -1,7 +1,7 @@
 ---
-title: -狼叔：2019年前端和Node的未来—Node.js篇
-description: 第189讲-狼叔：2019年前端和Node的未来—Node.js篇的核心要点与实践方法论
-keywords: [第189讲-狼叔]
+title: 狼叔：2019年前端和Node的未来—Node.js篇
+description: Node.js在大前端布局里意义重大，除了基本构建和Web服务外，狼叔（网名i5ting，阿里巴巴前端技术专家，Node.js技术布道者，Node全栈公众号运营者）重点讲了两点。
+keywords: []
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]
 ---

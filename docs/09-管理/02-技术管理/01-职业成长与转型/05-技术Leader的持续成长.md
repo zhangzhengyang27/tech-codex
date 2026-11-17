@@ -1,5 +1,5 @@
 ---
-title: -技术Leader的持续成长
+title: 技术Leader的持续成长
 description: 技术 Leader 稳定期的持续成长路径：保持动力追求卓越、培养产品洞察力、打造技术影响力，并落地学习小组、技术交流与 Hackathon 等团队成长机制。
 keywords: []
 category: 技术管理

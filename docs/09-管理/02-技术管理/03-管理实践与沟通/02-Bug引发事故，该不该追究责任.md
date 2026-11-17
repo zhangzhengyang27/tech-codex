@@ -1,6 +1,6 @@
 ---
-title: Bug引发事故，该不该追究责任？
-description: Bug引发事故，该不该追究责任？的核心要点与实践方法论
+title: Bug引发事故的责任追究：从无指责文化到Just Culture实践
+description: 软件系统中 Bug 引发的生产事故是工程组织的常态而非例外。
 keywords: [Bug引发事故, 该不该追究责任？]
 category: 技术管理
 tags: [技术管理, 团队管理, 工程文化]

@@ -1,5 +1,5 @@
 ---
-title: "100-PeopleSoft与Workday的企业软件史诗"
+title: 引言：73岁创业——David Duffield的传奇人生
 date: 2026-06-07
 author: "极客时间专栏"
 category: "技术与商业案例解读"

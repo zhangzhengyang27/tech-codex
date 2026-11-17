@@ -1,5 +1,5 @@
 ---
-title: "086-Palantir：神秘的大数据独角兽【2024年全面更新版】"
+title: 023 | Palantir：从神秘独角兽到AI时代国防科技巨头——全面重写版
 date: 2024-06-07
 author: 极客时间专栏
 version: 2.0

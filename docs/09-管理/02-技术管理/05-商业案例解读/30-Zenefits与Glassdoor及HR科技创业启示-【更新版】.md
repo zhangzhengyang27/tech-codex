@@ -1,5 +1,5 @@
 ---
-title: "107-Zenefits与Glassdoor及HR科技创业启示"
+title: 引言：HR科技创业的双面镜像
 date: 2026-06-07
 author: "极客时间专栏"
 category: "技术与商业案例解读"

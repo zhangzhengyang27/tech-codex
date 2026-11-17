@@ -1,6 +1,6 @@
 ---
-title: -七位CTO纵论技术领导者核心能力
-description: 第2讲-七位CTO纵论技术领导者核心能力的核心要点与实践方法论
+title: 七位CTO纵论技术领导者核心能力
+description: 关于技术领导者的具体职责和能力要求，每个企业会给出自己的定义。
 keywords: []
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]

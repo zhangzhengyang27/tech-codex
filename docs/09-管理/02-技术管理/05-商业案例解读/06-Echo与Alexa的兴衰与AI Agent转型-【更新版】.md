@@ -1,5 +1,5 @@
 ---
-title: "Echo与Alexa的兴衰与AI Agent转型"
+title: 引言：从"无心插柳"到"生死存亡"——一个产品的十年浮沉
 date: 2024-06-07
 original_articles: ["030-智能音箱的战斗：Echo攻城略地", "031-智能音箱的战斗：语音助手Alexa"]
 update_summary: "全面重写，融合2023-2024年LLM对语音助手行业的颠覆性影响，包括ChatGPT降维打击、Alexa百亿亏损、AI Agent新范式等内容"

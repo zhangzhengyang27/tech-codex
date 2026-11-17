@@ -1,5 +1,6 @@
 ---
-title: "西雅图IT公司之RealNetworks：一个帝国的兴衰——完整重写版（1994-2024）"
+title: 西雅图IT公司之RealNetworks：一个帝国的兴衰
+description: RealNetworks三十年兴衰复盘：定义流媒体标准、占据85%市场份额的帝国，败于微软'免费+捆绑'绞杀战并错失iPod；衰落不等于终结，私有化后正借SAFR人脸识别在AI时代寻找新定位。
 author: "极客时间专栏"
 date: "2024-06-07"
 version: "2024完整重写版"

@@ -1,6 +1,6 @@
 ---
-title: -CEO实话实说：我需要这样的CTO
-description: 第3讲-CEO实话实说：我需要这样的CTO的核心要点与实践方法论
+title: CEO实话实说：我需要这样的CTO
+description: 我们换个角度，看看公司真正的老大——CEO关于CTO这个问题的想法，和CTO们是否存在差异。
 keywords: [我需要这样的CTO]
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]

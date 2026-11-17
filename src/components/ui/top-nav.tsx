@@ -35,6 +35,7 @@ const navItems: NavItem[] = [
       { label: "Vue2", href: "/docs/vue2", icon: "💚" },
       { label: "Vue3", href: "/docs/vue3", icon: "💚" },
       { label: "构建工具", href: "/docs/frontend-toolchain", icon: "🔧" },
+      { label: "数据可视化", href: "/docs/frontend-visualization", icon: "📊" },
       { label: "Electron", href: "/docs/electron", icon: "🖥️" },
       { label: "前端调试", href: "/docs/debugging", icon: "🔍" },
     ],
@@ -66,7 +67,6 @@ const navItems: NavItem[] = [
   {
     label: "更多",
     children: [
-      { label: "数据可视化", href: "/docs/frontend-visualization", icon: "📊" },
       { label: "架构与工程", href: "/docs/architecture", icon: "🏗️" },
       { label: "运维", href: "/docs/ops", icon: "⚙️" },
       { label: "技术管理", href: "/docs/tech-management", icon: "👔" },

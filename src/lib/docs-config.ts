@@ -403,19 +403,16 @@ export const docGroups: DocGroup[] = [
   },
   {
     id: 'testing',
-    title: '测试与质量',
-    description: '基于 docs/测试/ 的现代化测试知识体系（2026 版）',
+    title: '测试',
+    description: '测试全领域一站式体系:测试基础与模型流程、单元/API/GUI/移动端测试实施、性能测试、测试开发与平台工程、前沿与质量管理及附录',
     categories: [
-      { slug: 'test-fundamentals', title: '测试基础', description: '测试工程师核心竞争力与职业路径、测试用例设计方法、测试覆盖率与质量门禁、软件缺陷报告与生命周期、测试计划与测试策略、测试工程师的非测试知识', icon: '🧪', dir: '08-测试/01-测试基础' },
-      { slug: 'test-models', title: '测试模型与流程', description: '测试金字塔与测试奖杯、测试左移与右移、敏捷测试 Sprint 流程、ATDD/BDD 与实例化需求、探索式测试 SBTM、精准测试与变更影响分析、基于模型的测试 MBT', icon: '🏛️', dir: '08-测试/02-测试模型与流程' },
-      { slug: 'unit-testing', title: '单元测试与代码级测试', description: '单元测试基础与测试替身、JUnit 5 Jupiter 实战、pytest 9 fixtures 与参数化、TDD 红-绿-重构、静态/动态/变异测试、JaCoCo 与 coverage.py 与 SonarQube 覆盖率工具', icon: '🔬', dir: '08-测试/03-单元测试与代码级测试' },
-      { slug: 'api-testing', title: 'API 测试', description: 'API 测试基础与多协议（REST/GraphQL/gRPC/WebSocket）、Postman v11 与 Newman 自动化、REST Assured 与 pytest+requests、API 测试框架五阶段演进、微服务契约测试 Pact、服务虚拟化与 Mock Server（Mountebank/WireMock）', icon: '🔌', dir: '08-测试/04-API测试' },
-      { slug: 'gui-testing', title: 'GUI 自动化测试', description: 'GUI 自动化测试策略与 ROI、Selenium 4 WebDriver、Playwright 1.61、Cypress 15、Page Object 与 Screenplay 模式、数据驱动测试、测试稳定性与 Flaky 治理、Allure 测试报告、Selenium Grid 4 分布式执行', icon: '🖱️', dir: '08-测试/05-GUI自动化测试' },
-      { slug: 'mobile-testing', title: '移动端测试', description: '移动应用测试方法（Web/Native/Hybrid/跨平台）、Appium 3 架构与实战、Android 自动化（UiAutomator2/Espresso）、iOS 自动化（XCUITest）、WebView 与混合应用测试、移动测试云真机平台（BrowserStack/Sauce Labs）', icon: '📱', dir: '08-测试/06-移动端测试' },
-      { slug: 'performance-testing', title: '性能测试', description: '性能测试指标与方法论、JMeter 5.6.3 核心概念与脚本构建、参数化与分布式压测、JMeter 二次开发、k6 云原生压测、Locust Python 压测、Lighthouse 与 Core Web Vitals 前端性能、Prometheus/Grafana/SkyWalking 10 后端监控、JFR/Arthas 4.3 JVM 分析、MySQL/Redis 8 性能调优、Docker/K8s 应用、Nginx 调优、全链路压测与影子库表', icon: '📊', dir: '08-测试/07-性能测试' },
-      { slug: 'test-dev', title: '测试开发与平台工程', description: '测试开发技术栈选型、测试平台开发（Django/FastAPI/Vue）、自动化测试框架设计 13 原则、数据驱动与参数化框架、测试数据持久化与统一数据平台、测试框架动态切换环境与用例、Mock Server 必杀技、测试报告与团队影响力、Linux/Shell 测试开发必备', icon: '🛠️', dir: '08-测试/08-测试开发与平台工程' },
-      { slug: 'testing-frontier', title: '测试前沿与质量管理', description: 'AI 辅助测试（LLM 生成用例/Copilot for Tests）、渗透测试与 DevSecOps、混沌工程与故障注入、质量管理体系（Google/BAT 对比）、测试成熟度模型与演进、网站架构与测试设计（高性能/高可用/可伸缩）', icon: '🚀', dir: '08-测试/09-测试前沿与质量管理' },
-      { slug: 'testing-appendix', title: '测试附录', description: '测试经典书目与学习资料、测试工程师面试题库、术语表', icon: '📚', dir: '08-测试/10-附录' },
+      {
+        slug: 'testing',
+        title: '测试',
+        description: '测试全领域体系(10 分册):测试基础、测试模型与流程、单元测试与代码级测试(JUnit 5/pytest 9/TDD/变异测试)、API 测试(REST/GraphQL/gRPC 与 Postman 11/Pact)、GUI 自动化(Selenium 4/Playwright 1.61/Cypress 15)、移动端测试(Appium 3)、性能测试(JMeter 5.6.3/k6/Locust 与全链路压测)、测试开发与平台工程、AI 辅助测试与混沌工程前沿、经典书目与面试附录',
+        icon: '🧪',
+        dir: '08-测试',
+      },
     ],
   },
   {

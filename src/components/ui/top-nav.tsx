@@ -44,29 +44,11 @@ const navItems: NavItem[] = [
   { label: "Python", href: "/docs/python", icon: "🐍" },
   { label: "Node.js", href: "/docs/node", icon: "🟢" },
   { label: "DevOps", href: "/docs/ops" },
-  { label: "安全", href: "/docs/security", icon: "🛡️" },
     {
-    label: "测试",
-    children: [
-      { label: "测试基础", href: "/docs/test-fundamentals", icon: "🧪" },
-      { label: "测试模型与流程", href: "/docs/test-models", icon: "🏛️" },
-      { label: "单元测试与代码级测试", href: "/docs/unit-testing", icon: "🔬" },
-      { label: "API 测试", href: "/docs/api-testing", icon: "🔌" },
-      { label: "GUI 自动化测试", href: "/docs/gui-testing", icon: "🖱️" },
-      { label: "移动端测试", href: "/docs/mobile-testing", icon: "📱" },
-      { label: "性能测试", href: "/docs/performance-testing", icon: "📊" },
-            { label: "测试开发与平台工程", href: "/docs/test-dev", icon: "🛠️" },
-      {
-        label: "测试前沿与质量管理",
-        href: "/docs/testing-frontier",
-        icon: "🚀",
-      },
-      { label: "测试附录", href: "/docs/testing-appendix", icon: "📚" },
-    ],
-  },
-  {
     label: "更多",
     children: [
+      { label: "安全", href: "/docs/security", icon: "🛡️" },
+      { label: "测试", href: "/docs/testing", icon: "🧪" },
       { label: "架构与工程", href: "/docs/architecture", icon: "🏗️" },
       { label: "技术管理", href: "/docs/tech-management", icon: "👔" },
       { label: "产品", href: "/docs/product", icon: "📱" },

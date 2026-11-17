@@ -5722,5 +5722,130 @@
     "source": "/docs/testing-appendix",
     "destination": "/docs/testing",
     "permanent": true
+  },
+  {
+    "source": "/docs/security/04-XSS%20%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB",
+    "destination": "/docs/security/04-XSS%20%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%EF%BC%9A%E5%8E%9F%E7%90%86%E3%80%81%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E5%BE%A1",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/05-XSS%20%E7%9A%84%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E5%BE%A1",
+    "destination": "/docs/security/04-XSS%20%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%EF%BC%9A%E5%8E%9F%E7%90%86%E3%80%81%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E5%BE%A1",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/06-SQL%20%E6%B3%A8%E5%85%A5",
+    "destination": "/docs/security/05-SQL%20%E6%B3%A8%E5%85%A5%EF%BC%9A%E5%8E%9F%E7%90%86%E3%80%81%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E5%BE%A1",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/07-SQL%20%E6%B3%A8%E5%85%A5%E7%9A%84%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E5%BE%A1",
+    "destination": "/docs/security/05-SQL%20%E6%B3%A8%E5%85%A5%EF%BC%9A%E5%8E%9F%E7%90%86%E3%80%81%E6%A3%80%E6%B5%8B%E4%B8%8E%E9%98%B2%E5%BE%A1",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/08-CSRF%20%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0",
+    "destination": "/docs/security/06-CSRF%20%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/09-SSRF%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0",
+    "destination": "/docs/security/07-SSRF%20%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/10-XXE%20XML%20%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%E6%B3%A8%E5%85%A5",
+    "destination": "/docs/security/08-XXE%20XML%20%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%E6%B3%A8%E5%85%A5",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/11-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E",
+    "destination": "/docs/security/09-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/12-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E",
+    "destination": "/docs/security/10-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/13-%E5%91%BD%E4%BB%A4%E4%B8%8E%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5",
+    "destination": "/docs/security/11-%E5%91%BD%E4%BB%A4%E4%B8%8E%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/14-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E",
+    "destination": "/docs/security/12-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/15-%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E",
+    "destination": "/docs/security/13-%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/16-%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F",
+    "destination": "/docs/security/14-%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/17-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA",
+    "destination": "/docs/security/15-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA%E4%B8%8E%E5%85%A5%E4%BE%B5%E6%8E%92%E6%9F%A5",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/18-%E5%85%A5%E4%BE%B5%E6%8E%92%E6%9F%A5%E4%B8%8E%E8%BF%BD%E8%B8%AA",
+    "destination": "/docs/security/15-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA%E4%B8%8E%E5%85%A5%E4%BE%B5%E6%8E%92%E6%9F%A5",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/19-%E7%A0%94%E5%8F%91%E5%AE%89%E5%85%A8%EF%BC%9A%E4%BB%8E%20SDL%20%E5%88%B0%20DevSecOps",
+    "destination": "/docs/security/16-%E7%A0%94%E5%8F%91%E5%AE%89%E5%85%A8%EF%BC%9A%E4%BB%8E%20SDL%20%E5%88%B0%20DevSecOps",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/20-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%89%E5%85%A8%EF%BC%9A%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5%E4%B8%8E%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93",
+    "destination": "/docs/security/17-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%89%E5%85%A8%E4%B8%8E%20HTTPS",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/21-HTTPS%20%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E9%AA%8C%E8%AF%81",
+    "destination": "/docs/security/17-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%89%E5%85%A8%E4%B8%8E%20HTTPS",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/22-%E9%99%84%E5%BD%95%20%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B3%95%E5%BE%8B%E6%B3%95%E8%A7%84",
+    "destination": "/docs/security/18-%E9%99%84%E5%BD%95%20%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B3%95%E5%BE%8B%E6%B3%95%E8%A7%84",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/23-%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83-OAuth2%E4%B8%8EOIDC",
+    "destination": "/docs/security/19-%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83%EF%BC%9AOAuth2%E3%80%81OIDC%20%E4%B8%8E%20JWT",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/24-%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83-JWT%E5%AE%89%E5%85%A8%E5%AE%9E%E8%B7%B5",
+    "destination": "/docs/security/19-%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83%EF%BC%9AOAuth2%E3%80%81OIDC%20%E4%B8%8E%20JWT",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/25-%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%BA%94%E7%94%A8",
+    "destination": "/docs/security/20-%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%BA%94%E7%94%A8",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/26-%E5%AE%B9%E5%99%A8%E4%B8%8E%E4%BA%91%E5%AE%89%E5%85%A8",
+    "destination": "/docs/security/21-%E5%AE%B9%E5%99%A8%E4%B8%8E%E4%BA%91%E5%AE%89%E5%85%A8",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/27-%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8",
+    "destination": "/docs/security/22-%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8",
+    "permanent": true
+  },
+  {
+    "source": "/docs/security/28-%E5%AE%89%E5%85%A8%E8%BF%90%E8%90%A5%E4%B8%8E%E5%90%88%E8%A7%84",
+    "destination": "/docs/security/23-%E5%AE%89%E5%85%A8%E8%BF%90%E8%90%A5%E4%B8%8E%E5%90%88%E8%A7%84",
+    "permanent": true
   }
 ]

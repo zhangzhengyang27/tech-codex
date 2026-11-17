@@ -9,7 +9,7 @@ tags: [网络协议, HTTPS]
 # HTTPS
 
 ::: tip 分工声明
-HTTPS/TLS 在站内有多个视角:[浏览器安全体系：同源策略、攻击防御与加密传输](</docs/security/20-浏览器安全：同源策略与加密传输>)(浏览器视角)·[HTTPS：浏览器如何验证数字证书](</docs/security/21-HTTPS 数字证书验证>)(证书机制视角)。
+HTTPS/TLS 在站内有多个视角:[浏览器安全体系：同源策略、攻击防御与加密传输](</docs/security/17-浏览器安全与%20HTTPS>)(浏览器视角)·[HTTPS：浏览器如何验证数字证书](</docs/security/17-浏览器安全与%20HTTPS>)(证书机制视角)。
 本篇=全栈配置视角:HTTPS 与 SSL/TLS 的加密体系、TLS 握手流程与抓包分析。
 :::
 

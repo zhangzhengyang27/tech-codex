@@ -1,15 +1,18 @@
 ---
-title: 浏览器安全体系：同源策略、攻击防御与加密传输
-description: 浏览器安全三维度（页面/系统/网络）：同源策略与 CORS、跨源隔离 COOP/COEP、XSS 现代防御（CSP/Trusted Types/Sanitizer）、CSRF 与 SameSite Cookie 演进、TLS 1.3、Privacy Sandbox 与 Passkeys
-keywords: [同源策略, CORS, 跨源隔离, CSP, Trusted Types, SameSite, TLS1.3, Privacy Sandbox, Passkeys]
+title: 浏览器安全与 HTTPS：同源策略、加密传输与证书验证
+description: 浏览器安全三维度（页面/系统/网络）：同源策略与 CORS、跨源隔离 COOP/COEP、XSS 现代防御（CSP/Trusted Types/Sanitizer）、CSRF 与 SameSite Cookie 演进、TLS 1.3、Privacy Sandbox 与 Passkeys,以及 HTTPS 证书链验证、吊销检查（CRL/OCSP/Stapling）与 Certificate Transparency
+keywords: [同源策略, CORS, 跨源隔离, CSP, Trusted Types, SameSite, TLS1.3, Privacy Sandbox, Passkeys, HTTPS, 数字证书, OCSP, Certificate Transparency]
 category: 安全
-tags: [浏览器安全, 同源策略, HTTPS, XSS防御, CSRF防御]
+tags: [浏览器安全, 同源策略, HTTPS, XSS防御, CSRF防御, 数字证书]
 ---
+
+# 浏览器安全与 HTTPS：同源策略、加密传输与证书验证
+
 
 # 浏览器安全体系：同源策略、攻击防御与加密传输
 
 ::: tip 分工声明
-HTTPS/TLS 在站内有多个视角:[HTTPS](</docs/fullstack/04-网络协议与Web接口/01-HTTPS>)(全栈配置视角)·[HTTPS：浏览器如何验证数字证书](</docs/security/21-HTTPS 数字证书验证>)(证书机制视角)。
+HTTPS/TLS 在站内有多个视角:[HTTPS](</docs/fullstack/04-网络协议与Web接口/01-HTTPS>)(全栈配置视角)·[HTTPS：浏览器如何验证数字证书](</docs/security/17-浏览器安全与%20HTTPS>)(证书机制视角)。
 本篇=浏览器视角:把 TLS 1.3 与加密传输放进同源策略/CORS 等浏览器安全体系里讲。
 :::
 
@@ -375,6 +378,89 @@ sequenceDiagram
 
 ---
 
+# HTTPS：浏览器如何验证数字证书
+
+::: tip 分工声明
+HTTPS/TLS 在站内有多个视角:[HTTPS](</docs/fullstack/04-网络协议与Web接口/01-HTTPS>)(全栈配置视角)·[浏览器安全体系：同源策略、攻击防御与加密传输](</docs/security/17-浏览器安全与%20HTTPS>)(浏览器视角)。
+本篇=证书机制视角:证书链验证、吊销检查(CRL/OCSP/Stapling)与 Certificate Transparency。
+:::
+
+
+## 8. 引言
+
+HTTPS 的安全性建立在 TLS 协议和数字证书之上。**浏览器验证数字证书的真实性和有效性，是防止中间人攻击的关键环节**。本文将阐述证书验证的完整流程，涵盖证书链、CRL/OCSP 和 Certificate Transparency。
+
+---
+
+
+## 9. 证书链验证
+
+### 1.1 证书链结构
+
+```
+终端证书（End-Entity Certificate）
+  → 中间 CA 证书（Intermediate CA Certificate）
+    → 根 CA 证书（Root CA Certificate）[内置于浏览器/OS]
+```
+
+### 1.2 验证流程
+
+```mermaid
+graph TB
+    A["接收服务器证书链"] --> B["验证签名<br/>用上级 CA 公钥验证当前证书签名"]
+    B --> C["验证有效期<br/>Not Before ≤ Now ≤ Not After"]
+    C --> D["验证用途<br/>Key Usage / Extended Key Usage"]
+    D --> E["验证主机名<br/>Subject Alternative Name 匹配域名"]
+    E --> F{"是否到达根 CA？"}
+    F -->|否| B
+    F -->|是| G["根 CA 是否在信任存储？"]
+    G -->|是| H["✅ 证书有效"]
+    G -->|否| I["❌ 证书不受信任"]
+```
+
+---
+
+
+## 10. 证书吊销检查
+
+### 2.1 CRL vs OCSP
+
+| 机制 | 全称 | 方式 | 缺点 |
+|------|------|------|------|
+| **CRL** | Certificate Revocation List | 下载完整吊销列表 | 体积大、更新延迟 |
+| **OCSP** | Online Certificate Status Protocol | 实时查询证书状态 | 隐私泄露（CA 知道访问了哪个站） |
+| **OCSP Stapling** | — | 服务器主动附上 OCSP 响应 | 需服务器支持 |
+
+### 2.2 CRLSet
+
+Chrome 使用 **CRLSet**——一个由 Google 分发的精简吊销列表，仅包含高优先级吊销证书。对于大多数证书，Chrome 不执行实时 OCSP 查询（避免延迟和隐私问题）。
+
+---
+
+
+## 11. Certificate Transparency（CT）
+
+### 3.1 机制
+
+CT 要求 CA 将签发的证书提交到公开的、仅追加的、可审计的日志中：
+
+```mermaid
+graph LR
+    CA["CA 签发证书"] --> LOG["CT Log<br/>公开日志"]
+    LOG --> SCT["SCT<br/>（Signed Certificate Timestamp）"]
+    SCT --> CERT["证书含 SCT 嵌入"]
+    CERT --> BROWSER["浏览器验证 SCT"]
+    LOG --> MONITOR["监控方<br/>域名所有者可审计"]
+```
+
+### 3.2 Chrome 的 CT 要求
+
+Chrome 要求所有 TLS 证书必须包含至少 2 个来自不同 CT Log 的 SCT，否则拒绝连接。
+
+---
+
+
+
 ## 参考文献
 
 1. W3C: [CORS](https://fetch.spec.whatwg.org/#cors-protocol)
@@ -384,3 +470,7 @@ sequenceDiagram
 5. W3C: [WebAuthn Level 3](https://w3c.github.io/webauthn/)
 6. Chrome Blog: [Privacy Sandbox](https://privacysandbox.com/)
 7. FIDO Alliance: [Passkeys](https://fidoalliance.org/passkeys/)
+8. RFC 5280: [X.509 Certificate Profile](https://datatracker.ietf.org/doc/html/rfc5280)
+9. RFC 6960: [OCSP](https://datatracker.ietf.org/doc/html/rfc6960)
+10. RFC 6962: [Certificate Transparency](https://datatracker.ietf.org/doc/html/rfc6962)
+11. Chrome: [CT Policy](https://chromium.googlesource.com/chromium/src/+/main/net/cert/cert_transparency.md)

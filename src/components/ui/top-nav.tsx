@@ -34,7 +34,7 @@ const navItems: NavItem[] = [
       { label: "TypeScript", href: "/docs/typescript", icon: "🔷" },
       { label: "Vue2", href: "/docs/vue2", icon: "💚" },
       { label: "Vue3", href: "/docs/vue3", icon: "💚" },
-      { label: "构建工具", href: "/docs/tools", icon: "🔧" },
+      { label: "构建工具", href: "/docs/frontend-toolchain", icon: "🔧" },
       { label: "Electron", href: "/docs/electron", icon: "🖥️" },
       { label: "前端调试", href: "/docs/debugging", icon: "🔍" },
     ],
@@ -42,10 +42,9 @@ const navItems: NavItem[] = [
   { label: "Java", href: "/docs/java", icon: "☕" },
   { label: "Python", href: "/docs/python", icon: "🐍" },
   { label: "Node.js", href: "/docs/node", icon: "🟢" },
-  { label: "DevOps", href: "/docs/devops" },
+  { label: "DevOps", href: "/docs/ops" },
   { label: "安全", href: "/docs/security", icon: "🛡️" },
-  { label: "操作系统", href: "/docs/os", icon: "🖥️" },
-  {
+    {
     label: "测试",
     children: [
       { label: "测试基础", href: "/docs/test-fundamentals", icon: "🧪" },
@@ -55,8 +54,7 @@ const navItems: NavItem[] = [
       { label: "GUI 自动化测试", href: "/docs/gui-testing", icon: "🖱️" },
       { label: "移动端测试", href: "/docs/mobile-testing", icon: "📱" },
       { label: "性能测试", href: "/docs/performance-testing", icon: "📊" },
-      { label: "CI/CD 与测试基础设施", href: "/docs/cicd-infra", icon: "🔧" },
-      { label: "测试开发与平台工程", href: "/docs/test-dev", icon: "🛠️" },
+            { label: "测试开发与平台工程", href: "/docs/test-dev", icon: "🛠️" },
       {
         label: "测试前沿与质量管理",
         href: "/docs/testing-frontier",
@@ -68,7 +66,7 @@ const navItems: NavItem[] = [
   {
     label: "更多",
     children: [
-      { label: "数据可视化", href: "/docs/visualization", icon: "📊" },
+      { label: "数据可视化", href: "/docs/frontend-visualization", icon: "📊" },
       { label: "架构与工程", href: "/docs/architecture", icon: "🏗️" },
       { label: "运维", href: "/docs/ops", icon: "⚙️" },
       { label: "技术管理", href: "/docs/tech-management", icon: "👔" },

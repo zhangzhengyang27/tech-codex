@@ -68,7 +68,6 @@ const navItems: NavItem[] = [
     label: "更多",
     children: [
       { label: "架构与工程", href: "/docs/architecture", icon: "🏗️" },
-      { label: "运维", href: "/docs/ops", icon: "⚙️" },
       { label: "技术管理", href: "/docs/tech-management", icon: "👔" },
       { label: "产品", href: "/docs/product", icon: "📱" },
     ],

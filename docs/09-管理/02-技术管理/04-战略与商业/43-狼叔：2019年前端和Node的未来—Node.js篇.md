@@ -1,12 +1,12 @@
 ---
-title: 第189讲-狼叔：2019年前端和Node的未来—Node.js篇
+title: -狼叔：2019年前端和Node的未来—Node.js篇
 description: 第189讲-狼叔：2019年前端和Node的未来—Node.js篇的核心要点与实践方法论
 keywords: [第189讲-狼叔]
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]
 ---
 
-# 第189讲 | 狼叔：2019年前端和Node的未来—Node.js篇
+# 狼叔：2019年前端和Node的未来—Node.js篇
 
 > **适用范围**：前端架构师、Node.js开发者及需要制定AI时代BFF/SSR技术战略的技术领导者；同样适用于希望理解Node.js在AI网关、Serverless推理中新角色的从业者。
 

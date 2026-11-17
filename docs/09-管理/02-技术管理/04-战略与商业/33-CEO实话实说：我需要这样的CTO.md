@@ -1,12 +1,12 @@
 ---
-title: 第3讲-CEO实话实说：我需要这样的CTO
+title: -CEO实话实说：我需要这样的CTO
 description: 第3讲-CEO实话实说：我需要这样的CTO的核心要点与实践方法论
 keywords: [我需要这样的CTO]
 category: 技术管理
 tags: [技术领导力, 团队管理, CTO]
 ---
 
-# 第3讲 | CEO实话实说：我需要这样的CTO
+# CEO实话实说：我需要这样的CTO
 
 > **适用范围**：CTO、技术VP及向CEO汇报的高级技术管理者，尤其是希望理解CEO真实期望、并在AI时代完成角色升级的技术领导者；同样适用于CEO与技术领导者之间的期望对齐场景。
 

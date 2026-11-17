@@ -10,7 +10,7 @@ tags: [Mock Server, WireMock, MockServer, Mountebank, Prism, 契约测试, OpenA
 
 在后端接口未就绪、第三方依赖收费限流、下游服务不稳定或联调环境稀缺的场景下，测试执行往往被"等接口"卡住。Mock Server 通过在网络层"伪装"被依赖服务的契约与行为，让前端联调、接口自动化、契约测试、性能压测能够独立、并行、可重复地推进。本文聚焦 Mock Server 主流工具的工程实战，覆盖 WireMock 3.x、MockServer 5.x、Mountebank、Prism 5.x 与 Postman Mock Server 的核心用法，并补充 2024–2026 年在 Schema 驱动 Mock、契约协同、AI 辅助生成与服务虚拟化方向上的新趋势。
 
-> **本文定位（分工卡）**：本文从 **测试开发与平台工程视角**讲解 Mock Server——聚焦工具横评与选型决策、Schema 驱动 Mock、契约协同、AI 辅助生成与平台化治理（规则版本化、GitOps、命中率审计）。WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、JUnit 集成）与契约测试的体系化方法论，见《[服务虚拟化与 Mock Server（Mountebank/WireMock）](../04-API测试/06-服务虚拟化与%20Mock%20Server（Mountebank-WireMock）.md)》。
+> **本文定位（分工卡）**：本文从 **测试开发与平台工程视角**讲解 Mock Server——聚焦工具横评与选型决策、Schema 驱动 Mock、契约协同、AI 辅助生成与平台化治理（规则版本化、GitOps、命中率审计）。WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、JUnit 集成）与契约测试的体系化方法论，见《[服务虚拟化与 Mock Server（Mountebank/WireMock）](../02-自动化测试/12-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89.md)》。
 
 ## 一、核心概念
 
@@ -169,7 +169,7 @@ curl -X POST http://localhost:8080/__admin/recordings/stop
 
 ### 2.5 JUnit 5 集成
 
-WireMock 通过 `@WireMockTest` 注解即可在测试中启动嵌入式实例并注册桩、执行 verify 断言。完整的接口测试级实战——JUnit 5 扩展写法、状态机场景（Scenario）、超时降级验证与调用次数断言——见《[服务虚拟化与 Mock Server](../04-API测试/06-服务虚拟化与%20Mock%20Server（Mountebank-WireMock）.md)》4.1 节，此处不再重复。平台侧要点是：嵌入式 WireMock 适合单测/集成测试；平台化场景应统一走独立部署（2.1 节）+ Git 管理的 mapping。
+WireMock 通过 `@WireMockTest` 注解即可在测试中启动嵌入式实例并注册桩、执行 verify 断言。完整的接口测试级实战——JUnit 5 扩展写法、状态机场景（Scenario）、超时降级验证与调用次数断言——见《[服务虚拟化与 Mock Server](../02-自动化测试/12-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89.md)》4.1 节，此处不再重复。平台侧要点是：嵌入式 WireMock 适合单测/集成测试；平台化场景应统一走独立部署（2.1 节）+ Git 管理的 mapping。
 
 ## 三、MockServer 5.x 实战
 
@@ -441,7 +441,7 @@ WireMock 3.x + 录制 + 状态机已能覆盖中小团队 80% 的 SV 需求；�
 
 ### 8.1 常见陷阱
 
-> "Mock 与真实行为脱节""过度 Mock""Mock 数据与契约不同步""忽视负向场景"等接口测试视角的误区剖析，见《[服务虚拟化与 Mock Server](../04-API测试/06-服务虚拟化与%20Mock%20Server（Mountebank-WireMock）.md)》第五章，此处聚焦平台治理侧陷阱。
+> "Mock 与真实行为脱节""过度 Mock""Mock 数据与契约不同步""忽视负向场景"等接口测试视角的误区剖析，见《[服务虚拟化与 Mock Server](../02-自动化测试/12-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89.md)》第五章，此处聚焦平台治理侧陷阱。
 
 - **硬编码敏感数据**：录制流量时把真实手机号、身份证号写进 mapping。**对策**：录制后强制脱敏流水线，禁止未脱敏 mapping 入库。
 - **Mock 状态泄漏**：状态机 Mock 在用例间未重置，导致用例间隐式依赖。**对策**：每个测试用例后调用 `__admin/reset` 或重建 imposter。

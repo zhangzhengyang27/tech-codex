@@ -15,7 +15,7 @@ tags: [服务虚拟化, Service Virtualization, Mock Server, WireMock, Mounteban
 
 本文系统阐述服务虚拟化的核心原理、WireMock 与 Mountebank 两大主流工具的实践、Mock 策略设计、以及与契约测试的关系。
 
-> **本文定位（分工卡）**：本文从 **API 测试视角**讲解服务虚拟化与 Mock Server——聚焦依赖解耦的测试设计、WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、verify 断言、故障注入）与契约测试衔接。Mock Server 工具横评与选型决策树、Schema 驱动 Mock、平台化治理（规则版本化、GitOps、AI 辅助生成）等测试开发与平台工程视角的内容，见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》。
+> **本文定位（分工卡）**：本文从 **API 测试视角**讲解服务虚拟化与 Mock Server——聚焦依赖解耦的测试设计、WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、verify 断言、故障注入）与契约测试衔接。Mock Server 工具横评与选型决策树、Schema 驱动 Mock、平台化治理（规则版本化、GitOps、AI 辅助生成）等测试开发与平台工程视角的内容，见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》。
 
 ## 一、服务虚拟化核心概念
 
@@ -488,7 +488,7 @@ curl -X POST http://localhost:2525/imposters -H 'Content-Type: application/json'
 }'
 ```
 
-接口测试中 Mountebank 最有价值的场景是**非 HTTP 协议验证**：例如创建 SMTP Imposter 模拟邮件服务器，测试用例触发"告警邮件"流程后，通过 `GET /smtp/4546/messages` 断言"邮件确实发出、主题与收件人正确"——这是 WireMock 无法覆盖的邮件类集成测试。imposter/stubs 模型、行为注入（`inject` 状态机）等更多细节见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第四章。
+接口测试中 Mountebank 最有价值的场景是**非 HTTP 协议验证**：例如创建 SMTP Imposter 模拟邮件服务器，测试用例触发"告警邮件"流程后，通过 `GET /smtp/4546/messages` 断言"邮件确实发出、主题与收件人正确"——这是 WireMock 无法覆盖的邮件类集成测试。imposter/stubs 模型、行为注入（`inject` 状态机）等更多细节见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第四章。
 
 ### 3.4 Hoverfly 录制与回放
 
@@ -526,11 +526,11 @@ curl https://real-api.example.com/users  # 实际返回录制的响应
 | **Mockoon** | Electron | HTTP/HTTPS | 桌面 GUI、易用 | 本地开发调试 |
 | **Pact** | 多语言 | HTTP/HTTPS | 契约驱动 Mock | 微服务契约测试 |
 
-完整的选型决策树（含 Prism/MockServer/Postman 的分支判断）见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第五章。
+完整的选型决策树（含 Prism/MockServer/Postman 的分支判断）见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第五章。
 
 ## 四、常见误区
 
-> Mock 规则版本化、GitOps 同步、命中率审计等**平台化治理**层面的最佳实践，见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第八章；本节聚焦接口测试视角的典型误区。
+> Mock 规则版本化、GitOps 同步、命中率审计等**平台化治理**层面的最佳实践，见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第八章；本节聚焦接口测试视角的典型误区。
 
 ### 4.1 Mock 与真实行为脱节
 
@@ -574,7 +574,7 @@ curl https://real-api.example.com/users  # 实际返回录制的响应
 
 ### 5.2 AI 辅助 Mock 生成
 
-2025-2026 年趋势：LLM 能从 OpenAPI 规范自动生成 WireMock/Mountebank 配置，能基于历史真实请求学习响应模式生成智能 Mock。AI 生成的 Mock 仍需人工校准，但能将 Mock 配置编写时间从小时级压缩到分钟级。"LLM 生成 → Schema 校验 → 入库"的完整工程流程见《[Mock Server 必杀技](../08-测试开发与平台工程/07-Mock%20Server%20必杀技.md)》第七章。
+2025-2026 年趋势：LLM 能从 OpenAPI 规范自动生成 WireMock/Mountebank 配置，能基于历史真实请求学习响应模式生成智能 Mock。AI 生成的 Mock 仍需人工校准，但能将 Mock 配置编写时间从小时级压缩到分钟级。"LLM 生成 → Schema 校验 → 入库"的完整工程流程见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第七章。
 
 ### 5.3 推荐参考
 

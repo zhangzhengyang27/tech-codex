@@ -2481,23 +2481,23 @@
   },
   {
     "source": "/docs/debugging/05-mock%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%B3%BB%E5%88%97/07-%E6%8E%A5%E5%8F%A3%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3",
-    "destination": "/docs/testing/07-性能测试/01-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E6%A0%87%E4%B8%8E%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/testing"
   },
   {
     "source": "/docs/debugging/05-mock%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%B3%BB%E5%88%97/08-Benchmark%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%A1%86%E6%9E%B6%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94",
-    "destination": "/docs/testing/07-性能测试/04-JMeter%20%E5%8F%82%E6%95%B0%E5%8C%96%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E5%8E%8B%E6%B5%8B"
+    "destination": "/docs/testing"
   },
   {
     "source": "/docs/debugging/05-mock%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%B3%BB%E5%88%97/09-JMeter%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8",
-    "destination": "/docs/testing/07-性能测试/03-JMeter%205.6.3%20%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E8%84%9A%E6%9C%AC%E6%9E%84%E5%BB%BA"
+    "destination": "/docs/testing"
   },
   {
     "source": "/docs/debugging/05-mock%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%B3%BB%E5%88%97/10-JMeter%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%9B%91%E6%8E%A7",
-    "destination": "/docs/testing/07-性能测试/04-JMeter%20%E5%8F%82%E6%95%B0%E5%8C%96%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E5%8E%8B%E6%B5%8B"
+    "destination": "/docs/testing"
   },
   {
     "source": "/docs/debugging/05-mock%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%B3%BB%E5%88%97/11-JMeter%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97",
-    "destination": "/docs/testing/07-性能测试/03-JMeter 5.6.3 核心概念与脚本构建"
+    "destination": "/docs/testing/03-性能测试/03-JMeter 5.6.3 核心概念与脚本构建"
   },
   {
     "source": "/docs/electron-practice/22-%E5%AE%9E%E7%8E%B0%E5%BA%94%E7%94%A8%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2",
@@ -5225,23 +5225,23 @@
   },
   {
     "source": "/docs/testing/08-%E6%B5%8B%E8%AF%95/07-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/16-%E6%8E%A5%E5%8F%A3%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%AD%96%E7%95%A5",
-    "destination": "/docs/testing/07-性能测试/01-性能测试指标与方法论"
+    "destination": "/docs/testing/03-性能测试/01-性能测试指标与方法论"
   },
   {
     "source": "/docs/testing/08-%E6%B5%8B%E8%AF%95/07-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/17-%E6%80%A7%E8%83%BD%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95%E4%B8%8E%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B",
-    "destination": "/docs/testing/07-性能测试/04-JMeter 参数化与分布式压测"
+    "destination": "/docs/testing/03-性能测试/04-JMeter 参数化与分布式压测"
   },
   {
     "source": "/docs/testing/08-%E6%B5%8B%E8%AF%95/07-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/18-JMeter%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8",
-    "destination": "/docs/testing/07-性能测试/03-JMeter 5.6.3 核心概念与脚本构建"
+    "destination": "/docs/testing/03-性能测试/03-JMeter 5.6.3 核心概念与脚本构建"
   },
   {
     "source": "/docs/testing/08-%E6%B5%8B%E8%AF%95/07-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/19-JMeter%E6%8F%92%E4%BB%B6%E7%94%9F%E6%80%81%E4%B8%8E%E6%89%A9%E5%B1%95",
-    "destination": "/docs/testing/07-性能测试/04-JMeter 参数化与分布式压测"
+    "destination": "/docs/testing/03-性能测试/04-JMeter 参数化与分布式压测"
   },
   {
     "source": "/docs/testing/08-%E6%B5%8B%E8%AF%95/07-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/20-JMeter%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B",
-    "destination": "/docs/testing/07-性能测试/02-性能测试目标制定与场景分类"
+    "destination": "/docs/testing/03-性能测试/02-性能测试目标制定与场景分类"
   },
   {
     "source": "/docs/ops/12-%E8%BF%90%E7%BB%B4/09-%E8%BF%90%E7%BB%B4%E8%87%AA%E5%8A%A8%E5%8C%96/01-%E5%9F%BA%E4%BA%8E%20Django_crontab%E3%80%81Xadmin%20%E5%81%9A%E4%B8%80%E5%A5%97%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F",
@@ -5304,13 +5304,383 @@
     "destination": "/docs/arch-interview/00-开篇词-中高级研发面试，逃不开架构设计这一环"
   },
   {
-    "source": "/docs/test-fundamentals",
+    "source": "/docs/test-fundamentals/01-%E6%B5%8B%E8%AF%95%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E6%A0%B8%E5%BF%83%E7%AB%9E%E4%BA%89%E5%8A%9B%E4%B8%8E%E8%81%8C%E4%B8%9A%E8%B7%AF%E5%BE%84",
+    "destination": "/docs/testing/01-测试基础与流程/01-测试工程师的核心竞争力与职业路径",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-fundamentals/02-%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%EF%BC%88%E7%AD%89%E4%BB%B7%E7%B1%BB%E4%B8%8E%E8%BE%B9%E7%95%8C%E5%80%BC%E4%B8%8E%E9%94%99%E8%AF%AF%E6%8E%A8%E6%B5%8B%E4%B8%8E%E6%AD%A3%E4%BA%A4%EF%BC%89",
+    "destination": "/docs/testing/01-测试基础与流程/02-测试用例设计方法（等价类与边界值与错误推测与正交）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-fundamentals/03-%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87%E4%B8%8E%E8%B4%A8%E9%87%8F%E9%97%A8%E7%A6%81",
+    "destination": "/docs/testing/01-测试基础与流程/03-测试覆盖率与质量门禁",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-fundamentals/04-%E8%BD%AF%E4%BB%B6%E7%BC%BA%E9%99%B7%E6%8A%A5%E5%91%8A%E4%B8%8E%E7%BC%BA%E9%99%B7%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F",
+    "destination": "/docs/testing/01-测试基础与流程/04-软件缺陷报告与缺陷生命周期",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-fundamentals/05-%E6%B5%8B%E8%AF%95%E8%AE%A1%E5%88%92%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5",
+    "destination": "/docs/testing/01-测试基础与流程/05-测试计划与测试策略",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-fundamentals/06-%E6%B5%8B%E8%AF%95%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E9%9D%9E%E6%B5%8B%E8%AF%95%E7%9F%A5%E8%AF%86%EF%BC%88%E6%9E%B6%E6%9E%84-K8s-DevOps%EF%BC%89",
+    "destination": "/docs/testing/01-测试基础与流程/06-测试工程师的非测试知识（架构-K8s-DevOps）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-models/01-%E6%B5%8B%E8%AF%95%E9%87%91%E5%AD%97%E5%A1%94%E4%B8%8E%E6%B5%8B%E8%AF%95%E5%A5%96%E6%9D%AF",
+    "destination": "/docs/testing/01-测试基础与流程/07-测试金字塔与测试奖杯",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-models/02-%E6%B5%8B%E8%AF%95%E5%B7%A6%E7%A7%BB%E4%B8%8E%E6%B5%8B%E8%AF%95%E5%8F%B3%E7%A7%BB",
+    "destination": "/docs/testing/01-测试基础与流程/08-测试左移与测试右移",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-models/03-%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%9D%E7%BB%B4%E4%B8%8E%20Sprint%20%E6%B5%81%E7%A8%8B",
+    "destination": "/docs/testing/01-测试基础与流程/09-敏捷测试思维与 Sprint 流程",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-models/04-ATDD-BDD%20%E4%B8%8E%E5%AE%9E%E4%BE%8B%E5%8C%96%E9%9C%80%E6%B1%82",
+    "destination": "/docs/testing/01-测试基础与流程/10-ATDD-BDD 与实例化需求",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-models/05-%E6%8E%A2%E7%B4%A2%E5%BC%8F%E6%B5%8B%E8%AF%95%EF%BC%88SBTM%EF%BC%89",
+    "destination": "/docs/testing/01-测试基础与流程/11-探索式测试（SBTM）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-models/06-%E7%B2%BE%E5%87%86%E6%B5%8B%E8%AF%95%E4%B8%8E%E5%8F%98%E6%9B%B4%E5%BD%B1%E5%93%8D%E5%88%86%E6%9E%90",
+    "destination": "/docs/testing/01-测试基础与流程/12-精准测试与变更影响分析",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-models/07-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%B5%8B%E8%AF%95%EF%BC%88MBT%EF%BC%89",
+    "destination": "/docs/testing/01-测试基础与流程/13-基于模型的测试（MBT）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-appendix/01-%E6%B5%8B%E8%AF%95%E7%BB%8F%E5%85%B8%E4%B9%A6%E7%9B%AE%E4%B8%8E%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99",
+    "destination": "/docs/testing/01-测试基础与流程/14-测试经典书目与学习资料",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-appendix/02-%E6%B5%8B%E8%AF%95%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%93",
+    "destination": "/docs/testing/01-测试基础与流程/15-测试工程师面试题库",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-appendix/03-%E6%9C%AF%E8%AF%AD%E8%A1%A8",
+    "destination": "/docs/testing/01-测试基础与流程/16-术语表",
+    "permanent": true
+  },
+  {
+    "source": "/docs/unit-testing/01-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%B5%8B%E8%AF%95%E6%9B%BF%E8%BA%AB",
+    "destination": "/docs/testing/02-自动化测试/01-单元测试基础与测试替身",
+    "permanent": true
+  },
+  {
+    "source": "/docs/unit-testing/02-JUnit%205%20Jupiter%20%E5%AE%9E%E6%88%98",
+    "destination": "/docs/testing/02-自动化测试/02-JUnit 5 Jupiter 实战",
+    "permanent": true
+  },
+  {
+    "source": "/docs/unit-testing/03-pytest%209%20%E5%AE%9E%E6%88%98%EF%BC%88fixtures%E4%B8%8E%E5%8F%82%E6%95%B0%E5%8C%96%E4%B8%8E%E6%8F%92%E4%BB%B6%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/03-pytest 9 实战（fixtures与参数化与插件）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/unit-testing/04-TDD%20%E7%BA%A2-%E7%BB%BF-%E9%87%8D%E6%9E%84%E5%BE%AA%E7%8E%AF",
+    "destination": "/docs/testing/02-自动化测试/04-TDD 红-绿-重构循环",
+    "permanent": true
+  },
+  {
+    "source": "/docs/unit-testing/05-%E4%BB%A3%E7%A0%81%E7%BA%A7%E6%B5%8B%E8%AF%95%EF%BC%88%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%8A%A8%E6%80%81%E6%B5%8B%E8%AF%95%E4%B8%8E%E5%8F%98%E5%BC%82%E6%B5%8B%E8%AF%95%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/05-代码级测试（静态分析与动态测试与变异测试）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/unit-testing/06-%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87%E5%B7%A5%E5%85%B7%EF%BC%88JaCoCo%20%E4%B8%8E%20coverage.py%20%E4%B8%8E%20SonarQube%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/06-测试覆盖率工具（JaCoCo 与 coverage.py 与 SonarQube）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/api-testing/01-API%20%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%8D%8F%E8%AE%AE",
+    "destination": "/docs/testing/02-自动化测试/07-API 测试基础与协议",
+    "permanent": true
+  },
+  {
+    "source": "/docs/api-testing/02-Postman%20v11%20%E4%B8%8E%20Newman%20%E8%87%AA%E5%8A%A8%E5%8C%96",
+    "destination": "/docs/testing/02-自动化测试/08-Postman v11 与 Newman 自动化",
+    "permanent": true
+  },
+  {
+    "source": "/docs/api-testing/03-REST%20Assured%20%E4%B8%8E%20pytest%2Brequests%20%E6%A1%86%E6%9E%B6",
+    "destination": "/docs/testing/02-自动化测试/09-REST Assured 与 pytest%2Brequests 框架",
+    "permanent": true
+  },
+  {
+    "source": "/docs/api-testing/04-API%20%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E4%BA%94%E9%98%B6%E6%AE%B5%E6%BC%94%E8%BF%9B",
+    "destination": "/docs/testing/02-自动化测试/10-API 测试框架五阶段演进",
+    "permanent": true
+  },
+  {
+    "source": "/docs/api-testing/05-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A5%91%E7%BA%A6%E6%B5%8B%E8%AF%95%EF%BC%88Pact%20%E4%B8%8E%20Spring%20Cloud%20Contract%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/11-微服务契约测试（Pact 与 Spring Cloud Contract）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/api-testing/06-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/12-服务虚拟化与 Mock Server（Mountebank-WireMock）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/01-GUI%20%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5%E4%B8%8E%20ROI",
+    "destination": "/docs/testing/02-自动化测试/13-GUI 自动化测试策略与 ROI",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/02-Selenium%204%20WebDriver%20%E5%AE%9E%E6%88%98",
+    "destination": "/docs/testing/02-自动化测试/14-Selenium 4 WebDriver 实战",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/03-Playwright%201.61%20%E5%AE%9E%E6%88%98%EF%BC%88%E5%90%AB%E7%BB%84%E4%BB%B6%E6%B5%8B%E8%AF%95%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/15-Playwright 1.61 实战（含组件测试）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/04-Cypress%2015%20%E5%AE%9E%E6%88%98",
+    "destination": "/docs/testing/02-自动化测试/16-Cypress 15 实战",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/05-Page%20Object%20%E4%B8%8E%20Screenplay%20%E6%A8%A1%E5%BC%8F",
+    "destination": "/docs/testing/02-自动化测试/17-Page Object 与 Screenplay 模式",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/06-%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E6%B5%8B%E8%AF%95%EF%BC%88DDT%EF%BC%89%E4%B8%8E%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E7%AD%96%E7%95%A5",
+    "destination": "/docs/testing/02-自动化测试/18-数据驱动测试（DDT）与测试数据策略",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/07-GUI%20%E6%B5%8B%E8%AF%95%E7%A8%B3%E5%AE%9A%E6%80%A7%EF%BC%88%E5%90%8C%E6%AD%A5%E7%AD%89%E5%BE%85%E4%B8%8E%E8%87%AA%E6%84%88%E4%B8%8EFlaky%20%E6%B2%BB%E7%90%86%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/19-GUI 测试稳定性（同步等待与自愈与Flaky 治理）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/08-GUI%20%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%EF%BC%88Allure%20%E4%B8%8E%20Trace%20Viewer%20%E4%B8%8E%20ReportPortal%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/20-GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/gui-testing/09-Selenium%20Grid%204%20%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E6%89%A7%E8%A1%8C",
+    "destination": "/docs/testing/02-自动化测试/21-Selenium Grid 4 与分布式执行",
+    "permanent": true
+  },
+  {
+    "source": "/docs/mobile-testing/01-%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%EF%BC%88Web%E4%B8%8ENative%E4%B8%8EHybrid%E4%B8%8E%E8%B7%A8%E5%B9%B3%E5%8F%B0%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/22-移动应用测试方法（Web与Native与Hybrid与跨平台）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/mobile-testing/02-Appium%203%20%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%AE%9E%E6%88%98",
+    "destination": "/docs/testing/02-自动化测试/23-Appium 3 架构与实战",
+    "permanent": true
+  },
+  {
+    "source": "/docs/mobile-testing/03-Android%20%E8%87%AA%E5%8A%A8%E5%8C%96%EF%BC%88UiAutomator2%20%E4%B8%8E%20Espresso%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/24-Android 自动化（UiAutomator2 与 Espresso）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/mobile-testing/04-iOS%20%E8%87%AA%E5%8A%A8%E5%8C%96%EF%BC%88XCUITest%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/25-iOS 自动化（XCUITest）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/mobile-testing/05-WebView%20%E4%B8%8E%E6%B7%B7%E5%90%88%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95",
+    "destination": "/docs/testing/02-自动化测试/26-WebView 与混合应用测试",
+    "permanent": true
+  },
+  {
+    "source": "/docs/mobile-testing/06-%E7%A7%BB%E5%8A%A8%E6%B5%8B%E8%AF%95%E4%BA%91%E7%9C%9F%E6%9C%BA%E5%B9%B3%E5%8F%B0%EF%BC%88BrowserStack%20%E4%B8%8E%20Sauce%20Labs%EF%BC%89",
+    "destination": "/docs/testing/02-自动化测试/27-移动测试云真机平台（BrowserStack 与 Sauce Labs）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/01-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%8C%87%E6%A0%87%E4%B8%8E%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/testing/03-性能测试/01-性能测试指标与方法论",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/02-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9B%AE%E6%A0%87%E5%88%B6%E5%AE%9A%E4%B8%8E%E5%9C%BA%E6%99%AF%E5%88%86%E7%B1%BB",
+    "destination": "/docs/testing/03-性能测试/02-性能测试目标制定与场景分类",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/03-JMeter%205.6.3%20%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E8%84%9A%E6%9C%AC%E6%9E%84%E5%BB%BA",
+    "destination": "/docs/testing/03-性能测试/03-JMeter 5.6.3 核心概念与脚本构建",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/04-JMeter%20%E5%8F%82%E6%95%B0%E5%8C%96%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E5%8E%8B%E6%B5%8B",
+    "destination": "/docs/testing/03-性能测试/04-JMeter 参数化与分布式压测",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/05-JMeter%20%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91%E4%B8%8E%20API%20%E5%B9%B3%E5%8F%B0",
+    "destination": "/docs/testing/03-性能测试/05-JMeter 二次开发与 API 平台",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/06-k6%20%E4%BA%91%E5%8E%9F%E7%94%9F%E5%8E%8B%E6%B5%8B%E5%AE%9E%E6%88%98",
+    "destination": "/docs/testing/03-性能测试/06-k6 云原生压测实战",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/07-Locust%20Python%20%E5%8E%8B%E6%B5%8B%E5%AE%9E%E6%88%98",
+    "destination": "/docs/testing/03-性能测试/07-Locust Python 压测实战",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/08-%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%EF%BC%88Lighthouse%E4%B8%8ECore%20Web%20Vitals%EF%BC%89",
+    "destination": "/docs/testing/03-性能测试/08-前端性能测试（Lighthouse与Core Web Vitals）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/09-%E5%90%8E%E7%AB%AF%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%88Prometheus%E4%B8%8EGrafana%E4%B8%8ESkyWalking%2010%EF%BC%89",
+    "destination": "/docs/testing/03-性能测试/09-后端性能监控（Prometheus与Grafana与SkyWalking 10）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/10-JVM%20%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%EF%BC%88JFR%E4%B8%8EArthas%204.3%E4%B8%8Easync-profiler%EF%BC%89",
+    "destination": "/docs/testing/03-性能测试/10-JVM 性能分析（JFR与Arthas 4.3与async-profiler）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/11-MySQL%20%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B8%8E%E6%85%A2%20SQL%20%E6%B2%BB%E7%90%86",
+    "destination": "/docs/testing/03-性能测试/11-MySQL 性能优化与慢 SQL 治理",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/12-Redis%208%20%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%EF%BC%88%E5%90%AB%20Vector%20Set%EF%BC%89",
+    "destination": "/docs/testing/03-性能测试/12-Redis 8 性能调优（含 Vector Set）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/13-Docker%20%E4%B8%8E%20K8s%20%E5%9C%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8",
+    "destination": "/docs/testing/03-性能测试/13-Docker 与 K8s 在性能测试中的应用",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/14-Nginx%20%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E4%B8%8E%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1",
+    "destination": "/docs/testing/03-性能测试/14-Nginx 性能调优与负载均衡",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/15-%E5%85%A8%E9%93%BE%E8%B7%AF%E5%8E%8B%E6%B5%8B%E4%B8%8E%E5%BD%B1%E5%AD%90%E5%BA%93%E8%A1%A8%E8%AE%BE%E8%AE%A1",
+    "destination": "/docs/testing/03-性能测试/15-全链路压测与影子库表设计",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/01-%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF%E6%A0%88%E9%80%89%E5%9E%8B",
+    "destination": "/docs/testing/04-测试开发与前沿/01-测试开发技术栈选型",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/02-%E6%B5%8B%E8%AF%95%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%EF%BC%88Django%20%E4%B8%8E%20FastAPI%20%E4%B8%8E%20Vue%EF%BC%89",
+    "destination": "/docs/testing/04-测试开发与前沿/02-测试平台开发（Django 与 FastAPI 与 Vue）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/03-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%2013%20%E5%8E%9F%E5%88%99",
+    "destination": "/docs/testing/04-测试开发与前沿/03-自动化测试框架设计 13 原则",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/04-%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E4%B8%8E%E5%8F%82%E6%95%B0%E5%8C%96%E6%A1%86%E6%9E%B6",
+    "destination": "/docs/testing/04-测试开发与前沿/04-数据驱动与参数化框架",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/05-%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E4%B8%8E%E7%BB%9F%E4%B8%80%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0",
+    "destination": "/docs/testing/04-测试开发与前沿/05-测试数据持久化与统一数据平台",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/06-%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E7%8E%AF%E5%A2%83%E4%B8%8E%E7%94%A8%E4%BE%8B",
+    "destination": "/docs/testing/04-测试开发与前沿/06-测试框架动态切换环境与用例",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80",
+    "destination": "/docs/testing/04-测试开发与前沿/07-Mock Server 必杀技",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/08-%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%E4%B8%8E%E5%9B%A2%E9%98%9F%E5%BD%B1%E5%93%8D%E5%8A%9B",
+    "destination": "/docs/testing/04-测试开发与前沿/08-测试报告与团队影响力",
+    "permanent": true
+  },
+  {
+    "source": "/docs/test-dev/09-Linux%E4%B8%8EShell%20%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91%E5%BF%85%E5%A4%87",
+    "destination": "/docs/testing/04-测试开发与前沿/09-Linux与Shell 测试开发必备",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-frontier/01-AI%20%E8%BE%85%E5%8A%A9%E6%B5%8B%E8%AF%95%EF%BC%88LLM%20%E7%94%9F%E6%88%90%E7%94%A8%E4%BE%8B-Copilot%20for%20Tests%EF%BC%89",
+    "destination": "/docs/testing/04-测试开发与前沿/10-AI 辅助测试（LLM 生成用例-Copilot for Tests）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-frontier/02-%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%8E%20DevSecOps",
+    "destination": "/docs/testing/04-测试开发与前沿/11-渗透测试与 DevSecOps",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-frontier/03-%E6%B7%B7%E6%B2%8C%E5%B7%A5%E7%A8%8B%E4%B8%8E%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5",
+    "destination": "/docs/testing/04-测试开发与前沿/12-混沌工程与故障注入",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-frontier/04-%E8%B4%A8%E9%87%8F%E7%AE%A1%E7%90%86%E4%BD%93%E7%B3%BB%EF%BC%88Google-BAT%20%E5%AF%B9%E6%AF%94%EF%BC%89",
+    "destination": "/docs/testing/04-测试开发与前沿/13-质量管理体系（Google-BAT 对比）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-frontier/05-%E6%B5%8B%E8%AF%95%E6%88%90%E7%86%9F%E5%BA%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%BC%94%E8%BF%9B",
+    "destination": "/docs/testing/04-测试开发与前沿/14-测试成熟度模型与演进",
+    "permanent": true
+  },
+  {
+    "source": "/docs/testing-frontier/06-%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%EF%BC%88%E9%AB%98%E6%80%A7%E8%83%BD-%E9%AB%98%E5%8F%AF%E7%94%A8-%E5%8F%AF%E4%BC%B8%E7%BC%A9%EF%BC%89",
+    "destination": "/docs/testing/04-测试开发与前沿/15-网站架构与测试设计（高性能-高可用-可伸缩）",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing/:path%2A",
+    "destination": "/docs/testing/03-性能测试/:path*",
+    "permanent": true
+  },
+  {
+    "source": "/docs/performance-testing",
     "destination": "/docs/testing",
     "permanent": true
   },
   {
-    "source": "/docs/test-fundamentals/:path*",
-    "destination": "/docs/testing/01-测试基础/:path*",
+    "source": "/docs/test-fundamentals",
+    "destination": "/docs/testing",
     "permanent": true
   },
   {
@@ -5319,58 +5689,23 @@
     "permanent": true
   },
   {
-    "source": "/docs/test-models/:path*",
-    "destination": "/docs/testing/02-测试模型与流程/:path*",
-    "permanent": true
-  },
-  {
     "source": "/docs/unit-testing",
-    "destination": "/docs/testing/03-单元测试与代码级测试",
-    "permanent": true
-  },
-  {
-    "source": "/docs/unit-testing/:path*",
-    "destination": "/docs/testing/03-单元测试与代码级测试/:path*",
+    "destination": "/docs/testing",
     "permanent": true
   },
   {
     "source": "/docs/api-testing",
-    "destination": "/docs/testing/04-API测试",
-    "permanent": true
-  },
-  {
-    "source": "/docs/api-testing/:path*",
-    "destination": "/docs/testing/04-API测试/:path*",
+    "destination": "/docs/testing",
     "permanent": true
   },
   {
     "source": "/docs/gui-testing",
-    "destination": "/docs/testing/05-GUI自动化测试",
-    "permanent": true
-  },
-  {
-    "source": "/docs/gui-testing/:path*",
-    "destination": "/docs/testing/05-GUI自动化测试/:path*",
+    "destination": "/docs/testing",
     "permanent": true
   },
   {
     "source": "/docs/mobile-testing",
-    "destination": "/docs/testing/06-移动端测试",
-    "permanent": true
-  },
-  {
-    "source": "/docs/mobile-testing/:path*",
-    "destination": "/docs/testing/06-移动端测试/:path*",
-    "permanent": true
-  },
-  {
-    "source": "/docs/performance-testing",
-    "destination": "/docs/testing/07-性能测试",
-    "permanent": true
-  },
-  {
-    "source": "/docs/performance-testing/:path*",
-    "destination": "/docs/testing/07-性能测试/:path*",
+    "destination": "/docs/testing",
     "permanent": true
   },
   {
@@ -5379,28 +5714,13 @@
     "permanent": true
   },
   {
-    "source": "/docs/test-dev/:path*",
-    "destination": "/docs/testing/08-测试开发与平台工程/:path*",
-    "permanent": true
-  },
-  {
     "source": "/docs/testing-frontier",
     "destination": "/docs/testing",
     "permanent": true
   },
   {
-    "source": "/docs/testing-frontier/:path*",
-    "destination": "/docs/testing/09-测试前沿与质量管理/:path*",
-    "permanent": true
-  },
-  {
     "source": "/docs/testing-appendix",
     "destination": "/docs/testing",
-    "permanent": true
-  },
-  {
-    "source": "/docs/testing-appendix/:path*",
-    "destination": "/docs/testing/10-附录/:path*",
     "permanent": true
   }
 ]

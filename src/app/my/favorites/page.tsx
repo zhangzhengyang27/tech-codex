@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import { Clock, ExternalLink, FileText, FolderOpen, Sparkles, Star, Trash2 } from "lucide-react";
+import { Clock, ExternalLink, FileText, FolderOpen, Loader2, Sparkles, Star, Trash2 } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { fetchDocUrls } from "@/lib/doc-url";
@@ -115,32 +115,73 @@ function CardSkeleton() {
   );
 }
 
-/** 我的收藏：卡片网格 + 分类徽章 + 空态引导。 */
+/** 我的收藏：卡片网格 + 分类徽章 + 空态引导；超出首页 20 条时提供「加载更多」分页。 */
+const PAGE_SIZE = 20;
+
 export default function MyFavoritesPage() {
   const { isLoggedIn } = useAuth();
   const hydrated = useHydrated();
   const [items, setItems] = useState<KbFavoriteView[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
   const [urlMap, setUrlMap] = useState<Record<string, string | null>>({});
+  /** 请求序守卫：加载更多与取消收藏并发时丢弃旧响应 */
+  const loadSeqRef = useRef(0);
+
+  const collectPublicPaths = (list: KbFavoriteView[]) =>
+    list.filter((f) => f.libraryId === "default").map((f) => f.filePath);
 
   useEffect(() => {
     if (!hydrated || !isLoggedIn) return;
-    favoritesList()
+    const seq = ++loadSeqRef.current;
+    favoritesList(0, PAGE_SIZE)
       .then((page) => {
+        if (seq !== loadSeqRef.current) return;
         setItems(page.content);
         setTotal(page.totalElements);
-        const publicPaths = page.content
-          .filter((f) => f.libraryId === "default")
-          .map((f) => f.filePath);
+        const publicPaths = collectPublicPaths(page.content);
         if (publicPaths.length > 0) {
           void fetchDocUrls(publicPaths).then(setUrlMap);
         }
       })
-      .catch((e) => setError(e instanceof Error ? e.message : "加载失败"))
-      .finally(() => setLoading(false));
+      .catch((e) => {
+        if (seq !== loadSeqRef.current) return;
+        setError(e instanceof Error ? e.message : "加载失败");
+      })
+      .finally(() => {
+        if (seq === loadSeqRef.current) setLoading(false);
+      });
   }, [hydrated, isLoggedIn]);
+
+  // 「加载更多」：按已加载条数换算下一页页码续拉；按 total 判断是否还有更多
+  const hasMore = items.length < total;
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    setError("");
+    const nextPage = Math.floor(items.length / PAGE_SIZE);
+    const seq = ++loadSeqRef.current;
+    try {
+      const page = await favoritesList(nextPage, PAGE_SIZE);
+      if (seq !== loadSeqRef.current) return;
+      setItems((prev) => {
+        const seen = new Set(prev.map((f) => f.docId));
+        return [...prev, ...page.content.filter((f) => !seen.has(f.docId))];
+      });
+      const publicPaths = collectPublicPaths(page.content);
+      if (publicPaths.length > 0) {
+        void fetchDocUrls(publicPaths).then(setUrlMap);
+      }
+    } catch (e) {
+      if (seq === loadSeqRef.current) {
+        setError(e instanceof Error ? e.message : "加载更多失败");
+      }
+    } finally {
+      if (seq === loadSeqRef.current) setLoadingMore(false);
+    }
+  };
 
   const linkOf = useMemo(
     () => (f: KbFavoriteView): string | null => {
@@ -237,6 +278,20 @@ export default function MyFavoritesPage() {
             </li>
           ))}
         </ul>
+      )}
+
+      {/* 加载更多：首页固定 20 条，收藏较多时按 total 续拉 */}
+      {!loading && hasMore && (
+        <div className="flex justify-center pt-2">
+          <button
+            onClick={() => void loadMore()}
+            disabled={loadingMore}
+            className="flex items-center gap-1.5 rounded-full border border-border px-4 py-1.5 text-xs text-foreground/60 hover:bg-muted hover:text-foreground disabled:opacity-50"
+          >
+            {loadingMore && <Loader2 size={12} className="animate-spin" />}
+            加载更多（已加载 {items.length} / {total} 篇）
+          </button>
+        </div>
       )}
     </div>
   );

@@ -79,10 +79,10 @@ function buildVue2SrcDoc(code: string): string {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script type="module">
+<script type="module" onerror="window.dispatchEvent(new Event('vue-preview-failed'))">
 import * as Vue from '/vue.esm-browser.js';
 window.Vue = Vue;
-window.__vueLoaded = true;
+window.dispatchEvent(new Event('vue-preview-ready'));
 <\/script>
 <style>
   body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1f2328; }
@@ -92,16 +92,28 @@ window.__vueLoaded = true;
 <body>
 <div id="app"></div>
 <script type="module">
-await new Promise(r => setInterval(() => window.__vueLoaded && r(), 50));
+// 事件驱动等待 Vue 运行时就绪（onerror/事件兜底），替代原「永不清理的 setInterval 轮询」
+try {
+  if (!window.Vue) {
+    await new Promise((resolve, reject) => {
+      window.addEventListener('vue-preview-ready', resolve, { once: true });
+      window.addEventListener('vue-preview-failed', () => reject(new Error('Vue 加载失败（依赖 esm.sh CDN）')), { once: true });
+      setTimeout(() => reject(new Error('Vue 加载超时（依赖 esm.sh CDN，请检查网络）')), 15000);
+    });
+  }
+} catch (e) {
+  document.body.innerHTML = '<pre style="color:#cf222e;white-space:pre-wrap">' + e.message + '</pre>';
+  throw e;
+}
 const { createApp, h } = window.Vue;
 
-// 动态加载 @vue/compiler-dom 用于模板编译
+// 动态加载 @vue/compiler-dom 用于模板编译（依赖外网 esm.sh CDN，失败时在预览区明确提示）
 let compile;
 try {
   const mod = await import('https://esm.sh/@vue/compiler-dom@3.5.13?bundle-deps');
   compile = mod.compile;
 } catch(e) {
-  document.body.innerHTML = '<pre style="color:#cf222e">编译器加载失败: ' + e.message + '</pre>';
+  document.body.innerHTML = '<pre style="color:#cf222e">编译器加载失败（依赖 esm.sh CDN）: ' + e.message + '</pre>';
   throw e;
 }
 
@@ -173,10 +185,10 @@ function buildSrcDoc(code: string): string {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script type="module">
+<script type="module" onerror="window.dispatchEvent(new Event('vue-preview-failed'))">
 import * as Vue from '/vue.esm-browser.js';
 window.Vue = Vue;
-window.__vueLoaded = true;
+window.dispatchEvent(new Event('vue-preview-ready'));
 <\/script>
 <style>
   body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1f2328; }
@@ -186,16 +198,28 @@ window.__vueLoaded = true;
 <body>
 <div id="app"></div>
 <script type="module">
-await new Promise(r => setInterval(() => window.__vueLoaded && r(), 50));
+// 事件驱动等待 Vue 运行时就绪（onerror/事件兜底），替代原「永不清理的 setInterval 轮询」
+try {
+  if (!window.Vue) {
+    await new Promise((resolve, reject) => {
+      window.addEventListener('vue-preview-ready', resolve, { once: true });
+      window.addEventListener('vue-preview-failed', () => reject(new Error('Vue 加载失败（依赖 esm.sh CDN）')), { once: true });
+      setTimeout(() => reject(new Error('Vue 加载超时（依赖 esm.sh CDN，请检查网络）')), 15000);
+    });
+  }
+} catch (e) {
+  document.body.innerHTML = '<pre style="color:#cf222e;white-space:pre-wrap">' + e.message + '</pre>';
+  throw e;
+}
 const { createApp, h } = window.Vue;
 
-// 动态加载 @vue/compiler-dom 用于模板编译
+// 动态加载 @vue/compiler-dom 用于模板编译（依赖外网 esm.sh CDN，失败时在预览区明确提示）
 let compile;
 try {
   const mod = await import('https://esm.sh/@vue/compiler-dom@3.5.13?bundle-deps');
   compile = mod.compile;
 } catch(e) {
-  document.body.innerHTML = '<pre style="color:#cf222e">编译器加载失败: ' + e.message + '</pre>';
+  document.body.innerHTML = '<pre style="color:#cf222e">编译器加载失败（依赖 esm.sh CDN）: ' + e.message + '</pre>';
   throw e;
 }
 
@@ -225,13 +249,19 @@ export function VuePreview({ code }: VuePreviewProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const srcDoc = useMemo(() => buildSrcDoc(code), [code]);
 
-  // 弹窗打开时禁止底层页面滚动
+  // 弹窗打开时禁止底层页面滚动 + ESC 关闭（与 html-preview 一致）
   useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => { document.body.style.overflow = prev; };
-    }
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prev;
+    };
   }, [open]);
 
   // 监听 iframe 内容高度（经 postMessage 上报，避免 allow-same-origin）

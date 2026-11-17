@@ -187,7 +187,9 @@ export default function AdminDocumentsPage() {
     setError("");
     try {
       await deleteAdminDocument(d.id);
-      void load(page, fetchPage);
+      // 删掉当前页最后一条且不在首页时回退一页，避免停留在空页
+      const isLastItemOnPage = page > 0 && docs.length === 1;
+      void load(isLastItemOnPage ? page - 1 : page, fetchPage);
     } catch (e) {
       setError(errText(e));
     } finally {

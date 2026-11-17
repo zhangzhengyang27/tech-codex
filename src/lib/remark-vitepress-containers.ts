@@ -29,8 +29,8 @@ export function normalizeVitepressContainers(md: string): string {
       continue;
     }
 
-    // 仅处理代码围栏外、顶格的容器边界行
-    if (fenceLen === 0 && /^:{3,}/.test(line)) {
+    // 仅处理代码围栏外的容器边界行（允许缩进，与 remark 的段落解析保持一致）
+    if (fenceLen === 0 && /^:{3,}/.test(trimmed)) {
       if (out.length > 0 && out[out.length - 1].trim() !== '') out.push('');
       out.push(line);
       if (i + 1 < lines.length && lines[i + 1].trim() !== '') out.push('');
@@ -55,6 +55,12 @@ function paragraphText(node: Paragraph): string {
 /** 若段落是闭合围栏（仅由 3+ 个冒号组成），返回冒号数量，否则返回 null */
 function closingFenceLen(node: Paragraph): number | null {
   const m = /^(:{3,})$/.exec(paragraphText(node).trim());
+  return m ? m[1].length : null;
+}
+
+/** 若段落是嵌套容器的起始标记（3+ 冒号后跟类型/标题），返回其围栏长度，否则返回 null */
+function openingFenceLen(node: Paragraph): number | null {
+  const m = /^(:{3,})\s*\S/.exec(paragraphText(node).trim());
   return m ? m[1].length : null;
 }
 
@@ -108,6 +114,11 @@ function processParent(parent: Parent) {
 
     if (node.type === 'paragraph') {
       const text = paragraphText(node).trim();
+      // 孤儿闭合标记：未被任何容器消费的纯冒号段落是残渣，直接丢弃（避免渲染出裸 :::）
+      if (closingFenceLen(node) !== null) {
+        i++;
+        continue;
+      }
       const openM = /^(:{3,})\s*([a-zA-Z][\w-]*)?[ \t]*([\s\S]*)$/.exec(text);
       // 起始标记：3+ 冒号 + 类型/标题（纯冒号行是闭合标记，不在此处理）
       if (openM && /^:{3,}\s*\S/.test(text)) {
@@ -115,17 +126,29 @@ function processParent(parent: Parent) {
         const type = (openM[2] || 'tip').toLowerCase();
         const title = (openM[3] || '').trim();
 
-        // 向后查找闭合标记（冒号数 >= 起始围栏）
+        // 向后查找闭合标记，按嵌套深度配对：
+        // 遇嵌套容器的起始标记压栈（深度 +1）；纯冒号段落先与栈顶嵌套容器配对
+        // （冒号数 >= 栈顶围栏长度则弹栈，属于嵌套容器）；栈空时冒号数 >= 起始
+        // 围栏长度的闭合才是本容器的闭合标记（深度归零）
         const inner: Parent['children'] = [];
+        const nestedOpens: number[] = [];
         let j = i + 1;
         let closed = false;
         while (j < children.length) {
           const cand = children[j];
           if (cand.type === 'paragraph') {
-            const cl = closingFenceLen(cand);
-            if (cl !== null && cl >= fenceLen) {
-              closed = true;
-              break;
+            const closeLen = closingFenceLen(cand);
+            if (closeLen !== null) {
+              const top = nestedOpens[nestedOpens.length - 1];
+              if (nestedOpens.length > 0 && closeLen >= top) {
+                nestedOpens.pop(); // 属于嵌套容器的闭合，保留为其内部内容
+              } else if (nestedOpens.length === 0 && closeLen >= fenceLen) {
+                closed = true;
+                break;
+              }
+            } else {
+              const openLen = openingFenceLen(cand);
+              if (openLen !== null) nestedOpens.push(openLen);
             }
           }
           inner.push(cand);

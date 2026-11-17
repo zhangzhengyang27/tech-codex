@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AlertCircle, FileText, Loader2, X } from "lucide-react";
 import clsx from "clsx";
 import { myDocument } from "@/lib/kb";
@@ -34,25 +34,34 @@ export function DocViewer({
   const [doc, setDoc] = useState<KbDocumentView | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  /** 请求序守卫：快速切换 docId（A→B）时丢弃 A 的慢响应，防止 A 内容覆盖 B */
+  const loadSeqRef = useRef(0);
 
   const load = useCallback(
     async (id: number) => {
+      const seq = ++loadSeqRef.current;
       setLoading(true);
       setError("");
       setDoc(null);
       try {
-        setDoc(await loadDoc(id));
+        const d = await loadDoc(id);
+        if (seq !== loadSeqRef.current) return; // 已切换到其他文档，丢弃过期响应
+        setDoc(d);
       } catch (e) {
+        if (seq !== loadSeqRef.current) return;
         setError(errText(e));
       } finally {
-        setLoading(false);
+        if (seq === loadSeqRef.current) setLoading(false);
       }
     },
     [loadDoc]
   );
 
   useEffect(() => {
-    if (docId != null) void load(docId);
+    if (docId == null) return;
+    // delayed setState：延后一拍发起加载，避免 effect 内同步 setState 级联渲染
+    const t = setTimeout(() => void load(docId), 0);
+    return () => clearTimeout(t);
   }, [docId, load]);
 
   // Esc 关闭

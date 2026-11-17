@@ -4,6 +4,13 @@ import type { Highlighter } from 'shiki';
 export const SHIKI_LANGS = [
   'javascript',
   'typescript',
+  // 常用别名/衍生语言：tsx、jsx、scss、xml、nginx 均为 shiki 内置 id（json 已在列），
+  // 围栏标记写成 ```tsx / ```xml 等时无需回退纯文本
+  'tsx',
+  'jsx',
+  'scss',
+  'xml',
+  'nginx',
   'html',
   'css',
   'json',
@@ -17,6 +24,41 @@ export const SHIKI_LANGS = [
   'vue',
   'plaintext',
 ] as const;
+
+/** 常用别名 → 白名单内规范 id 的归一化表（小写键） */
+const LANG_ALIASES: Record<string, string> = {
+  js: 'javascript',
+  mjs: 'javascript',
+  cjs: 'javascript',
+  ts: 'typescript',
+  mts: 'typescript',
+  cts: 'typescript',
+  py: 'python',
+  python3: 'python',
+  sh: 'bash',
+  shell: 'bash',
+  'shell-script': 'bash',
+  zsh: 'bash',
+  'shell-session': 'bash',
+  console: 'bash',
+  yml: 'yaml',
+  md: 'markdown',
+  mdx: 'markdown',
+  json5: 'json',
+  jsonc: 'json',
+  jsonl: 'json',
+  htm: 'html',
+  xhtml: 'html',
+};
+
+/**
+ * 语言标识归一化：小写去空白后按别名表映射。
+ * 不在白名单的语言由调用方回退纯文本（Shiki 'text'），不抛错。
+ */
+export function normalizeShikiLang(lang: string): string {
+  const l = lang.trim().toLowerCase();
+  return LANG_ALIASES[l] ?? l;
+}
 
 /**
  * 懒加载的 Shiki highlighter 单例。

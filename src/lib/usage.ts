@@ -1,6 +1,7 @@
 "use client";
 
 import { getToken } from "./auth";
+import { apiFetch, apiErrorMessage, handleUnauthorized } from "./fetch-helpers";
 
 /* ===== 与 rag-knowledge-hub /admin/kb/usage 文档契约的类型 ===== */
 
@@ -56,11 +57,14 @@ export interface UserUsageRow {
 
 const usageFetch = async (path: string): Promise<Response> => {
   const token = getToken();
-  const res = await fetch(`/kb-admin/usage${path}`, {
+  const res = await apiFetch(`/kb-admin/usage${path}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error((await res.text()) || `请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return res;
 };
 

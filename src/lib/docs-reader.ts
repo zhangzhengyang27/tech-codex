@@ -70,8 +70,34 @@ function sortByName(a: string, b: string): number {
   return a.localeCompare(b, 'zh-CN');
 }
 
+/** getSections 缓存（按分类 slug 键）：分类侧边栏在布局与列表页每次请求都全量
+ *  readdir + frontmatter 解析，dev 长时间运行会累积拖慢。与 getDocsIndex 同款策略：
+ *  生产环境永久缓存，dev 环境按 TTL 过期以便反映新增/重命名文档。 */
+interface SectionsCacheEntry {
+  sections: DocSection[];
+  at: number;
+}
+const sectionsCache = new Map<string, SectionsCacheEntry>();
+const DEV_SECTIONS_TTL_MS = 30_000;
+
 /** 获取某个分类下的所有章节和文件（递归构建嵌套树，支持任意深度目录） */
 export function getSections(categorySlug: string): DocSection[] {
+  const now = Date.now();
+  const cached = sectionsCache.get(categorySlug);
+  if (
+    cached &&
+    (process.env.NODE_ENV === 'production' || now - cached.at < DEV_SECTIONS_TTL_MS)
+  ) {
+    return cached.sections;
+  }
+
+  const sections = buildSections(categorySlug);
+  sectionsCache.set(categorySlug, { sections, at: now });
+  return sections;
+}
+
+/** 递归扫描分类目录构建章节树（getSections 的实际实现，结果由上层缓存） */
+function buildSections(categorySlug: string): DocSection[] {
   const category = getCategoryBySlug(categorySlug);
   if (!category) return [];
 
@@ -163,12 +189,30 @@ function buildSection(absDir: string, relDir: string, relSlug: string): DocSecti
   };
 }
 
+/** getDocContent 结果微缓存：详情页 generateMetadata 与页面主体同一请求各读一次，
+ *  以 (绝对路径 + mtimeMs) 为键复用读取与 frontmatter 解析；mtime 参与键保证 dev 下
+ *  改文件立即生效。LRU 上限防止长驻进程内存无界增长。 */
+const DOC_CONTENT_CACHE_MAX = 128;
+const docContentCache = new Map<string, { title: string; content: string }>();
+
 /** 读取单篇文档内容 */
 export function getDocContent(relativePath: string): { title: string; content: string } | null {
   // 工作区元文件（_* 前缀）不作为站点内容对外渲染
   if (path.basename(relativePath).startsWith(WORKSPACE_FILE_PREFIX)) return null;
-  const filePath = path.join(DOCS_ROOT, relativePath);
+  // 路径越界防护：解析后必须仍在 docs/ 目录内（防御 ../ 或绝对路径注入）
+  const filePath = path.resolve(DOCS_ROOT, relativePath);
+  if (filePath !== DOCS_ROOT && !filePath.startsWith(DOCS_ROOT + path.sep)) return null;
   if (!fs.existsSync(filePath)) return null;
+
+  const mtimeMs = fs.statSync(filePath).mtimeMs;
+  const cacheKey = `${filePath}\u0000${mtimeMs}`;
+  const hit = docContentCache.get(cacheKey);
+  if (hit) {
+    // LRU：命中后移到队尾
+    docContentCache.delete(cacheKey);
+    docContentCache.set(cacheKey, hit);
+    return hit;
+  }
 
   const raw = fs.readFileSync(filePath, 'utf-8');
   let title: string;
@@ -183,32 +227,13 @@ export function getDocContent(relativePath: string): { title: string; content: s
     content = raw;
   }
 
-  return { title, content };
-}
-
-/** 获取分类下所有文件路径（用于 generateStaticParams） */
-export function getAllDocPaths(categorySlug: string): string[] {
-  const category = getCategoryBySlug(categorySlug);
-  if (!category) return [];
-
-  const categoryDir = path.join(DOCS_ROOT, category.dir);
-  if (!fs.existsSync(categoryDir)) return [];
-
-  const paths: string[] = [];
-
-  function walk(dir: string, prefix: string) {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
-      if (entry.isDirectory() && !entry.name.startsWith('.')) {
-        walk(path.join(dir, entry.name), `${prefix}${entry.name}/`);
-      } else if (entry.isFile() && isRenderableDoc(entry.name)) {
-        paths.push(`${prefix}${entry.name.replace(/\.md$/, '')}`);
-      }
-    }
+  const result = { title, content };
+  docContentCache.set(cacheKey, result);
+  if (docContentCache.size > DOC_CONTENT_CACHE_MAX) {
+    const oldest = docContentCache.keys().next().value;
+    if (oldest !== undefined) docContentCache.delete(oldest);
   }
-
-  walk(categoryDir, '');
-  return paths;
+  return result;
 }
 
 /** 全站文档统计（真实扫描 docs/，构建/请求期执行，不在客户端运行） */

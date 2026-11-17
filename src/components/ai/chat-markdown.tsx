@@ -4,6 +4,7 @@
  * AI 回答的 Markdown 渲染器。
  * 复用文档站的 prose-doc 排版样式与 LazyCodeBlock 懒高亮，暂不启用重型交互组件（vp-container/代码组等）。
  */
+import { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { LazyCodeBlock } from '@/components/ui/lazy-code-block';
@@ -28,7 +29,36 @@ export function normalizeAtxHeadings(md: string): string {
     .join('');
 }
 
+/** 流式渲染节流阈值：距上次实际渲染 ≥120ms 或内容增量 ≥80 字符才重新全量 reparse */
+const THROTTLE_MS = 120;
+const THROTTLE_MIN_DELTA = 80;
+
 export function ChatMarkdown({ content }: { content: string }) {
+  // 流式回答约每 33ms 追加一个 token，逐帧全量 reparse markdown 开销大：
+  // 对传给 react-markdown 的文本做节流（时间或增量达标才更新），流结束后由尾帧
+  // 定时器强制渲染最终值，最终渲染结果不变。
+  const [renderText, setRenderText] = useState(content);
+  const lastFlushRef = useRef({ text: content, len: content.length, at: 0 });
+
+  useEffect(() => {
+    if (content === lastFlushRef.current.text) return;
+    const sinceFlush = Date.now() - lastFlushRef.current.at;
+    const delta = content.length - lastFlushRef.current.len;
+    // 内容回退/重置（如新一轮回答清空）立即渲染，不节流
+    const flushNow =
+      sinceFlush >= THROTTLE_MS ||
+      Math.abs(delta) >= THROTTLE_MIN_DELTA ||
+      content.length < lastFlushRef.current.len;
+    const timer = setTimeout(
+      () => {
+        lastFlushRef.current = { text: content, len: content.length, at: Date.now() };
+        setRenderText(content);
+      },
+      flushNow ? 0 : THROTTLE_MS - sinceFlush
+    );
+    return () => clearTimeout(timer);
+  }, [content]);
+
   return (
     <div className="prose-doc !text-[13.5px] leading-relaxed">
       <Markdown
@@ -53,7 +83,7 @@ export function ChatMarkdown({ content }: { content: string }) {
           },
         }}
       >
-        {normalizeAtxHeadings(content)}
+        {normalizeAtxHeadings(renderText)}
       </Markdown>
     </div>
   );

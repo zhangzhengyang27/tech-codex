@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { clsx } from "clsx";
 import { Eye, FileUp, Inbox, Loader2, RefreshCw, Search, Trash2 } from "lucide-react";
@@ -27,25 +27,33 @@ export default function MyKbDocumentsPage() {
   const [error, setError] = useState("");
   /** 正在查看的文档ID（阅读器弹窗） */
   const [viewingId, setViewingId] = useState<number | null>(null);
+  /** 请求序守卫：快速翻页/搜索/删除并发时丢弃旧响应，防止旧数据覆盖新页 */
+  const loadSeqRef = useRef(0);
 
   const load = useCallback(async (kw: string, pg: number) => {
+    const seq = ++loadSeqRef.current;
     setLoading(true);
     setError("");
     try {
       const data = await myDocuments(kw, pg, 20);
+      if (seq !== loadSeqRef.current) return; // 已有更新的请求接管渲染
       setDocs(data.content ?? []);
       setTotal(data.totalElements ?? 0);
       setPage(data.number ?? pg);
       setTotalPages(data.totalPages ?? 1);
     } catch (e) {
+      if (seq !== loadSeqRef.current) return;
       setError(errText(e));
     } finally {
-      setLoading(false);
+      if (seq === loadSeqRef.current) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    if (hydrated && isLoggedIn) void load("", 0);
+    if (!hydrated || !isLoggedIn) return;
+    // delayed setState：延后一拍发起加载，避免 effect 内同步 setState 级联渲染
+    const t = setTimeout(() => void load("", 0), 0);
+    return () => clearTimeout(t);
   }, [load, hydrated, isLoggedIn]);
 
   const onDelete = async (d: KbDocumentView) => {
@@ -53,7 +61,9 @@ export default function MyKbDocumentsPage() {
     setError("");
     try {
       await deleteMyDocument(d.id);
-      void load(keyword, page);
+      // 删掉当前页最后一条且不在首页时回退一页，避免停留空页
+      const isLastItemOnPage = page > 0 && docs.length === 1;
+      void load(keyword, isLastItemOnPage ? page - 1 : page);
     } catch (e) {
       setError(errText(e));
     }

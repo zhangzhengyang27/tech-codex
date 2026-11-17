@@ -26,8 +26,13 @@ export function TaskProgress({
   onDone: (task: AdminTaskView) => void;
   onDismiss: () => void;
 }) {
-  const [task, setTask] = useState<AdminTaskView | null>(null);
-  const [error, setError] = useState("");
+  /** 轮询快照（事件驱动）：只在响应到达时 setState；key 绑定 taskId+attempt，
+   *  切换任务/手动重试后旧快照立即失效（等价于原先 effect 内同步 setTask(null)/setError("")）。 */
+  const [pollState, setPollState] = useState<{
+    key: string;
+    task: AdminTaskView | null;
+    error: string;
+  } | null>(null);
   /** 网络错误计数与手动重试计数：attempt 变化触发整轮轮询重启 */
   const [attempt, setAttempt] = useState(0);
   const onDoneRef = useRef(onDone);
@@ -35,10 +40,14 @@ export function TaskProgress({
     onDoneRef.current = onDone;
   }, [onDone]);
 
+  const pollKey = taskId ? `${taskId}:${attempt}` : "";
+  // 派生展示态：快照属于当前轮询周期才采用
+  const task = pollState && pollState.key === pollKey ? pollState.task : null;
+  const error = pollState && pollState.key === pollKey ? pollState.error : "";
+
   useEffect(() => {
-    setTask(null);
-    setError("");
     if (!taskId) return;
+    const key = `${taskId}:${attempt}`;
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
     let consecutiveErrors = 0;
@@ -48,8 +57,7 @@ export function TaskProgress({
         const t = await getAdminTask(taskId);
         if (cancelled) return;
         consecutiveErrors = 0;
-        setError("");
-        setTask(t);
+        setPollState({ key, task: t, error: "" });
         if (t.status === "RUNNING") {
           timer = setTimeout(() => void poll(), 1500);
         } else {
@@ -63,7 +71,12 @@ export function TaskProgress({
           timer = setTimeout(() => void poll(), AUTO_RETRY_DELAY_MS);
           return;
         }
-        setError(e instanceof Error ? e.message : "任务进度查询失败");
+        // 保留最近一次成功快照（若有），仅置错误态
+        setPollState((prev) => ({
+          key,
+          task: prev && prev.key === key ? prev.task : null,
+          error: e instanceof Error ? e.message : "任务进度查询失败",
+        }));
       }
     };
     void poll();

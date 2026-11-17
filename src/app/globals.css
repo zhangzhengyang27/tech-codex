@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* 锚点跳转预留顶部高度：TOC 的 IntersectionObserver rootMargin 按 -80px 设计，
+   滚动定位偏移量需与之一致，避免目标标题被 sticky 顶栏遮挡 */
+html {
+  scroll-padding-top: 80px;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

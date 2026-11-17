@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -16,10 +16,6 @@ import { useHydrated } from "@/lib/use-hydrated";
 import { myDocuments, myQuota, type KbQuota } from "@/lib/kb";
 import { fmtDate, fmtSize, statusBadgeCls, statusText } from "@/lib/format";
 import type { KbDocumentView } from "@/lib/documents";
-
-function errText(e: unknown): string {
-  return e instanceof Error ? e.message : "加载失败";
-}
 
 /** 单项配额统计卡；limit<=0 表示不限制。 */
 function StatCard({
@@ -86,26 +82,33 @@ export default function MyKbOverviewPage() {
   const [recent, setRecent] = useState<KbDocumentView[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  /** 请求序守卫：连续刷新时丢弃旧响应 */
+  const loadSeqRef = useRef(0);
 
   const load = useCallback(async () => {
+    const seq = ++loadSeqRef.current;
     setLoading(true);
     setError("");
-    try {
-      const [q, docs] = await Promise.all([
-        myQuota().catch(() => null),
-        myDocuments("", 0, 5).catch(() => null),
-      ]);
-      setQuota(q);
-      setRecent(docs?.content ?? null);
-    } catch (e) {
-      setError(errText(e));
-    } finally {
-      setLoading(false);
+    // 配额与最近文档独立加载：部分失败仍展示已取得的数据 + 错误提示（不再吞错显示 0 值）
+    const [qRes, dRes] = await Promise.allSettled([myQuota(), myDocuments("", 0, 5)]);
+    if (seq !== loadSeqRef.current) return; // 已有更新的刷新接管渲染
+    const failed: string[] = [];
+    if (qRes.status === "fulfilled") setQuota(qRes.value);
+    else {
+      setQuota(null);
+      failed.push("配额信息");
     }
+    if (dRes.status === "fulfilled") setRecent(dRes.value.content ?? null);
+    else failed.push("最近文档");
+    if (failed.length > 0) setError(`${failed.join("、")}加载失败，请刷新重试`);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
-    if (hydrated && isLoggedIn) void load();
+    if (!hydrated || !isLoggedIn) return;
+    // delayed setState：延后一拍发起加载，避免 effect 内同步 setState 级联渲染
+    const t = setTimeout(() => void load(), 0);
+    return () => clearTimeout(t);
   }, [load, hydrated, isLoggedIn]);
 
   if (!hydrated || !isLoggedIn) {

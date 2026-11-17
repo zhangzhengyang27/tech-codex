@@ -150,6 +150,12 @@ function AccountMenu() {
   const router = useRouter();
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
+  // 路由变化时关闭下拉:渲染期派生(React 推荐模式),避免 effect 内 setState 级联渲染
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
   const boxRef = useRef<HTMLDivElement | null>(null);
   const displayName = user?.nickname || user?.username || "用户";
   const initial = avatarInitial(displayName);
@@ -164,10 +170,6 @@ function AccountMenu() {
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   const onLogout = () => {
     setOpen(false);
     logout();
@@ -452,6 +454,7 @@ export function TopNav() {
             className="lg:hidden ml-auto p-2 rounded-md bg-muted border border-border text-foreground/60"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="切换菜单"
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>

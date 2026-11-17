@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import clsx from "clsx";
 import { BarChart3, Loader2, ShieldAlert, RotateCw } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { timeoutOr } from "@/lib/fetch-helpers";
 import {
   usageSummary,
   usageRecent,
@@ -204,8 +204,11 @@ export default function AdminUsagePage() {
   const [error, setError] = useState("");
   const [summary, setSummary] = useState<UsageSummaryView | null>(null);
   const [recent, setRecent] = useState<ChatUsageView[]>([]);
-  const [recentLoading, setRecentLoading] = useState(false);
+  // 挂载即拉取明细/Top 用户：初始即为加载中，避免在 effect 内同步 setState
+  const [recentLoading, setRecentLoading] = useState(true);
   const [topUsers, setTopUsers] = useState<UserUsageRow[]>([]);
+  /** 请求序守卫：挂载自动加载与手动刷新并发时丢弃旧响应 */
+  const loadSeqRef = useRef(0);
 
   useEffect(() => {
     const t = setTimeout(() => setHydrated(true), 0);
@@ -218,38 +221,49 @@ export default function AdminUsagePage() {
   }, [isLoggedIn, hydrated, router]);
 
   const loadAll = useCallback(async () => {
+    const seq = ++loadSeqRef.current;
     setLoading(true);
     setError("");
+    setRecentLoading(true);
     try {
       const n = Number(days);
       const d = Number.isFinite(n) && n > 0 ? Math.min(n, 90) : 30;
       const [s, r] = await Promise.all([usageSummary(d), usageRecent(0, 20)]);
+      if (seq !== loadSeqRef.current) return; // 已有更新的请求接管渲染
       setSummary(s);
       setRecent(r.content);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "用量查询失败");
+      if (seq !== loadSeqRef.current) return;
+      setError(timeoutOr(e, e instanceof Error ? e.message : "用量查询失败"));
     } finally {
-      setLoading(false);
+      if (seq === loadSeqRef.current) {
+        setLoading(false);
+        setRecentLoading(false);
+      }
     }
   }, [days]);
 
-  // 挂载后自动加载，并加载明细与 Top 用户
+  // 挂载后自动加载汇总/明细/Top 用户（各自独立：部分失败也展示已取得的数据 + 错误提示，
+  // 不再吞错显示 0 值）；与手动刷新 loadAll 共享请求序守卫，慢的旧响应不覆盖新数据
   useEffect(() => {
-    let cancelled = false;
-    Promise.all([
-      usageSummary(30).catch(() => null),
-      usageRecent(0, 20).catch(() => null),
-      usageTopUsers(7, 10).catch(() => []),
-    ])
-      .then(([s, r, t]) => {
-        if (cancelled) return;
-        setSummary(s);
-        setRecent(r?.content ?? []);
-        setTopUsers(t ?? []);
-      })
-      .catch(() => undefined);
+    const seq = ++loadSeqRef.current;
+    Promise.allSettled([usageSummary(30), usageRecent(0, 20), usageTopUsers(7, 10)]).then(
+      (results) => {
+        if (seq !== loadSeqRef.current) return; // 用户已手动刷新，丢弃过期响应
+        const [s, r, t] = results;
+        const failed: string[] = [];
+        if (s.status === "fulfilled") setSummary(s.value);
+        else failed.push("用量汇总");
+        if (r.status === "fulfilled") setRecent(r.value.content);
+        else failed.push("用量明细");
+        if (t.status === "fulfilled") setTopUsers(t.value);
+        else failed.push("Top 用户");
+        if (failed.length > 0) setError(`${failed.join("、")}加载失败，请刷新重试`);
+        setRecentLoading(false);
+      }
+    );
     return () => {
-      cancelled = true;
+      loadSeqRef.current += 1; // 卸载后响应作废
     };
   }, []);
 

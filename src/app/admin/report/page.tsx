@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
@@ -113,30 +113,41 @@ export default function AdminReportPage() {
   const [days, setDays] = useState(30);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  /** 请求序守卫：快速切换统计周期（7/14/30/90 天）时丢弃旧周期响应 */
+  const loadSeqRef = useRef(0);
 
   useEffect(() => {
     if (isLoggedIn && !isAdmin) router.replace("/");
   }, [isLoggedIn, isAdmin, router]);
 
   const load = useCallback((period: number) => {
+    const seq = ++loadSeqRef.current;
     setLoading(true);
     setError("");
     weeklyReport(period)
-      .then(setReport)
-      .catch((e) => setError(e instanceof Error ? e.message : "加载失败"))
-      .finally(() => setLoading(false));
+      .then((r) => {
+        if (seq !== loadSeqRef.current) return; // 已切换到其他周期，丢弃过期响应
+        setReport(r);
+      })
+      .catch((e) => {
+        if (seq !== loadSeqRef.current) return;
+        setError(e instanceof Error ? e.message : "加载失败");
+      })
+      .finally(() => {
+        if (seq === loadSeqRef.current) setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn && isAdmin) load(days);
+    if (!isLoggedIn || !isAdmin) return;
+    // delayed setState：延后一拍发起加载，避免 effect 内同步 setState 级联渲染
+    const t = setTimeout(() => load(days), 0);
+    return () => clearTimeout(t);
   }, [isLoggedIn, isAdmin, days, load]);
 
   if (!isLoggedIn || !isAdmin) {
     return <div className="mx-auto max-w-[1440px] px-4 py-24 text-center text-sm text-foreground/40">加载中…</div>;
   }
-
-  const downRateCls = (v: number) =>
-    v >= 0.3 ? "text-red-500" : v >= 0.15 ? "text-amber-500" : "text-emerald-600";
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8">

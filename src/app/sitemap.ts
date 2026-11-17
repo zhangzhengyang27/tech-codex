@@ -16,11 +16,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entries.push({ url: `${SITE_URL}/docs/${cat.slug}`, changeFrequency: 'weekly', priority: 0.7 });
     for (const file of getCategoryFiles(cat.slug)) {
       entries.push({
-        url: `${SITE_URL}/docs/${cat.slug}/${file.slug}`,
+        // 中文 slug 逐段 percent-encode（保留 / 分隔符），否则生成的 URL 含非法裸字符
+        url: `${SITE_URL}/docs/${cat.slug}/${encodeDocPath(file.slug)}`,
         changeFrequency: 'monthly',
         priority: 0.5,
       });
     }
   }
   return entries;
+}
+
+/** 文档子路径逐段 percent-encode（保留 / 分隔符），与 remark-doc-links 的链接重写一致 */
+function encodeDocPath(slugPath: string): string {
+  return slugPath.split('/').map(encodeURIComponent).join('/');
 }

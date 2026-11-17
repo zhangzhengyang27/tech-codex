@@ -3,6 +3,7 @@
 /* ===== 与 lostsystem 知识库后端契约的类型 ===== */
 
 import { flattenPaged } from "./paged";
+import { apiFetch, apiErrorMessage, handleUnauthorized } from "./fetch-helpers";
 
 export const TOKEN_KEY = "techcodex_token";
 export const USER_KEY = "techcodex_user";
@@ -111,39 +112,24 @@ export function clearSession(): void {
 
 /* ===== 认证 API（经 /kb-auth rewrite → lostsystem /auth） ===== */
 
-interface ApiErrorBody {
-  message?: string;
-}
-
 export async function apiRegister(body: AuthRequest): Promise<AuthResponse> {
-  const res = await fetch("/kb-auth/register", {
+  const res = await apiFetch("/kb-auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error((await errorMessage(res)) ?? `请求失败（${res.status}）`);
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as AuthResponse;
 }
 
 export async function apiLogin(body: AuthRequest): Promise<AuthResponse> {
-  const res = await fetch("/kb-auth/login", {
+  const res = await apiFetch("/kb-auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error((await errorMessage(res)) ?? `请求失败（${res.status}）`);
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as AuthResponse;
-}
-
-async function errorMessage(res: Response): Promise<string | null> {
-  const text = await res.text();
-  if (!text) return null;
-  try {
-    const parsed = JSON.parse(text) as ApiErrorBody;
-    return typeof parsed.message === "string" ? parsed.message : null;
-  } catch {
-    return null;
-  }
 }
 
 /* ===== 知识库 API（经 /kb-api rewrite → lostsystem /api/kb） ===== */
@@ -159,11 +145,12 @@ export async function kbSearch(
   const pathQs = path ? `&path=${encodeURIComponent(path)}` : "";
   const scopeQs = scope ? `&scope=${encodeURIComponent(scope)}` : "";
   const categoryQs = category ? `&category=${encodeURIComponent(category)}` : "";
-  const res = await fetch(
+  const res = await apiFetch(
     `/kb-api/search?query=${encodeURIComponent(query)}&k=${k}${pathQs}${scopeQs}${categoryQs}`,
     { headers: token ? { Authorization: `Bearer ${token}` } : {} }
   );
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) handleUnauthorized();
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as KbChunkHit[];
 }
 
@@ -178,7 +165,7 @@ export async function kbFeedback(
   if (opts.question) body.set("question", opts.question);
   if (opts.answer) body.set("answer", opts.answer);
   if (opts.comment) body.set("comment", opts.comment);
-  const res = await fetch("/kb-api/feedback", {
+  const res = await apiFetch("/kb-api/feedback", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -186,7 +173,8 @@ export async function kbFeedback(
     },
     body,
   });
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) handleUnauthorized();
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as { id: number; rating: string };
 }
 
@@ -210,11 +198,14 @@ export async function kbFeedbackList(
 ): Promise<Paged<ChatFeedbackItem>> {
   const token = getToken();
   const ratingQs = rating ? `&rating=${rating}` : "";
-  const res = await fetch(`/kb-admin/feedback?page=${page}&size=${size}${ratingQs}`, {
+  const res = await apiFetch(`/kb-admin/feedback?page=${page}&size=${size}${ratingQs}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return flattenPaged(await res.json());
 }
 
@@ -225,41 +216,45 @@ export async function kbHistory(
 ): Promise<Paged<ChatHistoryItem>> {
   const token = getToken();
   const cid = conversationId ? `&conversationId=${encodeURIComponent(conversationId)}` : "";
-  const res = await fetch(`/kb-api/history?page=${page}&size=${size}${cid}`, {
+  const res = await apiFetch(`/kb-api/history?page=${page}&size=${size}${cid}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) handleUnauthorized();
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return flattenPaged(await res.json());
 }
 
 export async function kbClearHistory(conversationId?: string): Promise<void> {
   const token = getToken();
   const params = conversationId ? `?conversationId=${encodeURIComponent(conversationId)}` : "";
-  const res = await fetch(`/kb-api/clear-history${params}`, {
+  const res = await apiFetch(`/kb-api/clear-history${params}`, {
     method: "POST",
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) handleUnauthorized();
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
 }
 
 /** 当前用户的对话（会话）列表 */
 export async function listConversations(): Promise<ChatConversation[]> {
   const token = getToken();
-  const res = await fetch("/kb-api/conversations", {
+  const res = await apiFetch("/kb-api/conversations", {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) handleUnauthorized();
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as ChatConversation[];
 }
 
 /** 删除指定对话 */
 export async function deleteConversation(conversationId: string): Promise<void> {
   const token = getToken();
-  const res = await fetch(`/kb-api/conversations/${encodeURIComponent(conversationId)}`, {
+  const res = await apiFetch(`/kb-api/conversations/${encodeURIComponent(conversationId)}`, {
     method: "DELETE",
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) handleUnauthorized();
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
 }
 
 /* ===== SSE 流式问答（POST /api/kb/chat-stream，form body） ===== */
@@ -299,32 +294,48 @@ export async function streamChat(
   // 75s 内无任何帧则主动中止，避免界面永久卡在"回答中"（正常生成 token 间隔远小于此）
   const IDLE_TIMEOUT_MS = 75_000;
   let lastActivity = Date.now();
-  while (true) {
-    const remaining = IDLE_TIMEOUT_MS - (Date.now() - lastActivity);
-    if (remaining <= 0) break;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const idle = new Promise<"__idle__">((resolve) => {
-      timer = setTimeout(() => resolve("__idle__"), remaining);
-    });
-    const result = await Promise.race([reader.read(), idle]);
-    clearTimeout(timer);
-    if (result === "__idle__") break;
-    lastActivity = Date.now();
-    const { done, value } = result;
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-    let index;
-    while ((index = buffer.indexOf("\n\n")) >= 0) {
-      const frame = buffer.slice(0, index);
-      buffer = buffer.slice(index + 2);
-      const ev = parseFrame(frame);
+  let idleTimedOut = false;
+  // 无论正常结束、空闲超时还是 read() 抛错，都释放底层连接，避免 reader/连接泄漏
+  try {
+    while (true) {
+      const remaining = IDLE_TIMEOUT_MS - (Date.now() - lastActivity);
+      if (remaining <= 0) {
+        idleTimedOut = true;
+        break;
+      }
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const idle = new Promise<"__idle__">((resolve) => {
+        timer = setTimeout(() => resolve("__idle__"), remaining);
+      });
+      const result = await Promise.race([reader.read(), idle]);
+      clearTimeout(timer);
+      if (result === "__idle__") {
+        idleTimedOut = true;
+        break;
+      }
+      lastActivity = Date.now();
+      const { done, value } = result;
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let index;
+      while ((index = buffer.indexOf("\n\n")) >= 0) {
+        const frame = buffer.slice(0, index);
+        buffer = buffer.slice(index + 2);
+        const ev = parseFrame(frame);
+        if (ev) onEvent(ev);
+      }
+    }
+    // 流结束：处理可能缺少 \n\n 结尾的残留帧，避免末尾 token/done 事件丢失
+    if (buffer) {
+      const ev = parseFrame(buffer);
       if (ev) onEvent(ev);
     }
-  }
-  // 流结束：处理可能缺少 \n\n 结尾的残留帧，避免末尾 token/done 事件丢失
-  if (buffer) {
-    const ev = parseFrame(buffer);
-    if (ev) onEvent(ev);
+    // 空闲超时：显式下发提示事件，调用方按"回答可能不完整"处理，而不是静默当作正常完成
+    if (idleTimedOut) {
+      onEvent({ type: "error", data: "连接空闲超时，回答可能不完整" });
+    }
+  } finally {
+    reader.cancel().catch(() => {});
   }
 }
 
@@ -400,11 +411,14 @@ export async function kbEvalRun(limit?: number, topK?: number): Promise<KbEvalRe
   if (limit && limit > 0) params.set("limit", String(limit));
   if (topK && topK > 0) params.set("topK", String(topK));
   const qs = params.toString();
-  const res = await fetch(`/kb-admin/eval/run${qs ? `?${qs}` : ""}`, {
+  const res = await apiFetch(`/kb-admin/eval/run${qs ? `?${qs}` : ""}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as KbEvalResult;
 }
 
@@ -431,22 +445,28 @@ export async function kbEvalAb(p: EvalAbParams): Promise<KbEvalAbResult> {
     if (v !== undefined && v !== null) params.set(key, String(v));
   });
   const qs = params.toString();
-  const res = await fetch(`/kb-admin/eval/ab${qs ? `?${qs}` : ""}`, {
+  const res = await apiFetch(`/kb-admin/eval/ab${qs ? `?${qs}` : ""}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as KbEvalAbResult;
 }
 
 /** 查询最近 N 天评测趋势：/admin/kb/eval/trend */
 export async function kbEvalTrend(days = 30): Promise<EvalTrendPoint[]> {
   const token = getToken();
-  const res = await fetch(`/kb-admin/eval/trend?days=${days}`, {
+  const res = await apiFetch(`/kb-admin/eval/trend?days=${days}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return (await res.json()) as EvalTrendPoint[];
 }
 
@@ -465,7 +485,7 @@ export interface KbEvalCase {
 
 const adminFetch = async (path: string, init?: RequestInit): Promise<Response> => {
   const token = getToken();
-  const res = await fetch(`/kb-admin${path}`, {
+  const res = await apiFetch(`/kb-admin${path}`, {
     ...init,
     headers: {
       ...(init?.body ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
@@ -473,8 +493,11 @@ const adminFetch = async (path: string, init?: RequestInit): Promise<Response> =
       ...init?.headers,
     },
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error((await res.text()) || `请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return res;
 };
 

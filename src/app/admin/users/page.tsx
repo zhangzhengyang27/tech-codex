@@ -314,7 +314,7 @@ export default function AdminUsersPage() {
             <div className="text-sm font-semibold">重置密码 · {pwdTarget.username}</div>
             <p className="mt-1 text-xs text-foreground/50">为新密码直接生效，无需旧密码；请通过其他渠道告知该用户。</p>
             <input
-              type="text"
+              type="password"
               value={newPwd}
               onChange={(e) => setNewPwd(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && newPwd.length >= 8 && onResetPwd()}
@@ -332,7 +332,7 @@ export default function AdminUsersPage() {
               </button>
               <button
                 onClick={onResetPwd}
-                disabled={newPwd.length < 6 || busyId === pwdTarget.id}
+                disabled={newPwd.length < 8 || busyId === pwdTarget.id}
                 className="h-8 rounded-md bg-accent px-4 text-[13px] font-medium text-white hover:bg-accent/90 disabled:opacity-60"
               >
                 确认重置

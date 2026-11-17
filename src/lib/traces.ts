@@ -1,6 +1,7 @@
 "use client";
 
 import { getToken } from "./auth";
+import { apiFetch, apiErrorMessage, handleUnauthorized } from "./fetch-helpers";
 import { flattenPaged } from "./paged";
 
 /* ===== 与 rag-knowledge-hub /admin/kb/traces 契约的类型 ===== */
@@ -44,10 +45,13 @@ export async function listTraces(
   if (filters.libraryId?.trim()) qs.set("libraryId", filters.libraryId.trim());
   if (filters.userId?.trim()) qs.set("userId", filters.userId.trim());
   if (filters.keyword?.trim()) qs.set("keyword", filters.keyword.trim());
-  const res = await fetch(`/kb-admin/traces?${qs.toString()}`, {
+  const res = await apiFetch(`/kb-admin/traces?${qs.toString()}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error(`请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return flattenPaged(await res.json());
 }

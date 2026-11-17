@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { RotateCcw, Trash2, PanelLeft, Plus } from "lucide-react";
+import { RotateCcw, Trash2, PanelLeft, Plus, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import {
   streamChat,
@@ -28,6 +28,10 @@ import { WelcomeCard } from "@/components/ai/welcome-card";
 import { ChatInput } from "@/components/ai/chat-input";
 import { ScopeSwitcher } from "@/components/kb/scope-switcher";
 import { CategorySwitcher } from "@/components/kb/category-switcher";
+import { SESSION_INVALIDATED_EVENT } from "@/lib/fetch-helpers";
+
+/** 流式中断（后端 error/异常/空闲超时）时提交的部分回答尾部提示 */
+const PARTIAL_SUFFIX = "（连接中断，以上为部分回答）";
 
 export default function AiPage() {
   const router = useRouter();
@@ -53,14 +57,31 @@ export default function AiPage() {
   const [urlMap, setUrlMap] = useState<Record<string, string | null>>({});
   /** 已发起反查的 filePath，避免重复请求 */
   const requestedRef = useRef<Set<string>>(new Set());
+  /** 会话历史分页：当前已加载到的页码（后端 id 倒序，页码越大越早） */
+  const [historyPage, setHistoryPage] = useState(0);
+  const [hasMoreHistory, setHasMoreHistory] = useState(false);
+  const [loadingOlder, setLoadingOlder] = useState(false);
+  /** 会话历史加载失败（区别于流式请求错误，展示在消息区） */
+  const [historyError, setHistoryError] = useState("");
 
   // 打字机泵：SSE token 高速进缓冲（零渲染），渲染层按肉眼可读节奏逐帧放出
   const pumpRef = useRef<TypewriterPump | null>(null);
   const [streamText, setStreamText] = useState("");
+  /** 流式期间内容增长的节流信号：驱动自动滚动跟随而不逐帧触发 smooth scroll */
+  const [streamTick, setStreamTick] = useState(0);
+  const lastTickAtRef = useRef(0);
   const getPump = () => {
     if (!pumpRef.current) {
       const pump = new TypewriterPump();
-      pump.subscribe(setStreamText);
+      pump.subscribe((text) => {
+        setStreamText(text);
+        // 节流（≤4 次/秒）：流式回答增长时让消息区跟随滚动
+        const now = Date.now();
+        if (now - lastTickAtRef.current >= 250) {
+          lastTickAtRef.current = now;
+          setStreamTick((t) => t + 1);
+        }
+      });
       pumpRef.current = pump;
     }
     return pumpRef.current;
@@ -84,6 +105,13 @@ export default function AiPage() {
     }
   }, [isLoggedIn, hydrated, router]);
 
+  // 任意 API 返回 401 时 lib 层会清会话并广播事件：统一跳登录重新认证
+  useEffect(() => {
+    const onInvalidated = () => router.replace("/login?from=/ai");
+    window.addEventListener(SESSION_INVALIDATED_EVENT, onInvalidated);
+    return () => window.removeEventListener(SESSION_INVALIDATED_EVENT, onInvalidated);
+  }, [router]);
+
   // 加载会话列表
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -102,26 +130,54 @@ export default function AiPage() {
     (async () => {
       setLoading(true);
       setError("");
+      setHistoryError("");
+      setHistoryPage(0);
       try {
         if (activeId == null) {
           setMessages([]);
+          setHasMoreHistory(false);
           return;
         }
         const paged = await kbHistory(0, 100, activeId);
         // 后端按 id 倒序分页，翻转为时间正序供自上而下渲染
         setMessages(paged.content.slice().reverse().map((h) => ({ role: h.role, content: h.content })));
-      } catch {
-        /* 历史加载失败不阻断 */
+        setHistoryPage(paged.number ?? 0);
+        setHasMoreHistory((paged.number ?? 0) + 1 < paged.totalPages);
+      } catch (e) {
+        // 历史加载失败：给出可见错误态而不是静默吞掉
+        setMessages([]);
+        setHasMoreHistory(false);
+        setHistoryError(e instanceof Error ? e.message : "历史加载失败，请重试");
       } finally {
         setLoading(false);
       }
     })();
   }, [isLoggedIn, activeId]);
 
-  // 滚动到底部
+  // "加载更早"：按页拉取更早的历史（后端 id 倒序，下一页 = 更早的消息），前插到列表头
+  const loadOlderHistory = async () => {
+    if (!activeId || loadingOlder || !hasMoreHistory) return;
+    setLoadingOlder(true);
+    try {
+      const paged = await kbHistory(historyPage + 1, 100, activeId);
+      const older = paged.content
+        .slice()
+        .reverse()
+        .map((h) => ({ role: h.role, content: h.content } as ChatMessageData));
+      setMessages((prev) => [...older, ...prev]);
+      setHistoryPage(paged.number ?? historyPage + 1);
+      setHasMoreHistory((paged.number ?? historyPage + 1) + 1 < paged.totalPages);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "加载更早的消息失败");
+    } finally {
+      setLoadingOlder(false);
+    }
+  };
+
+  // 滚动到底部：messages/phase 变化，以及流式期间内容节流增长（streamTick）时跟随
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, phase]);
+  }, [messages, phase, streamTick]);
 
   // 清理 AbortController
   useEffect(() => {
@@ -150,7 +206,11 @@ export default function AiPage() {
   };
 
   const newChat = () => {
-    abortRef.current?.abort();
+    // 先摘除当前流再中止：中断回调里的"已停止"守卫（abortRef.current === controller）
+    // 因此不再匹配，不会把旧流状态残留到新会话
+    const live = abortRef.current;
+    abortRef.current = null;
+    live?.abort();
     setActiveId(null);
     setMessages([]);
     setError("");
@@ -159,13 +219,19 @@ export default function AiPage() {
   };
 
   const selectConversation = (id: string) => {
-    abortRef.current?.abort();
+    const live = abortRef.current;
+    abortRef.current = null;
+    live?.abort();
     setActiveId(id);
+    // 清掉上一会话残留的"已停止"等阶段文案，避免串到新会话
+    setPhase("");
     setMobileOpen(false);
   };
 
   /** 追加一条空的 AI 占位并流式填充回答；question 仅在请求中携带，不重复插入用户消息（供发送与重生成共用）。
-   *  渲染期间消息列表的末条内容保持空串，展示取打字机泵的 streamText；泵排空后一次性提交完整文本。 */
+   *  渲染期间消息列表的末条内容保持空串，展示取打字机泵的 streamText；泵排空后一次性提交完整文本。
+   *  流式中断（后端 error 事件 / 请求异常 / 空闲超时）时提交已生成的部分文本并追加截断提示（PARTIAL_SUFFIX），
+   *  完全无内容则移除占位气泡——避免中断导致整条回答丢失或留下空串气泡。 */
   const streamAnswer = async (question: string) => {
     setError("");
     setMessages((prev) => [...prev, { role: "ai", content: "" }]);
@@ -176,17 +242,36 @@ export default function AiPage() {
     pump.reset();
     setStreamText("");
     let sourcesCount = -1; // 意图路由/拒答兜底判断用（事件顺序到达，闭包内读取无竞态）
+    // 流式中途出错（后端 error 事件 / 异常 / 空闲超时）：onFinish 提交时追加截断提示
+    let errored = false;
+
+    /** 出错收尾：有部分文本则提交并追加提示，空则移除占位气泡 */
+    const commitInterrupted = () => {
+      const full = pump.current;
+      setMessages((prev) => {
+        const next = [...prev];
+        const last = next[next.length - 1];
+        if (last?.role !== "ai") return next;
+        if (last.content !== "") return next; // 已提交过（onFinish 路径），不覆盖
+        if (full) last.content = full + PARTIAL_SUFFIX;
+        else next.pop(); // 无任何内容：移除空气泡
+        return next;
+      });
+    };
 
     pump.onFinish((full) => {
       liveConvRef.current = null;
       setMessages((prev) => {
         const next = [...prev];
         const last = next[next.length - 1];
-        if (last?.role === "ai" && last.content === "") last.content = full;
+        if (last?.role === "ai" && last.content === "") {
+          last.content = errored && full ? full + PARTIAL_SUFFIX : full;
+          if (errored && !full) next.pop();
+        }
         return next;
       });
       setBusy(false);
-      setPhase("完成");
+      setPhase(errored ? "" : "完成");
       // 多轮上下文已产生新消息，刷新会话列表（消息数/时间）；activeId 取 ref 实时值
       if (activeIdRef.current) refreshConversations();
     });
@@ -230,6 +315,8 @@ export default function AiPage() {
           } else if (ev.type === "token") {
             pump.push(ev.data);
           } else if (ev.type === "error") {
+            // 后端错误/空闲超时事件：不再当作正常完成，改为提交部分回答 + 截断提示
+            errored = true;
             setError(ev.data);
           }
         },
@@ -238,7 +325,7 @@ export default function AiPage() {
         scope,
         category,
       );
-      // 流正常结束：泵排空剩余缓冲，onFinish 完成提交与收尾
+      // 流正常结束（或经 error 事件标记的中断）：泵排空剩余缓冲，onFinish 完成提交与收尾
       pump.end();
       abortRef.current = null;
     } catch (err) {
@@ -249,18 +336,25 @@ export default function AiPage() {
         setMessages((prev) => {
           const next = [...prev];
           const last = next[next.length - 1];
-          if (last?.role === "ai" && last.content === "") last.content = full;
+          if (last?.role === "ai" && last.content === "") {
+            if (full) last.content = full;
+            else next.pop();
+          }
           return next;
         });
         setBusy(false);
-        setPhase("已停止");
+        // "已停止"仅当本次中止仍对应当前活跃流时写入——
+        // 用户已切会话/新对话（phase 已被重置）时不得把旧状态残留回来
+        if (abortRef.current === controller) setPhase("已停止");
       } else {
         pump.flush();
+        errored = true;
         setError(err instanceof Error ? err.message : "请求失败");
+        commitInterrupted();
         setBusy(false);
         setPhase("");
       }
-      abortRef.current = null;
+      if (abortRef.current === controller) abortRef.current = null;
     }
   };
 
@@ -425,26 +519,55 @@ export default function AiPage() {
             <div className="flex h-full items-center justify-center text-sm text-foreground/40">
               加载中…
             </div>
+          ) : historyError ? (
+            <div className="flex h-full flex-col items-center justify-center gap-3 text-sm text-foreground/40">
+              <span className="text-red-500">{historyError}</span>
+              <button
+                onClick={() => {
+                  // 重新拉取当前会话历史：先置 null 再恢复以触发历史加载 effect
+                  const id = activeId;
+                  setActiveId(null);
+                  requestAnimationFrame(() => id && setActiveId(id));
+                }}
+                className="rounded-md border border-border px-3 py-1.5 text-xs text-foreground/60 hover:bg-muted"
+              >
+                重试
+              </button>
+            </div>
           ) : messages.length === 0 ? (
             <WelcomeCard onAsk={send} isNewChat={activeId == null} />
           ) : (
-            messages.map((m, i) => (
-              <ChatMessage
-                key={i}
-                message={
-                  busy && i === messages.length - 1 && m.role === "ai"
-                    ? { ...m, content: streamText }
-                    : m
-                }
-                streaming={busy && i === messages.length - 1}
-                urlMap={urlMap}
-                onFeedback={
-                  m.role === "ai" && !(busy && i === messages.length - 1)
-                    ? (rating, comment) => handleFeedback(i, rating, comment)
-                    : undefined
-                }
-              />
-            ))
+            <>
+              {hasMoreHistory && !busy && (
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => void loadOlderHistory()}
+                    disabled={loadingOlder}
+                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-foreground/50 hover:bg-muted hover:text-foreground disabled:opacity-50"
+                  >
+                    {loadingOlder && <Loader2 size={12} className="animate-spin" />}
+                    加载更早的消息
+                  </button>
+                </div>
+              )}
+              {messages.map((m, i) => (
+                <ChatMessage
+                  key={i}
+                  message={
+                    busy && i === messages.length - 1 && m.role === "ai"
+                      ? { ...m, content: streamText }
+                      : m
+                  }
+                  streaming={busy && i === messages.length - 1}
+                  urlMap={urlMap}
+                  onFeedback={
+                    m.role === "ai" && !(busy && i === messages.length - 1)
+                      ? (rating, comment) => handleFeedback(i, rating, comment)
+                      : undefined
+                  }
+                />
+              ))}
+            </>
           )}
           <div ref={bottomRef} />
         </div>

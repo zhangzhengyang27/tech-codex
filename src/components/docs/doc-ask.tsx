@@ -71,12 +71,13 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
 
     const commit = () => {
       const full = pump.current;
-      setMessages((prev) => {
-        const next = [...prev];
-        const last = next[next.length - 1];
-        if (last?.role === 'ai' && last.content === '') last.content = full;
-        return next;
-      });
+      setMessages((prev) =>
+        prev.map((m, i) =>
+          i === prev.length - 1 && m.role === 'ai' && m.content === ''
+            ? { ...m, content: full }
+            : m
+        )
+      );
       setBusy(false);
     };
     pump.onFinish(() => commit());

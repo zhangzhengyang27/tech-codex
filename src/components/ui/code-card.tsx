@@ -37,6 +37,9 @@ interface CodeCardProps {
   code: string;
 }
 
+/** Worker 运行超时（死循环代码会阻塞 worker 消息循环，只能靠主线程定时器 terminate） */
+const RUN_TIMEOUT_MS = 3000;
+
 /** 通用代码块：深色主题 + 右上角悬浮控件（复制 / 运行），代码内容由 LazyCodeBlock 懒高亮 */
 export function CodeCard({ lang, code }: CodeCardProps) {
   const [copied, setCopied] = useState(false);
@@ -58,12 +61,20 @@ export function CodeCard({ lang, code }: CodeCardProps) {
       const blob = new Blob([buildRunWorkerSource()], { type: 'text/javascript' });
       const url = URL.createObjectURL(blob);
       const worker = new Worker(url);
+      // 超时兜底：3s 未结束（如 while(true) 死循环）则终止 worker 并回收 blob URL
+      const timer = setTimeout(() => {
+        setLogs(['Error: 执行超时（超过 3 秒），已终止']);
+        worker.terminate();
+        URL.revokeObjectURL(url);
+      }, RUN_TIMEOUT_MS);
       worker.onmessage = (e: MessageEvent<string[]>) => {
+        clearTimeout(timer);
         setLogs(e.data);
         worker.terminate();
         URL.revokeObjectURL(url);
       };
       worker.onerror = () => {
+        clearTimeout(timer);
         setLogs(['Error: 脚本执行失败']);
         worker.terminate();
         URL.revokeObjectURL(url);

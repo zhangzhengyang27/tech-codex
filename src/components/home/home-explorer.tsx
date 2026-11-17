@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Search,
   FileText,
@@ -57,6 +57,9 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
   const [query, setQuery] = useState('');
   const [mode, setMode] = useState<'title' | 'smart'>('title');
   const [smart, setSmart] = useState<SmartState>(SMART_IDLE);
+  // 请求序守卫（同 use-paged-list 的模式）：防抖窗口内快速改词时，
+  // 慢的旧响应不得覆盖新请求的结果
+  const seqRef = useRef(0);
   const q = query.trim().toLowerCase();
   const searching = q !== '';
   // 智能模式且有输入时，主区展示检索结果而非分类索引
@@ -95,11 +98,14 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
   useEffect(() => {
     if (mode !== 'smart' || !q) return;
     const timer = setTimeout(async () => {
+      const seq = ++seqRef.current;
       setSmart((s) => ({ ...s, loading: true, error: '', needLogin: false }));
       try {
         const hits = await kbSearch(q, 8);
+        if (seq !== seqRef.current) return; // 已有更新的请求接管渲染
         setSmart({ loading: false, error: '', results: hits, needLogin: false, doneQuery: q });
       } catch (err) {
+        if (seq !== seqRef.current) return;
         const msg = err instanceof Error ? err.message : '搜索失败';
         setSmart({ loading: false, error: msg, results: [], needLogin: msg.includes('401'), doneQuery: q });
       }

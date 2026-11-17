@@ -1,6 +1,7 @@
 "use client";
 
 import { getToken } from "./auth";
+import { apiFetch, apiErrorMessage, handleUnauthorized } from "./fetch-helpers";
 import { flattenPaged } from "./paged";
 
 /* ===== 与 rag-knowledge-hub /admin/kb 文档契约的类型 ===== */
@@ -54,7 +55,7 @@ const adminKbFetch = async (path: string, init?: RequestInit): Promise<Response>
   const token = getToken();
   // FormData 交给浏览器自动生成 multipart 边界，不能手动设置 Content-Type
   const isForm = init?.body instanceof FormData;
-  const res = await fetch(`/kb-admin${path}`, {
+  const res = await apiFetch(`/kb-admin${path}`, {
     ...init,
     headers: {
       ...(init?.body && !isForm ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
@@ -62,8 +63,11 @@ const adminKbFetch = async (path: string, init?: RequestInit): Promise<Response>
       ...init?.headers,
     },
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error((await res.text()) || `请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return res;
 };
 

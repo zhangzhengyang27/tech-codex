@@ -1,6 +1,7 @@
 "use client";
 
 import { getToken } from "./auth";
+import { apiFetch, apiErrorMessage, handleUnauthorized } from "./fetch-helpers";
 import type { KbDocumentView, PagedDocuments } from "./documents";
 
 /* ===== 用户私有知识库 API（F1）=====
@@ -13,15 +14,18 @@ import type { KbDocumentView, PagedDocuments } from "./documents";
 
 const kbFetch = async (path: string, init?: RequestInit): Promise<Response> => {
   const token = getToken();
-  const res = await fetch(`/kb-api${path}`, {
+  const res = await apiFetch(`/kb-api${path}`, {
     ...init,
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init?.headers,
     },
   });
-  if (res.status === 401) throw new Error("登录已过期，请重新登录");
-  if (!res.ok) throw new Error((await res.text()) || `请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return res;
 };
 
@@ -122,7 +126,7 @@ export async function favoriteByPath(
   const token = getToken();
   if (!token) return null;
   try {
-    const res = await fetch(`/kb-api/favorites/by-path?path=${encodeURIComponent(path)}`, {
+    const res = await apiFetch(`/kb-api/favorites/by-path?path=${encodeURIComponent(path)}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return null;

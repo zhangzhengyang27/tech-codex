@@ -44,7 +44,9 @@ export function getRecentDocs(limit = 50): RecentDoc[] {
   const result: RecentDoc[] = [];
   for (const c of candidates) {
     if (result.length >= limit) break;
-    const key = `${c.category}/${c.slug}`;
+    // 去重键用绝对文件路径：分类目录互相嵌套时同一文件会被多个分类 walk 到，
+    // 按 category/slug 去重会漏掉（键不同），按绝对路径才能保证一篇只出现一次
+    const key = c.abs;
     if (seen.has(key)) continue;
     seen.add(key);
     const doc = getDocContent(relPathOf(c));

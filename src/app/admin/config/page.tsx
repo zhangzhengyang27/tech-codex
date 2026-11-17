@@ -50,7 +50,9 @@ export default function AdminConfigPage() {
 
   useEffect(() => {
     if (!hydrated || !isAdmin) return;
-    void load();
+    // delayed setState：延后一拍发起加载，避免 effect 内同步 setState 级联渲染
+    const t = setTimeout(() => void load(), 0);
+    return () => clearTimeout(t);
   }, [load, hydrated, isAdmin]);
 
   const setDraft = (key: string, value: string) => {

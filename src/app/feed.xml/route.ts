@@ -13,14 +13,20 @@ function escapeXml(s: string): string {
     .replace(/'/g, '&apos;');
 }
 
+/** 文档 URL：中文 slug 逐段 percent-encode（保留 / 分隔符）后整体做 XML 转义 */
+function docUrl(d: { category: string; slug: string }): string {
+  const path = d.slug.split('/').map(encodeURIComponent).join('/');
+  return escapeXml(`${SITE_URL}/docs/${d.category}/${path}`);
+}
+
 export function GET(): Response {
   const docs = getRecentDocs(50);
   const items = docs
     .map(
       (d) => `    <item>
       <title>${escapeXml(d.title)}</title>
-      <link>${SITE_URL}/docs/${d.category}/${d.slug}</link>
-      <guid isPermaLink="true">${SITE_URL}/docs/${d.category}/${d.slug}</guid>
+      <link>${docUrl(d)}</link>
+      <guid isPermaLink="true">${docUrl(d)}</guid>
       <pubDate>${new Date(d.updatedAt).toUTCString()}</pubDate>
       <description>${escapeXml(d.summary)}</description>
     </item>`

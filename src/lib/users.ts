@@ -2,6 +2,7 @@
 
 import { getToken } from "./auth";
 import { flattenPaged } from "./paged";
+import { apiFetch, apiErrorMessage, handleUnauthorized } from "./fetch-helpers";
 
 /* ===== 与 rag-knowledge-hub /admin/kb/users、/admin/kb/quotas 契约的类型 ===== */
 
@@ -53,15 +54,18 @@ export interface PagedQuotas {
 
 const usersFetch = async (path: string, init?: RequestInit): Promise<Response> => {
   const token = getToken();
-  const res = await fetch(`/kb-admin${path}`, {
+  const res = await apiFetch(`/kb-admin${path}`, {
     ...init,
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init?.headers,
     },
   });
-  if (res.status === 401) throw new Error("登录已过期或非管理员，请重新登录");
-  if (!res.ok) throw new Error((await res.text()) || `请求失败（${res.status}）`);
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期或非管理员，请重新登录");
+  }
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
   return res;
 };
 

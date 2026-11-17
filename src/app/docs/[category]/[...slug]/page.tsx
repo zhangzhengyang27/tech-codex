@@ -105,7 +105,9 @@ export async function generateMetadata({
   const { category, slug } = await params;
   const cat = getCategoryBySlug(category);
   if (!cat) return {};
-  const slugPath = slug.map((s) => decodeURIComponent(s)).join('/');
+  // Next.js(Turbopack)传入的 catch-all 参数为 percent-encoded 原始段，须解码；
+  // try/catch 容错：URL 里未编码的裸 % 序列不再导致 500，按原文处理
+  const slugPath = slug.map((s) => { try { return decodeURIComponent(s); } catch { return s; } }).join('/');
   const doc = getDocContent(`${cat.dir}/${slugPath}.md`);
   if (!doc) return {};
   const description = excerptOf(doc.content) || `${cat.title} · ${doc.title}`;
@@ -131,7 +133,9 @@ export default async function DocPage({
   const cat = getCategoryBySlug(category);
   if (!cat) notFound();
 
-  const slugPath = slug.map((s) => decodeURIComponent(s)).join('/');
+  // Next.js(Turbopack)传入的 catch-all 参数为 percent-encoded 原始段，须解码；
+  // try/catch 容错：URL 里未编码的裸 % 序列不再导致 500，按原文处理
+  const slugPath = slug.map((s) => { try { return decodeURIComponent(s); } catch { return s; } }).join('/');
   const relativePath = `${cat.dir}/${slugPath}.md`;
   const doc = getDocContent(relativePath);
   if (!doc) notFound();

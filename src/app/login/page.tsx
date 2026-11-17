@@ -6,9 +6,20 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { apiLogin, apiRegister } from "@/lib/auth";
 
-/** 登录后跳转目标白名单：仅允许站内路径，拒绝绝对 URL / 协议相对 URL，防 open redirect */
+/** 登录后跳转目标白名单：仅允许站内路径，防 open redirect。
+ *  拒绝绝对 URL、协议相对 URL（//）、含反斜杠的值（\ 会被部分浏览器/代理按 / 归一化
+ *  绕过 startsWith 校验，如 /\evil.com）；再用 new URL 规范化兜底校验同源。 */
 function safeFrom(raw: string): string {
-  return raw.startsWith("/") && !raw.startsWith("//") ? raw : "/ai";
+  if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("\\")) return "/ai";
+  try {
+    if (typeof window !== "undefined") {
+      const resolved = new URL(raw, window.location.origin);
+      if (resolved.origin !== window.location.origin) return "/ai";
+    }
+  } catch {
+    return "/ai";
+  }
+  return raw;
 }
 
 function LoginForm() {
@@ -29,12 +40,25 @@ function LoginForm() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    // 注册侧客户端校验（与管理端密码门槛一致：≥8 位；昵称去首尾空白）
+    const username = form.username.trim();
+    const nickname = form.nickname.trim();
+    if (mode === "register") {
+      if (!username) {
+        setError("用户名不能为空");
+        return;
+      }
+      if (form.password.length < 8) {
+        setError("密码长度至少 8 位");
+        return;
+      }
+    }
     setBusy(true);
     try {
       const body =
         mode === "register"
-          ? form
-          : { username: form.username, password: form.password };
+          ? { username, password: form.password, nickname: nickname || undefined }
+          : { username, password: form.password };
       const res = await (mode === "register" ? apiRegister : apiLogin)(body);
       setAuth(res);
       router.push(from);

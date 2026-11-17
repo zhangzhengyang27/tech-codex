@@ -5,6 +5,9 @@ import { allCategories } from './docs-config';
 
 const DOCS_ROOT = path.join(process.cwd(), 'docs');
 
+/** 分类按 dir 长度降序（最长前缀优先），模块级常量——避免每条链接重排 */
+const CATEGORIES_BY_DIR_DEPTH = [...allCategories].sort((a, b) => b.dir.length - a.dir.length);
+
 /**
  * 站内文档相对链接重写。
  *
@@ -42,9 +45,7 @@ export function resolveDocHref(docRelativePath: string, href: string): string | 
   if (!hit) return null;
 
   // 找到该文件所属的最具体分类(与 docs-reader buildIndex 的最长前缀归属一致)
-  const owner = [...allCategories]
-    .sort((a, b) => b.dir.length - a.dir.length)
-    .find((c) => hit === c.dir || hit.startsWith(`${c.dir}/`));
+  const owner = CATEGORIES_BY_DIR_DEPTH.find((c) => hit === c.dir || hit.startsWith(`${c.dir}/`));
   if (!owner) return null;
 
   let rest = hit.slice(owner.dir.length).replace(/^\//, '');

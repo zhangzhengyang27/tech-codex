@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ListTree, X } from 'lucide-react';
 import type { DocSection } from '@/lib/docs-reader';
 import { DocsSidebar } from './docs-sidebar';
@@ -17,6 +17,21 @@ export function MobileDocsDrawer({
   sections,
 }: MobileDocsDrawerProps) {
   const [open, setOpen] = useState(false);
+
+  // 抽屉打开时：ESC 关闭 + 锁定背景滚动，关闭时恢复
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open]);
 
   // 点击抽屉内任意文档链接后关闭抽屉
   const handlePanelClick = (e: React.MouseEvent<HTMLDivElement>) => {

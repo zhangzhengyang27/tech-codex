@@ -106,8 +106,12 @@ export default function AdminOverviewPage() {
 
   useEffect(() => {
     if (!hydrated || !isAdmin) return;
-    void loadStats();
-    void loadOps();
+    // delayed setState：延后一拍发起加载，避免 effect 内同步 setState 级联渲染
+    const t = setTimeout(() => {
+      void loadStats();
+      void loadOps();
+    }, 0);
+    return () => clearTimeout(t);
   }, [loadStats, loadOps, hydrated, isAdmin]);
 
   const startSync = async () => {

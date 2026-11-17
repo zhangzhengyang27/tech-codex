@@ -43,15 +43,26 @@ export function extractToc(markdown: string): TocItem[] {
   const lines = markdown.split('\n');
   const items: TocItem[] = [];
   const slugger = new GithubSlugger();
-  let inCodeBlock = false;
+  // 代码围栏状态：记录开启围栏的字符与长度（CommonMark 规则——
+  // 闭合围栏必须是相同字符且长度 >= 开启长度，```` 内的 ``` 不算闭合）
+  let fenceLen = 0;
+  let fenceChar = '';
 
   for (const line of lines) {
     const trimmed = line.trimStart();
-    if (trimmed.startsWith('```') || trimmed.startsWith('~~~')) {
-      inCodeBlock = !inCodeBlock;
+    const fenceMatch = /^(`{3,}|~{3,})/.exec(trimmed);
+    if (fenceMatch) {
+      const chars = fenceMatch[1];
+      if (fenceLen === 0) {
+        fenceLen = chars.length;
+        fenceChar = chars[0];
+      } else if (chars[0] === fenceChar && chars.length >= fenceLen) {
+        fenceLen = 0;
+        fenceChar = '';
+      }
       continue;
     }
-    if (inCodeBlock) continue;
+    if (fenceLen > 0) continue;
 
     const match = line.match(/^(#{2,4})\s+(.+)$/);
     if (match) {

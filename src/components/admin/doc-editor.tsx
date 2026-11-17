@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AlertTriangle, FileText, Loader2, Save, X } from "lucide-react";
 import { adminDocument, updateDocumentContent, type KbDocumentView } from "@/lib/documents";
 
@@ -25,28 +25,44 @@ export function DocEditor({
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  /**
+   * 请求序守卫：快速切换 docId（A→B）时 A 的慢响应若后到，
+   * 会用 A 的 content/title 覆盖 B，后续保存还可能带着 A 的数据写进 B 的 docId
+   * （A 的内容写进 B，数据破坏级）。序号不匹配的响应一律丢弃。
+   */
+  const loadSeqRef = useRef(0);
+  /** 当前已加载的文档ID：保存时以此为准，防止用旧请求残留的 content/title 保存错文档 */
+  const loadedIdRef = useRef<number | null>(null);
 
   const load = useCallback(async (id: number) => {
+    const seq = ++loadSeqRef.current;
     setLoading(true);
     setError("");
     setDoc(null);
+    loadedIdRef.current = null;
     try {
       const d = await adminDocument(id, true);
+      if (seq !== loadSeqRef.current) return; // 已切换到其他文档，丢弃过期响应
       if (d.sourceType === "SYNC") {
         setError("docs 同步受管文档不支持在线编辑：请在源仓库修改后执行「同步 docs 内容」");
       }
+      loadedIdRef.current = id;
       setDoc(d);
       setTitle(d.title);
       setContent(d.content ?? "");
     } catch (e) {
+      if (seq !== loadSeqRef.current) return;
       setError(errText(e));
     } finally {
-      setLoading(false);
+      if (seq === loadSeqRef.current) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    if (docId != null) void load(docId);
+    if (docId == null) return;
+    // delayed setState：延后一拍发起加载，避免 effect 内同步 setState 级联渲染
+    const t = setTimeout(() => void load(docId), 0);
+    return () => clearTimeout(t);
   }, [docId, load]);
 
   // Esc 关闭
@@ -64,6 +80,12 @@ export function DocEditor({
   const onSave = async () => {
     if (!content.trim()) {
       setError("文档内容不能为空");
+      return;
+    }
+    // 双保险：只有编辑器里装载完成的正是当前 docId 才允许保存，
+    // 杜绝 A 的内容经慢响应残留在 state 后被写进 B 的文档
+    if (loadedIdRef.current !== docId) {
+      setError("文档尚未加载完成，请稍候再保存");
       return;
     }
     setSaving(true);

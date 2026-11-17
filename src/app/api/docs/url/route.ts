@@ -28,6 +28,9 @@ export async function POST(req: Request) {
   if (!Array.isArray(rawPaths)) {
     return NextResponse.json({ error: "paths must be an array" }, { status: 400 });
   }
+  if (rawPaths.length > 500) {
+    return NextResponse.json({ error: "paths too many (max 500)" }, { status: 400 });
+  }
 
   const urls: Record<string, string | null> = {};
   for (const raw of rawPaths) {

@@ -1,0 +1,1046 @@
+[
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/01-%E4%BD%A0%E7%9A%84%E8%83%BD%E5%8A%9B%E6%A8%A1%E5%9E%8B%E5%86%B3%E5%AE%9A%E4%BD%A0%E7%9A%84%E8%81%8C%E4%BD%8D",
+    "destination": "/docs/tech-management/01-职业成长与转型/01-你的能力模型决定你的职位"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/02-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E6%B6%88%E9%99%A4%E5%8E%8B%E5%8A%9B%E7%9A%84%E4%B8%83%E7%A7%8D%E6%96%B9%E6%B3%95",
+    "destination": "/docs/tech-management/01-职业成长与转型/02-刘俊强：消除压力的七种方法"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/06-%E5%BE%90%E5%87%BD%E7%A7%8B%EF%BC%9A%E8%BD%AC%E5%9E%8B%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E8%80%85%E5%88%9D%E6%9C%9F%E7%9A%84%E4%B8%89%E5%A4%A7%E6%8C%91%E6%88%98",
+    "destination": "/docs/tech-management/01-职业成长与转型/03-徐函秋：转型技术管理者初期的三大挑战"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/07-%E6%88%90%E6%95%8F%EF%BC%9A%E6%8A%80%E6%9C%AF%E4%BA%BA%E8%BD%AC%E5%9E%8B%E7%AE%A1%E7%90%86%E7%9A%84%E4%B8%A4%E5%A4%A7%E7%A7%98%E8%AF%80",
+    "destination": "/docs/tech-management/01-职业成长与转型/04-成敏：技术人转型管理的两大秘诀"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/08-%E6%8A%80%E6%9C%AFLeader%E7%9A%84%E6%8C%81%E7%BB%AD%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/01-职业成长与转型/05-技术Leader的持续成长"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/10-%E6%9A%A8%E5%AE%B6%E6%84%89%EF%BC%9A%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%A6%82%E4%BD%95%E5%BF%AB%E4%B9%90%E7%9A%84%E8%87%AA%E6%88%91%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/01-职业成长与转型/06-暨家愉：技术人如何快乐的自我成长"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/11-%E6%9C%AA%E6%9D%A5%E7%BB%84%E7%BB%87%E5%BD%A2%E6%80%81%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E6%8C%91%E6%88%98",
+    "destination": "/docs/tech-management/01-职业成长与转型/07-未来组织形态带来的领导力挑战"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/12-%E7%A8%8B%E5%86%9B%EF%BC%9A%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%9A%84%E3%80%8C%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80%E3%80%8D",
+    "destination": "/docs/tech-management/01-职业成长与转型/08-程军：技术人的「知行合一」"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/13-%E7%A9%BA%E9%99%8D%E6%8A%80%E6%9C%AF%E9%AB%98%E7%AE%A1%E7%9A%84%E6%8B%A9%E4%B8%9A%E4%B8%83%E8%AE%A1",
+    "destination": "/docs/tech-management/01-职业成长与转型/09-空降技术高管的择业七计"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/14-%E7%A9%BA%E9%99%8D%E9%A2%86%E5%AF%BC%E8%80%85%E5%B9%B3%E7%A8%B3%E8%90%BD%E5%9C%B0%E8%A6%81%E5%81%9A%E7%9A%84%E5%9B%9B%E9%81%93%E9%A2%98",
+    "destination": "/docs/tech-management/01-职业成长与转型/10-空降领导者平稳落地要做的四道题"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/15-%E8%83%A1%E5%B3%B0%EF%BC%9A%E4%BA%BA%E5%88%B0%E4%B8%AD%E5%B9%B4%EF%BC%9A%E5%A4%B1%E4%B8%9A%E4%B8%8E%E6%81%90%E6%83%A7",
+    "destination": "/docs/tech-management/01-职业成长与转型/11-胡峰：人到中年：失业与恐惧"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/16-%E8%8C%B9%E7%82%B3%E6%99%9F%EF%BC%9AQE%E5%9B%A2%E9%98%9F%E5%90%91%E5%B7%A5%E7%A8%8B%E6%95%88%E8%83%BD%E5%9B%A2%E9%98%9F%E8%BD%AC%E5%9E%8B%E7%9A%84%E5%AE%9E%E8%B7%B5%E4%B9%8B%E8%B7%AF",
+    "destination": "/docs/tech-management/01-职业成长与转型/12-茹炳晟：QE团队向工程效能团队转型的实践之路"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/20-%E9%87%8D%E6%9E%84%E7%89%88-03-%E6%88%90%E9%95%BF%E8%A7%82-%E5%85%A8%E6%83%85%E6%8A%95%E5%85%A5%E5%AE%88%E6%AD%A3%E5%87%BA%E5%A5%87%E6%84%BF%E7%AD%89%E8%8A%B1%E5%BC%80",
+    "destination": "/docs/tech-management/01-职业成长与转型/13-成长观-全情投入守正出奇愿等花开"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/21-%E9%87%8D%E6%9E%84%E7%89%88-04-%E7%AE%A1%E7%90%86%E8%A7%82-%E4%BB%8E%E6%A1%A8%E6%89%8B%E5%88%B0%E5%85%9C%E5%BA%95%E4%BA%BA",
+    "destination": "/docs/tech-management/01-职业成长与转型/14-管理观-从桨手到兜底人"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/23-%E9%87%8D%E6%9E%84%E7%89%88-06-%E9%99%84%E5%BD%95",
+    "destination": "/docs/tech-management/01-职业成长与转型/15-附录"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/24-%E9%98%BF%E7%A6%85%EF%BC%9A%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%BD%AC%E5%9E%8B%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E5%8F%AF%E8%83%BD%E8%B8%A9%E5%88%B0%E7%9A%84%E2%80%9C%E5%9D%91%E2%80%9D",
+    "destination": "/docs/tech-management/01-职业成长与转型/16-阿禅：工程师转型产品经理可能踩到的“坑”"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/25-%E9%98%BF%E7%A6%85%EF%BC%9A%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%BD%AC%E5%9E%8B%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E7%9A%84%E5%BF%85%E5%A4%87%E6%80%9D%E7%BB%B4",
+    "destination": "/docs/tech-management/01-职业成长与转型/17-阿禅：工程师转型产品经理的必备思维"
+  },
+  {
+    "source": "/docs/tech-management/02-%E5%85%B6%E4%BB%96%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/01-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E8%80%85%E6%88%90%E9%95%BF%E6%8C%87%E5%8D%97",
+    "destination": "/docs/tech-management/01-职业成长与转型/18-技术管理者成长指南"
+  },
+  {
+    "source": "/docs/tech-management/02-%E5%85%B6%E4%BB%96%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/02-%E6%96%B0%E7%BB%8F%E7%90%86%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97",
+    "destination": "/docs/tech-management/01-职业成长与转型/19-新经理避坑指南"
+  },
+  {
+    "source": "/docs/tech-management/02-%E5%85%B6%E4%BB%96%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/03-%E7%AE%A1%E7%90%86%E8%A7%84%E5%88%92",
+    "destination": "/docs/tech-management/01-职业成长与转型/20-管理规划"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/02-%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E4%BA%BA%E9%80%82%E5%90%88%E8%80%83%E8%99%91%E7%AE%A1%E7%90%86%E8%A7%92%E8%89%B2",
+    "destination": "/docs/tech-management/01-职业成长与转型/21-什么样的人适合考虑管理角色"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/31-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E4%B8%AA%E4%BA%BA%E6%8A%80%E6%9C%AF%E5%93%81%E7%89%8C",
+    "destination": "/docs/tech-management/01-职业成长与转型/22-如何打造个人技术品牌"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/35-%E5%BC%A0%E7%9F%97%EF%BC%9A%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E8%80%85%E5%BF%85%E7%BB%8F%E7%9A%84%E5%87%A0%E4%B8%AA%E6%80%9D%E7%BB%B4%E8%BD%AC%E5%8F%98",
+    "destination": "/docs/tech-management/01-职业成长与转型/23-张矗：技术管理者必经的几个思维转变"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/36-%E5%BE%90%E6%AF%85%EF%BC%9A%E4%BA%94%E6%98%9F%E7%BA%A7%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E9%AB%98%E6%95%88%E7%A7%98%E8%AF%80",
+    "destination": "/docs/tech-management/01-职业成长与转型/24-徐毅：五星级软件工程师的高效秘诀"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/37-%E5%BE%90%E6%AF%85%EF%BC%9A%E6%8A%80%E6%9C%AFLeader%E5%BA%94%E8%AF%A5%E5%85%B7%E5%A4%87%E7%9A%84%E8%83%BD%E5%8A%9B%E6%88%96%E7%B4%A0%E8%B4%A8",
+    "destination": "/docs/tech-management/01-职业成长与转型/25-徐毅：技术Leader应该具备的能力或素质"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/56-%E8%B0%A2%E4%B8%9C%E5%8D%87%EF%BC%9A%E8%AF%B4%E8%AF%B4%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E8%80%85%E4%BB%8E%E5%A4%96%E4%BC%81%E5%88%B0%E6%B0%91%E4%BC%81%E7%9A%84%E6%8C%91%E6%88%98",
+    "destination": "/docs/tech-management/01-职业成长与转型/26-谢东升：说说技术管理者从外企到民企的挑战"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E4%B8%AA%E4%BA%BA%E5%93%81%E7%89%8C%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%BD%B1%E5%93%8D%E5%8A%9B",
+    "destination": "/docs/tech-management/01-职业成长与转型/27-汇编-个人品牌与技术影响力"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E8%80%85%E7%9A%84%E6%88%90%E9%95%BF%E4%B8%8E%E8%BD%AC%E5%9E%8B",
+    "destination": "/docs/tech-management/01-职业成长与转型/28-汇编-技术管理者的成长与转型"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E6%8A%80%E6%9C%AF%E9%A2%86%E5%AF%BC%E8%80%85%E7%9A%84%E8%83%BD%E5%8A%9B%E4%BF%AE%E7%82%BC",
+    "destination": "/docs/tech-management/01-职业成长与转型/29-汇编-技术领导者的能力修炼"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/02-%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86-%E4%BA%BA%E6%9C%BA%E5%8D%8F%E4%BD%9C%E6%97%B6%E4%BB%A3%E7%9A%84%E7%BB%84%E7%BB%87%E8%BF%9B%E5%8C%96",
+    "destination": "/docs/tech-management/02-团队建设与文化/01-团队管理-人机协作时代的组织进化"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/03-%22%E9%AB%98%E6%BD%9C%E5%8A%9B%E4%BA%BA%E6%89%8D%22%E7%9A%84%E5%86%85%E9%83%A8%E5%9F%B9%E5%85%BB",
+    "destination": "/docs/tech-management/02-团队建设与文化/02-\"高潜力人才\"的内部培养"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/04-%E4%B8%9A%E5%8A%A1%E9%AB%98%E9%80%9F%E5%A2%9E%E9%95%BF%E6%9C%9F%E7%9A%84%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86%EF%BC%9A%E2%80%9C%E7%9F%A5%E8%BD%BB%E9%87%8D%E3%80%81%E9%87%8D%E7%BB%B8%E7%BC%AA%E3%80%81%E8%B0%83%E7%BC%93%E6%80%A5%E2%80%9D",
+    "destination": "/docs/tech-management/02-团队建设与文化/03-业务高速增长期的团队管理：“知轻重、重绸缪、调缓急”"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/05-%E4%BA%8E%E8%89%BA%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E5%8D%87%E8%87%AA%E5%B7%B1%E7%9A%84%E8%83%BD%E5%8A%9B%E4%B8%8E%E5%8A%A8%E5%8A%9B",
+    "destination": "/docs/tech-management/02-团队建设与文化/04-于艺：如何提升自己的能力与动力"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/06-%E5%81%9A%E4%B8%AA%E5%90%88%E6%A0%BC%E7%9A%84%E6%8A%80%E6%9C%AF%E5%B2%97%E4%BD%8D%E9%9D%A2%E8%AF%95%E5%AE%98",
+    "destination": "/docs/tech-management/02-团队建设与文化/05-做个合格的技术岗位面试官"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/07-%E5%81%9A%E5%88%B0%E8%BF%99%E5%9B%9B%E7%82%B9%EF%BC%8C%E5%9B%A2%E9%98%9F%E5%BF%85%E5%AE%9A%E9%A3%9E%E9%80%9F%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/02-团队建设与文化/06-做到这四点，团队必定飞速成长"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/08-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E9%A2%86%E5%AF%BC%E5%8A%9B%E6%8F%90%E5%8D%87%E6%8C%87%E5%8D%97%E4%B9%8B%E5%9F%B9%E5%85%BB%E7%A7%AF%E6%9E%81%E7%9A%84%E6%80%81%E5%BA%A6",
+    "destination": "/docs/tech-management/02-团队建设与文化/07-刘俊强：领导力提升指南之培养积极的态度"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/09-%E5%88%98%E5%A4%A9%E8%83%9C%EF%BC%9A%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E5%9B%A2%E9%98%9F%EF%BC%8C%E5%85%B3%E9%94%AE%E5%9C%A8%E4%BA%8E%E5%B9%B3%E8%A1%A1%E4%BA%BA%E3%80%81%E4%BA%8B%E5%92%8C%E6%97%B6%E9%97%B4",
+    "destination": "/docs/tech-management/02-团队建设与文化/08-刘天胜：打造高效团队，关键在于平衡人、事和时间"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/10-%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%8B%9B%E5%88%B0%E5%90%88%E9%80%82%E7%9A%84%E4%BA%BA%E6%89%8D",
+    "destination": "/docs/tech-management/02-团队建设与文化/09-创业公司如何招到合适的人才"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/11-%E5%9B%A2%E9%98%9F%E6%88%90%E9%95%BF%E8%A6%81%E9%9D%A0%E6%8A%80%E5%B7%A7%E5%92%8C%E4%BD%93%E7%B3%BB",
+    "destination": "/docs/tech-management/02-团队建设与文化/10-团队成长要靠技巧和体系"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/12-%E5%9F%B9%E5%85%BB%E4%B8%AD%E5%B1%82%E5%9B%A2%E9%98%9F%E7%9A%84%E7%AE%A1%E7%90%86%E8%AE%A4%E7%9F%A5",
+    "destination": "/docs/tech-management/02-团队建设与文化/11-培养中层团队的管理认知"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/19-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E8%87%AA%E7%BB%84%E7%BB%87%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/02-团队建设与文化/12-如何打造一个自组织团队"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/20-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E6%9C%89%E6%B4%BB%E5%8A%9B%E3%80%81%E6%8C%81%E7%BB%AD%E5%88%9B%E6%96%B0%E7%9A%84%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/02-团队建设与文化/13-如何打造有活力、持续创新的研发团队"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/21-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/02-团队建设与文化/14-如何打造高效的分布式团队"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/22-%E5%A7%9A%E4%BB%8E%E7%A3%8A%EF%BC%9A%E5%B7%A7%E7%94%A8AARRR%E6%A8%A1%E5%9E%8B%EF%BC%8C%E5%90%B8%E5%BC%95%E4%BC%98%E7%A7%80%E6%8A%80%E6%9C%AF%E4%BA%BA%E6%89%8D",
+    "destination": "/docs/tech-management/02-团队建设与文化/15-姚从磊：巧用AARRR模型，吸引优秀技术人才"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/23-%E5%A7%9A%E5%A8%81%EF%BC%9A%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86%E4%B8%AD%E5%85%B3%E4%BA%8E%E5%85%AC%E5%B9%B3%E7%9A%84%E4%BA%94%E4%B8%AA%E6%A0%B8%E5%BF%83%E5%87%86%E5%88%99",
+    "destination": "/docs/tech-management/02-团队建设与文化/16-姚威：技术团队管理中关于公平的五个核心准则"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/24-%E5%BB%BA%E7%AB%8B%E6%9C%89%E6%95%88%E7%9A%84%E5%91%98%E5%B7%A5%E6%B7%98%E6%B1%B0%E6%9C%BA%E5%88%B6",
+    "destination": "/docs/tech-management/02-团队建设与文化/17-建立有效的员工淘汰机制"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/25-%E6%88%90%E6%95%8F%EF%BC%9A%E6%8A%80%E6%9C%AF%E4%BA%BA%E6%89%8D%E7%9A%84%E7%AE%A1%E7%90%86%E5%85%AC%E5%BC%8F",
+    "destination": "/docs/tech-management/02-团队建设与文化/18-成敏：技术人才的管理公式"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/26-%E6%89%93%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E6%90%AD%E5%BB%BA%E7%9A%84%E5%9F%BA%E7%A1%80",
+    "destination": "/docs/tech-management/02-团队建设与文化/19-打好技术团队搭建的基础"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/28-%E7%8E%8B%E5%8F%AF%E5%85%89%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%88%9D%E5%88%9B%E5%9B%A2%E9%98%9F%E4%B9%8B%E4%BA%BA%E6%89%8D%E5%85%B3",
+    "destination": "/docs/tech-management/02-团队建设与文化/20-王可光：如何搭建初创团队之人才关"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/29-%E7%A8%8B%E5%86%9B%EF%BC%9A%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E4%B9%8B%E6%8B%9B%E4%BA%BA",
+    "destination": "/docs/tech-management/02-团队建设与文化/21-程军：打造高效技术团队之招人"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/30-%E8%AE%BA%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86%E4%B8%8E%E5%85%B1%E5%90%8C%E5%8D%87%E7%BA%A7",
+    "destination": "/docs/tech-management/02-团队建设与文化/22-论团队管理与共同升级"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/31-%E8%B5%B5%E6%99%93%E5%85%89%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9F%B9%E5%85%BB%E5%9B%A2%E9%98%9F%E7%AB%9E%E4%BA%89%E5%8A%9B",
+    "destination": "/docs/tech-management/02-团队建设与文化/23-赵晓光：如何培养团队竞争力"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/32-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E5%85%B3%E4%BA%8E%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%AE%A1%E7%90%86%E7%9A%84%E5%87%A0%E7%82%B9%E6%80%9D%E8%80%83",
+    "destination": "/docs/tech-management/02-团队建设与文化/24-邱良军：关于做好技术团队管理的几点思考"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/33-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%9C%B0%E6%89%BE%E5%88%B0%E4%BD%A0%E5%BF%83%E4%BB%AA%E7%9A%84%E4%BA%BA%E6%89%8D",
+    "destination": "/docs/tech-management/02-团队建设与文化/25-邱良军：如何有效地找到你心仪的人才"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/34-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E4%BA%BA%E6%89%8D%E6%8B%9B%E8%81%98%E6%94%BB%E7%95%A5",
+    "destination": "/docs/tech-management/02-团队建设与文化/26-邱良军：打造高效技术团队的人才招聘攻略"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/35-%E9%99%88%E5%B4%87%E7%A3%90%EF%BC%9A%E5%BF%83%E7%90%86%E6%88%90%E7%86%9F%E5%BA%A6-%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E8%AF%86%E4%BA%BA%E5%88%A9%E5%99%A8",
+    "destination": "/docs/tech-management/02-团队建设与文化/27-陈崇磐：心理成熟度-创业公司识人利器"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/36-%E9%A9%AC%E8%BF%9E%E6%B5%A9%EF%BC%9A%E7%94%A8%E4%BA%BA%E7%9A%84%E5%85%B3%E9%94%AE%E5%9C%A8%E4%BA%8E%E7%94%A8%E4%BA%BA%E6%89%80%E9%95%BF%EF%BC%8C%E8%80%8C%E9%9D%9E%E6%94%B9%E4%BA%BA%E4%B9%8B%E7%9F%AD",
+    "destination": "/docs/tech-management/02-团队建设与文化/28-马连浩：用人的关键在于用人所长，而非改人之短"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/01-996%E3%80%81987%EF%BC%8C%E7%A8%8B%E5%BA%8F%E5%91%98%E5%8A%A0%E7%8F%AD%E6%96%87%E5%8C%96%E4%BD%A0%E6%80%8E%E4%B9%88%E7%9C%8B",
+    "destination": "/docs/tech-management/02-团队建设与文化/29-996、987，程序员加班文化你怎么看"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/02-%E4%BA%94%E4%BD%8D%E6%8A%80%E6%9C%AF%E9%A2%86%E5%AF%BC%E8%80%85%E7%9A%84%E6%96%87%E5%8C%96%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/02-团队建设与文化/30-五位技术领导者的文化构建实战"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/03-%E5%85%B3%E4%BA%8E%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96%E7%9A%84%E5%85%AD%E4%B8%AA%E9%97%AE%E9%A2%98",
+    "destination": "/docs/tech-management/02-团队建设与文化/31-关于工程师文化的六个问题"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/05-%E5%A6%82%E4%BD%95%E5%9C%A8%E4%B8%8D%E5%90%8C%E7%BB%84%E7%BB%87%E6%96%87%E5%8C%96%E4%B8%8B%E6%8E%A8%E8%A1%8C%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86",
+    "destination": "/docs/tech-management/02-团队建设与文化/32-如何在不同组织文化下推行技术管理"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/06-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E7%8B%AC%E5%B1%9E%E8%87%AA%E5%B7%B1%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96",
+    "destination": "/docs/tech-management/02-团队建设与文化/33-如何打造独属自己的工程师文化"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/07-%E6%88%90%E6%95%8F%EF%BC%9A%E6%89%93%E9%80%A0%E4%BC%98%E7%A7%80%E5%9B%A2%E9%98%9F%E4%B8%8E%E6%96%87%E5%8C%96%E7%9A%84%E4%B8%89%E4%B8%AA%E6%8E%A8%E6%89%8B",
+    "destination": "/docs/tech-management/02-团队建设与文化/34-成敏：打造优秀团队与文化的三个推手"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/08-%E6%96%87%E5%8C%96%E6%98%AF%E7%AE%A1%E7%90%86%E7%9A%84%E9%82%A3%E5%8F%AA%E6%97%A0%E5%BD%A2%E4%B9%8B%E6%89%8B",
+    "destination": "/docs/tech-management/02-团队建设与文化/35-文化是管理的那只无形之手"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/09-%E8%A2%AB80%25%E7%9A%84%E4%BA%BA%E8%AF%AF%E8%A7%A3%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96",
+    "destination": "/docs/tech-management/02-团队建设与文化/36-被80%25的人误解的工程师文化"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/10-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E4%BB%8E%E5%B0%8F%E5%A4%84%E7%9D%80%E7%9C%BC%EF%BC%8C%E4%BF%AE%E7%82%BC%E6%96%87%E5%8C%96%E4%BB%B7%E5%80%BC%E8%A7%82",
+    "destination": "/docs/tech-management/02-团队建设与文化/37-邱良军：从小处着眼，修炼文化价值观"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/11-%E9%99%88%E5%98%89%E4%BD%B3%EF%BC%9A%E5%A5%88%E9%A3%9E%E6%96%87%E5%8C%96%E5%AE%A3%E8%A8%80",
+    "destination": "/docs/tech-management/02-团队建设与文化/38-陈嘉佳：奈飞文化宣言"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/01-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BB%99%E4%BA%86%E9%AB%98%E5%B7%A5%E8%B5%84%EF%BC%8C%E4%BE%9D%E7%84%B6%E7%95%99%E4%B8%8D%E4%BD%8F%E6%A0%B8%E5%BF%83%E5%91%98%E5%B7%A5",
+    "destination": "/docs/tech-management/02-团队建设与文化/39-为什么给了高工资，依然留不住核心员工"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/03-%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BA%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/02-团队建设与文化/40-从零开始搭建轻量级研发团队"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/06-%E5%8D%93%E8%B6%8A%E7%9A%84%E5%9B%A2%E9%98%9F%EF%BC%8C%E5%BF%85%E7%84%B6%E6%9C%89%E4%B8%80%E4%B8%AA%E5%8D%93%E8%B6%8A%E7%9A%84%E9%A2%86%E5%AF%BC%E8%80%85",
+    "destination": "/docs/tech-management/02-团队建设与文化/41-卓越的团队，必然有一个卓越的领导者"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/33-%E5%B0%86%E4%BC%81%E4%B8%9A%E6%89%93%E9%80%A0%E6%88%90%E4%B8%80%E6%89%80%E7%BB%88%E8%BA%AB%E5%A4%A7%E5%AD%A6",
+    "destination": "/docs/tech-management/02-团队建设与文化/42-将企业打造成一所终身大学"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/34-%E5%BC%A0%E5%B5%A9%EF%BC%9A%E4%BB%8E%E5%BF%83%E7%90%86%E5%AD%A6%E8%A7%92%E5%BA%A6%E7%9C%8B%E5%BE%85%E5%B0%8F%E4%B8%AD%E5%9E%8B%E5%9B%A2%E9%98%9F%E7%9A%84%E7%AE%A1%E7%90%86",
+    "destination": "/docs/tech-management/02-团队建设与文化/43-张嵩：从心理学角度看待小中型团队的管理"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/40-%E6%8A%80%E6%9C%AF%E3%80%81%E4%BA%A7%E5%93%81%E3%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E4%B8%8D%E5%90%8C%E8%A7%86%E8%A7%92",
+    "destination": "/docs/tech-management/02-团队建设与文化/44-技术、产品、管理的不同视角"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/41-%E6%8A%8A%E8%84%89%E9%AB%98%E6%95%88%E6%89%A7%E8%A1%8C%E7%9A%84%E5%85%B3%E9%94%AE%E8%A6%81%E7%B4%A0",
+    "destination": "/docs/tech-management/02-团队建设与文化/45-把脉高效执行的关键要素"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/48-%E7%8E%8B%E5%9D%9A%EF%BC%9A%E5%B9%B4%E8%BD%BB%E4%BA%BA%E6%B0%B8%E8%BF%9C%E6%98%AF%E5%88%9B%E6%96%B0%E7%9A%84%E4%B8%BB%E4%BD%93",
+    "destination": "/docs/tech-management/02-团队建设与文化/46-王坚：年轻人永远是创新的主体"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/50-%E7%A8%8B%E5%86%9B%EF%BC%9A%E4%BB%8E0%E5%88%B01%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/tech-management/02-团队建设与文化/47-程军：从0到1打造高效技术团队的方法论"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/51-%E7%A8%8B%E5%86%9B%EF%BC%9A%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E4%B9%8B%E5%81%9A%E4%BA%8B",
+    "destination": "/docs/tech-management/02-团队建设与文化/48-程军：打造高效技术团队之做事"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/52-%E7%BB%93%E6%9D%9F%E7%AF%87-%E5%8D%B3%E4%BD%BF%E8%BF%9C%E9%9A%94%E5%8D%83%E5%B1%B1%E4%B8%87%E6%B0%B4%EF%BC%8C%E4%B9%9F%E8%A6%81%E4%B9%98%E9%A3%8E%E4%B8%8E%E4%BD%A0%E5%90%8C%E5%BE%80",
+    "destination": "/docs/tech-management/02-团队建设与文化/49-结束篇-即使远隔千山万水，也要乘风与你同往"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/53-%E8%82%96%E5%86%B0%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E9%AB%98%E4%BF%A1%E4%BB%BB%E5%BA%A6%E7%9A%84%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/02-团队建设与文化/50-肖冰：如何建立高信任度的团队"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/55-%E8%AE%A9%E7%BB%86%E8%8A%82%E7%9A%84%E2%80%9C%E7%97%85%E6%AF%92%E2%80%9D%E6%84%9F%E6%9F%93%E4%BD%A0%E7%9A%84%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/02-团队建设与文化/51-让细节的“病毒”感染你的团队"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/57-%E9%80%89%E5%AF%B9%E7%9A%84%E4%BA%BA%EF%BC%8C%E5%81%9A%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BA%8B%E6%83%85",
+    "destination": "/docs/tech-management/02-团队建设与文化/52-选对的人，做正确的事情"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/58-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%8C%E4%BD%A0%E5%87%86%E5%A4%87%E5%A5%BD%E4%BA%86%E5%90%97%EF%BC%81",
+    "destination": "/docs/tech-management/02-团队建设与文化/53-邱良军：打造高效技术团队，你准备好了吗！"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E4%BA%BA%E6%89%8D%E9%80%89%E8%82%B2%E7%94%A8%E7%95%99",
+    "destination": "/docs/tech-management/02-团队建设与文化/54-汇编-人才选育用留"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E5%9B%A2%E9%98%9F%E6%B4%BB%E5%8A%9B%E4%B8%8E%E8%87%AA%E9%A9%B1%E6%96%87%E5%8C%96",
+    "destination": "/docs/tech-management/02-团队建设与文化/55-汇编-团队活力与自驱文化"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E7%AE%A1%E7%90%86%E8%80%85%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E5%BF%83%E6%B3%95",
+    "destination": "/docs/tech-management/02-团队建设与文化/56-汇编-管理者的方法与心法"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/01-%E8%81%8C%E5%9C%BA%E5%88%86%E8%BA%AB%E6%9C%AF%EF%BC%9A%E4%BB%8E%E7%BB%99%E7%AD%94%E6%A1%88%E5%88%B0%E5%81%9A%E5%BC%95%E5%AF%BC",
+    "destination": "/docs/tech-management/03-管理实践与沟通/01-职场分身术：从给答案到做引导"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/02-Bug%E5%BC%95%E5%8F%91%E4%BA%8B%E6%95%85%EF%BC%8C%E8%AF%A5%E4%B8%8D%E8%AF%A5%E8%BF%BD%E7%A9%B6%E8%B4%A3%E4%BB%BB",
+    "destination": "/docs/tech-management/03-管理实践与沟通/02-Bug引发事故，该不该追究责任"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/03-%E5%A6%82%E4%BD%95%E5%B8%AE%E5%8A%A9%E5%9B%A2%E9%98%9F%E6%88%90%E5%91%98%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/03-管理实践与沟通/03-如何帮助团队成员成长"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/04-%E5%BD%93%E6%88%91%E4%BB%AC%E7%BB%99%E5%88%AB%E4%BA%BA%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BA%9B%E4%BB%80%E4%B9%88",
+    "destination": "/docs/tech-management/03-管理实践与沟通/04-当我们给别人提意见时，要注意些什么"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/05-%E7%AE%A1%E7%90%86%E4%B9%8B%E9%81%93%EF%BC%9A%E5%9B%A2%E9%98%9F%E4%B8%8E%E9%A2%86%E5%AF%BC%E5%8A%9B",
+    "destination": "/docs/tech-management/03-管理实践与沟通/05-管理之道：团队与领导力"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/06-%E5%BD%93%E5%88%AB%E4%BA%BA%E7%BB%99%E6%88%91%E4%BB%AC%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9",
+    "destination": "/docs/tech-management/03-管理实践与沟通/06-当别人给我们提意见时，该如何应对"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/07-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E5%85%AC%E5%8F%B8%E4%B8%AD%E7%9A%84%E4%B8%80%E5%AF%B9%E4%B8%80%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/03-管理实践与沟通/07-说说硅谷公司中的一对一沟通"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/08-%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E4%BA%86%EF%BC%8C%E4%BD%9C%E4%B8%BA%E8%B4%9F%E8%B4%A3%E4%BA%BA%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E",
+    "destination": "/docs/tech-management/03-管理实践与沟通/08-项目延期了，作为负责人该怎么办"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/09-%E7%AE%A1%E7%90%86%E5%92%8C%E8%A2%AB%E7%AE%A1%E7%90%86%EF%BC%9A%E6%9C%9F%E6%9C%9B%E5%80%BC%E5%B7%AE%E5%BC%82",
+    "destination": "/docs/tech-management/03-管理实践与沟通/09-管理和被管理：期望值差异"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/10-%E7%AE%A1%E7%90%86%E8%80%85%E5%9C%A8%E8%BF%9B%E8%A1%8C%E5%B7%A5%E4%BD%9C%E5%88%86%E9%85%8D%E6%97%B6%EF%BC%8C%E4%BC%9A%E8%80%83%E8%99%91%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98",
+    "destination": "/docs/tech-management/03-管理实践与沟通/10-管理者在进行工作分配时，会考虑哪些问题"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/11-%E7%A1%85%E8%B0%B7%E4%BA%BA%E5%88%B0%E5%BA%95%E5%BF%99%E4%B8%8D%E5%BF%99",
+    "destination": "/docs/tech-management/03-管理实践与沟通/11-硅谷人到底忙不忙"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/12-%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%BD%B1%E5%93%8D%E5%8A%9B",
+    "destination": "/docs/tech-management/03-管理实践与沟通/12-技术人如何建立个人影响力"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/13-%E7%AE%A1%E7%90%86%E8%80%85%E4%B8%8D%E7%94%A8%E4%BA%B2%E5%8A%9B%E4%BA%B2%E4%B8%BA%EF%BC%9A%E5%85%B3%E9%94%AE%E6%98%AF%E4%BB%80%E4%B9%88",
+    "destination": "/docs/tech-management/03-管理实践与沟通/13-管理者不用亲力亲为：关键是什么"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/14-%E7%A1%85%E8%B0%B7%E9%9D%A2%E8%AF%95%EF%BC%9A%E9%82%A3%E4%BA%9B%E4%BD%A0%E5%BA%94%E8%AF%A5%E7%9F%A5%E9%81%93%E7%9A%84%E4%BA%8B%E5%84%BF",
+    "destination": "/docs/tech-management/03-管理实践与沟通/14-硅谷面试：那些你应该知道的事儿"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/15-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E6%8A%80%E5%B7%A7",
+    "destination": "/docs/tech-management/03-管理实践与沟通/15-项目管理中的三个技巧"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/16-%E4%B8%8D%E8%A6%81%E5%81%9A%E5%BE%AE%E8%A7%82%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85",
+    "destination": "/docs/tech-management/03-管理实践与沟通/16-不要做微观的管理者"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/17-%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%B7%A5%E4%BD%9C%E4%B8%AD%E7%9A%84%E4%BA%BA%E9%99%85%E5%85%B3%E7%B3%BB",
+    "destination": "/docs/tech-management/03-管理实践与沟通/17-如何处理工作中的人际关系"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/18-%E5%85%BC%E5%AE%B9%E5%B9%B6%E5%8C%85%E7%9A%84%E9%A2%86%E5%AF%BC%E6%96%B9%E5%BC%8F",
+    "destination": "/docs/tech-management/03-管理实践与沟通/18-兼容并包的领导方式"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/19-%E5%A6%82%E4%BD%95%E5%81%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E8%81%8C%E5%9C%BA%E8%A7%84%E5%88%92",
+    "destination": "/docs/tech-management/03-管理实践与沟通/19-如何做自己的职场规划"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/20-%E5%A6%82%E4%BD%95%E6%BF%80%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BA%BA%E5%91%98%E7%9A%84%E8%B4%A3%E4%BB%BB%E5%BF%83",
+    "destination": "/docs/tech-management/03-管理实践与沟通/20-如何激发团队人员的责任心"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/21-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B",
+    "destination": "/docs/tech-management/03-管理实践与沟通/21-说说硅谷互联网公司的开发流程"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/22-%E7%BC%96%E7%A8%8B%E9%A9%AC%E6%8B%89%E6%9D%BE",
+    "destination": "/docs/tech-management/03-管理实践与沟通/22-编程马拉松"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/23-%E5%B7%A5%E7%A8%8B%E5%B8%88%E3%80%81%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E3%80%81%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%80%E8%B5%B7%E5%B7%A5%E4%BD%9C%E7%9A%84",
+    "destination": "/docs/tech-management/03-管理实践与沟通/23-工程师、产品经理、数据工程师是如何一起工作的"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/24-%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%9A%84%E7%8A%AF%E9%94%99%E6%88%90%E6%9C%AC",
+    "destination": "/docs/tech-management/03-管理实践与沟通/24-技术人的犯错成本"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/25-%E5%A6%82%E4%BD%95%E4%BB%8E%E9%94%99%E8%AF%AF%E4%B8%AD%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/03-管理实践与沟通/25-如何从错误中成长"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/26-%E7%90%86%E8%A7%A3%E5%B9%B6%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%BC%B9%E6%80%A7",
+    "destination": "/docs/tech-management/03-管理实践与沟通/26-理解并建立自己的工作弹性"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/27-%E5%A6%82%E4%BD%95%E5%AF%B9%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%AF%B4%22%E4%B8%8D%22",
+    "destination": "/docs/tech-management/03-管理实践与沟通/27-如何对更多的工作说\"不\""
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/03-%E8%81%8C%E5%9C%BA%E8%BD%AF%E6%8A%80%E8%83%BD-%E8%B6%85%E8%BF%9E%E6%8E%A5%E6%97%B6%E4%BB%A3%E7%9A%84%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B",
+    "destination": "/docs/tech-management/03-管理实践与沟通/28-职场软技能-超连接时代的沟通与影响力"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/04-%E5%86%85%E9%83%A8%E6%8A%80%E6%9C%AF%E4%BC%9A%E8%AE%AE%E7%9A%84%E4%BB%B7%E5%80%BC",
+    "destination": "/docs/tech-management/03-管理实践与沟通/29-内部技术会议的价值"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/05-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E4%B8%80%E6%9C%AC%E6%AD%A3%E7%BB%8F%E6%95%99%E4%BD%A0%E5%A6%82%E4%BD%95%E6%AF%81%E6%8E%89%E4%B8%80%E5%9C%BA%E6%8A%80%E6%9C%AF%E6%BC%94%E8%AE%B2",
+    "destination": "/docs/tech-management/03-管理实践与沟通/30-刘俊强：一本正经教你如何毁掉一场技术演讲"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/06-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%81%9A%E5%A5%BD%E4%B8%80%E5%AF%B9%E4%B8%80%E6%B2%9F%E9%80%9A%E7%9A%84%E5%85%B3%E9%94%AE%E8%A6%81%E7%B4%A0",
+    "destination": "/docs/tech-management/03-管理实践与沟通/31-刘俊强：做好一对一沟通的关键要素"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/07-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E7%AE%A1%E7%90%86%E8%80%85%E5%BF%85%E5%A4%87%E7%9A%84%E9%AB%98%E6%95%88%E4%BC%9A%E8%AE%AE%E6%8C%87%E5%8D%97",
+    "destination": "/docs/tech-management/03-管理实践与沟通/32-刘俊强：管理者必备的高效会议指南"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/08-%E5%88%98%E5%BB%BA%E5%9B%BD%EF%BC%9A%E6%88%91%E5%90%84%E6%96%B9%E9%9D%A2%E5%81%9A%E5%BE%97%E9%83%BD%E5%BE%88%E5%A5%BD%EF%BC%8C%E5%B0%B1%E6%98%AF%E5%81%9A%E4%B8%8D%E5%A5%BD%E5%90%91%E4%B8%8A%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/03-管理实践与沟通/33-刘建国：我各方面做得都很好，就是做不好向上沟通"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/09-%E5%BE%90%E6%9E%97%EF%BC%9A%E9%80%9A%E8%BF%87%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E5%BB%BA%E7%AB%8B%E5%85%85%E6%BB%A1%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/03-管理实践与沟通/34-徐林：通过快速反馈建立充满信任的技术团队"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/10-%E6%8A%80%E6%9C%AF%E6%BC%94%E8%AE%B2%EF%BC%8C%E6%9C%89%E7%AB%A0%E5%8F%AF%E5%BE%AA",
+    "destination": "/docs/tech-management/03-管理实践与沟通/35-技术演讲，有章可循"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/11-%E6%AD%A3%E7%A1%AE%E5%AF%B9%E5%BE%85%E6%8A%80%E6%9C%AF%E6%BC%94%E8%AE%B2%E4%B8%AD%E7%9A%84%E5%A4%B1%E8%AF%AF",
+    "destination": "/docs/tech-management/03-管理实践与沟通/36-正确对待技术演讲中的失误"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/12-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E6%B2%9F%E9%80%9A%EF%BC%8C%E6%B2%9F%E9%80%9A%EF%BC%8C%E8%BF%98%E6%98%AF%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/03-管理实践与沟通/37-邱良军：沟通，沟通，还是沟通"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/13-%E9%BB%84%E4%BA%91%EF%BC%9A%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E8%80%85%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E7%9A%84%E5%81%9A%E5%A5%BD%E5%90%91%E4%B8%8A%E7%AE%A1%E7%90%86",
+    "destination": "/docs/tech-management/03-管理实践与沟通/38-黄云：技术管理者如何科学的做好向上管理"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/32-%E5%AE%9D%E7%8E%89%EF%BC%9A%E6%80%8E%E6%A0%B7%E5%B9%B3%E8%A1%A1%E8%BD%AF%E4%BB%B6%E8%B4%A8%E9%87%8F%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%90%E6%9C%AC%E8%8C%83%E5%9B%B4%E7%9A%84%E5%85%B3%E7%B3%BB",
+    "destination": "/docs/tech-management/03-管理实践与沟通/39-宝玉：怎样平衡软件质量与时间成本范围的关系"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/38-%E6%88%90%E6%95%8F%EF%BC%9A%E6%8A%80%E6%9C%AF%E8%B4%9F%E8%B4%A3%E4%BA%BA%E5%A6%82%E4%BD%95%E5%81%9A%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E7%AD%96",
+    "destination": "/docs/tech-management/03-管理实践与沟通/40-成敏：技术负责人如何做优先级决策"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/54-%E8%96%9B%E6%96%87%E6%A4%8D%EF%BC%9A%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E7%9A%84%E6%9C%AC%E8%B4%A8%E2%80%94%E8%A6%81%E5%81%9A%E5%B0%8A%E9%87%8D%E4%BA%BA%E6%80%A7%E7%9A%84%E7%AE%A1%E7%90%86",
+    "destination": "/docs/tech-management/03-管理实践与沟通/41-薛文植：技术管理的本质—要做尊重人性的管理"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/04-%E8%B7%B3%E6%A7%BD%E4%B8%8E%E5%88%9B%E4%B8%9A-AI%E6%B5%AA%E6%BD%AE%E4%B8%8B%E7%9A%84%E6%9C%BA%E9%81%87%E4%B8%8E%E6%8A%89%E6%8B%A9",
+    "destination": "/docs/tech-management/04-战略与商业/01-跳槽与创业-AI浪潮下的机遇与抉择"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/05-CTO%E6%98%AF%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E5%92%8C%E6%8A%80%E6%9C%AF%E6%80%9D%E7%BB%B4%E4%BA%A4%E6%B1%87%E7%9A%84%E9%82%A3%E4%B8%AA%E7%82%B9",
+    "destination": "/docs/tech-management/04-战略与商业/02-CTO是商业思维和技术思维交汇的那个点"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/06-CTO%E8%A6%81%E6%8E%8C%E6%8F%A1%E7%9A%84%E4%BA%A7%E5%93%81%E5%93%B2%E5%AD%A6%EF%BC%9A%E7%90%86%E6%80%A7%E4%B8%8E%E4%BA%BA%E6%80%A7%E7%9A%84%E6%9D%83%E8%A1%A1",
+    "destination": "/docs/tech-management/04-战略与商业/03-CTO要掌握的产品哲学：理性与人性的权衡"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/07-%E4%BB%8E%E5%AE%A2%E6%88%B7%E4%BB%B7%E5%80%BC%E8%B0%88%E6%8A%80%E6%9C%AF%E5%88%9B%E6%96%B0",
+    "destination": "/docs/tech-management/04-战略与商业/04-从客户价值谈技术创新"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/08-%E4%BD%99%E5%8A%A0%E6%9E%97%EF%BC%9A%E4%BB%8E%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%88%B0%E5%88%9B%E4%B8%9A%E5%90%88%E4%BC%99%E4%BA%BA%E5%BF%85%E5%A4%87%E7%9A%84%E4%B8%89%E4%B8%AA%E7%BB%B4%E5%BA%A6%E7%9A%84%E6%94%B9%E5%8F%98",
+    "destination": "/docs/tech-management/04-战略与商业/05-余加林：从技术人到创业合伙人必备的三个维度的改变"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/09-%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8CTO%E7%9A%84%E8%AE%A4%E7%9F%A5%E5%8D%87%E7%BA%A7",
+    "destination": "/docs/tech-management/04-战略与商业/06-创业公司CTO的认知升级"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/10-%E5%90%B4%E6%99%96%EF%BC%9A%E4%BC%81%E4%B8%9AB2B%E6%9C%8D%E5%8A%A1%E6%89%93%E7%A3%A8%E7%9A%84%E7%A7%98%E8%AF%80%E2%80%94ESI",
+    "destination": "/docs/tech-management/04-战略与商业/07-吴晖：企业B2B服务打磨的秘诀—ESI"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/20-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E4%B8%9A%E5%8A%A1%E4%BB%B7%E5%80%BC%E7%9A%84%E9%AB%98%E4%BD%8E",
+    "destination": "/docs/tech-management/04-战略与商业/08-如何判断业务价值的高低"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/21-%E5%BC%A0%E6%BA%AA%E6%A2%A6%EF%BC%9A%E6%8A%80%E6%9C%AF%E9%A2%86%E8%A2%96%E9%9C%80%E8%A6%81%E5%85%B7%E5%A4%87%E7%9A%84%E5%95%86%E4%B8%9A%E4%BB%B7%E5%80%BC%E6%80%9D%E7%BB%B4",
+    "destination": "/docs/tech-management/04-战略与商业/09-张溪梦：技术领袖需要具备的商业价值思维"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/22-%E5%BE%90%E8%A3%95%E9%94%AE%EF%BC%9A%E5%9B%A2%E9%98%9F%E6%96%87%E5%8C%96%E5%BB%BA%E8%AE%BE%EF%BC%8C%E4%BF%9D%E6%8C%81%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E7%9A%84%E6%88%98%E6%96%97%E5%8A%9B",
+    "destination": "/docs/tech-management/04-战略与商业/10-徐裕键：团队文化建设，保持创业公司的战斗力"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/23-%E6%88%90%E6%95%8F%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%8A%80%E6%9C%AF%E6%96%87%E5%8C%96%E4%BA%A7%E5%93%81%E7%BC%BA%E5%A4%B1",
+    "destination": "/docs/tech-management/04-战略与商业/11-成敏：创业公司为什么会技术文化产品缺失"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/24-%E6%88%90%E6%95%8F%EF%BC%9A%E5%88%9B%E4%B8%9A%E8%80%85%E4%B8%8D%E8%A6%81%E6%88%90%E4%B8%BA%E8%87%AA%E5%B7%B1%E5%85%AC%E5%8F%B8%E4%BA%A7%E5%93%81%E6%8A%80%E6%9C%AF%E6%96%87%E5%8C%96%E7%9A%84%E7%A0%B4%E5%9D%8F%E8%80%85",
+    "destination": "/docs/tech-management/04-战略与商业/12-成敏：创业者不要成为自己公司产品技术文化的破坏者"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/25-%E6%88%90%E6%95%8F%EF%BC%9A%E5%88%9B%E4%B8%9A%E8%80%85%E5%BA%94%E8%AF%A5%E5%85%B7%E5%A4%87%E7%9A%84%E8%AE%A4%E7%9F%A5%E4%B8%8E%E6%80%9D%E7%BB%B4%E6%96%B9%E5%BC%8F",
+    "destination": "/docs/tech-management/04-战略与商业/13-成敏：创业者应该具备的认知与思维方式"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/26-%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%88%9B%E4%B8%9A%E5%89%8D%E8%A6%81%E9%97%AE%E8%87%AA%E5%B7%B1%E7%9A%84%E5%85%AD%E4%B8%AA%E9%97%AE%E9%A2%98",
+    "destination": "/docs/tech-management/04-战略与商业/14-技术人创业前要问自己的六个问题"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/27-%E6%8A%80%E6%9C%AF%E4%BA%BA%E6%8A%95%E8%BA%AB%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E4%B9%8B%E5%89%8D%EF%BC%8C%E5%BA%94%E5%BD%93%E8%80%83%E8%99%91%E4%BA%9B%E4%BB%80%E4%B9%88",
+    "destination": "/docs/tech-management/04-战略与商业/15-技术人投身创业公司之前，应当考虑些什么"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/28-%E6%8A%80%E6%9C%AF%E5%88%9B%E4%B8%9A%E8%AF%A5%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E8%B5%9B%E9%81%93",
+    "destination": "/docs/tech-management/04-战略与商业/16-技术创业该如何选择赛道"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/29-%E6%9D%8E%E5%88%97%E4%B8%BA%EF%BC%9A%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4",
+    "destination": "/docs/tech-management/04-战略与商业/17-李列为：技术人员的商业思维"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/30-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E4%B8%80%E6%B5%81%E5%9B%A2%E9%98%9F%E5%BF%85%E5%A4%87%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E8%83%BD%E5%8A%9B",
+    "destination": "/docs/tech-management/04-战略与商业/18-游舒帆：一流团队必备的商业思维能力"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/31-%E8%82%96%E5%BE%B7%E6%97%B6%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%9B%A2%E9%98%9F%E6%8A%80%E6%9C%AF%E9%A2%86%E5%AF%BC%E8%80%85%E5%BF%85%E5%A4%87%E7%9A%84%E5%8D%81%E4%B8%AA%E9%A2%86%E5%AF%BC%E5%8A%9B%E6%8A%80%E8%83%BD",
+    "destination": "/docs/tech-management/04-战略与商业/19-肖德时：创业团队技术领导者必备的十个领导力技能"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/32-%E8%94%A1%E9%94%90%E6%B6%9B%EF%BC%9A%E4%BB%8E0%E5%88%B01%E5%86%8D%E5%88%B0100%EF%BC%8C%E5%88%9B%E4%B8%9A%E4%B8%8D%E5%90%8C%E9%98%B6%E6%AE%B5%E7%9A%84%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E6%80%9D%E8%80%83",
+    "destination": "/docs/tech-management/04-战略与商业/20-蔡锐涛：从0到1再到100，创业不同阶段的技术管理思考"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/33-%E8%A2%81%E5%BA%97%E6%98%8E%EF%BC%9A%E5%88%9B%E4%B8%9A%E4%BA%A7%E5%93%81%E5%BF%85%E9%A1%BB%E8%BF%88%E8%BF%87%E7%9A%84%E9%B8%BF%E6%B2%9F",
+    "destination": "/docs/tech-management/04-战略与商业/21-袁店明：创业产品必须迈过的鸿沟"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/34-%E8%AE%B8%E8%89%AF%EF%BC%9A%E7%A7%91%E5%88%9B%E6%9D%BF%E6%9D%A5%E4%BA%86%EF%BC%8C%E6%88%91%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E",
+    "destination": "/docs/tech-management/04-战略与商业/22-许良：科创板来了，我该怎么办"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/35-%E8%B0%88%E8%B0%88CTO%E5%9C%A8%E5%95%86%E4%B8%9A%E6%88%98%E7%95%A5%E4%B8%AD%E7%9A%84%E5%AE%9A%E4%BD%8D",
+    "destination": "/docs/tech-management/04-战略与商业/23-谈谈CTO在商业战略中的定位"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/36-%E8%B0%A2%E5%91%88%EF%BC%9A%E5%85%B3%E4%BA%8E%E5%9E%82%E7%9B%B4%E4%BA%92%E8%81%94%E7%BD%91%E5%88%9B%E4%B8%9A%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88",
+    "destination": "/docs/tech-management/04-战略与商业/24-谢呈：关于垂直互联网创业的一些经验之谈"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/37-%E8%B0%A2%E5%91%88%EF%BC%9A%E6%8A%80%E6%9C%AF%E9%AB%98%E6%89%8B%E8%BD%AC%E8%BA%AB%E5%88%9B%E4%B8%9A%E7%9A%84%E5%9D%91%E5%92%8C%E5%9D%A1",
+    "destination": "/docs/tech-management/04-战略与商业/25-谢呈：技术高手转身创业的坑和坡"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/38-%E9%99%88%E5%B4%87%E7%A3%90%EF%BC%9A%E7%AE%A1%E4%BA%8B%E4%B8%8E%E7%AE%A1%E4%BA%BA-%E5%A6%82%E4%BD%95%E9%81%BF%E5%BC%80%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E7%BB%84%E9%98%9F%E9%99%B7%E9%98%B1",
+    "destination": "/docs/tech-management/04-战略与商业/26-陈崇磐：管事与管人-如何避开创业公司组队陷阱"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/39-%E9%99%88%E9%98%B3%EF%BC%9A%E7%A7%91%E5%88%9B%E6%9D%BF%E6%8A%95%E8%B5%84%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%93%AA%E4%BA%9B%E8%A1%8C%E4%B8%9A%E5%8F%97%E7%9B%8A%E6%9C%80%E5%A4%A7",
+    "destination": "/docs/tech-management/04-战略与商业/27-陈阳：科创板投资，未来哪些行业受益最大"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/40-%E9%BB%84%E4%BC%9F%E5%9D%9A%EF%BC%9A%E5%88%9B%E4%B8%9A%E4%B8%AD%E9%82%A3%E4%BA%9B%E6%B0%B8%E8%BF%9C%E5%9B%9E%E9%81%BF%E4%B8%8D%E4%BA%86%E7%9A%84%E9%97%AE%E9%A2%98",
+    "destination": "/docs/tech-management/04-战略与商业/28-黄伟坚：创业中那些永远回避不了的问题"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/41-%E9%BB%84%E4%BC%9F%E5%9D%9A%EF%BC%9A%E7%94%A8%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%80%9D%E7%BB%B4%E7%9C%8B%E5%BE%85%E5%88%9B%E4%B8%9A",
+    "destination": "/docs/tech-management/04-战略与商业/29-黄伟坚：用系统性思维看待创业"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/01-%E6%A0%BC%E5%B1%80%E4%B8%8E%E6%88%98%E7%95%A5-AI%E6%97%B6%E4%BB%A3%E6%8A%80%E6%9C%AF%E9%A2%86%E5%AF%BC%E8%80%85%E7%9A%84%E9%A1%B6%E5%B1%82%E8%AE%BE%E8%AE%A1",
+    "destination": "/docs/tech-management/04-战略与商业/30-格局与战略-AI时代技术领导者的顶层设计"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/02-%E6%8A%80%E6%9C%AF%E8%B6%8B%E5%8A%BF%E8%A7%A3%E8%AF%BB-2025-2026%E6%8A%80%E6%9C%AF%E5%85%A8%E6%99%AF%E5%9B%BE",
+    "destination": "/docs/tech-management/04-战略与商业/31-技术趋势解读-2025-2026技术全景图"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/03-%E6%94%BF%E7%AD%96%E4%B8%8E%E5%AE%8F%E8%A7%82%E7%8E%AF%E5%A2%83-AI%E6%97%B6%E4%BB%A3%E7%9A%84%E9%A1%BA%E5%8A%BF%E8%80%8C%E4%B8%BA",
+    "destination": "/docs/tech-management/04-战略与商业/32-政策与宏观环境-AI时代的顺势而为"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/04-CEO%E5%AE%9E%E8%AF%9D%E5%AE%9E%E8%AF%B4%EF%BC%9A%E6%88%91%E9%9C%80%E8%A6%81%E8%BF%99%E6%A0%B7%E7%9A%84CTO",
+    "destination": "/docs/tech-management/04-战略与商业/33-CEO实话实说：我需要这样的CTO"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/05-CTO%E7%9A%84%E4%B8%89%E9%87%8D%E5%A2%83%E7%95%8C",
+    "destination": "/docs/tech-management/04-战略与商业/34-CTO的三重境界"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/06-%E4%B8%83%E4%BD%8DCTO%E7%BA%B5%E8%AE%BA%E6%8A%80%E6%9C%AF%E9%A2%86%E5%AF%BC%E8%80%85%E6%A0%B8%E5%BF%83%E8%83%BD%E5%8A%9B",
+    "destination": "/docs/tech-management/04-战略与商业/35-七位CTO纵论技术领导者核心能力"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/07-%E4%BF%9E%E5%9C%86%E5%9C%86%EF%BC%9A%E5%90%88%E6%A0%BCCTO%E5%BA%94%E8%AF%A5%E5%81%9A%E5%A5%BD%E7%9A%845%E4%BB%B6%E4%BA%8B",
+    "destination": "/docs/tech-management/04-战略与商业/36-俞圆圆：合格CTO应该做好的5件事"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/08-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A2019%E5%B9%B4%E4%BA%91%E8%AE%A1%E7%AE%97%E8%B6%8B%E5%8A%BF%E5%AF%B9%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E7%9A%84%E5%BD%B1%E5%93%8D",
+    "destination": "/docs/tech-management/04-战略与商业/37-刘俊强：2019年云计算趋势对技术人员的影响"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/17-%E5%BE%90%E8%A3%95%E9%94%AE%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%AB%98%E9%80%9F%E5%A2%9E%E9%95%BF%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B",
+    "destination": "/docs/tech-management/04-战略与商业/38-徐裕键：业务高速增长过程中的技术演进"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/18-%E6%8A%80%E6%9C%AF%E9%A2%86%E5%AF%BC%E5%8A%9B%E5%B0%B1%E6%98%AF%E2%80%9C%E6%88%90%E4%BA%8B%E2%80%9D%E7%9A%84%E8%83%BD%E5%8A%9B",
+    "destination": "/docs/tech-management/04-战略与商业/39-技术领导力就是“成事”的能力"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/19-%E6%8A%80%E6%9C%AF%E9%A2%86%E5%AF%BC%E8%80%85%E4%B8%8D%E7%AD%89%E4%BA%8E%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E8%80%85",
+    "destination": "/docs/tech-management/04-战略与商业/40-技术领导者不等于技术管理者"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/21-%E6%B1%A4%E5%8A%9B%E5%98%89%EF%BC%9ACTO%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BA%A7%E5%93%81%E5%86%B3%E7%AD%96",
+    "destination": "/docs/tech-management/04-战略与商业/41-汤力嘉：CTO如何进行产品决策"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/22-%E6%B4%AA%E5%BC%BA%E5%AE%81%EF%BC%9A%E4%BB%8E%E7%A8%8B%E5%BA%8F%E5%91%98%E5%88%B0%E6%9E%B6%E6%9E%84%E5%B8%88%EF%BC%8C%E4%BB%8E%E6%9E%B6%E6%9E%84%E5%B8%88%E5%88%B0CTO",
+    "destination": "/docs/tech-management/04-战略与商业/42-洪强宁：从程序员到架构师，从架构师到CTO"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/23-%E7%8B%BC%E5%8F%94%EF%BC%9A2019%E5%B9%B4%E5%89%8D%E7%AB%AF%E5%92%8CNode%E7%9A%84%E6%9C%AA%E6%9D%A5%E2%80%94Node.js%E7%AF%87",
+    "destination": "/docs/tech-management/04-战略与商业/43-狼叔：2019年前端和Node的未来—Node.js篇"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/24-%E7%8B%BC%E5%8F%94%EF%BC%9A2019%E5%B9%B4%E5%89%8D%E7%AB%AF%E5%92%8CNode%E7%9A%84%E6%9C%AA%E6%9D%A5%E2%80%94%E5%A4%A7%E5%89%8D%E7%AB%AF%E7%AF%87",
+    "destination": "/docs/tech-management/04-战略与商业/44-狼叔：2019年前端和Node的未来—大前端篇"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/25-%E8%A6%81%E5%88%B6%E5%AE%9A%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%EF%BC%8C%E5%85%88%E7%9C%8B%E6%B8%85%E5%B1%80%E9%9D%A2",
+    "destination": "/docs/tech-management/04-战略与商业/45-要制定技术战略，先看清局面"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/26-%E8%B0%A2%E6%96%87%E6%9D%B0%EF%BC%9A%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%8D%81%E5%B9%B4",
+    "destination": "/docs/tech-management/04-战略与商业/46-谢文杰：区块链的下一个十年"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/27-%E8%B5%B0%E5%87%BA%E8%87%B3%E6%9A%97%E6%97%B6%E5%88%BB%E2%80%94%E2%80%94CTO%E7%A9%BA%E9%99%8D%E4%B8%8B%E7%AF%87",
+    "destination": "/docs/tech-management/04-战略与商业/47-走出至暗时刻——CTO空降下篇"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/28-%E9%80%89%E5%A5%BD%E4%BA%BA%E7%94%9F%E4%B8%8B%E4%B8%80%E7%AB%99%E2%80%94%E2%80%94CTO%E7%A9%BA%E9%99%8D%E4%B8%8A%E7%AF%87",
+    "destination": "/docs/tech-management/04-战略与商业/48-选好人生下一站——CTO空降上篇"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/29-%E9%82%B5%E6%B5%A9%EF%BC%9A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%96%B0%E6%8A%80%E6%9C%AF%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%8F%91%E7%8E%B0%E5%8F%8A%E8%90%BD%E5%9C%B0",
+    "destination": "/docs/tech-management/04-战略与商业/49-邵浩：人工智能新技术如何快速发现及落地"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/30-%E9%92%9F%E5%BF%BB%EF%BC%9A%E6%88%90%E4%B8%BA%E2%80%9C%E6%B8%A9%E6%A0%BC%E2%80%9D%E2%80%94%E8%81%8A%E8%81%8A%E5%A6%82%E4%BD%95%E5%BD%93%E5%A5%BDCTO",
+    "destination": "/docs/tech-management/04-战略与商业/50-钟忻：成为“温格”—聊聊如何当好CTO"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/04-%E5%83%8FCEO%E4%B8%80%E6%A0%B7%E6%80%9D%E8%80%83",
+    "destination": "/docs/tech-management/04-战略与商业/51-像CEO一样思考"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/05-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E6%8A%80%E6%9C%AF%E6%9C%80%E9%AB%98%E5%86%B3%E7%AD%96%E8%80%85%E5%BA%94%E8%AF%A5%E5%85%B3%E6%B3%A8%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82%E5%90%97",
+    "destination": "/docs/tech-management/04-战略与商业/52-刘俊强：技术最高决策者应该关注技术细节吗"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/07-%E5%90%B4%E9%93%AD%EF%BC%9A%E6%88%90%E6%9C%AC%E8%AF%84%E4%BC%B0%E6%98%AF%E6%8A%80%E6%9C%AFleader%E7%9A%84%E5%85%B3%E9%94%AE%E7%B4%A0%E8%B4%A8",
+    "destination": "/docs/tech-management/04-战略与商业/53-吴铭：成本评估是技术leader的关键素质"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/39-%E6%88%90%E6%95%8F%EF%BC%9A%E8%B0%88%E8%B0%88%E4%B8%8D%E5%90%8C%E9%98%B6%E6%AE%B5%E6%8A%80%E6%9C%AF%E5%85%AC%E5%8F%B8%E7%9A%84%E7%89%B9%E7%82%B9",
+    "destination": "/docs/tech-management/04-战略与商业/54-成敏：谈谈不同阶段技术公司的特点"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/43-%E6%9C%80%E5%90%88%E9%80%82%E7%9A%84%E6%8A%80%E6%9C%AF%E6%89%8D%E6%98%AF%E6%9C%80%E6%9C%89%E4%BB%B7%E5%80%BC%E7%9A%84%E6%8A%80%E6%9C%AF",
+    "destination": "/docs/tech-management/04-战略与商业/55-最合适的技术才是最有价值的技术"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/45-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%8A%9B%EF%BC%8C%E9%80%8F%E8%BF%87%E6%95%B0%E6%8D%AE%E6%8E%8C%E6%8F%A1%E5%85%AC%E5%8F%B8%E7%BB%8F%E8%90%A5%E5%A4%A7%E5%B0%8F%E4%BA%8B",
+    "destination": "/docs/tech-management/04-战略与商业/56-游舒帆：数据力，透过数据掌握公司经营大小事"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/46-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E7%AD%96%E7%95%A5%E5%8A%9B%EF%BC%8C%E8%AE%A9%E7%9B%AE%E6%A0%87%E4%B8%8E%E8%A1%8C%E5%8A%A8%E5%85%B7%E5%A4%87%E9%AB%98%E5%BA%A6%E4%B8%80%E8%87%B4%E6%80%A7",
+    "destination": "/docs/tech-management/04-战略与商业/57-游舒帆：策略力，让目标与行动具备高度一致性"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/47-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E8%BF%90%E8%90%A5%E5%8A%9B%EF%BC%8C%E8%AE%A9%E7%94%A8%E6%88%B7%E5%87%BA%E7%8E%B0%E4%BD%A0%E6%9C%9F%E5%BE%85%E7%9A%84%E8%A1%8C%E4%B8%BA",
+    "destination": "/docs/tech-management/04-战略与商业/58-游舒帆：运营力，让用户出现你期待的行为"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E8%B6%8B%E5%8A%BF%E5%88%A4%E6%96%AD",
+    "destination": "/docs/tech-management/04-战略与商业/59-汇编-技术战略与趋势判断"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E6%8A%80%E6%9C%AF%E5%88%9B%E4%B8%9A%E7%9A%84%E8%B5%9B%E9%81%93%E4%B8%8E%E6%8A%89%E6%8B%A9",
+    "destination": "/docs/tech-management/04-战略与商业/60-汇编-技术创业的赛道与抉择"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E5%90%88%E4%BC%99%E4%BA%BA%E4%B8%8E%E5%88%9B%E4%B8%9A%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/04-战略与商业/61-汇编-合伙人与创业团队"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4%E4%B8%8E%E7%94%A8%E6%88%B7%E5%A2%9E%E9%95%BF",
+    "destination": "/docs/tech-management/04-战略与商业/62-汇编-产品思维与用户增长"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/11-%E5%AE%9A%E5%88%B6%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/10-定制高效研发流程"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/12-%E5%BE%90%E8%A3%95%E9%94%AE%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%AB%98%E9%80%9F%E5%A2%9E%E9%95%BF%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%9B%A2%E9%98%9F%E8%BF%AD%E4%BB%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/11-徐裕键：业务高速增长过程中的团队迭代"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/13-%E6%95%8F%E6%8D%B7%E4%B8%AD%E7%9A%84%E6%9C%9F%E9%99%90%E4%B9%8B%E6%AE%87%EF%BC%8C%E8%BD%AF%E4%BB%B6%E4%B8%9A%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/12-敏捷中的期限之殇，软件业该怎么做"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/15-%E6%96%BD%E7%BF%94%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A07-24%E9%AB%98%E6%95%88%E4%BA%A4%E4%BB%98%E9%80%9A%E9%81%93%EF%BC%88%E4%B8%8A%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/13-施翔：如何打造7-24高效交付通道（上）"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/16-%E6%96%BD%E7%BF%94%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A07-24%E9%AB%98%E6%95%88%E4%BA%A4%E4%BB%98%E9%80%9A%E9%81%93%EF%BC%88%E4%B8%8B%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/14-施翔：如何打造7-24高效交付通道（下）"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/17-%E6%9C%89%E4%BA%86%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%EF%BC%8C%E9%82%A3%E4%BA%A4%E4%BB%98%E6%9C%9F%E9%99%90%E5%8E%BB%E5%93%AA%E5%84%BF%E4%BA%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/15-有了敏捷开发，那交付期限去哪儿了"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/18-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E6%95%8F%E6%8D%B7%E5%8A%9B%EF%BC%8C%E6%8B%A5%E6%8A%B1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%EF%BC%8C%E4%B8%8EVUCA%E5%85%B1%E8%88%9E",
+    "destination": "/docs/tech-management/06-研发流程与效能/16-游舒帆：敏捷力，拥抱不确定性，与VUCA共舞"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/19-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E9%82%A3%E4%BA%9B%E4%BA%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/17-游舒帆：高效研发流程那些事"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/20-%E7%8E%8B%E6%B5%B7%E4%BA%AE%EF%BC%9A%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E6%95%88%E7%8E%87%E7%9A%845%E4%B8%AA%E6%8F%90%E7%A4%BA%EF%BC%88%E4%B8%8A%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/18-王海亮：提升技术团队效率的5个提示（上）"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/21-%E7%8E%8B%E6%B5%B7%E4%BA%AE%EF%BC%9A%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E6%95%88%E7%8E%87%E7%9A%845%E4%B8%AA%E6%8F%90%E7%A4%BA%EF%BC%88%E4%B8%8B%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/19-王海亮：提升技术团队效率的5个提示（下）"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/22-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E5%81%9A%E5%A5%BD%E7%A0%94%E5%8F%91%E7%AE%A1%E7%90%86%E7%9A%843%E4%B8%AA%E5%85%B3%E9%94%AE",
+    "destination": "/docs/tech-management/06-研发流程与效能/20-邱良军：做好研发管理的3个关键"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/23-%E9%92%AE%E5%8D%9A%E5%BD%A6%EF%BC%9A%E8%BD%AF%E4%BB%B6%E7%A0%94%E5%8F%91%E5%BA%A6%E9%87%8F%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE",
+    "destination": "/docs/tech-management/06-研发流程与效能/21-钮博彦：软件研发度量体系建设"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/03-%E4%BA%A7%E5%93%81%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9FOKR%E4%BD%BF%E7%94%A8%E6%B3%95%E5%88%99",
+    "destination": "/docs/tech-management/07-绩效与激励/01-产品技术团队OKR使用法则"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/04-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86",
+    "destination": "/docs/tech-management/07-绩效与激励/02-刘俊强：必知绩效管理知识之绩效数据收集"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/05-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/07-绩效与激励/03-刘俊强：必知绩效管理知识之绩效沟通"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/06-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%9B%AE%E6%A0%87%E7%9A%84%E5%88%B6%E5%AE%9A",
+    "destination": "/docs/tech-management/07-绩效与激励/04-刘俊强：必知绩效管理知识之绩效目标的制定"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/07-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E5%BE%AA%E7%8E%AF",
+    "destination": "/docs/tech-management/07-绩效与激励/05-刘俊强：必知绩效管理知识之绩效管理循环"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/08-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E8%AF%84%E5%AE%9A%E7%BB%A9%E6%95%88",
+    "destination": "/docs/tech-management/07-绩效与激励/06-刘俊强：必知绩效管理知识之评定绩效"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/09-%E5%9B%A2%E9%98%9F%E6%BF%80%E5%8A%B1%E4%B9%8B%E5%88%86%E9%85%8D%E5%A5%BD%E4%BD%A0%E7%9A%84%E5%A5%96%E9%87%91",
+    "destination": "/docs/tech-management/07-绩效与激励/07-团队激励之分配好你的奖金"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/10-%E5%A4%A7%E5%92%96%E5%AF%B9%E8%AF%9D-%E6%9D%8E%E6%98%8A%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
+    "destination": "/docs/tech-management/07-绩效与激励/08-大咖对话-李昊：创业公司如何做好技术团队绩效考核"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/11-%E5%B4%94%E4%BF%8A%E6%B6%9B%EF%BC%9A%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E6%BF%80%E5%8A%B1",
+    "destination": "/docs/tech-management/07-绩效与激励/09-崔俊涛：如何做好技术团队的激励"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
+    "destination": "/docs/tech-management/07-绩效与激励/10-绩效管理的目标不仅仅是绩效考核"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/13-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E5%B7%A5%E5%85%B7%E7%AF%87",
+    "destination": "/docs/tech-management/07-绩效与激励/11-胡键：创业公司如何打造高凝聚力高绩效的技术团队：工具篇"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/14-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E7%BB%84%E7%BB%87%E7%AF%87",
+    "destination": "/docs/tech-management/07-绩效与激励/12-胡键：创业公司如何打造高凝聚力高绩效的技术团队：组织篇"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/15-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E9%9C%80%E8%A6%81%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/13-胡键：创业公司需要高凝聚力高绩效的技术团队"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/16-%E9%80%9A%E8%BF%87%E7%A7%AF%E5%88%86%E8%80%83%E6%A0%B8%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E7%BB%A9%E6%95%88",
+    "destination": "/docs/tech-management/07-绩效与激励/14-通过积分考核提升技术团队的绩效"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/17-%E9%AA%8C%E8%AF%81%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BB%B7%E5%80%BC%E7%9A%84%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8%E6%9C%BA%E5%88%B6",
+    "destination": "/docs/tech-management/07-绩效与激励/15-验证研发团队价值的绩效考核机制"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/18-%E9%AB%98%E7%90%A6%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%99%E7%A0%94%E5%8F%91%E6%89%93%E7%BB%A9%E6%95%88%E4%B8%8D%E5%A4%B4%E7%96%BC%E8%80%8C%E5%8F%88%E5%85%AC%E6%AD%A3",
+    "destination": "/docs/tech-management/07-绩效与激励/16-高琦：如何给研发打绩效不头疼而又公正"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/49-%E7%94%A8%E6%95%B0%E6%8D%AE%E6%9D%A5%E5%88%86%E6%9E%90%E7%AE%A1%E7%90%86%E5%91%98%E5%B7%A5",
+    "destination": "/docs/tech-management/07-绩效与激励/17-用数据来分析管理员工"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/00-OKR%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84",
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%B8%8E%E8%BF%AD%E4%BB%A3%E4%BA%A4%E4%BB%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/22-汇编-高效研发团队与迭代交付"
+  },
+  {
+    "source": "/docs/misc-tech-management/01-技术管理者成长指南",
+    "destination": "/docs/tech-management/01-职业成长与转型/18-技术管理者成长指南"
+  },
+  {
+    "source": "/docs/misc-tech-management/02-新经理避坑指南",
+    "destination": "/docs/tech-management/01-职业成长与转型/19-新经理避坑指南"
+  },
+  {
+    "source": "/docs/misc-tech-management/03-管理规划",
+    "destination": "/docs/tech-management/01-职业成长与转型/20-管理规划"
+  },
+  {
+    "source": "/docs/tech-management/06-技术与商业案例解读/:path*",
+    "destination": "/docs/tech-management/05-商业案例解读/:path*"
+  },
+  {
+    "source": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/:path*",
+    "destination": "/docs/tech-management/05-商业案例解读/:path*"
+  },
+  {
+    "source": "/docs/tech-management/10-研发流程与效率/01-敏捷与工程实践/:path*",
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/:path*"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/:path*",
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/:path*"
+  },
+  {
+    "source": "/docs/tech-management/10-研发流程与效率/02-腾讯敏捷项目管理实战/:path*",
+    "destination": "/docs/tech-management/06-研发流程与效能/02-腾讯敏捷项目管理实战/:path*"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/:path*",
+    "destination": "/docs/tech-management/06-研发流程与效能/02-腾讯敏捷项目管理实战/:path*"
+  },
+  {
+    "source": "/docs/tech-management/12-绩效管理/02-极简OKR实战/:path*",
+    "destination": "/docs/tech-management/07-绩效与激励/01-极简OKR实战/:path*"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/02-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/:path*",
+    "destination": "/docs/tech-management/07-绩效与激励/01-极简OKR实战/:path*"
+  },
+  {
+    "source": "/docs/tech-management/13-运维体系管理/:path*",
+    "destination": "/docs/ops/14-运维体系管理/:path*"
+  },
+  {
+    "source": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/:path*",
+    "destination": "/docs/ops/14-运维体系管理/:path*"
+  },
+  {
+    "source": "/docs/agile-pm",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/agile-pm/:path*",
+    "destination": "/docs/tech-management/06-研发流程与效能/02-腾讯敏捷项目管理实战/:path*"
+  },
+  {
+    "source": "/docs/okr-mini",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/okr-mini/:path*",
+    "destination": "/docs/tech-management/07-绩效与激励/01-极简OKR实战/:path*"
+  },
+  {
+    "source": "/docs/misc-tech-management",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/misc-tech-management/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/okr-course",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/10-研发流程与效率/:path*",
+    "destination": "/docs/tech-management/06-研发流程与效能/:path*"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/:path*",
+    "destination": "/docs/tech-management/06-研发流程与效能/:path*"
+  },
+  {
+    "source": "/docs/tech-management/01-个人成长与职业发展/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/01-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/02-其他技术管理/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/02-%E5%85%B6%E4%BB%96%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/03-创业与商业/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/03-%E5%88%9B%E4%B8%9A%E4%B8%8E%E5%95%86%E4%B8%9A/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/04-团队建设与招聘/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/05-工程师文化/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/05-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/07-技术战略与决策/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/08-技术管理实践/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/09-沟通与影响力/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/09-%E6%B2%9F%E9%80%9A%E4%B8%8E%E5%BD%B1%E5%93%8D%E5%8A%9B/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/11-组织管理/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/12-绩效管理/:path*",
+    "destination": "/docs/tech-management"
+  },
+  {
+    "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/:path*",
+    "destination": "/docs/tech-management"
+  }
+]

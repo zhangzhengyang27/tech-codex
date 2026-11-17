@@ -815,6 +815,18 @@ const FILE_RENUMBER_REDIRECTS = (() => {
   }));
 })();
 
+// 技术管理分类重组(2026-11):13 分册合并为 7、42 篇运维体系移入 ops、隐藏分类入口移除,见 redirects/tech-management-regroup-2026-11.json
+const TM_REGROUP_REDIRECTS = (() => {
+  const raw = JSON.parse(
+    readFileSync(path.join(__dirname, "redirects/tech-management-regroup-2026-11.json"), "utf-8")
+  );
+  return raw.map((r: { source: string; destination: string }) => ({
+    source: r.source,
+    destination: r.destination,
+    permanent: true,
+  }));
+})();
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -858,7 +870,7 @@ const nextConfig: NextConfig = {
     ];
     // 顺序原则:具体条目(REFACTOR 字面量与 JSON 全量明细)先于通配承接(legacy/dirRename/GROUP_NORMALIZE),
     // 否则通配先命中会把旧编号原样透传,明细里的修正目标永远轮不到
-    return [ ...productRedirects, ...REFACTOR_REDIRECT, ...FILE_RENUMBER_REDIRECTS, ...DATA_SCIENCE_REDIRECT, ...ARCH_MERGE_REDIRECT, ...ARCH_INTEGRATE_REDIRECT, ...ZHT_MOVE_REDIRECT, ...XU_SPLIT_REDIRECT, ...RENUMBER_REDIRECTS, ...SPLIT_DOC_REDIRECTS, ...legacy, ...dirRename, ...PYTHON_GROUP_NORMALIZE_REDIRECTS];
+    return [ ...productRedirects, ...REFACTOR_REDIRECT, ...FILE_RENUMBER_REDIRECTS, ...TM_REGROUP_REDIRECTS, ...DATA_SCIENCE_REDIRECT, ...ARCH_MERGE_REDIRECT, ...ARCH_INTEGRATE_REDIRECT, ...ZHT_MOVE_REDIRECT, ...XU_SPLIT_REDIRECT, ...RENUMBER_REDIRECTS, ...SPLIT_DOC_REDIRECTS, ...legacy, ...dirRename, ...PYTHON_GROUP_NORMALIZE_REDIRECTS];
   },
 };
 

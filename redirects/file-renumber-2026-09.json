@@ -1137,43 +1137,43 @@
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/00-%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E5%8F%8A%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/01-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/02-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/03-技术选型实践"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/03-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/04-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-01-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-02-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-03-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-04-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-%E5%8E%9F%E5%9E%8B%E5%9B%BE%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AB%9E%E5%93%81%E5%88%86%E6%9E%90-%E7%B4%A2%E5%BC%95",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/03-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9AA-B%E6%B5%8B%E8%AF%95",
@@ -1181,15 +1181,15 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/04-%E5%A6%82%E4%BD%95%E5%B8%AE%E5%8A%A9%E5%9B%A2%E9%98%9F%E6%88%90%E5%91%98%E6%88%90%E9%95%BF",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/03-%E5%A6%82%E4%BD%95%E5%B8%AE%E5%8A%A9%E5%9B%A2%E9%98%9F%E6%88%90%E5%91%98%E6%88%90%E9%95%BF"
+    "destination": "/docs/tech-management/03-管理实践与沟通/03-如何帮助团队成员成长"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/05-%E5%BD%93%E6%88%91%E4%BB%AC%E7%BB%99%E5%88%AB%E4%BA%BA%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BA%9B%E4%BB%80%E4%B9%88",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/04-%E5%BD%93%E6%88%91%E4%BB%AC%E7%BB%99%E5%88%AB%E4%BA%BA%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BA%9B%E4%BB%80%E4%B9%88"
+    "destination": "/docs/tech-management/03-管理实践与沟通/04-当我们给别人提意见时，要注意些什么"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/06-%E7%AE%A1%E7%90%86%E4%B9%8B%E9%81%93%EF%BC%9A%E5%9B%A2%E9%98%9F%E4%B8%8E%E9%A2%86%E5%AF%BC%E5%8A%9B",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/05-%E7%AE%A1%E7%90%86%E4%B9%8B%E9%81%93%EF%BC%9A%E5%9B%A2%E9%98%9F%E4%B8%8E%E9%A2%86%E5%AF%BC%E5%8A%9B"
+    "destination": "/docs/tech-management/03-管理实践与沟通/05-管理之道：团队与领导力"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/06-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E8%81%8A%E8%81%8A%E5%B9%82%E7%AD%89",
@@ -1197,11 +1197,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/07-%E5%BD%93%E5%88%AB%E4%BA%BA%E7%BB%99%E6%88%91%E4%BB%AC%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/06-%E5%BD%93%E5%88%AB%E4%BA%BA%E7%BB%99%E6%88%91%E4%BB%AC%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9"
+    "destination": "/docs/tech-management/03-管理实践与沟通/06-当别人给我们提意见时，该如何应对"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/08-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E5%85%AC%E5%8F%B8%E4%B8%AD%E7%9A%84%E4%B8%80%E5%AF%B9%E4%B8%80%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/07-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E5%85%AC%E5%8F%B8%E4%B8%AD%E7%9A%84%E4%B8%80%E5%AF%B9%E4%B8%80%E6%B2%9F%E9%80%9A"
+    "destination": "/docs/tech-management/03-管理实践与沟通/07-说说硅谷公司中的一对一沟通"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/09-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%97%B6%E4%BB%A3%E7%9A%84%E7%AE%97%E6%B3%95",
@@ -1209,11 +1209,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/10-%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E4%BA%86%EF%BC%8C%E4%BD%9C%E4%B8%BA%E8%B4%9F%E8%B4%A3%E4%BA%BA%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/08-%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E4%BA%86%EF%BC%8C%E4%BD%9C%E4%B8%BA%E8%B4%9F%E8%B4%A3%E4%BA%BA%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E"
+    "destination": "/docs/tech-management/03-管理实践与沟通/08-项目延期了，作为负责人该怎么办"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/11-%E7%AE%A1%E7%90%86%E5%92%8C%E8%A2%AB%E7%AE%A1%E7%90%86%EF%BC%9A%E6%9C%9F%E6%9C%9B%E5%80%BC%E5%B7%AE%E5%BC%82",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/09-%E7%AE%A1%E7%90%86%E5%92%8C%E8%A2%AB%E7%AE%A1%E7%90%86%EF%BC%9A%E6%9C%9F%E6%9C%9B%E5%80%BC%E5%B7%AE%E5%BC%82"
+    "destination": "/docs/tech-management/03-管理实践与沟通/09-管理和被管理：期望值差异"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/12-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9F%A5%E8%AF%86",
@@ -1221,11 +1221,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/13-%E7%AE%A1%E7%90%86%E8%80%85%E5%9C%A8%E8%BF%9B%E8%A1%8C%E5%B7%A5%E4%BD%9C%E5%88%86%E9%85%8D%E6%97%B6%EF%BC%8C%E4%BC%9A%E8%80%83%E8%99%91%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/10-%E7%AE%A1%E7%90%86%E8%80%85%E5%9C%A8%E8%BF%9B%E8%A1%8C%E5%B7%A5%E4%BD%9C%E5%88%86%E9%85%8D%E6%97%B6%EF%BC%8C%E4%BC%9A%E8%80%83%E8%99%91%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98"
+    "destination": "/docs/tech-management/03-管理实践与沟通/10-管理者在进行工作分配时，会考虑哪些问题"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/14-%E7%A1%85%E8%B0%B7%E4%BA%BA%E5%88%B0%E5%BA%95%E5%BF%99%E4%B8%8D%E5%BF%99",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/11-%E7%A1%85%E8%B0%B7%E4%BA%BA%E5%88%B0%E5%BA%95%E5%BF%99%E4%B8%8D%E5%BF%99"
+    "destination": "/docs/tech-management/03-管理实践与沟通/11-硅谷人到底忙不忙"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/15-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E7%B3%BB%E7%BB%9F%E6%8B%86%E5%88%86",
@@ -1233,11 +1233,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/16-%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%BD%B1%E5%93%8D%E5%8A%9B",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/12-%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%BD%B1%E5%93%8D%E5%8A%9B"
+    "destination": "/docs/tech-management/03-管理实践与沟通/12-技术人如何建立个人影响力"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/17-%E7%AE%A1%E7%90%86%E8%80%85%E4%B8%8D%E7%94%A8%E4%BA%B2%E5%8A%9B%E4%BA%B2%E4%B8%BA%EF%BC%9A%E5%85%B3%E9%94%AE%E6%98%AF%E4%BB%80%E4%B9%88",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/13-%E7%AE%A1%E7%90%86%E8%80%85%E4%B8%8D%E7%94%A8%E4%BA%B2%E5%8A%9B%E4%BA%B2%E4%B8%BA%EF%BC%9A%E5%85%B3%E9%94%AE%E6%98%AF%E4%BB%80%E4%B9%88"
+    "destination": "/docs/tech-management/03-管理实践与沟通/13-管理者不用亲力亲为：关键是什么"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/18-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9AAPI%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0",
@@ -1245,11 +1245,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/19-%E7%A1%85%E8%B0%B7%E9%9D%A2%E8%AF%95%EF%BC%9A%E9%82%A3%E4%BA%9B%E4%BD%A0%E5%BA%94%E8%AF%A5%E7%9F%A5%E9%81%93%E7%9A%84%E4%BA%8B%E5%84%BF",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/14-%E7%A1%85%E8%B0%B7%E9%9D%A2%E8%AF%95%EF%BC%9A%E9%82%A3%E4%BA%9B%E4%BD%A0%E5%BA%94%E8%AF%A5%E7%9F%A5%E9%81%93%E7%9A%84%E4%BA%8B%E5%84%BF"
+    "destination": "/docs/tech-management/03-管理实践与沟通/14-硅谷面试：那些你应该知道的事儿"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/20-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E6%8A%80%E5%B7%A7",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/15-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E6%8A%80%E5%B7%A7"
+    "destination": "/docs/tech-management/03-管理实践与沟通/15-项目管理中的三个技巧"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/21-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E4%B8%AD%E7%BE%8E%E5%9C%A8%E6%94%AF%E4%BB%98%E6%8A%80%E6%9C%AF%E5%92%8C%E5%A4%A7%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%B7%AE%E5%BC%82",
@@ -1257,11 +1257,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/22-%E4%B8%8D%E8%A6%81%E5%81%9A%E5%BE%AE%E8%A7%82%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/16-%E4%B8%8D%E8%A6%81%E5%81%9A%E5%BE%AE%E8%A7%82%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85"
+    "destination": "/docs/tech-management/03-管理实践与沟通/16-不要做微观的管理者"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/23-%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%B7%A5%E4%BD%9C%E4%B8%AD%E7%9A%84%E4%BA%BA%E9%99%85%E5%85%B3%E7%B3%BB",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/17-%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%B7%A5%E4%BD%9C%E4%B8%AD%E7%9A%84%E4%BA%BA%E9%99%85%E5%85%B3%E7%B3%BB"
+    "destination": "/docs/tech-management/03-管理实践与沟通/17-如何处理工作中的人际关系"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/24-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E6%BC%AB%E8%B0%88",
@@ -1269,11 +1269,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/25-%E5%85%BC%E5%AE%B9%E5%B9%B6%E5%8C%85%E7%9A%84%E9%A2%86%E5%AF%BC%E6%96%B9%E5%BC%8F",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/18-%E5%85%BC%E5%AE%B9%E5%B9%B6%E5%8C%85%E7%9A%84%E9%A2%86%E5%AF%BC%E6%96%B9%E5%BC%8F"
+    "destination": "/docs/tech-management/03-管理实践与沟通/18-兼容并包的领导方式"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/26-%E5%A6%82%E4%BD%95%E5%81%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E8%81%8C%E5%9C%BA%E8%A7%84%E5%88%92",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/19-%E5%A6%82%E4%BD%95%E5%81%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E8%81%8C%E5%9C%BA%E8%A7%84%E5%88%92"
+    "destination": "/docs/tech-management/03-管理实践与沟通/19-如何做自己的职场规划"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/27-%E5%B0%8F%E8%AE%AEJava%E8%AF%AD%E8%A8%80",
@@ -1281,19 +1281,19 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/28-%E5%A6%82%E4%BD%95%E6%BF%80%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BA%BA%E5%91%98%E7%9A%84%E8%B4%A3%E4%BB%BB%E5%BF%83",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/20-%E5%A6%82%E4%BD%95%E6%BF%80%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BA%BA%E5%91%98%E7%9A%84%E8%B4%A3%E4%BB%BB%E5%BF%83"
+    "destination": "/docs/tech-management/03-管理实践与沟通/20-如何激发团队人员的责任心"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/29-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/21-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"
+    "destination": "/docs/tech-management/03-管理实践与沟通/21-说说硅谷互联网公司的开发流程"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/30-%E7%BC%96%E7%A8%8B%E9%A9%AC%E6%8B%89%E6%9D%BE",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/22-%E7%BC%96%E7%A8%8B%E9%A9%AC%E6%8B%89%E6%9D%BE"
+    "destination": "/docs/tech-management/03-管理实践与沟通/22-编程马拉松"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/31-%E5%B7%A5%E7%A8%8B%E5%B8%88%E3%80%81%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E3%80%81%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%80%E8%B5%B7%E5%B7%A5%E4%BD%9C%E7%9A%84",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/23-%E5%B7%A5%E7%A8%8B%E5%B8%88%E3%80%81%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E3%80%81%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%80%E8%B5%B7%E5%B7%A5%E4%BD%9C%E7%9A%84"
+    "destination": "/docs/tech-management/03-管理实践与沟通/23-工程师、产品经理、数据工程师是如何一起工作的"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/32-%E7%A1%85%E8%B0%B7%E4%BA%BA%E5%A6%82%E4%BD%95%E5%81%9ACodeReview",
@@ -1301,31 +1301,31 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/33-%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%9A%84%E7%8A%AF%E9%94%99%E6%88%90%E6%9C%AC",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/24-%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%9A%84%E7%8A%AF%E9%94%99%E6%88%90%E6%9C%AC"
+    "destination": "/docs/tech-management/03-管理实践与沟通/24-技术人的犯错成本"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/34-%E5%A6%82%E4%BD%95%E4%BB%8E%E9%94%99%E8%AF%AF%E4%B8%AD%E6%88%90%E9%95%BF",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/25-%E5%A6%82%E4%BD%95%E4%BB%8E%E9%94%99%E8%AF%AF%E4%B8%AD%E6%88%90%E9%95%BF"
+    "destination": "/docs/tech-management/03-管理实践与沟通/25-如何从错误中成长"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/35-%E7%90%86%E8%A7%A3%E5%B9%B6%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%BC%B9%E6%80%A7",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/26-%E7%90%86%E8%A7%A3%E5%B9%B6%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%BC%B9%E6%80%A7"
+    "destination": "/docs/tech-management/03-管理实践与沟通/26-理解并建立自己的工作弹性"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/36-%E5%A6%82%E4%BD%95%E5%AF%B9%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%AF%B4%22%E4%B8%8D%22",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/27-%E5%A6%82%E4%BD%95%E5%AF%B9%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%AF%B4%22%E4%B8%8D%22"
+    "destination": "/docs/tech-management/03-管理实践与沟通/27-如何对更多的工作说\"不\""
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/01-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/03-技术选型实践"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E7%B2%BE%E7%9B%8A%E5%88%9B%E4%B8%9A",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-%E7%B2%BE%E7%9B%8A%E5%88%9B%E4%B8%9A"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/04-精益创业"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-RESTful%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83",
@@ -1333,23 +1333,23 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/06-接口文档工具与API设计实践"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/07-上下文差异"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/08-沙盘推演"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-AI%E5%A4%9A%E4%BB%A3%E7%90%86%E5%8D%8F%E4%BD%9C%E9%85%8D%E7%BD%AE%E5%AE%9E%E8%B7%B5",
@@ -1357,35 +1357,35 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/10-度量驱动"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E8%BF%AD%E4%BB%A30",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E8%BF%AD%E4%BB%A30"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/12-迭代0"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/14-任务分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/16-开发者测试"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-TDD",
@@ -1393,79 +1393,79 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/18-大师级程序员"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/19-任务分解实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/20-测试质量"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/21-需求分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/22-需求管理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/23-MVP最小代价"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/24-认知偏差"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/25-代码为谁而写"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/26-轻量级沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/27-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/27-可视化沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/28-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/28-快速反馈与CI"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/29-复盘与预防"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/30-聆听用户声音"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/31-尽早暴露问题"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/32-结构化写文档"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/33-懒惰与自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/34-项目自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/35-验收测试与BDD"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/36-代码治理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84",
@@ -1473,7 +1473,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/37-软件复杂度"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-DDD%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1",
@@ -1481,7 +1481,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/38-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/38-新入职快速上手"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E9%81%97%E7%95%99%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0",
@@ -1489,11 +1489,11 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/39-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/39-保持竞争力"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/40-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/40-划重点汇总"
   },
   {
     "source": "/docs/cs-basics/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/04-CPU%E7%AF%87-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E4%B8%AD%E6%96%AD",
@@ -2865,231 +2865,231 @@
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/01-%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E5%8F%8A%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/03-技术选型实践"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/04-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/06-01-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/07-02-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/08-03-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/09-04-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/10-%E5%8E%9F%E5%9E%8B%E5%9B%BE%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AB%9E%E5%93%81%E5%88%86%E6%9E%90-%E7%B4%A2%E5%BC%95",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/%E5%81%9A%E5%88%B0%E8%BF%99%E5%9B%9B%E7%82%B9%EF%BC%8C%E5%9B%A2%E9%98%9F%E5%BF%85%E5%AE%9A%E9%A3%9E%E9%80%9F%E6%88%90%E9%95%BF",
-    "destination": "/docs/tech-management/04-%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE%E4%B8%8E%E6%8B%9B%E8%81%98/07-%E5%81%9A%E5%88%B0%E8%BF%99%E5%9B%9B%E7%82%B9%EF%BC%8C%E5%9B%A2%E9%98%9F%E5%BF%85%E5%AE%9A%E9%A3%9E%E9%80%9F%E6%88%90%E9%95%BF"
+    "destination": "/docs/tech-management/02-团队建设与文化/06-做到这四点，团队必定飞速成长"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/002-RealNetworks%E5%AE%8C%E6%95%B4%E5%85%B4%E8%A1%B0%E5%8F%B21994-2024-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/01-RealNetworks%E5%AE%8C%E6%95%B4%E5%85%B4%E8%A1%B0%E5%8F%B21994-2024-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/01-RealNetworks完整兴衰史1994-2024-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/003-%E4%BB%A5RealNetworks%E4%B8%BA%E4%BE%8B%E8%B0%88%E5%88%9D%E5%88%9B%E5%85%AC%E5%8F%B8%E5%BA%94%E5%AF%B9%E5%B7%A8%E5%A4%B4%E7%A2%BE%E5%8E%8B-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/02-%E4%BB%A5RealNetworks%E4%B8%BA%E4%BE%8B%E8%B0%88%E5%88%9D%E5%88%9B%E5%85%AC%E5%8F%B8%E5%BA%94%E5%AF%B9%E5%B7%A8%E5%A4%B4%E7%A2%BE%E5%8E%8B-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/02-以RealNetworks为例谈初创公司应对巨头碾压-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/005-Tableau%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E6%9E%90%E4%B9%8B%E7%8E%8B%E8%A2%AB%E6%94%B6%E8%B4%AD%E5%A7%8B%E6%9C%AB-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/03-Tableau%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E6%9E%90%E4%B9%8B%E7%8E%8B%E8%A2%AB%E6%94%B6%E8%B4%AD%E5%A7%8B%E6%9C%AB-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/03-Tableau可视化分析之王被收购始末-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/006-Expedia%E5%9C%A8%E7%BA%BF%E6%97%85%E6%B8%B8%E5%B8%9D%E5%9B%BD%E7%9A%84%E5%B4%9B%E8%B5%B7%E4%B8%8E%E6%8C%91%E6%88%98-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/04-Expedia%E5%9C%A8%E7%BA%BF%E6%97%85%E6%B8%B8%E5%B8%9D%E5%9B%BD%E7%9A%84%E5%B4%9B%E8%B5%B7%E4%B8%8E%E6%8C%91%E6%88%98-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/04-Expedia在线旅游帝国的崛起与挑战-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/007-Cray%E8%B6%85%E7%BA%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%8EBungie%E6%B8%B8%E6%88%8F%E5%85%AC%E5%8F%B8%E7%9A%84%E5%91%BD%E8%BF%90%E5%AF%B9%E6%AF%94-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/05-Cray%E8%B6%85%E7%BA%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%8EBungie%E6%B8%B8%E6%88%8F%E5%85%AC%E5%8F%B8%E7%9A%84%E5%91%BD%E8%BF%90%E5%AF%B9%E6%AF%94-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/05-Cray超级计算机与Bungie游戏公司的命运对比-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/008-Echo%E4%B8%8EAlexa%E7%9A%84%E5%85%B4%E8%A1%B0%E4%B8%8EAI%20Agent%E8%BD%AC%E5%9E%8B-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/06-Echo%E4%B8%8EAlexa%E7%9A%84%E5%85%B4%E8%A1%B0%E4%B8%8EAI%20Agent%E8%BD%AC%E5%9E%8B-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/06-Echo与Alexa的兴衰与AI Agent转型-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/009-%E6%99%BA%E8%83%BD%E9%9F%B3%E7%AE%B1%E5%A4%A7%E6%88%98%E7%9A%84%E7%BB%88%E5%B1%80%E4%B8%8EAI%E8%8C%83%E5%BC%8F%E8%BD%AC%E7%A7%BB-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/07-%E6%99%BA%E8%83%BD%E9%9F%B3%E7%AE%B1%E5%A4%A7%E6%88%98%E7%9A%84%E7%BB%88%E5%B1%80%E4%B8%8EAI%E8%8C%83%E5%BC%8F%E8%BD%AC%E7%A7%BB-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/07-智能音箱大战的终局与AI范式转移-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/010-%E7%A1%85%E8%B0%B7%E4%BA%94%E5%B7%A8%E5%A4%B4%E4%BC%81%E4%B8%9A%E6%96%87%E5%8C%96%E9%80%8F%E8%A7%86%E5%BD%95-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/08-%E7%A1%85%E8%B0%B7%E4%BA%94%E5%B7%A8%E5%A4%B4%E4%BC%81%E4%B8%9A%E6%96%87%E5%8C%96%E9%80%8F%E8%A7%86%E5%BD%95-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/08-硅谷五巨头企业文化透视录-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/011-%E5%8A%9E%E5%85%AC%E8%BD%AF%E4%BB%B6%E9%BB%8E%E6%98%8E%E5%8F%B2%EF%BC%9A%E4%BB%8EVisiCalc%E5%88%B0Lotus%E5%B8%9D%E5%9B%BD-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/09-%E5%8A%9E%E5%85%AC%E8%BD%AF%E4%BB%B6%E9%BB%8E%E6%98%8E%E5%8F%B2%EF%BC%9A%E4%BB%8EVisiCalc%E5%88%B0Lotus%E5%B8%9D%E5%9B%BD-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/09-办公软件黎明史：从VisiCalc到Lotus帝国-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/012-%E5%BE%AE%E8%BD%AFOffice%E9%9C%B8%E6%9D%83%E4%B8%8ESlack%E7%9A%84%E5%BC%82%E5%86%9B%E7%AA%81%E8%B5%B7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/10-%E5%BE%AE%E8%BD%AFOffice%E9%9C%B8%E6%9D%83%E4%B8%8ESlack%E7%9A%84%E5%BC%82%E5%86%9B%E7%AA%81%E8%B5%B7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/10-微软Office霸权与Slack的异军突起-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/013-%E5%8A%9E%E5%85%AC%E8%BD%AF%E4%BB%B6%E6%88%98%E6%96%97%E5%9B%9B%E5%8D%81%E5%B9%B4%E5%8F%B2%E4%BB%8ELotus%E5%88%B0AI%E7%94%9F%E4%BA%A7%E5%8A%9B%E5%B9%B3%E5%8F%B0-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/11-%E5%8A%9E%E5%85%AC%E8%BD%AF%E4%BB%B6%E6%88%98%E6%96%97%E5%9B%9B%E5%8D%81%E5%B9%B4%E5%8F%B2%E4%BB%8ELotus%E5%88%B0AI%E7%94%9F%E4%BA%A7%E5%8A%9B%E5%B9%B3%E5%8F%B0-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/11-办公软件战斗四十年史从Lotus到AI生产力平台-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/014-Valve%20Steam%E5%B8%9D%E5%9B%BD%E4%B8%8E%E6%97%A0%E9%A2%86%E5%AF%BC%E7%AE%A1%E7%90%86%E4%BC%A0%E5%A5%87-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/12-Valve%20Steam%E5%B8%9D%E5%9B%BD%E4%B8%8E%E6%97%A0%E9%A2%86%E5%AF%BC%E7%AE%A1%E7%90%86%E4%BC%A0%E5%A5%87-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/12-Valve Steam帝国与无领导管理传奇-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/015-%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%BC%94%E9%80%A0%E8%80%85MongoDB%EF%BC%88%E4%B8%8A%EF%BC%89-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/13-%E6%96%87%E6%A1%A3%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%BC%94%E9%80%A0%E8%80%85MongoDB%EF%BC%88%E4%B8%8A%EF%BC%89-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/13-文档数据库的缔造者MongoDB（上）-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/016-MongoDB%E5%AE%8C%E6%95%B4%E7%94%9F%E6%80%81%E4%B8%8ENoSQL%E6%88%98%E7%95%A5%E6%A0%BC%E5%B1%80-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/14-MongoDB%E5%AE%8C%E6%95%B4%E7%94%9F%E6%80%81%E4%B8%8ENoSQL%E6%88%98%E7%95%A5%E6%A0%BC%E5%B1%80-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/14-MongoDB完整生态与NoSQL战略格局-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/017-Hadoop%E4%B8%89%E5%9B%BD%E4%B9%8B%E5%85%B4%E8%A1%B0Cloudera%E4%B8%8EHortonworks-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/15-Hadoop%E4%B8%89%E5%9B%BD%E4%B9%8B%E5%85%B4%E8%A1%B0Cloudera%E4%B8%8EHortonworks-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/15-Hadoop三国之兴衰Cloudera与Hortonworks-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/018-Hadoop%E4%B8%89%E5%9B%BD%E5%90%B4%E5%9B%BDMapR%E6%8A%80%E6%9C%AF%E7%8B%AC%E8%A1%8C%E8%80%85%E4%B9%8B%E6%AD%BB-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/16-Hadoop%E4%B8%89%E5%9B%BD%E5%90%B4%E5%9B%BDMapR%E6%8A%80%E6%9C%AF%E7%8B%AC%E8%A1%8C%E8%80%85%E4%B9%8B%E6%AD%BB-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/16-Hadoop三国吴国MapR技术独行者之死-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/019-%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%88%98%E5%9B%BD%E5%B7%A8%E5%A4%B4%E4%BB%AC%E7%9A%84%E6%88%98%E7%95%A5%E5%BE%97%E5%A4%B1-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/17-%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%88%98%E5%9B%BD%E5%B7%A8%E5%A4%B4%E4%BB%AC%E7%9A%84%E6%88%98%E7%95%A5%E5%BE%97%E5%A4%B1-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/17-大数据战国巨头们的战略得失-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/020-Google%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%88%98%E7%95%A5%E4%BB%8E%E4%B8%89%E9%A9%BE%E9%A9%AC%E8%BD%A6%E5%88%B0AI%E6%97%B6%E4%BB%A3-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/18-Google%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%88%98%E7%95%A5%E4%BB%8E%E4%B8%89%E9%A9%BE%E9%A9%AC%E8%BD%A6%E5%88%B0AI%E6%97%B6%E4%BB%A3-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/18-Google大数据战略从三驾马车到AI时代-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/021-%E8%B0%B7%E6%AD%8C%E4%B8%89%E9%A9%BE%E9%A9%AC%E8%BD%A6%E9%81%97%E4%BA%A7%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E8%8C%83%E5%BC%8F%E6%BC%94%E8%BF%9B-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/19-%E8%B0%B7%E6%AD%8C%E4%B8%89%E9%A9%BE%E9%A9%AC%E8%BD%A6%E9%81%97%E4%BA%A7%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E8%8C%83%E5%BC%8F%E6%BC%94%E8%BF%9B-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/19-谷歌三驾马车遗产与大数据技术范式演进-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/022-%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8E%E5%B7%A8%E5%A4%B4%E6%88%98%E7%95%A5%E5%BE%97%E5%A4%B1%E5%90%AF%E7%A4%BA%E5%BD%95-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/20-%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8E%E5%B7%A8%E5%A4%B4%E6%88%98%E7%95%A5%E5%BE%97%E5%A4%B1%E5%90%AF%E7%A4%BA%E5%BD%95-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/20-阿里巴巴大数据与巨头战略得失启示录-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/023-Palantir%E7%A5%9E%E7%A7%98%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%8B%AC%E8%A7%92%E5%85%BD-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/21-Palantir%E7%A5%9E%E7%A7%98%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%8B%AC%E8%A7%92%E5%85%BD-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/21-Palantir神秘大数据独角兽-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/024-Splunk%E6%9C%BA%E5%99%A8%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B8%9D%E5%9B%BD%E7%9A%84%E7%BB%88%E7%AB%A0-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/22-Splunk%E6%9C%BA%E5%99%A8%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B8%9D%E5%9B%BD%E7%9A%84%E7%BB%88%E7%AB%A0-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/22-Splunk机器数据分析帝国的终章-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/025-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E4%BC%97%E7%94%9F%E7%9B%B8-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/23-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E4%BC%97%E7%94%9F%E7%9B%B8-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/23-大数据创业公司众生相-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/026-Databricks-Spark%E6%95%B0%E6%8D%AE%E9%87%91%E7%A0%96%E7%8E%8B%E5%9B%BD%E7%9A%84AI%E5%B4%9B%E8%B5%B7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/24-Databricks-Spark%E6%95%B0%E6%8D%AE%E9%87%91%E7%A0%96%E7%8E%8B%E5%9B%BD%E7%9A%84AI%E5%B4%9B%E8%B5%B7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/24-Databricks-Spark数据金砖王国的AI崛起-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/027-Apache%20Flink%E5%B4%9B%E8%B5%B7%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%9B%E4%B8%9A%E7%94%9F%E5%AD%98%E6%8C%87%E5%8D%97-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/25-Apache%20Flink%E5%B4%9B%E8%B5%B7%E4%B8%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%9B%E4%B8%9A%E7%94%9F%E5%AD%98%E6%8C%87%E5%8D%97-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/25-Apache Flink崛起与大数据创业生存指南-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/028-Snowflake%E4%BA%91%E7%AB%AF%E5%BC%B9%E6%80%A7%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/26-Snowflake%E4%BA%91%E7%AB%AF%E5%BC%B9%E6%80%A7%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/26-Snowflake云端弹性数据仓库-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/029-TiDB%E5%9B%BD%E4%BA%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%85%A8%E7%90%83%E5%8C%96%E4%B9%8B%E8%B7%AF-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/27-TiDB%E5%9B%BD%E4%BA%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%85%A8%E7%90%83%E5%8C%96%E4%B9%8B%E8%B7%AF-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/27-TiDB国产数据库的全球化之路-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/030-%E4%BC%81%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/28-%E4%BC%81%E4%B8%9A%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/28-企业技术分析方法论-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/031-PeopleSoft%E4%B8%8EWorkday%E7%9A%84%E4%BC%81%E4%B8%9A%E8%BD%AF%E4%BB%B6%E5%8F%B2%E8%AF%97-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/29-PeopleSoft%E4%B8%8EWorkday%E7%9A%84%E4%BC%81%E4%B8%9A%E8%BD%AF%E4%BB%B6%E5%8F%B2%E8%AF%97-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/29-PeopleSoft与Workday的企业软件史诗-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/032-Zenefits%E4%B8%8EGlassdoor%E5%8F%8AHR%E7%A7%91%E6%8A%80%E5%88%9B%E4%B8%9A%E5%90%AF%E7%A4%BA-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/30-Zenefits%E4%B8%8EGlassdoor%E5%8F%8AHR%E7%A7%91%E6%8A%80%E5%88%9B%E4%B8%9A%E5%90%AF%E7%A4%BA-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/30-Zenefits与Glassdoor及HR科技创业启示-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/033-WinRAR%E4%B8%8E%E9%9A%90%E5%BD%A2%E5%86%A0%E5%86%9B%E7%9A%84%E5%95%86%E4%B8%9A%E6%99%BA%E6%85%A7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/31-WinRAR%E4%B8%8E%E9%9A%90%E5%BD%A2%E5%86%A0%E5%86%9B%E7%9A%84%E5%95%86%E4%B8%9A%E6%99%BA%E6%85%A7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/31-WinRAR与隐形冠军的商业智慧-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/034-%E5%91%A8%E9%B8%BF%E7%A5%8E%E4%B8%8EBAT%E4%BA%8C%E5%8D%81%E5%B9%B4%E6%B2%89%E6%B5%AE%E5%BD%95-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/32-%E5%91%A8%E9%B8%BF%E7%A5%8E%E4%B8%8EBAT%E4%BA%8C%E5%8D%81%E5%B9%B4%E6%B2%89%E6%B5%AE%E5%BD%95-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/32-周鸿祎与BAT二十年沉浮录-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/035-Yahoo%E9%9B%85%E8%99%8E%E5%AE%8C%E6%95%B4%E5%85%B4%E8%A1%B0%E5%8F%B21994-2024-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/33-Yahoo%E9%9B%85%E8%99%8E%E5%AE%8C%E6%95%B4%E5%85%B4%E8%A1%B0%E5%8F%B21994-2024-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/33-Yahoo雅虎完整兴衰史1994-2024-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/037-Peter%20Thiel%E4%BB%8EPayPal%E5%88%B0AI%E6%97%B6%E4%BB%A3%E7%9A%84%E6%8A%95%E8%B5%84%E5%93%B2%E5%AD%A6-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/34-Peter%20Thiel%E4%BB%8EPayPal%E5%88%B0AI%E6%97%B6%E4%BB%A3%E7%9A%84%E6%8A%95%E8%B5%84%E5%93%B2%E5%AD%A6-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/34-Peter Thiel从PayPal到AI时代的投资哲学-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/038-%E7%A1%85%E8%B0%B7%E5%88%9B%E6%96%B0%E6%96%87%E5%8C%96%E7%9A%84%E5%8F%8C%E9%9D%A2%E6%80%A7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/35-%E7%A1%85%E8%B0%B7%E5%88%9B%E6%96%B0%E6%96%87%E5%8C%96%E7%9A%84%E5%8F%8C%E9%9D%A2%E6%80%A7-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/35-硅谷创新文化的双面性-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/039-Twitter-X%E8%93%9D%E8%89%B2%E5%B0%8F%E9%B8%9F%E8%BF%98%E8%83%BD%E9%A3%9E%E5%A4%9A%E4%B9%85-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/36-Twitter-X%E8%93%9D%E8%89%B2%E5%B0%8F%E9%B8%9F%E8%BF%98%E8%83%BD%E9%A3%9E%E5%A4%9A%E4%B9%85-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/36-Twitter-X蓝色小鸟还能飞多久-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/040-%E8%B5%9A%E9%92%B1%E6%98%AF%E6%A0%B9%E6%9C%AC%E6%8D%A2CEO%E4%B9%9F%E6%B2%A1%E6%95%91-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/37-%E8%B5%9A%E9%92%B1%E6%98%AF%E6%A0%B9%E6%9C%AC%E6%8D%A2CEO%E4%B9%9F%E6%B2%A1%E6%95%91-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/37-赚钱是根本换CEO也没救-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/041-%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%94%9F%E6%AD%BB%E5%AD%98%E4%BA%A1%E5%BD%95Square%20Box%20Dropbox%E7%AD%89-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/38-%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%94%9F%E6%AD%BB%E5%AD%98%E4%BA%A1%E5%BD%95Square%20Box%20Dropbox%E7%AD%89-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/38-互联网公司生死存亡录Square Box Dropbox等-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/042-Groupon%E5%9B%A2%E8%B4%AD%E9%BC%BB%E7%A5%96%E7%9A%84%E5%85%B4%E8%A1%B0-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/39-Groupon%E5%9B%A2%E8%B4%AD%E9%BC%BB%E7%A5%96%E7%9A%84%E5%85%B4%E8%A1%B0-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/39-Groupon团购鼻祖的兴衰-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/043-%E4%BB%8EPinterest%E5%88%B0Reddit%E5%88%B0YC%E7%9A%84%E4%BA%92%E8%81%94%E7%BD%91%E7%94%9F%E6%80%81%E8%A7%82%E5%AF%9F-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/40-%E4%BB%8EPinterest%E5%88%B0Reddit%E5%88%B0YC%E7%9A%84%E4%BA%92%E8%81%94%E7%BD%91%E7%94%9F%E6%80%81%E8%A7%82%E5%AF%9F-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/40-从Pinterest到Reddit到YC的互联网生态观察-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/044-SaaS%E7%8E%8B%E8%80%85Salesforce%E7%9A%84AI%E8%BD%AC%E5%9E%8B%E4%B9%8B%E8%B7%AF-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/41-SaaS%E7%8E%8B%E8%80%85Salesforce%E7%9A%84AI%E8%BD%AC%E5%9E%8B%E4%B9%8B%E8%B7%AF-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/41-SaaS王者Salesforce的AI转型之路-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/045-Sun%E5%BE%AE%E7%B3%BB%E7%BB%9F%E5%A4%AA%E9%98%B3%E5%8D%87%E8%B5%B7%E5%88%B0%E9%99%A8%E8%90%BD%E7%9A%84%E5%AE%8C%E6%95%B4%E5%8F%B2%E8%AF%97-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/42-Sun%E5%BE%AE%E7%B3%BB%E7%BB%9F%E5%A4%AA%E9%98%B3%E5%8D%87%E8%B5%B7%E5%88%B0%E9%99%A8%E8%90%BD%E7%9A%84%E5%AE%8C%E6%95%B4%E5%8F%B2%E8%AF%97-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/42-Sun微系统太阳升起到陨落的完整史诗-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/046-SAP%20HANA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8E%8B%E5%BA%A7%E4%B9%8B%E4%BA%89-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/43-SAP%20HANA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8E%8B%E5%BA%A7%E4%B9%8B%E4%BA%89-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/43-SAP HANA与数据库王座之争-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/047-Zynga%E7%A4%BE%E4%BA%A4%E6%B8%B8%E6%88%8F%E5%B8%9D%E5%9B%BD%E7%9A%84%E5%85%B4%E8%A1%B0%E4%B8%8E%E5%90%AF%E7%A4%BA-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91",
-    "destination": "/docs/tech-management/06-%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%95%86%E4%B8%9A%E6%A1%88%E4%BE%8B%E8%A7%A3%E8%AF%BB/44-Zynga%E7%A4%BE%E4%BA%A4%E6%B8%B8%E6%88%8F%E5%B8%9D%E5%9B%BD%E7%9A%84%E5%85%B4%E8%A1%B0%E4%B8%8E%E5%90%AF%E7%A4%BA-%E3%80%90%E6%9B%B4%E6%96%B0%E7%89%88%E3%80%91"
+    "destination": "/docs/tech-management/05-商业案例解读/44-Zynga社交游戏帝国的兴衰与启示-【更新版】"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/05-%E6%8A%80%E6%9C%AF%E8%B6%8B%E5%8A%BF%E8%A7%A3%E8%AF%BB-2025-2026%E6%8A%80%E6%9C%AF%E5%85%A8%E6%99%AF%E5%9B%BE",
-    "destination": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/02-%E6%8A%80%E6%9C%AF%E8%B6%8B%E5%8A%BF%E8%A7%A3%E8%AF%BB-2025-2026%E6%8A%80%E6%9C%AF%E5%85%A8%E6%99%AF%E5%9B%BE"
+    "destination": "/docs/tech-management/04-战略与商业/31-技术趋势解读-2025-2026技术全景图"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/06-%E6%94%BF%E7%AD%96%E4%B8%8E%E5%AE%8F%E8%A7%82%E7%8E%AF%E5%A2%83-AI%E6%97%B6%E4%BB%A3%E7%9A%84%E9%A1%BA%E5%8A%BF%E8%80%8C%E4%B8%BA",
-    "destination": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/03-%E6%94%BF%E7%AD%96%E4%B8%8E%E5%AE%8F%E8%A7%82%E7%8E%AF%E5%A2%83-AI%E6%97%B6%E4%BB%A3%E7%9A%84%E9%A1%BA%E5%8A%BF%E8%80%8C%E4%B8%BA"
+    "destination": "/docs/tech-management/04-战略与商业/32-政策与宏观环境-AI时代的顺势而为"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/02-%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%EF%BC%9A%E6%95%B0%E6%8D%AE%E4%B8%8E%E5%AD%98%E5%82%A8",
@@ -3097,7 +3097,7 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/03-Bug%E5%BC%95%E5%8F%91%E4%BA%8B%E6%95%85%EF%BC%8C%E8%AF%A5%E4%B8%8D%E8%AF%A5%E8%BF%BD%E7%A9%B6%E8%B4%A3%E4%BB%BB",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/02-Bug%E5%BC%95%E5%8F%91%E4%BA%8B%E6%95%85%EF%BC%8C%E8%AF%A5%E4%B8%8D%E8%AF%A5%E8%BF%BD%E7%A9%B6%E8%B4%A3%E4%BB%BB"
+    "destination": "/docs/tech-management/03-管理实践与沟通/02-Bug引发事故，该不该追究责任"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/04-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9AA-B%E6%B5%8B%E8%AF%95",
@@ -3105,15 +3105,15 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/05-%E5%A6%82%E4%BD%95%E5%B8%AE%E5%8A%A9%E5%9B%A2%E9%98%9F%E6%88%90%E5%91%98%E6%88%90%E9%95%BF",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/03-%E5%A6%82%E4%BD%95%E5%B8%AE%E5%8A%A9%E5%9B%A2%E9%98%9F%E6%88%90%E5%91%98%E6%88%90%E9%95%BF"
+    "destination": "/docs/tech-management/03-管理实践与沟通/03-如何帮助团队成员成长"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/06-%E5%BD%93%E6%88%91%E4%BB%AC%E7%BB%99%E5%88%AB%E4%BA%BA%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BA%9B%E4%BB%80%E4%B9%88",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/04-%E5%BD%93%E6%88%91%E4%BB%AC%E7%BB%99%E5%88%AB%E4%BA%BA%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BA%9B%E4%BB%80%E4%B9%88"
+    "destination": "/docs/tech-management/03-管理实践与沟通/04-当我们给别人提意见时，要注意些什么"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/07-%E7%AE%A1%E7%90%86%E4%B9%8B%E9%81%93%EF%BC%9A%E5%9B%A2%E9%98%9F%E4%B8%8E%E9%A2%86%E5%AF%BC%E5%8A%9B",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/05-%E7%AE%A1%E7%90%86%E4%B9%8B%E9%81%93%EF%BC%9A%E5%9B%A2%E9%98%9F%E4%B8%8E%E9%A2%86%E5%AF%BC%E5%8A%9B"
+    "destination": "/docs/tech-management/03-管理实践与沟通/05-管理之道：团队与领导力"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/08-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E8%81%8A%E8%81%8A%E5%B9%82%E7%AD%89",
@@ -3121,11 +3121,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/09-%E5%BD%93%E5%88%AB%E4%BA%BA%E7%BB%99%E6%88%91%E4%BB%AC%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/06-%E5%BD%93%E5%88%AB%E4%BA%BA%E7%BB%99%E6%88%91%E4%BB%AC%E6%8F%90%E6%84%8F%E8%A7%81%E6%97%B6%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9"
+    "destination": "/docs/tech-management/03-管理实践与沟通/06-当别人给我们提意见时，该如何应对"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/10-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E5%85%AC%E5%8F%B8%E4%B8%AD%E7%9A%84%E4%B8%80%E5%AF%B9%E4%B8%80%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/07-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E5%85%AC%E5%8F%B8%E4%B8%AD%E7%9A%84%E4%B8%80%E5%AF%B9%E4%B8%80%E6%B2%9F%E9%80%9A"
+    "destination": "/docs/tech-management/03-管理实践与沟通/07-说说硅谷公司中的一对一沟通"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/11-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%97%B6%E4%BB%A3%E7%9A%84%E7%AE%97%E6%B3%95",
@@ -3133,11 +3133,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/12-%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E4%BA%86%EF%BC%8C%E4%BD%9C%E4%B8%BA%E8%B4%9F%E8%B4%A3%E4%BA%BA%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/08-%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E4%BA%86%EF%BC%8C%E4%BD%9C%E4%B8%BA%E8%B4%9F%E8%B4%A3%E4%BA%BA%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E"
+    "destination": "/docs/tech-management/03-管理实践与沟通/08-项目延期了，作为负责人该怎么办"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/13-%E7%AE%A1%E7%90%86%E5%92%8C%E8%A2%AB%E7%AE%A1%E7%90%86%EF%BC%9A%E6%9C%9F%E6%9C%9B%E5%80%BC%E5%B7%AE%E5%BC%82",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/09-%E7%AE%A1%E7%90%86%E5%92%8C%E8%A2%AB%E7%AE%A1%E7%90%86%EF%BC%9A%E6%9C%9F%E6%9C%9B%E5%80%BC%E5%B7%AE%E5%BC%82"
+    "destination": "/docs/tech-management/03-管理实践与沟通/09-管理和被管理：期望值差异"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/14-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9F%A5%E8%AF%86",
@@ -3145,11 +3145,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/15-%E7%AE%A1%E7%90%86%E8%80%85%E5%9C%A8%E8%BF%9B%E8%A1%8C%E5%B7%A5%E4%BD%9C%E5%88%86%E9%85%8D%E6%97%B6%EF%BC%8C%E4%BC%9A%E8%80%83%E8%99%91%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/10-%E7%AE%A1%E7%90%86%E8%80%85%E5%9C%A8%E8%BF%9B%E8%A1%8C%E5%B7%A5%E4%BD%9C%E5%88%86%E9%85%8D%E6%97%B6%EF%BC%8C%E4%BC%9A%E8%80%83%E8%99%91%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98"
+    "destination": "/docs/tech-management/03-管理实践与沟通/10-管理者在进行工作分配时，会考虑哪些问题"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/16-%E7%A1%85%E8%B0%B7%E4%BA%BA%E5%88%B0%E5%BA%95%E5%BF%99%E4%B8%8D%E5%BF%99",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/11-%E7%A1%85%E8%B0%B7%E4%BA%BA%E5%88%B0%E5%BA%95%E5%BF%99%E4%B8%8D%E5%BF%99"
+    "destination": "/docs/tech-management/03-管理实践与沟通/11-硅谷人到底忙不忙"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/17-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E7%B3%BB%E7%BB%9F%E6%8B%86%E5%88%86",
@@ -3157,11 +3157,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/18-%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%BD%B1%E5%93%8D%E5%8A%9B",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/12-%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%BD%B1%E5%93%8D%E5%8A%9B"
+    "destination": "/docs/tech-management/03-管理实践与沟通/12-技术人如何建立个人影响力"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/19-%E7%AE%A1%E7%90%86%E8%80%85%E4%B8%8D%E7%94%A8%E4%BA%B2%E5%8A%9B%E4%BA%B2%E4%B8%BA%EF%BC%9A%E5%85%B3%E9%94%AE%E6%98%AF%E4%BB%80%E4%B9%88",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/13-%E7%AE%A1%E7%90%86%E8%80%85%E4%B8%8D%E7%94%A8%E4%BA%B2%E5%8A%9B%E4%BA%B2%E4%B8%BA%EF%BC%9A%E5%85%B3%E9%94%AE%E6%98%AF%E4%BB%80%E4%B9%88"
+    "destination": "/docs/tech-management/03-管理实践与沟通/13-管理者不用亲力亲为：关键是什么"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/20-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9AAPI%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0",
@@ -3169,11 +3169,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/21-%E7%A1%85%E8%B0%B7%E9%9D%A2%E8%AF%95%EF%BC%9A%E9%82%A3%E4%BA%9B%E4%BD%A0%E5%BA%94%E8%AF%A5%E7%9F%A5%E9%81%93%E7%9A%84%E4%BA%8B%E5%84%BF",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/14-%E7%A1%85%E8%B0%B7%E9%9D%A2%E8%AF%95%EF%BC%9A%E9%82%A3%E4%BA%9B%E4%BD%A0%E5%BA%94%E8%AF%A5%E7%9F%A5%E9%81%93%E7%9A%84%E4%BA%8B%E5%84%BF"
+    "destination": "/docs/tech-management/03-管理实践与沟通/14-硅谷面试：那些你应该知道的事儿"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/22-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E6%8A%80%E5%B7%A7",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/15-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E6%8A%80%E5%B7%A7"
+    "destination": "/docs/tech-management/03-管理实践与沟通/15-项目管理中的三个技巧"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/23-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9A%E4%B8%AD%E7%BE%8E%E5%9C%A8%E6%94%AF%E4%BB%98%E6%8A%80%E6%9C%AF%E5%92%8C%E5%A4%A7%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%B7%AE%E5%BC%82",
@@ -3181,11 +3181,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/24-%E4%B8%8D%E8%A6%81%E5%81%9A%E5%BE%AE%E8%A7%82%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/16-%E4%B8%8D%E8%A6%81%E5%81%9A%E5%BE%AE%E8%A7%82%E7%9A%84%E7%AE%A1%E7%90%86%E8%80%85"
+    "destination": "/docs/tech-management/03-管理实践与沟通/16-不要做微观的管理者"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/25-%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%B7%A5%E4%BD%9C%E4%B8%AD%E7%9A%84%E4%BA%BA%E9%99%85%E5%85%B3%E7%B3%BB",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/17-%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%B7%A5%E4%BD%9C%E4%B8%AD%E7%9A%84%E4%BA%BA%E9%99%85%E5%85%B3%E7%B3%BB"
+    "destination": "/docs/tech-management/03-管理实践与沟通/17-如何处理工作中的人际关系"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/26-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E6%BC%AB%E8%B0%88",
@@ -3193,11 +3193,11 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/27-%E5%85%BC%E5%AE%B9%E5%B9%B6%E5%8C%85%E7%9A%84%E9%A2%86%E5%AF%BC%E6%96%B9%E5%BC%8F",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/18-%E5%85%BC%E5%AE%B9%E5%B9%B6%E5%8C%85%E7%9A%84%E9%A2%86%E5%AF%BC%E6%96%B9%E5%BC%8F"
+    "destination": "/docs/tech-management/03-管理实践与沟通/18-兼容并包的领导方式"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/28-%E5%A6%82%E4%BD%95%E5%81%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E8%81%8C%E5%9C%BA%E8%A7%84%E5%88%92",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/19-%E5%A6%82%E4%BD%95%E5%81%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E8%81%8C%E5%9C%BA%E8%A7%84%E5%88%92"
+    "destination": "/docs/tech-management/03-管理实践与沟通/19-如何做自己的职场规划"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/29-%E5%B0%8F%E8%AE%AEJava%E8%AF%AD%E8%A8%80",
@@ -3205,19 +3205,19 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/30-%E5%A6%82%E4%BD%95%E6%BF%80%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BA%BA%E5%91%98%E7%9A%84%E8%B4%A3%E4%BB%BB%E5%BF%83",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/20-%E5%A6%82%E4%BD%95%E6%BF%80%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BA%BA%E5%91%98%E7%9A%84%E8%B4%A3%E4%BB%BB%E5%BF%83"
+    "destination": "/docs/tech-management/03-管理实践与沟通/20-如何激发团队人员的责任心"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/31-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/21-%E8%AF%B4%E8%AF%B4%E7%A1%85%E8%B0%B7%E4%BA%92%E8%81%94%E7%BD%91%E5%85%AC%E5%8F%B8%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"
+    "destination": "/docs/tech-management/03-管理实践与沟通/21-说说硅谷互联网公司的开发流程"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/32-%E7%BC%96%E7%A8%8B%E9%A9%AC%E6%8B%89%E6%9D%BE",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/22-%E7%BC%96%E7%A8%8B%E9%A9%AC%E6%8B%89%E6%9D%BE"
+    "destination": "/docs/tech-management/03-管理实践与沟通/22-编程马拉松"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/33-%E5%B7%A5%E7%A8%8B%E5%B8%88%E3%80%81%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E3%80%81%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%80%E8%B5%B7%E5%B7%A5%E4%BD%9C%E7%9A%84",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/23-%E5%B7%A5%E7%A8%8B%E5%B8%88%E3%80%81%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E3%80%81%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%80%E8%B5%B7%E5%B7%A5%E4%BD%9C%E7%9A%84"
+    "destination": "/docs/tech-management/03-管理实践与沟通/23-工程师、产品经理、数据工程师是如何一起工作的"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/34-%E7%A1%85%E8%B0%B7%E4%BA%BA%E5%A6%82%E4%BD%95%E5%81%9ACodeReview",
@@ -3225,19 +3225,19 @@
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/35-%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%9A%84%E7%8A%AF%E9%94%99%E6%88%90%E6%9C%AC",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/24-%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%9A%84%E7%8A%AF%E9%94%99%E6%88%90%E6%9C%AC"
+    "destination": "/docs/tech-management/03-管理实践与沟通/24-技术人的犯错成本"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/36-%E5%A6%82%E4%BD%95%E4%BB%8E%E9%94%99%E8%AF%AF%E4%B8%AD%E6%88%90%E9%95%BF",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/25-%E5%A6%82%E4%BD%95%E4%BB%8E%E9%94%99%E8%AF%AF%E4%B8%AD%E6%88%90%E9%95%BF"
+    "destination": "/docs/tech-management/03-管理实践与沟通/25-如何从错误中成长"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/37-%E7%90%86%E8%A7%A3%E5%B9%B6%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%BC%B9%E6%80%A7",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/26-%E7%90%86%E8%A7%A3%E5%B9%B6%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%BC%B9%E6%80%A7"
+    "destination": "/docs/tech-management/03-管理实践与沟通/26-理解并建立自己的工作弹性"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/38-%E5%A6%82%E4%BD%95%E5%AF%B9%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%AF%B4%22%E4%B8%8D%22",
-    "destination": "/docs/tech-management/08-%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/27-%E5%A6%82%E4%BD%95%E5%AF%B9%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%AF%B4%22%E4%B8%8D%22"
+    "destination": "/docs/tech-management/03-管理实践与沟通/27-如何对更多的工作说\"不\""
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-RESTful%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83",
@@ -3245,23 +3245,23 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/06-接口文档工具与API设计实践"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/07-上下文差异"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/08-沙盘推演"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-AI%E5%A4%9A%E4%BB%A3%E7%90%86%E5%8D%8F%E4%BD%9C%E9%85%8D%E7%BD%AE%E5%AE%9E%E8%B7%B5",
@@ -3269,35 +3269,35 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/10-度量驱动"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E8%BF%AD%E4%BB%A30",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E8%BF%AD%E4%BB%A30"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/12-迭代0"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/14-任务分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/16-开发者测试"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-TDD",
@@ -3305,79 +3305,79 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/18-大师级程序员"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/19-任务分解实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/20-测试质量"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/21-需求分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/22-需求管理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/23-MVP最小代价"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/27-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/24-认知偏差"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/28-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/25-代码为谁而写"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/26-轻量级沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/27-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/27-可视化沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/28-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/28-快速反馈与CI"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/29-复盘与预防"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/30-聆听用户声音"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/31-尽早暴露问题"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/32-结构化写文档"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/33-懒惰与自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/34-项目自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/38-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/35-验收测试与BDD"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/39-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/36-代码治理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/40-%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84",
@@ -3385,7 +3385,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/41-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/37-软件复杂度"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/42-DDD%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1",
@@ -3393,7 +3393,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/43-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/38-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/38-新入职快速上手"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/44-%E9%81%97%E7%95%99%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0",
@@ -3401,11 +3401,11 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/45-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/39-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/39-保持竞争力"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/46-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB",
-    "destination": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/40-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB"
+    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/40-划重点汇总"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/images/78104/01975cfc49ac170f566b7f96ae0751e9.jpg",
@@ -3425,119 +3425,119 @@
   },
   {
     "source": "/docs/tech-management/%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E5%BE%90%E8%A3%95%E9%94%AE%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%AB%98%E9%80%9F%E5%A2%9E%E9%95%BF%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B",
-    "destination": "/docs/tech-management/07-%E6%8A%80%E6%9C%AF%E6%88%98%E7%95%A5%E4%B8%8E%E5%86%B3%E7%AD%96/17-%E5%BE%90%E8%A3%95%E9%94%AE%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%AB%98%E9%80%9F%E5%A2%9E%E9%95%BF%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B"
+    "destination": "/docs/tech-management/04-战略与商业/38-徐裕键：业务高速增长过程中的技术演进"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/05-%E5%A6%82%E4%BD%95%E4%BB%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9A%84%E8%A7%86%E8%A7%92%E7%9C%8B%E5%BE%85%E5%BA%94%E7%94%A8%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/04-%E5%A6%82%E4%BD%95%E4%BB%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9A%84%E8%A7%86%E8%A7%92%E7%9C%8B%E5%BE%85%E5%BA%94%E7%94%A8%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE"
+    "destination": "/docs/ops/14-运维体系管理/04-如何从生命周期的视角看待应用运维体系建设"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/06-%E8%81%8A%E8%81%8ACMDB%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/05-%E8%81%8A%E8%81%8ACMDB%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F"
+    "destination": "/docs/ops/14-运维体系管理/05-聊聊CMDB的前世今生"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/07-%E6%9C%89%E4%BA%86CMDB%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E9%9C%80%E8%A6%81%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/06-%E6%9C%89%E4%BA%86CMDB%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E9%9C%80%E8%A6%81%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"
+    "destination": "/docs/ops/14-运维体系管理/06-有了CMDB，为什么还需要应用配置管理"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/08-%E5%A6%82%E4%BD%95%E5%9C%A8CMDB%E4%B8%AD%E8%90%BD%E5%9C%B0%E5%BA%94%E7%94%A8%E7%9A%84%E6%A6%82%E5%BF%B5",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/07-%E5%A6%82%E4%BD%95%E5%9C%A8CMDB%E4%B8%AD%E8%90%BD%E5%9C%B0%E5%BA%94%E7%94%A8%E7%9A%84%E6%A6%82%E5%BF%B5"
+    "destination": "/docs/ops/14-运维体系管理/07-如何在CMDB中落地应用的概念"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/09-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E8%BF%90%E7%BB%B4%E7%BB%84%E7%BB%87%E6%9E%B6%E6%9E%84",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/08-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E8%BF%90%E7%BB%B4%E7%BB%84%E7%BB%87%E6%9E%B6%E6%9E%84"
+    "destination": "/docs/ops/14-运维体系管理/08-如何打造运维组织架构"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/10-%E8%B0%B7%E6%AD%8CSRE%E8%BF%90%E7%BB%B4%E6%A8%A1%E5%BC%8F%E8%A7%A3%E8%AF%BB",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/09-%E8%B0%B7%E6%AD%8CSRE%E8%BF%90%E7%BB%B4%E6%A8%A1%E5%BC%8F%E8%A7%A3%E8%AF%BB"
+    "destination": "/docs/ops/14-运维体系管理/09-谷歌SRE运维模式解读"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/11-%E4%BB%8E%E8%B0%B7%E6%AD%8CCRE%E8%B0%88%E8%B5%B7%EF%BC%8C%E8%BF%90%E7%BB%B4%E5%A6%82%E4%BD%95%E5%9F%B9%E5%85%BB%E6%9C%8D%E5%8A%A1%E6%84%8F%E8%AF%86",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/10-%E4%BB%8E%E8%B0%B7%E6%AD%8CCRE%E8%B0%88%E8%B5%B7%EF%BC%8C%E8%BF%90%E7%BB%B4%E5%A6%82%E4%BD%95%E5%9F%B9%E5%85%BB%E6%9C%8D%E5%8A%A1%E6%84%8F%E8%AF%86"
+    "destination": "/docs/ops/14-运维体系管理/10-从谷歌CRE谈起，运维如何培养服务意识"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/12-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E7%9F%A5%E6%98%93%E8%A1%8C%E9%9A%BE%EF%BC%8C%E6%83%B3%E5%81%9A%E6%88%90%E8%BF%99%E4%BA%8B%E4%BD%A0%E8%A6%81%E7%90%86%E8%A7%A3%E8%BF%99%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E7%82%B9",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/11-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E7%9F%A5%E6%98%93%E8%A1%8C%E9%9A%BE%EF%BC%8C%E6%83%B3%E5%81%9A%E6%88%90%E8%BF%99%E4%BA%8B%E4%BD%A0%E8%A6%81%E7%90%86%E8%A7%A3%E8%BF%99%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E7%82%B9"
+    "destination": "/docs/ops/14-运维体系管理/11-持续交付知易行难，想做成这事你要理解这几个关键点"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/13-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E7%9A%84%E7%AC%AC%E4%B8%80%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%9A%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/12-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E7%9A%84%E7%AC%AC%E4%B8%80%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%9A%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"
+    "destination": "/docs/ops/14-运维体系管理/12-持续交付的第一关键点：配置管理"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/14-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%AD%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/13-%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%AD%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"
+    "destination": "/docs/ops/14-运维体系管理/13-如何做好持续交付中的多环境配置管理"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/15-%E5%BC%80%E5%8F%91%E5%92%8C%E6%B5%8B%E8%AF%95%E4%BA%89%E6%8A%A2%E7%8E%AF%E5%A2%83%E6%98%AF%E6%97%B6%E5%80%99%E8%BF%9B%E8%A1%8C%E5%A4%9A%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%BE%E4%BA%86",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/14-%E5%BC%80%E5%8F%91%E5%92%8C%E6%B5%8B%E8%AF%95%E4%BA%89%E6%8A%A2%E7%8E%AF%E5%A2%83%E6%98%AF%E6%97%B6%E5%80%99%E8%BF%9B%E8%A1%8C%E5%A4%9A%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%BE%E4%BA%86"
+    "destination": "/docs/ops/14-运维体系管理/14-开发和测试争抢环境是时候进行多环境建设了"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/16-%E7%BA%BF%E4%B8%8A%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%BE%EF%BC%8C%E8%A6%81%E6%89%9B%E5%BE%97%E4%BD%8F%E7%9C%9F%E5%88%80%E7%9C%9F%E6%9E%AA%E7%9A%84%E8%80%83%E9%AA%8C",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/15-%E7%BA%BF%E4%B8%8A%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%BE%EF%BC%8C%E8%A6%81%E6%89%9B%E5%BE%97%E4%BD%8F%E7%9C%9F%E5%88%80%E7%9C%9F%E6%9E%AA%E7%9A%84%E8%80%83%E9%AA%8C"
+    "destination": "/docs/ops/14-运维体系管理/15-线上环境建设，要扛得住真刀真枪的考验"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/17-%E4%BA%BA%E5%A4%9A%E5%8A%9B%E9%87%8F%E5%A4%A7vs.%E4%B8%A4%E4%B8%AA%E6%8A%AB%E8%90%A8%E5%8E%9F%E5%88%99%EF%BC%8C%E8%81%8A%E8%81%8A%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%AD%E7%9A%84%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%A8%A1%E5%BC%8F",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/16-%E4%BA%BA%E5%A4%9A%E5%8A%9B%E9%87%8F%E5%A4%A7vs.%E4%B8%A4%E4%B8%AA%E6%8A%AB%E8%90%A8%E5%8E%9F%E5%88%99%EF%BC%8C%E8%81%8A%E8%81%8A%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%AD%E7%9A%84%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%A8%A1%E5%BC%8F"
+    "destination": "/docs/ops/14-运维体系管理/16-人多力量大vs.两个披萨原则，聊聊持续交付中的流水线模式"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/18-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E6%B5%81%E6%B0%B4%E7%BA%BF%E8%BD%AF%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%9A%BE%E5%90%97%E6%9C%89%E5%93%AA%E4%BA%9B%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/17-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E6%B5%81%E6%B0%B4%E7%BA%BF%E8%BD%AF%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%9A%BE%E5%90%97%E6%9C%89%E5%93%AA%E4%BA%9B%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98"
+    "destination": "/docs/ops/14-运维体系管理/17-持续交付流水线软件构建难吗有哪些关键问题"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/19-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%AD%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BA%E5%AE%8C%E6%88%90%E5%90%8E%E5%B0%B1%E5%A4%A7%E5%8A%9F%E5%91%8A%E6%88%90%E4%BA%86%E5%90%97%E5%88%AB%E5%BF%98%E4%BA%86%E8%B4%A8%E9%87%8F%E4%BF%9D%E9%9A%9C",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/18-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%AD%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%9E%84%E5%BB%BA%E5%AE%8C%E6%88%90%E5%90%8E%E5%B0%B1%E5%A4%A7%E5%8A%9F%E5%91%8A%E6%88%90%E4%BA%86%E5%90%97%E5%88%AB%E5%BF%98%E4%BA%86%E8%B4%A8%E9%87%8F%E4%BF%9D%E9%9A%9C"
+    "destination": "/docs/ops/14-运维体系管理/18-持续交付中流水线构建完成后就大功告成了吗别忘了质量保障"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/20-%E5%81%9A%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E6%A6%82%E5%BF%B5%E9%87%8D%E8%A6%81%E8%BF%98%E6%98%AF%E5%9C%BA%E6%99%AF%E9%87%8D%E8%A6%81%E7%9C%8B%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/19-%E5%81%9A%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E6%A6%82%E5%BF%B5%E9%87%8D%E8%A6%81%E8%BF%98%E6%98%AF%E5%9C%BA%E6%99%AF%E9%87%8D%E8%A6%81%E7%9C%8B%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88"
+    "destination": "/docs/ops/14-运维体系管理/19-做持续交付概念重要还是场景重要看笨办法如何找到最佳方案"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/21-%E6%9E%81%E7%AB%AF%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%8B%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E7%A8%B3%E5%AE%9A%E6%80%A7%E4%BF%9D%E9%9A%9C",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/20-%E6%9E%81%E7%AB%AF%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E4%B8%8B%EF%BC%8C%E6%88%91%E4%BB%AC%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E7%A8%B3%E5%AE%9A%E6%80%A7%E4%BF%9D%E9%9A%9C"
+    "destination": "/docs/ops/14-运维体系管理/20-极端业务场景下，我们应该如何做好稳定性保障"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/22-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92%E4%B9%8B%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/21-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92%E4%B9%8B%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90"
+    "destination": "/docs/ops/14-运维体系管理/21-稳定性实践：容量规划之业务场景分析"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/23-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92%E4%B9%8B%E5%8E%8B%E6%B5%8B%E7%B3%BB%E7%BB%9F%E5%BB%BA%E8%AE%BE",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/22-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92%E4%B9%8B%E5%8E%8B%E6%B5%8B%E7%B3%BB%E7%BB%9F%E5%BB%BA%E8%AE%BE"
+    "destination": "/docs/ops/14-运维体系管理/22-稳定性实践：容量规划之压测系统建设"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/24-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E9%99%90%E6%B5%81%E9%99%8D%E7%BA%A7",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/23-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E9%99%90%E6%B5%81%E9%99%8D%E7%BA%A7"
+    "destination": "/docs/ops/14-运维体系管理/23-稳定性实践：限流降级"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/25-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%BC%80%E5%85%B3%E5%92%8C%E9%A2%84%E6%A1%88",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/24-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%BC%80%E5%85%B3%E5%92%8C%E9%A2%84%E6%A1%88"
+    "destination": "/docs/ops/14-运维体系管理/24-稳定性实践：开关和预案"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/26-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%85%A8%E9%93%BE%E8%B7%AF%E8%B7%9F%E8%B8%AA%E7%B3%BB%E7%BB%9F%EF%BC%8C%E6%8A%80%E6%9C%AF%E8%BF%90%E8%90%A5%E8%83%BD%E5%8A%9B%E7%9A%84%E4%BD%93%E7%8E%B0",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/25-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%85%A8%E9%93%BE%E8%B7%AF%E8%B7%9F%E8%B8%AA%E7%B3%BB%E7%BB%9F%EF%BC%8C%E6%8A%80%E6%9C%AF%E8%BF%90%E8%90%A5%E8%83%BD%E5%8A%9B%E7%9A%84%E4%BD%93%E7%8E%B0"
+    "destination": "/docs/ops/14-运维体系管理/25-稳定性实践：全链路跟踪系统，技术运营能力的体现"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/27-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E8%B0%88%E8%B0%88%E6%88%91%E5%AF%B9%E6%95%85%E9%9A%9C%E7%9A%84%E7%90%86%E8%A7%A3",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/26-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E8%B0%88%E8%B0%88%E6%88%91%E5%AF%B9%E6%95%85%E9%9A%9C%E7%9A%84%E7%90%86%E8%A7%A3"
+    "destination": "/docs/ops/14-运维体系管理/26-故障管理：谈谈我对故障的理解"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/28-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E6%95%85%E9%9A%9C%E5%AE%9A%E7%BA%A7%E5%92%8C%E5%AE%9A%E8%B4%A3",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/27-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E6%95%85%E9%9A%9C%E5%AE%9A%E7%BA%A7%E5%92%8C%E5%AE%9A%E8%B4%A3"
+    "destination": "/docs/ops/14-运维体系管理/27-故障管理：故障定级和定责"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/29-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E9%BC%93%E5%8A%B1%E5%81%9A%E4%BA%8B%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%A4%84%E7%BD%9A%E9%94%99%E8%AF%AF",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/28-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E9%BC%93%E5%8A%B1%E5%81%9A%E4%BA%8B%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%A4%84%E7%BD%9A%E9%94%99%E8%AF%AF"
+    "destination": "/docs/ops/14-运维体系管理/28-故障管理：鼓励做事，而不是处罚错误"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/30-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E6%95%85%E9%9A%9C%E5%BA%94%E6%80%A5%E5%92%8C%E6%95%85%E9%9A%9C%E5%A4%8D%E7%9B%98",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/29-%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86%EF%BC%9A%E6%95%85%E9%9A%9C%E5%BA%94%E6%80%A5%E5%92%8C%E6%95%85%E9%9A%9C%E5%A4%8D%E7%9B%98"
+    "destination": "/docs/ops/14-运维体系管理/29-故障管理：故障应急和故障复盘"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/31-%E5%94%87%E4%BA%A1%E9%BD%BF%E5%AF%92%EF%BC%8C%E8%BF%90%E7%BB%B4%E4%B8%8E%E5%AE%89%E5%85%A8%20-%20%E4%BB%8E%E8%A2%AB%E5%8A%A8%E5%93%8D%E5%BA%94%E5%88%B0DevSecOps%E4%B8%BB%E5%8A%A8%E9%98%B2%E5%BE%A1%E4%BD%93%E7%B3%BB",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/30-%E5%94%87%E4%BA%A1%E9%BD%BF%E5%AF%92%EF%BC%8C%E8%BF%90%E7%BB%B4%E4%B8%8E%E5%AE%89%E5%85%A8%20-%20%E4%BB%8E%E8%A2%AB%E5%8A%A8%E5%93%8D%E5%BA%94%E5%88%B0DevSecOps%E4%B8%BB%E5%8A%A8%E9%98%B2%E5%BE%A1%E4%BD%93%E7%B3%BB"
+    "destination": "/docs/ops/14-运维体系管理/30-唇亡齿寒，运维与安全 - 从被动响应到DevSecOps主动防御体系"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/32-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9%E4%B8%8A%E4%BA%91-%20%E4%BB%8E%E6%88%90%E6%9C%AC%E5%9B%B0%E5%A2%83%E5%88%B0FinOps%E9%A9%B1%E5%8A%A8%E7%9A%84%E4%BA%91%E5%8E%9F%E7%94%9F%E6%88%98%E7%95%A5",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/31-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9%E4%B8%8A%E4%BA%91-%20%E4%BB%8E%E6%88%90%E6%9C%AC%E5%9B%B0%E5%A2%83%E5%88%B0FinOps%E9%A9%B1%E5%8A%A8%E7%9A%84%E4%BA%91%E5%8E%9F%E7%94%9F%E6%88%98%E7%95%A5"
+    "destination": "/docs/ops/14-运维体系管理/31-为什么选择上云- 从成本困境到FinOps驱动的云原生战略"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/33-Spring%20Cloud%EF%BC%9A%E9%9D%A2%E5%90%91%E5%BA%94%E7%94%A8%E5%B1%82%E7%9A%84%E4%BA%91%E6%9E%B6%E6%9E%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20-%20%E4%BB%8ENetflix%E5%81%9C%E7%BB%B4%E5%88%B0Service%20Mesh%E6%97%B6%E4%BB%A3",
@@ -3545,7 +3545,7 @@
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/33-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B7%B7%E5%90%88%E4%BA%91%E6%98%AF%E6%9C%AA%E6%9D%A5%E4%BA%91%E8%AE%A1%E7%AE%97%E7%9A%84%E4%B8%BB%E6%B5%81%E5%BD%A2%E6%80%81-%20%E4%BB%8E%E6%89%8B%E5%B7%A5%E7%BC%96%E6%8E%92%E5%88%B0Kubernetes%E8%B7%A8%E4%BA%91%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/32-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B7%B7%E5%90%88%E4%BA%91%E6%98%AF%E6%9C%AA%E6%9D%A5%E4%BA%91%E8%AE%A1%E7%AE%97%E7%9A%84%E4%B8%BB%E6%B5%81%E5%BD%A2%E6%80%81-%20%E4%BB%8E%E6%89%8B%E5%B7%A5%E7%BC%96%E6%8E%92%E5%88%B0Kubernetes%E8%B7%A8%E4%BA%91%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86"
+    "destination": "/docs/ops/14-运维体系管理/32-为什么混合云是未来云计算的主流形态- 从手工编排到Kubernetes跨云统一管理"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/34-Spring%20Cloud%EF%BC%9A%E9%9D%A2%E5%90%91%E5%BA%94%E7%94%A8%E5%B1%82%E7%9A%84%E4%BA%91%E6%9E%B6%E6%9E%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20-%20%E4%BB%8ENetflix%E5%81%9C%E7%BB%B4%E5%88%B0Service%20Mesh%E6%97%B6%E4%BB%A3",
@@ -3553,67 +3553,67 @@
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/34-%E4%BB%8ECDN%E5%92%8C%E4%BA%91%E5%AD%98%E5%82%A8%E5%88%B0%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97%E7%94%9F%E6%80%81%20-%20%E4%BA%91%E6%9C%8D%E5%8A%A1%E6%BC%94%E8%BF%9B%E4%B8%8E%E6%88%90%E6%9C%AC%E4%BC%98%E5%8C%96%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/33-%E4%BB%8ECDN%E5%92%8C%E4%BA%91%E5%AD%98%E5%82%A8%E5%88%B0%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97%E7%94%9F%E6%80%81%20-%20%E4%BA%91%E6%9C%8D%E5%8A%A1%E6%BC%94%E8%BF%9B%E4%B8%8E%E6%88%90%E6%9C%AC%E4%BC%98%E5%8C%96%E5%AE%9E%E6%88%98"
+    "destination": "/docs/ops/14-运维体系管理/33-从CDN和云存储到边缘计算生态 - 云服务演进与成本优化实战"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/35-%E4%BB%8ECDN%E5%92%8C%E4%BA%91%E5%AD%98%E5%82%A8%E5%88%B0%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97%E7%94%9F%E6%80%81%20-%20%E4%BA%91%E6%9C%8D%E5%8A%A1%E6%BC%94%E8%BF%9B%E4%B8%8E%E6%88%90%E6%9C%AC%E4%BC%98%E5%8C%96%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/33-%E4%BB%8ECDN%E5%92%8C%E4%BA%91%E5%AD%98%E5%82%A8%E5%88%B0%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97%E7%94%9F%E6%80%81%20-%20%E4%BA%91%E6%9C%8D%E5%8A%A1%E6%BC%94%E8%BF%9B%E4%B8%8E%E6%88%90%E6%9C%AC%E4%BC%98%E5%8C%96%E5%AE%9E%E6%88%98"
+    "destination": "/docs/ops/14-运维体系管理/33-从CDN和云存储到边缘计算生态 - 云服务演进与成本优化实战"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/35-%E9%87%8F%E4%BD%93%E8%A3%81%E8%A1%A3%E6%96%B9%E5%BE%97%E6%9C%80%E4%BC%98%E8%A7%A3%20-%20%E4%BB%8E%E9%A1%B5%E9%9D%A2%E9%9D%99%E6%80%81%E5%8C%96%E5%88%B0%E8%BE%B9%E7%BC%98%E6%99%BA%E8%83%BD%E6%B8%B2%E6%9F%93%E6%9E%B6%E6%9E%84",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/34-%E9%87%8F%E4%BD%93%E8%A3%81%E8%A1%A3%E6%96%B9%E5%BE%97%E6%9C%80%E4%BC%98%E8%A7%A3%20-%20%E4%BB%8E%E9%A1%B5%E9%9D%A2%E9%9D%99%E6%80%81%E5%8C%96%E5%88%B0%E8%BE%B9%E7%BC%98%E6%99%BA%E8%83%BD%E6%B8%B2%E6%9F%93%E6%9E%B6%E6%9E%84"
+    "destination": "/docs/ops/14-运维体系管理/34-量体裁衣方得最优解 - 从页面静态化到边缘智能渲染架构"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/36-%E4%BA%91%E8%AE%A1%E7%AE%97%E6%97%B6%E4%BB%A3%EF%BC%8C%E6%88%91%E4%BB%AC%E6%89%80%E8%AF%B4%E7%9A%84%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%EF%BC%8C%E5%BC%B9%E7%9A%84%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88-%20%E4%BB%8EHPA%E5%88%B0KPA%E3%80%81Karpenter%E4%B8%8E%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/35-%E4%BA%91%E8%AE%A1%E7%AE%97%E6%97%B6%E4%BB%A3%EF%BC%8C%E6%88%91%E4%BB%AC%E6%89%80%E8%AF%B4%E7%9A%84%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%EF%BC%8C%E5%BC%B9%E7%9A%84%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88-%20%E4%BB%8EHPA%E5%88%B0KPA%E3%80%81Karpenter%E4%B8%8E%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84"
+    "destination": "/docs/ops/14-运维体系管理/35-云计算时代，我们所说的弹性伸缩，弹的到底是什么- 从HPA到KPA、Karpenter与事件驱动架构"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/36-%E9%87%8F%E4%BD%93%E8%A3%81%E8%A1%A3%E6%96%B9%E5%BE%97%E6%9C%80%E4%BC%98%E8%A7%A3%20-%20%E4%BB%8E%E9%A1%B5%E9%9D%A2%E9%9D%99%E6%80%81%E5%8C%96%E5%88%B0%E8%BE%B9%E7%BC%98%E6%99%BA%E8%83%BD%E6%B8%B2%E6%9F%93%E6%9E%B6%E6%9E%84",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/34-%E9%87%8F%E4%BD%93%E8%A3%81%E8%A1%A3%E6%96%B9%E5%BE%97%E6%9C%80%E4%BC%98%E8%A7%A3%20-%20%E4%BB%8E%E9%A1%B5%E9%9D%A2%E9%9D%99%E6%80%81%E5%8C%96%E5%88%B0%E8%BE%B9%E7%BC%98%E6%99%BA%E8%83%BD%E6%B8%B2%E6%9F%93%E6%9E%B6%E6%9E%84"
+    "destination": "/docs/ops/14-运维体系管理/34-量体裁衣方得最优解 - 从页面静态化到边缘智能渲染架构"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/37-%E4%BA%91%E8%AE%A1%E7%AE%97%E6%97%B6%E4%BB%A3%EF%BC%8C%E6%88%91%E4%BB%AC%E6%89%80%E8%AF%B4%E7%9A%84%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%EF%BC%8C%E5%BC%B9%E7%9A%84%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88-%20%E4%BB%8EHPA%E5%88%B0KPA%E3%80%81Karpenter%E4%B8%8E%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/35-%E4%BA%91%E8%AE%A1%E7%AE%97%E6%97%B6%E4%BB%A3%EF%BC%8C%E6%88%91%E4%BB%AC%E6%89%80%E8%AF%B4%E7%9A%84%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%EF%BC%8C%E5%BC%B9%E7%9A%84%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88-%20%E4%BB%8EHPA%E5%88%B0KPA%E3%80%81Karpenter%E4%B8%8E%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%9E%B6%E6%9E%84"
+    "destination": "/docs/ops/14-运维体系管理/35-云计算时代，我们所说的弹性伸缩，弹的到底是什么- 从HPA到KPA、Karpenter与事件驱动架构"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/37-%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E8%B5%B0%E4%B8%8A%E8%BF%90%E7%BB%B4%E5%B2%97%E4%BD%8D%E7%9A%84",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/36-%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E8%B5%B0%E4%B8%8A%E8%BF%90%E7%BB%B4%E5%B2%97%E4%BD%8D%E7%9A%84"
+    "destination": "/docs/ops/14-运维体系管理/36-我是如何走上运维岗位的"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/38-%E4%BA%91%E8%AE%A1%E7%AE%97%E5%92%8CAI%E6%97%B6%E4%BB%A3%EF%BC%8C%E8%BF%90%E7%BB%B4%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E8%BD%AC%E5%9E%8B",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/37-%E4%BA%91%E8%AE%A1%E7%AE%97%E5%92%8CAI%E6%97%B6%E4%BB%A3%EF%BC%8C%E8%BF%90%E7%BB%B4%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E8%BD%AC%E5%9E%8B"
+    "destination": "/docs/ops/14-运维体系管理/37-云计算和AI时代，运维应该如何做好转型"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/38-%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E8%B5%B0%E4%B8%8A%E8%BF%90%E7%BB%B4%E5%B2%97%E4%BD%8D%E7%9A%84",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/36-%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E8%B5%B0%E4%B8%8A%E8%BF%90%E7%BB%B4%E5%B2%97%E4%BD%8D%E7%9A%84"
+    "destination": "/docs/ops/14-运维体系管理/36-我是如何走上运维岗位的"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/39-%E4%BA%91%E8%AE%A1%E7%AE%97%E5%92%8CAI%E6%97%B6%E4%BB%A3%EF%BC%8C%E8%BF%90%E7%BB%B4%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E8%BD%AC%E5%9E%8B",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/37-%E4%BA%91%E8%AE%A1%E7%AE%97%E5%92%8CAI%E6%97%B6%E4%BB%A3%EF%BC%8C%E8%BF%90%E7%BB%B4%E5%BA%94%E8%AF%A5%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E8%BD%AC%E5%9E%8B"
+    "destination": "/docs/ops/14-运维体系管理/37-云计算和AI时代，运维应该如何做好转型"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/39-%E8%BF%90%E7%BB%B4%E9%9C%80%E8%A6%81%E6%87%82%E4%BA%A7%E5%93%81%E5%92%8C%E8%BF%90%E8%90%A5%E5%90%97",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/38-%E8%BF%90%E7%BB%B4%E9%9C%80%E8%A6%81%E6%87%82%E4%BA%A7%E5%93%81%E5%92%8C%E8%BF%90%E8%90%A5%E5%90%97"
+    "destination": "/docs/ops/14-运维体系管理/38-运维需要懂产品和运营吗"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/40-%E5%86%B7%E9%9D%99%E4%B8%8B%E6%9D%A5%E6%83%B3%E6%83%B3%EF%BC%8C%E5%91%98%E5%B7%A5%E7%A6%BB%E8%81%8C%E8%BF%99%E4%BA%8B%E7%9C%9F%E8%83%BD%22%E9%98%B2%E5%BE%97%E4%BD%8F%22%E5%90%97",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/39-%E5%86%B7%E9%9D%99%E4%B8%8B%E6%9D%A5%E6%83%B3%E6%83%B3%EF%BC%8C%E5%91%98%E5%B7%A5%E7%A6%BB%E8%81%8C%E8%BF%99%E4%BA%8B%E7%9C%9F%E8%83%BD%22%E9%98%B2%E5%BE%97%E4%BD%8F%22%E5%90%97"
+    "destination": "/docs/ops/14-运维体系管理/39-冷静下来想想，员工离职这事真能\"防得住\"吗"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/40-%E8%BF%90%E7%BB%B4%E9%9C%80%E8%A6%81%E6%87%82%E4%BA%A7%E5%93%81%E5%92%8C%E8%BF%90%E8%90%A5%E5%90%97",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/38-%E8%BF%90%E7%BB%B4%E9%9C%80%E8%A6%81%E6%87%82%E4%BA%A7%E5%93%81%E5%92%8C%E8%BF%90%E8%90%A5%E5%90%97"
+    "destination": "/docs/ops/14-运维体系管理/38-运维需要懂产品和运营吗"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/41-%E5%86%B7%E9%9D%99%E4%B8%8B%E6%9D%A5%E6%83%B3%E6%83%B3%EF%BC%8C%E5%91%98%E5%B7%A5%E7%A6%BB%E8%81%8C%E8%BF%99%E4%BA%8B%E7%9C%9F%E8%83%BD%22%E9%98%B2%E5%BE%97%E4%BD%8F%22%E5%90%97",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/39-%E5%86%B7%E9%9D%99%E4%B8%8B%E6%9D%A5%E6%83%B3%E6%83%B3%EF%BC%8C%E5%91%98%E5%B7%A5%E7%A6%BB%E8%81%8C%E8%BF%99%E4%BA%8B%E7%9C%9F%E8%83%BD%22%E9%98%B2%E5%BE%97%E4%BD%8F%22%E5%90%97"
+    "destination": "/docs/ops/14-运维体系管理/39-冷静下来想想，员工离职这事真能\"防得住\"吗"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/41-%E6%A0%91%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%93%81%E7%89%8C%E6%84%8F%E8%AF%86%EF%BC%9A%E4%BB%8E%E8%83%8C%E6%99%AF%E8%B0%83%E6%9F%A5%E8%B0%88%E8%B0%88%E8%81%8C%E4%B8%9A%E5%8F%A3%E7%A2%91%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/40-%E6%A0%91%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%93%81%E7%89%8C%E6%84%8F%E8%AF%86%EF%BC%9A%E4%BB%8E%E8%83%8C%E6%99%AF%E8%B0%83%E6%9F%A5%E8%B0%88%E8%B0%88%E8%81%8C%E4%B8%9A%E5%8F%A3%E7%A2%91%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"
+    "destination": "/docs/ops/14-运维体系管理/40-树立个人品牌意识：从背景调查谈谈职业口碑的重要性"
   },
   {
     "source": "/docs/tech-management/%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/42-%E6%A0%91%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%93%81%E7%89%8C%E6%84%8F%E8%AF%86%EF%BC%9A%E4%BB%8E%E8%83%8C%E6%99%AF%E8%B0%83%E6%9F%A5%E8%B0%88%E8%B0%88%E8%81%8C%E4%B8%9A%E5%8F%A3%E7%A2%91%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7",
-    "destination": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/40-%E6%A0%91%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%93%81%E7%89%8C%E6%84%8F%E8%AF%86%EF%BC%9A%E4%BB%8E%E8%83%8C%E6%99%AF%E8%B0%83%E6%9F%A5%E8%B0%88%E8%B0%88%E8%81%8C%E4%B8%9A%E5%8F%A3%E7%A2%91%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"
+    "destination": "/docs/ops/14-运维体系管理/40-树立个人品牌意识：从背景调查谈谈职业口碑的重要性"
   },
   {
     "source": "/docs/python/02-%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%85%A5%E9%97%A8/03-IPython%E4%BD%BF%E7%94%A8",
@@ -4557,123 +4557,123 @@
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/00-OKR%20%E5%B7%A5%E4%BD%9C%E6%B3%95%EF%BC%9A%E7%BB%84%E7%BB%87%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E7%9A%84%E7%A5%9E%E5%99%A8",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/00-OKR%20%E5%B7%A5%E4%BD%9C%E6%B3%95%EF%BC%9A%E7%BB%84%E7%BB%87%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E7%9A%84%E7%A5%9E%E5%99%A8",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E5%8F%91%E5%B1%95",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E5%8F%91%E5%B1%95",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/02-OKR%20%E4%BB%B7%E5%80%BC",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/02-OKR%20%E4%BB%B7%E5%80%BC",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/03-OKR%20%E4%B8%8E%E6%88%98%E7%95%A5",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/03-OKR%20%E4%B8%8E%E6%88%98%E7%95%A5",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/04-OKR%20%E7%94%9F%E6%88%90",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/04-OKR%20%E7%94%9F%E6%88%90",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/05-O%20%E7%9A%84%E5%86%99%E6%B3%95",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/05-O%20%E7%9A%84%E5%86%99%E6%B3%95",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/06-KR%20%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/06-KR%20%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/07-%E6%A1%88%E4%BE%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/07-%E6%A1%88%E4%BE%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/08-%E6%B5%81%E7%A8%8B",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/08-%E6%B5%81%E7%A8%8B",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/09-OKR%20%E4%B8%8E%20KPI",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/09-OKR%20%E4%B8%8E%20KPI",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/10-%E6%BF%80%E5%8A%B1",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/10-%E6%BF%80%E5%8A%B1",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/11-%E6%96%87%E5%8C%96",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/11-%E6%96%87%E5%8C%96",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/12-%E5%8F%98%E9%9D%A9",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/12-%E5%8F%98%E9%9D%A9",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/13-OKR%20%E5%A1%AB%E5%86%99%E6%A8%A1%E6%9D%BF%E5%8F%8A%E6%A1%88%E4%BE%8B",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/13-OKR%20%E5%A1%AB%E5%86%99%E6%A8%A1%E6%9D%BF%E5%8F%8A%E6%A1%88%E4%BE%8B",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/14-%E5%88%B6%E8%83%9C%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8B%E5%8D%8A%E5%9C%BA",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/14-%E5%88%B6%E8%83%9C%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8B%E5%8D%8A%E5%9C%BA",
-    "destination": "/docs/okr-mini"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/css/10-%E7%89%B9%E6%95%88%E4%B8%8E%E5%8A%A8%E7%94%BB/01-%E5%85%B3%E9%94%AE%E5%B8%A7%E5%8A%A8%E7%94%BB",
@@ -5057,123 +5057,123 @@
   },
   {
     "source": "/docs/okr-course/00-OKR%20%E5%B7%A5%E4%BD%9C%E6%B3%95%EF%BC%9A%E7%BB%84%E7%BB%87%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E7%9A%84%E7%A5%9E%E5%99%A8",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/00-OKR%20%E5%B7%A5%E4%BD%9C%E6%B3%95%EF%BC%9A%E7%BB%84%E7%BB%87%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E7%9A%84%E7%A5%9E%E5%99%A8",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/01-%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E5%8F%91%E5%B1%95",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-%E7%9B%AE%E6%A0%87%E7%AE%A1%E7%90%86%E5%8F%91%E5%B1%95",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/02-OKR%20%E4%BB%B7%E5%80%BC",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/02-OKR%20%E4%BB%B7%E5%80%BC",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/03-OKR%20%E4%B8%8E%E6%88%98%E7%95%A5",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/03-OKR%20%E4%B8%8E%E6%88%98%E7%95%A5",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/04-OKR%20%E7%94%9F%E6%88%90",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/04-OKR%20%E7%94%9F%E6%88%90",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/05-O%20%E7%9A%84%E5%86%99%E6%B3%95",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/05-O%20%E7%9A%84%E5%86%99%E6%B3%95",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/06-KR%20%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/06-KR%20%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/07-%E6%A1%88%E4%BE%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/07-%E6%A1%88%E4%BE%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/08-%E6%B5%81%E7%A8%8B",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/08-%E6%B5%81%E7%A8%8B",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/09-OKR%20%E4%B8%8E%20KPI",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/09-OKR%20%E4%B8%8E%20KPI",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/10-%E6%BF%80%E5%8A%B1",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/10-%E6%BF%80%E5%8A%B1",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/11-%E6%96%87%E5%8C%96",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/11-%E6%96%87%E5%8C%96",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/12-%E5%8F%98%E9%9D%A9",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/12-%E5%8F%98%E9%9D%A9",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/13-OKR%20%E5%A1%AB%E5%86%99%E6%A8%A1%E6%9D%BF%E5%8F%8A%E6%A1%88%E4%BE%8B",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/13-OKR%20%E5%A1%AB%E5%86%99%E6%A8%A1%E6%9D%BF%E5%8F%8A%E6%A1%88%E4%BE%8B",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/okr-course/14-%E5%88%B6%E8%83%9C%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8B%E5%8D%8A%E5%9C%BA",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/01-OKR%E7%BB%84%E7%BB%87%E6%95%8F%E6%8D%B7%E7%9B%AE%E6%A0%87%E5%92%8C%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/14-%E5%88%B6%E8%83%9C%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8B%E5%8D%8A%E5%9C%BA",
-    "destination": "/docs/tech-management/12-绩效管理/00-OKR学习路径"
+    "destination": "/docs/tech-management/07-绩效与激励/00-OKR学习路径"
   },
   {
     "source": "/docs/node/02-Node/11-%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B/07-RESTful%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83",

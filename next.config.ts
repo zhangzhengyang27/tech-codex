@@ -218,8 +218,6 @@ const REFACTOR_REDIRECT = [
   // （原 os 分类已按内容拆分迁移至 10-计算机基础，无独立 os 分类 slug）
   { source: "/docs/os-course/:path*", destination: "/docs/cs-basics/01-操作系统/:path*", permanent: true },
   { source: "/docs/python/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/:path*", destination: "/docs/cs-basics/01-操作系统/:path*", permanent: true },
-  // 操作系统：重学操作系统 子目录合并进操作系统根目录（根目录现位于 cs-basics/01-操作系统）
-  { source: "/docs/os/%E9%87%8D%E5%AD%A6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/:path*", destination: "/docs/cs-basics/01-操作系统/:path*", permanent: true },
   // 运维：python-devops（旧分类）→ ops；Python 工程化下的运维文件
   { source: "/docs/python-devops/:path*", destination: "/docs/ops/:path*", permanent: true },
   { source: "/docs/python/%E5%B7%A5%E7%A8%8B%E5%8C%96%E4%B8%8E%E8%BF%90%E7%BB%B4/%E5%B7%A5%E7%A8%8B%E5%8C%96/06-CI-CD", destination: "/docs/ops/01-持续交付与CI-CD/00-CI-CD", permanent: true },
@@ -486,22 +484,6 @@ const REFACTOR_REDIRECT = [
 
   // 计算机网络：原 architecture/11-网络编程 物理路径迁移
   { source: "/docs/architecture/11-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/:path*", destination: "/docs/cs-basics/03-计算机网络/:path*", permanent: true },
-  // 操作系统/计算机基础：原 os 分类（docs/操作系统）按内容拆分迁移
-  { source: "/docs/os/01-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C", destination: "/docs/cs-basics/02-计算机组成原理/01-计算机组成与程序执行", permanent: true },
-  { source: "/docs/os/06-%E5%AD%98%E5%82%A8%E5%99%A8%E5%88%86%E7%BA%A7%EF%BC%9AL1%20Cache%20%E6%AF%94%E5%86%85%E5%AD%98%E5%92%8C%20SSD%20%E5%BF%AB%E5%A4%9A%E5%B0%91%E5%80%8D", destination: "/docs/cs-basics/02-计算机组成原理/07-存储器分级：L1 Cache 比内存和 SSD 快多少倍", permanent: true },
-  { source: "/docs/os/07-%E4%B8%AD%E6%96%AD%E5%92%8C%E4%B8%AD%E6%96%AD%E5%90%91%E9%87%8F%EF%BC%9AJava%20%E7%AD%89%E8%AF%AD%E8%A8%80%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E6%8D%95%E8%8E%B7%E5%88%B0%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5", destination: "/docs/cs-basics/02-计算机组成原理/08-中断和中断向量：Java 等语言为什么可以捕获到键盘输入", permanent: true },
-  { source: "/docs/os/12-%E7%BD%91%E7%BB%9C%E4%B8%8E%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8", destination: "/docs/cs-basics/03-计算机网络/14-网络与网络安全", permanent: true },
-  { source: "/docs/os/02-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8%E4%B8%8E%E6%80%81%E5%88%87%E6%8D%A2", destination: "/docs/cs-basics/01-操作系统/02-操作系统内核与态切换", permanent: true },
-  { source: "/docs/os/03-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6", destination: "/docs/cs-basics/01-操作系统/03-并发控制与线程调度", permanent: true },
-  { source: "/docs/os/04-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86", destination: "/docs/cs-basics/01-操作系统/04-内存管理", permanent: true },
-  { source: "/docs/os/05-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F", destination: "/docs/cs-basics/01-操作系统/16-文件系统-对象与索引", permanent: true },
-  { source: "/docs/os/08-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%B0%B1%E7%B3%BB%EF%BC%9AUnix%E3%80%81Linux%E3%80%81Windows%E3%80%81macOS%20%E4%B8%8E%20Android%20%E7%9A%84%E6%BA%90%E6%B5%81", destination: "/docs/cs-basics/01-操作系统/09-操作系统的谱系：Unix、Linux、Windows、macOS 与 Android 的源流", permanent: true },
-  { source: "/docs/os/09-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%BC%80%E9%94%80%E6%AF%94%E7%BA%BF%E7%A8%8B%E5%A4%A7%E5%9C%A8%E4%BA%86%E5%93%AA%E9%87%8C", destination: "/docs/cs-basics/01-操作系统/10-进程和线程：进程的开销比线程大在了哪里", permanent: true },
-  { source: "/docs/os/10-%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9A%20%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95", destination: "/docs/cs-basics/01-操作系统/11-进程间通信：进程间通信都有哪些方法", permanent: true },
-  { source: "/docs/os/11-%E5%88%86%E6%9E%90%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%89%B9%E6%80%A7%EF%BC%9A%E6%88%91%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%BA%94%E8%AF%A5%E5%BC%80%E5%A4%9A%E5%B0%91%E4%B8%AA%E8%BF%9B%E7%A8%8B%E3%80%81%E5%A4%9A%E5%B0%91%E4%B8%AA%E7%BA%BF%E7%A8%8B", destination: "/docs/cs-basics/01-操作系统/14-分析服务的特性：我的服务应该开多少个进程、多少个线程", permanent: true },
-  { source: "/docs/os/13-%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%E5%AE%B9%E5%99%A8", destination: "/docs/cs-basics/01-操作系统/18-虚拟化与容器", permanent: true },
-  { source: "/docs/os/14-%E5%95%86%E4%B8%9A%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E4%B8%8E%E8%BF%9B%E7%A8%8B-%E8%B5%84%E6%BA%90-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%9E%8B", destination: "/docs/cs-basics/01-操作系统/19-商业操作系统：设计理念与进程-资源-策略模型", permanent: true },
-  { source: "/docs/os/15-%E4%B9%A0%E9%A2%98%E4%B8%8E%E8%A7%A3%E6%9E%90", destination: "/docs/cs-basics/01-操作系统/20-习题与解析", permanent: true },
   // 微服务专栏：删除专栏化附加文档（开篇词/结束语/特别放送/PROMPT 工具文档），重定向到分类首页
   { source: "/docs/architecture/%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%8C%E4%BB%8E%E6%94%BE%E5%BC%83%E5%88%B0%E5%85%A5%E9%97%A8", destination: "/docs/architecture", permanent: true },
   { source: "/docs/architecture/%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%8C%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A", destination: "/docs/architecture", permanent: true },

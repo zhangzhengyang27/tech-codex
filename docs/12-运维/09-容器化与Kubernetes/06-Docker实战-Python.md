@@ -1200,8 +1200,8 @@ rm -f Dockerfile.unoptimized Dockerfile.slim Dockerfile.multistage
 ### 站内相关
 
 - [Docker 安装与核心概念详解](02-Docker安装与核心概念详解.md)
-- [Docker Compose 多容器编排](05-Docker%20Compose多容器编排.md)
-- [服务向 Kubernetes 容器平台迁移必须了解的事情](09-服务向%20Kubernetes%20容器平台迁移必须了解的事情.md)
+- [Docker Compose 多容器编排](05-Docker Compose多容器编排.md)
+- [服务向 Kubernetes 容器平台迁移必须了解的事情](09-服务向 Kubernetes 容器平台迁移必须了解的事情.md)
 
 ### 外部权威资源
 

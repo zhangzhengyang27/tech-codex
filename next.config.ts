@@ -839,6 +839,18 @@ const OPS_CICD_MERGE_REDIRECTS = (() => {
   }));
 })();
 
+// ops 09-Docker 更名容器化与Kubernetes+K8s 十篇/Node 四篇并入(2026-11),见 redirects/ops-docker-merge-2026-11.json
+const OPS_DOCKER_MERGE_REDIRECTS = (() => {
+  const raw = JSON.parse(
+    readFileSync(path.join(__dirname, "redirects/ops-docker-merge-2026-11.json"), "utf-8")
+  );
+  return raw.map((r: { source: string; destination: string }) => ({
+    source: r.source,
+    destination: r.destination,
+    permanent: true,
+  }));
+})();
+
 // ops 09-运维自动化 删除+分册整体顺延(2026-11):02-14→01-12 闭合并编号,见 redirects/ops-renumber-2026-11.json
 const OPS_RENUMBER_REDIRECTS = (() => {
   const raw = JSON.parse(
@@ -894,7 +906,7 @@ const nextConfig: NextConfig = {
     ];
     // 顺序原则:具体条目(REFACTOR 字面量与 JSON 全量明细)先于通配承接(legacy/dirRename/GROUP_NORMALIZE),
     // 否则通配先命中会把旧编号原样透传,明细里的修正目标永远轮不到
-    return [ ...productRedirects, ...REFACTOR_REDIRECT, ...FILE_RENUMBER_REDIRECTS, ...TM_REGROUP_REDIRECTS, ...OPS_CICD_MERGE_REDIRECTS, ...OPS_RENUMBER_REDIRECTS, ...DATA_SCIENCE_REDIRECT, ...ARCH_MERGE_REDIRECT, ...ARCH_INTEGRATE_REDIRECT, ...ZHT_MOVE_REDIRECT, ...XU_SPLIT_REDIRECT, ...RENUMBER_REDIRECTS, ...SPLIT_DOC_REDIRECTS, ...legacy, ...dirRename, ...PYTHON_GROUP_NORMALIZE_REDIRECTS];
+    return [ ...productRedirects, ...REFACTOR_REDIRECT, ...FILE_RENUMBER_REDIRECTS, ...TM_REGROUP_REDIRECTS, ...OPS_CICD_MERGE_REDIRECTS, ...OPS_RENUMBER_REDIRECTS, ...OPS_DOCKER_MERGE_REDIRECTS, ...DATA_SCIENCE_REDIRECT, ...ARCH_MERGE_REDIRECT, ...ARCH_INTEGRATE_REDIRECT, ...ZHT_MOVE_REDIRECT, ...XU_SPLIT_REDIRECT, ...RENUMBER_REDIRECTS, ...SPLIT_DOC_REDIRECTS, ...legacy, ...dirRename, ...PYTHON_GROUP_NORMALIZE_REDIRECTS];
   },
 };
 

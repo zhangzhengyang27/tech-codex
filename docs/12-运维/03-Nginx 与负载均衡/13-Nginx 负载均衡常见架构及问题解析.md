@@ -211,4 +211,4 @@ check_http_expect_alive http_2xx http_3xx;                 # 判断后端返回�
 
 - **动态负载均衡**：服务注册发现架构中的「动态 upstream」实现（OpenResty + Lua / confd / nginx-upsync / Kong / Traefik），见本目录《03-入口网关服务注册发现-OpenResty 动态 upstream》。
 - **4/7 层入口 SLB 设计**：LVS 四种模式（DR/NAT/TUNNEL/FULLNAT）与 OSPF+ECMP、DPDK 优化方向，见本目录《04-4、7 层入口负载均衡 SLB 如何作才是最佳姿势》。
-- **基础配置与性能优化**：本目录聚焦「优化/负载均衡/网关/网络专项」，Nginx 基础配置参考相邻 Nginx 专题，见本库 `docs/运维/03-Nginx/`。
+- **基础配置与性能优化**：本目录聚焦「优化/负载均衡/网关/网络专项」，Nginx 基础配置参考相邻 Nginx 专题，见本库 `docs/运维/03-Nginx 与负载均衡/`。

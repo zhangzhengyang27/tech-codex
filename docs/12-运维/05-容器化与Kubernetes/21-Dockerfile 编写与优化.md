@@ -11,9 +11,9 @@ tags: [Node.js, Docker, Dockerfile]
 
 ## 一、Nest 项目如何编写 Dockerfile
 
-首先思考一个问题：dockerfile 是在哪里 build 的，在命令行工具里，还是在 docker 守护进程呢？
+首先需要明确：dockerfile 是在哪里 build 的，命令行工具里，还是 docker 守护进程？
 
-答案是在守护进程 docker daemon。我没启动 docker daemon 的时候是不能 build 的，启动之后才可以。命令行工具会和 docker daemon 交互来实现各种功能。
+答案是在守护进程 docker daemon。没有启动 docker daemon 时不能 build，启动之后才可以。命令行工具会和 docker daemon 交互来实现各种功能。
 
 比如 docker build 的时候，会把 dockerfile 和它的构建上下文（也就是所在目录）打包发送给 docker daemon 来构建镜像：
 
@@ -21,7 +21,7 @@ tags: [Node.js, Docker, Dockerfile]
 docker build -t name:tag -f filename .
 ```
 
-这个 . 就是构建上下文的目录，你也可以指定别的路径。而镜像自然是越小性能越好，所以 docker 支持你通过 .dockerignore 声明哪些不需要发送给 docker daemon。
+这个 . 就是构建上下文的目录，也可以指定别的路径。而镜像自然是越小性能越好，所以 docker 支持通过 .dockerignore 声明哪些不需要发送给 docker daemon。
 
 ### 1.1 .dockerignore 语法
 
@@ -48,7 +48,7 @@ node_modules/
 - .DS\_Store 是 mac 的用于指定目录的图标、背景、字体大小的配置文件，这个一般都要忽略
 - eslint、prettier 的配置文件在构建镜像的时候也用不到
 
-**docker build 时，会先解析 .dockerignore，把该忽略的文件忽略掉，然后把剩余文件打包发送给 docker daemon 作为上下文来构建产生镜像。**这就像你在 git add 的时候，.gitignore 下配置的文件也会被忽略一样。忽略这些用不到的文件，是为了让构建更快、镜像体积更小。
+**docker build 时，会先解析 .dockerignore，把该忽略的文件忽略掉，然后把剩余文件打包发送给 docker daemon 作为上下文来构建产生镜像。**这就像 git add 的时候，.gitignore 下配置的文件也会被忽略一样。忽略这些用不到的文件，是为了让构建更快、镜像体积更小。
 
 ### 1.2 Nest 项目 Dockerfile
 
@@ -207,7 +207,7 @@ docker run -p 3000:3000 -v /aaa:/bbb/ccc --name xxx-container xxx-image
 
 这个镜像是通过 Dockerfile 经过 build 产生的。一般在项目里维护 Dockerfile，然后执行 docker build 构建出镜像、push 到镜像仓库，部署的时候 pull 下来用 docker run 跑起来。基本 CI/CD 也是这样的流程：CI 的时候 git clone 项目，根据 dockerfile 构建出镜像，打上 tag，push 到仓库。CD 的时候把打 tag 的镜像下下来，docker run 跑起来。
 
-比如我创建一个 nest 项目：
+例如创建一个 nest 项目：
 
 ```
 npx nest new dockerfile-test -p npm
@@ -282,11 +282,11 @@ docker run -d -p 2334:3000 --name second-container dockerfile-test:second
 
 ### 技巧二：使用多阶段构建
 
-看下这个 dockerfile，大家发现有啥问题没：为什么先复制 package.json 进去，安装依赖之后再复制其他文件，直接全部复制进去不就行了？
+看下这个 dockerfile：为什么先复制 package.json 进去，安装依赖之后再复制其他文件，直接全部复制进去不就行了？
 
 不是的，这两种写法的效果不同。docker 是分层存储的，dockerfile 里的每一行指令是一层，会做缓存。每次 docker build 的时候，只会从变化的层开始重新构建，没变的层会直接复用。也就是说如果 package.json 没变，那么就不会执行 npm install，直接复用之前的。那如果一开始就把所有文件复制进去呢？那不管 package.json 变没变，任何一个文件变了，都会重新 npm install，这样没法充分利用缓存，性能不好。
 
-试试看就知道了：现在重新跑 docker build，不管跑多少次，速度都很快，因为文件没变，直接用了镜像缓存。改下 README.md 重新 build 花了 25s，其实是没有重新 npm install 的。改下 package.json 再跑 docker build，时间明显多了很多，过程中你可以看到在 npm install 那层停留了很长时间。
+实际验证：重新跑 docker build，不管跑多少次，速度都很快，因为文件没变，直接用了镜像缓存。改下 README.md 重新 build 花了 25s，其实是没有重新 npm install 的。改下 package.json 再跑 docker build，时间明显多了很多，过程中在 npm install 那层停留了很长时间。
 
 这就是为什么要先复制依赖文件的原因。那还能发现有没有什么别的问题么？问题就是源码和很多构建的依赖是不需要的，但是现在都保存在了镜像里。实际上只需要构建出来的 ./dist 目录下的文件还有运行时的依赖。
 
@@ -918,10 +918,10 @@ networks:
 - 定期清理无用镜像：`docker image prune -f`
 - 使用 `docker compose config` 验证配置后再部署
 
-## 总结
+## 五、总结
 
 docker build 的时候会把构建上下文的所有文件打包发送给 docker daemon 来构建镜像。可以通过 .dockerignore 指定哪些文件不发送，这样能加快构建时间，减小镜像体积。此外，多阶段构建也能减小镜像体积，也就是 build 一个镜像、production 一个镜像，最终保留下 production 的镜像。而且一般使用 alpine 的基础镜像，类似 node:22-alpine3.20，这样构建出来镜像体积会小很多。
 
-Dockerfile 有挺多技巧：使用 alpine 镜像、多阶段构建、ARG 增加构建灵活性、CMD 结合 ENTRYPOINT、COPY vs ADD。灵活使用这些技巧，可以让你的 Dockerfile 更加灵活、性能更好。
+Dockerfile 有挺多技巧：使用 alpine 镜像、多阶段构建、ARG 增加构建灵活性、CMD 结合 ENTRYPOINT、COPY vs ADD。灵活使用这些技巧，可以让 Dockerfile 更加灵活、性能更好。
 
 安全方面，所有生产镜像必须指定非 root USER，使用 `COPY --chown`、`read_only`、`no-new-privileges`、`env_file` 等方式加固容器安全。

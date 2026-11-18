@@ -12,48 +12,36 @@ tags: [DevOps, CI/CD]
 
 # Kubernetes 灰度发布与滚动发布：零宕机发布的奥秘
 
-## 前言
+典型发布场景包括：
 
+> A 用户是VIP，怎么才能让VIP用户看到内测版本？
+> 不想停机，怎么发布新版本？
+> 如何让新版本服务只开放小流量访问？
 
-在前一章，我们学会如何在 `Kubernetes` 内部署自己的第一个应用。但是在实际应用中，我们还会遇到一些特定场景：
+这些场景依靠单纯的访问控制无法实现，需要引入灰度发布与滚动发布机制。
 
+## 一、什么是灰度发布
 
-> A 用户是VIP，我怎么才能让VIP用户看到内测版本呢？
-> 我不想停机，怎么发布新版本呢？
-> 如何让新版本服务只开放小流量访问呢？
-> ......
+**灰度发布**是一种发布方式，也叫 `金丝雀发布`。**起源是矿工在下井之前会先放一只金丝雀到井里，如果金丝雀不叫了，就代表瓦斯浓度高，原因是金丝雀对瓦斯气体很敏感。**这一典故非常形象地描述了发布行为。
 
+灰度发布的做法是：在现存旧应用的基础上，启动一个新版应用。新版应用并不直接让用户访问，而是先让测试同学进行测试；如果没有问题，则将真正的用户流量慢慢导入新版。中间持续对新版本运行状态做观察，直到慢慢切换过去，**这就是所谓的 A/B 测试。**也可以招募一些**灰度用户**，给他们设置独有的灰度标示（Cookie、Header），让他们可以访问到新版应用。
 
-显然，这些场景对于我们单纯的访问来看是无法做到的。那么有什么好办法呢？
+如果中间切换出现问题，应将流量迅速切换回老应用。
 
+## 二、实现方案：ingress-nginx canary
 
-## 什么是灰度发布
-
-
-首先我们来看**灰度发布**。灰度发布是一种发布方式，也叫 `金丝雀发布` 。**起源是矿工在下井之前会先放一只金丝雀到井里，如果金丝雀不叫了，就代表瓦斯浓度高。原因是金丝雀对瓦斯气体很敏感。**这就是金丝雀发布的由来，非常形象地描述了我们的发布行为。
-
-
-灰度发布的做法是：会在现存旧应用的基础上，启动一个新版应用。但是新版应用并不会直接让用户访问。而是先让测试同学去进行测试。如果没有问题，则可以将真正的用户流量慢慢导入到新版上。在这中间，持续对新版本运行状态做观察，直到慢慢切换过去，**这就是所谓的A/B测试。** 当然，你也可以招募一些**灰度用户**，给他们设置独有的灰度标示（Cookie，Header），来让他们可以访问到新版应用。
-
-当然，如果中间切换出现问题，也应该将流量迅速地切换到老应用上。
-
-
-## 实现方案
-
-
-在上一章节，我们使用 `k8s` 部署了 `ingress` 。这里我们就利用 `ingress annotations` 中的 `canary` 配置项来实现灰度发布逻辑。
-
+利用 `ingress annotations` 中的 `canary` 配置项实现灰度发布逻辑。
 
 ### 1. 准备新版本的 Service
 
+灰度之前需要准备一套新环境以备流量切分。切换到 `deployment` 目录，新启动一套 `v2` 的环境配置：将原先 `v1` 的配置文件拷贝一份，替换为 `v2` 的镜像：
 
-在开始准备灰度之前，需要准备一套新环境以备流量切分。切换到 `deployment` 目录，我们新启动一套 `v2` 的环境配置，在这里可以将原先 `v1` 的配置文件，拷贝一份替换为 `v2` 的镜像：
 ```shell
 cd deployment && cp v1.yaml v2.yaml
 ```
 
+修改 `v2.yaml`，将 `Deployment Name`、`Service Name` 和匹配规则都替换为 `v2`，并将镜像版本替换为 `v2`：
 
-修改 `v2.yaml`，将 `Deployment Name`， `Service Name` 和匹配规则都替换为 `v2` ，并将镜像版本替换为 `v2`
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -89,29 +77,24 @@ spec:
   type: NodePort
 ```
 
+使用 `kubectl apply` 命令使配置生效：
 
-接着使用 `kubectl apply` 命令使其配置生效：
 ```shell
 kubectl apply -f ./v2.yaml
 ```
 
+### 2. 根据 Cookie 切分流量
 
-### 2. 根据不同方案进行切分
+基于 `Cookie` 切分流量的原理：根据**用户请求中的 Cookie 是否存在灰度标示 Cookie** 判断是否为灰度用户，再决定是否返回灰度版本服务。
 
+新建一个全新的 ingress 配置文件，名称为 `gray`：
 
-#### 根据 Cookie 切分流量
-
-
-基于 `Cookie` 切分流量。这种实现原理主要根据**用户请求中的 Cookie 是否存在灰度标示 Cookie**去判断是否为灰度用户，再决定是否返回灰度版本服务。
-
-
-我们新建一个全新的 ingress 配置文件，名称叫 `gray`：
 ```shell
 cd ./ingress && vim ./gray.yaml
 ```
 
-
 输入以下配置：
+
 ```yaml
 # 与上一章一致，使用 networking.k8s.io/v1（extensions/v1beta1 已在 Kubernetes v1.22 移除）
 apiVersion: networking.k8s.io/v1
@@ -136,172 +119,119 @@ spec:
               number: 80
 ```
 
+`annotations` 中有两个关于灰度的配置项：
 
-我们可以看到，在 `annotations` 这里，有两个关于灰度的配置项。分别是：
+- nginx.ingress.kubernetes.io/canary：可选值为 `true / false`，代表是否开启灰度功能。
+- nginx.ingress.kubernetes.io/canary-by-cookie：灰度发布 `cookie` 的 `key`。当 `key` 值等于 `always` 时，灰度触发生效；等于其他值时，则不会走灰度环境。
 
+保存后使用 `kubectl apply` 生效配置文件：
 
-- nginx.ingress.kubernetes.io/canary：可选值为 `true / false` 。代表是否开启灰度功能
-- nginx.ingress.kubernetes.io/canary-by-cookie：灰度发布 `cookie` 的 `key`。当 `key` 值等于 `always` 时，灰度触发生效。等于其他值时，则不会走灰度环境。
-
-
-保存后，使用 `kubectl apply` 生效配置文件查看效果：
 ```shell
 kubectl apply -f ./gray.yaml
 ```
 
+执行成功后，使用 `kubectl get svc` 命令获取 `ingress` 的外部端口：
 
-执行成功后，可以使用 `kubectl get svc` 命令来获取 `ingress` 的外部端口：
 ```shell
 kubectl -n ingress-nginx get svc
 ```
 > -n: 指定命名空间（namespace）查询
 
+其中，`PORT` 字段是可以访问的外部端口：80 为 `ingress` 内部端口，31234 为外部端口。
 
-其中，`PORT` 字段是我们可以访问的外部端口。80为 `ingress` 内部端口，31234 为外部端口。
+访问 `http://<Master节点IP>:31234/` 可以正常访问到页面。之后在 chrome 控制台中手动设置一个 cookie：key 为 `users_from_Beijing`，值为 `always`。刷新页面，访问的是 v2——灰度发布环境搭建成功。
 
+### 3. 基于 Header 切分流量
 
-我们访问 `http://<Master节点IP>:31234/` 可以正常访问到页面。
+基于 `Header` 切分流量的原理：根据**用户请求中的 header 是否存在灰度标示 header** 判断是否为灰度用户，再决定是否返回灰度版本服务。
 
-接下来，我们在chrome控制台中手动设置一个 cookie。key为 `users_from_Beijing` ，值为 `always`
-
-
-刷新页面，发现我们访问的是v2。灰度发布环境搭建成功。
-
-
-#### 基于 Header 切分流量
-
-
-基于 `Header` 切分流量，这种实现原理主要根据**用户请求中的 header 是否存在灰度标示 header**去判断是否为灰度用户，再决定是否返回灰度版本服务。
-
-
-当然配置也很简单，只需要修改 `annotations` 配置项即可：
-
+配置只需修改 `annotations` 配置项：
 
 - nginx.ingress.kubernetes.io/canary-by-header：要灰度 `header` 的 `key` 值
-- nginx.ingress.kubernetes.io/canary-by-header-value: 要灰度 `header` 的 `value` 值
+- nginx.ingress.kubernetes.io/canary-by-header-value：要灰度 `header` 的 `value` 值
 
+保存后使用 `kubectl apply` 生效配置文件：
 
-保存后，使用 `kubectl apply` 生效配置文件：
 ```shell
 kubectl apply -f ./gray.yaml
 ```
 
+查看效果可使用 `curl` 命令加 header 头请求访问：
 
-如何查看效果呢？我们可以使用 `curl` 命令来加header头去请求访问调用：
 ```shell
 curl --header 'header的key:header的value' 127.0.0.1:端口值
 ```
 
-由于我这里配置的灰度 `header` 为 `janlay` ， `value` 为 `isme` ，所以如以下结果：
+对比验证：当灰度 `header` 配置为 `janlay: isme` 时，`janlay` 的值不是 `isme` 则灰度失效。
 
+### 4. 基于权重切分流量
 
-通过对比发现，当 `janlay` 的值不是 `isme` 时，灰度失效，验证成功。
+这种实现原理是根据灰度百分比决定用户请求是否转发到灰度服务环境。
 
-#### 基于权重切分流量
+修改 `annotations` 配置项即可：
 
+- nginx.ingress.kubernetes.io/canary-weight：值为字符串，是 `0-100` 的数字，代表灰度环境命中概率。值为 0 表示不会走灰度，值越大命中概率越大，值为 `100` 时代表全走灰度。
 
-这种实现原理主要是根据用户请求，根据灰度百分比决定是否转发到灰度服务环境中。
+保存后使用 `kubectl apply` 生效配置文件：
 
-
-在这里，我们修改 `annotations` 配置项即可：
-
-
-- nginx.ingress.kubernetes.io/canary-weight：值是字符串，为 `0-100` 的数字，代表灰度环境命中概率。如果值为 0，则表示不会走灰度。值越大命中概率越大。当值 = `100` 时，代表全走灰度。
-
-
-保存后，使用 `kubectl apply` 生效配置文件：
 ```shell
 kubectl apply -f ./gray.yaml
 ```
 
+用 shell 脚本写个轮询，循环 10 次调用服务，观察灰度命中概率：
 
-我们用shell脚本语言写个轮询，循环10次调用服务，看灰度命中概率：
 ```shell
 for ((i=1; i<=10; i++)); do curl 127.0.0.1:端口值;echo; done
 ```
-通过轮询10次发现，其命中概率大概在 `4-6` 次左右。这个命中概率只是相对于单次请求而言，拥有50%的概率。所以批量执行存在误差是正常的。
 
+轮询 10 次的命中概率大概在 `4-6` 次左右。这个命中概率只是相对于单次请求而言拥有 50% 的概率，批量执行存在误差是正常的。
 
-### 注意事项：优先级
+### 5. 注意事项：优先级
 
+三种灰度方案同时配置时，`ingress` 中的优先级规则在官方文档的 `Note` 提示中明确写明：
 
-上面的三种灰度方案都了解完后，如果同时配置三种方案，那么他们在 `ingress` 中的优先级是怎样的？
-在官方文档的后面有一个 `Note` 提示，上面明确有写：
-> Canary rules are evaluated in order of precedence. Precedence is as follows: 
+> Canary rules are evaluated in order of precedence. Precedence is as follows: 
 > **canary-by-header -> canary-by-cookie -> canary-weight**
 
+`k8s` 会优先匹配 `header`，如果未匹配则匹配 `cookie`，最后是 `weight`。
 
-`k8s` 会优先去匹配 `header` ，如果未匹配则去匹配 `cookie` ，最后是 `weight`
+## 三、什么是滚动发布
 
+滚动发布就是通常所说的无宕机发布。发布方式如同名称：一次取出一台/多台服务器（看策略配置）进行新版本更新，当取出的服务器新版确保无问题后，接着采用同等方式更新后面的服务器。
 
+### 发布流程
 
+**就绪状态**：准备一组当前服务版本为 V1 的服务器，接下来使用滚动策略将其发布到 V2 版本。
 
-## 什么是滚动发布
+**升级第一个 Pod**：增加一个 V2 版本的 Pod1 上来，**将 V1 版本的 Pod1 下线但不移除。此时 V1 版本的 Pod1 不再接受流量，而是进入一个平滑期等待状态（大约几十秒）后才会被杀掉。**第一个 Pod 升级完毕。
 
+**升级剩下的 Pod**：与上同理，**新增新版本 Pod 后，将旧版本 Pod 下线进入平滑期但不删除，等平滑期度过后再删除 Pod。**
 
-滚动发布，则是我们一般所说的无宕机发布。其发布方式如同名称一样，一次取出一台/多台服务器（看策略配置）进行新版本更新。当取出的服务器新版确保无问题后，接着采用同等方式更新后面的服务器。
+### 优缺点
 
-
-## 发布流程和策略
-
-
-### 就绪状态
-
-
-第一步，我们准备一组服务器。这组服务器当前服务的版本是 V1。
-
-
-接下来，我们将会使用滚动策略，将其发布到 V2 版本。
-
-### 升级第一个 Pod
-
-
-第二步开始升级。
-
-
-首先，会增加一个 V2 版本的 Pod1 上来，**将 V1 版本的 Pod1 下线但不移除。此时，V1版本的 Pod1 将不会接受流量进来，而是进入一个平滑期等待状态（大约几十秒）后才会被杀掉。**
-
-第一个 Pod 升级完毕。
-
-### 升级剩下的 Pod
-
-
-与上同理，同样是**新增新版本Pod后，将旧版本Pod下线进入平滑期但不删除。等平滑期度过后再删除Pod：**
-
-## 优缺点
-
-
-滚动发布作为众多发布类型的一种，必然也存在着一些优点和缺点：
-
-
-### 优点
-
+优点：
 
 1. 不需要停机更新，无感知平滑更新。
-1. 版本更新成本小。不需要新旧版本共存
+2. 版本更新成本小，不需要新旧版本共存。
 
+缺点：
 
-### 缺点
+1. 更新时间长：每次只更新一个/多个镜像，需要频繁连续等待服务启动缓冲（平滑期）。
+2. 旧版本环境无法得到备份：始终只有一个环境存在。
+3. 回滚版本异常痛苦：如果滚动发布到一半出了问题，回滚时需要使用同样的滚动策略回滚旧版本。
 
+## 四、Kubernetes 中的滚动发布
 
-1. 更新时间长：每次只更新一个/多个镜像，需要频繁连续等待服务启动缓冲（详见上文平滑期介绍）
-1. 旧版本环境无法得到备份：始终只有一个环境存在
-1. 回滚版本异常痛苦：如果滚动发布到一半出了问题，回滚时需要使用同样的滚动策略回滚旧版本。
-
-
-## Kubernetes 中的滚动发布
-
-
-在 `Kubernetes` 中，`Deployment` 默认就采用滚动发布的方式更新镜像。我们只需要通过简单的配置即可调整滚动发布策略
-
+在 `Kubernetes` 中，`Deployment` 默认就采用滚动发布的方式更新镜像，通过简单配置即可调整滚动发布策略。
 
 编辑 `deployment` 文件：
+
 ```shell
 vim ./v2.yaml
 ```
 
-
 在 `spec` 下添加以下字段：
+
 ```yaml
 spec:
   minReadySeconds: 1
@@ -313,100 +243,75 @@ spec:
       maxUnavailable: 0
 ```
 
-
-字段的含义分别为：
+字段含义：
 
 | 名称 | 含义 |
 | --- | --- |
 | minReadySeconds | 容器接收流量延缓时间：单位为秒，默认为0。如果没有设置的话，k8s会认为容器启动成功后就可以用了。设置该值可以延缓容器流量切分 |
-| strategy.type = RollingUpdate | ReplicaSet 发布类型，声明为滚动发布，默认也为滚动发布 |
+| strategy.type = RollingUpdate | ReplicaSet 发布类型，声明为滚动发布，默认也为滚动发布 |
 | strategy.rollingUpdate.maxSurge | 最多Pod数量：为数字类型/百分比。如果 maxSurge 设置为1，replicas 设置为10，则在发布过程中pod数量最多为10 + 1个（多出来的为新版本pod）。maxUnavailable 为 0 时，该值也不能设置为0 |
-| strategy.rollingUpdate.maxUnavailable | 升级中最多不可用pod的数量：为数字类型/百分比。当 maxSurge 为 0 时，该值也不能设置为0。 |
+| strategy.rollingUpdate.maxUnavailable | 升级中最多不可用pod的数量：为数字类型/百分比。当 maxSurge 为 0 时，该值也不能设置为0。 |
 
-编辑结束后，保存文件。
+编辑结束后保存文件。接着使 Kubernetes 生效配置，配置生效后立即继续发布动作，随后监听查看发布状态更改：
 
-
-接着使`Kubernetes`生效配置。配置生效后立即继续发布动作，随后监听查看发布状态更改：
 ```shell
 kubectl apply -f ./v2.yaml && kubectl rollout status deployment/front-v2
 ```
 
+通过日志可以看到，3 个 `replicas` 的更新逻辑为：**单个逐个地去进行更新 Pod，而不是一次性将旧的 Pod 全部杀死后再启动新的 Pod。**
 
-我们通过日志可以看到，3个 `replicas` 的更新逻辑为：**单个逐个地去进行更新 Pod。而不是一次性将旧的Pod 全部杀死后，再启动新的 Pod。**
+通过简单的配置，即可在 k8s 中实现滚动发布。
 
-通过简单的配置，我们即可在k8s中实现滚动发布。
+### 另一种发布模式：Recreate
 
+`Kubernetes` 中另一种发布方式为 `Recreate`：直接把所有旧的 `Pod` 全部杀死，杀死后再批量创建新的 `Pod`。
 
-## 另一种发布模式
+将 `strategy.type` 改为 `Recreate` 即可：
 
-
-既然 `k8s` 的默认发布方式就是滚动发布，那么有没有其他的更新方式？
-
-
-在 `Kubernetes` 中，有一种发布方式为 `Recreate` 。这种发布方式比较暴力，它会直接把所有旧的 `Pod` 全部杀死。杀死后再批量创建新的 `Pod` 。
-
-
-我们只需要将  `strategy.type`  改为 `Recreate` 即可：
 ```shell
 vim ./v2.yaml
 # type: Recreate
 ```
 
-
 接着更新 `deployment` 并查看发布状态：
+
 ```shell
 kubectl apply -f ./v2.yaml && kubectl rollout status deployment/front-v2
 ```
-我们看到， `k8s` 会将所有旧的 `Pod` 杀死，随后再批量启动新的 `Pod` 。
 
+`k8s` 会将所有旧的 `Pod` 杀死，随后再批量启动新的 `Pod`。这种发布方式相对滚动发布偏暴力，**且在发布空窗期（杀死旧 Pod、新 Pod 还没创建成功的情况下）服务会不可用。**
 
-这种发布方式相对滚动发布偏暴力。**且在发布空窗期（杀死旧Pod，新Pod还没创建成功的情况下）服务会不可用。**
+## 五、kubectl rollout
 
+`kubectl rollout` 命令用于管理 `deployment` 资源，包括版本的快速回退、暂停/恢复版本更新、根据更新历史回退版本等功能。
 
-接着我们再来介绍下上面提到的 `kubectl rollout` 命令：
+暂停一个 `deployment` 的发布：
 
-
-## kubectl rollout
-
-
-`kubectl rollout` 命令可以用来操纵 `deployment` 的资源进行管理。包括对版本的快速回退，暂停/恢复版本更新，根据更新历史回退版本等功能。
-
-
-例如暂停一个 `deployment` 的发布：
 ```shell
 kubectl rollout pause deployment/名称
 ```
 
-
 继续一个 `deployment` 的发布：
+
 ```shell
 kubectl rollout resume deployment/名称
 ```
 
-
 查看一个 `deployment` 的发布状态：
+
 ```shell
 kubectl rollout status deployment/名称
 ```
 
+## 六、小结
 
-## 总结
-
-
-这里我们学习了灰度发布的配置方式和其3种模式：基于 `cookie` 切分，基于 `header` 切分，基于权重概率切分。
-
-
-同时我们也学习了基于 `deployment` 的滚动发布模式，掌握如何不宕机平滑发布服务。
-
+- 灰度发布（金丝雀发布）基于 ingress-nginx 的 canary 注解实现，支持三种切流方式：`canary-by-cookie`（Cookie 标示）、`canary-by-header`（Header 标示）、`canary-weight`（0-100 权重概率），优先级为 header -> cookie -> weight。
+- 滚动发布按"新增新版 Pod → 旧版 Pod 下线进平滑期 → 平滑期后删除"逐个替换实例，通过 `minReadySeconds`、`maxSurge`、`maxUnavailable` 控制节奏；`Recreate` 模式则全量替换，存在服务不可用空窗期。
+- `kubectl rollout` 提供 `pause`/`resume`/`status` 等发布过程管理能力。
 
 ## 参考链接
 
 
 - kubernetes ingress 官方文档：[https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#canary](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#canary)
 
-## 本章小结
-
-
-本章通过 `Kubernetes` 实现了灰度发布/滚动发布环境，基本上可以满足需求。下一章将介绍健康度检查，用于更好地管理服务状态、控制服务的运行行为。
 > 📖 **相关理论延伸**：灰度/滚动/蓝绿等部署策略的概念与选型逻辑，及灰度发布与 A/B 测试的关系，见《持续交付36讲》[部署策略：蓝绿、金丝雀、渐进式交付](../01-持续交付36讲/16-部署策略：蓝绿、金丝雀、渐进式交付.md) 与 [灰度发布与 A/B 测试](../01-持续交付36讲/18-灰度发布与A-B测试.md)。 
-

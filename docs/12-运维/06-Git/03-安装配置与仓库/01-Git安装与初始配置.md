@@ -8,7 +8,7 @@ tags: [DevOps, Git]
 
 # Git 安装与初始配置
 
-在理解了版本控制系统的基本概念之后，下一步就是亲手搭建 Git 的工作环境。Git 的安装本身并不复杂，但初始配置却大有讲究——一个合理的配置不仅能避免后续使用中的诸多坑（比如跨平台换行符冲突、中文文件名乱码），还能显著提升日常工作效率。本章将从安装到配置，系统性地完成 Git 环境的搭建。
+本文阐述 Git 的安装方法与初始配置体系。Git 的安装本身并不复杂，但初始配置却大有讲究——一个合理的配置不仅能避免后续使用中的诸多问题（比如跨平台换行符冲突、中文文件名乱码），还能显著提升日常工作效率。本文覆盖从安装到配置的 Git 环境搭建全过程。
 
 ## 各平台安装方式
 
@@ -166,7 +166,7 @@ graph TB
 
 ```
 
-这个优先级设计遵循了"就近原则"——越具体的范围拥有越高的决定权。一个实际的使用场景是：你全局配置了 `user.name = 张三`，但在某个公司项目中需要使用英文名，就可以在该项目的本地配置中设置 `user.name = Zhang San`，这样在这个项目中的提交就会使用英文名，而不影响其他项目。
+这个优先级设计遵循了"就近原则"——越具体的范围拥有越高的决定权。一个实际的使用场景是：全局配置了 `user.name = 张三`，但在某个公司项目中需要使用英文名，就可以在该项目的本地配置中设置 `user.name = Zhang San`，这样在这个项目中的提交就会使用英文名，而不影响其他项目。
 
 ### 配置操作命令
 
@@ -197,7 +197,7 @@ git config --global --unset user.name
 
 ## 必要配置项详解
 
-安装 Git 后，有几项配置是必须或强烈建议设置的，它们直接影响你的日常使用体验。
+安装 Git 后，有几项配置是必须或强烈建议设置的，它们直接影响日常使用体验。
 
 ### user.name 和 user.email
 
@@ -208,13 +208,13 @@ git config --global user.name "Zhang San"
 git config --global user.email "zhangsan@example.com"
 ```
 
-> **关键注意**：`user.email` 必须与你 GitHub/GitLab 账号绑定的邮箱一致，否则你的提交将无法与你的账号关联，在平台上会显示为未知贡献者。如果你在 GitHub 上使用了邮箱隐私保护功能（noreply 邮箱），则应配置 GitHub 提供的 noreply 地址。
+> **关键注意**：`user.email` 必须与 GitHub/GitLab 账号绑定的邮箱一致，否则提交将无法与账号关联，在平台上会显示为未知贡献者。若在 GitHub 上使用了邮箱隐私保护功能（noreply 邮箱），则应配置 GitHub 提供的 noreply 地址。
 
 
 
 ### core.editor
 
-Git 在执行 commit、rebase 等操作时需要打开文本编辑器让你编写提交信息。默认编辑器取决于系统环境（通常是 Vi/Vim），你可以修改为自己习惯的编辑器：
+Git 在执行 commit、rebase 等操作时需要打开文本编辑器编写提交信息。默认编辑器取决于系统环境（通常是 Vi/Vim），可修改为自己习惯的编辑器：
 
 ```bash
 # 使用 VS Code
@@ -411,7 +411,7 @@ git config --global init.defaultBranch main
     untracked = red bold
 ```
 
-> **技巧**：你可以使用 `git config --global --edit` 直接在编辑器中打开并编辑全局配置文件，也可以用 `cat ~/.gitconfig` 查看其内容。本地配置文件 `.git/config` 的格式完全相同，只是作用范围限于当前仓库。
+> **技巧**：可以使用 `git config --global --edit` 直接在编辑器中打开并编辑全局配置文件，也可以用 `cat ~/.gitconfig` 查看其内容。本地配置文件 `.git/config` 的格式完全相同，只是作用范围限于当前仓库。
 
 ## SSH 密钥配置
 
@@ -513,7 +513,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 
 ### 多密钥管理
 
-当你同时使用 GitHub、GitLab、公司内部 Git 服务器时，可能需要为不同服务配置不同的密钥。通过 `~/.ssh/config` 文件实现：
+同时使用 GitHub、GitLab、公司内部 Git 服务器时，可能需要为不同服务配置不同的密钥。通过 `~/.ssh/config` 文件实现：
 
 ```sshconfig
 # GitHub 个人账号
@@ -726,7 +726,7 @@ git config --global alias.linecount '!git ls-files | xargs wc -l'
 
 ## 小结
 
-本章完成了 Git 从安装到配置的全过程，核心要点如下：
+本文覆盖了 Git 从安装到配置的全过程，核心要点如下：
 
 1. **安装**：macOS 推荐 Homebrew，Linux 使用系统包管理器，Windows 使用 Git for Windows。安装后务必用 `git --version` 验证。
 
@@ -740,5 +740,4 @@ git config --global alias.linecount '!git ls-files | xargs wc -l'
 
 6. **别名**：合理配置别名可以显著提升效率，从基础简写到外部命令别名，按需逐步添加。
 
-配置完成后，你的 Git 环境已经就绪。下一章将正式进入 Git 的基本操作，开始用 Git 管理你的第一个项目。
-
+配置完成后，Git 环境即已就绪，可以进入仓库创建与日常操作阶段。

@@ -8,13 +8,11 @@ tags: [DevOps, Git]
 
 # Git Flow 工作流
 
-在前面的文章中，我们了解了 Feature Branching 工作流——它的核心是"每个功能开一个分支，写完合并回主分支"。这种模型简洁高效，是当今最流行的团队协作方式之一。
+前文介绍了 Feature Branching 工作流——它的核心是"每个功能开一个分支，写完合并回主分支"。这种模型简洁高效，是当今最流行的团队协作方式之一。
 
-但在实际项目中，你可能会遇到一些更复杂的需求：产品有明确的版本发布计划、需要同时维护多个生产版本、线上出了紧急 Bug 要立刻修但不能把未完成的功能带上线……这些场景下，仅靠 `main` 和 `feature` 两条分支就显得力不从心了。
+但在实际项目中，可能遇到一些更复杂的需求：产品有明确的版本发布计划、需要同时维护多个生产版本、线上出了紧急 Bug 要立刻修但不能把未完成的功能带上线……这些场景下，仅靠 `main` 和 `feature` 两条分支就显得力不从心了。
 
-2010 年，Vincent Driessen 发表了一篇文章《A successful Git branching model》，提出了一个围绕发布周期的多分支协作模型——**Git Flow**。它通过定义五种不同角色的分支，为项目从开发、发布到维护的全生命周期提供了清晰的操作规范。
-
-这一节，我们就来系统地学习 Git Flow。
+2010 年，Vincent Driessen 发表了一篇文章《A successful Git branching model》，提出了一个围绕发布周期的多分支协作模型——**Git Flow**。它通过定义五种不同角色的分支，为项目从开发、发布到维护的全生命周期提供了清晰的操作规范。本文系统讲解 Git Flow。
 
 ## 核心思想：围绕发布周期的多分支模型
 
@@ -454,7 +452,7 @@ git flow hotfix finish fix-crash
 
 自动执行：
 1. 将 `hotfix/fix-crash` 合并到 main；
-2. 在 main 上打 tag（版本号需要你来确定）；
+2. 在 main 上打 tag（版本号需要人工确定）；
 3. 将 `hotfix/fix-crash` 合并回 develop；
 4. 删除 `hotfix/fix-crash` 分支。
 
@@ -473,7 +471,7 @@ git flow hotfix finish fix-crash
 | 开始修复 | `git flow hotfix start <version> [<base>]` |
 | 完成修复 | `git flow hotfix finish <name>` |
 
-> **不使用 git-flow 工具可以吗？** 当然可以。git-flow 工具只是对原生 Git 命令的封装，理解了 Git Flow 的原理后，完全可以用原生命令手动完成所有操作。工具的意义在于减少手动操作的出错概率，特别是在 release finish 和 hotfix finish 这类多步骤操作中。
+> **不使用 git-flow 工具也完全可以。** git-flow 工具只是对原生 Git 命令的封装，理解了 Git Flow 的原理后，完全可以用原生命令手动完成所有操作。工具的意义在于减少手动操作的出错概率，特别是在 release finish 和 hotfix finish 这类多步骤操作中。
 
 ## 适用场景分析
 
@@ -483,7 +481,7 @@ Git Flow 并非万能银弹，它有其最适合的场景，也有不太适合�
 
 **有明确发布周期的产品**：比如一个 App 每 2 个月发一个大版本，或者一个 SaaS 产品按季度发布新功能。Git Flow 的 release 分支机制与这种节奏天然契合——开发团队在 develop 上持续积累功能，到了发布窗口就从 develop 拉 release 分支进入发布准备阶段。
 
-**版本号驱动的项目**：如果你的项目需要严格的语义化版本管理（Semantic Versioning），Git Flow 的 tag 机制和 release 分支命名规范能很好地支撑这一点。
+**版本号驱动的项目**：若项目需要严格的语义化版本管理（Semantic Versioning），Git Flow 的 tag 机制和 release 分支命名规范能很好地支撑这一点。
 
 **需要同时维护多个版本的项目**：Git Flow 的 main 分支上的 tag 可以随时 checkout 出任意历史版本，这对需要同时维护多个生产版本的项目（如企业级软件）非常关键。
 
@@ -491,9 +489,9 @@ Git Flow 并非万能银弹，它有其最适合的场景，也有不太适合�
 
 ### 不太适合 Git Flow 的场景
 
-**持续部署的 Web 项目**：如果你的项目采用持续部署（Continuous Deployment），代码合并到 main 后几分钟内就自动部署到生产环境，那 release 分支就显得多余了——你不需要"准备发布"这个阶段，因为发布是自动的、持续的。这种场景更适合 GitHub Flow 或 Trunk-Based Development。
+**持续部署的 Web 项目**：若项目采用持续部署（Continuous Deployment），代码合并到 main 后几分钟内就自动部署到生产环境，那 release 分支就显得多余了——不需要"准备发布"这个阶段，因为发布是自动的、持续的。这种场景更适合 GitHub Flow 或 Trunk-Based Development。
 
-**没有明确版本概念的内部工具**：如果一个内部工具不需要对外发布版本号，也不需要回溯到特定的历史版本，Git Flow 的分支体系就过于笨重了。
+**没有明确版本概念的内部工具**：若一个内部工具不需要对外发布版本号，也不需要回溯到特定的历史版本，Git Flow 的分支体系就过于笨重了。
 
 **小团队或个人项目**：5 人以下的团队如果项目节奏较快，Git Flow 的多分支管理可能反而成为负担。Feature Branching 已经足够。
 
@@ -553,5 +551,4 @@ Git Flow 是一套围绕发布周期的多分支协作模型，它通过五种�
 
 Git Flow 最适合有明确发布周期、版本号驱动、对生产稳定性要求高的项目。对于持续部署的 Web 项目或小团队，GitHub Flow 或 Feature Branching 可能是更轻量的选择。
 
-最后，无论你是否使用 git-flow 扩展工具，理解 Git Flow 背后的分支协作思想才是关键——**用分支的角色分工来隔离不同阶段的工作，让每个阶段的人都能专注于自己手头的事**。这个思想不仅适用于 Git Flow，也适用于任何一种 Git 工作流的设计。
-
+最后，无论是否使用 git-flow 扩展工具，理解 Git Flow 背后的分支协作思想才是关键——**用分支的角色分工来隔离不同阶段的工作，让每个阶段的人都能专注于自己手头的事**。这个思想不仅适用于 Git Flow，也适用于任何一种 Git 工作流的设计。

@@ -31,7 +31,7 @@ gitGraph
 
 上图中，`feature` 分支从 commit `2` 分叉出去，之后 `main` 继续前进了两个 commit（`5` 和 `6`）。此时 `feature` 的基础点是 commit `2`。
 
-如果我们对 `feature` 执行 `git rebase main`，效果如下：
+对 `feature` 执行 `git rebase main`，效果如下：
 
 ```mermaid
 gitGraph
@@ -244,9 +244,9 @@ gitGraph
 
 ### 4.2 原因详解
 
-问题的根源在于 rebase 会改变 commit 的 SHA-1。当你的 commit 已经推送到远程仓库后，其他团队成员可能已经基于这些 commit 进行了新的开发。如果你在本地 rebase 了这些 commit，就相当于你创建了一组全新的 commit，与远程仓库中的旧 commit 内容相同但 SHA-1 不同。
+问题的根源在于 rebase 会改变 commit 的 SHA-1。当 commit 已经推送到远程仓库后，其他团队成员可能已经基于这些 commit 进行了新的开发。若在本地 rebase 了这些 commit，就相当于创建了一组全新的 commit，与远程仓库中的旧 commit 内容相同但 SHA-1 不同。
 
-当你尝试 push 这些 rebase 后的 commit 时，Git 会拒绝，因为远程仓库的历史与你本地的历史已经分叉了。即使你使用 `git push --force` 强制推送，也会覆盖远程仓库中其他人基于旧 commit 开发的内容。
+尝试 push 这些 rebase 后的 commit 时，Git 会拒绝，因为远程仓库的历史与本地历史已经分叉了。即使使用 `git push --force` 强制推送，也会覆盖远程仓库中其他人基于旧 commit 开发的内容。
 
 ```mermaid
 sequenceDiagram
@@ -323,7 +323,7 @@ flowchart TD
 
 ## 五、interactive rebase（git rebase -i）详解
 
-交互式 rebase 是 Git 中最强大的历史编辑工具。它允许你在 rebase 的过程中对 commit 序列进行修改，包括合并、重写提交信息、编辑、删除和重排。
+交互式 rebase 是 Git 中最强大的历史编辑工具。它允许在 rebase 的过程中对 commit 序列进行修改，包括合并、重写提交信息、编辑、删除和重排。
 
 ### 5.1 启动交互式 rebase
 
@@ -399,7 +399,7 @@ gitGraph
     commit id: "4bd2f8c 添加登录日志记录"
 ```
 
-效果：原来的两个 commit 被压缩为一个，Git 会打开编辑器让你合并提交信息。
+效果：原来的两个 commit 被压缩为一个，Git 会打开编辑器合并提交信息。
 
 #### fixup — 合并并丢弃提交信息
 
@@ -440,7 +440,7 @@ gitGraph
 
 #### edit — 暂停并修改 commit 内容
 
-暂停 rebase 过程，允许你修改该 commit 的内容（而不仅仅是提交信息）。你可以添加或删除文件、修改代码，然后继续。
+暂停 rebase 过程，允许修改该 commit 的内容（而不仅仅是提交信息），可以添加或删除文件、修改代码，然后继续。
 
 ```
 pick e3a1b35 添加用户登录功能
@@ -448,7 +448,7 @@ edit 7ac9a02 修复登录页面的样式问题
 pick 4bd2f8c 添加登录日志记录
 ```
 
-当 rebase 执行到 `7ac9a02` 时会暂停，你可以：
+当 rebase 执行到 `7ac9a02` 时会暂停，此时可以：
 
 ```shell
 # 修改文件内容
@@ -694,7 +694,7 @@ Git 会继续应用下一个 commit。如果又有冲突，重复上述步骤。
 | 冲突次数 | 一次性解决 | 可能逐 commit 多次解决 |
 | 解决后操作 | `git add` + `git commit` | `git add` + `git rebase --continue` |
 | 放弃操作 | `git merge --abort` | `git rebase --abort` |
-| 复杂度 | 相对简单，一次搞定 | 可能更繁琐，但每次冲突范围更小 |
+| 复杂度 | 相对简单，一次完成 | 可能更繁琐，但每次冲突范围更小 |
 
 rebase 冲突可能需要多次处理，但每次冲突的范围通常更小（只涉及单个 commit 的变更），这使得每次冲突的解决更聚焦。merge 冲突是一次性解决所有冲突，但冲突范围可能更大。
 
@@ -711,4 +711,3 @@ rebase 冲突可能需要多次处理，但每次冲突的范围通常更小（�
 | **冲突处理** | 逐 commit 解决，`git add` 后 `git rebase --continue`；可 `--abort` 放弃或 `--skip` 跳过 |
 
 **一句话总结**：rebase 是一把锋利的刀——用得好，可以让提交历史干净利落；用得不好，会伤到整个团队。理解原理、遵守规则、谨慎使用，是掌握 rebase 的关键。
-

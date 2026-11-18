@@ -8,7 +8,7 @@ tags: [DevOps, Docker, Python]
 
 # Docker 实战（Python）
 
-## 概述
+## 一、概述
 
 ### 是什么
 
@@ -16,11 +16,11 @@ Docker 是一个开源的容器化平台，它允许开发者将应用程序及�
 
 ### 为什么
 
-Python 开发者日常会遇到三类部署问题：本地开发环境与生产环境不一致导致"在我机器上能跑"的尴尬、依赖版本冲突让项目难以维护、手动部署流程繁琐且容易出错。Docker 通过容器化技术解决了这些问题：每个容器都是独立的环境，依赖被完整封装，部署变成一条命令的事情。
+Python 开发者日常会遇到三类部署问题：本地开发环境与生产环境不一致导致"本地能跑、上线就崩"的尴尬、依赖版本冲突让项目难以维护、手动部署流程繁琐且容易出错。Docker 通过容器化技术解决了这些问题：每个容器都是独立的环境，依赖被完整封装，部署变成一条命令的事情。
 
 ### 怎么做
 
-本文将从 Docker 的基础概念出发，逐步深入到 Dockerfile 编写最佳实践、Python 项目容器化实战、Docker Compose 多服务编排、镜像优化技巧，最后覆盖常见陷阱与排查方法。读完本文后，你应当能够独立完成 Python 项目的容器化部署。
+内容依次覆盖 Docker 基础概念、Dockerfile 编写最佳实践、Python 项目容器化实战、Docker Compose 多服务编排、镜像优化技巧与常见陷阱排查方法，可作为 Python 项目容器化部署的操作参考。
 
 ### 知识定位
 
@@ -34,10 +34,10 @@ flowchart LR
 ```
 
 ::: info 阅读建议
-本文假设你已熟悉 Python 的基本语法、pip 依赖管理、Web 框架（如 FastAPI）的基础用法。如果对 Mermaid 图中的前置节点不熟悉，建议先补全相关基础再进入正文。
+阅读本文需要熟悉 Python 的基本语法、pip 依赖管理、Web 框架（如 FastAPI）的基础用法。如果对 Mermaid 图中的前置节点不熟悉，建议先补全相关基础再进入正文。
 :::
 
-## 核心内容
+## 二、核心内容
 
 ### Docker 基础概念
 
@@ -561,7 +561,7 @@ docker run --rm \
 
 #### 基础概念
 
-Docker Compose 是定义和运行多容器应用的工具。通过 `docker-compose.yml` 文件，你可以用一条命令启动整个应用栈。
+Docker Compose 是定义和运行多容器应用的工具。通过 `docker-compose.yml` 文件，可用一条命令启动整个应用栈。
 
 ```mermaid
 flowchart TD
@@ -875,7 +875,7 @@ COPY --from=builder /app/dist ./dist
 FROM python:3.12.7-slim  # 而非 python:3.12-slim 或 python:latest
 ```
 
-## 代码示例
+## 三、代码示例
 
 ::: tip Python 版本要求
 本文示例基于 **Python 3.12+** 和较新版本的 Docker Engine（截至 2026-09，稳定版本线为 29.x）。Docker Compose V2 已集成到 Docker CLI，使用 `docker compose` 命令（而非旧版 `docker-compose`）。
@@ -1109,7 +1109,7 @@ docker rmi test:unoptimized test:slim test:multistage
 rm -f Dockerfile.unoptimized Dockerfile.slim Dockerfile.multistage
 ```
 
-## 常见陷阱
+## 四、常见陷阱
 
 | 常见错误 | 正确做法 |
 | --- | --- |
@@ -1127,10 +1127,10 @@ rm -f Dockerfile.unoptimized Dockerfile.slim Dockerfile.multistage
 | 忘记设置 `PYTHONUNBUFFERED=1`（日志延迟输出，调试困难） | 在 Dockerfile 中设置：`ENV PYTHONUNBUFFERED=1` |
 
 ::: danger 特别注意
-**不要在生产环境使用 `:latest` 标签**。某天基础镜像更新后，你的应用可能因为依赖版本变化而突然崩溃，且无法复现问题（因为不知道之前用的是什么版本）。始终使用明确的版本标签，并在 `requirements.txt` 中锁定依赖版本。
+**不要在生产环境使用 `:latest` 标签**。某天基础镜像更新后，应用可能因为依赖版本变化而突然崩溃，且无法复现问题（因为不知道之前用的是什么版本）。始终使用明确的版本标签，并在 `requirements.txt` 中锁定依赖版本。
 :::
 
-## 最佳实践速查表
+## 五、最佳实践速查表
 
 ### 要做的
 
@@ -1176,7 +1176,7 @@ rm -f Dockerfile.unoptimized Dockerfile.slim Dockerfile.multistage
 **不要忽略镜像安全扫描**：定期使用 `docker scout` 或 `trivy` 扫描镜像漏洞，及时更新基础镜像和依赖。
 :::
 
-## 术语表
+## 六、术语表
 
 | 术语 | 定义 |
 | --- | --- |
@@ -1195,7 +1195,7 @@ rm -f Dockerfile.unoptimized Dockerfile.slim Dockerfile.multistage
 更多通用术语定义请参见《全局术语说明》（治理文档，已移出正文区）。
 :::
 
-## 延伸阅读
+## 七、延伸阅读
 
 ### 站内相关
 

@@ -10,7 +10,7 @@ tags: [DevOps, Git]
 
 ## 为什么需要 stash？
 
-想象这样一个场景：你正在 `feature/login` 分支上开发一个登录功能，代码写了一半，测试还没通过——此时产品经理紧急要求你修复 `main` 分支上的一个线上 Bug。你需要切换到 `main` 分支去工作，但当前工作区的改动还没完成，你不想创建一个"半成品"提交来污染提交历史。
+想象这样一个场景：开发者正在 `feature/login` 分支上开发一个登录功能，代码写了一半，测试还没通过——此时产品经理紧急要求修复 `main` 分支上的一个线上 Bug。需要切换到 `main` 分支工作，但当前工作区的改动还没完成，又不希望创建一个"半成品"提交污染提交历史。
 
 这就是 `git stash` 的典型使用场景：**临时保存当前工作区和暂存区的改动，让工作目录恢复到干净状态，以便切换分支或执行其他操作，之后再把改动恢复回来。**
 
@@ -75,7 +75,7 @@ notes.txt
 
 ## stash 的底层实现：一个特殊的 merge commit
 
-理解 stash 的底层实现，能帮助你更深入地掌握它的工作方式。
+理解 stash 的底层实现，能更深入地掌握它的工作方式。
 
 `git stash` 并不是简单地把文件改动"搬"到某个临时存储区——它实际上创建了一个**特殊的 commit 对象**。这个 stash commit 本身的 **tree 保存了工作区的完整状态**，同时它是一个 merge commit，最多有三个父 commit：
 
@@ -97,7 +97,7 @@ graph BT
 - **第二父 commit（Parent 2）**：Index commit，保存了暂存区（index）的快照状态
 - **可选的第三父 commit**：Untracked files commit，仅在使用 `--include-untracked` 时存在
 
-你可以通过底层命令来验证这一点：
+可通过底层命令验证这一点：
 
 ```bash
 # 查看 stash 的 commit 信息
@@ -251,7 +251,7 @@ $ git stash pop
 CONFLICT (content): Merge conflict in src/auth.py
 ```
 
-冲突发生后，stash **不会被删除**（即使使用 `pop`），需要你手动解决冲突后再删除：
+冲突发生后，stash **不会被删除**（即使使用 `pop`），需要手动解决冲突后再删除：
 
 ```bash
 # 解决冲突后
@@ -286,13 +286,13 @@ Dropped stash@{2} (b7c8d9e...)
 $ git stash clear
 ```
 
-> **警告**：`clear` 是不可逆操作。一旦执行，所有 stash 都会丢失（除非你记住了 commit hash，可通过 `git fsck --dangling` 找回，但非常麻烦）。
+> **警告**：`clear` 是不可逆操作。一旦执行，所有 stash 都会丢失（除非记住了 commit hash，可通过 `git fsck --dangling` 找回，但非常麻烦）。
 
 ---
 
 ## git stash -p：部分 stash（交互式选择）
 
-有时你只想暂存部分改动，而不是全部。`git stash push -p`（或 `git stash -p`）会进入交互模式，逐个询问你是否要 stash 每个改动块（hunk）：
+有时只想暂存部分改动，而不是全部。`git stash push -p`（或 `git stash -p`）会进入交互模式，逐个询问是否 stash 每个改动块（hunk）：
 
 ```bash
 $ git stash push -p
@@ -324,20 +324,20 @@ Stash this hunk [y,n,q,a,d,/,s,e,?]?
 | `/` | 用正则搜索匹配的 hunk |
 | `?` | 显示帮助 |
 
-一个典型的使用场景——你同时修改了 Bug 修复和新功能代码，只想 stash 新功能部分：
+一个典型的使用场景——同时修改了 Bug 修复和新功能代码，只想 stash 新功能部分：
 
 ```bash
 # 只 stash 新功能相关的 hunk，Bug 修复的 hunk 输入 n 保留
 $ git stash push -p -m "新功能 WIP"
 ```
 
-> **注意**：被 stash 的 hunk 和保留在工作区的 hunk **不能属于同一个 hunk**——如果你需要更精细的控制，使用 `s`（split）拆分 hunk，或使用 `e`（edit）手动编辑。
+> **注意**：被 stash 的 hunk 和保留在工作区的 hunk **不能属于同一个 hunk**——如果需要更精细的控制，使用 `s`（split）拆分 hunk，或使用 `e`（edit）手动编辑。
 
 ---
 
 ## git stash branch \<name\>：从 stash 创建新分支
 
-当 stash 中的改动与当前分支的代码产生冲突，或者你发现这些改动其实应该在一个新分支上完成时，`git stash branch` 可以一步到位：
+当 stash 中的改动与当前分支的代码产生冲突，或者发现这些改动其实应该在一个新分支上完成时，`git stash branch` 可以一步到位：
 
 ```bash
 $ git stash branch feature/auth-refactor stash@{0}
@@ -391,8 +391,8 @@ flowchart LR
 这意味着：
 
 1. **在任何分支都可以看到所有 stash**：`git stash list` 的输出不随分支变化
-2. **在任何分支都可以 apply 任何 stash**：你在 `feature/login` 上创建的 stash，可以在 `main` 上 apply
-3. **stash 条目记录了创建时的分支名和 commit**：方便你识别来源，但不限制使用范围
+2. **在任何分支都可以 apply 任何 stash**：在 `feature/login` 上创建的 stash，可以在 `main` 上 apply
+3. **stash 条目记录了创建时的分支名和 commit**：方便识别来源，但不限制使用范围
 
 实际应用示例：
 
@@ -456,7 +456,7 @@ $ git stash --all
 # build/ 和 node_modules/ 的内容也会被 stash
 ```
 
-> **注意**：`--all` 会 stash 大量文件（包括 `node_modules`、`build` 输出等），通常这不是你想要的。大多数情况下 `--include-untracked` 就足够了。
+> **注意**：`--all` 会 stash 大量文件（包括 `node_modules`、`build` 输出等），通常并非预期行为。大多数情况下 `--include-untracked` 就足够了。
 
 ### 三种模式对比
 
@@ -480,7 +480,7 @@ $ git stash --keep-index
 # README.md 的修改被 stash 了
 ```
 
-这在你想分阶段提交时很有用：先 stash 未暂存的改动，提交暂存区的内容，然后再恢复。
+这在需要分阶段提交时很有用：先 stash 未暂存的改动，提交暂存区的内容，然后再恢复。
 
 ---
 
@@ -501,7 +501,7 @@ $ git stash list
 # （无输出）
 ```
 
-这意味着：**不要用 stash 代替 commit 来做长期保存**。如果你需要在不同机器间同步改动，请创建 commit（可以是临时分支），而不是依赖 stash。
+这意味着：**不要用 stash 代替 commit 来做长期保存**。若需要在不同机器间同步改动，请创建 commit（可以是临时分支），而不是依赖 stash。
 
 ### 2. stash 栈不宜过大
 
@@ -513,7 +513,7 @@ stash 栈虽然可以存储很多条目，但没有有效的组织机制——�
 
 ### 4. stash apply 时注意当前分支
 
-由于 stash 是全局的，你可能在错误的分支上 apply 了一个 stash。虽然 Git 不会阻止你，但这可能导致意料之外的冲突或代码混入。**apply 前务必确认当前分支。**
+由于 stash 是全局的，可能在错误的分支上 apply 了一个 stash。虽然 Git 不会阻止，但这可能导致意料之外的冲突或代码混入。**apply 前务必确认当前分支。**
 
 ### 5. stash 的改动可能无法干净应用
 
@@ -599,4 +599,3 @@ $ git stash pop
 - `pop` vs `apply` 的区别在于是否自动删除 stash 条目
 - 对于可能产生冲突的场景，优先使用 `apply` 或 `stash branch`
 - 不要用 stash 代替 commit 做长期保存，它只适合临时性的工作现场暂存
-

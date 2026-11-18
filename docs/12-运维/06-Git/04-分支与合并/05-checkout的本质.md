@@ -8,9 +8,9 @@ tags: [DevOps, Git]
 
 # checkout 的本质
 
-`git checkout` 是 Git 中最古老、也最容易让人困惑的命令之一。初学者常常搞不清它到底是在「切换分支」还是在「恢复文件」，而这两件事看起来毫无关联——为什么同一个命令能做两件截然不同的事？
+`git checkout` 是 Git 中最古老、也最容易让人困惑的命令之一。初学者常常搞不清它到底是在「切换分支」还是在「恢复文件」，而这两件事看起来毫无关联——同一个命令能做两件截然不同的事，原因在于其统一的核心语义。
 
-要回答这个问题，就必须回到 `checkout` 的本质：**签出（checkout）指定的 commit 或其内容**。当你签出一个分支时，你在签出该分支指向的 commit 所对应的完整工作目录；当你签出单个文件时，你在签出某次 commit 中该文件的特定版本。两者统一于「签出」这个核心语义。
+要回答这个问题，就必须回到 `checkout` 的本质：**签出（checkout）指定的 commit 或其内容**。签出一个分支时，签出的是该分支指向的 commit 所对应的完整工作目录；签出单个文件时，签出的是某次 commit 中该文件的特定版本。两者统一于「签出」这个核心语义。
 
 ---
 
@@ -187,11 +187,11 @@ sequenceDiagram
 
 ### 3.3 `--` 的作用
 
-你可能注意到了命令中有一个 `--`。这是 Git 中的一个路径分隔符，用来告诉 Git：**`--` 后面的内容是文件路径，不是分支名或选项**。
+命令中有一个 `--`。这是 Git 中的一个路径分隔符，用来告诉 Git：**`--` 后面的内容是文件路径，不是分支名或选项**。
 
 ```shell
 # 如果恰好有一个分支也叫 file.txt，Git 会混淆
-git checkout file.txt   # Git 会认为你要切换到 file.txt 分支
+git checkout file.txt   # Git 会认为目标是切换到 file.txt 分支
 
 # 加上 -- 就明确表示这是文件路径
 git checkout -- file.txt
@@ -218,7 +218,7 @@ git checkout -- file.txt
 
 ## 五、checkout 对未提交改动的处理
 
-当你有未提交的改动时执行 `git checkout <branch>`，Git 的行为取决于改动是否与目标分支冲突。
+有未提交的改动时执行 `git checkout <branch>`，Git 的行为取决于改动是否与目标分支冲突。
 
 
 
@@ -237,7 +237,7 @@ flowchart TD
 
 ### 5.2 同一文件冲突：拒绝切换
 
-如果工作区修改的某个文件在目标分支中的版本与当前分支不同，Git 会拒绝切换，以防止你的未提交修改被覆盖：
+如果工作区修改的某个文件在目标分支中的版本与当前分支不同，Git 会拒绝切换，以防止未提交修改被覆盖：
 
 ```shell
 error: Your local changes to the following files would be overwritten by checkout:
@@ -246,7 +246,7 @@ Please commit your changes or stash them before you switch branches.
 Aborting
 ```
 
-这是 Git 的保护机制。此时你有三种选择：
+这是 Git 的保护机制。此时有三种选择：
 
 ```shell
 # 方案一：提交改动
@@ -303,7 +303,7 @@ git checkout --detach
 
 ### 6.3 detached HEAD 下的行为特点
 
-在 detached HEAD 状态下，你仍然可以查看代码、构建项目、甚至创建新的 commit。但有一个关键问题：**这些新 commit 没有任何分支指向它们**。
+在 detached HEAD 状态下，仍然可以查看代码、构建项目、甚至创建新的 commit。但有一个关键问题：**这些新 commit 没有任何分支指向它们**。
 
 ```mermaid
 gitGraph
@@ -319,11 +319,11 @@ gitGraph
     commit id: "C7"
 ```
 
-上图中，C6 和 C7 是在 detached HEAD 状态下创建的 commit。一旦你 `checkout master` 切回分支，C6 和 C7 就成了「野生 commit」——没有任何引用指向它们，`git log` 看不到，但它们短期内仍存在于 Git 的对象数据库中。
+上图中，C6 和 C7 是在 detached HEAD 状态下创建的 commit。一旦执行 `git checkout master` 切回分支，C6 和 C7 就成了「野生 commit」——没有任何引用指向它们，`git log` 看不到，但它们短期内仍存在于 Git 的对象数据库中。
 
 ### 6.4 保存或丢弃 detached commit
 
-如果你在 detached HEAD 下创建了有价值的 commit，可以这样做：
+若在 detached HEAD 下创建了有价值的 commit，可以这样做：
 
 ```shell
 # 在 detached HEAD 状态下，创建分支保存这些 commit
@@ -335,7 +335,7 @@ git reflog               # 找到 detached commit 的 SHA-1
 git branch hotfix abc1234 # 用该 SHA-1 创建分支
 ```
 
-如果你不需要这些 commit，什么都不用做——它们会在大约两周后被 Git 的垃圾回收机制（`git gc`）自动清理。
+如果不需要这些 commit，什么都不用做——它们会在大约两周后被 Git 的垃圾回收机制（`git gc`）自动清理。
 
 ---
 
@@ -476,4 +476,3 @@ flowchart TD
 - **还原文件时**，从暂存区恢复不改暂存区，从指定 commit 恢复会同步更新暂存区
 - **detached HEAD** 状态下可以正常工作，但新创建的 commit 没有分支保护，需及时创建分支保存
 - **Git 2.23+** 推荐使用 `git switch` 替代分支切换、`git restore` 替代文件恢复，语义更清晰、更安全
-

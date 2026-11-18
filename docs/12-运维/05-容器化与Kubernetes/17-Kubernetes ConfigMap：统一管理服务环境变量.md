@@ -12,64 +12,47 @@ tags: [DevOps, CI/CD]
 
 # Kubernetes ConfigMap：统一管理服务环境变量
 
-## 前言
+## 一、什么是 ConfigMap
 
+日常开发部署时经常遇到环境变量的配置需求：数据库地址、负载均衡要转发的服务地址等。这类内容使用 `Secret` 显然不合适，打包在镜像内耦合又太严重，此时可以借助 `Kubernetes ConfigMap`。
 
-在前一章中，我们学习了如何上手 `Kubernetes Secret`。我们都知道，`Kubernetes Secret` 的主要作用是来存放密码，密钥等机密信息。
+`ConfigMap` 是 `Kubernetes` 的一种资源类型，用于存放环境变量和配置文件。信息存入后，可以使用挂载卷的方式挂载进 Pod 内，也可以通过环境变量注入。与 `Secret` 最大的不同是，存在 `ConfigMap` 内的内容不会加密。
 
-但是在日常开发部署时，我们还会遇到一些环境变量的配置：例如你的数据库地址，负载均衡要转发的服务地址等等信息。这部分内容使用 `Secret` 显然不合适，打包在镜像内耦合又太严重。这里，我们可以借助 `Kubernetes ConfigMap` 来配置这项事情。
+## 二、创建方式
 
-
-## 什么是 ConfigMap
-
-
-`ConfigMap` 是 `Kubernetes` 的一种资源类型，我们可以使用它存放一些环境变量和配置文件。信息存入后，我们可以使用挂载卷的方式挂载进我们的 Pod 内，也可以通过环境变量注入。和 `Secret` 类型最大的不同是，存在 `ConfigMap` 内的内容不会加密。
-
-
-## 创建方式
-
-
-和 `Secret` 一样， `ConfigMap` 也支持多种创建方式
-
+与 `Secret` 一样，`ConfigMap` 支持多种创建方式。
 
 ### 命令行直接创建
 
+第一种是使用命令行直接创建，使用 `kubectl create configmap [config_name]` 命令，格式如下：
 
-第一种是使用命令行直接创建。我们直接使用 `kubectl create configmap [config_name]` 命令创建即可。格式如下：
 ```shell
 kubectl create configmap [config_name] --from-literal=[key]=[value]
 ```
-在这里， `--from-literal` 对应一条信息。如果想创建多个 `key value` 组合，向后重复 `--from-literal=[key]=[value]` 即可。
 
+`--from-literal` 对应一条信息；想创建多个 `key value` 组合，向后重复 `--from-literal=[key]=[value]` 即可。
 
-例如我创建一个 `mysql` 的配置文件，其中包含了服务地址，端口。则可以按下面这种格式创建：
+例如创建一个 `mysql` 的配置，包含服务地址、端口：
+
 ```shell
 kubectl create configmap mysql-config \
 --from-literal=MYSQL_HOST=192.168.1.172 \
 --from-literal=MYSQL_PORT=3306
 ```
-> 这里需要注意，configmap 的名称必须是全小写，特殊符号只能包含 '-' 和 '.'。可以用下面的这个正则表达式校验下看看符不符合规则：
+> 注意：configmap 的名称必须是全小写，特殊符号只能包含 '-' 和 '.'。可以用下面的这个正则表达式校验下看看符不符合规则：
 > 
 
 > `[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*`
 
 
-创建成功后，我们可以使用 `kubectl get cm` 查看我们创建过的 `configmap`：
-
-
-可以看到，上面的就是我们刚创建的 `ConfigMap`。里面的 `DATA` 为 `2` ，代表有 `2` 条数据存在。我们直接使用 `kubectl describe cm mysql-config` 即可查看下这个 `ConfigMap` 的具体信息：
-
-
-这里可以看到刚才我们存放的数据，代表该 `configmap` 创建成功。
-
+创建成功后，使用 `kubectl get cm` 查看创建过的 `configmap`：刚创建的 `ConfigMap` 的 `DATA` 为 `2`，代表有 `2` 条数据存在。使用 `kubectl describe cm mysql-config` 可查看这个 `ConfigMap` 的具体信息，确认存放的数据，代表该 `configmap` 创建成功。
 
 ### 配置清单创建
 
+通过一份配置清单创建：
 
-当然，通过一份配置清单创建的方式也很简单。
+新建一个名称为 `mysql-config-file.yaml` 的文件，填入以下内容：
 
-
-我们新建一个文件，名称为 `mysql-config-file.yaml` ，填入以下内容：
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -81,62 +64,53 @@ data:
 ```
 > 字符串不要忘记加引号
 
+字段含义：`kind` 的值为 `ConfigMap`，代表声明一个 `ConfigMap` 类型的资源；`metadata.name` 是该 `configmap` 的名称；`data` 是存放数据的地方，数据格式为 `key:value`。
 
-到这里，大部分字段已经比较熟悉了。`kind` 的值为 `ConfigMap` ，代表声明一个 `ConfigMap` 类型的资源； `metadata.name` 代表是该 `configmap` 的名称；`data` 是存放数据的地方，数据格式为 `key:value`。
+保存后使用 `kubectl apply` 命令使配置生效：
 
-
-按照惯例，我们保存后使用 `kubectl apply` 命令即可使配置生效：
 ```shell
 kubectl apply -f ./mysql-config-file.yaml
 ```
 
-
-生效后，我们直接使用 `kubectl describe cm mysql-config-file` 查看下配置结果。
-
-可以看到，要保存创建的内容成功存入。
-
+生效后，使用 `kubectl describe cm mysql-config-file` 查看配置结果，确认创建的内容成功存入。
 
 ### 文件创建
 
+另一种方式是将文件加载进去，适合挂载配置文件（例如 nginx 配置文件等）。使用 `kubectl create configmap` 命令行创建，格式如下：
 
-另一种方式是将文件加载进去，这种方式适合挂载配置文件（例如 nginx 配置文件等等）。这种方式，我们直接使用 `kubectl create configmap` 命令行创建即可。格式如下：
 ```shell
 kubectl create configmap [configname] --from-file=[key]=[file_path]
 ```
-这里每一条 `--from-file` 都代表一个文件。key是文件在 `configmap` 内的 `key`， `file_path` 是文件的路径。
 
+每一条 `--from-file` 代表一个文件，key 是文件在 `configmap` 内的 `key`，`file_path` 是文件的路径。
 
-我们创建一个文件，然后将文件内容存入 `configmap` 中。创建一个名为 `env.config` 的文件，输入以下内容：
+创建一个名为 `env.config` 的文件，输入以下内容：
+
 ```
 URL: 192.168.1.173
 PATH: /root/abcd/efg
 ```
 
+保存后，使用 `kubectl create configmap` 命令将其存入 `configmap`：
 
-保存后，我们使用 `kubectl create configmap` 命令将其保存至 `configmap` 内：
 ```shell
 kubectl create configmap env-from-file --from-file=env=./env.config
 ```
 
-
-接着，我们直接使用 `kubectl get cm env-from-file -o yaml` 来查看下保存进入的内容。
-
-这里我们看到， `configmap` 直接将我们整个文件内容都保存了进去。 `env` 则是这个文件的 `key` 值。
-
+使用 `kubectl get cm env-from-file -o yaml` 查看保存进入的内容：`configmap` 将整个文件内容都保存了进去，`env` 是这个文件的 `key` 值。
 
 ### 目录创建
 
+除了单个文件，也可以将一个目录下的文件整个存入。
 
-当然，可以将单个文件存入，也可以直接将一个目录下的文件整个存入进去。
+目录创建与文件创建的命令类似，差别只是将 `--from-file` 的值从一个 `key=value` 变成输入一整个文件夹：
 
-
-目录创建这里和文件创建的命令差不多，其差别只是将 `--from-file` 的值从一个 `key=value`，变成了输入一整个文件夹。
 ```shell
 kubectl create configmap [configname] --from-file=[dir_path]
 ```
 
+创建一个文件夹，下面存放几个文件来测试。创建三个文件 `env1.config`、`env2.config`、`env3.config`，内容与文件名对应：
 
-我们创建一个文件夹，下面存放几个文件来测试下。这里我们创建了三个文件，分别是 `env1.config`，`env2.config`，`env3.config` 。内容也和其文件名对应。
 ```shell
 mkdir env && cd ./env
 echo 'env1' > env1.config
@@ -144,30 +118,20 @@ echo 'env2' > env2.config
 echo 'env3' > env3.config
 ```
 
+使用创建命令，将内容批量存入到 `configmap` 内：
 
-这样我们使用创建命令，将内容批量存入到 `configmap` 内：
 ```shell
 kubectl create configmap env-from-dir --from-file=./
 ```
 
+创建完成后，使用 `kubectl get cm env-from-dir -o yaml` 查看保存进去的文件内容：文件夹下的文件内容被批量存放了进去。
 
-创建完成后，我们使用 `kubectl get cm env-from-dir -o yaml` 查看下保存进去的文件内容：
-
-我们看到，文件夹下的文件内容被批量存放了进去。
-
-
-## 使用方式
-
-
-在了解了其创建方式后，我们来看看如何使用 `ConfigMap`。
-
-
-
+## 三、使用方式
 
 ### 环境变量注入
 
+注入到环境变量是比较常见的方式。编辑 `front-v1` 的 `deployment` 配置文件，将 `configmap` 注入进环境变量：
 
-注入到环境变量是一种比较常见的方式。在这里，我们编辑下 `front-v1` 的 `deployment` 配置文件，来将 `configmap` 注入进环境变量内：
 ```yaml
 env:
 - name: MYSQL_HOST
@@ -176,26 +140,27 @@ env:
       name: mysql-config
       key: MYSQL_HOST
 ```
-`configmap` 的环境变量注入，其实和 `Secret` 的环境变量注入方式差别不大，只是字段换成了 `configMapKeyRef` 。`name` 为要选择注入的 `configmap` 名称；`key` 则为 `configmap` 内的其中一个 `key`。
 
+`configmap` 的环境变量注入与 `Secret` 的方式差别不大，只是字段换成了 `configMapKeyRef`：`name` 为要选择注入的 `configmap` 名称；`key` 为 `configmap` 内的其中一个 `key`。
 
-编辑完后，保存并退出。使用 `kubectl apply -f` 命令生效下配置文件，此时旧 Pod 会被杀死重启创建。
+编辑完后保存退出，使用 `kubectl apply -f` 命令生效配置文件，此时旧 Pod 会被杀死重启创建：
+
 ```shell
 kubectl apply -f ./v1.yaml
 ```
-生效后，在最新的 `Pod`  内使用 `kubectl exec` 命令来看看环境变量注入结果：
+
+生效后，在最新的 `Pod` 内使用 `kubectl exec` 命令查看环境变量注入结果：
+
 ```shell
 kubectl exec -it [POD_NAME] -- env | grep MYSQL_HOST
 ```
-此时可以看到，我们的环境变量成功的注入了进去。
 
+环境变量成功注入。
 
 ---
 
-可是，如果一条一条地注入环境配置，是不是太麻烦了。怎样才能一次性将整个 `ConfigMap` 都注入进去呢？
+一条一条注入环境配置比较繁琐。一次性将整个 `ConfigMap` 注入，可以借助 `containers.envFrom` 字段批量导入：
 
-
-在这里，我们可以借助 `containers.envFrom` 字段去一次性批量导入我们的 `configmap` ：
 ```yaml
 envFrom:
 - configMapRef:
@@ -204,30 +169,26 @@ envFrom:
 ```
 > 注意：使用 `envFrom` 时，如果 `configmap` 中的 key 不是合法的环境变量名（例如含有 "-" 或 "."），该 key 会被跳过（Pod 可正常启动，但事件中会记录 InvalidVariableNames 警告），并不会自动转换为 "_"
 
+`name` 为已配置好的 `configmap`；`optional` 代表如果没有该 `configmap`，容器是否能够正常启动。
 
-这里我们的 `name` 值为已配置好的 `configmap`， `optional` 代表如果没有该 `configmap` ，容器是否能够正常启动。
+编辑 `front-v1` 的 `deployment` 配置文件加入这项配置，保存并生效。`Pod` 杀死重建后，使用 `kubectl exec` 命令查看 `Pod` 内环境变量注入情况：
 
-
-接着我们编辑下 `front-v1` 的 `deployment` 配置文件，加入这项配置
-添加后，保存并生效该 `deployment`，此时 `Pod` 会杀死重建。新 `Pod` 启动后，我们使用 `kubectl exec` 命令看下 `Pod` 内环境变量注入情况：
 ```shell
 kubectl exec -it [POD_NAME] -- env | grep MYSQL
 ```
-此时我们可以看到，环境变量被批量注入了进去。
 
+环境变量被批量注入。
 
 ### 存储卷挂载
 
+第二种方式是存储卷挂载。这种方式会将 `configmap` 内容中的每个 `key` 和 `value`，以独立文件方式通过外部挂载卷挂载进去（`key` 是文件名，`value` 是文件内容）。用法与 `Secret` 的存储卷挂载类似。
 
-第二种方式是存储卷挂载。这种方式会将 `configmap` 里内容中的每个 `key` 和 `value`，以独立文件方式通过外部挂载卷挂载进去（ `key` 是文件名，`value` 是文件内容）。这部分的用法和 `Secret` 的用法很像。
-
-
-我们编辑下 `front-v1` 的 `deployment` 配置文件，修改下配置：
-
+编辑 `front-v1` 的 `deployment` 配置文件：
 
 #### 第一步：在 Pod 层面声明一个外部存储卷
 
-`name` 为存储卷名称；`configMap` 代表存储卷的文件来源为 `configMap`；`configMap.name` 要填入要加载的 `configMap` 名称。
+`name` 为存储卷名称；`configMap` 代表存储卷的文件来源为 `configMap`；`configMap.name` 填入要加载的 `configMap` 名称：
+
 ```yaml
 volumes:
 - name: envfiles
@@ -235,10 +196,10 @@ volumes:
     name: env-from-dir
 ```
 
-
 #### 第二步：在容器镜像层面配置存储卷
 
-`name` 的值来源于第一步配置的 `name` 值；`mountPath` 为要挂载的目录；`readOnly` 则代表文件是不是只读。
+`name` 的值来源于第一步配置的 `name` 值；`mountPath` 为要挂载的目录；`readOnly` 代表文件是否只读：
+
 ```yaml
 volumeMounts:
 - name: envfiles
@@ -246,22 +207,24 @@ volumeMounts:
   readOnly: true
 ```
 
+编辑完后保存退出，使用 `kubectl apply -f` 命令生效配置文件：
 
-编辑完后，保存并退出。使用 `kubectl apply -f` 命令生效下配置文件。
 ```shell
 kubectl apply -f ./v1.yaml
 ```
 
+待 `Pod` 杀死重建后，使用 `kubectl exec` 命令查看目录中的文件，验证是否挂载成功：
 
-待 `Pod` 杀死重建后，我们来验证下文件是否已经挂载了进去。这里我们使用 `kubectl exec` 命令看下目录是否有这些文件：
 ```shell
 kubectl exec -it [POD_NAME] -- ls /root
 ```
-可以看到，三个文件都成功地挂载了进去。
+
+三个文件都成功挂载。
 
 ---
 
-但是，这种方式每次挂载都要将整个文件夹挂载进去，我们如何一次只挂载单个文件呢？这里我们可以借助 `volumes.configMap.items[]` 字段来配置多个 `item` 项：
+这种方式每次挂载都要将整个文件夹挂载进去。一次只挂载单个文件，可以借助 `volumes.configMap.items[]` 字段配置多个 `item` 项：
+
 ```yaml
 volumes:
 - name: envfiles
@@ -273,17 +236,14 @@ volumes:
     - key: env2.config
       path: env2.config
 ```
-这里的 `item` 是个数组，每一项都是一条 `ConfigMap` 里的独立字段。
 
+`item` 是个数组，每一项都是一条 `ConfigMap` 里的独立字段：`key` 是 `ConfigMap` 中的字段名称；`path` 是要挂载的路径（相对于容器镜像层面配置存储卷时的 `mountPath` 字段）。填写保存后退出生效。
 
-其中，`key` 是 `ConfigMap` 中的字段名称；`path` 则是要挂载的路径（相对于在容器镜像层面配置存储卷配置的 `mountPath` 字段）。填写保存后退出生效。
+使用 `kubectl exec` 命令验证挂载结果：只挂载了配置的 2 个文件。
 
+## 四、小结
 
-接着我们用 `kubectl exec` 命令验证下挂载结果
-结果如我们所愿，只挂载进去我们配置的2个文件。
-
-
-## 本章小结
-
-
-本章介绍了如何使用 `ConfigMap` 配置服务环境变量：将环境变量外置，与业务代码解耦合。下一章将利用 `Kubernetes` **容忍度和污点**更好地调度部署 `Pod`。
+- `ConfigMap` 用于外置环境变量与配置文件，与业务代码解耦；内容明文存储（区别于 Secret 的 base64 机密存储）。
+- 四种创建方式：`--from-literal` 键值对、配置清单 `data` 字段、`--from-file` 单文件（适合挂载 nginx 等配置文件）、`--from-file` 整目录批量导入；名称须匹配正则 `[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*`。
+- 两种使用方式：环境变量注入（单条 `configMapKeyRef`、批量 `envFrom` + `configMapRef`）与存储卷挂载（`volumes[].configMap` + `volumeMounts`，可用 `items[]` 按需只挂载部分文件）。
+- 注意 `envFrom` 对非法环境变量名的 key 会直接跳过，不会自动转换。

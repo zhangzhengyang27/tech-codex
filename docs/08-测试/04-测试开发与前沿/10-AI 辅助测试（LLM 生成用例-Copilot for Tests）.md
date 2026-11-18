@@ -452,6 +452,7 @@ AI 生成测试用例若遗漏关键场景导致线上事故，责任在谁？�
 - [自动化测试框架设计 13 原则](03-自动化测试框架设计%2013%20原则) —— AI 维护所依赖的框架设计原则
 - [GUI 测试稳定性（同步等待与自愈与Flaky 治理）](../02-自动化测试/19-GUI%20测试稳定性（同步等待与自愈与Flaky%20治理）) —— 自愈与 Flaky 治理的工程体系
 - [数据驱动与参数化框架](04-数据驱动与参数化框架) —— LLM 生成测试数据的 Schema 校验落点
+- [AI 测试方案全景与选型](../05-AI%20测试/00-AI%20测试方案全景与选型) —— AI 测试分册总览：Agentic/MCP/评测/红队/自愈/视觉/造数等方案深潜的入口
 - 论文：《Automated Test Case Generation using Large Language Models》—— LLM 生成用例的学术基线，可在 arXiv（arxiv.org）或 Google Scholar 按标题检索
 - 工具官网：[Qodo](https://qodo.ai/) —— 原 CodiumAI，AI 生成单测与代码行为分析
 - 工具官网：[Mabl](https://mabl.com/) —— 低代码云端 E2E 测试平台，内置 AI 自愈

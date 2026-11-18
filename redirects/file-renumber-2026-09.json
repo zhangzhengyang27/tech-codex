@@ -1137,43 +1137,43 @@
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/00-%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E5%8F%8A%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/01-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/02-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/03-技术选型实践"
+    "destination": "/docs/tech-management/06-研发流程与效能/23-技术选型实践"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/03-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/25-架构设计方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/04-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
+    "destination": "/docs/tech-management/06-研发流程与效能/29-项目管理与维护"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-01-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-02-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/33-原型设计工具实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-03-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/35-AI工具与原型实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-04-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
+    "destination": "/docs/tech-management/06-研发流程与效能/37-设计稿与素材工具"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-%E5%8E%9F%E5%9E%8B%E5%9B%BE%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AB%9E%E5%93%81%E5%88%86%E6%9E%90-%E7%B4%A2%E5%BC%95",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/03-%E6%AF%8F%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BA%86%E8%A7%A3%E7%9A%84%EF%BC%9AA-B%E6%B5%8B%E8%AF%95",
@@ -1317,15 +1317,15 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/01-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/03-技术选型实践"
+    "destination": "/docs/tech-management/06-研发流程与效能/23-技术选型实践"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E7%B2%BE%E7%9B%8A%E5%88%9B%E4%B8%9A",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/04-精益创业"
+    "destination": "/docs/tech-management/06-研发流程与效能/24-精益创业"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-RESTful%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83",
@@ -1333,23 +1333,23 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/25-架构设计方法论"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/06-接口文档工具与API设计实践"
+    "destination": "/docs/tech-management/06-研发流程与效能/26-接口文档工具与API设计实践"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/07-上下文差异"
+    "destination": "/docs/tech-management/06-研发流程与效能/27-上下文差异"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/08-沙盘推演"
+    "destination": "/docs/tech-management/06-研发流程与效能/28-沙盘推演"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
+    "destination": "/docs/tech-management/06-研发流程与效能/29-项目管理与维护"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-AI%E5%A4%9A%E4%BB%A3%E7%90%86%E5%8D%8F%E4%BD%9C%E9%85%8D%E7%BD%AE%E5%AE%9E%E8%B7%B5",
@@ -1357,35 +1357,35 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/10-度量驱动"
+    "destination": "/docs/tech-management/06-研发流程与效能/30-度量驱动"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E8%BF%AD%E4%BB%A30",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/12-迭代0"
+    "destination": "/docs/tech-management/06-研发流程与效能/32-迭代0"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/33-原型设计工具实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/14-任务分解"
+    "destination": "/docs/tech-management/06-研发流程与效能/34-任务分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/35-AI工具与原型实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/16-开发者测试"
+    "destination": "/docs/tech-management/06-研发流程与效能/36-开发者测试"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
+    "destination": "/docs/tech-management/06-研发流程与效能/37-设计稿与素材工具"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-TDD",
@@ -1393,79 +1393,79 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/18-大师级程序员"
+    "destination": "/docs/tech-management/06-研发流程与效能/38-大师级程序员"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/19-任务分解实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/39-任务分解实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/20-测试质量"
+    "destination": "/docs/tech-management/06-研发流程与效能/40-测试质量"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/21-需求分解"
+    "destination": "/docs/tech-management/06-研发流程与效能/41-需求分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/22-需求管理"
+    "destination": "/docs/tech-management/06-研发流程与效能/42-需求管理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/23-MVP最小代价"
+    "destination": "/docs/tech-management/06-研发流程与效能/43-MVP最小代价"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/24-认知偏差"
+    "destination": "/docs/tech-management/06-研发流程与效能/44-认知偏差"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/25-代码为谁而写"
+    "destination": "/docs/tech-management/06-研发流程与效能/45-代码为谁而写"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/26-轻量级沟通"
+    "destination": "/docs/tech-management/06-研发流程与效能/46-轻量级沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/27-可视化沟通"
+    "destination": "/docs/tech-management/06-研发流程与效能/47-可视化沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/28-快速反馈与CI"
+    "destination": "/docs/tech-management/06-研发流程与效能/48-快速反馈与CI"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/29-复盘与预防"
+    "destination": "/docs/tech-management/06-研发流程与效能/49-复盘与预防"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/30-聆听用户声音"
+    "destination": "/docs/tech-management/06-研发流程与效能/50-聆听用户声音"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/31-尽早暴露问题"
+    "destination": "/docs/tech-management/06-研发流程与效能/51-尽早暴露问题"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/32-结构化写文档"
+    "destination": "/docs/tech-management/06-研发流程与效能/52-结构化写文档"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/33-懒惰与自动化"
+    "destination": "/docs/tech-management/06-研发流程与效能/53-懒惰与自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/34-项目自动化"
+    "destination": "/docs/tech-management/06-研发流程与效能/54-项目自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/35-验收测试与BDD"
+    "destination": "/docs/tech-management/06-研发流程与效能/55-验收测试与BDD"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/36-代码治理"
+    "destination": "/docs/tech-management/06-研发流程与效能/56-代码治理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84",
@@ -1473,7 +1473,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/37-软件复杂度"
+    "destination": "/docs/tech-management/06-研发流程与效能/57-软件复杂度"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-DDD%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1",
@@ -1481,7 +1481,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/38-新入职快速上手"
+    "destination": "/docs/tech-management/06-研发流程与效能/58-新入职快速上手"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E9%81%97%E7%95%99%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0",
@@ -1489,11 +1489,11 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/39-保持竞争力"
+    "destination": "/docs/tech-management/06-研发流程与效能/59-保持竞争力"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/40-划重点汇总"
+    "destination": "/docs/tech-management/06-研发流程与效能/60-划重点汇总"
   },
   {
     "source": "/docs/cs-basics/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/04-CPU%E7%AF%87-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E4%B8%AD%E6%96%AD",
@@ -2865,43 +2865,43 @@
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/01-%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E5%8F%8A%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/02-需求分析方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/03-技术选型实践"
+    "destination": "/docs/tech-management/06-研发流程与效能/23-技术选型实践"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/04-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/25-架构设计方法论"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/05-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
+    "destination": "/docs/tech-management/06-研发流程与效能/29-项目管理与维护"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/06-01-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/07-02-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/33-原型设计工具实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/08-03-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/35-AI工具与原型实战"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/09-04-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
+    "destination": "/docs/tech-management/06-研发流程与效能/37-设计稿与素材工具"
   },
   {
     "source": "/docs/product/%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/10-%E5%8E%9F%E5%9E%8B%E5%9B%BE%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AB%9E%E5%93%81%E5%88%86%E6%9E%90-%E7%B4%A2%E5%BC%95",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF%E4%B8%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/%E5%81%9A%E5%88%B0%E8%BF%99%E5%9B%9B%E7%82%B9%EF%BC%8C%E5%9B%A2%E9%98%9F%E5%BF%85%E5%AE%9A%E9%A3%9E%E9%80%9F%E6%88%90%E9%95%BF",
@@ -3245,23 +3245,23 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/05-架构设计方法论"
+    "destination": "/docs/tech-management/06-研发流程与效能/25-架构设计方法论"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/06-接口文档工具与API设计实践"
+    "destination": "/docs/tech-management/06-研发流程与效能/26-接口文档工具与API设计实践"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/07-上下文差异"
+    "destination": "/docs/tech-management/06-研发流程与效能/27-上下文差异"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/08-沙盘推演"
+    "destination": "/docs/tech-management/06-研发流程与效能/28-沙盘推演"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/09-项目管理与维护"
+    "destination": "/docs/tech-management/06-研发流程与效能/29-项目管理与维护"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-AI%E5%A4%9A%E4%BB%A3%E7%90%86%E5%8D%8F%E4%BD%9C%E9%85%8D%E7%BD%AE%E5%AE%9E%E8%B7%B5",
@@ -3269,35 +3269,35 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/10-度量驱动"
+    "destination": "/docs/tech-management/06-研发流程与效能/30-度量驱动"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/11-原型设计理论基础"
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E8%BF%AD%E4%BB%A30",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/12-迭代0"
+    "destination": "/docs/tech-management/06-研发流程与效能/32-迭代0"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/13-原型设计工具实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/33-原型设计工具实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/14-任务分解"
+    "destination": "/docs/tech-management/06-研发流程与效能/34-任务分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/15-AI工具与原型实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/35-AI工具与原型实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/16-开发者测试"
+    "destination": "/docs/tech-management/06-研发流程与效能/36-开发者测试"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/17-设计稿与素材工具"
+    "destination": "/docs/tech-management/06-研发流程与效能/37-设计稿与素材工具"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-TDD",
@@ -3305,79 +3305,79 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/18-大师级程序员"
+    "destination": "/docs/tech-management/06-研发流程与效能/38-大师级程序员"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/19-任务分解实战"
+    "destination": "/docs/tech-management/06-研发流程与效能/39-任务分解实战"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/20-测试质量"
+    "destination": "/docs/tech-management/06-研发流程与效能/40-测试质量"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/21-需求分解"
+    "destination": "/docs/tech-management/06-研发流程与效能/41-需求分解"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/22-需求管理"
+    "destination": "/docs/tech-management/06-研发流程与效能/42-需求管理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/23-MVP最小代价"
+    "destination": "/docs/tech-management/06-研发流程与效能/43-MVP最小代价"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/27-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/24-认知偏差"
+    "destination": "/docs/tech-management/06-研发流程与效能/44-认知偏差"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/28-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/25-代码为谁而写"
+    "destination": "/docs/tech-management/06-研发流程与效能/45-代码为谁而写"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/26-轻量级沟通"
+    "destination": "/docs/tech-management/06-研发流程与效能/46-轻量级沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/27-可视化沟通"
+    "destination": "/docs/tech-management/06-研发流程与效能/47-可视化沟通"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/28-快速反馈与CI"
+    "destination": "/docs/tech-management/06-研发流程与效能/48-快速反馈与CI"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/29-复盘与预防"
+    "destination": "/docs/tech-management/06-研发流程与效能/49-复盘与预防"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/30-聆听用户声音"
+    "destination": "/docs/tech-management/06-研发流程与效能/50-聆听用户声音"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/31-尽早暴露问题"
+    "destination": "/docs/tech-management/06-研发流程与效能/51-尽早暴露问题"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/32-结构化写文档"
+    "destination": "/docs/tech-management/06-研发流程与效能/52-结构化写文档"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/33-懒惰与自动化"
+    "destination": "/docs/tech-management/06-研发流程与效能/53-懒惰与自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/34-项目自动化"
+    "destination": "/docs/tech-management/06-研发流程与效能/54-项目自动化"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/38-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/35-验收测试与BDD"
+    "destination": "/docs/tech-management/06-研发流程与效能/55-验收测试与BDD"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/39-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/36-代码治理"
+    "destination": "/docs/tech-management/06-研发流程与效能/56-代码治理"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/40-%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84",
@@ -3385,7 +3385,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/41-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/37-软件复杂度"
+    "destination": "/docs/tech-management/06-研发流程与效能/57-软件复杂度"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/42-DDD%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1",
@@ -3393,7 +3393,7 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/43-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/38-新入职快速上手"
+    "destination": "/docs/tech-management/06-研发流程与效能/58-新入职快速上手"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/44-%E9%81%97%E7%95%99%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0",
@@ -3401,11 +3401,11 @@
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/45-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/39-保持竞争力"
+    "destination": "/docs/tech-management/06-研发流程与效能/59-保持竞争力"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/46-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/40-划重点汇总"
+    "destination": "/docs/tech-management/06-研发流程与效能/60-划重点汇总"
   },
   {
     "source": "/docs/tech-management/%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/images/78104/01975cfc49ac170f566b7f96ae0751e9.jpg",

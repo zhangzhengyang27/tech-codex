@@ -753,119 +753,119 @@
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/11-%E5%AE%9A%E5%88%B6%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B",
-    "destination": "/docs/tech-management/06-研发流程与效能/10-定制高效研发流程"
+    "destination": "/docs/tech-management/06-研发流程与效能/08-定制高效研发流程"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/12-%E5%BE%90%E8%A3%95%E9%94%AE%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%AB%98%E9%80%9F%E5%A2%9E%E9%95%BF%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%9B%A2%E9%98%9F%E8%BF%AD%E4%BB%A3",
-    "destination": "/docs/tech-management/06-研发流程与效能/11-徐裕键：业务高速增长过程中的团队迭代"
+    "destination": "/docs/tech-management/06-研发流程与效能/09-徐裕键：业务高速增长过程中的团队迭代"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/13-%E6%95%8F%E6%8D%B7%E4%B8%AD%E7%9A%84%E6%9C%9F%E9%99%90%E4%B9%8B%E6%AE%87%EF%BC%8C%E8%BD%AF%E4%BB%B6%E4%B8%9A%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A",
-    "destination": "/docs/tech-management/06-研发流程与效能/12-敏捷中的期限之殇，软件业该怎么做"
+    "destination": "/docs/tech-management/06-研发流程与效能/10-敏捷中的期限之殇，软件业该怎么做"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/15-%E6%96%BD%E7%BF%94%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A07-24%E9%AB%98%E6%95%88%E4%BA%A4%E4%BB%98%E9%80%9A%E9%81%93%EF%BC%88%E4%B8%8A%EF%BC%89",
-    "destination": "/docs/tech-management/06-研发流程与效能/13-施翔：如何打造7-24高效交付通道（上）"
+    "destination": "/docs/tech-management/06-研发流程与效能/11-施翔：如何打造7-24高效交付通道（上）"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/16-%E6%96%BD%E7%BF%94%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A07-24%E9%AB%98%E6%95%88%E4%BA%A4%E4%BB%98%E9%80%9A%E9%81%93%EF%BC%88%E4%B8%8B%EF%BC%89",
-    "destination": "/docs/tech-management/06-研发流程与效能/14-施翔：如何打造7-24高效交付通道（下）"
+    "destination": "/docs/tech-management/06-研发流程与效能/12-施翔：如何打造7-24高效交付通道（下）"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/17-%E6%9C%89%E4%BA%86%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%EF%BC%8C%E9%82%A3%E4%BA%A4%E4%BB%98%E6%9C%9F%E9%99%90%E5%8E%BB%E5%93%AA%E5%84%BF%E4%BA%86",
-    "destination": "/docs/tech-management/06-研发流程与效能/15-有了敏捷开发，那交付期限去哪儿了"
+    "destination": "/docs/tech-management/06-研发流程与效能/13-有了敏捷开发，那交付期限去哪儿了"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/18-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E6%95%8F%E6%8D%B7%E5%8A%9B%EF%BC%8C%E6%8B%A5%E6%8A%B1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%EF%BC%8C%E4%B8%8EVUCA%E5%85%B1%E8%88%9E",
-    "destination": "/docs/tech-management/06-研发流程与效能/16-游舒帆：敏捷力，拥抱不确定性，与VUCA共舞"
+    "destination": "/docs/tech-management/06-研发流程与效能/14-游舒帆：敏捷力，拥抱不确定性，与VUCA共舞"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/19-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E9%82%A3%E4%BA%9B%E4%BA%8B",
-    "destination": "/docs/tech-management/06-研发流程与效能/17-游舒帆：高效研发流程那些事"
+    "destination": "/docs/tech-management/06-研发流程与效能/15-游舒帆：高效研发流程那些事"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/20-%E7%8E%8B%E6%B5%B7%E4%BA%AE%EF%BC%9A%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E6%95%88%E7%8E%87%E7%9A%845%E4%B8%AA%E6%8F%90%E7%A4%BA%EF%BC%88%E4%B8%8A%EF%BC%89",
-    "destination": "/docs/tech-management/06-研发流程与效能/18-王海亮：提升技术团队效率的5个提示（上）"
+    "destination": "/docs/tech-management/06-研发流程与效能/16-王海亮：提升技术团队效率的5个提示（上）"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/21-%E7%8E%8B%E6%B5%B7%E4%BA%AE%EF%BC%9A%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E6%95%88%E7%8E%87%E7%9A%845%E4%B8%AA%E6%8F%90%E7%A4%BA%EF%BC%88%E4%B8%8B%EF%BC%89",
-    "destination": "/docs/tech-management/06-研发流程与效能/19-王海亮：提升技术团队效率的5个提示（下）"
+    "destination": "/docs/tech-management/06-研发流程与效能/17-王海亮：提升技术团队效率的5个提示（下）"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/22-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E5%81%9A%E5%A5%BD%E7%A0%94%E5%8F%91%E7%AE%A1%E7%90%86%E7%9A%843%E4%B8%AA%E5%85%B3%E9%94%AE",
-    "destination": "/docs/tech-management/06-研发流程与效能/20-邱良军：做好研发管理的3个关键"
+    "destination": "/docs/tech-management/06-研发流程与效能/18-邱良军：做好研发管理的3个关键"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/23-%E9%92%AE%E5%8D%9A%E5%BD%A6%EF%BC%9A%E8%BD%AF%E4%BB%B6%E7%A0%94%E5%8F%91%E5%BA%A6%E9%87%8F%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE",
-    "destination": "/docs/tech-management/06-研发流程与效能/21-钮博彦：软件研发度量体系建设"
+    "destination": "/docs/tech-management/06-研发流程与效能/19-钮博彦：软件研发度量体系建设"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/03-%E4%BA%A7%E5%93%81%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9FOKR%E4%BD%BF%E7%94%A8%E6%B3%95%E5%88%99",
-    "destination": "/docs/tech-management/07-绩效与激励/02-产品技术团队OKR使用法则"
+    "destination": "/docs/tech-management/07-绩效与激励/01-产品技术团队OKR使用法则"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/04-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86",
-    "destination": "/docs/tech-management/07-绩效与激励/03-刘俊强：必知绩效管理知识之绩效数据收集"
+    "destination": "/docs/tech-management/07-绩效与激励/02-刘俊强：必知绩效管理知识之绩效数据收集"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/05-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/07-绩效与激励/04-刘俊强：必知绩效管理知识之绩效沟通"
+    "destination": "/docs/tech-management/07-绩效与激励/03-刘俊强：必知绩效管理知识之绩效沟通"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/06-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%9B%AE%E6%A0%87%E7%9A%84%E5%88%B6%E5%AE%9A",
-    "destination": "/docs/tech-management/07-绩效与激励/05-刘俊强：必知绩效管理知识之绩效目标的制定"
+    "destination": "/docs/tech-management/07-绩效与激励/04-刘俊强：必知绩效管理知识之绩效目标的制定"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/07-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E5%BE%AA%E7%8E%AF",
-    "destination": "/docs/tech-management/07-绩效与激励/06-刘俊强：必知绩效管理知识之绩效管理循环"
+    "destination": "/docs/tech-management/07-绩效与激励/05-刘俊强：必知绩效管理知识之绩效管理循环"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/08-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E8%AF%84%E5%AE%9A%E7%BB%A9%E6%95%88",
-    "destination": "/docs/tech-management/07-绩效与激励/07-刘俊强：必知绩效管理知识之评定绩效"
+    "destination": "/docs/tech-management/07-绩效与激励/06-刘俊强：必知绩效管理知识之评定绩效"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/09-%E5%9B%A2%E9%98%9F%E6%BF%80%E5%8A%B1%E4%B9%8B%E5%88%86%E9%85%8D%E5%A5%BD%E4%BD%A0%E7%9A%84%E5%A5%96%E9%87%91",
-    "destination": "/docs/tech-management/07-绩效与激励/08-团队激励之分配好你的奖金"
+    "destination": "/docs/tech-management/07-绩效与激励/07-团队激励之分配好你的奖金"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/10-%E5%A4%A7%E5%92%96%E5%AF%B9%E8%AF%9D-%E6%9D%8E%E6%98%8A%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
-    "destination": "/docs/tech-management/07-绩效与激励/09-大咖对话-李昊：创业公司如何做好技术团队绩效考核"
+    "destination": "/docs/tech-management/07-绩效与激励/08-大咖对话-李昊：创业公司如何做好技术团队绩效考核"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/11-%E5%B4%94%E4%BF%8A%E6%B6%9B%EF%BC%9A%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E6%BF%80%E5%8A%B1",
-    "destination": "/docs/tech-management/07-绩效与激励/10-崔俊涛：如何做好技术团队的激励"
+    "destination": "/docs/tech-management/07-绩效与激励/09-崔俊涛：如何做好技术团队的激励"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
-    "destination": "/docs/tech-management/07-绩效与激励/11-绩效管理的目标不仅仅是绩效考核"
+    "destination": "/docs/tech-management/07-绩效与激励/10-绩效管理的目标不仅仅是绩效考核"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/13-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E5%B7%A5%E5%85%B7%E7%AF%87",
-    "destination": "/docs/tech-management/07-绩效与激励/12-胡键：创业公司如何打造高凝聚力高绩效的技术团队：工具篇"
+    "destination": "/docs/tech-management/07-绩效与激励/11-胡键：创业公司如何打造高凝聚力高绩效的技术团队：工具篇"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/14-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E7%BB%84%E7%BB%87%E7%AF%87",
-    "destination": "/docs/tech-management/07-绩效与激励/13-胡键：创业公司如何打造高凝聚力高绩效的技术团队：组织篇"
+    "destination": "/docs/tech-management/07-绩效与激励/12-胡键：创业公司如何打造高凝聚力高绩效的技术团队：组织篇"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/15-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E9%9C%80%E8%A6%81%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F",
-    "destination": "/docs/tech-management/07-绩效与激励/14-胡键：创业公司需要高凝聚力高绩效的技术团队"
+    "destination": "/docs/tech-management/07-绩效与激励/13-胡键：创业公司需要高凝聚力高绩效的技术团队"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/16-%E9%80%9A%E8%BF%87%E7%A7%AF%E5%88%86%E8%80%83%E6%A0%B8%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E7%BB%A9%E6%95%88",
-    "destination": "/docs/tech-management/07-绩效与激励/15-通过积分考核提升技术团队的绩效"
+    "destination": "/docs/tech-management/07-绩效与激励/14-通过积分考核提升技术团队的绩效"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/17-%E9%AA%8C%E8%AF%81%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BB%B7%E5%80%BC%E7%9A%84%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8%E6%9C%BA%E5%88%B6",
-    "destination": "/docs/tech-management/07-绩效与激励/16-验证研发团队价值的绩效考核机制"
+    "destination": "/docs/tech-management/07-绩效与激励/15-验证研发团队价值的绩效考核机制"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/18-%E9%AB%98%E7%90%A6%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%99%E7%A0%94%E5%8F%91%E6%89%93%E7%BB%A9%E6%95%88%E4%B8%8D%E5%A4%B4%E7%96%BC%E8%80%8C%E5%8F%88%E5%85%AC%E6%AD%A3",
-    "destination": "/docs/tech-management/07-绩效与激励/17-高琦：如何给研发打绩效不头疼而又公正"
+    "destination": "/docs/tech-management/07-绩效与激励/16-高琦：如何给研发打绩效不头疼而又公正"
   },
   {
     "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/49-%E7%94%A8%E6%95%B0%E6%8D%AE%E6%9D%A5%E5%88%86%E6%9E%90%E7%AE%A1%E7%90%86%E5%91%98%E5%B7%A5",
-    "destination": "/docs/tech-management/07-绩效与激励/18-用数据来分析管理员工"
+    "destination": "/docs/tech-management/07-绩效与激励/17-用数据来分析管理员工"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/00-OKR%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84",
@@ -873,7 +873,7 @@
   },
   {
     "source": "/docs/tech-management/11-%E7%BB%84%E7%BB%87%E7%AE%A1%E7%90%86/%E6%B1%87%E7%BC%96-%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%B8%8E%E8%BF%AD%E4%BB%A3%E4%BA%A4%E4%BB%98",
-    "destination": "/docs/tech-management/06-研发流程与效能/22-汇编-高效研发团队与迭代交付"
+    "destination": "/docs/tech-management/06-研发流程与效能/20-汇编-高效研发团队与迭代交付"
   },
   {
     "source": "/docs/misc-tech-management/01-技术管理者成长指南",
@@ -897,27 +897,27 @@
   },
   {
     "source": "/docs/tech-management/10-研发流程与效率/01-敏捷与工程实践/:path*",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/:path*",
-    "destination": "/docs/tech-management/06-研发流程与效能/01-敏捷与工程实践/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/tech-management/10-研发流程与效率/02-腾讯敏捷项目管理实战/:path*",
-    "destination": "/docs/tech-management/06-研发流程与效能/02-腾讯敏捷项目管理实战/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/:path*",
-    "destination": "/docs/tech-management/06-研发流程与效能/02-腾讯敏捷项目管理实战/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/tech-management/12-绩效管理/02-极简OKR实战/:path*",
-    "destination": "/docs/tech-management/07-绩效与激励/01-极简OKR实战/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/tech-management/12-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86/02-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/:path*",
-    "destination": "/docs/tech-management/07-绩效与激励/01-极简OKR实战/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/tech-management/13-运维体系管理/:path*",
@@ -933,7 +933,7 @@
   },
   {
     "source": "/docs/agile-pm/:path*",
-    "destination": "/docs/tech-management/06-研发流程与效能/02-腾讯敏捷项目管理实战/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/okr-mini",
@@ -941,7 +941,7 @@
   },
   {
     "source": "/docs/okr-mini/:path*",
-    "destination": "/docs/tech-management/07-绩效与激励/01-极简OKR实战/:path*"
+    "destination": "/docs/tech-management"
   },
   {
     "source": "/docs/misc-tech-management",
@@ -1044,71 +1044,995 @@
     "destination": "/docs/tech-management"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E4%BA%A7%E5%93%81%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9FOKR%E4%BD%BF%E7%94%A8%E6%B3%95%E5%88%99",
-    "destination": "/docs/tech-management/07-绩效与激励/02-产品技术团队OKR使用法则"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/03-%E4%BA%8E%E4%BA%BA%EF%BC%9A%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BA%BA%E5%9D%87%E4%BA%A7%E8%83%BD3%E5%B9%B4%E6%8F%90%E5%8D%873.6%E5%80%8D%E7%9A%84%E7%A7%98%E8%AF%80%EF%BC%88%E4%B8%8A%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/01-于人：研发团队人均产能3年提升3.6倍的秘诀（上）"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/02-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86",
-    "destination": "/docs/tech-management/07-绩效与激励/03-刘俊强：必知绩效管理知识之绩效数据收集"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/04-%E4%BA%8E%E4%BA%BA%EF%BC%9A%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BA%BA%E5%9D%87%E4%BA%A7%E8%83%BD3%E5%B9%B4%E6%8F%90%E5%8D%873.6%E5%80%8D%E7%9A%84%E7%A7%98%E8%AF%80%EF%BC%88%E4%B8%8B%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/02-于人：研发团队人均产能3年提升3.6倍的秘诀（下）"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/03-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%B2%9F%E9%80%9A",
-    "destination": "/docs/tech-management/07-绩效与激励/04-刘俊强：必知绩效管理知识之绩效沟通"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/05-%E4%BD%95%E4%B8%96%E5%8F%8B%EF%BC%9A%E7%8E%B0%E4%BB%A3%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%BD%93%E7%B3%BB%E6%89%93%E9%80%A0",
+    "destination": "/docs/tech-management/06-研发流程与效能/03-何世友：现代研发流程体系打造"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/04-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%9B%AE%E6%A0%87%E7%9A%84%E5%88%B6%E5%AE%9A",
-    "destination": "/docs/tech-management/07-绩效与激励/05-刘俊强：必知绩效管理知识之绩效目标的制定"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/06-%E5%85%B0%E5%86%9B%EF%BC%9A%E5%9B%A2%E9%98%9F%E7%A0%94%E5%8F%91%E6%95%88%E7%8E%87%E4%BD%8E%E4%B8%8B%E7%9A%84%E8%A6%81%E5%9B%A0%E5%88%86%E6%9E%90",
+    "destination": "/docs/tech-management/06-研发流程与效能/04-兰军：团队研发效率低下的要因分析"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/05-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E5%BE%AA%E7%8E%AF",
-    "destination": "/docs/tech-management/07-绩效与激励/06-刘俊强：必知绩效管理知识之绩效管理循环"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/07-%E5%85%B0%E5%86%9B%EF%BC%9A%E6%8F%90%E5%8D%87%E4%BA%A7%E5%93%81%E5%9B%A2%E9%98%9F%E7%A0%94%E5%8F%91%E6%95%88%E7%8E%87%E7%9A%84%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%8A%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/05-兰军：提升产品团队研发效率的实践（上）"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/06-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E8%AF%84%E5%AE%9A%E7%BB%A9%E6%95%88",
-    "destination": "/docs/tech-management/07-绩效与激励/07-刘俊强：必知绩效管理知识之评定绩效"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/08-%E5%85%B0%E5%86%9B%EF%BC%9A%E6%8F%90%E5%8D%87%E4%BA%A7%E5%93%81%E5%9B%A2%E9%98%9F%E7%A0%94%E5%8F%91%E6%95%88%E7%8E%87%E7%9A%84%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%8B%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/06-兰军：提升产品团队研发效率的实践（下）"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/07-%E5%9B%A2%E9%98%9F%E6%BF%80%E5%8A%B1%E4%B9%8B%E5%88%86%E9%85%8D%E5%A5%BD%E4%BD%A0%E7%9A%84%E5%A5%96%E9%87%91",
-    "destination": "/docs/tech-management/07-绩效与激励/08-团队激励之分配好你的奖金"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/09-%E5%8D%A2%E4%BA%BF%E9%9B%B7%EF%BC%9A%E4%BC%81%E4%B8%9A%E5%8F%91%E5%B1%95%E7%9A%84%E4%B8%8D%E5%90%8C%E9%98%B6%E6%AE%B5%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E7%9A%84%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%BD%93%E7%B3%BB",
+    "destination": "/docs/tech-management/06-研发流程与效能/07-卢亿雷：企业发展的不同阶段，该如何打造高效的研发流程体系"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/08-%E5%A4%A7%E5%92%96%E5%AF%B9%E8%AF%9D-%E6%9D%8E%E6%98%8A%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
-    "destination": "/docs/tech-management/07-绩效与激励/09-大咖对话-李昊：创业公司如何做好技术团队绩效考核"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/10-%E5%AE%9A%E5%88%B6%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/08-定制高效研发流程"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/09-%E5%B4%94%E4%BF%8A%E6%B6%9B%EF%BC%9A%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E6%BF%80%E5%8A%B1",
-    "destination": "/docs/tech-management/07-绩效与激励/10-崔俊涛：如何做好技术团队的激励"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/11-%E5%BE%90%E8%A3%95%E9%94%AE%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%AB%98%E9%80%9F%E5%A2%9E%E9%95%BF%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%9B%A2%E9%98%9F%E8%BF%AD%E4%BB%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/09-徐裕键：业务高速增长过程中的团队迭代"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/10-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
-    "destination": "/docs/tech-management/07-绩效与激励/11-绩效管理的目标不仅仅是绩效考核"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/12-%E6%95%8F%E6%8D%B7%E4%B8%AD%E7%9A%84%E6%9C%9F%E9%99%90%E4%B9%8B%E6%AE%87%EF%BC%8C%E8%BD%AF%E4%BB%B6%E4%B8%9A%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/10-敏捷中的期限之殇，软件业该怎么做"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/11-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E5%B7%A5%E5%85%B7%E7%AF%87",
-    "destination": "/docs/tech-management/07-绩效与激励/12-胡键：创业公司如何打造高凝聚力高绩效的技术团队：工具篇"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/13-%E6%96%BD%E7%BF%94%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A07-24%E9%AB%98%E6%95%88%E4%BA%A4%E4%BB%98%E9%80%9A%E9%81%93%EF%BC%88%E4%B8%8A%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/11-施翔：如何打造7-24高效交付通道（上）"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/12-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E7%BB%84%E7%BB%87%E7%AF%87",
-    "destination": "/docs/tech-management/07-绩效与激励/13-胡键：创业公司如何打造高凝聚力高绩效的技术团队：组织篇"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/14-%E6%96%BD%E7%BF%94%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A07-24%E9%AB%98%E6%95%88%E4%BA%A4%E4%BB%98%E9%80%9A%E9%81%93%EF%BC%88%E4%B8%8B%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/12-施翔：如何打造7-24高效交付通道（下）"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/13-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E9%9C%80%E8%A6%81%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F",
-    "destination": "/docs/tech-management/07-绩效与激励/14-胡键：创业公司需要高凝聚力高绩效的技术团队"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/15-%E6%9C%89%E4%BA%86%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%EF%BC%8C%E9%82%A3%E4%BA%A4%E4%BB%98%E6%9C%9F%E9%99%90%E5%8E%BB%E5%93%AA%E5%84%BF%E4%BA%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/13-有了敏捷开发，那交付期限去哪儿了"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/14-%E9%80%9A%E8%BF%87%E7%A7%AF%E5%88%86%E8%80%83%E6%A0%B8%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E7%BB%A9%E6%95%88",
-    "destination": "/docs/tech-management/07-绩效与激励/15-通过积分考核提升技术团队的绩效"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/16-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E6%95%8F%E6%8D%B7%E5%8A%9B%EF%BC%8C%E6%8B%A5%E6%8A%B1%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%EF%BC%8C%E4%B8%8EVUCA%E5%85%B1%E8%88%9E",
+    "destination": "/docs/tech-management/06-研发流程与效能/14-游舒帆：敏捷力，拥抱不确定性，与VUCA共舞"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/15-%E9%AA%8C%E8%AF%81%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BB%B7%E5%80%BC%E7%9A%84%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8%E6%9C%BA%E5%88%B6",
-    "destination": "/docs/tech-management/07-绩效与激励/16-验证研发团队价值的绩效考核机制"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/17-%E6%B8%B8%E8%88%92%E5%B8%86%EF%BC%9A%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E9%82%A3%E4%BA%9B%E4%BA%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/15-游舒帆：高效研发流程那些事"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/16-%E9%AB%98%E7%90%A6%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%99%E7%A0%94%E5%8F%91%E6%89%93%E7%BB%A9%E6%95%88%E4%B8%8D%E5%A4%B4%E7%96%BC%E8%80%8C%E5%8F%88%E5%85%AC%E6%AD%A3",
-    "destination": "/docs/tech-management/07-绩效与激励/17-高琦：如何给研发打绩效不头疼而又公正"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/18-%E7%8E%8B%E6%B5%B7%E4%BA%AE%EF%BC%9A%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E6%95%88%E7%8E%87%E7%9A%845%E4%B8%AA%E6%8F%90%E7%A4%BA%EF%BC%88%E4%B8%8A%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/16-王海亮：提升技术团队效率的5个提示（上）"
   },
   {
-    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/17-%E7%94%A8%E6%95%B0%E6%8D%AE%E6%9D%A5%E5%88%86%E6%9E%90%E7%AE%A1%E7%90%86%E5%91%98%E5%B7%A5",
-    "destination": "/docs/tech-management/07-绩效与激励/18-用数据来分析管理员工"
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/19-%E7%8E%8B%E6%B5%B7%E4%BA%AE%EF%BC%9A%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E6%95%88%E7%8E%87%E7%9A%845%E4%B8%AA%E6%8F%90%E7%A4%BA%EF%BC%88%E4%B8%8B%EF%BC%89",
+    "destination": "/docs/tech-management/06-研发流程与效能/17-王海亮：提升技术团队效率的5个提示（下）"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/20-%E9%82%B1%E8%89%AF%E5%86%9B%EF%BC%9A%E5%81%9A%E5%A5%BD%E7%A0%94%E5%8F%91%E7%AE%A1%E7%90%86%E7%9A%843%E4%B8%AA%E5%85%B3%E9%94%AE",
+    "destination": "/docs/tech-management/06-研发流程与效能/18-邱良军：做好研发管理的3个关键"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/21-%E9%92%AE%E5%8D%9A%E5%BD%A6%EF%BC%9A%E8%BD%AF%E4%BB%B6%E7%A0%94%E5%8F%91%E5%BA%A6%E9%87%8F%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE",
+    "destination": "/docs/tech-management/06-研发流程与效能/19-钮博彦：软件研发度量体系建设"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/22-%E6%B1%87%E7%BC%96-%E9%AB%98%E6%95%88%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%B8%8E%E8%BF%AD%E4%BB%A3%E4%BA%A4%E4%BB%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/20-汇编-高效研发团队与迭代交付"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/01-%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E4%BD%93%E7%B3%BB",
+    "destination": "/docs/tech-management/06-研发流程与效能/21-项目文档管理体系"
+  },
+  {
+    "source": "/docs/agile-pm/01-%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E4%BD%93%E7%B3%BB",
+    "destination": "/docs/tech-management/06-研发流程与效能/21-项目文档管理体系"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/01-%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E4%BD%93%E7%B3%BB",
+    "destination": "/docs/tech-management/06-研发流程与效能/21-项目文档管理体系"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
+  },
+  {
+    "source": "/docs/agile-pm/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/02-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/tech-management/06-研发流程与效能/22-需求分析方法论"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
+    "destination": "/docs/tech-management/06-研发流程与效能/23-技术选型实践"
+  },
+  {
+    "source": "/docs/agile-pm/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
+    "destination": "/docs/tech-management/06-研发流程与效能/23-技术选型实践"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/03-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AE%9E%E8%B7%B5",
+    "destination": "/docs/tech-management/06-研发流程与效能/23-技术选型实践"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-%E7%B2%BE%E7%9B%8A%E5%88%9B%E4%B8%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/24-精益创业"
+  },
+  {
+    "source": "/docs/agile-pm/04-%E7%B2%BE%E7%9B%8A%E5%88%9B%E4%B8%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/24-精益创业"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/04-%E7%B2%BE%E7%9B%8A%E5%88%9B%E4%B8%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/24-精益创业"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/tech-management/06-研发流程与效能/25-架构设计方法论"
+  },
+  {
+    "source": "/docs/agile-pm/05-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/tech-management/06-研发流程与效能/25-架构设计方法论"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/05-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BA",
+    "destination": "/docs/tech-management/06-研发流程与效能/25-架构设计方法论"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5",
+    "destination": "/docs/tech-management/06-研发流程与效能/26-接口文档工具与API设计实践"
+  },
+  {
+    "source": "/docs/agile-pm/06-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5",
+    "destination": "/docs/tech-management/06-研发流程与效能/26-接口文档工具与API设计实践"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/06-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7%E4%B8%8EAPI%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5",
+    "destination": "/docs/tech-management/06-研发流程与效能/26-接口文档工具与API设计实践"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82",
+    "destination": "/docs/tech-management/06-研发流程与效能/27-上下文差异"
+  },
+  {
+    "source": "/docs/agile-pm/07-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82",
+    "destination": "/docs/tech-management/06-研发流程与效能/27-上下文差异"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/07-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%AE%E5%BC%82",
+    "destination": "/docs/tech-management/06-研发流程与效能/27-上下文差异"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94",
+    "destination": "/docs/tech-management/06-研发流程与效能/28-沙盘推演"
+  },
+  {
+    "source": "/docs/agile-pm/08-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94",
+    "destination": "/docs/tech-management/06-研发流程与效能/28-沙盘推演"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/08-%E6%B2%99%E7%9B%98%E6%8E%A8%E6%BC%94",
+    "destination": "/docs/tech-management/06-研发流程与效能/28-沙盘推演"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
+    "destination": "/docs/tech-management/06-研发流程与效能/29-项目管理与维护"
+  },
+  {
+    "source": "/docs/agile-pm/09-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
+    "destination": "/docs/tech-management/06-研发流程与效能/29-项目管理与维护"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/09-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%8E%E7%BB%B4%E6%8A%A4",
+    "destination": "/docs/tech-management/06-研发流程与效能/29-项目管理与维护"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8",
+    "destination": "/docs/tech-management/06-研发流程与效能/30-度量驱动"
+  },
+  {
+    "source": "/docs/agile-pm/10-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8",
+    "destination": "/docs/tech-management/06-研发流程与效能/30-度量驱动"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/10-%E5%BA%A6%E9%87%8F%E9%A9%B1%E5%8A%A8",
+    "destination": "/docs/tech-management/06-研发流程与效能/30-度量驱动"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
+  },
+  {
+    "source": "/docs/agile-pm/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/11-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80",
+    "destination": "/docs/tech-management/06-研发流程与效能/31-原型设计理论基础"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E8%BF%AD%E4%BB%A30",
+    "destination": "/docs/tech-management/06-研发流程与效能/32-迭代0"
+  },
+  {
+    "source": "/docs/agile-pm/12-%E8%BF%AD%E4%BB%A30",
+    "destination": "/docs/tech-management/06-研发流程与效能/32-迭代0"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/12-%E8%BF%AD%E4%BB%A30",
+    "destination": "/docs/tech-management/06-研发流程与效能/32-迭代0"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/33-原型设计工具实战"
+  },
+  {
+    "source": "/docs/agile-pm/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/33-原型设计工具实战"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/13-%E5%8E%9F%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/33-原型设计工具实战"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/34-任务分解"
+  },
+  {
+    "source": "/docs/agile-pm/14-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/34-任务分解"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/14-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/34-任务分解"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/35-AI工具与原型实战"
+  },
+  {
+    "source": "/docs/agile-pm/15-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/35-AI工具与原型实战"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/15-AI%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%8E%9F%E5%9E%8B%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/35-AI工具与原型实战"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95",
+    "destination": "/docs/tech-management/06-研发流程与效能/36-开发者测试"
+  },
+  {
+    "source": "/docs/agile-pm/16-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95",
+    "destination": "/docs/tech-management/06-研发流程与效能/36-开发者测试"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/16-%E5%BC%80%E5%8F%91%E8%80%85%E6%B5%8B%E8%AF%95",
+    "destination": "/docs/tech-management/06-研发流程与效能/36-开发者测试"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/37-设计稿与素材工具"
+  },
+  {
+    "source": "/docs/agile-pm/17-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/37-设计稿与素材工具"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/17-%E8%AE%BE%E8%AE%A1%E7%A8%BF%E4%B8%8E%E7%B4%A0%E6%9D%90%E5%B7%A5%E5%85%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/37-设计稿与素材工具"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/38-大师级程序员"
+  },
+  {
+    "source": "/docs/agile-pm/18-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/38-大师级程序员"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/18-%E5%A4%A7%E5%B8%88%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/38-大师级程序员"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/39-任务分解实战"
+  },
+  {
+    "source": "/docs/agile-pm/19-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/39-任务分解实战"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/19-%E4%BB%BB%E5%8A%A1%E5%88%86%E8%A7%A3%E5%AE%9E%E6%88%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/39-任务分解实战"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F",
+    "destination": "/docs/tech-management/06-研发流程与效能/40-测试质量"
+  },
+  {
+    "source": "/docs/agile-pm/20-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F",
+    "destination": "/docs/tech-management/06-研发流程与效能/40-测试质量"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/20-%E6%B5%8B%E8%AF%95%E8%B4%A8%E9%87%8F",
+    "destination": "/docs/tech-management/06-研发流程与效能/40-测试质量"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/41-需求分解"
+  },
+  {
+    "source": "/docs/agile-pm/21-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/41-需求分解"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/21-%E9%9C%80%E6%B1%82%E5%88%86%E8%A7%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/41-需求分解"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/42-需求管理"
+  },
+  {
+    "source": "/docs/agile-pm/22-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/42-需求管理"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/22-%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/42-需求管理"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/43-MVP最小代价"
+  },
+  {
+    "source": "/docs/agile-pm/23-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/43-MVP最小代价"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/23-MVP%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/43-MVP最小代价"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE",
+    "destination": "/docs/tech-management/06-研发流程与效能/44-认知偏差"
+  },
+  {
+    "source": "/docs/agile-pm/24-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE",
+    "destination": "/docs/tech-management/06-研发流程与效能/44-认知偏差"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/24-%E8%AE%A4%E7%9F%A5%E5%81%8F%E5%B7%AE",
+    "destination": "/docs/tech-management/06-研发流程与效能/44-认知偏差"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99",
+    "destination": "/docs/tech-management/06-研发流程与效能/45-代码为谁而写"
+  },
+  {
+    "source": "/docs/agile-pm/25-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99",
+    "destination": "/docs/tech-management/06-研发流程与效能/45-代码为谁而写"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/25-%E4%BB%A3%E7%A0%81%E4%B8%BA%E8%B0%81%E8%80%8C%E5%86%99",
+    "destination": "/docs/tech-management/06-研发流程与效能/45-代码为谁而写"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/46-轻量级沟通"
+  },
+  {
+    "source": "/docs/agile-pm/26-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/46-轻量级沟通"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/26-%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/46-轻量级沟通"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/27-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/47-可视化沟通"
+  },
+  {
+    "source": "/docs/agile-pm/27-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/47-可视化沟通"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/27-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/47-可视化沟通"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/28-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI",
+    "destination": "/docs/tech-management/06-研发流程与效能/48-快速反馈与CI"
+  },
+  {
+    "source": "/docs/agile-pm/28-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI",
+    "destination": "/docs/tech-management/06-研发流程与效能/48-快速反馈与CI"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/28-%E5%BF%AB%E9%80%9F%E5%8F%8D%E9%A6%88%E4%B8%8ECI",
+    "destination": "/docs/tech-management/06-研发流程与效能/48-快速反馈与CI"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2",
+    "destination": "/docs/tech-management/06-研发流程与效能/49-复盘与预防"
+  },
+  {
+    "source": "/docs/agile-pm/29-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2",
+    "destination": "/docs/tech-management/06-研发流程与效能/49-复盘与预防"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/29-%E5%A4%8D%E7%9B%98%E4%B8%8E%E9%A2%84%E9%98%B2",
+    "destination": "/docs/tech-management/06-研发流程与效能/49-复盘与预防"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3",
+    "destination": "/docs/tech-management/06-研发流程与效能/50-聆听用户声音"
+  },
+  {
+    "source": "/docs/agile-pm/30-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3",
+    "destination": "/docs/tech-management/06-研发流程与效能/50-聆听用户声音"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/30-%E8%81%86%E5%90%AC%E7%94%A8%E6%88%B7%E5%A3%B0%E9%9F%B3",
+    "destination": "/docs/tech-management/06-研发流程与效能/50-聆听用户声音"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/51-尽早暴露问题"
+  },
+  {
+    "source": "/docs/agile-pm/31-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/51-尽早暴露问题"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/31-%E5%B0%BD%E6%97%A9%E6%9A%B4%E9%9C%B2%E9%97%AE%E9%A2%98",
+    "destination": "/docs/tech-management/06-研发流程与效能/51-尽早暴露问题"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/52-结构化写文档"
+  },
+  {
+    "source": "/docs/agile-pm/32-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/52-结构化写文档"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/32-%E7%BB%93%E6%9E%84%E5%8C%96%E5%86%99%E6%96%87%E6%A1%A3",
+    "destination": "/docs/tech-management/06-研发流程与效能/52-结构化写文档"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96",
+    "destination": "/docs/tech-management/06-研发流程与效能/53-懒惰与自动化"
+  },
+  {
+    "source": "/docs/agile-pm/33-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96",
+    "destination": "/docs/tech-management/06-研发流程与效能/53-懒惰与自动化"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/33-%E6%87%92%E6%83%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96",
+    "destination": "/docs/tech-management/06-研发流程与效能/53-懒惰与自动化"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96",
+    "destination": "/docs/tech-management/06-研发流程与效能/54-项目自动化"
+  },
+  {
+    "source": "/docs/agile-pm/34-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96",
+    "destination": "/docs/tech-management/06-研发流程与效能/54-项目自动化"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/34-%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E5%8C%96",
+    "destination": "/docs/tech-management/06-研发流程与效能/54-项目自动化"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD",
+    "destination": "/docs/tech-management/06-研发流程与效能/55-验收测试与BDD"
+  },
+  {
+    "source": "/docs/agile-pm/35-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD",
+    "destination": "/docs/tech-management/06-研发流程与效能/55-验收测试与BDD"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/35-%E9%AA%8C%E6%94%B6%E6%B5%8B%E8%AF%95%E4%B8%8EBDD",
+    "destination": "/docs/tech-management/06-研发流程与效能/55-验收测试与BDD"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/56-代码治理"
+  },
+  {
+    "source": "/docs/agile-pm/36-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/56-代码治理"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/36-%E4%BB%A3%E7%A0%81%E6%B2%BB%E7%90%86",
+    "destination": "/docs/tech-management/06-研发流程与效能/56-代码治理"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6",
+    "destination": "/docs/tech-management/06-研发流程与效能/57-软件复杂度"
+  },
+  {
+    "source": "/docs/agile-pm/37-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6",
+    "destination": "/docs/tech-management/06-研发流程与效能/57-软件复杂度"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/37-%E8%BD%AF%E4%BB%B6%E5%A4%8D%E6%9D%82%E5%BA%A6",
+    "destination": "/docs/tech-management/06-研发流程与效能/57-软件复杂度"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/38-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/58-新入职快速上手"
+  },
+  {
+    "source": "/docs/agile-pm/38-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/58-新入职快速上手"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/38-%E6%96%B0%E5%85%A5%E8%81%8C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/58-新入职快速上手"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/39-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B",
+    "destination": "/docs/tech-management/06-研发流程与效能/59-保持竞争力"
+  },
+  {
+    "source": "/docs/agile-pm/39-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B",
+    "destination": "/docs/tech-management/06-研发流程与效能/59-保持竞争力"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/39-%E4%BF%9D%E6%8C%81%E7%AB%9E%E4%BA%89%E5%8A%9B",
+    "destination": "/docs/tech-management/06-研发流程与效能/59-保持竞争力"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/40-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB",
+    "destination": "/docs/tech-management/06-研发流程与效能/60-划重点汇总"
+  },
+  {
+    "source": "/docs/agile-pm/40-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB",
+    "destination": "/docs/tech-management/06-研发流程与效能/60-划重点汇总"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/40-%E5%88%92%E9%87%8D%E7%82%B9%E6%B1%87%E6%80%BB",
+    "destination": "/docs/tech-management/06-研发流程与效能/60-划重点汇总"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/41-%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/61-其他开发模型"
+  },
+  {
+    "source": "/docs/agile-pm/41-%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/61-其他开发模型"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/41-%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/61-其他开发模型"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/42-%E5%A4%A7%E5%8E%82%E9%83%BD%E5%9C%A8%E7%94%A8%E5%93%AA%E4%BA%9B%E6%95%8F%E6%8D%B7%E6%96%B9%E6%B3%95",
+    "destination": "/docs/tech-management/06-研发流程与效能/62-大厂都在用哪些敏捷方法"
+  },
+  {
+    "source": "/docs/agile-pm/42-%E5%A4%A7%E5%8E%82%E9%83%BD%E5%9C%A8%E7%94%A8%E5%93%AA%E4%BA%9B%E6%95%8F%E6%8D%B7%E6%96%B9%E6%B3%95",
+    "destination": "/docs/tech-management/06-研发流程与效能/62-大厂都在用哪些敏捷方法"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/42-%E5%A4%A7%E5%8E%82%E9%83%BD%E5%9C%A8%E7%94%A8%E5%93%AA%E4%BA%9B%E6%95%8F%E6%8D%B7%E6%96%B9%E6%B3%95",
+    "destination": "/docs/tech-management/06-研发流程与效能/62-大厂都在用哪些敏捷方法"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/43-%E5%AF%B9%E5%BE%85%E5%BC%80%E4%BC%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/63-对待开会"
+  },
+  {
+    "source": "/docs/agile-pm/43-%E5%AF%B9%E5%BE%85%E5%BC%80%E4%BC%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/63-对待开会"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/43-%E5%AF%B9%E5%BE%85%E5%BC%80%E4%BC%9A",
+    "destination": "/docs/tech-management/06-研发流程与效能/63-对待开会"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/44-%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4",
+    "destination": "/docs/tech-management/06-研发流程与效能/64-工程思维"
+  },
+  {
+    "source": "/docs/agile-pm/44-%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4",
+    "destination": "/docs/tech-management/06-研发流程与效能/64-工程思维"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/44-%E5%B7%A5%E7%A8%8B%E6%80%9D%E7%BB%B4",
+    "destination": "/docs/tech-management/06-研发流程与效能/64-工程思维"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/45-%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91",
+    "destination": "/docs/tech-management/06-研发流程与效能/65-敏捷开发"
+  },
+  {
+    "source": "/docs/agile-pm/45-%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91",
+    "destination": "/docs/tech-management/06-研发流程与效能/65-敏捷开发"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/45-%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91",
+    "destination": "/docs/tech-management/06-研发流程与效能/65-敏捷开发"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/46-%E7%80%91%E5%B8%83%E6%A8%A1%E5%9E%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/66-瀑布模型"
+  },
+  {
+    "source": "/docs/agile-pm/46-%E7%80%91%E5%B8%83%E6%A8%A1%E5%9E%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/66-瀑布模型"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/46-%E7%80%91%E5%B8%83%E6%A8%A1%E5%9E%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/66-瀑布模型"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/47-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/67-软件工程"
+  },
+  {
+    "source": "/docs/agile-pm/47-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/67-软件工程"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/47-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B",
+    "destination": "/docs/tech-management/06-研发流程与效能/67-软件工程"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/48-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/68-项目管理工具"
+  },
+  {
+    "source": "/docs/agile-pm/48-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/68-项目管理工具"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/01-%E6%95%8F%E6%8D%B7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/48-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7",
+    "destination": "/docs/tech-management/06-研发流程与效能/68-项目管理工具"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/00-%E6%95%8F%E6%8D%B7%E6%98%AF%E4%BA%92%E8%81%94%E7%BD%91%E6%97%B6%E4%BB%A3%E7%9A%84%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E6%9C%AF",
+    "destination": "/docs/tech-management/06-研发流程与效能/69-敏捷是互联网时代的超级管理术"
+  },
+  {
+    "source": "/docs/agile-pm/00-%E6%95%8F%E6%8D%B7%E6%98%AF%E4%BA%92%E8%81%94%E7%BD%91%E6%97%B6%E4%BB%A3%E7%9A%84%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E6%9C%AF",
+    "destination": "/docs/tech-management/06-研发流程与效能/69-敏捷是互联网时代的超级管理术"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/00-%E6%95%8F%E6%8D%B7%E6%98%AF%E4%BA%92%E8%81%94%E7%BD%91%E6%97%B6%E4%BB%A3%E7%9A%84%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E6%9C%AF",
+    "destination": "/docs/tech-management/06-研发流程与效能/69-敏捷是互联网时代的超级管理术"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/01-%E6%BC%94%E5%8C%96%EF%BC%9A%E8%85%BE%E8%AE%AF%E7%9A%84%E6%95%8F%E6%8D%B7%E7%AE%A1%E7%90%86%E4%B9%8B%E8%B7%AF",
+    "destination": "/docs/tech-management/06-研发流程与效能/70-演化：腾讯的敏捷管理之路"
+  },
+  {
+    "source": "/docs/agile-pm/01-%E6%BC%94%E5%8C%96%EF%BC%9A%E8%85%BE%E8%AE%AF%E7%9A%84%E6%95%8F%E6%8D%B7%E7%AE%A1%E7%90%86%E4%B9%8B%E8%B7%AF",
+    "destination": "/docs/tech-management/06-研发流程与效能/70-演化：腾讯的敏捷管理之路"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/01-%E6%BC%94%E5%8C%96%EF%BC%9A%E8%85%BE%E8%AE%AF%E7%9A%84%E6%95%8F%E6%8D%B7%E7%AE%A1%E7%90%86%E4%B9%8B%E8%B7%AF",
+    "destination": "/docs/tech-management/06-研发流程与效能/70-演化：腾讯的敏捷管理之路"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/02-%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BD%A0%E5%BF%85%E9%A1%BB%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%8F%E6%8D%B7%E5%86%85%E5%AE%B9",
+    "destination": "/docs/tech-management/06-研发流程与效能/71-入门：你必须知道的敏捷内容"
+  },
+  {
+    "source": "/docs/agile-pm/02-%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BD%A0%E5%BF%85%E9%A1%BB%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%8F%E6%8D%B7%E5%86%85%E5%AE%B9",
+    "destination": "/docs/tech-management/06-研发流程与效能/71-入门：你必须知道的敏捷内容"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/02-%E5%85%A5%E9%97%A8%EF%BC%9A%E4%BD%A0%E5%BF%85%E9%A1%BB%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%8F%E6%8D%B7%E5%86%85%E5%AE%B9",
+    "destination": "/docs/tech-management/06-研发流程与效能/71-入门：你必须知道的敏捷内容"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/03-%E9%87%8F%E4%BD%93%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E9%80%82%E5%90%88%E5%81%9A%E6%95%8F%E6%8D%B7%E8%BD%AC%E5%9E%8B%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/72-量体：如何判断是否适合做敏捷转型？"
+  },
+  {
+    "source": "/docs/agile-pm/03-%E9%87%8F%E4%BD%93%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E9%80%82%E5%90%88%E5%81%9A%E6%95%8F%E6%8D%B7%E8%BD%AC%E5%9E%8B%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/72-量体：如何判断是否适合做敏捷转型？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/03-%E9%87%8F%E4%BD%93%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E9%80%82%E5%90%88%E5%81%9A%E6%95%8F%E6%8D%B7%E8%BD%AC%E5%9E%8B%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/72-量体：如何判断是否适合做敏捷转型？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/04-%E8%A3%81%E8%A1%A3%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E6%95%8F%E6%8D%B7%E6%96%B9%E6%B3%95%E9%80%82%E5%90%88%E5%85%AC%E5%8F%B8%E5%AE%9E%E6%83%85%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/73-裁衣：如何使敏捷方法适合公司实情？"
+  },
+  {
+    "source": "/docs/agile-pm/04-%E8%A3%81%E8%A1%A3%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E6%95%8F%E6%8D%B7%E6%96%B9%E6%B3%95%E9%80%82%E5%90%88%E5%85%AC%E5%8F%B8%E5%AE%9E%E6%83%85%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/73-裁衣：如何使敏捷方法适合公司实情？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/04-%E8%A3%81%E8%A1%A3%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E6%95%8F%E6%8D%B7%E6%96%B9%E6%B3%95%E9%80%82%E5%90%88%E5%85%AC%E5%8F%B8%E5%AE%9E%E6%83%85%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/73-裁衣：如何使敏捷方法适合公司实情？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/05-%E5%90%AF%E5%8A%A8%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E6%95%8F%E6%8D%B7%E6%80%9D%E7%BB%B4%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/74-启动：如何拥有敏捷思维？"
+  },
+  {
+    "source": "/docs/agile-pm/05-%E5%90%AF%E5%8A%A8%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E6%95%8F%E6%8D%B7%E6%80%9D%E7%BB%B4%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/74-启动：如何拥有敏捷思维？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/05-%E5%90%AF%E5%8A%A8%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E6%95%8F%E6%8D%B7%E6%80%9D%E7%BB%B4%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/74-启动：如何拥有敏捷思维？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/06-%E8%87%AA%E7%BB%84%E7%BB%87%EF%BC%9A%E6%95%8F%E6%8D%B7%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E5%BC%80%E5%B1%95%E8%87%AA%E7%BB%84%E7%BB%87%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/75-自组织：敏捷团队如何开展自组织？"
+  },
+  {
+    "source": "/docs/agile-pm/06-%E8%87%AA%E7%BB%84%E7%BB%87%EF%BC%9A%E6%95%8F%E6%8D%B7%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E5%BC%80%E5%B1%95%E8%87%AA%E7%BB%84%E7%BB%87%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/75-自组织：敏捷团队如何开展自组织？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/06-%E8%87%AA%E7%BB%84%E7%BB%87%EF%BC%9A%E6%95%8F%E6%8D%B7%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E5%BC%80%E5%B1%95%E8%87%AA%E7%BB%84%E7%BB%87%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/75-自组织：敏捷团队如何开展自组织？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/07-%E8%AE%A1%E5%88%92%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E5%A5%BD%E7%9A%84%E8%BF%AD%E4%BB%A3%E8%AE%A1%E5%88%92%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/76-计划：如何制定一份好的迭代计划？"
+  },
+  {
+    "source": "/docs/agile-pm/07-%E8%AE%A1%E5%88%92%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E5%A5%BD%E7%9A%84%E8%BF%AD%E4%BB%A3%E8%AE%A1%E5%88%92%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/76-计划：如何制定一份好的迭代计划？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/07-%E8%AE%A1%E5%88%92%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E4%B8%80%E4%BB%BD%E5%A5%BD%E7%9A%84%E8%BF%AD%E4%BB%A3%E8%AE%A1%E5%88%92%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/76-计划：如何制定一份好的迭代计划？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/08-%E6%89%A7%E8%A1%8C%E5%92%8C%E7%9B%91%E6%8E%A7%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E5%9B%A2%E9%98%9F%E8%BF%9B%E5%B1%95%E2%80%9C%E9%80%8F%E6%98%8E%E5%8C%96%E2%80%9D%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/77-执行和监控：如何使团队进展“透明化”？"
+  },
+  {
+    "source": "/docs/agile-pm/08-%E6%89%A7%E8%A1%8C%E5%92%8C%E7%9B%91%E6%8E%A7%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E5%9B%A2%E9%98%9F%E8%BF%9B%E5%B1%95%E2%80%9C%E9%80%8F%E6%98%8E%E5%8C%96%E2%80%9D%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/77-执行和监控：如何使团队进展“透明化”？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/08-%E6%89%A7%E8%A1%8C%E5%92%8C%E7%9B%91%E6%8E%A7%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E5%9B%A2%E9%98%9F%E8%BF%9B%E5%B1%95%E2%80%9C%E9%80%8F%E6%98%8E%E5%8C%96%E2%80%9D%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/77-执行和监控：如何使团队进展“透明化”？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/09-%E6%94%B6%E5%B0%BE%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BC%80%E5%B1%95%E5%B1%95%E7%A4%BA%E4%B8%8E%E5%9B%9E%E9%A1%BE%E4%BC%9A%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/78-收尾：如何开展展示与回顾会？"
+  },
+  {
+    "source": "/docs/agile-pm/09-%E6%94%B6%E5%B0%BE%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BC%80%E5%B1%95%E5%B1%95%E7%A4%BA%E4%B8%8E%E5%9B%9E%E9%A1%BE%E4%BC%9A%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/78-收尾：如何开展展示与回顾会？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/09-%E6%94%B6%E5%B0%BE%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BC%80%E5%B1%95%E5%B1%95%E7%A4%BA%E4%B8%8E%E5%9B%9E%E9%A1%BE%E4%BC%9A%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/78-收尾：如何开展展示与回顾会？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/10-%E5%BA%A6%E9%87%8F%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BA%A6%E9%87%8F%E6%95%8F%E6%8D%B7%E5%9B%A2%E9%98%9F%E7%9A%84%E7%BB%A9%E6%95%88%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/79-度量：如何度量敏捷团队的绩效？"
+  },
+  {
+    "source": "/docs/agile-pm/10-%E5%BA%A6%E9%87%8F%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BA%A6%E9%87%8F%E6%95%8F%E6%8D%B7%E5%9B%A2%E9%98%9F%E7%9A%84%E7%BB%A9%E6%95%88%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/79-度量：如何度量敏捷团队的绩效？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/10-%E5%BA%A6%E9%87%8F%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BA%A6%E9%87%8F%E6%95%8F%E6%8D%B7%E5%9B%A2%E9%98%9F%E7%9A%84%E7%BB%A9%E6%95%88%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/79-度量：如何度量敏捷团队的绩效？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/11-%E8%90%BD%E5%9C%B0%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BB%8E%200%20%E5%88%B0%201%20%E5%AF%BC%E5%85%A5%E6%95%8F%E6%8D%B7%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/80-落地：如何从 0 到 1 导入敏捷？"
+  },
+  {
+    "source": "/docs/agile-pm/11-%E8%90%BD%E5%9C%B0%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BB%8E%200%20%E5%88%B0%201%20%E5%AF%BC%E5%85%A5%E6%95%8F%E6%8D%B7%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/80-落地：如何从 0 到 1 导入敏捷？"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/11-%E8%90%BD%E5%9C%B0%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BB%8E%200%20%E5%88%B0%201%20%E5%AF%BC%E5%85%A5%E6%95%8F%E6%8D%B7%EF%BC%9F",
+    "destination": "/docs/tech-management/06-研发流程与效能/80-落地：如何从 0 到 1 导入敏捷？"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/12-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E8%BF%9B%E9%98%B6%E4%B9%8B%20ACP%20%E8%AE%A4%E8%AF%81%E6%94%BB%E7%95%A5",
+    "destination": "/docs/tech-management/06-研发流程与效能/81-项目管理进阶之 ACP 认证攻略"
+  },
+  {
+    "source": "/docs/agile-pm/12-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E8%BF%9B%E9%98%B6%E4%B9%8B%20ACP%20%E8%AE%A4%E8%AF%81%E6%94%BB%E7%95%A5",
+    "destination": "/docs/tech-management/06-研发流程与效能/81-项目管理进阶之 ACP 认证攻略"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/12-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E8%BF%9B%E9%98%B6%E4%B9%8B%20ACP%20%E8%AE%A4%E8%AF%81%E6%94%BB%E7%95%A5",
+    "destination": "/docs/tech-management/06-研发流程与效能/81-项目管理进阶之 ACP 认证攻略"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/13-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/06-研发流程与效能/82-个人成长"
+  },
+  {
+    "source": "/docs/agile-pm/13-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/06-研发流程与效能/82-个人成长"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/13-%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF",
+    "destination": "/docs/tech-management/06-研发流程与效能/82-个人成长"
+  },
+  {
+    "source": "/docs/tech-management/06-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E8%83%BD/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/14-%E6%95%8F%E6%8D%B7%EF%BC%8C%E5%AE%9E%E8%B7%B5%E5%87%BA%E7%9C%9F%E7%9F%A5",
+    "destination": "/docs/tech-management/06-研发流程与效能/83-敏捷，实践出真知"
+  },
+  {
+    "source": "/docs/agile-pm/14-%E6%95%8F%E6%8D%B7%EF%BC%8C%E5%AE%9E%E8%B7%B5%E5%87%BA%E7%9C%9F%E7%9F%A5",
+    "destination": "/docs/tech-management/06-研发流程与效能/83-敏捷，实践出真知"
+  },
+  {
+    "source": "/docs/tech-management/10-%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%95%88%E7%8E%87/02-%E8%85%BE%E8%AE%AF%E6%95%8F%E6%8D%B7%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/14-%E6%95%8F%E6%8D%B7%EF%BC%8C%E5%AE%9E%E8%B7%B5%E5%87%BA%E7%9C%9F%E7%9F%A5",
+    "destination": "/docs/tech-management/06-研发流程与效能/83-敏捷，实践出真知"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/02-%E4%BA%A7%E5%93%81%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9FOKR%E4%BD%BF%E7%94%A8%E6%B3%95%E5%88%99",
+    "destination": "/docs/tech-management/07-绩效与激励/01-产品技术团队OKR使用法则"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/03-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86",
+    "destination": "/docs/tech-management/07-绩效与激励/02-刘俊强：必知绩效管理知识之绩效数据收集"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/04-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E6%B2%9F%E9%80%9A",
+    "destination": "/docs/tech-management/07-绩效与激励/03-刘俊强：必知绩效管理知识之绩效沟通"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/05-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%9B%AE%E6%A0%87%E7%9A%84%E5%88%B6%E5%AE%9A",
+    "destination": "/docs/tech-management/07-绩效与激励/04-刘俊强：必知绩效管理知识之绩效目标的制定"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/06-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E5%BE%AA%E7%8E%AF",
+    "destination": "/docs/tech-management/07-绩效与激励/05-刘俊强：必知绩效管理知识之绩效管理循环"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/07-%E5%88%98%E4%BF%8A%E5%BC%BA%EF%BC%9A%E5%BF%85%E7%9F%A5%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%B9%8B%E8%AF%84%E5%AE%9A%E7%BB%A9%E6%95%88",
+    "destination": "/docs/tech-management/07-绩效与激励/06-刘俊强：必知绩效管理知识之评定绩效"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/08-%E5%9B%A2%E9%98%9F%E6%BF%80%E5%8A%B1%E4%B9%8B%E5%88%86%E9%85%8D%E5%A5%BD%E4%BD%A0%E7%9A%84%E5%A5%96%E9%87%91",
+    "destination": "/docs/tech-management/07-绩效与激励/07-团队激励之分配好你的奖金"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/09-%E5%A4%A7%E5%92%96%E5%AF%B9%E8%AF%9D-%E6%9D%8E%E6%98%8A%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
+    "destination": "/docs/tech-management/07-绩效与激励/08-大咖对话-李昊：创业公司如何做好技术团队绩效考核"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/10-%E5%B4%94%E4%BF%8A%E6%B6%9B%EF%BC%9A%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E6%BF%80%E5%8A%B1",
+    "destination": "/docs/tech-management/07-绩效与激励/09-崔俊涛：如何做好技术团队的激励"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/11-%E7%BB%A9%E6%95%88%E7%AE%A1%E7%90%86%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8",
+    "destination": "/docs/tech-management/07-绩效与激励/10-绩效管理的目标不仅仅是绩效考核"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/12-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E5%B7%A5%E5%85%B7%E7%AF%87",
+    "destination": "/docs/tech-management/07-绩效与激励/11-胡键：创业公司如何打造高凝聚力高绩效的技术团队：工具篇"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/13-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%EF%BC%9A%E7%BB%84%E7%BB%87%E7%AF%87",
+    "destination": "/docs/tech-management/07-绩效与激励/12-胡键：创业公司如何打造高凝聚力高绩效的技术团队：组织篇"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/14-%E8%83%A1%E9%94%AE%EF%BC%9A%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%E9%9C%80%E8%A6%81%E9%AB%98%E5%87%9D%E8%81%9A%E5%8A%9B%E9%AB%98%E7%BB%A9%E6%95%88%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/13-胡键：创业公司需要高凝聚力高绩效的技术团队"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/15-%E9%80%9A%E8%BF%87%E7%A7%AF%E5%88%86%E8%80%83%E6%A0%B8%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E7%BB%A9%E6%95%88",
+    "destination": "/docs/tech-management/07-绩效与激励/14-通过积分考核提升技术团队的绩效"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/16-%E9%AA%8C%E8%AF%81%E7%A0%94%E5%8F%91%E5%9B%A2%E9%98%9F%E4%BB%B7%E5%80%BC%E7%9A%84%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8%E6%9C%BA%E5%88%B6",
+    "destination": "/docs/tech-management/07-绩效与激励/15-验证研发团队价值的绩效考核机制"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/17-%E9%AB%98%E7%90%A6%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%99%E7%A0%94%E5%8F%91%E6%89%93%E7%BB%A9%E6%95%88%E4%B8%8D%E5%A4%B4%E7%96%BC%E8%80%8C%E5%8F%88%E5%85%AC%E6%AD%A3",
+    "destination": "/docs/tech-management/07-绩效与激励/16-高琦：如何给研发打绩效不头疼而又公正"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/18-%E7%94%A8%E6%95%B0%E6%8D%AE%E6%9D%A5%E5%88%86%E6%9E%90%E7%AE%A1%E7%90%86%E5%91%98%E5%B7%A5",
+    "destination": "/docs/tech-management/07-绩效与激励/17-用数据来分析管理员工"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/00-%E5%A6%82%E4%BD%95%E5%AE%8C%E6%88%90%20OKR%20%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5%E8%90%BD%E5%9C%B0%E7%9A%84%E8%B7%A8%E8%B6%8A%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/18-如何完成 OKR 理论到实践落地的跨越？"
+  },
+  {
+    "source": "/docs/okr-mini/00-%E5%A6%82%E4%BD%95%E5%AE%8C%E6%88%90%20OKR%20%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5%E8%90%BD%E5%9C%B0%E7%9A%84%E8%B7%A8%E8%B6%8A%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/18-如何完成 OKR 理论到实践落地的跨越？"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/01-%E4%B8%BA%E4%BB%80%E4%B9%88%20OKR%20%E5%B9%BF%E5%8F%97%E4%BC%81%E4%B8%9A%E9%9D%92%E7%9D%90%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/19-为什么 OKR 广受企业青睐？"
+  },
+  {
+    "source": "/docs/okr-mini/01-%E4%B8%BA%E4%BB%80%E4%B9%88%20OKR%20%E5%B9%BF%E5%8F%97%E4%BC%81%E4%B8%9A%E9%9D%92%E7%9D%90%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/19-为什么 OKR 广受企业青睐？"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/02-%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%20VS%20500%20%E5%BC%BA%E5%85%AC%E5%8F%B8%EF%BC%8C%E8%90%BD%E5%9C%B0%20OKR%20%E9%87%8D%E7%82%B9%E5%85%B3%E6%B3%A8%E4%BB%80%E4%B9%88%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/20-创业公司 VS 500 强公司，落地 OKR 重点关注什么？"
+  },
+  {
+    "source": "/docs/okr-mini/02-%E5%88%9B%E4%B8%9A%E5%85%AC%E5%8F%B8%20VS%20500%20%E5%BC%BA%E5%85%AC%E5%8F%B8%EF%BC%8C%E8%90%BD%E5%9C%B0%20OKR%20%E9%87%8D%E7%82%B9%E5%85%B3%E6%B3%A8%E4%BB%80%E4%B9%88%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/20-创业公司 VS 500 强公司，落地 OKR 重点关注什么？"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/03-%E4%BA%92%E8%81%94%E7%BD%91%E8%A1%8C%E4%B8%9A%20VS%20%E4%BC%A0%E7%BB%9F%E8%A1%8C%E4%B8%9A%EF%BC%8C%E5%A6%82%E4%BD%95%E7%81%B5%E6%B4%BB%E5%BA%94%E7%94%A8%20OKR%20%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/21-互联网行业 VS 传统行业，如何灵活应用 OKR ？"
+  },
+  {
+    "source": "/docs/okr-mini/03-%E4%BA%92%E8%81%94%E7%BD%91%E8%A1%8C%E4%B8%9A%20VS%20%E4%BC%A0%E7%BB%9F%E8%A1%8C%E4%B8%9A%EF%BC%8C%E5%A6%82%E4%BD%95%E7%81%B5%E6%B4%BB%E5%BA%94%E7%94%A8%20OKR%20%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/21-互联网行业 VS 传统行业，如何灵活应用 OKR ？"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/04-%E9%87%8D%E8%AF%86%E7%9B%AE%E6%A0%87%20O%EF%BC%9A%E4%BB%BB%E5%8A%A1%E5%92%8C%E4%BB%B7%E5%80%BC%EF%BC%8C%E5%BA%94%E8%AF%A5%E4%BB%A5%E8%B0%81%E4%B8%BA%E5%AF%BC%E5%90%91%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/22-重识目标 O：任务和价值，应该以谁为导向？"
+  },
+  {
+    "source": "/docs/okr-mini/04-%E9%87%8D%E8%AF%86%E7%9B%AE%E6%A0%87%20O%EF%BC%9A%E4%BB%BB%E5%8A%A1%E5%92%8C%E4%BB%B7%E5%80%BC%EF%BC%8C%E5%BA%94%E8%AF%A5%E4%BB%A5%E8%B0%81%E4%B8%BA%E5%AF%BC%E5%90%91%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/22-重识目标 O：任务和价值，应该以谁为导向？"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/05-%E5%85%B3%E9%94%AE%E7%BB%93%E6%9E%9C%20KR%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E6%89%8D%E8%83%BD%E4%BD%93%E7%8E%B0%E7%9B%AE%E6%A0%87%E2%80%9C%E8%BF%9B%E5%BA%A6%E2%80%9D%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/23-关键结果 KR：如何制定才能体现目标“进度”？"
+  },
+  {
+    "source": "/docs/okr-mini/05-%E5%85%B3%E9%94%AE%E7%BB%93%E6%9E%9C%20KR%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E6%89%8D%E8%83%BD%E4%BD%93%E7%8E%B0%E7%9B%AE%E6%A0%87%E2%80%9C%E8%BF%9B%E5%BA%A6%E2%80%9D%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/23-关键结果 KR：如何制定才能体现目标“进度”？"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/06-%E5%9B%A2%E9%98%9F%E6%BF%80%E5%8A%B1%E9%9A%BE%EF%BC%9FOKR%20%E7%9B%AE%E6%A0%87%E6%80%9D%E7%BB%B4%E8%BD%BB%E6%9D%BE%E8%BE%BE%E6%88%90",
+    "destination": "/docs/tech-management/07-绩效与激励/24-团队激励难？OKR 目标思维轻松达成"
+  },
+  {
+    "source": "/docs/okr-mini/06-%E5%9B%A2%E9%98%9F%E6%BF%80%E5%8A%B1%E9%9A%BE%EF%BC%9FOKR%20%E7%9B%AE%E6%A0%87%E6%80%9D%E7%BB%B4%E8%BD%BB%E6%9D%BE%E8%BE%BE%E6%88%90",
+    "destination": "/docs/tech-management/07-绩效与激励/24-团队激励难？OKR 目标思维轻松达成"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/07-%E8%BF%BD%E8%B8%AA%EF%BC%9A%E5%8F%AF%E8%A7%86%E5%8C%96%E8%BF%BD%E8%B8%AA%EF%BC%8C%E8%AE%A9%20OKR%20%E5%85%AC%E5%BC%80%E9%80%8F%E6%98%8E",
+    "destination": "/docs/tech-management/07-绩效与激励/25-追踪：可视化追踪，让 OKR 公开透明"
+  },
+  {
+    "source": "/docs/okr-mini/07-%E8%BF%BD%E8%B8%AA%EF%BC%9A%E5%8F%AF%E8%A7%86%E5%8C%96%E8%BF%BD%E8%B8%AA%EF%BC%8C%E8%AE%A9%20OKR%20%E5%85%AC%E5%BC%80%E9%80%8F%E6%98%8E",
+    "destination": "/docs/tech-management/07-绩效与激励/25-追踪：可视化追踪，让 OKR 公开透明"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/08-%E6%8F%90%E4%BC%98%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84%20OKR%20%E5%88%B6%E5%AE%9A%E3%80%81%E8%AF%84%E5%AE%A1%E4%BC%9A%E8%AE%AE%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/26-提优：如何打造高效率的 OKR 制定、评审会议？"
+  },
+  {
+    "source": "/docs/okr-mini/08-%E6%8F%90%E4%BC%98%EF%BC%9A%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84%20OKR%20%E5%88%B6%E5%AE%9A%E3%80%81%E8%AF%84%E5%AE%A1%E4%BC%9A%E8%AE%AE%EF%BC%9F",
+    "destination": "/docs/tech-management/07-绩效与激励/26-提优：如何打造高效率的 OKR 制定、评审会议？"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/09-%E5%8F%8D%E9%A6%88%EF%BC%9A%E8%87%AA%E4%B8%8B%E8%80%8C%E4%B8%8A%EF%BC%8COKR%20%E4%B8%BA%E6%88%98%E7%95%A5%E6%8F%90%E4%BE%9B%E4%BC%98%E5%8C%96%E5%AF%BC%E5%90%91",
+    "destination": "/docs/tech-management/07-绩效与激励/27-反馈：自下而上，OKR 为战略提供优化导向"
+  },
+  {
+    "source": "/docs/okr-mini/09-%E5%8F%8D%E9%A6%88%EF%BC%9A%E8%87%AA%E4%B8%8B%E8%80%8C%E4%B8%8A%EF%BC%8COKR%20%E4%B8%BA%E6%88%98%E7%95%A5%E6%8F%90%E4%BE%9B%E4%BC%98%E5%8C%96%E5%AF%BC%E5%90%91",
+    "destination": "/docs/tech-management/07-绩效与激励/27-反馈：自下而上，OKR 为战略提供优化导向"
+  },
+  {
+    "source": "/docs/tech-management/07-%E7%BB%A9%E6%95%88%E4%B8%8E%E6%BF%80%E5%8A%B1/01-%E6%9E%81%E7%AE%80OKR%E5%AE%9E%E6%88%98/10-%E7%BB%93%E6%9D%9F%E8%AF%AD%20OKR%EF%BC%8C%E5%AF%B9%E4%BB%B7%E5%80%BC%E7%9A%84%E6%9E%81%E8%87%B4%E8%BF%BD%E6%B1%82",
+    "destination": "/docs/tech-management/07-绩效与激励/28-结束语 OKR，对价值的极致追求"
+  },
+  {
+    "source": "/docs/okr-mini/10-%E7%BB%93%E6%9D%9F%E8%AF%AD%20OKR%EF%BC%8C%E5%AF%B9%E4%BB%B7%E5%80%BC%E7%9A%84%E6%9E%81%E8%87%B4%E8%BF%BD%E6%B1%82",
+    "destination": "/docs/tech-management/07-绩效与激励/28-结束语 OKR，对价值的极致追求"
   }
 ]

@@ -1,6 +1,6 @@
 ---
 title: 从CDN和云存储到边缘计算生态 - 云服务演进与成本优化实战
-description: 从CDN和云存储到边缘计算生态 - 云服务演进与成本优化实战的核心要点与实践方法论
+description: 前文介绍了混合云模式，以及面向应用层的云架构解决方案的 Spring Cloud。
 keywords: []
 category: 技术管理
 tags: [运维, DevOps, 稳定性]

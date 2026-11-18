@@ -1,12 +1,12 @@
 ---
 title: 谷歌SRE运维模式解读
-description: 谷歌SRE运维模式解读的核心要点与实践方法论
+description: 前面我和你分享了一些关于运维组织架构和协作模式转型的内容，为了便于我们更加全面地了解先进的运维模式，今天我们再来谈一下谷歌的SRE（Site Reliability Engineer。
 keywords: []
 category: 技术管理
 tags: [运维, DevOps, 稳定性]
 ---
 
-# 10 | 谷歌SRE运维模式解读
+# 谷歌SRE运维模式解读
 
 > **适用范围**：SRE、运维团队负责人、技术管理者、平台工程师；适用于 SRE 方法论落地、SLI/SLO/SLA 体系建设、On-Call 轮值设计、Toil 消除、Platform Engineering 转型等场景。
 

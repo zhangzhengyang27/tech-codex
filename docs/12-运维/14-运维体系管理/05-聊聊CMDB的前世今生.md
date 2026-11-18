@@ -1,12 +1,12 @@
 ---
 title: 聊聊CMDB的前世今生
-description: 聊聊CMDB的前世今生的核心要点与实践方法论
+description: 我们前面在讲标准化的时候，对关键的运维对象做了识别，主要分为两个部分：
 keywords: []
 category: 技术管理
 tags: [运维, DevOps, 稳定性]
 ---
 
-# 06 | 聊聊CMDB的前世今生
+# 聊聊CMDB的前世今生
 
 > **适用范围**：运维平台工程师、CMDB/IDP 建设负责人、SRE、平台架构师；适用于配置管理平台建设、云原生 CMDB 演进、Backstage Software Catalog 落地等场景。
 

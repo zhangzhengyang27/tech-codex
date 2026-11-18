@@ -7,7 +7,9 @@ tags: [DevOps, 运维, OpenResty, 网关]
 ---
 
 
-# ① 模块介绍
+# 入口网关服务注册发现-OpenResty 动态 upstream
+
+## ① 模块介绍
 
 Nginx 的 upstream（上游服务器组）配置本质是**静态的**：后台节点扩容缩容时只能手工改配置并重启服务，无法做到实时感知。本文讲解入口网关服务注册发现的场景与意义，并基于 **OpenResty + Lua** 演示一套支持动态添加、删除、监控 upstream 节点的方案。OpenResty 是 Nginx 与 Lua 结合的高性能 Web 平台，内置大量 Lua 库与第三方模块，免去手工编译 Lua 模块的繁琐。
 

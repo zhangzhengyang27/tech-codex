@@ -1,12 +1,12 @@
 ---
 title: 从谷歌CRE谈起，运维如何培养服务意识？
-description: 从谷歌CRE谈起，运维如何培养服务意识？的核心要点与实践方法论
+description: 2016年10月，谷歌云平台博客（Google Cloud Platform Blog）上更新了一篇文章，谷歌宣布了一个新的专业岗位。
 keywords: [从谷歌CRE谈起]
 category: 技术管理
 tags: [运维, DevOps, 稳定性]
 ---
 
-# 11 | 从谷歌CRE谈起，运维如何培养服务意识？
+# 从谷歌CRE谈起，运维如何培养服务意识？
 
 > **适用范围**：运维团队负责人、平台工程团队、SRE、技术支持团队、Technical Account Manager；适用于服务意识培养、DevEx 建设、内部开发者平台体验优化、客户成功体系建设等场景。
 

@@ -221,7 +221,7 @@ curl -d '{"x" : 1}' -H "Content-Type: application/json" -X POST http://localhost
 
 `host` 提供了 `-t` 参数用于指定查找的记录类型。使用 `host -t ns <网址>` 即可查看某域名的 NS（Name Server，名称服务器）记录。`dig` 也提供了同样的能力（`dig NS <网址>`）。此外可结合 `man` 深入学习各指令的参数。
 
-### 6.2 思考题
+### 6.2 自查问题
 
 如何查看正在 TIME_WAIT 状态的连接数量？
 

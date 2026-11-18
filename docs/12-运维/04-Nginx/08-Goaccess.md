@@ -1,5 +1,5 @@
 ---
-title: Goaccess
+title: GoAccess 可视化 access 日志
 description: "GoAccess 是开源的实时 Web 日志分析器与交互式查看器：通过 log-format 与 Nginx 日志格式对齐解析 access.log，支持终端、实时 HTML 看板与 JSON 输出，并覆盖 systemd 守护、logrotate 联动与访问控制"
 keywords: [GoAccess, Nginx, 日志分析]
 category: Nginx

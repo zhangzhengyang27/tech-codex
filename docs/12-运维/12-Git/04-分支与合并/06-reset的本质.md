@@ -207,7 +207,8 @@ graph TD
 
     reset前 -->QN1["--soft → C2"]
     reset前 -->QN2["--mixed → C2"]
-    reset前 -->QN3["--hard → C2"]```
+    reset前 -->QN3["--hard → C2"]
+```
 
 
 

@@ -1,6 +1,6 @@
 ---
 title: "高级进阶：JVM 常见优化参数"
-description: "现在大家用得最多的 Java 版本是 Java 21（当前 LTS），如果你的公司比较保守，那么使用较多的垃圾回收器就是 G1（JDK 9+ 默认）。历史版本中 CMS 曾在 Java 8 时代流行，但 CMS 已经在 Java 14 中被正式废除。本文以 ES 的 JVM 参数为例讲解常见优化参数。"
+description: "现在用得最多的 Java 版本是 Java 21（当前 LTS），保守的公司也在使用 G1（JDK 9+ 默认）。历史版本中 CMS 曾在 Java 8 时代流行，但 CMS 已经在 Java 14 中被正式废除。本文以 ES 的 JVM 参数为例讲解常见优化参数。"
 keywords: [JVM, 调优参数, GC 日志, 垃圾回收器]
 category: "Java"
 tags: [Java, 性能优化实战]
@@ -12,11 +12,13 @@ tags: [Java, 性能优化实战]
 本篇讲 JVM 参数与 GC 日志实操；收集器与调优见 [02-JVM与并发/JVM 垃圾回收与调优](../../02-JVM与并发/16-JVM垃圾回收与调优.md)，原理主篇见 [JVM 内存区域与垃圾回收](../../02-JVM与并发/13-JVM内存区域与垃圾回收.md)，面试问答见 [垃圾回收器对比](../../07-面试与进阶/02-面试问答/24-你用过哪些垃圾回收器？它们有什么区别？.md)。
 :::
 
-现在大家用得最多的 Java 版本是 Java 21（当前 LTS），如果你的公司比较保守，那么使用较多的垃圾回收器就是 G1（JDK 9+ 默认）。历史版本中 CMS 曾在 Java 8 时代流行，但 CMS 已经在 Java 14 中被正式废除，随着 ZGC 的诞生和 G1 的稳定，CMS 已成为过去式。
+## 背景与问题
+
+现在大家用得最多的 Java 版本是 Java 21（当前 LTS），如果公司比较保守，那么使用较多的垃圾回收器就是 G1（JDK 9+ 默认）。历史版本中 CMS 曾在 Java 8 时代流行，但 CMS 已经在 Java 14 中被正式废除，随着 ZGC 的诞生和 G1 的稳定，CMS 已成为过去式。
 
 Java 9 之后，Java 版本已经进入了快速发布阶段，大约是每半年发布一次，Java 8、Java 11、Java 17、Java 21 是历代的 LTS 版本，当前 LTS 为 Java 21（2023 年 9 月发布，支持至 2031 年），Java 25 为下一代 LTS。
 
-由于 JVM 一直处在变化之中，所以一些参数的配置并不总是有效的。有时候你加入一个参数，“感觉上”运行速度加快了，但通过 -XX:+PrintFlagsFinal 来查看，却发现这个参数默认就是这样了。
+由于 JVM 一直处在变化之中，所以一些参数的配置并不总是有效的。有时候加入一个参数，“感觉上”运行速度加快了，但通过 -XX:+PrintFlagsFinal 来查看，却发现这个参数默认就是这样了。
 
 所以，在不同的 JVM 版本上，不同的垃圾回收器上，要先看一下这个参数默认是什么，不要轻信别人的建议，命令行示例如下：
 
@@ -24,7 +26,7 @@ Java 9 之后，Java 版本已经进入了快速发布阶段，大约是每半�
 java -XX:+PrintFlagsFinal -XX:+UseG1GC  2>&1 | grep UseAdaptiveSizePolicy
 ```
 
-还有一个与之类似的参数叫作 PrintCommandLineFlags，通过它，你能够查看当前所使用的垃圾回收器和一些默认的值。
+还有一个与之类似的参数叫作 PrintCommandLineFlags，通过它，能够查看当前所使用的垃圾回收器和一些默认的值。
 
 可以看到下面的 JVM 默认使用的就是并行收集器：
 
@@ -36,10 +38,12 @@ OpenJDK Runtime Environment (build 1.8.0_41-b04)
 OpenJDK 64-Bit Server VM (build 25.40-b25, mixed mode)
 ```
 
-JVM 的参数配置繁多，但大多数不需要我们去关心。
-下面，我们通过对 ES 服务的 JVM 参数分析，来看一下常见的优化点。
+JVM 的参数配置繁多，但大多数不需要去关心。
+下面，通过对 ES 服务的 JVM 参数分析，来看一下常见的优化点。
 
 ElasticSearch（简称 ES）是一个高性能的开源分布式搜索引擎。ES 是基于 Java 语言开发的，在它的 conf 目录下，有一个叫作**jvm.options**的文件，JVM 的配置就放在这里。
+
+## ES 的 JVM 参数配置
 
 ### 堆空间的配置
 
@@ -50,7 +54,7 @@ ElasticSearch（简称 ES）是一个高性能的开源分布式搜索引擎。E
 -Xmx1g
 ```
 
-我们在 **“17 | 高级进阶：JVM 如何完成垃圾回收？”** 就聊到过，JVM 中空间最大的一块就是堆，垃圾回收也主要是针对这块区域。通过 Xmx 可指定堆的最大值，通过 Xms 可指定堆的初始大小。我们通常把这两个参数，设置成一样大小的，可避免堆空间在动态扩容时的时间开销。
+《高级进阶：JVM 如何完成垃圾回收？》中介绍过，JVM 中空间最大的一块就是堆，垃圾回收也主要是针对这块区域。通过 Xmx 可指定堆的最大值，通过 Xms 可指定堆的初始大小。通常把这两个参数，设置成一样大小的，可避免堆空间在动态扩容时的时间开销。
 
 在配置文件中还有 AlwaysPreTouch 这个参数。
 
@@ -62,9 +66,9 @@ ElasticSearch（简称 ES）是一个高性能的开源分布式搜索引擎。E
 
 JVM 的内存，分为堆和堆外内存，其中堆的大小可以通过 Xmx 和 Xms 来配置。
 
-但我们在配置 ES 的堆内存时，通常把堆的初始化大小，设置成物理内存的一半。这是因为 ES 是存储类型的服务，我们需要预留一半的内存给文件缓存（理论参见 **“07 | 案例分析：无处不在的缓存，高并发系统的法宝”**），等下次用到相同的文件时，就不用与磁盘进行频繁的交互。这一块区域一般叫作 **PageCache**，占用的空间很大。
+但配置 ES 的堆内存时，通常把堆的初始化大小，设置成物理内存的一半。这是因为 ES 是存储类型的服务，需要预留一半的内存给文件缓存（理论参见 **《案例分析：无处不在的缓存，高并发系统的法宝》**），等下次用到相同的文件时，就不用与磁盘进行频繁的交互。这一块区域一般叫作 **PageCache**，占用的空间很大。
 
-对于计算型节点来说，比如我们普通的 Web 服务，通常会把堆内存设置为物理内存的 2/3，剩下的 1/3 就是给堆外内存使用的。
+对于计算型节点来说，比如普通的 Web 服务，通常会把堆内存设置为物理内存的 2/3，剩下的 1/3 就是给堆外内存使用的。
 
 堆外内存可以进行非常细致的划分，解释如下：
 
@@ -115,7 +119,7 @@ JVM 的内存，分为堆和堆外内存，其中堆的大小可以通过 Xmx �
 9-:-Xlog:gc*,gc+age=trace,safepoint:file=logs/gc.log:utctime,pid,tags:filecount=32,filesize=64m
 ```
 
-再来看下 ES 在异常情况下的配置参数：
+再看下 ES 在异常情况下的配置参数：
 
 ```text
 -XX:+HeapDumpOnOutOfMemoryError
@@ -123,9 +127,9 @@ JVM 的内存，分为堆和堆外内存，其中堆的大小可以通过 Xmx �
 -XX:ErrorFile=logs/hs_err_pid%p.log
 ```
 
-HeapDumpOnOutOfMemoryError、HeapDumpPath、ErrorFile 是每个 Java 应用都应该配置的参数。正常情况下，我们通过 jmap 获取应用程序的堆信息；异常情况下，比如发生了 OOM，通过这三个配置参数，即可在发生OOM的时候，自动 dump 一份堆信息到指定的目录中。
+HeapDumpOnOutOfMemoryError、HeapDumpPath、ErrorFile 是每个 Java 应用都应该配置的参数。正常情况下，通过 jmap 获取应用程序的堆信息；异常情况下，比如发生了 OOM，通过这三个配置参数，即可在发生OOM的时候，自动 dump 一份堆信息到指定的目录中。
 
-拿到了这份 dump 信息，我们就可以使用 MAT 等工具详细分析，找到具体的 OOM 原因。
+拿到了这份 dump 信息，就可以使用 MAT 等工具详细分析，找到具体的 OOM 原因。
 
 ### 垃圾回收器配置
 
@@ -157,7 +161,7 @@ ES 默认使用 CMS 垃圾回收器，它有以下三行主要的配置。
 
 CMS 垃圾回收器，已经在 Java14 中被移除，由于它的 GC 时间不可控，有条件应该尽量避免使用。
 
-针对 Java10（普通 Java 应用在 Java 8 中即可开启 G1），ES 可采用 G1 垃圾回收器。我们在 **“17 | 高级进阶：JVM 如何完成垃圾回收？”** 介绍过 G1，它可以通过配置参数 MaxGCPauseMillis，指定一个期望的停顿时间，使用相对比较简单。
+针对 Java10（普通 Java 应用在 Java 8 中即可开启 G1），ES 可采用 G1 垃圾回收器。《高级进阶：JVM 如何完成垃圾回收？》中介绍过 G1，它可以通过配置参数 MaxGCPauseMillis，指定一个期望的停顿时间，使用相对比较简单。
 
 下面是主要的配置参数：
 
@@ -183,7 +187,7 @@ JVM 支持非常多的垃圾回收器，下面是最常用的几个，以及配�
 
 ### 额外配置
 
-我们再来看下几个额外的配置。
+再看几个额外的配置。
 
 ```plain
 -Xss1m
@@ -223,21 +227,43 @@ Headless 模式是系统的一种配置模式，在该模式下，系统缺少�
 
 ### 其他调优
 
-以上就是 ES 默认的 JVM 参数配置，大多数还是比较基础的。在平常的应用服务中，我们希望得到更细粒度的控制，其中比较常用的就是调整各个分代之间的比例。
+以上就是 ES 默认的 JVM 参数配置，大多数还是比较基础的。在平常的应用服务中，通常需要更细粒度的控制，其中比较常用的就是调整各个分代之间的比例。
 
 - **-Xmn** 年轻代大小，默认年轻代占堆大小的 1/3。高并发快消亡场景可适当加大这个区域，对半或者更多都是可以的。但是在 G1 下，就不用再设置这个值了，它会自动调整；
 
 - **-XX:SurvivorRatio** 默认值为 8，表示伊甸区和幸存区的比例；
 
-- **-XX:MaxTenuringThreshold** 这个值在 CMS 下默认为 6，G1 下默认为 15。这个值和我们前面提到的对象提升有关，改动效果会比较明显。对象的年龄分布可以使用 -XX:+PrintTenuringDistribution 打印，如果后面几代的大小总是差不多，证明过了某个年龄后的对象总能晋升到老年代，就可以把晋升阈值设的小一些；
+- **-XX:MaxTenuringThreshold** 这个值在 CMS 下默认为 6，G1 下默认为 15。这个值和前文提到的对象提升有关，改动效果会比较明显。对象的年龄分布可以使用 -XX:+PrintTenuringDistribution 打印，如果后面几代的大小总是差不多，证明过了某个年龄后的对象总能晋升到老年代，就可以把晋升阈值设的小一些；
 
 - **PretenureSizeThreshold** 超过一定大小的对象，将直接在老年代分配，不过这个参数用得不是很多。
 
-### 练习：cassandra 的参数配置
+## 延伸练习：cassandra 的参数配置
 
-了解了我们上面说的配置参数，大家可以拿 cassandra 的配置文件分析一下，cassandra 是一个高速的列存数据库，使用 gossip 进行集群维护，它的 JVM 参数配置同样在 jvm.options 中。
+了解了上面说的配置参数，可以拿 cassandra 的配置文件分析一下。cassandra 是一个高速的列存数据库，使用 gossip 进行集群维护，它的 JVM 参数配置同样在 jvm.options 中。
 
-为了方便大家分析，我把 ES 和 cassandra 的这两个配置文件也上传到了仓库中，你可以实际练习一下。
+为方便分析，ES 和 cassandra 的这两个配置文件已上传到仓库中，可实际练习对比。
+
+## 实践要点
+
+- 先验证再配置：用 `-XX:+PrintFlagsFinal` 确认参数在当前 JVM 版本/收集器下的默认值，用 `-XX:+PrintCommandLineFlags` 查看当前生效的收集器与默认参数，避免“加了没生效”的错觉。
+
+- -Xms 与 -Xmx 设为相同值，避免堆动态扩容开销；存储型服务（ES）堆约占物理内存一半、留出 PageCache，计算型服务堆约占 2/3、留 1/3 给堆外内存。
+
+- 堆外内存五类中，只有元空间（-XX:MaxMetaspaceSize）、CodeCache（-XX:ReservedCodeCacheSize）、直接内存（-XX:MaxDirectMemorySize）可用参数限制，JNI/本地内存 JVM 无法控制。
+
+- 每个应用都应配置 HeapDumpOnOutOfMemoryError、HeapDumpPath、ErrorFile，OOM 时自动 dump，配合 MAT 分析。
+
+- GC 日志按版本分两套：Java 8 用 PrintGCDetails 系列 + 滚动日志参数；Java 9+ 统一为 -Xlog 语法（JEP 158 移除了 40 多个旧参数）。
+
+- CMS 参数体系（InitiatingOccupancyFraction/UseCMSInitiatingOccupancyOnly/ExplicitGCInvokesConcurrent 等）仅旧版本适用，CMS 已在 JDK 14 移除；现代应用以 G1 三参数（MaxGCPauseMillis/G1HeapRegionSize/InitiatingHeapOccupancyPercent）为主。
+
+- -Xss（栈大小）、-OmitStackTraceInFastThrow（异常栈合并）、-Djava.awt.headless、-D 系统属性是常见附加配置；分代比例调优优先看 PrintTenuringDistribution 的年龄分布再动 MaxTenuringThreshold。
+
+## 小结
+
+本文以 ES 的 jvm.options 为例，梳理了 JVM 常见优化参数的四大板块：堆与堆外内存、GC 日志、垃圾回收器选择、额外与分代调优参数。
+
+核心方法论是：参数不是越多越好，先用 PrintFlagsFinal/PrintCommandLineFlags 确认默认值与生效情况，再结合服务类型（存储型/计算型）与监控数据（GC 日志、对象年龄分布）做针对性调整。
 
 ## 版本差异(JVM 参数 → Java 21)
 

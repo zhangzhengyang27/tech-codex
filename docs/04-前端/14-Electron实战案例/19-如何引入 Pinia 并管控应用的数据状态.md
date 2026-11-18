@@ -9,7 +9,7 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # 如何引入 Pinia 并管控应用的数据状态？
 
-我们一般都会考虑统筹管理一个上了规模的 Vue 项目的数据状态，对于基于 Vue2.x 创建的前端项目来说，Vuex 是个不错的选择；但对于使用 Vue3.x 创建前端项目来说，可能 Pinia 才是更好的选择。
+上了规模的 Vue 项目一般都需要统筹管理数据状态。对于基于 Vue2.x 创建的前端项目来说，Vuex 是个不错的选择；但对于使用 Vue3.x 创建的前端项目来说，可能 Pinia 才是更好的选择。
 
 相对于 Vuex 来说，Pinia 有以下几方面的优势。
 
@@ -19,7 +19,7 @@ tags: [Electron, 桌面应用, IPC, 打包]
 - **不需要再使用名称空间来控制 `store`**，也不需要再考虑 store 的嵌套问题。
 - **Pinia 性能优于 Vuex**。
 
-接下来我们就从“如何为工程引入 Pinia，如何创建 Store，如何创建数据模型，如何使用 Store，如何订阅 Store，如何完成 Store 间的互访”等几个方面讲解如何使用 Pinia 管控应用的数据状态。
+本文从“如何为工程引入 Pinia，如何创建 Store，如何创建数据模型，如何使用 Store，如何订阅 Store，如何完成 Store 间的互访”等几个方面讲解如何使用 Pinia 管控应用的数据状态。
 
 ## 为项目引入 Pinia
 
@@ -45,7 +45,7 @@ createApp(App).use(createPinia()).use(router).mount("#app");
 
 ## 创建 Store
 
-接下来，我们在`src\renderer\store`目录下为我们的应用创建第一个 Store 程序，代码如下：
+接下来，在`src\renderer\store`目录下为应用创建第一个 Store 程序，代码如下：
 
 ```ts
 //src\renderer\store\useChatStore.ts
@@ -77,19 +77,19 @@ export const useChatStore = defineStore("chat", () => {
 });
 ```
 
-在这个文件中，我们通过 export 暴露了一个 `useChatStore` 方法，这个方法是通过 Pinia 的`defineStore`方法创建的，在 Vue 业务组件中执行这个函数实例才会得到真正的 Store。
+在这个文件中，通过 export 暴露了一个 `useChatStore` 方法，这个方法是通过 Pinia 的`defineStore`方法创建的，在 Vue 业务组件中执行这个函数实例才会得到真正的 Store。
 
-我们**使用`defineStore(name,function)`的形式创建 Store，这种形式的 Store 叫作`Setup Stores`**。Pinia 还提供了另一种形式的 Store ：[Option Stores](https://pinia.vuejs.org/core-concepts/#option-stores)，具体可以参阅 Pinia 的官方文档。你如果也像我一样倾向于使用 Vue 组件的 Setup API（这也是 Vue 作者推荐的方式），那么使用 Pinia 的`Setup Stores`会更方便，编码风格也一致。
+**使用`defineStore(name,function)`的形式创建 Store，这种形式的 Store 叫作`Setup Stores`**。Pinia 还提供了另一种形式的 Store ：[Option Stores](https://pinia.vuejs.org/core-concepts/#option-stores)，具体可以参阅 Pinia 的官方文档。如果倾向于使用 Vue 组件的 Setup API（这也是 Vue 作者推荐的方式），那么使用 Pinia 的`Setup Stores`会更方便，编码风格也一致。
 
-这个 Store 的状态数据存储在：`data`属性中，这是一个被`Ref`对象包裹着的数组，数组里的内容是我们通过`prepareData`方法模拟的（模拟了十个聊天会话对象）。
+这个 Store 的状态数据存储在：`data`属性中，这是一个被`Ref`对象包裹着的数组，数组里的内容是通过`prepareData`方法模拟的（模拟了十个聊天会话对象）。
 
 这个 Store 还提供了一个`Action`方法：`selectItem`，这个方法用于选中某个具体的聊天会话。
 
-代码中的 ModelChat 是数据模型定义类，接下来我们就介绍这个数据模型。
+代码中的 ModelChat 是数据模型定义类，接下来介绍这个数据模型。
 
 ## 数据模型
 
-聊天会话的数据模型是在`src\model`目录下定义的，因为应用的主进程和渲染进程都可能会用到数据模型，所以我们把它放置在`renderer`和`main`的同级目录下。以后我们还会在这个目录下定义更多的模型。
+聊天会话的数据模型是在`src\model`目录下定义的，因为应用的主进程和渲染进程都可能会用到数据模型，所以把它放置在`renderer`和`main`的同级目录下。后续更多的模型也会定义在这个目录下。
 
 `ModelChat`模型的代码如下所示：
 
@@ -111,7 +111,7 @@ export class ModelChat extends ModelBase {
 
 **模型主要用于描述对象携带的信息**，所以模型里的类并没有具体的方法。
 
-由于所有的模型都会拥有一些共同的字段，所以我们把这些字段放置在模型的基类`ModelBase`中，这个类的代码如下所示：
+由于所有的模型都会拥有一些共同的字段，所以把这些字段放置在模型的基类`ModelBase`中，这个类的代码如下所示：
 
 ```ts
 // src\model\ModelBase.ts
@@ -124,15 +124,15 @@ export class ModelBase {
 }
 ```
 
-这里我们暂时只提供了一个公共字段：`id`，**凡继承于`ModelBase`的子类都将拥有这个字段**，而且这个字段是随模型实例化的时候自动创建的。也就是说，只有`new ModelXXXX`时才会创建这个字段，`let model = obj as ModelXXXX`时不会创建这个字段。
+这里暂时只提供了一个公共字段：`id`，**凡继承于`ModelBase`的子类都将拥有这个字段**，而且这个字段是随模型实例化的时候自动创建的。也就是说，只有`new ModelXXXX`时才会创建这个字段，`let model = obj as ModelXXXX`时不会创建这个字段。
 
-我们使用 Node.js `crypto`模块的`randomUUID`方法来生成每个聊天会话的 ID，这将为我们把数据存储在数据库中打下基础。
+模型使用 Node.js `crypto`模块的`randomUUID`方法来生成每个聊天会话的 ID，这为后续把数据存储在数据库中打下基础。
 
-> 无论是`ModelChat`模型还是我们后文介绍到的其他模型，都只用作演示用途，实际项目中的模型要比这些模型复杂得多。
+> 无论是`ModelChat`模型还是后文介绍到的其他模型，都只用作演示用途，实际项目中的模型要比这些模型复杂得多。
 
 ## 使用 Store
 
-首先我们把模型中模拟的 10 个聊天会话显示在界面上，代码如下所示：
+首先把模型中模拟的 10 个聊天会话显示在界面上，代码如下所示：
 
 ```ts
 <script setup lang="ts">
@@ -160,15 +160,15 @@ onMounted(() => {
 </template>
 ```
 
-在这段代码中，我们通过 Vue 的`v-for`指令渲染了一个自定义组件列表（`ChatItem`）。
+在这段代码中，通过 Vue 的`v-for`指令渲染了一个自定义组件列表（`ChatItem`）。
 
-**store 对象是通过`useChatStore`方法获取的**，`useChatStore`方法就是我们前面介绍的`useChatStore.ts`导出的方法。得到 store 对象之后，可以直接使用`store.data`获取 Store 对象里的数据。
+**store 对象是通过`useChatStore`方法获取的**，`useChatStore`方法就是前文介绍的`useChatStore.ts`导出的方法。得到 store 对象之后，可以直接使用`store.data`获取 Store 对象里的数据。
 
-在当前组件`ChatBoard`渲染完成后，我们调用了`store`对象的`selectItem`方法，选中了第 7 个会话
+在当前组件`ChatBoard`渲染完成后，调用了`store`对象的`selectItem`方法，选中了第 7 个会话
 
 具体每一个聊天会话对象是通过自定义组件的 `data` 属性传递到组件内部的。
 
-实际上我们在`ChatBoard`组件渲染完成时，还可以通过如下代码来选中某个聊天会话：
+实际上，在`ChatBoard`组件渲染完成时，还可以通过如下代码来选中某个聊天会话：
 
 ```ts
 store.$patch((v) => (v.data[5].isSelected = true));
@@ -210,7 +210,7 @@ let itemClick = (item: ModelChat) => {
 </template>
 ```
 
-在这段代码中，我们使用`defineProps`方法接收父组件传来的数据。
+在这段代码中，使用`defineProps`方法接收父组件传来的数据。
 
 聊天会话对象里的数据在这个自定义组件中被展开，渲染给用户。
 
@@ -218,9 +218,9 @@ let itemClick = (item: ModelChat) => {
 
 ## 订阅 Store
 
-无论是用户点击`ChatItem`组件选中一个聊天会话，还是`ChatBoard`渲染完成后选中一个聊天会话，我们都应该通知其他组件，选中的聊天会话变更了。
+无论是用户点击`ChatItem`组件选中一个聊天会话，还是`ChatBoard`渲染完成后选中一个聊天会话，都应该通知其他组件：选中的聊天会话变更了。
 
-这里我们在`MessageBoard`组件中演示这个功能，代码如下所示：
+这里在`MessageBoard`组件中演示这个功能，代码如下所示：
 
 ```ts
 <script setup lang="ts">
@@ -252,19 +252,19 @@ store.$subscribe((mutations, state) => {
 </template>
 ```
 
-在上面代码中我们**使用`store`对象的`$subscribe`方法订阅了数据变更事件**，无论什么时候 store 内的数据发生了变化，都会执行我们为`$subscribe`方法提供的回调函数。
+在上面代码中**使用`store`对象的`$subscribe`方法订阅了数据变更事件**，无论什么时候 store 内的数据发生了变化，都会执行为`$subscribe`方法提供的回调函数。
 
 > 用户点击`ChatItem`组件选中一个聊天会话时，无论是通过`selectItem`方法更新数据，还是通过`$patch`方法更新数据，都会触发订阅事件。
 
-我们在订阅回调中，验证选中的会话是否发生了变化（有可能是当前 store 其他数据对象的变化触发了订阅回调），如果是，那么就给出提示（此处仅仅用于演示）。
+在订阅回调中，验证选中的会话是否发生了变化（有可能是当前 store 其他数据对象的变化触发了订阅回调），如果是，那么就给出提示（此处仅仅用于演示）。
 
 订阅回调函数有两个参数 ，第一个是 `mutations` 参数，这个参数的`events`属性携带着变更前的值和变更后的值，但这个属性只有在开发环境下存在，生产环境下不存在。**订阅的第二个参数是 state，这个参数包含 store 中的数据**。
 
-以这种方式更新 store 里的数据，不利于复用数据更新的逻辑，接下来我就介绍可以复用数据更新逻辑的方案。
+以这种方式更新 store 里的数据，不利于复用数据更新的逻辑，下文介绍可以复用数据更新逻辑的方案。
 
 ## store 的互访
 
-让我们新建一个模型类，代码如下所示：
+新建一个模型类，代码如下所示：
 
 ```ts
 //src\model\ModelMessage.ts
@@ -281,7 +281,7 @@ export class ModelMessage extends ModelBase {
 }
 ```
 
-这个模型用于描述聊天的消息，聊天会话模型与这个模型之间的关系是一对多的关系（1:n），它们之间的关系字段就是`ModelChat`模型的 id 字段和`ModelMessage`模型的`chatId`字段。后面的代码中我们还会进一步描述这种关系。
+这个模型用于描述聊天的消息，聊天会话模型与这个模型之间的关系是一对多的关系（1:n），它们之间的关系字段就是`ModelChat`模型的 id 字段和`ModelMessage`模型的`chatId`字段。后面的代码中还会进一步描述这种关系。
 
 然后创建`useMessageStore`，用于管理消息的状态数据，代码如下：
 
@@ -314,9 +314,9 @@ export const useMessageStore = defineStore("message", () => {
 });
 ```
 
-如你所见，消息数据我们也是模拟出来的，这里模拟了 10 条消息，我们预期用户切换会话的时候，执行`initData`方法，初始化当前会话的消息。
+消息数据也是模拟出来的，这里模拟了 10 条消息。预期效果是：用户切换会话的时候，执行`initData`方法，初始化当前会话的消息。
 
-现在我们修改一下`MessageBoard`组件的代码，如下所示：
+现在修改一下`MessageBoard`组件的代码，如下所示：
 
 ```ts
 <script setup lang="ts">
@@ -350,9 +350,9 @@ chatStore.$subscribe((mutations, state) => {
 </template>
 ```
 
-现在**当选中的聊天会话切换时，我们执行了`messageStore`对象的`initData`方法，这样就初始化了`messageStore`内部的状态数据**。
+现在**当选中的聊天会话切换时，会执行`messageStore`对象的`initData`方法，这样就初始化了`messageStore`内部的状态数据**。
 
-`MessageItem`是我们新创建的一个 Vue 组件，这个组件用于显示一条消息的具体信息。代码如下所示：
+`MessageItem`是新创建的一个 Vue 组件，这个组件用于显示一条消息的具体信息。代码如下所示：
 
 ```ts
 <script setup lang="ts">
@@ -388,11 +388,11 @@ defineProps<{ data: ModelMessage }>();
 </template>
 ```
 
-这段代码我们就不多做解释了，现在我们的界面已经能同时展示会话列表和消息记录了。
+这段代码不再多做解释，此时界面已经能同时展示会话列表和消息记录了。
 
-有心的读者可能已经发现了，如果我们在切换选中的聊天会话时，直接初始化`messageStore`里的数据，就完全不需要在`MessageBoard`组件里订阅`chatStore`的数据变更了。
+细心的读者可能已经发现：如果在切换选中的聊天会话时，直接初始化`messageStore`里的数据，就完全不需要在`MessageBoard`组件里订阅`chatStore`的数据变更了。
 
-`pinia`是支持这种操作的，现在我们修改一下`useChatStore`的代码，如下所示：
+`pinia`是支持这种操作的，现在修改一下`useChatStore`的代码，如下所示：
 
 ```ts
 // src\renderer\store\useChatStore.ts
@@ -410,20 +410,20 @@ export const useChatStore = defineStore("chat", () => {
 });
 ```
 
-你会发现我们**完全可以在`selectItem`方法内使用`messageStore`提供的方法**。
+可见**完全可以在`selectItem`方法内使用`messageStore`提供的方法**。
 
-删除掉订阅逻辑之后，不但提升了性能，减少了内存消耗，还使我们的代码逻辑变得更加清晰了。
+删除掉订阅逻辑之后，不但提升了性能，减少了内存消耗，还使代码逻辑变得更加清晰了。
 
 ## 总结
 
-本节我们介绍了如何为工程引入 Pinia，如何创建 Store，如何创建数据模型，如何使用 Store，如何订阅 Store，如何完成 Store 间的互访等内容。
+本文介绍了如何为工程引入 Pinia，如何创建 Store，如何创建数据模型，如何使用 Store，如何订阅 Store，如何完成 Store 间的互访等内容。
 
-本节的内容技术难度并不高，但工程实战性特别强，希望你在学习本节内容时体会一个工程内有数百个 Store 时该如何组织管控应用的数据状态。
+这些内容技术难度并不高，但工程实战性特别强。当一个工程内有数百个 Store 时，同样可以按照本文介绍的方式来组织管控应用的数据状态。
 
 后续将介绍如何为应用引入客户端数据库。
 
 ## 源码
 
-本节示例代码请通过如下地址自行下载：
+本文示例代码请通过如下地址自行下载：
 
 [源码仓储](https://gitee.com/horsejs_admin/electron-jue-jin/tree/pinia)

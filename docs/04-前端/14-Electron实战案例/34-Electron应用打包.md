@@ -9,7 +9,7 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron应用打包
 
-## 前言
+## 背景与方案选型
 打包一个 Electron 应用程序简单来说就是通过构建工具创建一个桌面安装程序（.dmg、.exe、.deb 等）。在 Electron 早期作为 Atom 编辑器的一部分时，应用程序开发者通常通过手动编辑 Electron 二进制文件来为应用程序做分发准备。
 
 随着时间的推移，Electron 社区构建了丰富的工具生态系统，用于处理 Electron 应用程序的各种分发任务，其中包括：
@@ -30,7 +30,7 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 - **Electron Builder**：Electron Builder 针对大多数构建任务重新编写了自己的内部逻辑，提供了丰富的功能，包括代码签名、发布支持、文件配置、多种目标构建等。Electron Builder 不限制使用的框架和打包工具，使得可以更加灵活地进行配置和打包。
 
-总而言之，就长期支持性而言，使用 `Electron Forge` 会更好，但是 `Electron Forge` 打包出来后的包体积会比 `Electron Builder` 大不少。而 `Electron Builder` 则是目前功能最丰富、使用最多的打包方案。比如：[Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/)、[electron-vite](https://cn.electron-vite.org/) 这些工具的打包默认情况下都是基于 `Electron Builder` 的。所以，接下来的内容，我们将基于 `Electron Builder` 介绍打包构建的过程。
+总而言之，就长期支持性而言，使用 `Electron Forge` 会更好，但是 `Electron Forge` 打包出来后的包体积会比 `Electron Builder` 大不少。而 `Electron Builder` 则是目前功能最丰富、使用最多的打包方案。比如：[Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/)、[electron-vite](https://cn.electron-vite.org/) 这些工具的打包默认情况下都是基于 `Electron Builder` 的。所以，下文基于 `Electron Builder` 介绍打包构建的过程。
 
 
 ## 打包前准备
@@ -46,7 +46,7 @@ windows 下给 Electron 程序做签名需要一个签名证书，这个证书�
 
 > 详细制作教程可以参考这篇文章《创建数字证书PFX》。
 
-也可以付费购买，常见的数字证书服务商有：[CheapSSLSecurity](https://cheapsslsecurity.com/)、[digicert](https://www.digicert.com/dc/code-signing/microsoft-authenticode.htm)，但是价格好像都挺贵的，比如 CheapSSLSecurity 购买一年需要 83 美元。详细的使用教程可以参考这篇文章：[Electron 在 Windows 下的代码签名](https://oldj.net/article/2022/07/15/code-signing-with-electron-on-windows/)。
+也可以付费购买，常见的数字证书服务商有：[CheapSSLSecurity](https://cheapsslsecurity.com/)、[digicert](https://www.digicert.com/dc/code-signing/microsoft-authenticode.htm)，但价格都比较贵，比如 CheapSSLSecurity 购买一年需要 83 美元。详细的使用教程可以参考这篇文章：[Electron 在 Windows 下的代码签名](https://oldj.net/article/2022/07/15/code-signing-with-electron-on-windows/)。
 
 不管是手动制作还是付费购买，最后都会生成一个 `.pfx` 格式的文件。然后再配置一下 `electron-builder` 进行签名：
 
@@ -114,7 +114,7 @@ xcrun stapler staple "electron-app.dmg"
 
 更多细节内容，推荐参考阅读：《Electron-builder 构建MacOS应用小白教程（打包 & 签名 & 公证 & 上架）》。
 
-后续，如果你的应用程序需要上架到 Mac App Store，可以阅读官方的操作指南：[Mac App Store 应用程序提交指南](https://www.electronjs.org/zh/docs/latest/tutorial/mac-app-store-submission-guide)。
+后续，如果应用程序需要上架到 Mac App Store，可以阅读官方的操作指南：[Mac App Store 应用程序提交指南](https://www.electronjs.org/zh/docs/latest/tutorial/mac-app-store-submission-guide)。
 
 
 ### 2. 图标制作
@@ -147,9 +147,9 @@ iconutil -c icns icons.iconset -o icon.icns
 
 ## electron-builder 使用
 
-前面我们简单介绍了 `electron-builder` 的基本概念，它是一个 Electron 应用程序打包构建工具，开发者只需要在 `package.json` 中添加 `build` 字段，然后增加一些配置就可以快速打包。
+前文简单介绍了 `electron-builder` 的基本概念，它是一个 Electron 应用程序打包构建工具，开发者只需要在 `package.json` 中添加 `build` 字段，然后增加一些配置就可以快速打包。
 
-由于我们通常会使用 [Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/)、[electron-vite](https://cn.electron-vite.org/) 作为我们桌面端开发脚手架工具，其中已经集成好了 `electron-builder`，我们不需要手动安装。但是配置文件的位置会有所不同，在 `Vue CLI Plugin Electron Builder` 中，配置文件是存放在 `vue.config.js` 中的 `pluginOptions.electronBuilder.builderOptions` 字段内。而 `electron-vite` 则是通过一个 `electron-builder.yml` 文件单独存放。但是不管是哪种工具，其实核心配置字段都是一致的，一份简单的配置示例：
+由于通常会使用 [Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/)、[electron-vite](https://cn.electron-vite.org/) 作为桌面端开发脚手架工具，其中已经集成好了 `electron-builder`，不需要手动安装。但是配置文件的位置会有所不同，在 `Vue CLI Plugin Electron Builder` 中，配置文件是存放在 `vue.config.js` 中的 `pluginOptions.electronBuilder.builderOptions` 字段内。而 `electron-vite` 则是通过一个 `electron-builder.yml` 文件单独存放。但是不管是哪种工具，其实核心配置字段都是一致的，一份简单的配置示例：
 
 ```js
 "build": {
@@ -177,7 +177,7 @@ iconutil -c icns icons.iconset -o icon.icns
   // ... 
 }
 ```
-另外，我们上面为不同平台制作的图标，也需要在 `electron-builder` 中进行设置，比如 `Windows` 下的配置项：
+另外，上面为不同平台制作的图标，也需要在 `electron-builder` 中进行设置，比如 `Windows` 下的配置项：
 
 ```js
 "win": {
@@ -194,7 +194,7 @@ iconutil -c icns icons.iconset -o icon.icns
   ]
 }
 ```
-除此之外，`electron-builder` 也支持在构建的各个阶段插入一些钩子函数，比如我们需要在构建完成时，自定义一些操作动作：
+除此之外，`electron-builder` 也支持在构建的各个阶段插入一些钩子函数，比如需要在构建完成时，自定义一些操作动作：
 
 ```js
 "build": {
@@ -226,18 +226,18 @@ npm run build:win
 Electron 应用中的前端代码最终会打包成 [asar](https://github.com/electron/asar) 文件。`asar` 是一种文件归档方式，类似于 `tar` 包，把多个目录和文件合并在一起，但是并不进行压缩。因为一个包里容纳了多个文件，所以需要对各个文件做索引，加上这些索引信息后，`.asar` 文件大小实际上超过各个文件加起来的总和。
 
 既然 `asar` 文件不进行压缩也不进行加密，那么为什么 Electron 要使用 `asar` 呢？官方也给了一些解释：
-1. 如果我们的程序依赖的某些资源路径很深，而在 Windows 上对资源路径的长度是有限制的，路径过长就会加载失败，使用 asar 打包就能绕开这个问题。
+1. 如果程序依赖的某些资源路径很深，而在 Windows 上对资源路径的长度是有限制的，路径过长就会加载失败，使用 asar 打包就能绕开这个问题。
 2. 程序运行时加载一个 `.asar` 文件，相对于加载不同路径的文件而言，加快了 `require` 函数的加载文件的速度。
 3. 避免向用户直接暴露代码文件。
 
-好了，介绍完 `asar` 后，我们再来说一下 `asar` 存档的一些局限性：
+介绍完 `asar` 后，再来说一下 `asar` 存档的一些局限性：
 
 1. asar 文件是只读的，所以 Node APIs 里那些会修改文件的方法在使用 asar 文件时都无法正常工作。
 2. asar 中的目录不能被设置成工作目录（working directory），这是因为 asar 是一个并不存在的虚拟目录。
 3. 需要将 asar 中的文件解压出来才能运行 node.js 的部分 API。
 4. fs.stat 返回的信息是不真实的。这个也是因为 asar 是一个虚拟目录。
 
-1、2、4 三点大多数对我们的影响并不大，但是第三点需要特别注意，还记得我们在《Electron 的原生能力》章节介绍过的使用 `child_process.execFile` 调用可执行文件的能力。如果我们将这个可执行程序 `.exe` 一起打包进入 `.asar` 虚拟文件中，因为 node.js 的 `execFile` 不支持执行 `asar` 中的虚拟文件，所以 Electron 会将所需的 `.exe` 文件提取到临时文件中，并将临时文件的路径传递给这些 API，以使其正常工作，对于这类 API，会增加一些开销。
+1、2、4 三点大多数情况下影响并不大，但第三点需要特别注意。前文介绍过使用 `child_process.execFile` 调用可执行文件的能力。如果将这个可执行程序 `.exe` 一起打包进入 `.asar` 虚拟文件中，因为 node.js 的 `execFile` 不支持执行 `asar` 中的虚拟文件，所以 Electron 会将所需的 `.exe` 文件提取到临时文件中，并将临时文件的路径传递给这些 API，以使其正常工作，对于这类 API，会增加一些开销。
 
 除了 `child_process.execFile` 这个 API 外，其他的还有：
 
@@ -246,9 +246,9 @@ Electron 应用中的前端代码最终会打包成 [asar](https://github.com/el
 -   `fs.openSync`
 -   `process.dlopen` - 用在 `require` 原生模块时
 
-除此之外，有一些 Node API 不支持在 ASAR 存档中执行二进制文件，例如 `child_process.exec`、`child_process.spawn`。所以，我们尽量不要将一些 Node 原生模块（比如：`sqlite` ）、二进制文件（比如：`*.node`、`*.exe`）打包进 `asar` 文档中。
+除此之外，有一些 Node API 不支持在 ASAR 存档中执行二进制文件，例如 `child_process.exec`、`child_process.spawn`。所以，尽量不要将一些 Node 原生模块（比如：`sqlite` ）、二进制文件（比如：`*.node`、`*.exe`）打包进 `asar` 文档中。
 
-如果你使用的是 [Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/)，那么你可以在 `vue.config.js` 中的 `pluginOptions.electronBuilder.externals` 中配置需要提取的模块：
+如果使用的是 [Vue CLI Plugin Electron Builder](https://nklayman.github.io/vue-cli-plugin-electron-builder/)，可以在 `vue.config.js` 中的 `pluginOptions.electronBuilder.externals` 中配置需要提取的模块：
 
 ```js
 pluginOptions: {
@@ -262,7 +262,7 @@ pluginOptions: {
   }
 }
 ```
-如果你使用的是 [electron-vite](https://cn.electron-vite.org/)，那么你可以在 `electron-builder.yml` 中添加如下配置：
+如果使用的是 [electron-vite](https://cn.electron-vite.org/)，可以在 `electron-builder.yml` 中添加如下配置：
 
 ```yaml
 asarUnpack:
@@ -272,9 +272,9 @@ asarUnpack:
 ```
 
 ## 集成到 github Actions 跨平台构建
-我们知道，Electron 是一个可以构建跨平台的桌面端工具，我们可以把 Electron 应用程序打包成不同平台的安装包。但是，需要注意的是打包成不同平台的安装包需要我们使用不同的操作系统进行打包。比如我们需要打包 `.dmg、.exe、.deb` 这三个安装包文件，那么我们就需要使用三套操作系统来分别打包。所以，你可能需要通过一些 `CI` 工具来帮助你完成多端打包能力。
+Electron 是一个可以构建跨平台的桌面端工具，可以把 Electron 应用程序打包成不同平台的安装包。但需要注意的是，打包成不同平台的安装包需要使用不同的操作系统进行打包。比如需要打包 `.dmg、.exe、.deb` 这三个安装包文件，就需要使用三套操作系统来分别打包。所以，可能需要通过一些 `CI` 工具来帮助完成多端打包能力。
 
-这里，为了方便演示和讲解，我们以 `github Actions` 作为示例，演示如何将你的应用程序集成到自动化构建流程中。
+这里以 `github Actions` 作为示例，演示如何将应用程序集成到自动化构建流程中。
 
 ### 什么是 github Actions?
 GitHub Actions 是 GitHub 提供的一项功能，用于自动化软件开发工作流程。它允许在特定事件发生时执行自定义的自动化操作，例如代码提交、拉取请求、问题创建等。通过 Actions，开发者可以配置一系列步骤和任务，使得在特定事件触发时，自动运行这些任务。
@@ -355,16 +355,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 ```
-以上 `yml` 文件描述了当我们把代码 `push` 到 `master` 分支时，会触发 `jobs` 执行。`jobs` 会分别在 `macos-11, windows-2019, ubuntu-latest` 三套环境中运行构建任务。完成构建后，会将我们构建完成的三个平台的可执行程序上传到 `github release` 中。
+以上 `yml` 文件描述了当把代码 `push` 到 `master` 分支时，会触发 `jobs` 执行。`jobs` 会分别在 `macos-11, windows-2019, ubuntu-latest` 三套环境中运行构建任务。完成构建后，会将构建完成的三个平台的可执行程序上传到 `github release` 中。
 
-> 需要注意的是，上传构建包到 github release 中需要在 yml 配置一下 GH_TOKEN 这个字段，你可以在你仓库的项目 `xxx/settings/secrets/actions` 路径下进行设置。
+> 需要注意的是，上传构建包到 github release 中需要在 yml 配置一下 GH_TOKEN 这个字段，可以在仓库的项目 `xxx/settings/secrets/actions` 路径下进行设置。
 > 
 >
->另外，workflow 文件的配置字段非常多，如果你有其他的诉求，可以详见[官方文档](https://help.github.com/en/articles/workflow-syntax-for-github-actions)。
+>另外，workflow 文件的配置字段非常多，如有其他的诉求，可以详见[官方文档](https://help.github.com/en/articles/workflow-syntax-for-github-actions)。
 
 ## 总结
-本小节，我们介绍了 Electron 应用程序打包过程中使用的两个主流工具：Electron Forge 和 Electron Builder。并介绍了它们各自的优势和劣势：对于长期支持性，Electron Forge 可能更适合，但打包出的包体积会比 Electron Builder 大。
 
-同时，我们也介绍了打包前的准备工作，如应用程序签名和图标制作的方法。还详细讲解了 asar 文件、Electron Builder 的使用配置以及如何集成到 GitHub Actions 进行跨平台构建。
+Electron 应用程序打包过程中有两个主流工具：Electron Forge 和 Electron Builder。它们各自的优势和劣势是：对于长期支持性，Electron Forge 可能更适合，但打包出的包体积会比 Electron Builder 大。
 
-有了这些基础，接下来我们需要再学习另外一个重要部分，那就是 Electron 应用程序的更新。
+打包前的准备工作包括应用程序签名和图标制作。此外，本文还讲解了 asar 文件的原理与局限、Electron Builder 的使用配置以及如何集成到 GitHub Actions 进行跨平台构建。

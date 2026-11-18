@@ -17,7 +17,7 @@ tags: [Java, 源码剖析]
 
 - CachedThreadPool 和 ScheduledThreadPool：允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
 
-其实当我们去看 Executors 的源码会发现，Executors.newFixedThreadPool()、Executors.newSingleThreadExecutor() 和 Executors.newCachedThreadPool() 等方法的底层都是通过 ThreadPoolExecutor 实现的，所以本文我们就重点来了解一下 ThreadPoolExecutor 的相关知识，比如它有哪些核心的参数？它是如何工作的？
+其实查看 Executors 的源码会发现，Executors.newFixedThreadPool()、Executors.newSingleThreadExecutor() 和 Executors.newCachedThreadPool() 等方法的底层都是通过 ThreadPoolExecutor 实现的，所以本文重点讲解 ThreadPoolExecutor 的相关知识，比如它有哪些核心的参数？它是如何工作的？
 
 ::: tip 分工声明：线程池
 本篇是面试问答 + 源码执行流程视角；线程池的完整使用指南（参数、队列、拒绝策略、定制与关闭）见 [02-JVM与并发/线程池](../../02-JVM与并发/02-线程池.md)，监控与调优实战另见 [线程池监控调优与排查案例](../../02-JVM与并发/12-线程池监控调优与排查案例.md)。
@@ -55,7 +55,7 @@ public ThreadPoolExecutor(int corePoolSize,
 }
 ```
 
-第 1 个参数：**corePoolSize** 表示线程池的常驻核心线程数。如果设置为 0，则表示不保留常驻线程，线程执行完任务且超过存活时间后就会被回收；如果大于 0，即使没有任务时也会保证线程池的线程数量等于此值。但需要注意，此值如果设置的比较小，则会频繁的创建和销毁线程（创建和销毁的原因会在本文的下半部分讲到）；如果设置的比较大，则会浪费系统资源，所以开发者需要根据自己的实际业务来调整此值。
+第 1 个参数：**corePoolSize** 表示线程池的常驻核心线程数。如果设置为 0，则表示不保留常驻线程，线程执行完任务且超过存活时间后就会被回收；如果大于 0，即使没有任务时也会保证线程池的线程数量等于此值。但需要注意，此值如果设置的比较小，则会频繁的创建和销毁线程（创建和销毁的原因会在下文的源码分析部分讲到）；如果设置的比较大，则会浪费系统资源，所以开发者需要根据自己的实际业务来调整此值。
 
 第 2 个参数：**maximumPoolSize** 表示线程池在任务最多时，最大可以创建的线程数。官方规定此值必须大于 0，也必须大于等于 corePoolSize，此值只有在任务比较多，且不能存放在任务队列时，才会用到。
 
@@ -65,7 +65,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 第 5 个参数：**workQueue** 表示线程池执行的任务队列，当线程池的所有线程都在处理任务时，如果来了新任务就会缓存到此任务队列中排队等待执行。
 
-第 6 个参数：**threadFactory** 表示线程的创建工厂，此参数一般用的比较少，我们通常在创建线程池时不指定此参数，它会使用默认的线程创建工厂的方法来创建线程，源代码如下：
+第 6 个参数：**threadFactory** 表示线程的创建工厂，此参数一般用的比较少，通常在创建线程池时不指定此参数，它会使用默认的线程创建工厂的方法来创建线程，源代码如下：
 
 ```java
 public ThreadPoolExecutor(int corePoolSize,
@@ -109,7 +109,7 @@ static class DefaultThreadFactory implements ThreadFactory {
 }
 ```
 
-我们也可以自定义一个线程工厂，通过实现 ThreadFactory 接口来完成，这样就可以自定义线程的名称或线程执行的优先级了。
+也可以自定义一个线程工厂，通过实现 ThreadFactory 接口来完成，这样就可以自定义线程的名称或线程执行的优先级了。
 
 第 7 个参数：**RejectedExecutionHandler** 表示指定线程池的拒绝策略，当线程池的任务已经在缓存队列 workQueue 中存储满了之后，并且不能创建新的线程来执行此任务时，就会用到此拒绝策略，它属于一种限流保护的机制。
 
@@ -153,7 +153,7 @@ public void execute(Runnable command) {
 
 ### 考点分析
 
-本文的这道面试题考察的是你对于线程池和 ThreadPoolExecutor 的掌握程度，也属于 Java 的基础知识，几乎所有的面试都会被问到，其中线程池任务执行的主要流程，会在下文 execute() 的源码分析中详细展开。
+本文的这道面试题考察的是对线程池和 ThreadPoolExecutor 的掌握程度，也属于 Java 的基础知识，几乎所有的面试都会被问到，其中线程池任务执行的主要流程，会在下文 execute() 的源码分析中详细展开。
 
 与 ThreadPoolExecutor 相关的面试题还有以下几个：
 
@@ -173,7 +173,7 @@ public void execute(Runnable command) {
 
 execute() 和 submit() 都是用来执行线程池任务的，它们最主要的区别是，submit() 方法可以接收线程池执行的返回值，而 execute() 不能接收返回值。
 
-来看两个方法的具体使用：
+两个方法的具体使用如下：
 
 ```java
 ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 10, 10L,
@@ -220,7 +220,7 @@ Java 自带的拒绝策略有 4 种：
 
 - **DiscardOldestPolicy**，忽略最早的任务（最先加入队列的任务）。
 
-例如，我们来演示一个 AbortPolicy 的拒绝策略，代码如下：
+例如，以下代码演示 AbortPolicy 的拒绝策略：
 
 ```java
 ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 3, 10,
@@ -283,11 +283,11 @@ pool-1-thread-1
 pool-1-thread-2
 ```
 
-可以看出线程池执行了自定义的拒绝策略，我们可以在 rejectedExecution 中添加自己业务处理的代码。
+可以看出线程池执行了自定义的拒绝策略，在 rejectedExecution 中可以添加相应的业务处理代码。
 
 #### ThreadPoolExecutor 扩展
 
-ThreadPoolExecutor 的扩展主要是通过重写它的 beforeExecute() 和 afterExecute() 方法实现的，我们可以在扩展方法中添加日志或者实现数据统计，比如统计线程的执行时间，如下代码所示：
+ThreadPoolExecutor 的扩展主要是通过重写它的 beforeExecute() 和 afterExecute() 方法实现的，在扩展方法中可以添加日志或者实现数据统计，比如统计线程的执行时间，如下代码所示：
 
 ```java
 public class ThreadPoolExtend {
@@ -354,7 +354,7 @@ pool-1-thread-1 | after | time=4570328636800 | 耗时：0.169 毫秒
 
 ### 小结
 
-最后我们总结一下：线程池的使用必须要通过 ThreadPoolExecutor 的方式来创建，这样才可以更加明确线程池的运行规则，规避资源耗尽的风险。同时，也介绍了 ThreadPoolExecutor 的七大核心参数，包括核心线程数和最大线程数之间的区别，当线程池的任务队列没有可用空间且线程池的线程数量已经达到了最大线程数时，则会执行拒绝策略，Java 自动的拒绝策略有 4 种，用户也可以通过重写 rejectedExecution() 来自定义拒绝策略，我们还可以通过重写 beforeExecute() 和 afterExecute() 来实现 ThreadPoolExecutor 的扩展功能。
+总结来说：线程池的使用必须要通过 ThreadPoolExecutor 的方式来创建，这样才可以更加明确线程池的运行规则，规避资源耗尽的风险。同时，本文也介绍了 ThreadPoolExecutor 的七大核心参数，包括核心线程数和最大线程数之间的区别，当线程池的任务队列没有可用空间且线程池的线程数量已经达到了最大线程数时，则会执行拒绝策略，Java 自动的拒绝策略有 4 种，用户也可以通过重写 rejectedExecution() 来自定义拒绝策略，还可以通过重写 beforeExecute() 和 afterExecute() 来实现 ThreadPoolExecutor 的扩展功能。
 
 ## 版本差异(线程池 → Java 21)
 

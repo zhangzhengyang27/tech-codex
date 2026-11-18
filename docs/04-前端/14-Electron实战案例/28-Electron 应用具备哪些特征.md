@@ -9,13 +9,15 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron 应用具备哪些特征？
 
-在上一节中我们介绍了如何升级 Electron 应用，现在我们已经介绍完了如何开发一个 Electron 应用以及如何把 Electron 应用分发给用户。如果按照一个产品的生命周期来考虑，那么我们现在面对的是如何观察、分析、调试线上应用了，如果你不了解 Electron 应用在用户侧的特征，那么就很难正确地分析线上应用的问题。
+## 背景与问题
 
-本节我们通过讲解 Electron 应用安装目录的结构、缓存目录的结构、注册表信息、全量升级缓存目录的结构等信息来介绍线上应用的特征，除此之外我们还会分析开发环境下 electron npm 包和 electron-builder npm 包的特征，以便于我们分析开发环境下的问题。
+完成 Electron 应用的开发并把应用分发给用户之后，产品的生命周期就进入观察、分析、调试线上应用的阶段。如果不了解 Electron 应用在用户侧的特征，就很难正确地分析线上应用的问题。
+
+本文梳理 Electron 应用安装目录的结构、缓存目录的结构、注册表信息、全量升级缓存目录的结构等线上应用特征，除此之外还会分析开发环境下 electron npm 包和 electron-builder npm 包的特征，以便于分析开发环境下的问题。
 
 ## 应用程序安装目录
 
-如果你在使用 electron-builder 打包你的应用时设置了不允许用户修改应用程序安装目录，那么你的应用程序会安装在用户的如下目录中：
+使用 electron-builder 打包应用时，如果设置了不允许用户修改应用程序安装目录，那么应用程序会安装在用户的如下目录中：
 
 ```text
 64 位应用程序的安装目录：C:\Program Files\\[yourAppName]
@@ -85,17 +87,19 @@ MacintoshHD/用户/[yourOsUserName]/资源库/ApplicationSupport/[yourAppName]
 
 该目录下的内容与子目录结构跟 Windows 操作系统类似，不再赘述。
 
-需要注意的是，**虽然以上目录内的文件都是加密存储的，但你只要把这个目录下的文件拷贝到另一台机器上，就可以用一个伪造的 Electron 程序读取到这些缓存文件内的数据**。
+需要注意的是，**虽然以上目录内的文件都是加密存储的，但只要把这个目录下的文件拷贝到另一台机器上，就可以用一个伪造的 Electron 程序读取到这些缓存文件内的数据**。
 
-另外，我们前面章节介绍的客户端数据库文件也是存放在这个目录下的。
+另外，客户端数据库文件也是存放在这个目录下的。
 
-Electron 为我们提供了一个便捷的 API 来获取此路径，此方法执行时会判断当前应用正运行在什么操作系统上，然后根据操作系统的名称返回具体的路径地址。
+Electron 提供了一个便捷的 API 来获取此路径，此方法执行时会判断当前应用正运行在什么操作系统上，然后根据操作系统的名称返回具体的路径地址。
 
 ```js
 app.getPath("userData");
 ```
 
 ## 注册表键值
+
+### 开机自启动
 
 如果开发者使用 Electron 提供的开机自启动 API，为应用程序设置了开机自启动功能，那么在 Windows 操作系统下，用户注册表如下路径下会增加一个键值对：
 
@@ -117,7 +121,9 @@ app.setLoginItemSettings({
 });
 ```
 
-另外 99% 的 Electron 应用是通过安装包分发给最终用户的，有安装包势必就有卸载程序，操作系统一般会在注册表如下三个路径下记录系统的卸载程序路径：
+### 卸载程序记录
+
+另外，99% 的 Electron 应用是通过安装包分发给最终用户的，有安装包势必就有卸载程序，操作系统一般会在注册表如下三个路径下记录系统的卸载程序路径：
 
 ```text
 计算机\HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall
@@ -125,20 +131,22 @@ app.setLoginItemSettings({
 计算机\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall
 ```
 
-如果开发者使用 app 对象的 setAsDefaultProtocolClient 方法，把自己的应用设置成可以通过外部连接唤起的应用，那么这个操作也会在用户的注册表内留下痕迹，如下为 GitHubDesktop 在我的注册表中写入的内容：
+### 协议唤起
+
+如果开发者使用 app 对象的 setAsDefaultProtocolClient 方法，把自己的应用设置成可以通过外部连接唤起的应用，那么这个操作也会在用户的注册表内留下痕迹，如下为 GitHubDesktop 在注册表中写入的内容：
 
 ```text
 键：计算机\HKEY_CURRENT_USER\Software\Classes\github-windows\shell\open\command
 值："C:\Users\liuxiaolun\AppData\Local\GitHubDesktop\app-2.9.0\GitHubDesktop.exe" --protocol-launcher "%1"
 ```
 
-如你所见，当用户点击链接唤起我们的应用时，这个注册表键值不但给我的应用传递了--protocol-launcher 参数，还中转了链接中的参数给我的应用。
+当用户点击链接唤起应用时，这个注册表键值不但给应用传递了 --protocol-launcher 参数，还中转了链接中的参数给应用。
 
 Mac 没有注册表，相关的信息都是通过 Info.plist 文件和应用程序共同完成的。
 
 ## 升级程序缓存目录
 
-前文我们介绍了全量升级 Electron 应用的方案，当 electron-updater 检测到升级服务器上存在新版本的应用程序时，会下载新版本相关的文件，并保存在如下目录中：
+全量升级 Electron 应用时，当 electron-updater 检测到升级服务器上存在新版本的应用程序，会下载新版本相关的文件，并保存在如下目录中：
 
 ```text
  C:\Users\[userName]\AppData\Local\[appName]-updater\pending
@@ -154,9 +162,9 @@ Mac 没有注册表，相关的信息都是通过 Info.plist 文件和应用程�
 C:\Users\[userName]\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar
 ```
 
-在一些特殊的情况下，我们可能要更新这个快捷方式的目标程序，比如用户先安装了 32 位的应用程序，又安装 64 位的应用程序，此时用户固定在任务栏的图标指向的目标程序路径就是错的了。
+在一些特殊的情况下，可能需要更新这个快捷方式的目标程序，比如用户先安装了 32 位的应用程序，又安装 64 位的应用程序，此时用户固定在任务栏的图标指向的目标程序路径就是错的了。
 
-Electron 为我们提供了读写快捷方式的 API：shell 模块下的 `readShortcutLink` 和 `writeShortcutLink`，开发者可以使用这两个 API 来更新任务栏上的快捷方式。
+Electron 提供了读写快捷方式的 API：shell 模块下的 `readShortcutLink` 和 `writeShortcutLink`，开发者可以使用这两个 API 来更新任务栏上的快捷方式。
 
 ## Electron npm 包的特征
 
@@ -166,17 +174,19 @@ Electron npm 包会被安装到工程的如下目录中：
 yourSolutionDir\node_modules\electron
 ```
 
-这个目录下 dist 子目录中存放着 Electron 的二进制文件，我们开发调试应用时，启动的就是下面这个应用程序：
+这个目录下 dist 子目录中存放着 Electron 的二进制文件，开发调试应用时，启动的就是下面这个应用程序：
 
 ```bash
 yourSolutionDir\node_modules\electron\dist\electron.exe
 ```
 
-这个包的导出文件是 index.js，这个文件并没有什么特殊的逻辑，只是返回了上面 electron.exe 的路径。如果你还记得我们在《如何开发 Vite3 插件构建 Electron 开发环境》章节中介绍的知识，我们就是通过`require("electron")`获取 electron.exe 的路径的，如下代码所示：
+这个包的导出文件是 index.js，这个文件并没有什么特殊的逻辑，只是返回了上面 electron.exe 的路径。构建 Electron 开发环境时，正是通过`require("electron")`获取 electron.exe 的路径的，如下代码所示：
 
 ```ts
 let electronProcess = spawn(require("electron").toString(), [], {});
 ```
+
+### 二进制资源的下载地址
 
 安装 Electron npm 包时，npm 会在如下路径下载 Electron 的二进制资源：
 
@@ -196,7 +206,9 @@ https://github.com/electron/electron/releases/download/v20.1.3/electron-v20.1.3-
 - 版本部分的环境变量：ELECTRON_CUSTOM_DIR。
 - 文件部分的环境变量：ELECTRON_CUSTOM_FILENAME。
 
-如果你因为网络环境问题而无法成功安装 Electron npm 包，那么可以尝试设置 ELECTRON_MIRROR 的环境变量为https://npmmirror.com/mirrors/electron/ ，这是阿里巴巴团队为国内开发者提供的镜像地址。
+如果因为网络环境问题而无法成功安装 Electron npm 包，可以尝试设置 ELECTRON_MIRROR 的环境变量为 https://npmmirror.com/mirrors/electron/ ，这是阿里巴巴团队为国内开发者提供的镜像地址。
+
+### 二进制资源的缓存目录
 
 npm 会首先把下载到的 Electron 可执行文件及其二进制资源压缩包放置到如下目录中：
 
@@ -210,7 +222,7 @@ C:\Users\ADMINI~1\AppData\Local\Temp
 C:\Users\[your os username]\AppData\Local\electron\Cache
 ```
 
-开发者可以通过设置名为 electron_config_cache 的环境变量来自定义缓存目录。知道了缓存目录的位置之后，开发者就可以先手动把 Electron 可执行文件及其二进制资源压缩包和哈希文件放置到相应的缓存目录中。这样再通过 `npm install` 命令安装 Electron 依赖包时，就会先从你的缓存目录里获取相应的文件，而不是去网络上下载了。这对于工作在无外网环境下的开发者来说，无疑是一种非常有价值的手段。
+开发者可以通过设置名为 electron_config_cache 的环境变量来自定义缓存目录。知道了缓存目录的位置之后，开发者就可以先手动把 Electron 可执行文件及其二进制资源压缩包和哈希文件放置到相应的缓存目录中。这样再通过 `npm install` 命令安装 Electron 依赖包时，就会先从缓存目录里获取相应的文件，而不是去网络上下载了。这对于工作在无外网环境下的开发者来说，是一种非常有价值的手段。
 
 需要注意的是，缓存目录子目录的命名方式是有要求的，如下所示：
 
@@ -221,7 +233,7 @@ C:\Users\[your os username]\AppData\Local\electron\Cache
 [你的缓存目录]/httpsgithub.comelectronelectronreleasesdownloadv11.1.0SHASUMS256.txt/SHASUMS256.txt
 ```
 
-路径中[你的缓存目录]下的子目录的命名方式看起来有些奇怪，这其实就是下载地址格式化得来的（去除了 url 路径中的斜杠，使得其能成为文件路径）。
+路径中缓存目录下的子目录的命名方式看起来有些奇怪，这其实就是下载地址格式化得来的（去除了 url 路径中的斜杠，使得其能成为文件路径）。
 
 ## electron-builder npm 包的特征
 
@@ -234,8 +246,8 @@ electron-builder 下载并缓存 Electron 的逻辑与安装 Electron 依赖包�
 
 当开发者在 64 位操作系统上打 32 位的应用程序安装包时，electron-builder 会去服务器下载 32 位的 Electron 二进制包，从而完成**交叉编译**的需求，这实际上并不是真正的交叉编译。
 
-## 总结
+## 小结
 
-本节我们先介绍了 Electron 应用安装目录的结构，不知道你有没有注意到 Windows 安装目录和 Mac 安装目录的文件结构差异是非常巨大的；接着我们介绍了 Electron 应用在 Windows 和 Mac 操作系统下的缓存目录，这两个操作系统下的缓存目录作用是相同的；之后我们介绍了一个 Electron 应用会在 Windows 操作系统下留下哪些注册表信息；还讲解了 Electron 应用全量升级时升级文件的缓存目录。最后介绍的 electron npm 包和 electron-builder npm 包的特征主要是为了方便我们分析开发环境下的问题。
+Electron 应用在用户侧的特征可以归纳为四类：安装目录结构（Windows 与 Mac 安装目录的文件结构差异非常巨大）、缓存目录（Windows 与 Mac 下缓存目录的作用相同，客户端数据库文件也存放在这里）、Windows 注册表信息（开机自启动、卸载程序、协议唤起都会留下痕迹）、全量升级时升级文件的缓存目录。
 
-知道了 Electron 应用具备哪些特征之后，后续将介绍如何调试用户侧的 Electron 应用。
+electron npm 包和 electron-builder npm 包的特征则主要用于分析开发环境下的问题：前者涉及二进制资源的下载地址构成与缓存机制，后者涉及安装包制作与签名工具的缓存位置。

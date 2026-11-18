@@ -9,12 +9,12 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron应用更新
 
-## 前言
-作为一名前端开发者，我们会很轻松地将我们开发的网页部署到各类云 OSS 上。如果后续在需求迭代中，出现了一些 bug，我们可以对代码进行修复后再次发布，所有用户都会很容易更新到最新的代码。
+## 背景与问题
+对于网页应用，开发者可以很轻松地将页面部署到各类云 OSS 上。后续需求迭代中出现了一些 bug，对代码进行修复后再次发布，所有用户都会很容易更新到最新的代码。
 
-然而，如果你正在使用 Electron 构建桌面应用程序，此时出现了一些 bug，你也尝试修复了这个问题，但是如何确保你的用户收到并更新呢？
+然而，如果正在使用 Electron 构建桌面应用程序，出现了一些 bug 并尝试修复了这个问题，如何确保用户收到并更新呢？
 
-这个小节，我们来一起探讨 Electron 更新的几种方式以及各种更新模式下的优劣问题。
+本文探讨 Electron 更新的几种方式以及各种更新模式下的优劣问题。
 
 ## 1. 全量更新
 手动全量更新核心原理是在启动 Electron 应用程序的时候获取服务器当前软件最新的版本号和本地软件中的 `package.json` 版本进行匹配，如果发现落后于服务器版本则进行更新提示，并引导用户进行手动下载安装，核心代码如下：
@@ -72,13 +72,13 @@ const compareVersion2Update = (current, latest) => {
 这种更新方式优点是实现方式简单，而且非常稳定。但过程繁琐、软件包大多在 100M 左右，更新速度特别慢，而且用户更新意愿也不是很强烈，更新率低。
 
 ## 2. 文件覆盖式更新
-我们知道，Electron 在打包后会将我们的业务代码全部导入到 `app.asar` 文件中，`app.asar` 文件一般包含以下文件：
+Electron 在打包后会将业务代码全部导入到 `app.asar` 文件中，`app.asar` 文件一般包含以下文件：
 
 * `main` ：主进程的入口文件。
 * `renderer`：渲染进程入口文件。
 * `preload`：预加载脚本文件
 
-所以，如果我们只修改了渲染进程里面的东西的话，并不需要进行完全的打包更新，只要对 `renderer` 文件中依赖的 `js、html、css` 进行替换，那我们的页面也会更新。要完成对 `renderer` 更新大多数想到办法是直接替换覆盖用户本地的 `app.asar` 文件即可。
+所以，如果只修改了渲染进程里面的内容的话，并不需要进行完全的打包更新，只要对 `renderer` 文件中依赖的 `js、html、css` 进行替换，页面也就会更新。要完成对 `renderer` 更新，大多数开发者想到的办法是直接替换覆盖用户本地的 `app.asar` 文件即可。
 
 在 `macOS` 上确实可以，在需要更新时，下载新的 `asar` 包覆盖旧的 `asar` 包并重启应用即可，而且在应用程序运行的过程中，依然可以操作覆盖，不影响正常使用。
 
@@ -91,7 +91,7 @@ const compareVersion2Update = (current, latest) => {
 
 ### 2.1 使用 extraResources 字段
 
-既然 `.asar` 文件不可以覆盖，那就把需要更新的资源不打包到 `.asar` 中，在 `electron-builder` 中，我们可以通过 [extraResources](https://www.electron.build/configuration/contents#extraresources) 字段，将一些不需要打包进 `.asar` 的文件提取到 `app.asar.unpacked` 文件夹中。比如，我们可以通过以下配置将渲染进程中的代码在打包的时候提取到 `app.asar.unpacked` 中：
+既然 `.asar` 文件不可以覆盖，那就把需要更新的资源不打包到 `.asar` 中。在 `electron-builder` 中，可以通过 [extraResources](https://www.electron.build/configuration/contents#extraresources) 字段，将一些不需要打包进 `.asar` 的文件提取到 `app.asar.unpacked` 文件夹中。比如，可以通过以下配置将渲染进程中的代码在打包的时候提取到 `app.asar.unpacked` 中：
 
 ```js
 builderOptions: {
@@ -114,9 +114,9 @@ builderOptions: {
   ]
 },
 ```
-其中，我们通过 `extraResources.filter` 字段指明了：**除了哪些内容外，需要构建到 `app.asar.unpacked` 中的资源**，通过 `files` 字段指明了：**需要构建到 `app.asar` 中的资源**。这段配置的意思就是除了 `icons、preload.js、node_modules、background.js` 外，其他渲染进程中的 `index.html、js、css` 资源全部打包进 `app.asar.unpacked` 中。
+其中，`extraResources.filter` 字段指明了：**除了哪些内容外，需要构建到 `app.asar.unpacked` 中的资源**，`files` 字段指明了：**需要构建到 `app.asar` 中的资源**。这段配置的意思就是除了 `icons、preload.js、node_modules、background.js` 外，其他渲染进程中的 `index.html、js、css` 资源全部打包进 `app.asar.unpacked` 中。
 
-我们可以通过 `electron-builder` 打包试试看，最终的目录大致如下：
+通过 `electron-builder` 打包后，最终的目录大致如下：
 
 ```bash
 app.asar.unpacked
@@ -146,7 +146,7 @@ if (process.env.WEBPACK_DEV_SERVER_URL) {
 }
 ```
 
-这里的 `app://` 是通过 `createProtocol('app')` 函数注册的请求协议，指向的是 `app.asar` 文件，一起来看看 `vue-cli-plugin-electron-builder` 中的 `createProtocol` 方法：
+这里的 `app://` 是通过 `createProtocol('app')` 函数注册的请求协议，指向的是 `app.asar` 文件。`vue-cli-plugin-electron-builder` 中的 `createProtocol` 方法如下：
 
 ```js
 // createProtocol.js
@@ -193,7 +193,7 @@ export default (scheme, customProtocol) => {
   )
 }
 ```
-所以，我们需要修改 `createProtocol` 函数，将从 `app.asar` 中读取文件修改成 `app.asar.unpacked` 中的资源：
+所以，需要修改 `createProtocol` 函数，将从 `app.asar` 中读取文件修改成 `app.asar.unpacked` 中的资源：
 ```js
 // process.resourcesPath 指向 Resource 目录
 const serverPath = path.join(process.resourcesPath, './app.asar.unpacked')
@@ -211,7 +211,7 @@ export default (scheme) => {
   )
 }
 ```
-这样，我们就可以实现正确的资源加载了。后面的操作就是通过检测版本号判断是否需要更新，如果需要更新可以通过 [download](https://github.com/kevva/download) 这个库来完成对资源的覆盖式下载更新：
+这样，就可以实现正确的资源加载了。后面的操作就是通过检测版本号判断是否需要更新，如果需要更新可以通过 [download](https://github.com/kevva/download) 这个库来完成对资源的覆盖式下载更新：
 
 ```js
 import download from 'download';
@@ -234,12 +234,12 @@ const update = async () => {
 ```
 
 ### 2.2 使用 asar 字段
-除了使用 `extraResources` 字段外，我们还可以通过 `electron-builder` 的 `asar` 字段来指明不打包成 `asar` 虚拟目录：
+除了使用 `extraResources` 字段外，还可以通过 `electron-builder` 的 `asar` 字段来指明不打包成 `asar` 虚拟目录：
 
 ```js
 asar: false
 ```
-通过这种方式打包，我们可以直接得到一个无 `app.asar` 的 `app` 目录：
+通过这种方式打包，可以直接得到一个无 `app.asar` 的 `app` 目录：
 
 ```bash
 app
@@ -258,7 +258,7 @@ app
 这个 `app` 文件夹目录是直接可以进行替换的，那么接下来覆盖式更新和设置就和上面的使用 `extraResources` 字段打包后是一致的了，需要指明一下加载的文件资源路径。
 
 ## 3. 自动更新
-如果你使用的是 `electron-builder`，那么你可以直接使用 [electron-updater](https://www.electron.build/auto-update.html) 来进行软件的自动更新。接下来，我们将基于 `vue-cli-plugin-electron-builder` 来详细介绍一下如何使用 `electron-updater` 来完成应用的自动更新能力。
+如果使用的是 `electron-builder`，那么可以直接使用 [electron-updater](https://www.electron.build/auto-update.html) 来进行软件的自动更新。下面基于 `vue-cli-plugin-electron-builder` 来详细介绍如何使用 `electron-updater` 来完成应用的自动更新能力。
 
 首先，需要配置一下 `electron-builder` 的 `publish` 和 `releaseInfo` 字段，来记录发布更新地址和发布日志：
 
@@ -278,7 +278,7 @@ releaseInfo: {
 },
 ```
 
-这里，`publish` 中使用的是基于 `github` 提供给 `release` 包。然后在我们执行打包构建，会在 `build` 目录下生成一个 `latest.yml` 文件，记录着此次更新的一些信息，大致如下：
+这里，`publish` 中使用的是基于 `github` 提供给 `release` 包。执行打包构建后，会在 `build` 目录下生成一个 `latest.yml` 文件，记录着此次更新的一些信息，大致如下：
 ```yml
 # latest.yml
 version: 版本号
@@ -339,23 +339,17 @@ autoUpdater.on('update-downloaded', () => {
 });
 ```
 
-通过订阅 `download-progress` 事件，我们可以监听到下载的进度，一旦下载完成，我们将发送一个弹窗，告知用户发现新版本是否退出重新安装更新，用户手动进行确认更新，通过 `autoUpdater.quitAndInstall()` 方法进行退出更新。
+通过订阅 `download-progress` 事件，可以监听到下载的进度。一旦下载完成，应用会发送一个弹窗，告知用户发现新版本是否退出重新安装更新，用户手动进行确认更新，通过 `autoUpdater.quitAndInstall()` 方法进行退出更新。
 
 关于自动更新的完整代码见：https://github.com/rubickCenter/rubick/blob/e2ea081d2553125790e4a05a746b583e27cc6ca5/src/main/common/versionHandler.ts
 
-以上，便是使用 `electron-updater` 更新的全流程，但是需要注意的是如果你需要支持 macOS 上的自动更新，那么你还需要对应用程序进行代码签名和公证，然后再进行打包构建，这块内容参考 《Electron应用打包》。
+以上，便是使用 `electron-updater` 更新的全流程。但需要注意的是，如果需要支持 macOS 上的自动更新，还需要对应用程序进行代码签名和公证，然后再进行打包构建，相关内容可参考《Electron应用打包》。
 
 ## 总结
-本小节我们详细介绍了 Electron 常见的三种更新方式：手动更新、覆盖式更新、自动更新。
+Electron 常见的三种更新方式：手动更新、覆盖式更新、自动更新。
 
 手动更新又称全量更新，是一种比较传统的更新方式，其优势是稳定、简单。缺点就是过程繁琐、慢、影响使用、更新率低。适用于低频更新、用户粘性高、作为各种升级技术的降级方案。
 
 覆盖式更新（增量更新）其优势就是更新速度快，但是实现比较复杂、稳定性差、写文件容易失败，比较适合 `hotfix` 打补丁式的发布更新。
 
 自动更新比较稳定、快、而且对用户的打扰少，但是整体实现稍微复杂，一般适用于高频更新软件、体验要求高的场景。
-
-
-
-
-
-

@@ -9,7 +9,7 @@ tags: [Java, 源码剖析]
 
 90% 的程序员直接或者间接的使用过动态代理，无论是日志框架或 Spring 框架，它们都包含了动态代理的实现代码。动态代理是程序在运行期间动态构建代理对象和动态调用代理方法的一种机制。
 
-我们本文的面试题是，如何实现动态代理？JDK Proxy 和 CGLib 有什么区别？
+本文的面试题是，如何实现动态代理？JDK Proxy 和 CGLib 有什么区别？
 
 ::: tip 定位声明：动态代理
 本篇属面试问答体系（原理速答 + 考点扩展）；动态代理在 AOP 中的系统运用见 [Spring AOP](</docs/java-framework/05-Spring/02-AOP>)。
@@ -17,7 +17,7 @@ tags: [Java, 源码剖析]
 
 ### 典型回答
 
-动态代理的常用实现方式是反射。**反射机制**是指程序在运行期间可以访问、检测和修改其本身状态或行为的一种能力，使用反射我们可以调用任意一个类对象，以及类对象中包含的属性及方法。
+动态代理的常用实现方式是反射。**反射机制**是指程序在运行期间可以访问、检测和修改其本身状态或行为的一种能力，使用反射可以调用任意一个类对象，以及类对象中包含的属性及方法。
 
 但动态代理不止有反射一种实现方式，例如，动态代理可以通过 CGLib 来实现，而 CGLib 是基于 ASM（一个 Java 字节码操作框架）而非反射实现的。简单来说，动态代理是一种行为方式，而反射或 ASM 只是它的一种实现手段而已。
 
@@ -39,9 +39,9 @@ JDK Proxy 和 CGLib 的区别主要体现在以下几个方面：
 
 ### 考点分析
 
-本文考察的是你对反射、动态代理及 CGLib 的了解，很多人经常会把反射和动态代理划为等号，但从严格意义上来说，这种想法是不正确的，真正能搞懂它们之间的关系，也体现了你扎实 Java 的基本功。和这个问题相关的知识点，还有以下几个：
+本文考察的是对反射、动态代理及 CGLib 的了解，很多人经常会把反射和动态代理划为等号，但从严格意义上来说，这种想法是不正确的，真正能搞懂它们之间的关系，也体现了扎实的 Java 基本功。和这个问题相关的知识点，还有以下几个：
 
-- 你对 JDK Proxy 和 CGLib 的掌握程度。
+- 对 JDK Proxy 和 CGLib 的掌握程度。
 
 - Lombok 是通过反射实现的吗？
 
@@ -135,7 +135,7 @@ static class Taxi implements Car {
 The taxi is running.
 ```
 
-可以看出 JDK Proxy 实现动态代理的核心是实现 InvocationHandler 接口，我们查看 InvocationHandler 的源码，会发现里面其实只有一个 invoke() 方法，源码如下：
+可以看出 JDK Proxy 实现动态代理的核心是实现 InvocationHandler 接口，查看 InvocationHandler 的源码会发现里面其实只有一个 invoke() 方法，源码如下：
 
 ```java
 public interface InvocationHandler {
@@ -144,11 +144,11 @@ public interface InvocationHandler {
 }
 ```
 
-这是因为在动态代理中有一个重要的角色也就是代理器，它用于统一管理被代理的对象，显然 InvocationHandler 就是这个代理器，而 invoke() 方法则是触发代理的执行方法，我们通过实现 InvocationHandler 接口来拥有动态代理的能力。
+这是因为在动态代理中有一个重要的角色也就是代理器，它用于统一管理被代理的对象，显然 InvocationHandler 就是这个代理器，而 invoke() 方法则是触发代理的执行方法，通过实现 InvocationHandler 接口即可拥有动态代理的能力。
 
 **CGLib 的实现**
 
-在使用 CGLib 之前，我们要先在项目中引入 CGLib 框架，在 pom.xml 中添加如下配置：
+在使用 CGLib 之前，需要先在项目中引入 CGLib 框架，在 pom.xml 中添加如下配置：
 
 ```html
 <!-- https://mvnrepository.com/artifact/cglib/cglib -->
@@ -227,9 +227,9 @@ The car is running.
 
 #### 2.Lombok 原理分析
 
-在开始讲 Lombok 的原理之前，我们先来简单地介绍一下 Lombok，它属于 Java 的一个热门工具类，使用它可以有效的解决代码工程中那些繁琐又重复的代码，如 Setter、Getter、toString、equals 和 hashCode 等等，向这种方法都可以使用 Lombok 注解来完成。
+在开始讲 Lombok 的原理之前，先来简单地介绍一下 Lombok，它属于 Java 的一个热门工具类，使用它可以有效的解决代码工程中那些繁琐又重复的代码，如 Setter、Getter、toString、equals 和 hashCode 等等，向这种方法都可以使用 Lombok 注解来完成。
 
-例如，我们使用比较多的 Setter 和 Getter 方法，在没有使用 Lombok 之前，代码是这样的：
+例如，使用比较多的 Setter 和 Getter 方法，在没有使用 Lombok 之前，代码是这样的：
 
 ```java
 public class Person {
@@ -262,15 +262,15 @@ public class Person {
 
 可以看出 Lombok 让代码简单和优雅了很多。
 
-> 小贴士：如果在项目中使用了 Lombok 的 Getter 和 Setter 注解，那么想要在编码阶段成功调用对象的 set 或 get 方法，我们需要在 IDE 中安装 Lombok 插件才行。
+> 小贴士：如果在项目中使用了 Lombok 的 Getter 和 Setter 注解，那么想要在编码阶段成功调用对象的 set 或 get 方法，需要在 IDE 中安装 Lombok 插件才行。
 
 接下来讲讲 Lombok 的原理。
 
-Lombok 的实现和反射没有任何关系，前面我们说了反射是程序在运行期的一种自省（introspect）能力，而 Lombok 的实现是在编译期就完成了，为什么这么说呢？
+Lombok 的实现和反射没有任何关系，前面说过反射是程序在运行期的一种自省（introspect）能力，而 Lombok 的实现是在编译期就完成了，为什么这么说呢？
 
-回到我们刚才 Setter/Getter 的方法，当我们打开 Person 编译后的字节码就会发现，使用了 Lombok 的 @Data 注解之后，Getter、Setter、toString、equals 和 hashCode 等方法已经被自动生成了。
+回到刚才 Setter/Getter 的示例，打开 Person 编译后的字节码就会发现，使用了 Lombok 的 @Data 注解之后，Getter、Setter、toString、equals 和 hashCode 等方法已经被自动生成了。
 
-也就是说，Lombok 是在编译期就为我们生成了对应的字节码。
+也就是说，Lombok 是在编译期就生成了对应的字节码。
 
 其实 Lombok 是基于 Java 1.6 实现的 JSR 269: Pluggable Annotation Processing API 来实现的，也就是通过编译期自定义注解处理器来实现的：在编译期阶段，当 Java 源码被抽象成语法树（AST）之后，Lombok 会根据自己的注解处理器动态修改 AST，增加新的代码（节点），在这一切执行之后就生成了最终的字节码（.class）文件，这就是 Lombok 的执行原理。
 
@@ -280,13 +280,13 @@ Lombok 的实现和反射没有任何关系，前面我们说了反射是程序�
 
 动态代理的常见使用场景有 RPC 框架的封装、AOP（面向切面编程）的实现、JDBC 的连接等。
 
-Spring 框架中同时使用了两种动态代理 JDK Proxy 和 CGLib，当 Bean 实现了接口时，Spring 就会使用 JDK Proxy，在没有实现接口时就会使用 CGLib，我们也可以在配置中指定强制使用 CGLib，只需要在 Spring 配置中添加 <aop:aspectj-autoproxy proxy-target-class="true"/> 即可。
+Spring 框架中同时使用了两种动态代理 JDK Proxy 和 CGLib，当 Bean 实现了接口时，Spring 就会使用 JDK Proxy，在没有实现接口时就会使用 CGLib，也可以在配置中指定强制使用 CGLib，只需要在 Spring 配置中添加 <aop:aspectj-autoproxy proxy-target-class="true"/> 即可。
 
 ### 小结
 
-本文我们介绍了 JDK Proxy 和 CGLib 的区别，JDK Proxy 是 Java 语言内置的动态代理，必须要通过实现接口的方式来代理相关的类，而 CGLib 是第三方提供的基于 ASM 的高效动态代理类，它通过实现被代理类的子类来实现动态代理的功能，因此被代理的类不能使用 final 修饰。
+本文介绍了 JDK Proxy 和 CGLib 的区别，JDK Proxy 是 Java 语言内置的动态代理，必须要通过实现接口的方式来代理相关的类，而 CGLib 是第三方提供的基于 ASM 的高效动态代理类，它通过实现被代理类的子类来实现动态代理的功能，因此被代理的类不能使用 final 修饰。
 
-除了 JDK Proxy 和 CGLib 之外，我们还讲了 Java 中常用的工具类 Lombok 的实现原理，它其实和反射是没有任何关系的；最后讲了动态代理的使用场景以及 Spring 中动态代理的实现方式，希望本文可以帮助到你。
+除了 JDK Proxy 和 CGLib 之外，本文还讲了 Java 中常用的工具类 Lombok 的实现原理，它其实和反射是没有任何关系的；最后讲了动态代理的使用场景以及 Spring 中动态代理的实现方式。
 
 ## 版本差异(动态代理 → 当前)
 

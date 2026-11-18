@@ -1,17 +1,19 @@
 ---
 title: "SpringBoot 服务性能优化"
-description: "在开始对 SpringBoot 服务进行性能优化之前，你需要做一些准备，把 SpringBoot 服务的一些数据暴露出来。比如，你的服务用到了缓存，就需要把缓存命中率这些数据进行收集。本文介绍基于 Prometheus 的监控、火焰图、Tomcat/Undertow 容器与 HTTP 优化等 SpringBoot 服务优化手段。"
+description: "在开始对 SpringBoot 服务进行性能优化之前，需要先做一些准备，把 SpringBoot 服务的一些数据暴露出来。比如，服务用到了缓存，就需要把缓存命中率这些数据进行收集。本文介绍基于 Prometheus 的监控、火焰图、Tomcat/Undertow 容器与 HTTP 优化等 SpringBoot 服务优化手段。"
 keywords: [SpringBoot, 服务性能优化]
 category: "Java"
 tags: [Java, 性能优化实战]
 ---
 # SpringBoot 服务性能优化
 
-在开始对 SpringBoot 服务进行性能优化之前，你需要做一些准备，把 SpringBoot 服务的一些数据暴露出来。比如，你的服务用到了缓存，就需要把缓存命中率这些数据进行收集；用到了数据库连接池，就需要把连接池的参数给暴露出来。
+## 背景与问题
 
-我们这里采用的监控工具是 Prometheus，它是一个时序数据库，能够存储我们的指标。SpringBoot 可以非常方便地接入到 Prometheus 中。
+在开始对 SpringBoot 服务进行性能优化之前，需要先做一些准备，把 SpringBoot 服务的一些数据暴露出来。比如，服务用到了缓存，就需要把缓存命中率这些数据进行收集；用到了数据库连接池，就需要把连接池的参数给暴露出来。
 
-### SpringBoot 如何开启监控？
+这里采用的监控工具是 Prometheus，它是一个时序数据库，能够存储指标数据。SpringBoot 可以非常方便地接入到 Prometheus 中。
+
+## 监控：SpringBoot 如何开启监控？
 
 创建一个 SpringBoot 项目后，首先加入 maven 依赖。
 
@@ -30,7 +32,7 @@ tags: [Java, 性能优化实战]
  </dependency>
 ```
 
-然后，我们需要在 application.properties 配置文件中，开放相关的监控接口。
+然后，需要在 application.properties 配置文件中，开放相关的监控接口。
 
 ```properties
 management.endpoint.metrics.enabled=true
@@ -39,9 +41,9 @@ management.endpoint.prometheus.enabled=true
 management.metrics.export.prometheus.enabled=true
 ```
 
-启动之后，我们就可以通过访问[监控接口](http://localhost:8080/actuator/prometheus)来获取监控数据。
+启动之后，就可以通过访问[监控接口](http://localhost:8080/actuator/prometheus)来获取监控数据。
 
-想要监控业务数据也是比较简单的，你只需要注入一个 MeterRegistry 实例即可，下面是一段示例代码：
+想要监控业务数据也比较简单，只需要注入一个 MeterRegistry 实例即可，下面是一段示例代码：
 
 ```java
 @Autowired
@@ -59,7 +61,7 @@ public String test() {
 }
 ```
 
-从监控连接中，我们可以找到刚刚添加的监控信息。
+从监控连接中，可以找到刚刚添加的监控信息。
 
 ```text
 test_total{from="127.0.0.1",method="test",} 5.0
@@ -67,15 +69,15 @@ test_total{from="127.0.0.1",method="test",} 5.0
 
 这里简单介绍一下流行的**Prometheus 监控体系**，Prometheus 使用拉的方式获取监控数据，这个暴露数据的过程可以交给功能更加齐全的 telegraf 组件。
 
-我们通常使用 Grafana 进行监控数据的展示，使用 AlertManager 组件进行提前预警。这一部分的搭建工作不是我们的重点，感兴趣的同学可自行研究。
+通常使用 Grafana 进行监控数据的展示，使用 AlertManager 组件进行提前预警。这一部分的搭建工作不在本文范围内，感兴趣的话可自行研究。
 
 在一张典型的监控图上，可以看到 Redis 的缓存命中率等情况。
 
-### Java 生成火焰图
+## Java 生成火焰图
 
 **火焰图**是用来分析程序运行瓶颈的工具。
 
-火焰图也可以用来分析 Java 应用。可以从 [github](https://github.com/jvm-profiling-tools/async-profiler) 上下载 async-profiler 的压缩包进行相关操作。比如，我们把它解压到 /root/ 目录，然后以 javaagent 的方式来启动 Java 应用，命令行如下：
+火焰图也可以用来分析 Java 应用。可以从 [github](https://github.com/jvm-profiling-tools/async-profiler) 上下载 async-profiler 的压缩包进行相关操作。比如，把它解压到 /root/ 目录，然后以 javaagent 的方式来启动 Java 应用，命令行如下：
 
 ```bash
 java -agentpath:/root/build/libasyncProfiler.so=start,svg,file=profile.svg -jar spring-petclinic-2.3.1.BUILD-SNAPSHOT.jar
@@ -84,19 +86,19 @@ java -agentpath:/root/build/libasyncProfiler.so=start,svg,file=profile.svg -jar 
 运行一段时间后，停止进程，可以看到在当前目录下，生成了 profile.svg 文件，这个文件是可以用浏览器打开的。
 纵向，表示的是调用栈的深度；横向，表明的是消耗的时间。所以格子的宽度越大，越说明它可能是一个瓶颈。一层层向下浏览，即可找到需要优化的目标。
 
-### 优化思路
+## 优化思路
 
-对一个普通的 Web 服务来说，我们来看一下，要访问到具体的数据，都要经历哪些主要的环节？
+对一个普通的 Web 服务来说，要访问到具体的数据，都要经历以下主要环节：
 
-在浏览器中输入相应的域名，需要通过 DNS 解析到具体的 IP 地址上，为了保证高可用，我们的服务一般都会部署多份，然后使用 Nginx 做反向代理和负载均衡。
+在浏览器中输入相应的域名，需要通过 DNS 解析到具体的 IP 地址上，为了保证高可用，服务一般都会部署多份，然后使用 Nginx 做反向代理和负载均衡。
 
-Nginx 根据资源的特性，会承担一部分动静分离的功能。其中，动态功能部分，会进入我们的 SpringBoot 服务。
+Nginx 根据资源的特性，会承担一部分动静分离的功能。其中，动态功能部分，会进入 SpringBoot 服务。
 
-SpringBoot 默认使用内嵌的 tomcat 作为 Web 容器，使用典型的 MVC 模式，最终访问到我们的数据。
+SpringBoot 默认使用内嵌的 tomcat 作为 Web 容器，使用典型的 MVC 模式，最终访问到数据。
 
-### HTTP 优化
+## HTTP 优化
 
-下面我们举例来看一下，哪些动作能够加快网页的获取。为了描述方便，我们仅讨论 HTTP1.1 协议。
+下面举例说明哪些动作能够加快网页的获取。为描述方便，仅讨论 HTTP1.1 协议。
 
 **1.使用 CDN 加速文件获取**
 
@@ -142,9 +144,9 @@ gzip_types text/plain application/javascript text/css;
 
 **6.使用 keepalive**
 
-由于连接的创建和关闭，都需要耗费资源。用户访问我们的服务后，后续也会有更多的互动，所以保持长连接可以显著减少网络交互，提高性能。
+由于连接的创建和关闭，都需要耗费资源。用户访问服务后，后续也会有更多的互动，所以保持长连接可以显著减少网络交互，提高性能。
 
-nginx 默认开启了对客户端的 keepalive 支持，你可以通过下面两个参数来调整它的行为。
+nginx 默认开启了对客户端的 keepalive 支持，可以通过下面两个参数来调整它的行为。
 
 ```nginx
 http {
@@ -163,9 +165,9 @@ location ~ /{
 }
 ```
 
-### 自定义 Web 容器
+## 自定义 Web 容器
 
-如果你的项目并发量比较高，想要修改最大线程数、最大连接数等配置信息，可以通过自定义 Web 容器的方式，代码如下所示。
+如果项目并发量比较高，想要修改最大线程数、最大连接数等配置信息，可以通过自定义 Web 容器的方式，代码如下所示。
 
 ```java
 @SpringBootApplication(proxyBeanMethods = false)
@@ -190,7 +192,7 @@ public class App implements WebServerFactoryCustomizer<ConfigurableServletWebSer
 }
 ```
 
-注意上面的代码，我们设置了它的协议为 org.apache.coyote.http11.Http11Nio2Protocol，意思就是开启了 Nio2。这个参数在 Tomcat 8.0 之后才有，开启之后会增加一部分性能。
+注意上面的代码，协议被设置为 org.apache.coyote.http11.Http11Nio2Protocol，意思就是开启了 Nio2。这个参数在 Tomcat 8.0 之后才有，开启之后会增加一部分性能。
 
 > **Spring Boot 3.2+ 提示**：上述自定义方式在 Boot 3.5.x（Tomcat 10.1，jakarta 命名空间）中依然有效，类名未变。更简单的现代做法是开启**虚拟线程**：在 `application.yml` 中配置 `spring.threads.virtual.enabled=true`，Tomcat 将自动使用虚拟线程处理请求，无需手动调 maxThreads（默认 200 已足够，虚拟线程数量不受平台线程限制）。
 对比如下（测试项目代码见 [spring-petclinic-main](https://gitee.com/xjjdog/tuning-lagou-res/tree/master/tuning-020/spring-petclinic-main)）：
@@ -229,7 +231,7 @@ Requests/sec:    248.64
 Transfer/sec:      1.51MB
 ```
 
-你甚至可以将 tomcat 替换成 undertow。undertow 也是一个 Web 容器，更加轻量级一些，占用的内存更少，启动的守护进程也更少，更改方式如下：
+甚至可以将 tomcat 替换成 undertow。undertow 也是一个 Web 容器，更加轻量级一些，占用的内存更少，启动的守护进程也更少，更改方式如下：
 
 ```html
 <dependency>
@@ -248,18 +250,18 @@ Transfer/sec:      1.51MB
     </dependency>
 ```
 
-其实，对于 tomcat 优化最为有效的，还是 JVM 参数的配置，你可以参考上一节的内容进行调整。
+其实，对于 tomcat 优化最为有效的，还是 JVM 参数的配置，可参考《高级进阶：JVM 常见优化参数》进行调整。
 比如，使用下面的参数启动，QPS 由 248 上升到 308。
 
 ```bash
 -XX:+UseG1GC -Xmx2048m -Xms2048m -XX:+AlwaysPreTouch
 ```
 
-### SkyWalking
+## SkyWalking
 
-对于一个 web 服务来说，最缓慢的地方就在于数据库操作。所以，使用“07 | 案例分析：无处不在的缓存，高并发系统的法宝”和“08 | 案例分析：Redis 如何助力秒杀业务”提供的本地缓存和分布式缓存优化，能够获得最大的性能提升。
+对于一个 web 服务来说，最缓慢的地方就在于数据库操作。所以，使用《案例分析：无处不在的缓存，高并发系统的法宝》和《案例分析：Redis 如何助力秒杀业务》提供的本地缓存和分布式缓存优化，能够获得最大的性能提升。
 
-对于如何定位到复杂分布式环境中的问题，我这里想要分享另外一个工具：Skywalking。
+对于如何定位到复杂分布式环境中的问题，还有另外一个工具：Skywalking。
 
 Skywalking 是使用探针技术（JavaAgent）来实现的。通过在 Java 的启动参数中，加入 javaagent 的 Jar 包，即可将性能数据和调用链数据封装，并发送到 Skywalking 的服务器。
 
@@ -283,11 +285,11 @@ java  -jar /opt/test-service/spring-boot-demo.jar  --spring.profiles.active=dev
 java -javaagent:/opt/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=the-demo-name  -jar /opt/test-service/spring-boot-demo.jar  --spring.profiles.active=dev
 ```
 
-访问一些服务的链接，打开 SkyWalking 的 UI，即可看到调用链等分析界面。这些指标可以类比“01 | 理论分析：性能优化，有哪些衡量指标？需要注意什么？”提到的衡量指标去理解，我们就可以从图中找到响应比较慢 QPS 又比较高的接口，进行专项优化。
+访问一些服务的链接，打开 SkyWalking 的 UI，即可看到调用链等分析界面。这些指标可以类比《理论分析：性能优化，有哪些衡量指标？需要注意什么？》提到的衡量指标去理解，从图中找到响应比较慢 QPS 又比较高的接口，进行专项优化。
 
-### 各个层次的优化方向
+## 各个层次的优化方向
 
-#### 1.Controller 层
+### 1.Controller 层
 
 controller 层用于接收前端的查询参数，然后构造查询结果。现在很多项目都采用前后端分离的架构，所以 controller 层的方法，一般会使用 @ResponseBody 注解，把查询的结果，解析成 JSON 数据返回（兼顾效率和可读性）。
 
@@ -297,17 +299,17 @@ controller 层用于接收前端的查询参数，然后构造查询结果。现
 
 假如结果集在解析成 JSON 之前，占用的内存是 10MB，那么在解析过程中，有可能会使用 20MB 或者更多的内存去做这个工作。
 
-我见过很多案例，由于返回对象的嵌套层次太深、引用了不该引用的对象（比如非常大的 byte[] 对象），造成了内存使用的飙升。
+很多案例都是由于返回对象的嵌套层次太深、引用了不该引用的对象（比如非常大的 byte[] 对象），造成了内存使用的飙升。
 
-所以，**对于一般的服务，保持结果集的精简，是非常有必要的**，这也是 DTO（data transfer object）存在的必要。如果你的项目，返回的结果结构比较复杂，对结果集进行一次转换是非常有必要的。
+所以，**对于一般的服务，保持结果集的精简，是非常有必要的**，这也是 DTO（data transfer object）存在的必要。如果项目返回的结果结构比较复杂，对结果集进行一次转换是非常有必要的。
 
-#### 2.Service 层
+### 2.Service 层
 
 service 层用于处理具体的业务，大部分功能需求都是在这里完成的。service 层一般是使用单例模式，很少会保存状态，而且可以被 controller 复用。
 
-service 层的代码组织，对代码的可读性、性能影响都比较大。我们常说的设计模式，大多数都是针对 service 层来说的。
+service 层的代码组织，对代码的可读性、性能影响都比较大。常说的设计模式，大多数都是针对 service 层来说的。
 
-service 层会频繁使用更底层的资源，通过组合的方式获取我们所需要的数据，大多数可以通过我们前面节提供的优化思路进行优化。
+service 层会频繁使用更底层的资源，通过组合的方式获取所需的数据，大多数可以通过前文提供的优化思路进行优化。
 
 这里要着重提到的一点，就是分布式事务。
 
@@ -317,7 +319,7 @@ service 层会频繁使用更底层的资源，通过组合的方式获取我们
 
 分布式事务要在改造成本、性能、时效等方面进行综合考虑。有一个介于分布式事务和非事务之间的名词，叫作**柔性事务**。柔性事务的理念是将业务逻辑和互斥操作，从资源层上移至业务层面。
 
-**关于传统事务和柔性事务，我们来简单比较一下。**
+**关于传统事务和柔性事务，简单比较如下。**
 
 **ACID**
 
@@ -345,21 +347,33 @@ BASE 为 Basically Available、Soft-state、Eventually consistent 三者的缩�
 
 互联网业务，推荐使用补偿事务，完成最终一致性。比如，通过一系列的定时任务，完成对数据的修复。
 
-#### 3.Dao 层
+### 3.Dao 层
 
-经过合理的数据缓存，我们都会尽量避免请求穿透到 Dao 层。除非你对 ORM 本身提供的缓存特性特别的熟悉；否则，都推荐你使用更加通用的方式去缓存数据。
+经过合理的数据缓存，通常会尽量避免请求穿透到 Dao 层。除非对 ORM 本身提供的缓存特性特别的熟悉；否则，都推荐使用更加通用的方式去缓存数据。
 
-Dao 层，主要在于对 ORM 框架的使用上。比如，在 JPA 中，如果加了一对多或者多对多的映射关系，而又没有开启懒加载，级联查询的时候就容易造成深层次的检索，造成了内存开销大、执行缓慢的后果。
+Dao 层的优化，主要在于对 ORM 框架的使用上。比如，在 JPA 中，如果加了一对多或者多对多的映射关系，而又没有开启懒加载，级联查询的时候就容易造成深层次的检索，造成了内存开销大、执行缓慢的后果。
 
 在一些数据量比较大的业务中，多采用分库分表的方式。在这些分库分表组件中，很多简单的查询语句，都会被重新解析后分散到各个节点进行运算，最后进行结果合并。
 
-举个例子，select count(*) from a 这句简单的 count 语句，就可能将请求路由到十几张表中去运算，最后在协调节点进行统计，执行效率是可想而知的。目前，分库分表中间件，比较有代表性的是驱动层的 ShardingJdbc 和代理层的 MyCat，它们都有这样的问题。这些组件提供给使用者的视图是一致的，但我们在编码的时候，一定要注意这些区别。
+举个例子，select count(*) from a 这句简单的 count 语句，就可能将请求路由到十几张表中去运算，最后在协调节点进行统计，执行效率是可想而知的。目前，分库分表中间件，比较有代表性的是驱动层的 ShardingJdbc 和代理层的 MyCat，它们都有这样的问题。这些组件提供给使用者的视图是一致的，但在编码的时候，一定要注意这些区别。
 
-### 小结
+## 实践要点
 
-下面我们来总结一下。
+- 优化前先建监控：actuator + micrometer 接入 Prometheus，业务指标用 MeterRegistry 埋点；Grafana 展示、AlertManager 预警。
 
-本文，我们简单看了一下 SpringBoot 常见的优化思路，然后介绍了三个新的性能分析工具。
+- 瓶颈定位双工具：async-profiler 火焰图（格子越宽越可能是瓶颈）定位代码热点；SkyWalking（JavaAgent 探针）定位分布式调用链，挑出响应慢且 QPS 高的接口专项优化。
+
+- HTTP 层六板斧：CDN 分发、Cache-Control/Expires 缓存头、单页面域名数控制在 4 个以内（DNS 解析 20-120ms）、开启 gzip、压缩 JS/CSS/HTML、keepalive 长连接（客户端默认开，upstream 需手动配 proxy_http_version 1.1 + 清空 Connection 头）。
+
+- 容器层：高并发下自定义 WebServerFactory 调 maxConnections/maxThreads 并开启 Nio2 协议（Tomcat 8.0+）；Boot 3.2+ 可改用 spring.threads.virtual.enabled=true 虚拟线程；内存敏感场景可换 Undertow。
+
+- 最大收益在 JVM 参数：G1 + 相等 Xmx/Xms + AlwaysPreTouch 的组合实测将 QPS 从 248 提升到 308。
+
+- Controller 层保持结果集精简（DTO 转换），警惕深嵌套与误引用大对象导致解析内存翻倍；Service 层警惕分布式事务这个性能杀手，可评估柔性事务/BASE/补偿事务方案；Dao 层注意 ORM 级联懒加载与分库分表组件对简单语句的拆分开销（ShardingJdbc/MyCat）。
+
+## 小结
+
+本文梳理了 SpringBoot 常见的优化思路，并介绍了三个新的性能分析工具：
 
 - 一个是监控系统 Prometheus，可以看到一些具体的指标大小；
 
@@ -367,9 +381,9 @@ Dao 层，主要在于对 ORM 框架的使用上。比如，在 JPA 中，如果
 
 - 一个是 Skywalking，可以分析分布式环境中的调用链。
 
-SpringBoot 自身的 Web 容器是 Tomcat，那我们就可以通过对 Tomcat 的调优来获取性能提升。当然，对于服务上层的负载均衡 Nginx，我们也提供了一系列的优化思路。
+SpringBoot 自身的 Web 容器是 Tomcat，可以通过对 Tomcat 的调优来获取性能提升。当然，对于服务上层的负载均衡 Nginx，也提供了一系列的优化思路。
 
-最后，我们看了在经典的 MVC 架构下，Controller、Service、Dao 的一些优化方向，并着重看了 Service 层的分布式事务问题。
+最后，在经典的 MVC 架构下，Controller、Service、Dao 各有优化方向，其中 Service 层的分布式事务问题尤其值得注意。
 
 SpringBoot 作为一个广泛应用的服务框架，在性能优化方面已经做了很多工作，选用了很多高速组件。比如，数据库连接池默认使用 HikariCP，Redis 缓存框架默认使用 Lettuce，本地缓存提供 Caffeine 等。对于一个普通的数据库交互的 Web 服务来说，缓存是最主要的优化手段。
 

@@ -1,6 +1,6 @@
 ---
 title: Electron的基础概念
-description: "Electron 由 Node.js + Chromium + Native API 构成。你可以理解成，它是一个得到了 Node.js 和基于不同平台的 Native API 加强的 Chromium 浏览器。"
+description: "Electron 由 Node.js + Chromium + Native API 构成，可以将其理解为一个得到了 Node.js 和基于不同平台的 Native API 加强的 Chromium 浏览器。"
 keywords: [Electron, 主进程, 渲染进程, preload]
 category: Electron
 tags: [Electron, 桌面应用, IPC, 打包]
@@ -9,14 +9,14 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron的基础概念
 
-## 前言
+## 背景与问题
 
-`Electron` 由 `Node.js + Chromium + Native API` 构成。你可以理解成，它是**一个得到了 `Node.js` 和基于不同平台的 `Native API` 加强的 `Chromium` 浏览器**。
-
-
+`Electron` 由 `Node.js + Chromium + Native API` 构成。可以将其理解成，它是**一个得到了 `Node.js` 和基于不同平台的 `Native API` 加强的 `Chromium` 浏览器**。
 
 
-为了让你对 `Electron` 有更加深刻的理解和认识，接下来我将详细地为你介绍学习 `Electron` 所必须要知道的基础概念。
+
+
+以下内容详细介绍学习 `Electron` 必须掌握的基础概念。
 
 
 ## 主进程（main） 和 渲染进程（renderer）
@@ -32,7 +32,7 @@ Electron 继承了来自 Chromium 的多进程架构，Chromium 始于其主进�
 
 ### 主进程
 
-主进程是 Electron 应用程序的核心，通常由一个主要的 JavaScript 文件（如 `main.js` ）定义，你可以在 `package.json` 中指定它：
+主进程是 Electron 应用程序的核心，通常由一个主要的 JavaScript 文件（如 `main.js` ）定义，可以在 `package.json` 中指定它：
 
 ```js
 // package.json
@@ -55,9 +55,10 @@ Electron 继承了来自 Chromium 的多进程架构，Chromium 始于其主进�
 
 
 
+
 #### 1. 管理应用程序生命周期
 
-在 `Electron` 的主进程中，你可以使用 [app](https://www.electronjs.org/zh/docs/latest/api/app) 模块来管理应用程序的生命周期，该模块提供了一整套的事件和方法，可以让你用来添加自定义的应用程序行为。
+在 `Electron` 的主进程中，可以使用 [app](https://www.electronjs.org/zh/docs/latest/api/app) 模块来管理应用程序的生命周期，该模块提供了一整套的事件和方法，用于添加自定义的应用程序行为。
 
 ```js
 const { app } = require('electron')
@@ -76,7 +77,7 @@ app 的常用生命周期钩子如下：
 -   `will-quit` 即将退出应用的时候触发。
 -   `quit` 应用退出的时候触发。
 
-而我们通常会在 `ready` 的时候执行创建应用窗口、创建应用菜单、创建应用快捷键等初始化操作。而在 `will-quit` 或者 `quit` 的时候执行一些清空操作，比如解绑应用快捷键。
+通常会在 `ready` 的时候执行创建应用窗口、创建应用菜单、创建应用快捷键等初始化操作。而在 `will-quit` 或者 `quit` 的时候执行一些清空操作，比如解绑应用快捷键。
 
 特别的，在非 `macOS` 的系统下，通常一个应用的所有窗口都退出的时候，也是这个应用退出之时。所以，可以配合 `window-all-closed` 这个钩子来实现：
 
@@ -167,13 +168,13 @@ const dockMenu = Menu.buildFromTemplate([
 
 渲染进程与主进程是分开的，它们之间通过 IPC（进程间通信）来进行通信。渲染进程可以通过一些特定的 Electron API 来与主进程进行交互，以实现诸如向主进程发送消息、接收主进程的指令等功能。
 
-其实在 `Electron` 中，因为安全性等问题的考量，提供给 `Renderer` 可用的 `API` 是比较少的，我们可以简单看一下主进程和渲染进程可使用的 API 图：
+其实在 `Electron` 中，因为安全性等问题的考量，提供给 `Renderer` 可用的 `API` 是比较少的，主进程和渲染进程可使用的 API 分布如下：
 
 
 
 
 
-可以看到，能够在渲染进程中使用的 API 一共有 7 个。那么如果需要在渲染进程中使用主进程的 API 要怎么操作呢？`Electron` 本身额外提供了一个库 `@electron/remote`，使用这个库可以用来调用主进程的一些 API 能力：
+可以看到，能够在渲染进程中使用的 API 一共有 7 个。如果需要在渲染进程中使用主进程的 API，可以借助 Electron 提供的 `@electron/remote` 库，它用于调用主进程的一些 API 能力：
 
 ```js
 // 渲染进程
@@ -189,16 +190,17 @@ require('@electron/remote/main').initialize()
 
 > electron v14 版本后开始去掉了内置的 `remote` 模块，`@electron/remote` 是 Electron 中内置 remote 模块的替代品。之所以移除 `remote` 模块，其主要考量是：
 > 
-> 1. **性能问题：** 通过 `remote` 模块可以访问主进程的对象、类型、方法，但这些操作都是跨进程的，跨进程操作性能上的损耗可能是进程内操作的几百倍甚至上千倍。假设你在渲染进程通过 `remote` 模块创建了一个 `BrowserWindow` 对象，不但你创建这个对象的过程很慢，后面你使用这个对象的过程也很慢。小到更新这个对象的属性，大到使用这个对象的方法，都是跨进程的。
+> 1. **性能问题：** 通过 `remote` 模块可以访问主进程的对象、类型、方法，但这些操作都是跨进程的，跨进程操作性能上的损耗可能是进程内操作的几百倍甚至上千倍。假设在渲染进程通过 `remote` 模块创建了一个 `BrowserWindow` 对象，不但创建这个对象的过程很慢，后面使用这个对象的过程也很慢。小到更新这个对象的属性，大到调用这个对象的方法，都是跨进程的。
 > 2. **安全性问题：** 使用 `remote` 模块可以让渲染进程直接访问主进程的模块和对象，这可能导致一些潜在的安全风险。因为这种方式打破了主进程和渲染进程之间的隔离，可能存在恶意代码利用这一特性进行攻击或者不当操作。
-> 3. **影子对象问题：** 我们在渲染进程中通过 `remote` 模块使用了主进程的某个对象，得到的是这个对象的影子（代理），是一个影子对象，它看起来像是真正的对象，但实际上不是。首先，这个对象原型链上的属性不会被映射到渲染进程的代理对象上。其次，类似 `NaN`、`Infinity` 这样的值不会被正确地映射给渲染进程，如果一个主进程方法返回一个 `NaN` 值，那么渲染进程通过 `remote` 模块访问这个方法将会得到 `undefined`。
+> 3. **影子对象问题：** 在渲染进程中通过 `remote` 模块使用主进程的某个对象时，得到的是这个对象的影子（代理），是一个影子对象，它看起来像是真正的对象，但实际上不是。首先，这个对象原型链上的属性不会被映射到渲染进程的代理对象上。其次，类似 `NaN`、`Infinity` 这样的值不会被正确地映射给渲染进程，如果一个主进程方法返回一个 `NaN` 值，那么渲染进程通过 `remote` 模块访问这个方法将会得到 `undefined`。
+
 
 
 
 
 ## 预加载脚本 preload.js
 
-预加载（preload）脚本包含了那些执行于渲染器进程中，且先于网页内容开始加载的代码。 在 `preload.js` 中，我们不仅可以使用 Node API，还可以直接使用 Electron 渲染进程的 API 以及 DOM API，另外可以通过 `IPC` 和主进程进行通信达成调用主进程模块的目的。`preload.js` 脚本虽运行于渲染器的环境中，却因此而拥有了更多的权限。
+预加载（preload）脚本包含了那些执行于渲染器进程中，且先于网页内容开始加载的代码。 在 `preload.js` 中，不仅可以使用 Node API，还可以直接使用 Electron 渲染进程的 API 以及 DOM API，另外可以通过 `IPC` 和主进程进行通信达成调用主进程模块的目的。`preload.js` 脚本虽运行于渲染器的环境中，却因此而拥有了更多的权限。
 
 
 
@@ -227,7 +229,7 @@ window.myAPI = {
 console.log(window.myAPI)
 ```
 
-注意：自从 `Electron v12` 版本以后，添加了 `webPreferences.contextIsolation = true` 的默认设置，这就意味着你通过 `preload` 修改 `window` 上的内容后，在渲染进程中并不能访问到。
+注意：自从 `Electron v12` 版本以后，添加了 `webPreferences.contextIsolation = true` 的默认设置，这意味着通过 `preload` 修改 `window` 上的内容后，在渲染进程中并不能访问到。
 
 ```js
 // renderer.js
@@ -238,11 +240,11 @@ console.log(window.myAPI)  // => undefined
 
 `contextIsolation` 是 Electron 中一个重要的安全特性，用于提高渲染进程的安全性。它的作用在于将渲染进程的 JavaScript 上下文（代码执行环境）与主进程隔离开来，以减少安全风险并加强安全性。
 
-举个🌰：
+举一个例子：
 
 假设有一个 `Electron` 应用程序，其中有一个渲染进程需要执行一些文件系统操作，比如读取本地文件并在界面中显示。在未启用 `contextIsolation` 的情况下，渲染进程可以直接访问 Node.js 的 `fs` 模块来进行文件操作。但这样会存在安全风险，因为渲染进程可以执行任意的文件系统操作，**比如文件删除**，可能导致安全漏洞或恶意代码执行。
 
-现在，启用了 `contextIsolation`，渲染进程无法直接访问 Node.js 的 `fs` 模块。相反，你可以使用 `preload` 选项来为渲染进程加载一个预加载的脚本，在这个脚本中可以安全地访问 Node.js 的 `fs` 模块，并将需要的操作通过 [contextBridge](https://www.electronjs.org/zh/docs/latest/api/context-bridge) 模块封装成 API 提供给渲染进程。这样，渲染进程只能通过预加载的 API 来请求文件操作，而无法直接执行文件系统操作。
+现在，启用了 `contextIsolation`，渲染进程无法直接访问 Node.js 的 `fs` 模块。相反，可以使用 `preload` 选项来为渲染进程加载一个预加载的脚本，在这个脚本中可以安全地访问 Node.js 的 `fs` 模块，并将需要的操作通过 [contextBridge](https://www.electronjs.org/zh/docs/latest/api/context-bridge) 模块封装成 API 提供给渲染进程。这样，渲染进程只能通过预加载的 API 来请求文件操作，而无法直接执行文件系统操作。
 
 ```js
 // preload.js
@@ -260,11 +262,11 @@ console.log(window.myAPI)
 // => { exists: Function }
 ```
 
-> 更多关于 Electron 安全性的问题，我们将会在 《通用篇：Electron 应用安全性指南》 章节详细介绍。
+> 更多关于 Electron 安全性的内容，参见《37-Electron应用安全性指南》。
 
 
 ## 总结
 
-本小节主要介绍了关于 `Electron` 的一些基础知识，包括 `主进程` 、`渲染进程`、`preload` 的一些用法和介绍。这些基础知识是我们后续开启实战篇的理论前提。
+本文介绍了 `Electron` 的一些基础知识，包括 `主进程`、`渲染进程`、`preload` 的职责和用法。
 
-我们文中也提了一嘴关于渲染进程如何使用主进程的模块，其实除了使用 `@electron/remote` 模块外，我们还可以使用进程间的通信来解决，下面的章节将继续介绍如何实现 `electron` 进程间的通信。
+其中渲染进程如何使用主进程的模块，除了借助 `@electron/remote` 模块外，还可以使用进程间通信来解决，具体实现方式参见《07-Electron进程间的通信》。

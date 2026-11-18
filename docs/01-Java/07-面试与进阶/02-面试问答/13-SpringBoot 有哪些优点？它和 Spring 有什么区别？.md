@@ -7,9 +7,9 @@ tags: [Java, 源码剖析]
 ---
 # SpringBoot 有哪些优点？它和 Spring 有什么区别？
 
-Spring 和 Spring Boot 的区别很多新手容易搞混，从这道简单的面试题也可以很轻易试探出你的 Java 基础功底，如果连这个问题都答不上来的话，通常就没有什么下文了，因为这已经是用人单位对面试者的最低要求了，所以本文我们就来看一下二者的区别，以及 Spring Boot 的特性。
+Spring 和 Spring Boot 的区别很多新手容易搞混，从这道简单的面试题也可以很轻易试探出候选人的 Java 基础功底，如果连这个问题都答不上来的话，通常就没有什么下文了，因为这已经是用人单位对面试者的最低要求了，所以本文就来看一下二者的区别，以及 Spring Boot 的特性。
 
-我们本文的面试题是，Spring 和 Spring Boot 有什么区别？Spring Boot 的优点有哪些？
+本文的面试题是，Spring 和 Spring Boot 有什么区别？Spring Boot 的优点有哪些？
 
 ::: tip 定位声明：SpringBoot
 本篇属面试问答体系（原理速答 + 考点扩展）；自动配置与启动流程的系统讲解见 [自动配置与 Starter 机制](</docs/java-framework/06-SpringBoot/21-自动配置与Starter机制>) 与 [启动主流程](</docs/java-framework/06-SpringBoot/20-SpringBoot启动主流程>)。
@@ -23,7 +23,7 @@ Spring Boot 本质上是 Spring 框架的延伸和扩展，它的诞生是为了
 
 #### Spring Boot 特性一：更快速的构建能力
 
-Spring Boot 提供了更多的 Starters 用于快速构建业务框架，**Starters 可以理解为启动器**，它包含了一系列可以集成到应用里面的依赖包，你可以一站式集成 Spring 及其他技术，而不需要到处找依赖包。
+Spring Boot 提供了更多的 Starters 用于快速构建业务框架，**Starters 可以理解为启动器**，它包含了一系列可以集成到应用里面的依赖包，可以一站式集成 Spring 及其他技术，而不需要到处找依赖包。
 
 例如在 Spring 中如果要创建 Web 应用程序的最小依赖项为：
 
@@ -49,9 +49,9 @@ Spring Boot 提供了更多的 Starters 用于快速构建业务框架，**Start
 </dependency>
 ```
 
-当我们添加了 Starter 模块支持之后，在项目的构建期，它就会把所有其他依赖项自动添加到项目中。
+添加了 Starter 模块支持之后，在项目的构建期，它就会把所有其他依赖项自动添加到项目中。
 
-这样的例子还有很多，比如测试库，如果是 Spring 项目我们通常要添加 Spring Test、JUnit、Hamcrest 和 Mockito 库；而如果是 Spring Boot 项目的话，只需要添加 spring-boot-starter-test 即可，它会自动帮我们把其他的依赖项添加到项目中。
+这样的例子还有很多，比如测试库，如果是 Spring 项目通常要添加 Spring Test、JUnit、Hamcrest 和 Mockito 库；而如果是 Spring Boot 项目的话，只需要添加 spring-boot-starter-test 即可，它会自动把其他的依赖项添加到项目中。
 
 常见的 Starters 有以下几个：
 
@@ -71,13 +71,13 @@ Spring Boot 提供了起步依赖，也就是在创建 Spring Boot 时可以直�
 
 #### Spring Boot 特性三：内嵌容器支持
 
-Spring Boot 内嵌了 Tomcat、Jetty、Undertow 三种容器，其默认嵌入的容器是 **Tomcat**，这个在我们启动 Spring Boot 项目的时候，在控制台上就能看到，具体信息如下：
+Spring Boot 内嵌了 Tomcat、Jetty、Undertow 三种容器，其默认嵌入的容器是 **Tomcat**，这个在启动 Spring Boot 项目的时候，在控制台上就能看到，具体信息如下：
 
 > o.s.b.w.embedded.tomcat.TomcatWebServer :Tomcat started on port(s): 8080 (http) with context path ''
 
 可以看出 Spring Boot 默认使用的是 Tomcat 容器启动的。
 
-我们可以通过修改 pom.xml 来移除内嵌的 Tomcat 更换为其他的容器，比如更换为 Jetty 容器，配置如下：
+可以通过修改 pom.xml 来移除内嵌的 Tomcat 更换为其他的容器，比如更换为 Jetty 容器，配置如下：
 
 ```html
 <dependency>
@@ -98,12 +98,12 @@ Spring Boot 内嵌了 Tomcat、Jetty、Undertow 三种容器，其默认嵌入�
 </dependency>
 ```
 
-当我们添加完成之后，再重新生成 pom.xml 文件，然后再启动 Spring Boot 项目容器信息就变了，如下所示：
+添加完成之后，再重新生成 pom.xml 文件，然后再启动 Spring Boot 项目容器信息就变了，如下所示：
 
 > o.e.jetty.server.AbstractConnector: Started ServerConnector@53f9009d{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
 > o.s.b.web.embedded.jetty.JettyWebServer
 
-可以看出 Spring Boot 使用了我们指定的 Jetty 容器启动了。
+可以看出 Spring Boot 使用了指定的 Jetty 容器启动。
 
 #### Spring Boot 特性四：Actuator 监控
 
@@ -143,7 +143,7 @@ Actuator 提供了 19 个接口，接口请求地址和代表含义如下表所�
 
 > 注：启动源码基于 Spring Boot 2.x，Boot 3.x 的执行步骤一致，仅部分类名/包名随 jakarta 命名空间等变化。
 
-我们知道 Spring Boot 程序的入口是 SpringApplication.run(Application.class, args) 方法，那么就从 run() 方法开始分析吧，它的源码如下：
+Spring Boot 程序的入口是 SpringApplication.run(Application.class, args) 方法，下面就从 run() 方法开始分析，它的源码如下：
 
 ```java
 public ConfigurableApplicationContext run(String... args) {
@@ -234,7 +234,7 @@ public ConfigurableApplicationContext run(String... args) {
 
 Spring Boot 启动时会打印 Banner 图片。
 
-此 banner 信息是在 SpringBootBanner 类中定义的，我们可以通过实现 Banner 接口来自定义 banner 信息，然后通过代码 setBanner() 方法设置 Spring Boot 项目使用自己自定义 Banner 信息，或者是在 resources 下添加一个 banner.txt，把 banner 信息添加到此文件中，就可以实现自定义 banner 的功能了。
+此 banner 信息是在 SpringBootBanner 类中定义的，可以通过实现 Banner 接口来自定义 banner 信息，然后通过代码 setBanner() 方法设置 Spring Boot 项目使用自定义 Banner 信息，或者是在 resources 下添加一个 banner.txt，把 banner 信息添加到此文件中，就可以实现自定义 banner 的功能了。
 
 **8.创建应用上下文**
 
@@ -278,7 +278,7 @@ Spring Boot 启动时会打印 Banner 图片。
 
 **18.返回应用上下文对象**
 
-到此为止 Spring Boot 的启动程序就结束了，我们就可以正常来使用 Spring Boot 框架了。
+到此为止 Spring Boot 的启动程序就结束了，之后即可正常使用 Spring Boot 框架。
 
 ### 小结
 

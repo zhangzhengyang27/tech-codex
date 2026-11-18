@@ -11,8 +11,8 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 ## 前言
 
-我们在《[Electron的原生能力](10-Electron的原生能力.md)》 章节介绍了关于如何使用 `C++` 来开发 Electron 应用程序的 Node
-扩展。其实除了 `C++` 以外，我们还可以使用 `Rust` 来开发 `Node` 扩展。
+在《[Electron的原生能力](10-Electron的原生能力.md)》中介绍过如何使用 `C++` 来开发 Electron 应用程序的 Node
+扩展。其实除了 `C++` 以外，还可以使用 `Rust` 来开发 `Node` 扩展。
 
 `Rust` 和 `C++` 虽然都可以用于开发 Node 的原生扩展，但它们有一些不同之处，其中 `Rust` 相对于 `C++` 有一些优势：
 
@@ -20,7 +20,7 @@ tags: [Electron, 桌面应用, IPC, 打包]
 * **性能**：`Rust` 以及其所提供的内存安全性和零成本抽象，可以带来出色的性能。它可以通过其强大的编译器优化产生高效的机器码，这在某些情况下可能比 `C++` 更高效。
 * **生态系统**：虽然 `C++` 有着长期的历史和庞大的生态系统，但 `Rust` 作为一门新兴语言，拥有逐渐壮大的社区和生态系统。它的包管理器 `Cargo` 提供了便捷的依赖管理和构建工具。
 
-为了使用 `Rust` 开发 `Nodejs Addon`，你需要使用到 [NAPI-RS](https://napi.rs/cn) 这个库。
+为了使用 `Rust` 开发 `Nodejs Addon`，需要用到 [NAPI-RS](https://napi.rs/cn) 这个库。
 
 > NAPI-RS 是一个用于 Node.js Addon API（N-API）的 Rust 绑定库。通过使用 NAPI-RS，开发者可以充分利用 Rust 强大的性能和安全性，并与 Node.js 生态系统无缝集成，为 Node.js 应用程序编写高性能、高质量的原生扩展。
 > 
@@ -45,21 +45,21 @@ tags: [Electron, 桌面应用, IPC, 打包]
 | Linux armv7 android   | ✓      | ✓      | ✓      | ✓      | ✓ |
 | FreeBSD x64           | ✓      | ✓      | ✓      | ✓      | ✓|
 
-以上看到其平台支持是很完备的，你编写的功能甚至能移植到 Android 设备上，此外还支持编译到 `WASM` ，在浏览器等环境中使用。
+可以看到其平台支持是很完备的，编写的功能甚至能移植到 Android 设备上，此外还支持编译到 `WASM`，在浏览器等环境中使用。
 
-接下来，我们来一起了解一下如何通过 `Rust` 来开发一个可以在 `Electron` 中使用的 `Nodejs` 原生扩展程序。
+下面介绍如何通过 `Rust` 来开发一个可以在 `Electron` 中使用的 `Nodejs` 原生扩展程序。
 
->相信大多数人都一样，对于 `Rust` 并没有过多接触，但是请放心，本节不涉及 `Rust` 的任何高级特性，我会确保你读懂这里的每一段代码。
+> 即使对 `Rust` 并没有过多接触也不必担心，本文不涉及 `Rust` 的任何高级特性，每一段代码都易于读懂。
 >
-> 本小节的实例代码都源自 Rubick 的 Rust 原生扩展：[Rubick-Native](https://github.com/rubickCenter/rubick-native)
+> 本文的实例代码都源自 Rubick 的 Rust 原生扩展：[Rubick-Native](https://github.com/rubickCenter/rubick-native)
 
 
 ## 工具链安装
 
 
->这里已经默认你安装了 `Node.js` 和 `Electron` 。
+>以下步骤默认已经安装了 `Node.js` 和 `Electron` 。
 
-1. 首先我们要安装 Rustup，使用 Rustup 官方的安装器即可：
+1. 首先要安装 Rustup，使用 Rustup 官方的安装器即可：
 
 > rustup 是 rust 的版本管理器，类似于 nodejs 下的 nvm。
 
@@ -96,13 +96,13 @@ npm install -g @napi-rs/cli
 napi new
 ```
 
-输入你的拓展名称，并选择需要支持的平台。完成导航后，NAPI-RS 会自动写入项目文件。
+输入拓展名称，并选择需要支持的平台。完成导航后，NAPI-RS 会自动写入项目文件。
 
-我们查看目录后发现，实际上这就是一个 NPM 包，唯一不同的是，`src` 目录下是 `.rs` 后缀的文件。
+查看目录后发现，实际上这就是一个 NPM 包，唯一不同的是，`src` 目录下是 `.rs` 后缀的文件。
 
 这里 `.rs` 后缀的文件，就是 rust 的源代码文件。
 
-默认生成的代码我已为你简化了，这里所实现的是一个简单的加和函数，用 `#[napi]` 进行标记，以暴露给 JS 调用：
+这里对默认生成的代码做了简化，实现的是一个简单的加和函数，用 `#[napi]` 进行标记，以暴露给 JS 调用：
 
 ```rs
 // 导入依赖
@@ -116,21 +116,21 @@ pub fn sum(a: i32, b: i32) -> i32 {
 
 ### 在 JavaScript 世界中使用原生拓展
 
-以上我们已经在 Rust 世界里创建了一个“高效”的加和函数，那么如何在 JavaScript 世界中使用呢？
+以上已经在 Rust 世界里创建了一个“高效”的加和函数，那么如何在 JavaScript 世界中使用呢？
 
-很简单，我们尝试运行编译命令：
+很简单，尝试运行编译命令：
 
 ```bash
 pnpm build
 ```
 
-我们发现项目目录下多了三个文件。
+编译后会发现项目目录下多了三个文件。
 
 `.node` 结尾的文件名会因平台架构和操作系统而异，这是原生拓展的`“本体”`，一个二进制文件。
 
-我们在项目目录下运行 Nodejs ，并尝试直接引入该原生拓展，刚刚在 Rust 世界里创建的“高效”的加和函数，现在能在 JS 的世界里为我们所用了。
+在项目目录下运行 Nodejs，并尝试直接引入该原生拓展，刚刚在 Rust 世界里创建的“高效”的加和函数，现在能在 JS 的世界里使用了。
 
-该二进制文件无法逆向出代码，也就是说你可以将需要保护的代码例如用户认证、数据加密等逻辑“**藏**”在原生模块中。
+该二进制文件无法逆向出代码，也就是说可以将需要保护的代码例如用户认证、数据加密等逻辑“**藏**”在原生模块中。
 
 那另外两个文件呢？
 
@@ -142,28 +142,28 @@ pnpm build
 export function sum(a: number, b: number): number
 ```
 
-这样你在使用原生拓展时，体验就和使用 TypeScript 库一样舒畅，相关类型会在编译时自动映射并生成。
+这样在使用原生拓展时，体验就和使用 TypeScript 库一样舒畅，相关类型会在编译时自动映射并生成。
 
-接下来，你就可以在任意 Node.js 项目或是 Electron 项目中以以上方式导入并使用该原生模块。
+接下来，就可以在任意 Node.js 项目或是 Electron 项目中以以上方式导入并使用该原生模块。
 
 
-### 实战场
+### 实战案例
 
-接下来，我们基于 [Rubick-Native](https://github.com/rubickCenter/rubick-native) 代码库进行实战操练，该代码库已发布于 NPM，你可以使用 `pnpm add rubick-native` 下载并使用。
+下面基于 [Rubick-Native](https://github.com/rubickCenter/rubick-native) 代码库进行实战，该代码库已发布于 NPM，可以使用 `pnpm add rubick-native` 下载并使用。
 
-我们以两个实用的功能为例：
+以两个实用的功能为例：
 
  - 剪切板读取文件文本
  - 键鼠监听
 
-#### 1. 为我们的原生拓展添加“剪切板读取文件文本”功能
+#### 1. 为原生拓展添加“剪切板读取文件文本”功能
 
 Rust 生态中有以下两个涉及剪切板读取的包，且都是跨平台的：
 
  - [clipboard-files](https://github.com/betamos/clipboard-files) 读取剪切板文件
  - [copypasta](https://github.com/alacritty/copypasta) 读写剪切板文本
 
-我们要做的，就是把以上两个包的功能整合，封装成统一的函数 `getClipboardContent()` ，并暴露在 JS 环境中，以下是我们预想的该函数的出参描述。
+要做的是把以上两个包的功能整合，封装成统一的函数 `getClipboardContent()`，并暴露在 JS 环境中。以下是该函数预期的出参描述。
 
 **出参 eg**：
 
@@ -186,9 +186,9 @@ Rust 生态中有以下两个涉及剪切板读取的包，且都是跨平台的
 -   type: 'file' | 'text'
 -   content: Array | string
 
-我们希望在 Rust 端能判断剪切板中的数据类型，如果是文件则输出 `type` 为 `file`，`content` 为文件路径列表，文本则输出 `type` 为 `text`，`content` 为剪切板文本内容。
+预期效果是 Rust 端能判断剪切板中的数据类型：如果是文件则输出 `type` 为 `file`，`content` 为文件路径列表；文本则输出 `type` 为 `text`，`content` 为剪切板文本内容。
 
-**第一步**，我们根据以上涉及定义数据对象类型，在 Rust 中被称为 “结构体”：
+**第一步**，根据以上描述定义数据对象类型，在 Rust 中被称为 “结构体”：
 
 ```rs
 #[napi(object)] // 标记此类型为需要与 JS “互动”的对象
@@ -199,7 +199,7 @@ pub struct ClipBoardContentJson { // 定义公开的，名称为 ClipBoardConten
 }
 ```
 
-**第二步**，我们在 Rust 中实现该函数：
+**第二步**，在 Rust 中实现该函数：
 
 ```rs
 // 获取剪切板文件或者文本
@@ -281,9 +281,9 @@ pub fn get_clipboard_content() -> Option<ClipBoardContentJson> {
 
 接下来，编译后，就可以在 JS 中使用该函数。
 
-#### 2. 为我们的原生拓展添加“键鼠监听”功能
+#### 2. 为原生拓展添加“键鼠监听”功能
 
-键鼠监听，就是在 JS 中能够获取到鼠标或是键盘的“事件通知”，我们知道 Nodejs 的事件驱动模型中，事件是通过“回调函数”进行处理的，所以如果我们有一个键盘对象 `keyboard`，那么我们预想中监听键盘输入事件的代码应该是这样：
+键鼠监听，就是在 JS 中能够获取到鼠标或是键盘的“事件通知”。Nodejs 的事件驱动模型中，事件是通过“回调函数”进行处理的，所以如果有一个键盘对象 `keyboard`，预想中监听键盘输入事件的代码应该是这样：
 
 ```ts
 keyboard.onevent(event => {
@@ -299,9 +299,9 @@ event => {
 }
 ```
 
-那么，我们如何在 Rust 世界中主动调用 JS 世界中的“函数”呢？
+那么，如何在 Rust 世界中主动调用 JS 世界中的“函数”呢？
 
-实现代码如下，完整代码见 [rubick-native/src/monitor/mod.rs](https://github.com/rubickCenter/rubick-native/blob/main/src/monitor/mod.rs#L12)，我们使用 NAPI-RS 对 [rdev](https://github.com/Narsil/rdev) 库进行了包装，便使 Node.js 获得了键鼠事件监听的功能。
+实现代码如下，完整代码见 [rubick-native/src/monitor/mod.rs](https://github.com/rubickCenter/rubick-native/blob/main/src/monitor/mod.rs#L12)，实现使用 NAPI-RS 对 [rdev](https://github.com/Narsil/rdev) 库进行了包装，便使 Node.js 获得了键鼠事件监听的功能。
 
 ```rs
 #[napi(ts_args_type = "callback: (event: string) => void")] // 自定义回调函数类型
@@ -326,9 +326,9 @@ pub fn on_input_event(callback: JsFunction) -> Result<()> {
   Ok(())
 }
 ```
-其中，我们用到了 Rust 中 [rdev](https://github.com/Narsil/rdev) 库，该库可以在 Windows、macOS、Linux 下对键鼠事件进行监听。
+其中用到了 Rust 中 [rdev](https://github.com/Narsil/rdev) 库，该库可以在 Windows、macOS、Linux 下对键鼠事件进行监听。
 
-之后，在 JS 中，我们可以这样对该函数进行调用：
+之后，在 JS 中可以这样对该函数进行调用：
 
 ```ts
 onInputEvent((event => {
@@ -338,10 +338,9 @@ onInputEvent((event => {
 
 ## 总结
 
-本小节我们介绍了如何开发原生拓展来打破 Node.js/Electron 世界的“次元壁”，让你的应用获得以下能力：
+本文介绍了如何开发原生拓展来打破 Node.js/Electron 世界的“次元壁”，让应用获得以下能力：
 
  - 操作系统底层指令
  - 用极致性能解决计算密集型任务
  - 保护关键代码的知识产权
  - 功能高可移植性
-

@@ -9,30 +9,30 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron实现屏幕截图
 
-## 前言
+## 背景与方案概览
 桌面端截图功能是大多数桌面端应用都具备的功能，在 Electron中，实现截图方案一般有两种。
 
 - 一种是通过 Electron 提供的截取屏幕 API [desktopCapturer](https://www.electronjs.org/zh/docs/latest/api/desktop-capturer)，获取每个屏幕（存在外接显示器的情况）和每个窗口的图像信息，传递给浏览器的 [`navigator.mediaDevices.getUserMedia`](https://developer.mozilla.org/en/docs/Web/API/MediaDevices/getUserMedia) API 获取桌面视频的媒体源的信息，在获取到整个屏幕图像后再通过 canvas 标签绘制截图区域。
 
 - 第二种方式是使用操作系统自带的截图功能或者调用三方可执行截图文件（比如 Windows 的 .exe 文件）来实现屏幕的截图。
 
-接下来，我们详细介绍这两种截图方式的实现原理。
+下面详细介绍这两种截图方式的实现原理。
 
 
 ## Electron 手动实现截图能力
 
-在介绍实现截图功能前，我们首先需要认识两个 API。
+实现截图功能前，首先需要认识两个 API。
 
 ### desktopCapturer API
 
-Electron 中的 `desktopCapturer` 对象是一个用于获取屏幕截图和视频流的 API。它允许你从用户的屏幕上捕获图像，并且可以用于创建截图工具、屏幕录制应用程序等。
+Electron 中的 `desktopCapturer` 对象是一个用于获取屏幕截图和视频流的 API。它允许应用从用户的屏幕上捕获图像，并且可以用于创建截图工具、屏幕录制应用程序等。
 
 这个对象返回了 `Promise<DesktopCapturerSource[]>` 这样一个结果，其中 [DesktopCapturerSource](https://www.electronjs.org/zh/docs/latest/api/structures/desktop-capturer-source) 是一个对象类型的数组，每个 `DesktopCapturerSource` 代表一个屏幕或一个可以被捕获的独立窗口。
 
 ### navigator.mediaDevices.getUserMedia
 `navigator.mediaDevices.getUserMedia()` 是一个 Web API，允许网页或应用程序访问用户的摄像头和麦克风，以便获取视频流、音频流或者二者的组合。
 
-`getUserMedia()` 的第一个参数是一个对象，用于指定你要访问的每种媒体类型的详细信息和要求。例如，如果你要访问摄像头，第一个参数应为 `{video: true}`。要同时使用麦克风和摄像头，第一个参数为`{video: true, audio: true}`：
+`getUserMedia()` 的第一个参数是一个对象，用于指定要访问的每种媒体类型的详细信息和要求。例如，要访问摄像头，第一个参数应为 `{video: true}`。要同时使用麦克风和摄像头，第一个参数为`{video: true, audio: true}`：
 
 ```html
 <video style="width: 100vw;height: 100vh" autoplay></video>
@@ -53,9 +53,9 @@ Electron 中的 `desktopCapturer` 对象是一个用于获取屏幕截图和视�
   });
 </script>
 ```
-通过以上代码，我们就可以实现实时捕捉电脑摄像头的音视频并播放到 `<video>` 标签中。
+通过以上代码，就可以实现实时捕捉电脑摄像头的音视频并播放到 `<video>` 标签中。
 
-`getUserMedia()` 的第一个参数还可用于指定对返回的媒体流的更多要求（或限制条件）。例如，你还可以通过 `video.mandatory` 参数指定视频的来源和尺寸：
+`getUserMedia()` 的第一个参数还可用于指定对返回的媒体流的更多要求（或限制条件）。例如，还可以通过 `video.mandatory` 参数指定视频的来源和尺寸：
 
 ```js
 navigator.mediaDevices.getUserMedia({
@@ -77,13 +77,13 @@ navigator.mediaDevices.getUserMedia({
 ```
 
 ### 结合 desktopCapturer 和 getUserMedia
-通过以上的介绍，我们大致了解了这两个 API 的用处，下面我们就来详细介绍一下截屏的思路：
+结合上文对这两个 API 的介绍，截屏的整体思路如下：
 1. 首先通过调用 `desktopCapturer` API 来获取所有屏幕信息。
 2. 将 `desktopCapturer` 返回结果中的 `sourceId`（一个 window 或者 screen 的唯一标识）传递给 `getUserMedia`，作为 `chromeMediaSourceId` 的约束条件。
 3. 调用 `getUserMedia` API 来实时获取桌面屏幕视频流。
 4. 获取视频流第一帧的图像进行截图操作。
 
-其中，1-3 比较好实现，我们一起来看一下代码：
+其中，1-3 比较好实现，代码如下：
 
 ```html
 <template>
@@ -136,7 +136,7 @@ desktopCapturer.getSources({ types: ['screen'] }).then(async sources => {
 
 以上代码的作用是获取屏幕信息，使用 `navigator.mediaDevices.getUserMedia` 捕获屏幕视频流，并将视频流显示在 `<video>` 元素中。
 
-接下来就是第 4 步，要开始截图了，先说一下原理：
+接下来是第 4 步，即开始截图。其原理如下：
 1. **窗口层：** 为每个显示器创建一个透明的、全屏的、置顶的 BrowserWindow 窗口。
 2. **图像层：** 然后将 `getUserMedia` 捕捉的图像信息生成图片后传递到 `BrowserWindow` 窗口中的 `<img>` 标签中，这样就会模拟出一个虚拟桌面。
 3. **蒙版层：** 在图片上再覆盖一层灰色透明的蒙版，模拟截图黑屏的效果。
@@ -322,11 +322,11 @@ mousemoveFun = e => {
  }
 }
 ```
-上面代码也很简单，当鼠标 `mousemove` 的时候，动态计算需要截屏的大小，并将区域矩形图片传递给 `canvas` 进行动态绘制，以模拟出截屏的效果。
+上面代码的逻辑是：当鼠标 `mousemove` 的时候，动态计算需要截屏的大小，并将区域矩形图片传递给 `canvas` 进行动态绘制，以模拟出截屏的效果。
 
 > 完整代码见：https://github.com/muwoo/desktop-capture-demo
 
-这样，我们就实现了一个“模拟截图的功能”，这个“模拟截图”因为是纯前端绘制，所以最大的优势就是我们可以自定义一些操作层的使用方式，比如画笔、取色、文案绘制……但也会有一些其他问题的产生：
+这样就实现了一个"模拟截图的功能"，这个"模拟截图"因为是纯前端绘制，所以最大的优势是可以自定义一些操作层的使用方式，比如画笔、取色、文案绘制……但也会有一些其他问题的产生：
 
 1. 每次截图都需要创建模拟窗口，对于 Electron 而言，创建窗口是需要耗时的。（可以用窗口池解决，提前预先创建窗口，但容易占用不少内存。）
 2. Linux 只支持单屏幕截图。由于 Chrome 内核的原因，Linux 系统无法区分多个屏幕，它所有的屏幕 ID 都是 `0:0`。
@@ -334,7 +334,7 @@ mousemoveFun = e => {
 4. 使用 `Canvas` 生成图像层的时候，比较耗时，越高分辨率耗时越高。
 5. 毕竟是模拟窗口，在 macOS 上，还是可以对窗口进行滑屏操作，体验非常不好。
 
-接下来我们接着介绍另外一种截图实现方式。
+下面介绍另外一种截图实现方式。
 
 
 
@@ -342,7 +342,7 @@ mousemoveFun = e => {
 使用三方能力是一种取巧的方式，利用的是 Electron 可以通过 `nodejs` 调用 `Shell` 脚本的方式来执行命令行命令。
 
 ### MacOS
-在 `MacOS` 中，我们调用系统自带的 `screencapture` 命令来实现截图：
+在 `MacOS` 中，调用系统自带的 `screencapture` 命令来实现截图：
 
 ```js
 import { clipboard, app } from 'electron'
@@ -362,12 +362,12 @@ export const handleScreenShots = () => {
 ```
 
 `screencapture` 是 macOS 系统中的命令行工具，用于捕获屏幕截图或录制屏幕视频。代码中：
--   `-i`：表示进行交互式捕获，允许你选择捕获的区域。
+-   `-i`：表示进行交互式捕获，允许用户选择捕获的区域。
 -   `-U`：在交互模式下显示交互式工具栏。
 -   `-c`：将捕获的屏幕图像复制到剪贴板中，而不是保存为文件。
 
 ### Windows
-在 `Windows` 中，我们可以通过 `node` 调用一些三方提供的截图应用程序，比如 [ScreenCapture.exe](https://github.com/xland/ScreenCapture)：
+在 `Windows` 中，可以通过 `node` 调用一些三方提供的截图应用程序，比如 [ScreenCapture.exe](https://github.com/xland/ScreenCapture)：
 ```js
 // 截图方法windows
 export const screenWindow = (cb) => {
@@ -383,16 +383,10 @@ export const screenWindow = (cb) => {
 };
 ```
 
-效果如下（此处从略）。
+> 注意：打包的时候，注意不要将 `.exe` 文件一起打包到 `.asar` 文件中，需要额外地告诉打包工程在打包的时候需要排除 `.exe` 文件，详细的操作见：《[Electron应用打包](34-Electron应用打包.md)》。
 
-> 注意：我们在打包的时候，注意不要将 `.exe` 文件一起打包到 `.asar` 文件中，需要额外地告诉打包工程在打包的时候需要排除 `.exe` 文件，详细的操作见：《[Electron应用打包](34-Electron应用打包.md)》。
+## 小结
 
-## 总结
+Electron 实现截图有两种方式。一种是通过前端"模拟"截图操作，这种方式最大的优势是前端可以自定义一些图像操作，但缺点是性能不佳，体验也不是很好。另一种是借助三方能力，虽然解决了性能问题，但是没有办法自定义一些样式和功能。
 
-本小节我们详细介绍了 Electron 实现截图的两种方式，一种是通过前端“模拟”截图操作，这种操作最大的优势就是前端可以自定义一些图像操作，但缺点就是性能不佳，体验也不是很好。还有一种就是借助三方能力，虽然解决了性能问题，但是没有办法自定义一些样式和功能。
-
-本小节主要为没有原生开发能力的小伙伴提供了一种折中式的解决方案，如果既想要性能优秀、体验完美、可自定义样式的截图工具，还是需要祭出原生开发的方式。
-
-
-
-
+对于没有原生开发能力的团队，三方能力方案是一种折中选择；如果既想要性能优秀、体验完美、可自定义样式的截图工具，还是需要原生开发的方式。

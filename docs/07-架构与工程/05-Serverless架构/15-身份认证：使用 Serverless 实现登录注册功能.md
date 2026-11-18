@@ -8,20 +8,15 @@ tags: [架构, 05-Serverless架构]
 
 # 身份认证：使用 Serverless 实现登录注册功能
 
+## 背景与问题
 
-从今天开始，我们将进入 Serverless 应用的场景案例篇。这一节我将带你实现 Serverless 中的身份认证。
+登录的过程就是身份认证的过程。以电商网站为例：下单前先要注册账号，然后输入用户名（可能是手机号或邮箱）、密码登录；之后一段时间内再访问该电商网站，都不用再登录，只有在连续长时间不登录的情况下（比如一个月），才需要登录。也正因为长时间不输入密码，换了电脑或手机后很容易忘记密码。
 
-我们平时用过那么多的网站和 App，很多都需要登录，登录的过程就是身份认证的过程。以电商网站为例，如果你想下单，先要注册账号，然后输入用户名（可能手机号或邮箱）、密码登录。之后你在一段时间内再访问该电商网站，都不用再登录，只有在连续长时间不登录的情况下（比如一个月），才用登录。这样一来，当你长时间不输入密码，很可能换了电脑或手机后，就忘记密码了。
+身份认证几乎是每个系统必备的能力，所以很多开发者开发应用时，实现的第一功能就是登录注册。然而当把应用迁移到 Serverless 架构时，问题就来了：基于 Serverless 的身份认证功能应该怎么实现？
 
-身份认证几乎是每个系统必备能力，所以很多同学开发应用时，实现的第一功能就是登录注册。然而当把应用迁移到 Serverless 架构时，很多同学就犯难了，基于 Serverless 的身份认证功能应该怎么实现呢？
-
-为了让你深入理解 Serverless 架构中的身份认证实现原理，我准备了今天的内容，这一节我会先带你了解一些身份认证技术方案，然后带你从零到一实现一个 Serverless 的登录注册应用。
-
-话不多说，我们进入今天的学习。
+回答这个问题需要先了解身份认证的技术方案，以及各方案在 Serverless 架构中的适用性——有的技术方案可能不适合 Serverless。
 
 ## 身份认证的技术方案
-
-要实现应用中的身份认证，你首先要详细了解身份认证的技术方案，以及该方案怎么在 Serverless 架构中使用，因为有的技术方案可能不适合 Serverless。
 
 ### Cookie-Session
 
@@ -45,11 +40,9 @@ tags: [架构, 05-Serverless架构]
 
 - cookie 是浏览器的功能，手机 App 等客户端并不支持 cookie，所以该方案不适用于非浏览器的应用。
 
-第一个问题也是 Cookie-Session 方案应用于 Serverless 架构的主要问题，因为 Serverless 应用是无状态的，内存中的数据用完即销毁，多个请求间无法共享 Session。**解决该问题也比较容易，** 就是用一个共享存储来保存 Session 信息，最常见的就是 Redis，因为 Redis 是一个内存数据库，读写速度很快。
+第一个问题也是 Cookie-Session 方案应用于 Serverless 架构的主要问题，因为 Serverless 应用是无状态的，内存中的数据用完即销毁，多个请求间无法共享 Session。**解决该问题也比较容易**：用一个共享存储来保存 Session 信息，最常见的就是 Redis，因为 Redis 是一个内存数据库，读写速度很快。
 
-于是 Cookie-Session 的身份认证方案就发生了变化：
-
-与早期方案不同，用户登录时，该方案会把用户信息保存在 Redis 中，而不是内存中，然后服务端依然会将 Session ID 返回给浏览器，浏览器将其保存在 cookie 中。而之后非登录的请求，浏览器依然会将包含 Session ID 的 cookie 放在请求头中发送给服务端，服务端拿到 Session ID 后，从 Redis 中查询出用户信息。这样就可以解决分布式、无状态的系统中用户登录状态共享问题。
+于是 Cookie-Session 的身份认证方案就发生了变化：与早期方案不同，用户登录时，该方案会把用户信息保存在 Redis 中，而不是内存中，然后服务端依然会将 Session ID 返回给浏览器，浏览器将其保存在 cookie 中。而之后非登录的请求，浏览器依然会将包含 Session ID 的 cookie 放在请求头中发送给服务端，服务端拿到 Session ID 后，从 Redis 中查询出用户信息。这样就可以解决分布式、无状态的系统中用户登录状态共享问题。
 
 不过这个方案依旧无法解决非浏览器场景的身份认证问题，所以 JWT 方案诞生了。
 
@@ -71,15 +64,13 @@ token 是一个比较长的字符串，格式为`Header.Payload.Signature`，由
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqYWNrIiwiaWF0IjoxNjEwODg1MTcxfQ.KIduc-undaZ0z-Bt4wjGZIK5fMlx1auVHl_G1DvGDCw
 ```
 
-**可能有同学会担忧：** token 是根据用户信息生成的，这样会不会泄露用户信息呢？需要注意，JWT 的 Header 和 Payload 只是 Base64 编码，并非加密，任何人都可以解码查看其中的内容；Signature 只能保证 token 不被篡改，并不能加密数据。因此 token 中不要存放手机号、密码等敏感信息，只应保存必要的用户标识（如用户 ID），并设置合理的过期时间。这样合理使用 JWT，就不会泄露用户信息。
+一个常见的担忧是：token 是根据用户信息生成的，这样会不会泄露用户信息？需要注意，JWT 的 Header 和 Payload 只是 Base64 编码，并非加密，任何人都可以解码查看其中的内容；Signature 只能保证 token 不被篡改，并不能加密数据。因此 token 中不要存放手机号、密码等敏感信息，只应保存必要的用户标识（如用户 ID），并设置合理的过期时间。这样合理使用 JWT，就不会泄露用户信息。
 
 基于 JWT，客户端可以使用自己特有的存储来保存 token，不依赖 cookie，所以 JWT 可以适用于任意客户端。并且使用 JWT 进行身份认证，服务端就不用存储用户信息了，这样服务端就是无状态的。**因此 JWT 这种身份认证方案，也非常适合 Serverless 应用。**
 
-接下来，我就基于 JWT，带你从 0 到 1 实现一个登录注册应用。
-
 ## 从 0 到 1 实现一个登录注册应用
 
-为了方便，我们将基于 Express.js 框架进行开发。关于该应用的所有代码你可以在 Github 上查看：[Serverless Authorization](https://github.com/nodejh/serverless-class/tree/master/15/auth-app)。
+基于 JWT，可以使用 Express.js 框架从零实现一个登录注册应用。关于该应用的所有代码可以在 Github 上查看：[Serverless Authorization](https://github.com/nodejh/serverless-class/tree/master/15/auth-app)。
 
 ### 应用初始化
 
@@ -89,9 +80,9 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqYWNrIiwiaWF0Ijo
 $ npm i express body-parser @webserverless/fc-express -S
 ```
 
-@webserverless/fc-express 的作用是将函数计算的 HTTP 或 API 网关触发器参数转换为 Express.js 框架的参数，这样你就可以很方便在函数计算中使用 Express.js 了。
+@webserverless/fc-express 的作用是将函数计算的 HTTP 或 API 网关触发器参数转换为 Express.js 框架的参数，这样就可以很方便地在函数计算中使用 Express.js 了。
 
-然后我们初始化一个 template.yaml 模板，该模板定义了 auth-app 这个函数，函数触发器为 HTTP 触发器，支持 GET 和 POST 请求：
+然后初始化一个 template.yaml 模板，该模板定义了 auth-app 这个函数，函数触发器为 HTTP 触发器，支持 GET 和 POST 请求：
 
 ```yaml
 ROSTemplateFormatVersion: '2015-09-01'
@@ -145,11 +136,11 @@ module.exports.handler = function (req, res, context) {
 
 **这段代码主要实现两个功能：**
 
-- 定义了 / 路由，该路由返回了 Hello Serverless! 字符串，我们之后可以用它来测试代码是否正常运行；
+- 定义了 / 路由，该路由返回了 Hello Serverless! 字符串，之后可以用它来测试代码是否正常运行；
 
 - 使用 @webserverless/fc-express 将函数计算的请求转发给 Express.js 应用，@webserverless/fc-express 可以将函数参数转换为 Express.js 的路由参数。
 
-然后通过 `fun deploy`部署应用：
+然后通过 `fun deploy` 部署应用：
 
 ```shell
 # 部署应用
@@ -169,20 +160,20 @@ $ curl https://1457216987974698.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/ser
 {"success":true,"data":"Hello Serverless!"}
 ```
 
-部署成功后，我们就可以获取到函数计算提供的测试 HTTP Endpoint，然后就可以通过 curl 命令进行测试应用是否正常运行：
+部署成功后，就可以获取到函数计算提供的测试 HTTP Endpoint，然后通过 curl 命令测试应用是否正常运行：
 
 ```shell
 $ curl https://1457216987974698.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/serverless/auth-app/
 {"success":true,"data":"Hello Serverless!"}
 ```
 
-如果你和我一样返回了上述 JSON 字符串，就说明应用正常运行了，接下来我们就可以继续实现注册功能了。
+返回了上述 JSON 字符串，就说明应用正常运行了，接下来就可以继续实现注册功能了。
 
 ### 实现注册功能
 
 注册的逻辑是：先获取用户输入的用户名和密码，然后判断用户是否存在，如果不存在就将其存入表格存储数据库。
 
-**这里我们使用的数据库是表格存储。** 可能你使用的比较多的是 MySQL，之所以选用表格存储而不是 MySQL，是因为表格存储可以直接通过 RESTful API 进行读写，并且弹性可扩展，更适合 Serverless 应用。使用表格存储时，你要先创建一个表格存储实例，然后创建一个 user 表。为了方便，我也给你提供了一个创建 user 表的脚本：[create-table](https://github.com/nodejh/serverless-class/tree/master/15/create-table)。
+**这里使用的数据库是表格存储。** 选用表格存储而不是更常见的 MySQL，是因为表格存储可以直接通过 RESTful API 进行读写，并且弹性可扩展，更适合 Serverless 应用。使用表格存储时，要先创建一个表格存储实例，然后创建一个 user 表。创建 user 表可使用现成的脚本：[create-table](https://github.com/nodejh/serverless-class/tree/master/15/create-table)。
 
 接下来继续编写代码。由于要使用表格存储，所以首先需要安装 tablestore 依赖，然后在 index.js 中初始化表格存储 client：
 
@@ -206,7 +197,7 @@ const client = new TableStore.Client({
 });
 ```
 
-现在我们就可以定义一个路由来处理用户的注册请求了。代码如下所示，首先我们根据 name 从表格存储中查询用户信息，如果用户已存在，则直接返回；如果用户不存在，则将用户信息写入表格存储。
+现在就可以定义一个路由来处理用户的注册请求了。代码如下所示：首先根据 name 从表格存储中查询用户信息，如果用户已存在，则直接返回；如果用户不存在，则将用户信息写入表格存储。
 
 ```javascript
 // 定义 /register 路由，处理注册请求
@@ -249,7 +240,7 @@ app.post('/register', async (req, res) => {
 });
 ```
 
-至此注册功能就完成了，你可以将代码部署到函数计算上，像下面这样通过 curl 命令来模拟用户请求，验证功能是否正常：
+至此注册功能就完成了。将代码部署到函数计算上，像下面这样通过 curl 命令模拟用户请求，验证功能是否正常：
 
 ```shell
 $ curl https://1457216987974698.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/serverless/auth-app/login \
@@ -267,18 +258,15 @@ $ curl https://1457216987974698.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/ser
 
 ### 实现登录功能
 
-登录就是验证用户输入的用户名密码是否正确。
+登录就是验证用户输入的用户名密码是否正确：首先根据用户输入的 name 从表格存储中查询出用户信息，然后对比用户密码与数据库中的用户密码是否一致，如果一致，则登录成功；否则登录失败。登录成功后，还需要根据用户信息生成一个 token 返回给用户。
 
-首先根据用户输入的 name 从表格存储中查询出用户信息，然后对比用户密码与数据库中的用户密码是否一致，如果一致，则登录成功；否则登录失败。登录成功后，还需要根据用户信息生成一个 token 返回给用户。**具体怎么实现呢？**
-
-前面我们提到，Serverless 中最通用的身份认证方案是 JWT，所以我们首先需要安装 Node.js 中的 JWT 依赖包 jsonwebtoken：
+如前所述，Serverless 中最通用的身份认证方案是 JWT，所以首先需要安装 Node.js 中的 JWT 依赖包 jsonwebtoken：
 
 ```shell
 $ npm install jsonwebtoken -S
 ```
 
-然后在代码中引入 jsonwebtoken，并定义 SECRET。SECRET 是用来签名和校验 token 的密钥，非常重要，且不能泄露。
-接下来在代码中定义 `/login` 路由来处理用户请求。这段代码中，我们首先验证了用户密码是否正确，密码正确后，再使用 jwt.sign() 方法，根据用户信息生成了 token，最后将 token 返回给客户端，客户端需要将 token 保存下来。之后客户端每次请求，都需要带上 token 进行身份认证。
+然后在代码中引入 jsonwebtoken，并定义 SECRET。SECRET 是用来签名和校验 token 的密钥，非常重要，且不能泄露。接下来在代码中定义 `/login` 路由来处理用户请求。这段代码中，首先验证用户密码是否正确，密码正确后，再使用 jwt.sign() 方法根据用户信息生成 token，最后将 token 返回给客户端，客户端需要将 token 保存下来。之后客户端每次请求，都需要带上 token 进行身份认证。
 
 ```javascript
 // index.js
@@ -348,17 +336,17 @@ $ curl https://1457216987974698.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/ser
 {"success":false,"message":"密码错误"}
 ```
 
-那么问题来了：对于需要登录后才能访问的接口，应该怎么根据 token 验证用户身份呢？别急，我们继续下面的学习。
+对于需要登录后才能访问的接口，应该怎么根据 token 验证用户身份？这就是下面要解决的问题。
 
 ### 验证用户身份
 
-前面提到，登录成功后，客户端需要将 token 保存下来，然后在接下来的请求中，都需要带上 token。通常会将 token 放在 HTTP 请求头中，格式通常为：
+登录成功后，客户端需要将 token 保存下来，然后在接下来的请求中都需要带上 token。通常会将 token 放在 HTTP 请求头中，格式通常为：
 
 ```
 Authorization: Bearer token
 ```
 
-这时假设我们要实现一个新的接口，获取当前登录用户信息，该接口也只能登录后才能使用。那么代码实现就是下面这样：
+假设要实现一个新的接口——获取当前登录用户信息，该接口只能登录后才能使用，那么代码实现如下：
 
 ```javascript
 // 定义 /user 路由，获取当前登录的用户信息
@@ -385,9 +373,9 @@ app.get('/user', (req, res) => {
 });
 ```
 
-首先我们定义了 `/user` 路由，然后通过请求头拿到 token 信息，最后使用 `jwt.verify()` 校验 token 的签名并解析出用户信息，如果用户传入的 token 无法通过校验，则说明用户身份异常。
+这段代码先定义了 `/user` 路由，然后通过请求头拿到 token 信息，最后使用 `jwt.verify()` 校验 token 的签名并解析出用户信息；如果用户传入的 token 无法通过校验，则说明用户身份异常。
 
-同样，我们可以将代码部署到函数计算并进行测试：
+同样，将代码部署到函数计算并进行测试：
 
 ```shell
 $ curl https://1457216987974698.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/serverless/auth-app/user \
@@ -399,21 +387,26 @@ $ curl https://1457216987974698.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/ser
 {"success":false,"data":"身份认证失败"}
 ```
 
-到此为止，一个 Serverless 架构的登录注册功能就完成了，我们也基于 JWT 实现了 Serverless 中的身份认证。
+到此为止，一个 Serverless 架构的登录注册功能就完成了，也基于 JWT 实现了 Serverless 中的身份认证。
 
-## 总结
+## 实践要点
 
-这一节，我首先为你介绍了常用的身份认证方案，并分析了这些方案的特点，以及如何在 Serverless 架构中使用这些方案。然后我带你从 0 到 1 实现了一个 Serverless 的登录注册应用，通过该场景实践，让你深入理解 Serverless 中的身份认证。
+- **方案选型**：Web-only 场景可用改造后的 Cookie-Session（Session 入 Redis）；多端（App、小程序等）或 Serverless 场景优先 JWT。
+- **token 安全**：JWT 的 Header/Payload 仅是 Base64 编码，Signature 只防篡改不加密；token 中只保存必要的用户标识（如用户 ID），不要放手机号、密码等敏感信息，并设置合理的过期时间。
+- **SECRET 管理**：签名与校验 token 的密钥非常重要，不能泄露，注意在返回 token 前对密码等字段脱敏（如 `user.password = '******'`）。
+- **存储选型**：Serverless 场景下表格存储这类支持 RESTful API、弹性可扩展的数据库，比传统 MySQL 更契合无状态函数。
+- **框架适配**：函数计算中复用 Express.js 生态时，使用 @webserverless/fc-express 将触发器参数转换为 Express 路由参数。
+- **第三方替代方案**：除了自己实现身份认证，也可以使用第三方的身份认证服务，比如 AWS Cognito、Google Firebase 等，基于它们就不用自己开发用户管理及身份认证功能了。
 
-Serverless 应用的身份认证，本质上是要将有状态的认证方案改为无状态的。如何改为无状态呢？
+## 小结
+
+Serverless 应用的身份认证，本质上是要将有状态的认证方案改为无状态的，改法有两条：
 
 - 使用共享存储来保存登录状态，比如将 Session 信息存储到 Redis，这样应用就不用存储状态了；
 
 - 使用无状态的身份认证方案，比如 JWT。
 
-当然了，除了自己实现应用的身份认证，你也可以使用第三方的身份认证服务，比如 AWS Cognito、Google Firebase 等，基于它们，你就不用自己开发用户管理及身份认证功能了。
-
-关于这一节，我想强调这样几点：
+关于 Serverless 身份认证，需要强调这样几点：
 
 - Cookie-Session 的身份认证方式，是在服务端存储 Session 信息，客户端（浏览器）通过 cookie 存储 Session ID；
 

@@ -9,7 +9,7 @@ tags: [Java, 源码剖析]
 
 MyBatis 的前身是 IBatis，IBatis 是由 Internet 和 Abatis 组合而成，其目的是想当做互联网的篱笆墙，围绕着数据库提供持久化服务的一个框架，2010 年正式改名为 MyBatis。它是一款优秀的持久层框架，支持自定义 SQL、存储过程及高级映射。MyBatis 免除了几乎所有的 JDBC 代码以及设置参数和获取结果集的工作，还可以通过简单的 XML 或注解来配置和映射原始类型、接口和 Java POJO（Plain Ordinary Java Object，普通 Java 对象）为数据库中的记录。
 
-关于 MyBatis 的介绍与使用，官方已经提供了比较详尽的中文参考文档，[可点击这里查看](https://mybatis.org/mybatis-3/zh/getting-started.html)，而本文则以面试的角度出发，聊一聊不一样的知识点，它也是 MyBatis 比较热门的面试题之一，MyBatis 使用了哪些设计模式？在源码中是如何体现的？
+关于 MyBatis 的介绍与使用，官方已经提供了比较详尽的中文参考文档，[可点击这里查看](https://mybatis.org/mybatis-3/zh/getting-started.html)，而本文则以面试的角度出发，讲解一个不一样的知识点，它也是 MyBatis 比较热门的面试题之一，MyBatis 使用了哪些设计模式？在源码中是如何体现的？
 
 > 注意：本文使用的 MyBatis 源码为 3.5.5。
 
@@ -21,7 +21,7 @@ MyBatis 的前身是 IBatis，IBatis 是由 Internet 和 Abatis 组合而成，�
 
 #### 1.工厂模式
 
-工厂模式想必都比较熟悉，它是 Java 中最常用的设计模式之一。工厂模式就是提供一个工厂类，当有客户端需要调用的时候，只调用这个工厂类就可以得到自己想要的结果，从而无需关注某类的具体实现过程。这就好比你去餐馆吃饭，可以直接点菜，而不用考虑厨师是怎么做的。
+工厂模式想必都比较熟悉，它是 Java 中最常用的设计模式之一。工厂模式就是提供一个工厂类，当有客户端需要调用的时候，只调用这个工厂类就可以得到自己想要的结果，从而无需关注某类的具体实现过程。这就好比去餐馆吃饭，可以直接点菜，而不用考虑厨师是怎么做的。
 
 工厂模式在 MyBatis 中的典型代表是 SqlSessionFactory。
 
@@ -47,7 +47,7 @@ private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionI
 }
 ```
 
-从该方法我们可以看出它会 configuration.newExecutor(tx, execType) 读取对应的环境配置，而此方法的源码如下：
+从该方法可以看出它会 configuration.newExecutor(tx, execType) 读取对应的环境配置，而此方法的源码如下：
 
 ```java
 public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
@@ -75,13 +75,13 @@ public Executor newExecutor(Transaction transaction, ExecutorType executorType) 
 
 建造者模式指的是将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。也就是说建造者模式是通过多个模块一步步实现了对象的构建，相同的构建过程可以创建不同的产品。
 
-例如，组装电脑，最终的产品就是一台主机，然而不同的人对它的要求是不同的，比如设计人员需要显卡配置高的；而影片爱好者则需要硬盘足够大的（能把视频都保存起来），但对于显卡却没有太大的要求，我们的装机人员根据每个人不同的要求，组装相应电脑的过程就是**建造者模式**。
+例如，组装电脑，最终的产品就是一台主机，然而不同的人对它的要求是不同的，比如设计人员需要显卡配置高的；而影片爱好者则需要硬盘足够大的（能把视频都保存起来），但对于显卡却没有太大的要求，装机人员根据每个人不同的要求，组装相应电脑的过程就是**建造者模式**。
 
 建造者模式在 MyBatis 中的典型代表是 SqlSessionFactoryBuilder。
 
 普通的对象都是通过 new 关键字直接创建的，但是如果创建对象需要的构造参数很多，且不能保证每个参数都是正确的或者不能一次性得到构建所需的所有参数，那么就需要将构建逻辑从对象本身抽离出来，让对象只关注功能，把构建交给构建类，这样可以简化对象的构建，也可以达到分步构建对象的目的，而 SqlSessionFactoryBuilder 的构建过程正是如此。
 
-在 SqlSessionFactoryBuilder 中构建 SqlSessionFactory 对象的过程是这样的，首先需要通过 XMLConfigBuilder 对象读取并解析 XML 的配置文件，然后再将读取到的配置信息存入到 Configuration 类中，然后再通过 build 方法生成我们需要的 DefaultSqlSessionFactory 对象，实现源码如下（在 SqlSessionFactoryBuilder 类中）：
+在 SqlSessionFactoryBuilder 中构建 SqlSessionFactory 对象的过程是这样的，首先需要通过 XMLConfigBuilder 对象读取并解析 XML 的配置文件，然后再将读取到的配置信息存入到 Configuration 类中，然后再通过 build 方法生成需要的 DefaultSqlSessionFactory 对象，实现源码如下（在 SqlSessionFactoryBuilder 类中）：
 
 ```java
 public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
@@ -136,7 +136,7 @@ public class ErrorContext {
 
 适配器模式是指将一个不兼容的接口转换成另一个可以兼容的接口，这样就可以使那些不兼容的类可以一起工作。
 
-例如，最早之前我们用的耳机都是圆形的，而现在大多数的耳机和电源都统一成了方形的 typec 接口，那之前的圆形耳机就不能使用了，只能买一个适配器把圆形接口转化成方形的。
+例如，最早之前用的耳机都是圆形的，而现在大多数的耳机和电源都统一成了方形的 typec 接口，那之前的圆形耳机就不能使用了，只能买一个适配器把圆形接口转化成方形的。
 
 而这个转换头就相当于程序中的适配器模式，适配器模式在 MyBatis 中的典型代表是 Log。
 
@@ -210,13 +210,13 @@ public class Log4j2Impl implements Log {
 }
 ```
 
-这样当你项目中添加了 Log4j2 时，MyBatis 就可以直接使用它打印 MyBatis 的日志信息了。
+这样当项目中添加了 Log4j2 时，MyBatis 就可以直接使用它打印 MyBatis 的日志信息了。
 
 #### 5.代理模式
 
 代理模式指的是给某一个对象提供一个代理对象，并由代理对象控制原对象的调用。
 
-代理模式在生活中也比较常见，比如我们常见的超市、小卖店其实都是一个个“代理”，他们的最上游是一个个生产厂家，他们这些代理负责把厂家生产出来的产品卖出去。
+代理模式在生活中也比较常见，比如常见的超市、小卖店其实都是一个个“代理”，他们的最上游是一个个生产厂家，他们这些代理负责把厂家生产出来的产品卖出去。
 
 代理模式在 MyBatis 中的典型代表是 MapperProxyFactory。
 
@@ -251,7 +251,7 @@ public class MapperProxyFactory<T> {
 
 模板方法模式是最常用的设计模式之一，它是指定义一个操作算法的骨架，而将一些步骤的实现延迟到子类中去实现，使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。此模式是基于继承的思想实现代码复用的。
 
-例如，我们喝茶的一般步骤都是这样的：
+例如，喝茶的一般步骤都是这样的：
 
 - 把热水烧开
 
@@ -263,7 +263,7 @@ public class MapperProxyFactory<T> {
 
 - 喝茶
 
-整个过程都是固定的，唯一变的就是泡入茶叶种类的不同，比如今天喝的是绿茶，明天可能喝的是红茶，那么我们就可以把流程定义为一个模板，而把茶叶的种类延伸到子类中去实现，这就是模板方法的实现思路。
+整个过程都是固定的，唯一变的就是泡入茶叶种类的不同，比如今天喝的是绿茶，明天可能喝的是红茶，那么就可以把流程定义为一个模板，而把茶叶的种类延伸到子类中去实现，这就是模板方法的实现思路。
 
 模板方法在 MyBatis 中的典型代表是 BaseExecutor。
 
@@ -326,7 +326,7 @@ public class ReuseExecutor extends BaseExecutor {
 
 装饰器模式允许向一个现有的对象添加新的功能，同时又不改变其结构，这种类型的设计模式属于结构型模式，它是作为现有类的一个包装。
 
-装饰器模式在生活中很常见，比如装修房子，我们在不改变房子结构的同时，给房子添加了很多的点缀；比如安装了天然气报警器，增加了热水器等附加的功能都属于装饰器模式。
+装饰器模式在生活中很常见，比如装修房子，在不改变房子结构的同时，给房子添加了很多的点缀；比如安装了天然气报警器，增加了热水器等附加的功能都属于装饰器模式。
 
 装饰器模式在 MyBatis 中的典型代表是 Cache。
 
@@ -334,7 +334,7 @@ Cache 除了有数据存储和缓存的基本功能外（由 PerpetualCache 永�
 
 ### 小结
 
-本文我们重点讲了 MyBatis 源码中的几个主要设计模式，即工厂模式、建造者模式、单例模式、适配器模式、代理模式、模板方法模式等，希望本文的内容能起到抛砖引玉的作用，对你理解设计模式和 MyBatis 提供一些帮助，如果想要阅读全部的 MyBatis 源码可以访问：[https://github.com/mybatis/mybatis-3](https://github.com/mybatis/mybatis-3)。
+本文重点讲了 MyBatis 源码中的几个主要设计模式，即工厂模式、建造者模式、单例模式、适配器模式、代理模式、模板方法模式等，以期对理解设计模式和 MyBatis 提供一些帮助，如果想要阅读全部的 MyBatis 源码可以访问：[https://github.com/mybatis/mybatis-3](https://github.com/mybatis/mybatis-3)。
 
 ## 版本差异(MyBatis 设计模式 → 3.5.x)
 

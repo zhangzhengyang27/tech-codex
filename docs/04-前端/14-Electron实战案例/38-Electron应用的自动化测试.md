@@ -9,10 +9,10 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron应用的自动化测试
 
-## 前言
+## 背景与测试方案概览
 自动化测试是利用软件工具和脚本来执行测试用例和验证预期结果的过程，而无需人工干预。它是软件测试的一种方法，通过编写脚本和使用特定的测试工具来模拟用户行为和系统交互，以验证软件应用程序的功能、性能和稳定性。
 
-对于前端熟悉的 Web 自动化测试而言，它通过使用特定的测试工具（比如：`Selenium`、`Puppeteer`...）和脚本来模拟用户在 Web 浏览器中的行为和交互，以验证网站或 Web 应用程序的功能、界面和性能。
+前端开发者熟悉的 Web 自动化测试，通过使用特定的测试工具（比如：`Selenium`、`Puppeteer`...）和脚本来模拟用户在 Web 浏览器中的行为和交互，以验证网站或 Web 应用程序的功能、界面和性能。
 
 对于 Electron 应用自动化测试而言，整体来说跟 Web 自动化测试差不多，最大区别就是要处理 Electron 驱动。
 
@@ -23,7 +23,7 @@ Electron 应用程序自动化测试有比较多的工具可以选择，常用�
 3. **Playwright**：`Playwright` 是一个用于自动化 Web 浏览器操作的工具，它类似于 `Selenium` 和 `Puppeteer`。由 Microsoft 开发并维护，它提供了跨浏览器（如 Chrome、Firefox、WebKit）、跨平台（Windows、MacOS、Linux）的自动化解决方案。
 4. **自定义驱动**：相对于现有的测试框架，自定义驱动可以使用 Node.js 的内建 `IPC STDIO` 来编写自己的自定义驱动。自定义测试驱动程序需要写额外的应用代码，但是有较低的性能开销，也可以自定义很多操作方法。
 
-接下来我们将分别介绍这几种测试方案如何在 Electron 应用程序中进行自动化测试。
+下面分别介绍这几种测试方案如何在 Electron 应用程序中进行自动化测试。
 
 
 
@@ -37,7 +37,7 @@ WebdriverIO 提供了一个集成服务，简化了与 Electron 应用程序的�
 
 ### 1. 安装 WebdriverIO
 
-在我们创建的 Electron 应用中，通过以下命令来安装 `WebdriverIO`：
+在创建的 Electron 应用中，通过以下命令来安装 `WebdriverIO`：
 
 ```bash
 # 安装 wdio
@@ -45,7 +45,7 @@ npm create wdio@latest ./
 ```
 接下来会有一系列询问，默认情况下直接回车。
 
-完成之后，你会看到多了一个 `wdio.conf.js` 文件，以及一个 `test` 文件夹，`wdio.conf.js` 用于配置 `WebdriverIO` 的一些功能。`test` 文件夹主要是我们存放单测文件的目录。
+完成之后，项目里会多一个 `wdio.conf.js` 文件，以及一个 `test` 文件夹。`wdio.conf.js` 用于配置 `WebdriverIO` 的一些功能，`test` 文件夹主要是存放单测文件的目录。
 
 然后再安装 `wdio-electron-service`，使用 `wdio-electron-service` 可以实现自动下载和管理正确版本的 ChromeDriver，访问 Electron API，自定义模拟 Electron API 功能，以及定义自定义 API 处理程序来修改测试中应用程序的行为等。
 
@@ -55,7 +55,7 @@ yarn add wdio-electron-service
 ```
 
 ### 2. 配置 WebdriverIO
-为了支持 Electron 驱动，你需要在 `wdio.conf.js` 中添加如下内容：
+为了支持 Electron 驱动，需要在 `wdio.conf.js` 中添加如下内容：
 ```js
 export const config = {
   outputDir: 'logs',
@@ -69,19 +69,19 @@ export const config = {
   // ...
 };
 ```
-其中 `services` 字段是一个数组，用于配置各种服务，这些服务可以增强测试的功能和设置。`services` 允许你扩展测试框架的功能，以便执行特定任务或增加额外的功能，而无需显式添加新的命令。
+其中 `services` 字段是一个数组，用于配置各种服务，这些服务可以增强测试的功能和设置。`services` 允许扩展测试框架的功能，以便执行特定任务或增加额外的功能，而无需显式添加新的命令。
 
-`capabilities` 中的 `browserName` 是指你想要运行的浏览器的名称或标识符。它指定了测试用例将在哪种类型的浏览器中执行，例如 Chrome、Firefox、Safari 等。
+`capabilities` 中的 `browserName` 是指想要运行的浏览器的名称或标识符。它指定了测试用例将在哪种类型的浏览器中执行，例如 Chrome、Firefox、Safari 等。
 
-`appArgs`：这个选项允许你向 Electron 应用程序传递命令行参数。
+`appArgs`：这个选项允许向 Electron 应用程序传递命令行参数。
 
-`appBinaryPath`：这个选项表示 Electron 应用程序的可执行文件路径。它指定了要用于测试的已编译或构建的 Electron 应用程序的位置。以 `vue-cli-plugin-electron-builder` 为例，我们应用在 `MacOS` 上构建完成后，应用程序的路径目录为：
+`appBinaryPath`：这个选项表示 Electron 应用程序的可执行文件路径。它指定了要用于测试的已编译或构建的 Electron 应用程序的位置。以 `vue-cli-plugin-electron-builder` 为例，应用在 `MacOS` 上构建完成后，应用程序的路径目录为：
 
 ```bash
 build/mac/${你的应用程序名}.app/Contents/MacOS/${你的应用程序名}
 ```
 
-不同平台编译后的应用程序路径是不一样的，所以我们可以通过以下脚本来动态获取：
+不同平台编译后的应用程序路径是不一样的，所以可以通过以下脚本来动态获取：
 
 ```js
 // for each OS
@@ -100,7 +100,7 @@ if (process.platform === 'linux') {
 完整配置：https://github.com/muwoo/electron-demo/blob/feat/test/wdio.conf.js
 
 ### 3. 使用 Electron API
-完成步骤 1、2 后，你可以在 `test/specs/test.e2e.js` 中开始编写一个简单的测试用例：
+完成步骤 1、2 后，可以在 `test/specs/test.e2e.js` 中开始编写一个简单的测试用例：
 
 ```js
 // test.e2e.js
@@ -110,7 +110,7 @@ import { browser } from '@wdio/globals';
 const appName = await browser.electron.app('getName');
 ```
 
-如果你希望在 `wdio` 中来 `Mock` Electron 的 API，那么你需要在你的应用中导入 `wdio-electron-service` 的 preload 和 main 脚本。
+如果希望在 `wdio` 中来 `Mock` Electron 的 API，那么需要在应用中导入 `wdio-electron-service` 的 preload 和 main 脚本。
 
 比如，在应用的 `preload.js` 中：
 
@@ -150,7 +150,7 @@ describe('App', () => {
 [Selenium](https://www.selenium.dev/) 是一个 Web 自动化框架，以多种语言公开与 WebDriver API 的绑定方式。 Node.js 环境下，可以通过 NPM 安装 `selenium-webdriver` 包来使用此框架。
 
 ### 1. 安装 Selenium 环境
-为了与 Electron 一起使用 Selenium ，你需要下载 `electron-chromedriver` 和 `selenium-webdriver`：
+为了与 Electron 一起使用 Selenium ，需要下载 `electron-chromedriver` 和 `selenium-webdriver`：
 
 ```bash
 # 安装 electron-chromedriver
@@ -160,7 +160,7 @@ yarn add --dev electron-chromedriver
 yarn add --dev selenium-webdriver
 ```
 
-然后在你的项目目录下启动一个 `ChromeDriver` 服务：
+然后在项目目录下启动一个 `ChromeDriver` 服务：
 
 ```bash
 ./node_modules/.bin/chromedriver
@@ -171,7 +171,7 @@ yarn add --dev selenium-webdriver
 启动成功后，默认端口是 `9515`。
 
 ### 2. 编写测试用例
-接下来，我们在项目目录中，新建一个 `selenium/test.js` 目录，写入以下内容：
+接下来，在项目目录中，新建一个 `selenium/test.js` 文件，写入以下内容：
 
 ```js
 const webdriver = require('selenium-webdriver')
@@ -208,7 +208,7 @@ driver.wait(() => {
 }, 1000)
 driver.quit()
 ```
-这里，我们通过 `webdriver.Builder()` 来创建了一个 `WebDriver` 实例，其中 `9515` 端口就是我们之前启动的 `ChromeDriver` 服务地址，`binary` 字段指明了启动 Electron 应用程序的地址路径。
+这里通过 `webdriver.Builder()` 来创建了一个 `WebDriver` 实例，其中 `9515` 端口就是之前启动的 `ChromeDriver` 服务地址，`binary` 字段指明了启动 Electron 应用程序的地址路径。
 
 然后运行脚本：
 
@@ -222,7 +222,7 @@ SessionNotCreatedError: session not created: This version of ChromeDriver only s
 Current browser version is 118.0.5993.159 
 ```
 
-因为 Electron 不同版本本身内置了一个特定版本的 `Chromium`， 这个错误表明你使用的 `ChromeDriver` 版本与当前 Electron 版本内置的 `Chromium` 不兼容。
+因为 Electron 不同版本本身内置了一个特定版本的 `Chromium`， 这个错误表明使用的 `ChromeDriver` 版本与当前 Electron 版本内置的 `Chromium` 不兼容。
 
 解决方案一个是通过 [ChromeDriver - WebDriver for Chrome - Downloads](https://chromedriver.chromium.org/downloads) 这里找到匹配 Electron 内置 `Chromium` 版本的 `ChromeDriver`。
 
@@ -247,7 +247,7 @@ yarn add --dev @playwright/test
 ```
 
 ### 2. 编写测试用例
-安装完成后，可以在当前应用目录下新建一个测试目录：`playwright/test.spec.js`，然后写入我们的第一个测试用例：
+安装完成后，可以在当前应用目录下新建一个测试文件：`playwright/test.spec.js`，然后写入第一个测试用例：
 
 ```js
 const { _electron: electron } = require('playwright')
@@ -280,7 +280,7 @@ test('example test', async () => {
 
 `Playwright` 通过 `electron.launch` API 可以在开发模式下启动应用程序。 因此，要将此 API 的 `args` 参数指向 Electron 应用，可以将路径传递到主进程入口点（此处为 `../out/main/index.js`）。
 
-在此之后，你可以通过 `electronApp.evaluate` 中的回调来访问到 Electron App 的主进程模块。
+在此之后，可以通过 `electronApp.evaluate` 中的回调来访问到 Electron App 的主进程模块。
 
 然后调用脚本来运行测试用例：
 
@@ -297,12 +297,12 @@ npx playwright test
 ```
 
 ## 自定义驱动
-我们知道，通过 Node 的 `child_process.spawn` 可以打开并运行一个应用程序，并通过 `process.on()` 和 `process.send()` 来和应用程序进行消息通信。因为有了这些能力，可以让自定义驱动变得可行。
+通过 Node 的 `child_process.spawn` 可以打开并运行一个应用程序，并通过 `process.on()` 和 `process.send()` 来和应用程序进行消息通信。因为有了这些能力，可以让自定义驱动变得可行。
 
 自定义启动的实现原理是将需要获取应用信息的功能通过 `process.send()` 向 Electron 主进程发送通信消息，主进程通过 `process.on()` 收到操作指令获取到数据后再通过 `process.send()` 返回给测试程序。
 
 ### 测试 demo
-首先，我们可以编写一个自定义测试驱动类，来实现启动测试和与测试应用的消息通信的功能：
+首先，可以编写一个自定义测试驱动类，来实现启动测试和与测试应用的消息通信的功能：
 
 ```js
 // driver.js
@@ -353,7 +353,7 @@ class TestDriver {
 module.exports = { TestDriver }
 ```
 
-接着，我们需要给主进程增加事件处理功能：
+接着，需要给主进程增加事件处理功能：
 
 ```js
 // main.js
@@ -391,13 +391,13 @@ if (process.env.APP_TEST_DRIVER) {
   process.on('message', onMessage)
 }
 ```
-接下来，我们尝试使用 [Mocha](https://mochajs.org/) 和 [assert](https://www.npmjs.com/package/assert) 来编写测试用例，在此之前，你需要先安装这两个测试工具：
+接下来，使用 [Mocha](https://mochajs.org/) 和 [assert](https://www.npmjs.com/package/assert) 来编写测试用例，在此之前，需要先安装这两个测试工具：
 
 ```bash
 yarn add mocha assert
 ```
 
-然后，我们就可以基于 `Mocha` 和 `assert` 开始编写测试用例：
+然后，就可以基于 `Mocha` 和 `assert` 开始编写测试用例：
 ```js
 // app.test.js
 const assert = require('assert')
@@ -451,21 +451,10 @@ describe('测试启动', () => {
 
 ## 总结
 
-> 本小节所有测试 demo 已上传 github：https://github.com/muwoo/electron-demo/tree/feat/test
+> 本文所有测试 demo 已上传 github：https://github.com/muwoo/electron-demo/tree/feat/test
 
 `WebdriverIO`、`Selenium` 二者都是基于 `WebDriver` 协议的测试框架。`Selenium` 提供了多种语言来编写测试用例的能力，`WebdriverIO` 则是一个相对工程化的测试解决方案，内置了各种插件。`Playwright` 是一个相对较新的自动化测试工具，其基于的是类似于 [Puppeteer](https://github.com/puppeteer/puppeteer) 的无头 Node.js API 来完成自动化测试。
 
-与上面三者不同的是，我们还可以通过 Node 的 `child_process` 来自定义测试驱动，这种方案会有更小的测试内存占用，更加灵活的测试功能，但与此同时，我们也需要编写更多的代码。
+与上面三者不同的是，还可以通过 Node 的 `child_process` 来自定义测试驱动，这种方案会有更小的测试内存占用，更加灵活的测试功能，但与此同时，也需要编写更多的代码。
 
-这几种测试工具和方法都可以应用到你的应用当中，具体使用哪种测试工具取决于团队的偏好、项目需求以及对于性能和功能的要求。
-
-
-
-
-
-
-
-
-
-
-
+这几种测试工具和方法都可以应用到实际项目当中，具体使用哪种测试工具取决于团队的偏好、项目需求以及对于性能和功能的要求。

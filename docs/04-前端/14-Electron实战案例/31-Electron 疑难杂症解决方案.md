@@ -9,15 +9,17 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron 疑难杂症解决方案
 
-开发普通的桌面应用单凭我们前面介绍的 Electron 和 Vue 知识或许已经足够了，但我们应该知道桌面应用开发所涉及的知识浩如烟海，即使你掌握了所有 Electron 和 Vue 的知识也还是远远不够。本节将介绍一些特殊的需求、问题的处理方案，让你知道这个领域有很多有趣的问题等待我们去解决。
+## 背景与问题
 
-本节中我们通过“四个课题”来打开开发者的眼界：首先我们讲解如何把窗口钉在桌面上，其次介绍如何重新上传文件，接着再分析如何监控内存消耗，最后是如何模拟弱网环境。
+开发普通的桌面应用，单凭 Electron 和 Vue 的知识或许已经足够，但桌面应用开发所涉及的知识浩如烟海，即使掌握了所有 Electron 和 Vue 的知识也还是远远不够。本文介绍一些特殊需求、特殊问题的处理方案，展示这个领域中有许多有趣的问题等待解决。
+
+下文通过“四个课题”来打开开发者的眼界：首先讲解如何把窗口钉在桌面上，其次介绍如何重新上传文件，接着分析如何监控内存消耗，最后介绍如何模拟弱网环境。
 
 ## 把窗口钉在桌面上
 
 有一些特殊的应用，可以把窗口“钉”在桌面上，比如：桌面日历，当用户点击“显示桌面”时，所有的窗口都会隐藏，桌面会显示给用户，但桌面日历窗口，可以不被隐藏，依然显示在桌面上，就好像被“钉”在桌面上一样。
 
-很显然 Electron 是没有类似的能力的，开发者要想实现这样的功能，可能最先想到的是使用原生模块来调用操作系统的 API 来完成这样的功能。
+很显然 Electron 是没有类似的能力的。开发者要想实现这样的功能，可能最先想到的是使用原生模块来调用操作系统的 API 来完成这样的功能。
 
 这确实是最直接的解决问题的办法，这里只简单介绍一下思路：
 
@@ -29,7 +31,7 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 更方便的做法是使用这个开源库：[electget](https://github.com/lowfront/electget) 。
 
-为你的项目引入这个库，然后在主进程中执行如下代码：
+在项目中引入这个库，然后在主进程中执行如下代码：
 
 ```ts
 // import electget from "electget";
@@ -38,7 +40,7 @@ electget.preventFromShowDesktop(win);
 electget.moveToBottom(win);
 ```
 
-这时你的窗口就可以“钉”在桌面上了。为了更完美地满足需求，我们最好监控一下窗口聚焦事件，当用户聚焦窗口时，把窗口移至最底层，如下代码所示：
+这时窗口就可以“钉”在桌面上了。为了更完美地满足需求，最好监控一下窗口聚焦事件，当用户聚焦窗口时，把窗口移至最底层，如下代码所示：
 
 ```ts
 app.on("browser-window-focus", (e, win: BrowserWindow) => {
@@ -49,9 +51,9 @@ app.on("browser-window-focus", (e, win: BrowserWindow) => {
 
 这样做可以避免在用户与窗口交互后，被钉住的窗口浮到其他窗口之上。
 
-> 这个窗口虽然被钉在桌面上了，但它还是显示在桌面图标之上的，如果你想要把窗口放置在桌面图标之下（桌面背景之上），那么你需要使用更复杂的技术。可以参考这个开源项目 [electron-as-wallpaper](https://github.com/meslzy/electron-as-wallpaper) 和我写的[这篇文章](https://zhuanlan.zhihu.com/p/580281260)，此技术常用于开发动态桌面类产品。（此技术用到了操作系统未公开的 API，兼容性并不是很好。）
+> 这个窗口虽然被钉在桌面上了，但它还是显示在桌面图标之上的。如果想要把窗口放置在桌面图标之下（桌面背景之上），那么需要使用更复杂的技术。可以参考开源项目 [electron-as-wallpaper](https://github.com/meslzy/electron-as-wallpaper) 和一篇[相关文章](https://zhuanlan.zhihu.com/p/580281260)，此技术常用于开发动态桌面类产品。（此技术用到了操作系统未公开的 API，兼容性并不是很好。）
 
-我们之所以介绍这个库，主要目的并不是介绍它的能力，而是介绍它的实现方式，它并不能算一个真正的原生模块，它是基于 [ffi-napi](https://github.com/node-ffi-napi/node-ffi-napi) 开发的。开发者可以基于这个库使用纯 JavaScript 加载和调用动态库。也就是说，开发者可以使用 JavaScript 访问操作系统动态链接库，有了它开发者就不需要编写任何 C++ 代码完成原生功能了。
+介绍这个库的主要目的并不是罗列它的能力，而是介绍它的实现方式：它并不能算一个真正的原生模块，它是基于 [ffi-napi](https://github.com/node-ffi-napi/node-ffi-napi) 开发的。开发者可以基于这个库使用纯 JavaScript 加载和调用动态库。也就是说，开发者可以使用 JavaScript 访问操作系统动态链接库，有了它开发者就不需要编写任何 C++ 代码完成原生功能了。
 
 ```ts
 import ffi from "ffi-napi";
@@ -67,11 +69,11 @@ const desktopHWnd = user32.GetDesktopWindow();
 
 ## 文件重新上传
 
-如果你的桌面应用涉及到文件上传的功能，而且上传的文件有可能会很大的话，那么大概率你需要开发文件重新上传的功能。
+如果桌面应用涉及到文件上传的功能，而且上传的文件有可能会很大的话，那么大概率需要开发文件重新上传的功能。
 
-当网络环境不好或者用户不小心退出了应用，上传过程就会中断，当上传环境恢复后，产品应该可以重新上传之前没上传成功的文件。
+当网络环境不好或者用户不小心退出了应用，上传过程就会中断；当上传环境恢复后，产品应该可以重新上传之前没上传成功的文件。
 
-我们先来介绍有问题的方案，开发者在上传文件之前，把文件路径记录下来，重新上传文件时，直接用文件路径构造一个 File 对象，然后再上传到服务端。
+先来介绍有问题的方案：开发者在上传文件之前，把文件路径记录下来，重新上传文件时，直接用文件路径构造一个 File 对象，然后再上传到服务端。
 
 使用文件路径构造 File 对象的代码如下所示：
 
@@ -87,7 +89,7 @@ let file = new window.File([Uint8Array.from(buffer)], path.basename(filePath), {
 
 所以，更好的方案是一块一块读文件的内容，然后再附加到 POST 请求内。显然这样的 POST 请求要自行构建，可以参考 [W3C 的文档](https://xhr.spec.whatwg.org/#the-formdata-interface) 。
 
-有一个开源库—— [form-data](https://github.com/form-data/form-data)，可以帮我们大大简化这方面的工作。
+有一个开源库—— [form-data](https://github.com/form-data/form-data)，可以大大简化这方面的工作。
 
 把 form-data 引入工程内后，可以使用如下代码构造上传表单，用这种方法上传文件就是分片上传的。
 
@@ -99,7 +101,7 @@ form.append("yourFile", fs.createReadStream("/your/file/path.7z"));
 form.submit("http://yourFileService.com/upload");
 ```
 
-如果你要开发取消上传、显示文件上传进度等功能，可以参考如下代码：
+如果要开发取消上传、显示文件上传进度等功能，可以参考如下代码：
 
 ```ts
 new Promise((resolve, reject) => {
@@ -132,7 +134,7 @@ formData.submit 方法内部执行的其实是 Node.js 的 http.request 方法�
 
 ## 内存消耗监控
 
-就像我们前面说的，如果应用突然内存消耗暴涨又没有及时释放的话，我们该如何及时发现这种问题呢？Chromium 为开发者提供了内存监控工具，Electron 也因此具备此能力，打开 Electron 的开发者调试工具，切换到 Memory 面板。
+如果应用突然内存消耗暴涨又没有及时释放，如何及时发现这种问题呢？Chromium 为开发者提供了内存监控工具，Electron 也因此具备此能力。打开 Electron 的开发者调试工具，切换到 Memory 面板。
 
 面板中提供了三种监控内存的方式。
 
@@ -159,15 +161,15 @@ formData.submit 方法内部执行的其实是 Node.js 的 http.request 方法�
 
 选中一行内存消耗较高的记录后，视图的下方将会出现与这行内存占用有关的业务逻辑信息，开发者可以通过此视图内的链接切换到业务代码中观察哪行代码导致此处内存消耗增加了。
 
-需要注意的是 Constructor 列中，值为（closure）的项，这里记录着因闭包函数引用而未被释放的内存，这类内存泄漏问题是开发时最容易忽略、调优时最难发现的问题。开发者应尤为注意。
+需要注意的是 Constructor 列中，值为（closure）的项，这里记录着因闭包函数引用而未被释放的内存，这类内存泄漏问题是开发时最容易忽略、调优时最难发现的问题，开发者应尤为注意。
 
 ## 模拟弱网环境
 
-对于一些需要在极端环境下运行的应用程序来说，网络环境状况是否会影响应用程序的正常运行是测试过程中的一项重要工作。Chromium 具备模拟弱网的能力，打开开发者工具，切换到 Network 标签页。
+对于一些需要在极端环境下运行的应用程序来说，网络环境状况是否会影响应用程序的正常运行，是测试过程中的一项重要工作。Chromium 具备模拟弱网的能力，打开开发者工具，切换到 Network 标签页。
 
-在 Network throttling 处选择 Slow 3G，可以使 Chromium 模拟较慢的 3G 移动网络，建议做此设置前先把 Caching 项禁用，避免 Chromium 加载缓存的内容，而不去请求网络。
+在 Network throttling 处选择 Slow 3G，可以使 Chromium 模拟较慢的 3G 移动网络。建议做此设置前先把 Caching 项禁用，避免 Chromium 加载缓存的内容，而不去请求网络。
 
-如果你需要更精准地控制应用的上行、下行速率，可以使用 session 对象提供的 API，代码如下所示：
+如果需要更精准地控制应用的上行、下行速率，可以使用 session 对象提供的 API，代码如下所示：
 
 ```ts
 window.webContents.session.enableNetworkEmulation({
@@ -194,10 +196,10 @@ await dbg.sendCommand("Network.emulateNetworkConditions", {
 
 这种方案是使用 Chromium 为调试器定义的协议（Chrome DevTools Protocol）来完成弱网模拟的，Chrome DevTools Protocol 协议还有很多其他的 API，功能非常强大，详情请参考：[Chrome DevTools Protocol 官方文档](https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-emulateNetworkConditions) 。
 
-## 总结
+## 小结
 
-本节的主要目的不是解决几个疑难杂症，而是`用更开阔的视野看待桌面应用开发`。
+本文的主要目的不是解决几个疑难杂症，而是`用更开阔的视野看待桌面应用开发`。
 
-首先我们介绍了如何把窗口钉在桌面上，这里我们介绍了 electget 库，以及 electget 库使用的 ffi-napi 库，教会大家如何不用 C++ 也可以调用操作系统的 API。
+窗口钉在桌面一节介绍了 electget 库，以及 electget 库使用的 ffi-napi 库，展示了如何不用 C++ 也可以调用操作系统的 API。
 
-接着我们介绍了如何实现文件重新上传的功能，这个看似简单的功能其实隐藏着一个“重要”的陷阱：内存暴增且无法及时释放，此处我们讲解了如何使用 form-data 库以避免误入陷阱。
+文件重新上传一节介绍了一个看似简单的功能背后隐藏的“重要”陷阱：内存暴增且无法及时释放，并讲解了如何使用 form-data 库以避免误入陷阱。内存消耗监控依托 DevTools 的 Memory 面板，弱网模拟则依托 Network throttling、session API 与 Chrome DevTools Protocol。

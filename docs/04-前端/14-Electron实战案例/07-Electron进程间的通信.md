@@ -9,32 +9,32 @@ tags: [Electron, 桌面应用, IPC, 打包]
 
 # Electron进程间的通信
 
-## 前言
+## 背景与问题
 
 进程间通信（IPC）并非仅限于 Electron，而是源自甚至早于 Unix 诞生的概念。尽管“进程间通信”这个术语的确创造于何时并不清楚，但将数据传递给另一个程序或进程的理念可以追溯至 1964 年，当时 [Douglas McIlroy](https://www.cs.dartmouth.edu/~doug/) 在 Unix 的第三版（1973 年）中描述了 Unix 管道的概念。
 
 >We should have some ways of coupling programs like garden hose--screw in another segment when it becomes when it becomes necessary to massage data in another way.
 
-我们可以通过使用管道操作符（`|`）将一个程序的输出传递到另一个程序，比如：
+通过使用管道操作符（`|`）可以将一个程序的输出传递到另一个程序，比如：
 
 ```bash
 # 列出当前目录下的所有.ts文件
 ls | grep .ts
 ```
-在 Unix 系统中，管道只是 IPC 的一种形式，还有许多其他形式，比如信号、消息队列、信号量和共享内存。在 Electron 中也有自己的 IPC 形式，接下来我们将会详细介绍。
+在 Unix 系统中，管道只是 IPC 的一种形式，还有许多其他形式，比如信号、消息队列、信号量和共享内存。在 Electron 中也有自己的 IPC 形式，下文将详细介绍。
 
 
 
 
 
-## ipcMain 和 ipcRenderer
-与 Chromium 相同，Electron 使用进程间通信（IPC）来在进程之间进行通信，在介绍 Electron 进程间通信前，我们必须先认识一下 Electron 的 2 个模块。
+## 通信机制基础：ipcMain 与 ipcRenderer
+与 Chromium 相同，Electron 使用进程间通信（IPC）来在进程之间进行通信，在介绍 Electron 进程间通信前，需要先认识一下 Electron 的 2 个模块。
 
 - [ipcMain](https://www.electronjs.org/zh/docs/latest/api/ipc-main) 是一个仅在主进程中以异步方式工作的模块，用于与渲染进程交换消息。
 
 - [ipcRenderer](https://www.electronjs.org/zh/docs/latest/api/ipc-renderer) 是一个仅在渲染进程中以异步方式工作的模块，用于与主进程交换消息。
 
-`ipcMain` 和 `ipcRenderer` 是 Electron 中负责通信的两个主要模块。它们继承自 NodeJS 的 [EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter) 模块。在 `EventEmitter` 中允许我们向指定 `channel` 发送消息。`channel` 是一个字符串，在 Electron 中 `ipcMain` 和 `ipcRenderer` 使用它来发出和接收事件/数据。
+`ipcMain` 和 `ipcRenderer` 是 Electron 中负责通信的两个主要模块。它们继承自 NodeJS 的 [EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter) 模块。`EventEmitter` 允许向指定 `channel` 发送消息。`channel` 是一个字符串，在 Electron 中 `ipcMain` 和 `ipcRenderer` 使用它来发出和接收事件/数据。
 
 ```js
 // 接受消息
@@ -83,7 +83,7 @@ ipcMain.on('my_channel', (event, message) => {
 })
 ```
 
-请注意，如果使用 `send` 来发送数据，如果你的主进程需要回复消息，那么需要使用 `event.reply` 来进行回复：
+请注意，如果使用 `send` 来发送数据，主进程需要回复消息时，需要使用 `event.reply` 来进行回复：
 
 ```js
 // main.js
@@ -131,7 +131,7 @@ ipcMain.handle('my_channel', async (event, message) => {
 });
 ```
 
-注意，渲染进程通过 `ipcRenderer.invoke` 发送消息后，`invoke` 的返回值是一个 `Promise<pending>` 。主进程回复消息需要通过 `return` 的方式进行回复，而 `ipcRenderer` 只需要等到 `Promise resolve` 即可获取到返回的值。
+注意，渲染进程通过 `ipcRenderer.invoke` 发送消息后，`invoke` 的返回值是一个 `Promise<pending>`。主进程回复消息需要通过 `return` 的方式进行回复，而 `ipcRenderer` 只需要等到 `Promise resolve` 即可获取到返回的值。
 
 
 
@@ -164,7 +164,7 @@ ipcMain.on('my_channel', async (event, message) => {
 
 >发送同步消息将阻止整个渲染过程直到收到回复。这样使用此方法只能作为最后手段。使用异步版本更好 [`invoke()`](https://www.electronjs.org/zh/docs/latest/api/ipc-renderer#ipcrendererinvokechannel-args)。
 
-### 4. 小节
+### 4. 三种方式对比
 **ipcRenderer.send：** 这个方法是异步的，用于从渲染进程向主进程发送消息。它发送消息后不会等待主进程的响应，而是立即返回，适合在不需要等待主进程响应的情况下发送消息。
 
 **ipcRenderer.sendSync：** 与 `ipcRenderer.send` 不同，这个方法是同步的，也是用于从渲染进程向主进程发送消息，但是它会等待主进程返回响应。它会阻塞当前进程，直到收到主进程的返回值或者超时。
@@ -209,20 +209,16 @@ mainWindow.loadFile('index.html');
 mainWindow.webContents.send('messageToRenderer', 'Hello from Main!');
 ```
 
-### 3. 小节
-不管是通过 `event.sender.send()` 还是 `BrowserWindow.webContents.send` 的方式，如果你只是单窗口的数据通信，那么本质上是没什么差异的。
+### 3. 两种推送方式对比
+不管是通过 `event.sender.send()` 还是 `BrowserWindow.webContents.send` 的方式，如果只是单窗口的数据通信，那么本质上是没什么差异的。
 
-但是如果你想要发送一些数据到特定的窗口，那么你可以直接使用 `BrowserWindow.webContents.send` 这种方式。
+但如果想要发送一些数据到特定的窗口，那么可以直接使用 `BrowserWindow.webContents.send` 这种方式。
 
 
 
 ## 渲染进程 -> 渲染进程
 
-默认情况下，渲染进程和渲染进程之间是无法直接进行通信的。
-
-
-
-既然说的是无法直接通信，那么肯定还有一些“曲线救国”的方式。
+默认情况下，渲染进程和渲染进程之间是无法直接进行通信的，但存在一些“曲线救国”的方式。
 
 
 ### 1. 利用主进程作为中间人
@@ -282,11 +278,11 @@ ipcRenderer.send('win1-msg', 'msg from win1');
 
 ### 2. 使用 MessagePort
 
-上面的传输方式虽然可以实现渲染进程之间的通信，但是非常依赖主进程，写起来也比较麻烦，那有什么不依赖于主进程的方式嘛？那当然也是有的，那就是 [MessagePort](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort)。
+上面的传输方式虽然可以实现渲染进程之间的通信，但是非常依赖主进程，写起来也比较麻烦。不依赖主进程的方式同样存在，那就是 [MessagePort](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort)。
 
 `MessagePort` 并不是 Electron 提供的能力，而是基于 MDN 的 Web 标准 API，这意味着它可以在渲染进程直接创建。同时 Electron 提供了 node.js 侧的实现，所以它也能在主进程创建。
 
-接下来，我们将通过一个示例来描述如何通过 `MessagePort` 来实现渲染进程之间的通信。
+下面通过一个示例来描述如何通过 `MessagePort` 来实现渲染进程之间的通信。
 
 
 #### 2.1 主进程中创建 `MessagePort`
@@ -345,7 +341,7 @@ port2.postMessage('我是渲染进程二发送的消息');
 
 #### 2.2 渲染进程中获取 port
 
-有了上面的知识，我们最重要的任务就是需要获取主进程中创建的 `port` 对象，要做的是在你的预加载脚本（preload.js）中通过 IPC 接收 `port`，并设置相应的监听器。
+了解上面的知识后，最关键的任务就是获取主进程中创建的 `port` 对象：在预加载脚本（preload.js）中通过 IPC 接收 `port`，并设置相应的监听器。
 
 ```js
 // preloadMain.js
@@ -364,7 +360,7 @@ ipcRenderer.on('port', e => {
 
 #### 2.3 消息通信
 
-通过上面的一些操作后，就可以在应用程序的任何地方调用 `postMessage` 方法向另一个渲染进程发送消息。
+完成上述操作后，就可以在应用程序的任何地方调用 `postMessage` 方法向另一个渲染进程发送消息。
 
 ```js
 // mainWindow renderer.js
@@ -372,15 +368,16 @@ ipcRenderer.on('port', e => {
 window.electronMessagePort.postMessage('ping')
 ```
 
+## 实践要点
+
+- **参数序列化限制**：IPC 参数使用结构化克隆算法序列化，不包含原型链；发送函数、Promise、Symbol、WeakMap 或 WeakSet 会抛出异常，跨进程只应传递可序列化的纯数据。
+- **优先使用 `invoke` 而非 `sendSync`**：`sendSync` 会阻塞整个渲染进程直到收到回复，只能作为最后手段；需要返回值时，`invoke` 的 Promise 模式既异步又易读。
+- **推送方式的选型**：`event.sender.send()` 与 `BrowserWindow.webContents.send()` 在单窗口场景下等价；需要向特定窗口定向发送数据时，直接使用 `BrowserWindow.webContents.send`。
+- **渲染进程间通信优先考虑 `MessagePort`**：主进程中转方式写法繁琐且强依赖主进程；`MessagePort` 基于 Web 标准 API，建立通道后两个渲染进程可直接收发消息。
+- **`ipcRenderer.sendTo` 已废弃**：它曾是渲染进程间通信的另一种方式，在 Electron 最新版本中已被废弃，新代码不应再使用。
+
 ## 总结
 
-本小节，我们从 IPC 的历史开始逐步介绍了 Electron IPC 的基本概念，以及 Electron IPC 如何完成通信。希望能让你对 Electron IPC 通信的知识有更深刻的理解。
+本文从 IPC 的历史出发，逐步介绍了 Electron IPC 的基本概念，以及 `ipcMain`/`ipcRenderer`、`webContents`、主进程中转和 `MessagePort` 四类通信方式的适用场景与用法。
 
-> 本小节的渲染进程和渲染进程通信其实还有另一种方式，那就是 `ipcRenderer.sendTo`，不过在 `Electron` 最新的版本中已经被废弃了，所以没有做介绍，有兴趣了解这块的，可以参考阅读这篇文章：https://juejin.cn/post/7078476722223448095 。
-
-
-
-
-
-
-
+> 渲染进程和渲染进程通信其实还有另一种方式，那就是 `ipcRenderer.sendTo`，不过在 `Electron` 最新的版本中已经被废弃了，所以没有做介绍，有兴趣了解这块的，可以参考阅读这篇文章：https://juejin.cn/post/7078476722223448095 。

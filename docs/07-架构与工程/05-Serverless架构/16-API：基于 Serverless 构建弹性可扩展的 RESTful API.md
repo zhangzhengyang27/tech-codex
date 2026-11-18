@@ -9,23 +9,19 @@ tags: [架构, 05-Serverless架构]
 # API：基于 Serverless 构建弹性可扩展的 RESTful API
 
 
-今天我想和你聊一聊怎么基于 Serverless 构建弹性可扩展的 RESTful API。
-
-API 是使用 Serverless 最常见，也是最适合的场景之一。和 Serverful 架构的 API 相比，用 Serverless 开发 API 好处很多：
+API 是使用 Serverless 最常见、也最适合的场景之一。和 Serverful 架构的 API 相比，用 Serverless 开发 API 好处很多：
 
 - 不用购买、管理服务器等基础设施，不用关心服务器的运维，节省人力成本；
 
-- 基于 Serverless 的 API，具备自动弹性伸缩的能力，能根据请求流量弹性扩缩容，让你不再担心流量波峰、波谷；
+- 基于 Serverless 的 API 具备自动弹性伸缩的能力，能根据请求流量弹性扩缩容，无须担心流量波峰、波谷；
 
 - 基于 Serverless 的 API 按实际资源使用量来付费，节省财务成本。
 
-因为好处很多，很多开发者跃跃欲试，但在实践过程中却遇到了很多问题，比如怎么设计最优的架构？怎么组织代码？怎么管理多个函数？所以今天我就以开发一个内容管理系统为例，带你学习怎么基于 Serverless 去开发一个 RESTful API，解决上述共性问题。
-
-首先，我们需要对内容管理系统进行架构设计。
+不过在实践过程中会遇到不少共性问题：怎么设计最优的架构？怎么组织代码？怎么管理多个函数？本文以开发一个内容管理系统为例，给出基于 Serverless 开发 RESTful API 的完整方案。
 
 ## 内容管理系统的架构设计
 
-在进行架构设计前，你要明确系统的需求。对于一个内容管理系统，最核心的功能（也是这一节要实现的功能），主要有这样几个：
+在进行架构设计前，需要明确系统的需求。对于一个内容管理系统，最核心的功能(也是本文要实现的功能)主要有六个：
 
 - 用户注册；
 
@@ -39,17 +35,17 @@ API 是使用 Serverless 最常见，也是最适合的场景之一。和 Server
 
 - 查询文章。
 
-这 6 个功能分别对应了我们要实现的 RESTful API。为了方便统一管理 API，在 Serverless 架构中我们通常会用到 API 网关，通过 API 网关触发函数执行，并且基于 API 网关我们还可以实现参数控制、超时时间、IP 黑名单、流量控制等高级功能。
+这 6 个功能分别对应要实现的 RESTful API。为了方便统一管理 API,在 Serverless 架构中通常会用到 API 网关：通过 API 网关触发函数执行，并且基于 API 网关还可以实现参数控制、超时时间、IP 黑名单、流量控制等高级功能。
 
-对于文章管理相关的 RESTful API，用户发布文章前需要先登录，在 15 节，你已经知道在 Serverless 中可以用 JWT 进行身份认证，该管理系统中的登录注册功能也将沿用上一节的内容。
+对于文章管理相关的 RESTful API,用户发布文章前需要先登录。在 Serverless 中可以用 JWT 进行身份认证(实现方式见身份认证一篇)，本系统的登录注册功能也沿用该方案。
 
-在传统的 Serverful 架构中，通常会用 MySQL 等关系型数据库存储数据，但因为关系型数据库要在代码中维护连接状态及连接池，且一般不能自动扩容，并不适合 Serverless 应用，所以在 Serverless 架构中，通常选用表格存储等 Serverless NoSQL 数据来存储数据。
+在传统的 Serverful 架构中，通常用 MySQL 等关系型数据库存储数据，但关系型数据库要在代码中维护连接状态及连接池，且一般不能自动扩容，并不适合 Serverless 应用。因此在 Serverless 架构中，通常选用表格存储等 Serverless NoSQL 数据库来存储数据。
 
-基于 JWT 的身份认证方案、数据存储方案，我们可以梳理出 Serverless 内容管理系统的整体架构。**架构主要表达的意思是：** 通过 API 网关承接用户请求，并驱动函数执行。每个函数分别实现一个具体功能，并通过 JWT 实现身份认证，最后表格存储作为数据库。
+基于 JWT 的身份认证方案和数据存储方案，可以梳理出 Serverless 内容管理系统的整体架构。**架构主要表达的意思是：** 通过 API 网关承接用户请求，并驱动函数执行；每个函数分别实现一个具体功能，并通过 JWT 实现身份认证；最后表格存储作为数据库。
 
-其中，数据库中存储的数据主要是用户数据和文章数据。假设用户有 username（用户名） 和 password（密码） 两个属性；文章有 article_id（文章 ID）、username（创建者）、title（文章标题）、content（文章内容）、create_date（创建时间）、update_date（更新时间）这几个属性。
+其中，数据库中存储的数据主要是用户数据和文章数据。假设用户有 username(用户名)和 password(密码)两个属性；文章有 article_id(文章 ID)、username(创建者)、title(文章标题)、content(文章内容)、create_date(创建时间)、update_date(更新时间)这几个属性。
 
-接下来，你可以在表格存储中创建对应的数据表（你可以在表格存储控制台创建，也可以直接用我提供的这段代码进行创建）：
+接下来在表格存储中创建对应的数据表(可以在表格存储控制台创建，也可以直接用下面的代码创建)：
 
 ```javascript
 // index.js
@@ -157,13 +153,11 @@ async function createArticleTable() {
 })();
 ```
 
-这段代码主要创建了 user 和 article 两张表，其中 user 表的主键是 username，article 表的主键是 article_id，主键的作用是方便查询。除了主键，我还定义了几个列。其实对于表格存储，默认也可以不创建列，表格存储是宽表，除主键外，数据列可以随意扩展。
+这段代码主要创建了 user 和 article 两张表，其中 user 表的主键是 username,article 表的主键是 article_id,主键的作用是方便查询。除了主键，还定义了几个列。其实对于表格存储，默认也可以不创建列——表格存储是宽表，除主键外，数据列可以随意扩展。
 
-在完成了数据库表的创建后，我们就可以开始进行系统实现了。
+在完成了数据库表的创建后，就可以开始进行系统实现了。
 
 ## 内容管理系统的实现
-
-为了方便你学习，我为你提供了配套的完整示例代码（课程仓库 serverless-class），你可以参考着学习。
 
 整个代码目录结构如下：
 
@@ -193,15 +187,15 @@ async function createArticleTable() {
 
 - config/index.js 是配置文件，里面包含身份凭证等配置信息；
 
-- db/client.js 对表格存储的增删改查操作进行了封装，方便在函数中使用（将数据库的操作封装还有一个好处是，如果你之后想要迁移到其他数据库，只要修改 db/client.js 中的逻辑，不用修改业务代码）；
+- db/client.js 对表格存储的增删改查操作进行了封装，方便在函数中使用(将数据库的操作封装还有一个好处：之后想要迁移到其他数据库时，只要修改 db/client.js 中的逻辑，不用修改业务代码)；
 
-- middleware 目录中是一些中间件，比如 auth.js，用于身份认证；
+- middleware 目录中是一些中间件，比如 auth.js,用于身份认证；
 
 - functions 目录中就是所有函数，登录、注册、创建文章等，每个功能分别对应一个函数；
 
 - template.yaml 是应用配置文件，包括函数和 API 网关的配置。
 
-根据前面梳理的系统功能，我们需要实现以下几个 API：
+根据前面梳理的系统功能，需要实现以下几个 API:
 
 | 功能 | 请求方式与路径 |
 | --- | --- |
@@ -212,7 +206,7 @@ async function createArticleTable() {
 | 更新文章 | POST /article/update |
 | 删除文章 | PUT /article/delete/[article_id] |
 
-每个 API 对应一个具体的函数，每个函数也都有一个与之对应的 API 网关触发器。由于这些函数属于同一个应用，所以我们可以通过一个 template.yaml 来定义所有函数。同时也可以在 template.yaml 中定义函数的 API 网关触发器，这样部署函数时，就会自动创建 API 网关。
+每个 API 对应一个具体的函数，每个函数也都有一个与之对应的 API 网关触发器。由于这些函数属于同一个应用，所以可以通过一个 template.yaml 来定义所有函数，同时也可以在 template.yaml 中定义函数的 API 网关触发器——这样部署函数时，就会自动创建 API 网关。
 
 内容管理系统的 template.yaml 格式如下：
 
@@ -247,7 +241,7 @@ Resources:
               timeout: 3000
 ```
 
-**template.yaml  主要分为两部分：** 函数定义和 API 网关定义，每个函数都有一个与之对应的 API 网关。我们用 serverless-cms 服务来表示内容管理系统这个应用，服务内的所有函数都是内容管理系统的函数。同理，ServerlessCMSGroup 这个 API 网关分组中的所有 API 都是内容管理系统的 API。
+**template.yaml 主要分为两部分：** 函数定义和 API 网关定义，每个函数都有一个与之对应的 API 网关。这里用 serverless-cms 服务来表示内容管理系统这个应用，服务内的所有函数都是内容管理系统的函数；同理，ServerlessCMSGroup 这个 API 网关分组中的所有 API 都是内容管理系统的 API。
 
 完整的 template.yaml 配置如下：
 
@@ -357,23 +351,23 @@ Resources:
 
 在这份配置中，需要注意两个地方：
 
-- 函数的 Handler 配置，Handler 可以写函数路径，比如 src/function/user/register.handler 表示 src/function/user/ 目录中的 register.js 文件中的 handler 方法；
+- 函数的 Handler 配置。Handler 可以写函数路径，比如 src/function/user/register.handler 表示 src/function/user/ 目录中的 register.js 文件中的 handler 方法；
 
-- API 网关配置中的 /article/detail/[article_id] Path，这种带参数的 PATH，必须使用 x-aliyun-apigateway-request-parameters 指定 Path 参数。
+- API 网关配置中的 /article/detail/[article_id] Path。这种带参数的 PATH,必须使用 x-aliyun-apigateway-request-parameters 指定 Path 参数。
 
-接下来，我们就来实现内容管理系统的各个 API，也就是 template.yaml 中定义的各个函数。
+接下来实现内容管理系统的各个 API,也就是 template.yaml 中定义的各个函数。
 
 ### 用户注册
 
 用户注册接口定义如下。
 
-- 请求方法：POST。
+- 请求方法:POST。
 
-- Path：/user/register
+- Path:/user/register
 
-- Body 参数：username 用户名、password 密码。
+- Body 参数:username 用户名、password 密码。
 
-整体代码很简单，在入口函数 handler 中，通过 event 得到 API 网关传递过来的 HTTP 请求 body 数据，然后从中得到 username、password，再将用户信息写入数据库。
+代码逻辑很简单：在入口函数 handler 中，通过 event 得到 API 网关传递过来的 HTTP 请求 body 数据，从中取出 username、password,再将用户信息写入数据库。
 
 ```javascript
 // src/function/user/register.js
@@ -398,7 +392,7 @@ module.exports.handler = function (event, context, callback) {
 };
 ```
 
-代码完成后，就可以将应用部署到函数计算：
+代码完成后，将应用部署到函数计算：
 
 ```shell
 # 部署应用
@@ -411,9 +405,9 @@ Waiting for api gateway ServerlessCMSGroup to be deployed...
 api gateway ServerlessCMSGroup deploy success
 ```
 
-部署过程中，如果看到函数服务 serverless-cms 和 API 网关 ServerlessCMSGroup 都成功部署了，就说明应用部署完成。部署完成后，API 网关会提供一个用来测试的 API Endpoint，当然你也可以绑定自定义域名。
+部署过程中，如果看到函数服务 serverless-cms 和 API 网关 ServerlessCMSGroup 都成功部署，就说明应用部署完成。部署完成后，API 网关会提供一个用来测试的 API Endpoint,也可以绑定自定义域名。
 
-我们可以通过 curl 测试一下：
+通过 curl 测试:
 
 ```shell
 $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/user/register \
@@ -422,19 +416,19 @@ $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/user/r
 {"success":true}
 ```
 
-返回 `{"success": true}`，说明用户注册成功。这时在表格存储控制台也可以看到刚注册的用户。
+返回 `{"success": true}`,说明用户注册成功。这时在表格存储控制台也可以看到刚注册的用户。
 
 ### 用户登录
 
-完成用户注册函数开发后，就可以接着开发登录。用户登录的接口定义如下。
+完成用户注册函数开发后，接着开发登录。用户登录的接口定义如下。
 
-- 请求方法：POST。
+- 请求方法:POST。
 
-- Path：/user/login
+- Path:/user/login
 
-- Body 参数：username 用户名、password 密码。
+- Body 参数:username 用户名、password 密码。
 
-登录的逻辑就是验证用户输入的密码是否正确，如果正确就生成一个 token 返回给调用方。代码实现如下：
+登录的逻辑是验证用户输入的密码是否正确，如果正确就生成一个 token 返回给调用方。代码实现如下：
 
 ```javascript
 // src/function/user/login.js
@@ -464,7 +458,7 @@ module.exports.handler = function (event, context, callback) {
 };
 ```
 
-将其部署到函数计算后，我们也可以使用 curl 命令进行测试：
+将其部署到函数计算后，使用 curl 命令进行测试：
 
 ```shell
 $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/user/login \
@@ -475,9 +469,9 @@ $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/user/l
 
 ### 身份认证
 
-在完成了注册登录接口后，我们再来看一下内容管理系统中，身份认证应该怎么实现。
+完成了注册登录接口后，再看内容管理系统中身份认证的实现。
 
-在 15 讲，我们实现了一个 Express.js 框架的身份认证中间件，用来拦截所有请求，身份认证通过后才能执行后面的代码逻辑。在内容管理系统中，你也可以参考 Express.js 的思想，实现一个 auth.js 专门用于身份认证，代码如下：
+在 Express.js 等框架中，身份认证通常实现为中间件，用来拦截所有请求，身份认证通过后才能执行后面的代码逻辑。内容管理系统中可以参考同样的思想，实现一个 auth.js 专门用于身份认证，代码如下：
 
 ```javascript
 // src/middleware/auth.js
@@ -506,9 +500,9 @@ const auth = function (event) {
 module.exports = auth;
 ```
 
-其原理很简单，就是从 API 网关的 event 对象中获取 token，然后验证 token 是否正常。如果认证通过，就返回 user 信息，失败就返回 false。
+其原理很简单：从 API 网关的 event 对象中获取 token,验证 token 是否有效。认证通过就返回 user 信息，失败则返回 false。
 
-这样在需要身份认证的函数中，你只引入 auth.js 并传入 event 对象就可以了。下面是一个简单的示例：
+这样，在需要身份认证的函数中，只需引入 auth.js 并传入 event 对象即可。下面是一个简单的示例：
 
 ```javascript
 const auth = require('./middleware/auth');
@@ -525,21 +519,21 @@ module.exports.handler = function (event, context, callback) {
 };
 ```
 
-除了登录注册，其他接口都需要身份认证，所以接下来我们就通过实现“发布文章”函数来实际使用 auth.js。
+除了登录注册，其他接口都需要身份认证。下面通过实现“发布文章”函数来实际使用 auth.js。
 
 ### 发布文章
 
 发布文章的接口定义如下。
 
-- 请求方法：POST。
+- 请求方法:POST。
 
-- Path：/article/create
+- Path:/article/create
 
-- Headers 参数：Authorization token。
+- Headers 参数:Authorization token。
 
-- Body 参数：title、content。
+- Body 参数:title、content。
 
-由于登录后才能发布文章，所以要先通过登录接口获取 token，然后调用 `/article/create` 接口时，再将 token 放在 HTTP Headers 参数中。发布文章的代码实现如下：
+由于登录后才能发布文章，所以要先通过登录接口获取 token,再调用 `/article/create` 接口时将 token 放在 HTTP Headers 参数中。发布文章的代码实现如下：
 
 ```javascript
 // src/function/article/create.js
@@ -596,9 +590,9 @@ module.exports.handler = function (event, context, callback) {
 };
 ```
 
-首先是使用 auth.js 进行身份认证，认证通过后就可以从 user 中获取 username。然后再从请求体中获取文章标题和文章内容数据，将其存入数据库。
+首先是使用 auth.js 进行身份认证，认证通过后从 user 中获取 username;然后从请求体中获取文章标题和文章内容数据，将其存入数据库。
 
-接下来我们依旧可以将函数部署和使用 curl 进行测试：
+函数部署后使用 curl 进行测试：
 
 ```shell
 $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/article/create \
@@ -608,19 +602,19 @@ $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/articl
 {"success":true,"data":{"article_id":"d4b9bad8-a0ed-499d-b3c6-c57f16eaa193"}}
 ```
 
-在测试时，我们需要将 token 放在 HTTP 请求头的 Authorization 属性中。文章发布成功后，你就可以在表格存储中看到对应的数据了。
+测试时，需要将 token 放在 HTTP 请求头的 Authorization 属性中。文章发布成功后，就可以在表格存储中看到对应的数据了。
 
 ### 查询文章
 
-发布文章的接口开发完成后，我们继续开发一个查询文章的接口，这样就可以查询出刚才创建的文章。查询文章接口定义如下。
+发布文章的接口开发完成后，继续开发一个查询文章的接口，用于查询刚才创建的文章。查询文章接口定义如下。
 
-- 请求方法：GET。
+- 请求方法:GET。
 
-- Path：/article/detail/[article_id]
+- Path:/article/detail/[article_id]
 
-- Headers 参数：Authorization token。
+- Headers 参数:Authorization token。
 
-在查询文章接口中，我们需要在 Path 中定义文章 ID 参数，即 article_id。这样在函数代码中，你就可以从 event 对象的 pathParameters 中获取 article_id 参数，然后根据 article_id 来查询文章详情了。完整代码如下：
+查询文章接口需要在 Path 中定义文章 ID 参数，即 article_id。在函数代码中，从 event 对象的 pathParameters 中获取 article_id 参数，然后根据 article_id 查询文章详情。完整代码如下：
 
 ```javascript
 const uuid = require("uuid");
@@ -665,7 +659,7 @@ module.exports.handler = function (event, context, callback) {
 };
 ```
 
-开发完成后，我们可以将其部署到函数计算，再用 curl 命令进行测试：
+开发完成后，将其部署到函数计算，再用 curl 命令进行测试：
 
 ```shell
 $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/article/detail/d4b9bad8-a0ed-499d-b3c6-c57f16eaa193 \
@@ -677,19 +671,19 @@ $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/articl
 
 ### 更新文章
 
-更新文章的 API Path 参数和查询文章一样，都需要在 Path 中定义 article_id。而其 body 参数则与创建文章相同。此外，更新文章的请求 method 是 PUT，因为在 RESTful API 规范中，我们通常使用 POST 来表示创建，使用 PUT 来表示更新。
+更新文章的 API Path 参数和查询文章一样，都需要在 Path 中定义 article_id;body 参数则与创建文章相同。此外，更新文章的请求 method 是 PUT——在 RESTful API 规范中，通常使用 POST 表示创建，使用 PUT 表示更新。
 
 更新文章的接口定义如下。
 
-- 请求方法：PUT。
+- 请求方法:PUT。
 
-- Path：/article/update/[article_id]
+- Path:/article/update/[article_id]
 
-- Headers 参数：Authorization token。
+- Headers 参数:Authorization token。
 
-- Body 参数：title、content。
+- Body 参数:title、content。
 
-更新文章的逻辑就是根据 article_id 去更新一行数据。代码如下：
+更新文章的逻辑就是根据 article_id 更新一行数据。代码如下：
 
 ```javascript
 const auth = require("../../middleware/auth");
@@ -756,13 +750,13 @@ $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/articl
 
 ### 删除文章
 
-最后就剩下删除文章的 API 了。删除文章的 API 也需要在 Path 中定义 article_id 参数，并且其 HTTP method 是 DELETE。具体接口定义如下。
+最后是删除文章的 API。删除文章的 API 同样需要在 Path 中定义 article_id 参数，并且其 HTTP method 是 DELETE。具体接口定义如下。
 
-- 请求方法：DELETE。
+- 请求方法:DELETE。
 
-- Path：/article/delete/[article_id]
+- Path:/article/delete/[article_id]
 
-- Headers 参数：Authorization token。
+- Headers 参数:Authorization token。
 
 删除文章很简单，就是根据 article_id 删除一行数据，代码如下：
 
@@ -808,7 +802,7 @@ module.exports.handler = function (event, context, callback) {
 };
 ```
 
-同样我们可以通过 curl 命令进行测试：
+同样可以通过 curl 命令进行测试：
 
 ```shell
 $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/article/delete/d4b9bad8-a0ed-499d-b3c6-c57f16eaa193 \
@@ -817,13 +811,13 @@ $ curl http://a88f7e84f71749958100997b77b3e2f6-cn-beijing.alicloudapi.com/articl
 {"success":true}
 ```
 
-删除成功后，再去表格存储中就找不到这行记录了。至此，内容管理系统的 RESTful API 就开发完毕了。
+删除成功后，再去表格存储中就找不到这行记录了。至此，内容管理系统的 RESTful API 开发完毕。
 
-## 总结
+## 小结
 
-可以看到，基于 Serverless 开发 RESTful API 的整个代码非常简单，每个函数只负责一个独立的业务，职责单一、逻辑清晰。关于这一节，我想强调这样几个重点：
+基于 Serverless 开发 RESTful API 的整个代码非常简单，每个函数只负责一个独立的业务，职责单一、逻辑清晰。实践要点：
 
-- 基于 Serverless 开发 API 时，建议你使用 API 网关进行 API 的管理；
+- 基于 Serverless 开发 API 时，建议使用 API 网关进行 API 的统一管理；
 
 - 对于数据库等第三方服务，建议对其基本操作进行封装，这样更方便进行扩展；
 

@@ -561,3 +561,4 @@ driver.switchTo().defaultContent();   // 回到主文档
 - [GUI 测试稳定性（同步等待与自愈与Flaky 治理）](19-GUI%20测试稳定性（同步等待与自愈与Flaky%20治理）) —— 等待策略与 Flaky 治理的系统展开
 - [Selenium Grid 4 与分布式执行](21-Selenium%20Grid%204%20与分布式执行) —— 多浏览器并行执行与 K8s 弹性扩缩容
 - [Selenium 官方文档](https://www.selenium.dev/documentation/) —— 各语言绑定与 BiDi API 参考
+- [AI 自愈与测试资产维护](../05-AI%20测试/05-AI%20自愈与测试资产维护) —— Healenium 与自愈定位器的工程化展开

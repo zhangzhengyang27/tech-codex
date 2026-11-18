@@ -444,3 +444,4 @@ await expect(page).toHaveScreenshot('home.png', {
 - [Cypress 15 实战](16-Cypress%2015%20实战) —— retryability 与网络拦截 Mock
 - [GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）](20-GUI%20测试报告（Allure%20与%20Trace%20Viewer%20与%20ReportPortal）) —— 失败现场的还原与报告体系
 - [Playwright Actionability](https://playwright.dev/docs/actionability) —— auto-wait 可操作性判定的官方说明
+- [AI 自愈与测试资产维护](../05-AI%20测试/05-AI%20自愈与测试资产维护) —— 自愈机制与 Flaky ML 分诊的工程体系

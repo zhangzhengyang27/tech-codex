@@ -595,3 +595,4 @@ Playwright 1.61 的基线能力由 auto-waiting、web-first assertions、测试�
 - [Page Object 与 Screenplay 模式](17-Page%20Object%20与%20Screenplay%20模式) —— Locator 与 Fixture 的工程化组织
 - [Playwright 调试模式与 Trace Viewer](../../04-前端/11-调试/07-浏览器自动化/05-Playwright调试模式与Trace-Viewer.md) —— 前端调试视角的 Inspector 与 Trace 用法
 - [Playwright 官方文档](https://playwright.dev/docs/intro) —— 配置项、API 与 CI 指南的权威来源
+- [Agentic 测试与 AI 测试代理](../05-AI%20测试/01-Agentic%20测试与%20AI%20测试代理) —— Playwright Agents 与 AI 代理驱动的 E2E 实践

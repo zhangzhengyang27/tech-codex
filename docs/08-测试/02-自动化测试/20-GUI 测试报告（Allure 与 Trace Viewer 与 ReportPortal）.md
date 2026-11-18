@@ -491,3 +491,4 @@ ReportPortal 的实时收集模式正在成为大型测试集的标准配置。�
 - [AI 辅助测试（LLM 生成用例-Copilot for Tests）](../04-测试开发与前沿/10-AI%20辅助测试（LLM%20生成用例-Copilot%20for%20Tests）) —— AI 在测试链路中的其他落地
 - [Allure 官方文档](https://allurereport.org/docs/) —— 注解体系与各框架适配器说明
 - [ReportPortal 文档](https://reportportal.io/docs) —— 部署、集成与 AI 分析配置指南
+- [AI 自愈与测试资产维护](../05-AI%20测试/05-AI%20自愈与测试资产维护) —— ReportPortal ML 失败分诊的工程化展开

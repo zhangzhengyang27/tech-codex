@@ -8,19 +8,13 @@ tags: [可视化, ECharts, D3, Canvas]
 
 # canvas 快速入门
 
-[canvas 参考手册](https://www.w3school.com.cn/tags/html_ref_canvas.asp)
+canvas 的属性与方法的完整清单可查阅 [canvas 参考手册](https://www.w3school.com.cn/tags/html_ref_canvas.asp)。
 
-以前我们用 div+css 可以绘制矩形、圆角矩形、圆形、或者椭圆形，可是若想绘制三角形、五角形，或者异形，那就很难了
-
-因此，这个时候我们就需要使用 canvas 绘图。我们可以使用 canvas 绘制复杂图形，做动画，处理图像，开发游戏，处理视频…
+div+css 可以绘制矩形、圆角矩形、圆形、椭圆形等规则形状，但三角形、五角形或异形则很难实现。canvas 绘图正是为解决这类需求而生：使用 canvas 可以绘制复杂图形，做动画，处理图像，开发游戏，处理视频…
 
 ![img](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202309212349322.png)
 
-这时候，会 svg 的小伙伴可能会说，用 svg 也可以绘制上面的形状
-
-svg 与 canvas 确实有着很多共通之处，很多项目可以用 SVG 开发，也可以用 canvas 开发
-
-但svg与canvas的差异也挺大的：
+svg 与 canvas 存在很多共通之处，很多项目既可以用 SVG 开发，也可以用 canvas 开发，但两者的差异也相当明显：
 
 - svg，是矢量图形，缩放不失真；支持鼠标事件，选择方便；不适合图形数量较大的场景
 - canvas，是位图，缩放失真；鼠标事件只能通过 canvas 接收，其内部图形无法接收；适合图像数量较大的场景
@@ -30,7 +24,7 @@ svg 与 canvas 确实有着很多共通之处，很多项目可以用 SVG 开发
 ## 概念
 
 - 广义：h5 新增 canvas 2d 绘图功能
-- 在 html 中: canvas 是 html 标签，可以理解为一张画布。我们需要用 js 在 canvas 里绘制图形
+- 在 html 中: canvas 是 html 标签，可以理解为一张画布。绘图需要通过 js 在 canvas 内完成
 
 设置 canvas 的 width、height 属性：
 
@@ -59,7 +53,7 @@ const canvas=document.getElementById('canvas');
 const ctx=canvas.getContext('2d');
 ```
 
-使用画笔在 canvas 上画画，要考虑三个方面：
+在 canvas 上绘图需要考虑三个方面：
 
 - 颜色
 - 形状
@@ -122,7 +116,7 @@ canvas 在不同浏览器和平台上的极限值：
 
 ### 矩形
 
-这里说的矩形是 canvas 绘图形式中的矩形，它有三种类型：
+canvas 中的矩形有三种绘制类型：
 
 - 填充矩形方法：fillRect(x,y,w,h)
 - 描边矩形方法：strokeRect(x,y,w,h)
@@ -430,7 +424,7 @@ ctx.miterLimit 可避免此问题：
 - 模糊度： `shadowBlur = float`
 - 颜色：`shadowColor = color`
 
-其实，投影不仅可以做投影，当投影比较亮的时候，还可以做光晕
+投影属性除了用于生成阴影外，当投影颜色较亮时，还可以用于制作光晕效果
 
 ## 文本
 

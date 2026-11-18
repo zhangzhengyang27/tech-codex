@@ -1,6 +1,6 @@
 ---
 title: CSS3D动画
-description: "前面介绍了 3D 变换的原理和算法实现，并通过一些简单的 demo 演示了变换效果，但这些 demo 都是使用 WebGL 技术渲染。本节暂时不使用 WebGL，而是改用前端同学最熟悉的 CSS 技术来实现 3D 效果，并进一步了解 CSS 中的 3D 属性和 WebGL 中 3D 概念的异同之处。"
+description: "不使用 WebGL，改用 CSS 技术实现 3D 效果：详解 transform 基本变换与组合变换的坐标系理解、matrix/matrix3d 的参数含义与生成方式、transform-style/perspective/perspective-origin 等属性，并通过照片墙、图片盒、魔方格子旋转三个实例展示 CSS 3D 动画技术及其与 WebGL 3D 概念的异同。"
 keywords: [CSS3D动画]
 category: 前端
 tags: [可视化, ECharts, D3, Canvas]
@@ -21,7 +21,7 @@ tags: [可视化, ECharts, D3, Canvas]
 
 ## 第 24 章：CSS 与 3D 之 transform
 
-前面介绍了 3D 变换的原理和算法实现，并通过一些简单的 demo 演示了变换效果，但这些 demo 都是使用 WebGL 技术渲染。本节暂时不使用 WebGL，而是改用前端同学最熟悉的 CSS 技术来实现 3D 效果，并进一步了解 CSS 中的 3D 属性和 WebGL 中 3D 概念的异同之处。
+前面介绍了 3D 变换的原理和算法实现，并通过一些简单的 demo 演示了变换效果，但这些 demo 都是使用 WebGL 技术渲染。本章暂时不使用 WebGL，而是改用前端开发者最熟悉的 CSS 技术来实现 3D 效果，并进一步了解 CSS 中的 3D 属性和 WebGL 中 3D 概念的异同之处。
 
 ### CSS 中的 3D 属性
 
@@ -34,23 +34,23 @@ tags: [可视化, ECharts, D3, Canvas]
 - transform-style：是否启用 3D 变换。
 - backface-visibility：背面是否可见。
 
-本节主要讲述 CSS 中的变换属性`transform`，变换分为`基本变换`和`矩阵变换`，基本变换大家都比较熟悉了，本节不做过多介绍，我们主要介绍`矩阵变换`和`组合变换`。
+本节主要讲述 CSS 中的变换属性`transform`，变换分为`基本变换`和`矩阵变换`，基本变换不做过多介绍，主要介绍`矩阵变换`和`组合变换`。
 
 #### 变换：transform
 
-`transform` 是大家最常用的一个属性，我们经常会使用它实现一像素的边框和以及容器或者内容的水平、垂直居中，又或者利用它实现强制 GPU 渲染，提升动画性能。
+`transform` 是最常用的一个属性，经常使用它实现一像素的边框和以及容器或者内容的水平、垂直居中，又或者利用它实现强制 GPU 渲染，提升动画性能。
 
 transform 分为 2D 和 3D 变换，3D 变换只是在 2D 的基础上增加了 Z 轴方向的变换。
 
-一般情况下，如果对一个 DOM 施加变换，那么变换的中心往往是 DOM 的中心位置，类比到 WebGL 中，也就是模型的中心，我们可以把 CSS 中的 DOM 看做 WebGL 中的模型。
+一般情况下，如果对一个 DOM 施加变换，那么变换的中心往往是 DOM 的中心位置，类比到 WebGL 中，也就是模型的中心。可以把 CSS 中的 DOM 看做 WebGL 中的模型。
 
 transform 包含四个基本变换属性值：`translate`、`rotate`、`skew`、`scale`，对应的 3D 变换属性值为 `translate3d`、`rotate3d`、`scale3d`。
 
 > 注意，skew 没有对应的 3D 变换设置。
 
-基本变换大家应该都很熟悉了，后面重点要讲解的是 `matrix` 、`matrix3d`的计算与使用，以及`组合变换`的使用技巧。
+基本变换比较常见，后面重点要讲解的是 `matrix` 、`matrix3d`的计算与使用，以及`组合变换`的使用技巧。
 
-当然，下面我们还是先回顾一下 `transform` 的基本用法。
+下面先回顾一下 `transform` 的基本用法。
 
 ##### 平移
 
@@ -102,9 +102,9 @@ transform: rotateZ(45deg);
 
 ###### 绕任意轴的旋转。
 
-关于旋转，我想说明一下`rotate3d` 的使用方式，它接收一个`轴向量`和一个`角度`，代表绕`轴向量`旋转某个`角度`。
+关于旋转，需要说明一下`rotate3d` 的使用方式，它接收一个`轴向量`和一个`角度`，代表绕`轴向量`旋转某个`角度`。
 
-举个例子来说，我们想让模型绕轴 axis= {x: 1,y: 1,z: 1}进行旋转，那么用rotate3d表示如下：
+举个例子来说，想让模型绕轴 axis= {x: 1,y: 1,z: 1}进行旋转，那么用rotate3d表示如下：
 
 ```
 .box{
@@ -124,12 +124,12 @@ transform: rotateZ(45deg);
 
 ###### 变换参照点 transform-origin
 
-根据上图的例子，你会发现，默认的旋转是绕着模型的中心位置进行的，这个位置是浏览器默认的。但事实上，CSS 仍然提供了对变换中心的设置功能，通过设置 `transform-origin` 来实现。
+根据上图的例子可以看出，默认的旋转是绕着模型的中心位置进行的，这个位置是浏览器默认的。但事实上，CSS 仍然提供了对变换中心的设置功能，通过设置 `transform-origin` 来实现。
 
 - transform-origin 包含 X、Y、Z 轴坐标的设置。
 - transform-origin 接收百分比数值时，是以自身尺寸为基准的。
 
-比如，我们让一个 DOM 元素沿着上边沿进行旋转，只需要将 transform-origin 的 Y 轴分量设置为 0% 或者 0 即可。
+比如，让一个 DOM 元素沿着上边沿进行旋转，只需要将 transform-origin 的 Y 轴分量设置为 0% 或者 0 即可。
 
 ```
 transform-origin: 50% 0%;
@@ -138,7 +138,7 @@ transform: rotateX(90deg);
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets2018121016797ac6ac7cad17~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-这个概念比较简单，但是很灵活。利用它我们能实现很多有意思的 3D 效果，比如 CSS 版的`魔方`。
+这个概念比较简单，但是很灵活。利用它能实现很多有意思的 3D 效果，比如 CSS 版的`魔方`。
 
 #### 缩放
 
@@ -190,7 +190,7 @@ transform: skewX(30deg);
 transform: skewY(40deg);
 ```
 
-以上就是 `transform` 的常见用法，接下来我们开始讲重点了：`组合变换`和 `matrix`
+以上就是 `transform` 的常见用法，接下来进入重点：`组合变换`和 `matrix`
 
 #### 组合变换
 
@@ -212,17 +212,17 @@ transform: rotateX(60deg) rotateY(60deg);
 
 至于多个变换是基于动态坐标系进行构思，还是基于静态的世界坐标系进行构思，取决于每个人的理解习惯，但最终的变换效果都是一样的。
 
-> 在欧拉角章节我们也讲过了多个矩阵相乘时，从前往后和从后往前理解变换所基于的坐标系是不同的。transform 多个变换理解顺序和前面所讲的保持一致。
+> 欧拉角章节也讲过了多个矩阵相乘时，从前往后和从后往前理解变换所基于的坐标系是不同的。transform 多个变换理解顺序和前面所讲的保持一致。
 
-再举个比较明显的例子，我们先让 DOM 旋转 60 度，然后将其沿 X 轴平移 200 像素，大家觉得 DOM 会按照怎样的轨迹变换？
+再举个比较明显的例子：先让 DOM 旋转 60 度，然后将其沿 X 轴平移 200 像素，DOM 会按照怎样的轨迹变换？
 
-我们看一下：
+看一下：
 
 ```
 transform: rotateX(60deg) translateX(200px);
 ```
 
-为了更方便观察 3D 组合变换的效果，我将图片外层容器的`视点`设置在了右上方：
+为了更方便观察 3D 组合变换的效果，图片外层容器的`视点`设置在了右上方：
 
 ```
 .imgWrapper{
@@ -233,7 +233,7 @@ transform: rotateX(60deg) translateX(200px);
 }
 ```
 
-关于视点 `perspective-origin` 和 视距 `perspective` 我们放在下一节讲述。
+关于视点 `perspective-origin` 和 视距 `perspective`，在下一节讲述。
 
 ##### 从前往后理解变换，需要按照`模型坐标系`理解：
 
@@ -254,11 +254,11 @@ transform: rotateX(60deg) translateX(200px);
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201812616782664ef6d8d2e~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-可以看出，无论我们按照哪种坐标系理解，最终变换效果都是一样的，看下图：
+可以看出，无论按照哪种坐标系理解，最终变换效果都是一样的，看下图：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201812616782681da82aeb6~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-这就是`组合变换`要注意的地方，了解了组合变换的规律，我们才能做出很有意思的特效，比如照片墙：
+这就是`组合变换`要注意的地方，了解了组合变换的规律，才能做出很有意思的特效，比如照片墙：
 
 照片墙的核心原理就是先将图片沿着 Z 轴方向移动一定距离，之后绕世界坐标系的Y 轴旋转指定角度。
 
@@ -266,22 +266,22 @@ transform: rotateX(60deg) translateX(200px);
 transform: rotateY(30deg) translateZ(200px);
 ```
 
-当然，这只是核心原理，事实上我们还需要做如下几步：
+当然，这只是核心原理，事实上还需要做如下几步：
 
 - 让图片能够显示出 3D 效果，这一步需要让图片父容器的 `transform-style` 属性设置为 `preserve-3d`。
 - 为父容器加上透视属性`perspective`，设置为透视投影，并调整合适的视距 ，这样才能实现近大远小的效果。
 
-这几个属性我们下节细讲，先贴下照片墙的效果：
+这几个属性在下节细讲，先看照片墙的效果：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201812416778c9cd6a5b210~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-具体的实现我们在讲视点和视距属性时再分析。
+具体的实现在讲视点和视距属性时再分析。
 
 又比如 3D 盒效果：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201812616783e9b138a5848~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-这是一个立方体盒子，每个面上都对应一张图片，当然，你也可以根据自己的需要往各个面上放置自己的内容。
+这是一个立方体盒子，每个面上都对应一张图片，当然，也可以根据需要往各个面上放置其他内容。
 
 立方体盒子的原理也是利用组合变换实现的：
 
@@ -296,15 +296,15 @@ transform: rotateY(30deg) translateZ(200px);
 
 这里主要展示组合变换顺序的理解与强大，不对实现做分析，`实现过程`留在下一节和`视点`以及`视距`一起介绍。
 
-我们还是先把变换讲完，接下来介绍 `transform` 的另一个重要用法，`matrix` 和 `matrix3d`。
+先把变换讲完，接下来介绍 `transform` 的另一个重要用法，`matrix` 和 `matrix3d`。
 
 #### matrix
 
 transform 除了提供一些基本变换，还提供了 `matrix` 和 `matrix3d` 属性值，这两个属性值是做什么的呢？
 
-`matrix` 是矩阵的意思，transform 是变换属性，所以 matrix 就是对 DOM 执行变换的矩阵，这和我们前面讲的 WebGL 的变换矩阵概念相同。
+`matrix` 是矩阵的意思，transform 是变换属性，所以 matrix 就是对 DOM 执行变换的矩阵，这和前面讲的 WebGL 的变换矩阵概念相同。
 
-根据前面的学习，我们知道 2 维平面的变换矩阵，是一个 3 阶矩阵，包含 9 个数字：
+根据前面的学习，2 维平面的变换矩阵是一个 3 阶矩阵，包含 9 个数字：
 
 ![\begin{aligned}
 \begin{pmatrix}
@@ -314,15 +314,15 @@ x1 & y1 & ty \\\
 \end{pmatrix}
 \end{aligned}](https://juejin.cn/equation?tex=%5Cbegin%7Baligned%7D%0A%5Cbegin%7Bpmatrix%7D%0Ax0%20%26%20y0%20%26%20tx%20%5C%5C%5C%0Ax1%20%26%20y1%20%26%20ty%20%5C%5C%5C%0A0%20%26%200%20%26%201%0A%5Cend%7Bpmatrix%7D%0A%5Cend%7Baligned%7D)
 
-按照我们之前章节坐标系变换的原理分析：
+按照之前章节坐标系变换的原理分析：
 
 - x0、x1 代表变换之后的 X 轴基向量在原坐标系中的表示。
 - y0、y1 代表变换之后的 Y 轴基向量在原坐标系中的表示。
 - tx、ty 代表坐标原点的偏移量。
 
-如果没有看之前章节的话，可能不太理解基向量的含义以及坐标系的概念，大家可以去看一下，理解一下坐标系变换的原理。
+如果不了解之前章节的内容，可能不太理解基向量的含义以及坐标系的概念，可先阅读坐标系变换的原理。
 
-你会看到第三行的数值是固定的`0 0 1`，所以，浏览器为了简化赋值，规定 transform 中的 matrix 只接受 3 阶矩阵的前两行参数，共 6 个数字。
+第三行的数值是固定的`0 0 1`，所以，浏览器为了简化赋值，规定 transform 中的 matrix 只接受 3 阶矩阵的前两行参数，共 6 个数字。
 
 请记住，matrix 的参数顺序对应上面的矩阵元素如下：
 
@@ -330,7 +330,7 @@ x1 & y1 & ty \\\
 transform: matrix(x0, x1, y0, y1, tx, ty);
 ```
 
-前面章节我们推导过基本变换的矩阵表示：
+前面章节推导过基本变换的矩阵表示：
 
 - 平移
 
@@ -356,7 +356,7 @@ sx & 0 & 0 \\\
 \end{pmatrix}
 \end{aligned}](https://juejin.cn/equation?tex=%5Cbegin%7Baligned%7D%0A%5Cbegin%7Bpmatrix%7D%0Asx%20%26%200%20%26%200%20%5C%5C%5C%0A0%20%26%20sy%20%26%200%20%5C%5C%5C%0A0%20%26%200%20%26%201%0A%5Cend%7Bpmatrix%7D%0A%5Cend%7Baligned%7D)
 
-也就是说基本变换我们都可以用 `matrix` 来表示。
+也就是说基本变换都可以用 `matrix` 来表示。
 
 - 斜切
   沿着 X 轴倾斜 α 度，沿着 Y 轴倾斜 θ 度：
@@ -383,7 +383,7 @@ sin\theta & cos\theta & 0 \\\
 
 - 绕 Z 轴旋转 60 度。
 
-用 rotateZ 表示上面的旋转很简单，我们看下用 matrix 如何表示：
+用 rotateZ 表示上面的旋转很简单，看下用 matrix 如何表示：
 
 ![cos(60) = 0.5](https://juejin.cn/equation?tex=cos(60)%20%3D%200.5)
 
@@ -395,7 +395,7 @@ sin\theta & cos\theta & 0 \\\
 transform: matrix(0.5, 0.866, -0.866, 0.5, 0, 0);
 ```
 
-你会发现无论我们是用 rotateZ 表示，还是用 matrix 表示，变换效果都是一样的。
+无论用 rotateZ 表示，还是用 matrix 表示，变换效果都是一样的。
 
 #### matrix3d
 
@@ -414,17 +414,15 @@ x2 & y2 & z2 & tz \\\
 
 事实上，3D 的基本变换都可以用 matrix 或者 matrix3d 来表示，但是一些复杂变换只能使用 matrix 或者 matrix3d 来实现。
 
-#### matrix 对我们来说有什么用呢？
+#### matrix 有什么用？
 
-这是一个很关键的问题，大家会觉得，基本变换的用法更容易理解，更方便书写，matrix 需要的参数太多，而且参数值需要计算，更糟糕的是，我们往往不知道怎么计算，那 matrix 有什么用呢？
+这是一个很关键的问题：基本变换的用法更容易理解，更方便书写，matrix 需要的参数太多，而且参数值需要计算。matrix 的价值在于它能完成基本变换不能完成的变换，能做出基本变换完成不了的效果。
 
-这是个好问题，但我想说的是 matrix 能完成基本变换不能完成的变换，能做出基本变换完成不了的效果。
-
-这时你就该考虑使用 matrix 了。
+这时就该考虑使用 matrix 了。
 
 紧跟而来的问题是，matrix 如何求得呢？
 
-我们前面章节讲述了 matrix 矩阵的求法，一旦你确定了需要的变换，你就可以计算变换后的基向量，然后将基向量的各个分量代入矩阵的各个位置即可求出变换矩阵，有了变换矩阵，也就有了 matrix 所需要的各个元素，将矩阵转化成 matrix 或者 matrix3d 所需要的字符串就轻而易举了。
+前面章节讲述了 matrix 矩阵的求法，一旦确定了需要的变换，就可以计算变换后的基向量，然后将基向量的各个分量代入矩阵的各个位置即可求出变换矩阵，有了变换矩阵，也就有了 matrix 所需要的各个元素，将矩阵转化成 matrix 或者 matrix3d 所需要的字符串就轻而易举了。
 
 - 镜像效果
 
@@ -451,11 +449,11 @@ y1 &= 1
 transform: matrix(-1,0,0,1,0,0);
 ```
 
-我们看下效果：
+看下效果：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201812616783fcc8bcfd906~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-当然大家也可以举一反三，比如上下镜像：
+也可以举一反三，比如上下镜像：
 
 ```
 transform: matrix(1,0,0,-1,0,0);
@@ -467,11 +465,11 @@ transform: matrix(1,0,0,-1,0,0);
 
 绕任意轴的旋转，除了可以使用 rotate3d 来实现，还可以使用 matrix3d。这个旋转矩阵该如何计算呢？
 
-还记得基本变换章节我们推导出的绕固定轴旋转的矩阵方法`axisRotation`吗？
+基本变换章节推导出了绕固定轴旋转的矩阵方法`axisRotation`。
 
 `axisRotation(axis, angle)`，其中 axis 是一个三维向量，angle 是一个弧度值。
 
-这里我不准备举绕基本轴旋转的例子，因为它们不需要matrix3d 出手，我们想绕`{x:1, y: 1, z: 1}`的倾斜轴旋转，上面的 axisRotation 方法该出场了，它会为我们提供变换矩阵，但是我们还需要将变换矩阵转化为 css 样式，我们先封装一个矩阵转 css 的方法：
+此处不举绕基本轴旋转的例子，因为它们不需要matrix3d 出手。若想绕`{x:1, y: 1, z: 1}`的倾斜轴旋转，上面的 axisRotation 方法可以提供变换矩阵，但还需要将变换矩阵转化为 css 样式，先封装一个矩阵转 css 的方法：
 
 ```
 function matrix2css(mt){
@@ -497,7 +495,7 @@ function matrix2css(mt){
 let mt = matrix.axisRotation({x:1, y:1, z:1}, Math.PI / 180 * 90)
 ```
 
-在这里我用绕轴向量 axis = {x:1, y:1, z:1} 不停旋转的动画演示：
+在这里用绕轴向量 axis = {x:1, y:1, z:1} 不停旋转的动画演示：
 
 ```
 function render(){
@@ -518,25 +516,23 @@ document.body.addEventListener('click',function(){
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201812616784262a1dc9805~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-是不是很简单呢？
-
 #### 总结
 
-transform 中的基本变换都可以使用 matrix 和 matrix3d 来表示，只有当基本变换表示不了我们的变换时，我们才考虑使用 matrix 或者 matrix3d 。
+transform 中的基本变换都可以使用 matrix 和 matrix3d 来表示，只有当基本变换表示不了所需的变换时，才考虑使用 matrix 或者 matrix3d 。
 
-可见，即使不做 WebGL 开发，我们之前学到的内容也会对普通开发者大有帮助，掌握变换原理，配合 CSS3 中的 3D 属性，照样可以做出很酷炫的 3D 动画效果。
+可见，即使不做 WebGL 开发，之前学到的内容也会对普通开发者大有帮助，掌握变换原理，配合 CSS3 中的 3D 属性，照样可以做出很酷炫的 3D 动画效果。
 
-### 回顾
+### 小结
 
 本节讲述了 CSS 中的 3D 变换，以及它们与 WebGL 变换的相同之处。总的来说，基本原理都是一样的，之前封装的数学矩阵库，不仅可以用在 WebGL 领域，也可以用在 css 领域。
 
-下一节，我们讲述 CSS 中 3D 变换 的其它几个重要属性，`变换类型(transform-style)`、`视点(perspective-origin)`、`视距(perspective)`。
+CSS 中 3D 变换的其它几个重要属性，`变换类型(transform-style)`、`视点(perspective-origin)`、`视距(perspective)`，在第 25 章讲述。
 
 ---
 
 ## 第 25 章：CSS 与 3D 之 perspective
 
-上节我们讲述了 CSS 中的变换方式以及对它们原理的深入理解。本节介绍一下 3D 变换的投影方式`perspective`相关属性，并通过`照片墙`和`图片盒`的实现学习它们的深入使用方法。
+第 24 章讲述了 CSS 中的变换方式以及对它们原理的深入理解。本节介绍 3D 变换的投影方式`perspective`相关属性，并通过`照片墙`和`图片盒`的实现学习它们的深入使用方法。
 
 本节要介绍的主要属性有如下几个：
 
@@ -545,13 +541,13 @@ transform 中的基本变换都可以使用 matrix 和 matrix3d 来表示，只�
 - perspective-origin： 视点位置。
 - backface-visibility：背面是否可见。
 
-本节教大家掌握这几个属性，之后用 CSS 就能够很轻松地做出有创意的 3D 效果了。
+掌握这几个属性之后，用 CSS 就能够很轻松地做出有创意的 3D 效果。
 
 ### transform-style
 
-该属性是用来设置子元素变换的展示形式，默认是 2D 平面展示，当我们需要让子元素的渲染有 3D 效果时，那么我们要将当前元素的 transform-style 属性设置为 preserve-3d。
+该属性是用来设置子元素变换的展示形式，默认是 2D 平面展示。需要让子元素的渲染有 3D 效果时，要将当前元素的 transform-style 属性设置为 preserve-3d。
 
-我们用一张图片做示例：
+用一张图片做示例：
 
 ```
 <div class="img-wrapper">
@@ -572,13 +568,13 @@ transform 中的基本变换都可以使用 matrix 和 matrix3d 来表示，只�
 }
 ```
 
-我们不对图片施加变换，图片是正常状态：
+不对图片施加变换，图片是正常状态：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets2018127167884e85db72163~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
 记住图片默认时的样子。
 
-此时，我们对图片施加变换，让图片绕 X 轴旋转 60 度。
+此时，对图片施加变换，让图片绕 X 轴旋转 60 度。
 
 ```
 .img-wrapper img{
@@ -590,9 +586,9 @@ transform 中的基本变换都可以使用 matrix 和 matrix3d 来表示，只�
 
 可以看出，图片因为旋转，展示到屏幕上已经变形了，正常情况下，绕 X 轴旋转，图片的上半部分应该转到屏幕内侧，下半部分转到屏幕外侧。
 
-我们看一下，是不是这样子的。
+下面验证一下。
 
-我们让图片的父容器也绕 X 轴旋转，这样就能看出图片到底是不是真的有了 3D 效果。
+让图片的父容器也绕 X 轴旋转，这样就能看出图片到底是不是真的有了 3D 效果。
 
 ```
 .img-wrapper{
@@ -620,7 +616,7 @@ transform 中的基本变换都可以使用 matrix 和 matrix3d 来表示，只�
 
 transform-style 要闪亮登场了。
 
-我们将 transform-style 设置为 preserve-3d 即可。
+将 transform-style 设置为 preserve-3d 即可。
 
 另一个问题是，为哪个元素设置 transform-style 属性呢？
 
@@ -628,13 +624,11 @@ transform-style 要闪亮登场了。
 
 WebGL 中有舞台和场景的概念， CSS 中也有类似概念。
 
-我们需要一个舞台，然后为舞台设置展示方式。
+需要一个舞台，然后为舞台设置展示方式。
 
-上面的示例，大家觉得哪个元素是舞台呢？
+上面的示例中，图片的祖先容器都可以当做图片的舞台。将一个祖先容器设定为舞台，祖先容器的子元素就是舞台上的元素。
 
-很简单，图片的祖先容器都可以当做图片的舞台，我们将一个祖先容器设定为舞台，祖先容器的子元素就是舞台上的元素。
-
-因此，既然我们想让元素呈现立体效果，我们就要在元素所在的舞台上设置 transform-style 属性，对于图片来说，图片的任何一个祖先元素都可以作为舞台，我们将图片的父容器作为舞台，为它设置舞台元素的呈现效果。
+因此，想让元素呈现立体效果，就要在元素所在的舞台上设置 transform-style 属性。对于图片来说，图片的任何一个祖先元素都可以作为舞台，此处将图片的父容器作为舞台，为它设置舞台元素的呈现效果。
 
 ```
 .img-wrapper{
@@ -646,9 +640,9 @@ WebGL 中有舞台和场景的概念， CSS 中也有类似概念。
 
 很明显，图片呈现出了 3D效果。
 
-通过这两幅动图，我相信大家已经明白 transform-style 的作用了。
+通过这两幅动图，transform-style 的作用已经比较清楚了。
 
-我们总结一下：
+总结一下：
 
 transform-style用来设置容器中子元素的呈现方式。
 
@@ -661,7 +655,7 @@ transform-style用来设置容器中子元素的呈现方式。
 
 这就涉及到两个新属性 `perspective`和`perspective-origin`，这两个属性用来设置观察点的坐标，并让投影产生透视效果，透视效果最明显的现象就是近大远小。
 
-perspective 用来设置观察点在 Z 轴方向的位置，默认时观察点在元素中心，即 z = 0 位置，我们可以调整它到元素中心的距离。
+perspective 用来设置观察点在 Z 轴方向的位置，默认时观察点在元素中心，即 z = 0 位置，可以调整它到元素中心的距离。
 
 设置这个属性会产生两个效果：
 
@@ -670,11 +664,9 @@ perspective 用来设置观察点在 Z 轴方向的位置，默认时观察点�
 
 #### 舞台
 
-我们想换个角度看图片，那观察点需要设置在哪个元素上呢？
+想换个角度看图片，那观察点需要设置在哪个元素上呢？
 
-perspective 这个属性也是在舞台上设置的。
-
-我们为舞台设置 perspective属性。
+perspective 这个属性也是在舞台上设置的，即为舞台设置 perspective 属性。
 
 > 请注意，perspective 默认值是 0，此时不产生透视效果。只有不为 0 时才会形成透视效果。
 
@@ -682,7 +674,7 @@ perspective 这个属性也是在舞台上设置的。
 
 千言万语抵不过一幅图。
 
-我们通过一张动图感受一下，在这个动画里，我将观察点的 Z 轴坐标从 1 像素匀速改变到 100 像素，再从 100 像素移近到 1 像素，另外为了区别舞台和舞台元素在 Z 轴上的不同，我将舞台的背景颜色改为透明度为 70% 的红色。
+通过一张动图感受一下，在这个动画里，观察点的 Z 轴坐标从 1 像素匀速改变到 100 像素，再从 100 像素移近到 1 像素；另外为了区别舞台和舞台元素在 Z 轴上的不同，舞台的背景颜色改为透明度为 70% 的红色。
 
 ```
 .img-wrapper{
@@ -709,17 +701,17 @@ perspective 这个属性也是在舞台上设置的。
 
 ![z = 110 \div 2 * \frac{\sqrt{3}}{2} \approx 49](https://juejin.cn/equation?tex=z%20%3D%20110%20%5Cdiv%202%20*%20%5Cfrac%7B%5Csqrt%7B3%7D%7D%7B2%7D%20%5Capprox%2049)
 
-所以，我们的观察点的 Z 轴坐标至少要大于这个值，才能看到图片的全貌。
+所以，观察点的 Z 轴坐标至少要大于这个值，才能看到图片的全貌。
 
 距离越近，就越看不到图片在观察点后面的部分。
 
-我们将 perspective （观察点的 Z 轴坐标）移动到 100px 处。
+将 perspective （观察点的 Z 轴坐标）移动到 100px 处。
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20181281678cc5fc18c3c15~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
 此时，图片有了近大远小的透视效果，这就是 perspective 的作用。
 
-从感官上我们是能感受到它好像有了 3D 的感觉，但是还是看不出它在 Z 轴上的状态。
+从感官上能感受到它好像有了 3D 的感觉，但是还是看不出它在 Z 轴上的状态。
 
 改变 perspective 只是改变了在 Z 轴的位置，也就是拉远或者拉近镜头，但是并没有将镜头移到图片上方去观察。
 
@@ -731,13 +723,13 @@ perspective 这个属性也是在舞台上设置的。
 
 它负责设置观察点在 X、Y 轴的偏移，即屏幕的左右、上下方向。
 
-我们看下它的用法：
+看下它的用法：
 
 perspective-origin，接收两个参数，一个代表 X 轴偏移，一个代表 Y 轴偏移。
 
 请谨记：该属性的默认值是 （50%，50%），在舞台 DOM 的中心位置。
 
-回到上面的话题，移动镜头到图片上方，也就是设置观察点在舞台上的 Y 轴坐标，我们将镜头往上移动一定高度，从舞台上方观察图片。
+回到上面的话题，移动镜头到图片上方，也就是设置观察点在舞台上的 Y 轴坐标。将镜头往上移动一定高度，从舞台上方观察图片。
 
 还是用动图来演示这个过程。
 
@@ -761,26 +753,26 @@ perspective-origin，接收两个参数，一个代表 X 轴偏移，一个代�
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20181281678d97bfccd73ed~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-上面就是我们将镜头慢慢移动到上方时，对舞台元素的观察过程。
+上面就是镜头慢慢移动到上方时，对舞台元素的观察过程。
 
-注意，图片本身并没有动，我们移动的只是镜头，虽然你会有一种镜头没动，图片在动的感觉。
+注意，图片本身并没有动，移动的只是镜头，虽然会有一种镜头没动，图片在动的感觉。
 
-通过这几幅动图，我相信大家对这几个属性有了更深刻的认识，接下来，我们介绍如何利用这几个属性实现照片墙和图片盒。
+通过这几幅动图，对这几个属性应该有了更深刻的认识。接下来介绍如何利用这几个属性实现照片墙和图片盒。
 
 ### 照片墙
 
-在上一节，我介绍了照片墙的原理，简单来说，就是图片先旋转一定度数，之后沿着 Z 轴方向移动一定距离。
+上一节介绍了照片墙的原理，简单来说，就是图片先旋转一定度数，之后沿着 Z 轴方向移动一定距离。
 
-在动手写代码之前，我们要想清楚两个问题：
+在动手写代码之前，要想清楚两个问题：
 
 - 每张图片绕 Y 轴旋转的角度。
 - 沿 Z 轴方向至少移动多少像素。
 
-我想，只要你想清楚了这两个问题，代码就信手拈来了。
+只要想清楚了这两个问题，代码就信手拈来了。
 
 #### 每张图片绕 Y 轴旋转的角度。
 
-我们准备 12 张图片，并将每张图片设置成宽 150px，高 110px 。
+准备 12 张图片，并将每张图片设置成宽 150px，高 110px 。
 
 ```
 img{
@@ -793,15 +785,15 @@ img{
 
 #### 沿 Z 轴方向最少移动距离
 
-为了让图片能够不交叉，我们需要沿图片 Z 轴平移一定距离，那么，这个距离是多少呢？
+为了让图片能够不交叉，需要沿图片 Z 轴平移一定距离，那么，这个距离是多少呢？
 
-当然我们可以一点点地区尝试，但是我想我还是教给大家一个严谨的思路比较好。
+当然可以一点点地尝试，但更严谨的方式是推导。
 
-大家看下图：
+看下图：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20181281678e79b9936cde6~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-根据下图，我们能够知道，图片在 Z 轴平移的最小距离是 ![\vec{OB}](https://juejin.cn/equation?tex=%5Cvec%7BOB%7D)，那么如何求得 ![\vec{OB}](https://juejin.cn/equation?tex=%5Cvec%7BOB%7D) 的长度呢？
+根据下图能够知道，图片在 Z 轴平移的最小距离是 ![\vec{OB}](https://juejin.cn/equation?tex=%5Cvec%7BOB%7D)，那么如何求得 ![\vec{OB}](https://juejin.cn/equation?tex=%5Cvec%7BOB%7D) 的长度呢？
 
 由最简单的三角公式可以得出：
 
@@ -817,9 +809,9 @@ img{
 
 ![OB = (BD + DC) \times \sqrt3 \approx 280](https://juejin.cn/equation?tex=OB%20%3D%20(BD%20%2B%20DC)%20%5Ctimes%20%5Csqrt3%20%5Capprox%20280)
 
-也就是说，我们至少要让图片沿着 Z 轴移动 280 像素，才能让各个图片正好衔接。
+也就是说，至少要让图片沿着 Z 轴移动 280 像素，才能让各个图片正好衔接。
 
-口说无凭，看看效果吧。
+口说无凭，看看效果。
 
 ```
 Array.prototype.forEach.call($('img'), (item, i) => {
@@ -827,11 +819,11 @@ Array.prototype.forEach.call($('img'), (item, i) => {
 });
 ```
 
-仍然用一幅动图来演示，我们将观察点移动到舞台上方：
+仍然用一幅动图来演示，将观察点移动到舞台上方：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20181291678e93e5f22b564~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-可以看到，当我们让图片沿Z 轴移动 280 像素之后，各个图片的边缘正好能够对齐，和我们推导的结果一致。
+可以看到，让图片沿Z 轴移动 280 像素之后，各个图片的边缘正好能够对齐，与推导的结果一致。
 
 将舞台绕 X 轴旋转 90 度，以自下而上的角度观察照片墙是如何从默认位置沿着 Z 轴移动到指定位置：
 
@@ -843,11 +835,11 @@ Array.prototype.forEach.call($('img'), (item, i) => {
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20181291678e9a7e142deb5~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-从不同角度观看我们的舞台，展现效果也会不同。
+从不同角度观看舞台，展现效果也会不同。
 
 #### 背面是否可见
 
-照片墙这个效果，大家应该能看到处于背面的元素还是能够可见的，这与实际有所差异，如果大家不想背面元素可见，我们可以设置 backface-visibility 属性来实现：
+照片墙这个效果中，处于背面的元素还是能够可见的，这与实际有所差异。如果不想背面元素可见，可以设置 backface-visibility 属性来实现：
 
 ```
 backface-visibility: hidden;
@@ -855,11 +847,11 @@ backface-visibility: hidden;
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20181291679202ab61c6b7d~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-大家可以看到，设置完背面不可见属性之后，位于后面的图片此时已经看不到了。
+可以看到，设置完背面不可见属性之后，位于后面的图片此时已经看不到了。
 
-以上就是图片墙的主要原理，可见，了解一些图形学知识对于我们做 3D 动效有莫大的帮助。
+以上就是图片墙的主要原理，可见，了解一些图形学知识对于做 3D 动效有莫大的帮助。
 
-接下来，我们看一下另一个效果`图片盒子`的分析实现过程。
+接下来看一下另一个效果`图片盒子`的分析实现过程。
 
 ### 图片盒
 
@@ -867,20 +859,20 @@ backface-visibility: hidden;
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201812916791e7ad7c1ff01~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-上图就是一个图片盒子的例子，我们接下来的目标就是利用 CSS 的 3D 属性实现这样一个效果。
+上图就是一个图片盒子的例子，接下来的目标就是利用 CSS 的 3D 属性实现这样一个效果。
 
-写代码之前还是先思考一下，不考虑动效，我们如何实现这样一个立方体。
+写代码之前还是先思考一下，不考虑动效，如何实现这样一个立方体。
 
 其实很简单，主要思考清楚六个面的状态就可以了。
 
-- 首先我们需要六个 DOM 元素，此时六个元素在同一位置。
+- 首先需要六个 DOM 元素，此时六个元素在同一位置。
 - 处理前后两个平面在 Z 轴方向的差别。
 - 对上下两个平面施加绕 X 轴旋转90度的效果，然后处理 Y 轴方向的差别。
 - 对左右两个平面施加绕 Y 轴旋转90度的效果，然后处理 X 轴方向的差别。
 
 想清楚这几个步骤，代码就很简单了。
 
-为了让图片展示 3D 效果，我们需要为图片父容器设置 transform-style 属性：
+为了让图片展示 3D 效果，需要为图片父容器设置 transform-style 属性：
 
 ```
 .img-wrapper{
@@ -889,7 +881,7 @@ backface-visibility: hidden;
 }
 ```
 
-接下来，我们为图片元素设置宽高，并对六张图片采用绝对定位，使他们重合。
+接下来，为图片元素设置宽高，并对六张图片采用绝对定位，使他们重合。
 
 ```
 img{
@@ -899,9 +891,9 @@ img{
 }
 ```
 
-然后，开始处理各个面的状态，对于图片盒子的前后两个面，我们只需要改变它们的 Z 轴坐标就可以了，那么 Z 轴坐标设置多少呢？
+然后，开始处理各个面的状态，对于图片盒子的前后两个面，只需要改变它们的 Z 轴坐标，那么 Z 轴坐标设置多少呢？
 
-聪明的同学已经想到了， Z 轴坐标是图片高度的一半。
+答案是图片高度的一半。
 
 ```
 .front{
@@ -934,27 +926,27 @@ img{
 }
 ```
 
-这样，就完成了一个图片盒子，很简单吧？
+这样，就完成了一个图片盒子。
 
-### 回顾
+### 小结
 
-本节主要讲述了如何设置观察点在三维层面的坐标，并结合上节的变换属性实现照片墙和图片盒子的特效，主要目的不是教会大家做这些效果，而是教大家思考 3D 特效的分析过程。通过这两个例子，我想大家认识到了 css 的强大。即使不使用 WebGL ，我们依然可以用 DOM 元素结合 CSS 实现 3D 效果。
+本节主要讲述了如何设置观察点在三维层面的坐标，并结合上节的变换属性实现照片墙和图片盒子的特效，重点在于 3D 特效的分析过程。通过这两个例子可以看出 css 的强大：即使不使用 WebGL ，依然可以用 DOM 元素结合 CSS 实现 3D 效果。
 
-下一节，我们详细阐述一下数学库在 CSS 3D 属性中的高级应用。
+数学库在 CSS 3D 属性中的高级应用在第 26 章详细阐述。
 
 ---
 
 ## 第 26 章：数学库在 CSS 的 3D 动画中扮演的重要角色
 
-前面两节，我们详细讲述了CSS 3D 属性的相关概念与使用方法，本节看一下 3D 数学库如何与 CSS 中的 transform 属性实现复杂的 3D 效果。
+前面两章详细讲述了CSS 3D 属性的相关概念与使用方法，本节看一下 3D 数学库如何与 CSS 中的 transform 属性实现复杂的 3D 效果。
 
-我们依然从最简单的平移、旋转、缩放开始演示，但是不再使用 translate、scale、rotate 等属性来实现，而是采用 matrix 和 matrix3d。
+下面依然从最简单的平移、旋转、缩放开始演示，但是不再使用 translate、scale、rotate 等属性来实现，而是采用 matrix 和 matrix3d。
 
 ### matrix 和 matrix3d
 
-作为 transform 属性最冷门的两个属性值，我想大家很少有人会用到它们，或者不知道它们是做什么的，以及不知道该如何使用它们。
+作为 transform 属性最冷门的两个属性值，很少有人会用到它们，或者不知道它们是做什么的，以及不知道该如何使用它们。
 
-上一节我简单介绍了 matrix 和 matrix3d 的使用方法，本节我会详细介绍一下它们。
+上一节简单介绍了 matrix 和 matrix3d 的使用方法，本节详细介绍它们。
 
 - matrix 和 matrix3d 的作用。
 - 它们的使用方法。
@@ -966,7 +958,7 @@ matrix 是 transform 的 2 维变换矩阵，由六个数字组成。
 
 > transform: matrix(a, b, c, d, e, f);
 
-事实上，二维变换矩阵是一个 3 阶矩阵，包含 3 x 3 = 9 个数字，但是你会发现 matrix 是由 6 个数字组成，它们对应一个 3 阶矩阵的如下部分：
+事实上，二维变换矩阵是一个 3 阶矩阵，包含 3 x 3 = 9 个数字，但 matrix 是由 6 个数字组成，它们对应一个 3 阶矩阵的如下部分：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201911216841fb9efa3a4fd~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
@@ -1012,7 +1004,7 @@ transform: scale(2);
 transform: scale(2, 2);
 ```
 
-当我们想通过 matrix 设置缩放比例时，只需要改变 sx、sy 即可。
+想通过 matrix 设置缩放比例时，只需要改变 sx、sy 即可。
 
 ##### 旋转
 
@@ -1040,7 +1032,7 @@ transform: rotate(45deg);
 transform: rotateZ(45deg);
 ```
 
-以上就是通过单一矩阵介绍了 matrix 的用法。大家可能会有如下疑惑：transform 已经内置了基本变换属性`translate`、`rotate`、`scale`，所以，我们为什么还要用 matrix？况且 matrix 更复杂，更不易于理解。回答这个问题之前，我们趁热打铁，先了解下 3 维变换 matrix3d 的用法。
+以上就是通过单一矩阵介绍了 matrix 的用法。可能的疑惑是：transform 已经内置了基本变换属性`translate`、`rotate`、`scale`，为什么还要用 matrix？况且 matrix 更复杂，更不易于理解。回答这个问题之前，先了解下 3 维变换 matrix3d 的用法。
 
 #### matrix3d
 
@@ -1052,7 +1044,7 @@ CSS 中 matrix3d 的参数顺序对应变换矩阵的元素位置如下图所示
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191141684a5d49cf364c7~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-16 个数字乍看之下很多，初学者容易犯晕，不过大家可以根据上图对这 16 个数字进行分类，分为四组，每组 4 个数字，每组数字代表变换矩阵的每一列，每一列数字代表的含义如下：
+16 个数字乍看之下很多，初学者容易犯晕，不过可以根据上图对这 16 个数字进行分类，分为四组，每组 4 个数字，每组数字代表变换矩阵的每一列，每一列数字代表的含义如下：
 
 - 第一列，代表变换后的坐标系的 X 轴在原坐标系下的坐标。
   - a：X 轴坐标分量
@@ -1075,7 +1067,7 @@ CSS 中 matrix3d 的参数顺序对应变换矩阵的元素位置如下图所示
   - o：Z 轴坐标分量。
   - p：通常为 1，代表点。
 
-如果你看过在之前章节坐标系变换原理的话，相信你会很容易理解上面的解释，如果你没看过，那也没关系，只需要掌握数学矩阵库的使用即可生成这么一个`变换矩阵`，之后将矩阵的各个元素填入 matrix3d 的 对应位置即可。
+如果看过之前章节坐标系变换原理的话，会很容易理解上面的解释；如果没看过，那也没关系，只需要掌握数学矩阵库的使用即可生成这么一个`变换矩阵`，之后将矩阵的各个元素填入 matrix3d 的 对应位置即可。
 
 接下来看一下 matrix3d 是如何达到 transform 基本变换效果的。
 
@@ -1093,9 +1085,9 @@ CSS 中 matrix3d 的参数顺序对应变换矩阵的元素位置如下图所示
 - ty：代表沿 Y 轴的平移量。
 - tz：代表沿 Z 轴的平移量。
 
-如果，我们想通过 matrix3d 表示平移的话，只需要改变 tx、ty、tz 三个元素即可，其余元素如上图，无需变化。
+如果想通过 matrix3d 表示平移的话，只需要改变 tx、ty、tz 三个元素即可，其余元素如上图，无需变化。
 
-假设我们要实现沿 X 轴平移 30 像素，沿 Y 轴平移 40 像素，沿 Z 轴平移 50 像素，那么 CSS 可以像下面这样设置：
+假设要实现沿 X 轴平移 30 像素，沿 Y 轴平移 40 像素，沿 Z 轴平移 50 像素，那么 CSS 可以像下面这样设置：
 
 ```
 transform: matrix3d(
@@ -1112,9 +1104,9 @@ transform: matrix3d(
 transform: translate3d(30px, 40px, 50px);
 ```
 
-注意哦，当使用 translate 时需要带上单位 `px`。
+注意，当使用 translate 时需要带上单位 `px`。
 
-> 大家仍然不难发现，使用 matrix3d 比 translate 复杂，要书写的属性内容也多，并且不易于理解。
+> 不难发现，使用 matrix3d 比 translate 复杂，要书写的属性内容也多，并且不易于理解。
 
 #### 3D缩放
 
@@ -1130,9 +1122,9 @@ transform: translate3d(30px, 40px, 50px);
 - sy：代表沿 Y 轴缩放的比例。
 - sz：代表沿 Z 轴缩放的比例。
 
-除了 sx、sy、sz 这三个元素需要我们自己设置，其余位置的元素都是固定值，如上图。
+除了 sx、sy、sz 这三个元素需要设置，其余位置的元素都是固定值，如上图。
 
-假设我们要将一个 dom 元素沿 X 轴、Y 轴、Z 轴各放大两倍，那么用 matrix3d 表示如下：
+假设要将一个 dom 元素沿 X 轴、Y 轴、Z 轴各放大两倍，那么用 matrix3d 表示如下：
 
 ```
 transform: matrix3d(
@@ -1149,7 +1141,7 @@ transform: matrix3d(
 transform: scale3d(2, 2, 2);
 ```
 
-我们通过一个小例子，看下效果。
+通过一个小例子，看下效果。
 
 ```
 <div class="parent">
@@ -1178,18 +1170,18 @@ transform: scale3d(2, 2, 2);
 }
 ```
 
-> 为了便于观察 Z 轴放大效果，此处我对子元素做了一个多重变换，首先将子元素沿着 X 轴旋转 60 度，之后再执行缩放变换。多重变换的细节大家可以参见本章《CSS 与 3D 之 transform》中组合变换的部分。
+> 为了便于观察 Z 轴放大效果，此处对子元素做了一个多重变换：首先将子元素沿着 X 轴旋转 60 度，之后再执行缩放变换。多重变换的细节可参见第 24 章《CSS 与 3D 之 transform》中组合变换的部分。
 
-我们将子元素沿着 Z 轴放大四倍，X 轴和 Y 轴比例不变，观察下效果：
+子元素沿着 Z 轴放大四倍，X 轴和 Y 轴比例不变，观察下效果：
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191141684b783f6e95e9b~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-大家可以发现， Z 轴长度变为了之前的 4 倍。
-上面我们是用 matrix3d 实现的，使用 scale3d 同样能达到上述效果，大家不妨试一试。
+可以发现， Z 轴长度变为了之前的 4 倍。
+上面是用 matrix3d 实现的，使用 scale3d 同样能达到上述效果。
 
 #### 旋转
 
-3D 旋转是基本变换最复杂的一个，涉及到绕基本坐标轴的旋转、绕任意轴的旋转、欧拉角旋转、四元数旋转等，但是 CSS 中除了 matrix 和 matrix3d 以外，只提供了绕基本轴旋转、绕任意轴旋转，欧拉角旋转和四元数旋转需要通过数学库计算出对应的旋转矩阵。我们还是先看下如何使用 matrix3d 实现基本旋转。
+3D 旋转是基本变换最复杂的一个，涉及到绕基本坐标轴的旋转、绕任意轴的旋转、欧拉角旋转、四元数旋转等，但是 CSS 中除了 matrix 和 matrix3d 以外，只提供了绕基本轴旋转、绕任意轴旋转，欧拉角旋转和四元数旋转需要通过数学库计算出对应的旋转矩阵。先看下如何使用 matrix3d 实现基本旋转。
 
 ##### 绕 X 轴旋转
 
@@ -1197,7 +1189,7 @@ transform: scale3d(2, 2, 2);
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191141684baa31098682e~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-举个例子，假设我们实现绕 X 轴旋转 45 度的效果，那么对应的 css 表示如下：
+举个例子，实现绕 X 轴旋转 45 度的效果，对应的 css 表示如下：
 
 ```
 transform: matrix3d(
@@ -1225,7 +1217,7 @@ transform: rotate3d(1, 0, 0, 45deg);
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191141684bec76da1333f~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-举个例子，假设我们实现绕 Y 轴旋转 45 度的效果，那么对应的 css 表示如下：
+举个例子，实现绕 Y 轴旋转 45 度的效果，对应的 css 表示如下：
 
 ```
 transform: matrix3d(
@@ -1253,7 +1245,7 @@ transform: rotate3d(0, 1, 0, 45deg);
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191141684bee618018b04~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-举个例子，假设我们实现绕 Z 轴旋转 45 度的效果，那么对应的 css 表示如下：
+举个例子，实现绕 Z 轴旋转 45 度的效果，对应的 css 表示如下：
 
 ```
 transform: matrix3d(
@@ -1275,20 +1267,20 @@ transform: rotate3d(0, 0, 1, 45deg);
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191151684f473b63d8879~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-以上就是使用 matrix 和 matrix3d 来代替基本变换属性的讲解内容。大家应该能明白它们的用法了，归纳起来如下：
+以上就是使用 matrix 和 matrix3d 来代替基本变换属性的讲解内容，归纳起来如下：
 
 - matrix 接收二维变换矩阵。
 - matrix3d 接收三维变换矩阵。
 
 很简单。
 
-那另一个问题是，如何求得变换矩阵呢？这就需要用到我们前面总结的数学矩阵库了。
+那另一个问题是，如何求得变换矩阵呢？这就需要用到前面总结的数学矩阵库了。
 
 #### 矩阵库与 matrix 的搭配
 
-对于基本变换，我们没有必要使用 matrix 来实现，但是对于一些基本变换满足不了的效果，我们就需要考虑 matrix 了。
+对于基本变换，没有必要使用 matrix 来实现，但是对于一些基本变换满足不了的效果，就需要考虑 matrix 了。
 
-比如，我需要为一个 dom 元素进行如下变换：
+比如，需要为一个 dom 元素进行如下变换：
 
 - 首先绕 X 轴旋转 45 度。
 - 接着沿 Y 轴平移 30 像素。
@@ -1297,12 +1289,12 @@ transform: rotate3d(0, 0, 1, 45deg);
 
 > 以上变换基于静态坐标系（世界坐标系）进行的。
 
-对于这么一个复杂的变换，我们有两种方式来实现：
+对于这么一个复杂的变换，有两种方式来实现：
 
 - 组合变换，上节已经讲过。
 - matrix 变换。
 
-首先，我们看下如何使用组合变换来实现：
+首先，看下如何使用组合变换来实现：
 
 ```
 transform: rotateY(90deg) 
@@ -1311,26 +1303,26 @@ transform: rotateY(90deg)
  rotateX(45deg);
 ```
 
-> 在 css transform 章节中介绍了 transform 组合变换时各个变换的顺序与坐标系的关系，如果大家还没忘记的话，应该记得变换属性从后往前排列代表按照世界坐标系进行变换。
+> 在 css transform 章节中介绍了 transform 组合变换时各个变换的顺序与坐标系的关系：变换属性从后往前排列代表按照世界坐标系进行变换。
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191151684fa203ee5ce01~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
 变换的分步执行过程如上图。
 
-你会发现，如果变换过程比较多的话，transform 中要书写很多属性，所以可以尝试另一种思路，matrix3d。
+如果变换过程比较多的话，transform 中要书写很多属性，所以可以尝试另一种思路，matrix3d。
 
-我们看下如何使用 matrix3d 来表示。
+看下如何使用 matrix3d 来表示。
 
-利用之前的矩阵库，我们需要如下几个方法计算最终的变换矩阵：
+利用之前的矩阵库，需要如下几个方法计算最终的变换矩阵：
 
 - rotateZ：绕 Z 轴旋转。
 - rotateX：绕 X 轴旋转。
 - rotationY：绕 Y 轴旋转。
 - translate：平移。
 
-> 你可能没有发现矩阵相乘的方法，这是因为 rotateZ、rotateX、translate 方法允许传入一个矩阵作为左乘矩阵，返回一个组合矩阵。当然，你也可以用矩阵相乘方法来实现组合矩阵的求值，但是那样会多执行一些重复运算。
+> 矩阵相乘的方法没有在此出现，这是因为 rotateZ、rotateX、translate 方法允许传入一个矩阵作为左乘矩阵，返回一个组合矩阵。当然，也可以用矩阵相乘方法来实现组合矩阵的求值，但是那样会多执行一些重复运算。
 
-这几个方法在之前章节已经讲述过，所以我们拿来使用即可：
+这几个方法在之前章节已经讲述过，拿来使用即可：
 
 ```
 var deg = Math.PI / 180;
@@ -1345,13 +1337,13 @@ target = matrix.translate(target, 0, 30, 0, target);
 target = matrix.rotateX(target, 45 * deg, target);
 ```
 
-我们将 target 打印出来看一下：
+将 target 打印出来看一下：
 
 ```
 [ 4.329780632585522e-17, 0.7071067690849304, -0.7071067690849304, 0, 0.7071067690849304, 0.5, 0.5, 0, 0.7071067690849304, -0.5, -0.5, 0, -1.298934236097771e-15, 21.21320343017578, 21.21320343017578, 1]
 ```
 
-target 就是上面几种变换组合后的最终矩阵，我们将它转化为 css 的 matrix3d 属性：
+target 就是上面几种变换组合后的最终矩阵，将它转化为 css 的 matrix3d 属性：
 
 ```
 // 将矩阵转化为transform matrix 属性值。
@@ -1376,26 +1368,26 @@ function matrix2css(m){
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets2019115168506ba371e5fbf~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-很显然，通过组合变换和 matrix，我们达到了同样的效果。
+很显然，通过组合变换和 matrix，达到了同样的效果。
 
-通过比较上面的两种实现，我们发现，组合变换相较于 matrix 更容易理解，当变换次数较少时，使用组合变换更优一些。但是当变换次数越来越多时，就需要使用 matrix 了。那么，什么时候变换次数会越来越多呢？
+通过比较上面的两种实现可以发现，组合变换相较于 matrix 更容易理解，当变换次数较少时，使用组合变换更优一些。但是当变换次数越来越多时，就需要使用 matrix 了。那么，什么时候变换次数会越来越多呢？
 
 - 分段动画
   - 当一段动画分成很多段时，变换次数会越来越多，这时，需要针对动画做关键帧处理，每一个关键帧处使用 matrix 来表示。
 - 复杂交互
   - 当交互比较复杂时，每一次交互都会在原来的变换属性上触发一次或者多次变换，这就需要使用数学库的矩阵乘法来计算组合矩阵。
 
-下面，我会通过一个魔方格子的旋转来讲述 matrix3d 的使用场景。
+下面通过一个魔方格子的旋转来讲述 matrix3d 的使用场景。
 
 ### 魔方格子的旋转
 
-大家都玩过魔方吧，沿不同方向进行旋转，可以将一个面的格子绕指定轴旋转 90 度。
+魔方沿不同方向进行旋转，可以将一个面的格子绕指定轴旋转 90 度。
 
-接下来我们构造一个魔方格子，演示一下如何通过 matrix3d 完成这种交互。
+接下来构造一个魔方格子，演示如何通过 matrix3d 完成这种交互。
 
 #### 构造魔方格子
 
-首先，我们要构造一个魔方格子，魔方格子是一个立方体，在前面章节我曾经介绍过图片盒的实现，此处仍然采用图片盒的实现方式，只不过将图片换成 DIV 容器。
+首先，要构造一个魔方格子，魔方格子是一个立方体，在前面章节曾介绍过图片盒的实现，此处仍然采用图片盒的实现方式，只不过将图片换成 DIV 容器。
 
 ```
 <div class="block" id="block">
@@ -1448,7 +1440,7 @@ function matrix2css(m){
 }
 ```
 
-为了便于观察，我们为让魔方格子旋转起来：
+为了便于观察，让魔方格子旋转起来：
 
 ```
 @keyframes rotate {
@@ -1470,7 +1462,7 @@ function matrix2css(m){
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets201911516850e6ba543ba69~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-上图魔方格子的旋转是通过CSS 中的 `animation` 属性 来实现的，并没有通过交互来触发，接下来，我们讲解一下如何通过鼠标滑动进行旋转。
+上图魔方格子的旋转是通过CSS 中的 `animation` 属性 来实现的，并没有通过交互来触发，接下来讲解如何通过鼠标滑动进行旋转。
 
 #### 旋转
 
@@ -1481,7 +1473,7 @@ function matrix2css(m){
 - 从上往下：绕 X 轴旋转 θ 角。
 - 从下往上：绕 X 轴旋转 -θ 度。
 
-当然旋转需要有一个参照点，默认盒子中心。在上一章《四元数的应用：使用鼠标控制模型的旋转》中我们使用四元数、欧拉角分别实现了模型的旋转交互，本节依然采用旋转矩阵的生成原理，区别就是将生成的矩阵转化为 CSS 中 transform 的 matrix3d 属性值。
+当然旋转需要有一个参照点，默认盒子中心。在上一章《四元数的应用：使用鼠标控制模型的旋转》中使用四元数、欧拉角分别实现了模型的旋转交互，本节依然采用旋转矩阵的生成原理，区别就是将生成的矩阵转化为 CSS 中 transform 的 matrix3d 属性值。
 
 ```
 var currentQ = {x:0, y:0, z:0, w:1};
@@ -1496,7 +1488,7 @@ currentQ = matrix.multiplyQuaternions(q, lastQ);
 currentMatrix = matrix.makeRotationFromQuaternion(currentQ);
 ```
 
-通过上述方式我们计算出了当前旋转矩阵 currentMatrix，接下来，我们使用上面介绍的矩阵转化成对应 css 的函数，生成对应的 transform 属性。
+通过上述方式计算出了当前旋转矩阵 currentMatrix，接下来使用上面介绍的矩阵转化成对应 css 的函数，生成对应的 transform 属性。
 
 ```
 var style = matrix2css(currentMatrix);
@@ -1508,12 +1500,12 @@ var style = matrix2css(currentMatrix);
 document.querySelector('#block').style.transform = style;
 ```
 
-至此，我们通过 matrix3d 实现了使用鼠标控制魔方格子旋转的效果。
+至此，通过 matrix3d 实现了使用鼠标控制魔方格子旋转的效果。
 
 ![](/webgl-images/p1-jj.byteimg.comtos-cn-i-t2oaga2asxgold-user-assets20191151685233083461428~tplv-t2oaga2asx-zoom-in-crop-mark3024000.awebp)
 
-### 回顾
+### 小结
 
-以上就是数学矩阵库与 CSS transform 属性的高级使用技巧，通过这两个例子的学习，大家应该对 transform 的 3D 属性更有信心了，希望大家以后碰到交互给出的 3D 特效时不再畏手畏脚，而是大胆的拥抱它。
+以上就是数学矩阵库与 CSS transform 属性的高级使用技巧，通过这两个例子的学习，对 transform 的 3D 属性应该更有信心了，碰到交互给出的 3D 特效时可以大胆地实现它。
 
-至此，我们对 CSS 的 3D 属性的学习就告一段落了。下一节，我们还是回到 WebGL 的学习内容上来。
+至此，CSS 的 3D 属性的内容告一段落，后续内容回到 WebGL。

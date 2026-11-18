@@ -42,7 +42,7 @@ tags: [可视化, ECharts, D3, Canvas]
 
 [Anime.js](https://animejs.com/) 是轻量级、功能强大的 JavaScript 动画库。它可以处理 CSS 属性、SVG、DOM 属性和 JavaScript 对象，让复杂的动画实现变得简单高效
 
-> 本文示例均基于 Anime.js v3（CDN 固定 3.2.1）。v4 起改为纯 ESM 导出（`import { animate, createTimeline } from "animejs"`），API 命名有较大调整，使用时请注意所装版本。
+> 示例均基于 Anime.js v3（CDN 固定 3.2.1）。v4 起改为纯 ESM 导出（`import { animate, createTimeline } from "animejs"`），API 命名有较大调整，使用时需确认所安装的版本。
 
 相较于其他动画库（如 GSAP）或纯 CSS 动画，Anime.js 在功能、体积和易用性上取得了很好的平衡：
 
@@ -69,7 +69,7 @@ import anime from "animejs"
 <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 ```
 
-简单示例：方块平移动画开始
+简单示例：方块平移动画
 
 ```html
 <!DOCTYPE html>
@@ -160,7 +160,7 @@ import anime from "animejs"
 
 ### 核心概念
 
-Anime.js 的核心是 `anime()` 函数，它接受一个对象作为参数，用于描述动画的所有细节。该函数会返回一个动画实例，你可以用它来控制动画（播放、暂停等）
+Anime.js 的核心是 `anime()` 函数，它接受一个对象作为参数，用于描述动画的所有细节。该函数会返回一个动画实例，可用于控制动画（播放、暂停等）
 
 `targets` 参数指定动画作用于哪些元素。它的值可以是：
 
@@ -178,7 +178,7 @@ Anime.js 的核心是 `anime()` 函数，它接受一个对象作为参数，用
   - `opacity`, `backgroundColor`, `fontSize` 等
   - **Transform 属性**: `translateX`、`rotate`、`scale`。推荐使用 `transform` 来实现位移、旋转和缩放，以获得更好的性能
 - **SVG 属性**: `points`, `d` (用于路径), `fill` 等
-- **JavaScript 对象属性**: 如果 `targets` 是一个 JS 对象，你可以对它的任意属性做动画
+- **JavaScript 对象属性**: 如果 `targets` 是一个 JS 对象，则可对其任意属性做动画
 
 #### 动画参数
 

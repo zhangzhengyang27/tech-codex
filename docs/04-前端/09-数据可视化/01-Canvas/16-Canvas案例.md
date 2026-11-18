@@ -10,6 +10,8 @@ tags: [可视化, ECharts, D3, Canvas]
 
 ## 1. 认识 canvas
 
+canvas 的使用围绕三个要素展开：画布对象、上下文对象（画笔）与绘制方法。以下示例演示从获取画布、建立路径到填充描边的完整流程。
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -60,6 +62,8 @@ tags: [可视化, ECharts, D3, Canvas]
 ```
 
 ## 2. 绘制形状
+
+路径系统支持绘制任意多边形、圆形与文本，配合 lineCap、lineJoin 等属性控制线条外观。
 
 ### 不规则形状
 
@@ -172,7 +176,7 @@ tags: [可视化, ECharts, D3, Canvas]
 
 ## 3. 绘制图像
 
-
+drawImage() 可将图片与视频帧绘制到画布，支持位移、缩放、裁剪三种参数形式，并可叠加文字水印或进行像素级处理。
 
 ### 图片
 
@@ -343,6 +347,8 @@ tags: [可视化, ECharts, D3, Canvas]
 ```
 
 ## 4. 变形
+
+变换的本质是对坐标系的操作：rotate() 旋转、translate() 平移、scale() 缩放，配合 save()/restore() 保存与恢复画笔状态。
 
 ### 旋转
 
@@ -576,6 +582,8 @@ tags: [可视化, ECharts, D3, Canvas]
 
 ## 5. 叠加模式
 
+globalCompositeOperation 决定源图像（新绘制）与目标图像（已有内容）的合成方式，默认值为 source-over。
+
 ### 图形叠加
 
 ```html
@@ -711,6 +719,8 @@ tags: [可视化, ECharts, D3, Canvas]
 ```
 
 ## 6. 画板
+
+画板案例综合运用路径绘制、像素快照（getImageData/putImageData）与鼠标事件监听，实现画笔、矩形切换与图片导出。
 
 [跳转](http://vuepress.zhangzhengyang.com/canvas-code/6画板/index.html)
 
@@ -910,6 +920,8 @@ tags: [可视化, ECharts, D3, Canvas]
 :::
 
 ## 7. 图片压缩
+
+图片压缩利用 canvas 的 drawImage 缩放能力与 toDataURL 导出能力，在前端即可完成图片类型校验、尺寸压缩与格式转换。
 
 ```html
 <!DOCTYPE html>

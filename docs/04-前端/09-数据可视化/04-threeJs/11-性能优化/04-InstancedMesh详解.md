@@ -1142,3 +1142,7 @@ function checkCollisions(instancedMesh) {
   }
 }
 ```
+
+## 小结
+
+InstancedMesh 的价值在于把 N 个重复对象压缩为 1 次 Draw Call：所有实例共享同一份 Geometry 与 Material，逐实例差异仅通过 `instanceMatrix`（必选）与 `instanceColor`（可选）两个 `InstancedBufferAttribute` 表达。矩阵操作遵循「dummy 对象设置变换 → `updateMatrix()` → `setMatrixAt()` → `needsUpdate`」的标准流程，颜色通过 `setColorAt` 配合 `vertexColors: true` 生效；需要更多逐实例数据时，向几何体挂载自定义 `InstancedBufferAttribute` 并在 `ShaderMaterial` 中通过 `instanceMatrix` 与自定义 attribute 访问。交互（`raycaster.intersectObject` 返回 `instanceId`）、高亮、动态更新均以实例索引为单位进行，但要注意其约束：实例不是真正的 Object3D、射线检测仍逐实例遍历、静态场景初始化后不应反复标记 `needsUpdate`。适用判断标准很简单——几何体与材质相同且数量在百级以上，优先考虑实例化。

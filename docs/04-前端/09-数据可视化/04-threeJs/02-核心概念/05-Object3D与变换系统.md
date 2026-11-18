@@ -1179,3 +1179,7 @@ function getObjectPath(obj) {
 
 // 输出示例: "Scene > car > wheel_FL"
 ```
+
+## 小结
+
+Object3D 是 Three.js 场景图的统一抽象：变换由 position/rotation/scale（及 quaternion）描述，经矩阵传递到世界空间；层级通过 `add()`/`attach()` 建立，子对象继承父对象的全部变换；本地坐标与世界坐标经 `localToWorld()`/`worldToLocal()` 双向转换。旋转表示上，欧拉角直观但存在万向锁，四元数适用于动画与复杂旋转。实践中应通过 `add()` 而非直接操作 `children` 建立层级、使用 Group 按职能组织场景、依赖 `frustumCulled` 与 `renderOrder` 控制渲染行为，并用 `userData` 与 `EventDispatcher` 扩展对象数据与交互。

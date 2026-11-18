@@ -1,6 +1,6 @@
 ---
 title: JavaScript API
-description: "百度地图JavaScript API是一套由JavaScript语言编写的应用程序接口，可帮助您在网站中构建功能丰富、交互性强的地图应用。"
+description: "百度地图JavaScript API是一套由JavaScript语言编写的应用程序接口，用于在网站中构建功能丰富、交互性强的地图应用。"
 keywords: [JavaScript, API]
 category: 前端
 tags: [可视化, ECharts, D3, Canvas]
@@ -9,7 +9,9 @@ tags: [可视化, ECharts, D3, Canvas]
 
 # JavaScript API
 
-百度地图JavaScript API是一套由JavaScript语言编写的应用程序接口，可帮助您在网站中构建功能丰富、交互性强的地图应用。
+## 概念说明
+
+百度地图 JavaScript API 是一套由 JavaScript 语言编写的应用程序接口，用于在网站中构建功能丰富、交互性强的地图应用。API 分为两个版本线：`BMap`（v3.0 经典版）与 `BMapGL`（WebGL 版），前者兼容 IE9+，后者提供 3D 渲染与倾斜旋转能力。接口体系按「类（Map/Point/Marker/Polyline 等）→ 服务类（检索、路线、地理编码、定位）→ 事件系统 → 加载与工程化」四个层面展开。
 
 ## 版本说明
 
@@ -820,7 +822,11 @@ function destroyMap() {
 }
 ```
 
-## 下一步
+## 小结
 
-- 了解 [Web服务API](04-Web服务API.md) 服务端调用
-- 查看 [实战案例](07-实战案例.md)
+JavaScript API 的使用要点可归纳为：版本选型上，需要 3D/海量点原生支持时选 GL 版，需要老浏览器兼容时选 v3.0；类使用上遵循「构造函数 + Options 配置表 + 方法列表」的统一模式；大数据量场景优先使用 `PointCollection` 海量点与 `MarkerClusterer` 点聚合，而非逐个创建 Marker；性能优化的三板斧是按需引入工具库、批量操作前临时禁用拖拽、对高频事件节流；实例销毁前应依次清理覆盖物、控件与事件监听。
+
+## 延伸阅读
+
+- [Web服务API](04-Web服务API.md)
+- [实战案例](07-实战案例.md)

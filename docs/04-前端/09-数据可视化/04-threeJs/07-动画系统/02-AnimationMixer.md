@@ -911,6 +911,15 @@ function animate() {
 animate();
 ```
 
+## 小结
+
+- 动画系统四层结构：AnimationMixer 调度时间线与混合，AnimationAction 控制播放状态，AnimationClip 承载数据，KeyframeTrack 存储属性关键帧；渲染循环中必须调用 `mixer.update(delta)`。
+- 属性路径使用点号语法（`.position`、`.material.opacity`），六种 Track 类型与目标属性的数据格式一一对应。
+- Action 的核心控制项为 `loop`/`repetitions`/`timeScale`/`weight`/`clampWhenFinished`；交叉渐变（`crossFadeTo`/`crossFadeFrom`）要求两个动作均处于播放状态，`timeScale` 设为负值可实现倒放。
+- 多动画按权重混合实现状态过渡（idle/walk/run，权重和为 1），分层动画用多个 Mixer 分别驱动不同身体部位。
+- GLTF 模型的动画经 `gltf.animations` 获得，`reset().fadeIn(0.5).play()` 是标准的平滑切换序列；`finished`/`loop` 事件用于回调。
+- 动画不播放的排查顺序：`mixer.update` → `action.play()` → `weight` > 0 → `timeScale` ≠ 0；优化手段包括只更新可见对象、LOD 动画与 `clip.optimize()` 精简关键帧。
+
 ## 相关链接
 
 - [动画基础](01-动画基础.md)

@@ -9,7 +9,9 @@ tags: [可视化, ECharts, D3, Canvas]
 
 # ECharts API 参考
 
-本文档详细介绍 ECharts 的 API，包括全局 echarts 对象和 echartsInstance 实例对象。
+## 概念说明
+
+ECharts 的 API 分为两个层面：**全局 `echarts` 对象** 负责实例的创建与销毁（`init`/`dispose`）、多图联动（`connect`/`disconnect`）、按需注册（`use`/`registerMap`/`registerTheme`）以及图形工具（`echarts.graphic`）；**`echartsInstance` 实例对象** 由 `echarts.init` 返回，承担配置提交（`setOption`）、事件绑定（`on`/`off`）、行为派发（`dispatchAction`）、坐标转换与数据追加等运行时操作。本文档详细介绍 ECharts 的 API，包括全局 echarts 对象和 echartsInstance 实例对象。
 
 ## 全局 echarts 对象
 
@@ -839,6 +841,10 @@ option = {
   }]
 }
 ```
+
+## 小结
+
+API 使用的关键规律：`echarts.use` 等注册类接口必须在 `echarts.init` 之前调用；`setOption` 是唯一需要长期掌握的配置入口，三种合并模式覆盖增量更新与全量替换两类场景；事件与行为互为镜像，`on` 接收用户操作、`dispatchAction` 反向驱动；生命周期方面 `showLoading`/`hideLoading`/`clear`/`dispose` 分别对应加载、清空与销毁，实例销毁后不可再用。坐标类 API（`convertToPixel`/`convertFromPixel`/`containPixel`）是自定义覆盖层、标线等高级交互的基础。
 
 ## 相关链接
 

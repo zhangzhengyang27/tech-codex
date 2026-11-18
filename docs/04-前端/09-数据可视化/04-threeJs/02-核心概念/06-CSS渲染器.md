@@ -1,6 +1,6 @@
 ---
 title: CSS2D / CSS3D 渲染器
-description: "CSS2DRenderer 和 CSS3DRenderer 允许在 Three.js 3D 场景中使用 HTML 元素作为渲染对象。这使得我们可以将常规的 HTML/CSS 内容（文字、图片、表单、动画等）与 3D 对象结合，实现标签、信息面板、悬浮提示等丰富的交互效果。"
+description: "CSS2DRenderer 和 CSS3DRenderer 允许在 Three.js 3D 场景中使用 HTML 元素作为渲染对象，将常规的 HTML/CSS 内容（文字、图片、表单、动画等）与 3D 对象结合，实现标签、信息面板、悬浮提示等丰富的交互效果。"
 keywords: [CSS渲染器]
 category: 前端
 tags: [可视化, ECharts, D3, Canvas]
@@ -9,7 +9,7 @@ tags: [可视化, ECharts, D3, Canvas]
 
 # CSS2D / CSS3D 渲染器
 
-CSS2DRenderer 和 CSS3DRenderer 允许在 Three.js 3D 场景中使用 HTML 元素作为渲染对象。这使得我们可以将常规的 HTML/CSS 内容（文字、图片、表单、动画等）与 3D 对象结合，实现标签、信息面板、悬浮提示等丰富的交互效果。
+CSS2DRenderer 和 CSS3DRenderer 允许在 Three.js 3D 场景中使用 HTML 元素作为渲染对象。这类渲染器将常规的 HTML/CSS 内容（文字、图片、表单、动画等）与 3D 对象结合，实现标签、信息面板、悬浮提示等丰富的交互效果。
 
 ## 系统架构
 
@@ -1148,3 +1148,7 @@ if ('ontouchstart' in window) {
   labelElement.style.minWidth = '120px'
 }
 ```
+
+## 小结
+
+CSS 渲染器的本质是「3D 坐标 → 屏幕投影 → DOM transform 定位」的坐标同步机制：CSS2DObject 输出始终面向相机、无透视变形的平面标签，CSS3DObject/CSS3DSprite 则让 HTML 元素参与 3D 空间变换。工程要点包括：容器层设置 `pointerEvents: 'none'` 保证 3D 交互穿透（仅标签自身按需开启 `auto`）、每个渲染帧与 WebGLRenderer 同步调用 `render()`、大量标签使用对象池与视距裁剪控制 DOM 开销、后处理场景下将 CSS 层叠加在 composer 输出之上。

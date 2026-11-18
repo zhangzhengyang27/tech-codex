@@ -15,14 +15,14 @@ tags: [可视化, ECharts, D3, Canvas]
 ## Next.js 简介
 
 
-**[Next.js](https://nextjs.org/)** 是一个由 Vercel 公司创建的开源 Web 开发框架，专为提供基于 React 的 Web 应用程序的服务器端渲染（SSR）和静态网站生成（SSG）功能而设计。通过 Next.js，你可以创建高质量的 Web 应用程序，充分利用 React 组件的强大功能，同时享受服务器端渲染带来的性能和 SEO 优势。
+**[Next.js](https://nextjs.org/)** 是一个由 Vercel 公司创建的开源 Web 开发框架，专为基于 React 的 Web 应用程序提供服务器端渲染（SSR）和静态网站生成（SSG）功能。借助 Next.js，开发者能够构建高质量的 Web 应用程序，充分利用 React 组件的强大功能，同时获得服务器端渲染带来的性能与 SEO 优势。
 
 
-Next.js 提供了一系列强大功能和优化，这些功能和特点对于在 Next.js 中使用 SVG 图像具有显著优势。以下是 Next.js 的具体特点如何为 SVG 的使用带来益处：
+Next.js 提供了一系列强大的功能与优化，这些特性对在 Next.js 中使用 SVG 图像具有显著优势。以下是这些特点分别为 SVG 的使用带来的益处：
 
 
 -   **内置优化**：Next.js 的自动优化功能不仅包括对图片的优化，还能处理 SVG 图像。自动优化功能确保 SVG 图像在 Web 应用中加载更快，提升用户体验（UX）和核心 Web 指标（Core Web Vitals）。
--   **动态 HTML 流式传输：** 使用 Next.js 的动态 HTML 流式传输功能，SVG 图像可以更快地从服务器传输到客户端。这对于需要快速呈现复杂图形的应用特别有用，确保 SVG 图像在初始加载时迅速可见，提高用户满意度。
+-   **动态 HTML 流式传输**：使用 Next.js 的动态 HTML 流式传输功能，SVG 图像可以更快地从服务器传输到客户端。这对于需要快速呈现复杂图形的应用特别有用，确保 SVG 图像在初始加载时迅速可见，提高用户满意度。
 -   **高级路由与嵌套布局**：Next.js 的高级路由和嵌套布局支持，使得开发者能够在不同的页面和组件中轻松地复用 SVG 图像。文件系统路由的使用，使得管理和组织 SVG 图像变得更加简单。
 -   **CSS 支持**：Next.js 支持使用 CSS Modules、Tailwind CSS 等工具，这使得对 SVG 图像进行样式设置和定制变得更加灵活。开发者可以轻松地使用 CSS 来调整 SVG 的外观和动画效果，从而创建更具吸引力的用户界面。
 -   **服务器操作和中间件**：通过 Next.js 的服务器操作和中间件功能，开发者可以动态生成或修改 SVG 图像。例如，可以根据用户请求生成个性化的 SVG 图像，或者在服务器端进行 SVG 图像的优化和压缩，确保传输到客户端的 SVG 图像体积最小，加载最快。
@@ -36,7 +36,7 @@ Next.js 提供了一系列强大功能和优化，这些功能和特点对于在
 ## 快速开始
 
 
-要在 Next.js 中使用 SVG，首先需要创建一个 Next.js 应用。这与在 React 和 Vue 应用中使用 SVG 的过程类似。[创建一个新的 Next.js 应用](https://nextjs.org/docs/app/api-reference/create-next-app)非常简单，只需运行以下命令：
+在 Next.js 中使用 SVG，首先需要创建一个 Next.js 应用，这一过程与在 React 和 Vue 应用中使用 SVG 类似。[创建一个新的 Next.js 应用](https://nextjs.org/docs/app/api-reference/create-next-app)只需运行以下命令：
 
 
 ```
@@ -47,16 +47,13 @@ pnpm create next-app
 根据命令行中的提示进行相应选择，即可快速构建一个全新的 Next.js 应用。
 
 
-接下来，进入项目目录，并在命令行中执行 `pnpm run dev`，这将启动你新创建的 Next.js 应用。然后，在浏览器地址栏中输入 `http://localhost:3000`，你将会在浏览器中看到应用的默认页面。
+随后进入项目目录，在命令行中执行 `pnpm run dev` 启动应用，然后在浏览器地址栏访问 `http://localhost:3000` 即可看到应用的默认页面。
 
 
-恭喜你，专属于你的 Next.js 应用创建成功。
+在正式使用 SVG 之前，需要先调整 Next.js 项目的结构，具体可参考[官方推荐方式](https://nextjs.org/docs/getting-started/project-structure)。
 
 
-在开始聊 SVG 之前，我们还有一点准备工作需要做。首先，调整一下 Next.js 项目的结构，具体可参考[官方推荐方式](https://nextjs.org/docs/getting-started/project-structure)。
-
-
-你也可以按照下面这样的模式来设置 Next.js 项目的结构：
+常见的项目结构组织模式如下：
 
 
 ```
@@ -97,22 +94,19 @@ svg-nextjs/
 ```
 
 
-我选择了一种自己比较习惯的方式。
+以上是一种较为常见的组织方式。
 
 
-与此同时，我在 `src/assets` 添加了一些 `.svg` 文件，毕竟我们接下来更多的时间是与 SVG 打交道。另外，我将 `page.js` 中的内容尽可能简单化。
+与此同时，示例在 `src/assets` 目录中添加了若干 `.svg` 文件，后续内容均基于这些文件展开；`page.js` 中的内容则尽量保持简单。
 
 
-这个时候，你在浏览器中看到的页面非常干净。
-
-
-现在，准备就绪，我们开始进入今天真正的主题吧！
+此时浏览器中呈现的页面非常干净，准备工作即告完成。
 
 
 ## 了解 Next.js 应用中的 SVG 导入
 
 
-将 SVG 图像整合到你的 Next.js 项目中可以增强其视觉吸引力，并通过提供可缩放的图形来改善用户体验，保持在任何尺寸下的质量不变。下面是有效导入和使用 SVG 文件的方法，帮助你在 Next.js 应用程序中充分利用这一功能。
+将 SVG 图像整合到 Next.js 项目中可以增强视觉吸引力，并通过提供可缩放的图形改善用户体验，使图形在任何尺寸下保持质量不变。下面介绍在 Next.js 应用中有效导入和使用 SVG 文件的方法。
 
 
 ### 将 SVG 作为图像导入
@@ -151,7 +145,7 @@ export default App;
 ```
 
 
-不幸运的是，在 Next.js 项目中，要是直接通过 `<img>` 的 `src` 引用 SVG 文件，并不能像你所期望的那样，将 SVG 图形在浏览器中呈现：
+然而，在 Next.js 项目中，直接通过 `<img>` 的 `src` 引用 SVG 文件并不能如预期那样将 SVG 图形呈现在浏览器中：
 
 
 ```JavaScript
@@ -177,13 +171,10 @@ export default function Home() {
 ```
 
 
-浏览器控制台抛出错误信息：
+浏览器控制台会抛出错误信息。此时，VSCode 编辑器也会给出提示：[需要使用 `<image>` 元素（即 next/image）](https://nextjs.org/docs/messages/no-img-element)。
 
 
-你发现，智能的 VSCode 编辑器提示我们，[需要使用 `<image>` 元素(即 next/image）](https://nextjs.org/docs/messages/no-img-element) :
-
-
-根据上面提示，使用 `Image` 引入 SVG：
+按照提示改用 `Image` 组件引入 SVG：
 
 
 ```JavaScript
@@ -201,16 +192,13 @@ export default function Home() {
 ```
 
 
-正如你想的，浏览器正常的将你引入的 SVG 图像渲染出来了：
-
-
-这与我们所熟悉的 Vue 和 React 应用是不一样的。具体原委，稍后会阐述！
+此时浏览器即可正常渲染引入的 SVG 图像。这一行为与 Vue 和 React 应用中的表现并不相同，具体原因在后文阐述。
 
 
 ### 将 SVG 作为 CSS 背景
 
 
-虽然在 Next.js 中无法直接通过 `<img>` 引入 SVG ，但在 CSS 中将 SVG 用作背景图像，和我们以往所了解的应用是相同的：
+虽然在 Next.js 中无法直接通过 `<img>` 引入 SVG，但在 CSS 中将 SVG 用作背景图像的方式与常规 Web 应用相同：
 
 
 ```CSS
@@ -221,13 +209,13 @@ export default function Home() {
 ```
 
 
-你看到的类似流星的效果，就是 `bg.svg` 的效果。这种方法比较适用于不需要通过 JavaScript 或 CSS 进行操作的装饰背景。注意，CSS 中可接受 `<image>` 值类型的属性都可以像 `background-image` 应用 SVG。例如 `mask-image` 、`border-image` 等。
+页面呈现的类似流星的效果即是 `bg.svg` 的效果。这种方法比较适用于不需要通过 JavaScript 或 CSS 进行操作的装饰背景。注意，CSS 中所有可接受 `<image>` 值类型的属性都可以像 `background-image` 一样应用 SVG，例如 `mask-image`、`border-image` 等。
 
 
 ### 将 SVG 内联到 Next.js 应用中
 
 
-另一种方法是直接将 SVG 代码内联你到的 Next.js 组件中。这种方法简单直接，不需要任何额外的配置。只需要复制你的 SVG 代码，直接粘贴到 Next.js 组件文件中即可。
+另一种方法是直接将 SVG 代码内联到 Next.js 组件中。这种方法简单直接，不需要任何额外的配置，只需复制 SVG 代码并粘贴到组件文件中即可。
 
 
 ```JavaScript
@@ -246,7 +234,7 @@ export default function Home() {
 ```
 
 
-这种方式的最大优势是，你可以直接通过 CSS 或 JavaScript 来控制 SVG 图形：
+这种方式的最大优势在于可以直接通过 CSS 或 JavaScript 来控制 SVG 图形：
 
 
 ```CSS
@@ -263,19 +251,19 @@ svg:hover path {
 ```
 
 
-但是，请注意，对于大型 SVG 或使用多个 SVG 实例时，这可能不是最有效的方法。
+但需要注意，对于大型 SVG 或使用多个 SVG 实例的场景，这可能不是最有效的方法。
 
 
 ### 如何通过 Image 组件导入 SVG
 
 
-每个标准的 Next.js 项目都包含一个内置的 `Image 组件`（即 `next/image`），用于处理各种图像格式。你可以使用这个 `Image` 组件来处理位图和矢量图。因此，在 Next.js 应用程序中使用 SVG 或其他图像格式时，内置的 `Image` 组件几乎总是你的首选。
+每个标准的 Next.js 项目都包含一个内置的 `Image` 组件（即 `next/image`），用于处理各种图像格式，既可以处理位图也可以处理矢量图。因此在 Next.js 应用程序中使用 SVG 或其他图像格式时，内置的 `Image` 组件几乎总是首选。
 
 
 `Image` 组件是 Next.js 中加载和渲染图像（包括 SVG）的标准组件。该组件能够高效地加载和渲染图像，并优化图像以实现更快的页面加载速度、更好的性能和稳定性。它是 HTML 的 `<img>` 元素的增强版，提供了更多功能和更好的性能。
 
 
-对于本地 SVG 图像，你可以像下面的示例一样导入和使用 `Image` 组件：
+对于本地 SVG 图像，可按如下示例导入和使用 `Image` 组件：
 
 
 ```JavaScript
@@ -293,10 +281,10 @@ export default function Home() {
 ```
 
 
-通过这种方式，你可以确保在 Next.js 项目中高效地使用 SVG 图像，并提升页面的加载性能。 `priority` 属性确保重要的图像优先加载，从而改善用户体验。
+通过这种方式，可以在 Next.js 项目中高效地使用 SVG 图像，并提升页面的加载性能。`priority` 属性确保重要的图像优先加载，从而改善用户体验。
 
 
-你不需要显式指定 `width` 和 `height` 属性，因为 Next.js 会自动确定它们的值。另一方面，对于远程图像， `src` 属性值应该是绝对或相对 URL 字符串。你应该像下面的示例中那样设置 `width` 和 `height` 属性：
+本地图像无需显式指定 `width` 和 `height` 属性，因为 Next.js 会自动确定它们的值。另一方面，对于远程图像，`src` 属性值应该是绝对或相对 URL 字符串，此时需要像下面的示例那样显式设置 `width` 和 `height` 属性：
 
 
 ```JavaScript
@@ -314,25 +302,22 @@ export default function Home() {
 ```
 
 
-在使用 `Image` 组件时，请注意 Next.js 会从项目的根目录中的 `public` 目录中提供静态资源，例如图像。因此，在上面的示例中，`facebook.svg` 文件必须位于 `public` 目录中的 `assets/icons` 目录中。否则，浏览器在渲染的时候会找不到 `facebook.svg` 文件：
+使用 `Image` 组件时需要注意，Next.js 从项目根目录的 `public` 目录中提供静态资源（例如图像）。因此上面的示例中，`facebook.svg` 文件必须位于 `public` 目录中的 `assets/icons` 目录中，否则浏览器渲染时将找不到 `facebook.svg` 文件。
 
 
-根据相关要求，将 `assets` 整个目录移入到 `public` 目录中：
+按照这一要求，将整个 `assets` 目录移入 `public` 目录之后，Next.js 的 `Image` 组件导入的 `facebook.svg` 图标即可在浏览器中得到正常渲染。
 
 
-此时，Next.js 的 `Image` 组件导入的 `facebook.svg` 图标能在浏览器中得到正常的渲染：
-
-
-你可以向 `Image` 组件传递多个 `props`。[查看 Image 组件文档以获取所需和可选 props 的完整列表](https://nextjs.org/docs/pages/api-reference/components/image)。在本节中，我们重点介绍了使用 `Image` 组件在 Next.js 应用程序中导入和渲染 SVG 的方法。
+可以向 `Image` 组件传递多个 `props`，[查看 Image 组件文档以获取所需和可选 props 的完整列表](https://nextjs.org/docs/pages/api-reference/components/image)。以上即是使用 `Image` 组件在 Next.js 应用程序中导入和渲染 SVG 的方法。
 
 
 ### 以组件的方式导入 SVG
 
 
-在 Next.js 项目中，有多种方式可以以组件的形式导入 SVG。常见的一种方法是在组件中直接内联 SVG 代码。这样做与直接将代码内联到 Next.js 项目中没有太大差异，不同之处在于，内联的 SVG 代码被封装成一个独立的组件，可以在任意次数和任意地方引用使用。
+在 Next.js 项目中，有多种以组件的形式导入 SVG 的方式。常见的一种方法是在组件中直接内联 SVG 代码：这样做与直接将代码内联到 Next.js 项目中没有太大差异，不同之处在于，内联的 SVG 代码被封装成一个独立的组件，可以在任意次数和任意地方引用使用。
 
 
-例如，我们在 `components` 目录中创建了一个名为 `FacebookIcon` 的组件，然后将 SVG 代码直接内联到该组件中：
+例如，在 `components` 目录中创建一个名为 `FacebookIcon` 的组件，然后将 SVG 代码直接内联到该组件中：
 
 
 ```JavaScript
@@ -349,7 +334,7 @@ export default FacebookIcon;
 ```
 
 
-接着你可以在 Next.js 项目中的任何地方引用 `FacebookIcon` 组件：
+随后即可在 Next.js 项目中的任何地方引用 `FacebookIcon` 组件：
 
 
 ```JavaScript
@@ -366,10 +351,10 @@ export default function Home() {
 ```
 
 
-此时，浏览器就会将 `facebook.svg` 对应的代码直接嵌入到 DOM 中，并渲染出 Facebook 图标：
+此时，浏览器会将 `facebook.svg` 对应的代码直接嵌入到 DOM 中，并渲染出 Facebook 图标。
 
 
-另一种方式是通过调整 Next.js 的配置来处理 SVG 文件，例如，使用 `@svgr/webpack` 加载器将 SVG 转换为 Next.js 组件。这意味着，你无需直接在代码中处理繁琐的 SVG 语法，只需将 SVG 文件导入为 Next.js 组件，然后像使用任何其他 Next.js 组件一样使用它们。这需要在项目的 `next.config.js` 文件中设置[自定义的 Webpack 配置](https://nextjs.org/docs/pages/api-reference/next-config-js/webpack)。
+另一种方式是通过调整 Next.js 的配置来处理 SVG 文件，例如使用 `@svgr/webpack` 加载器将 SVG 转换为 Next.js 组件。这样无需在代码中直接处理繁琐的 SVG 语法，只需将 SVG 文件导入为 Next.js 组件，然后像使用任何其他 Next.js 组件一样使用它们。这需要在项目的 `next.config.js` 文件中设置[自定义的 Webpack 配置](https://nextjs.org/docs/pages/api-reference/next-config-js/webpack)。
 
 
 ```JavaScript
@@ -407,7 +392,7 @@ export default nextConfig;
 ```
 
 
-现在，SVGR 已经设置好了，这使你可以直接将 SVG 文件作为 Next.js 组件导入到你的项目中。
+SVGR 配置完成之后，即可直接将 SVG 文件作为 Next.js 组件导入到项目中。
 
 
 ```JavaScript
@@ -429,22 +414,22 @@ export default function Home() {
 这种方法简化了使用 SVG 的过程，使其与任何其他 Next.js 组件一样易于使用。
 
 
-在 Next.js 项目中，除了可以使用像 `@svgr/webpack` 这样的工具导入 SVG 外，还有许多类似的工具包可供选择。这些工具都可以帮助你将 SVG 导入到 Next.js 项目中，例如 `next-images` 和 `babel-plugin-inline-react-svg`。我们不会在这里详细探讨它们的使用，但如果你感兴趣，可以查看它们各自的使用文档。相比之下，我更喜欢使用 `@svgr/webpack`，因为 [SVGR](https://react-svgr.com/) 的功能已经非常强大了，几乎可以满足所有使用 SVG 的需求。
+在 Next.js 项目中，除了可以使用像 `@svgr/webpack` 这样的工具导入 SVG 外，还有许多类似的工具包可供选择，例如 `next-images` 和 `babel-plugin-inline-react-svg`，它们同样可以将 SVG 导入到 Next.js 项目中，具体用法可查阅各自的文档。相比之下，`@svgr/webpack` 是更推荐的选择，因为 [SVGR](https://react-svgr.com/) 的功能已经非常强大，几乎可以满足所有使用 SVG 的需求。
 
 
 ## 比较在 Next.js 中导入 SVG 的选项
 
 
-正如前面所述，在 Next.js 项目中，有多种导入和使用 SVG 的方法，每种方法都有其独特的用途。
+如前所述，在 Next.js 项目中有多种导入和使用 SVG 的方法，每种方法都有其独特的适用场景。
 
 
 首先，Next.js 内置了 `Image` 组件，可以高效地加载和渲染各种图像格式，包括 SVG。这个组件是 HTML 图像元素 `<img>` 的增强版，能够提供内置的性能优化，使页面加载更快，性能更佳。
 
 
-其次，你可以选择手动导入 SVG 或使用 `@svgr/webpack` 工具将 SVG 内联到 Next.js 组件中。这种方法允许你在 CSS、JavaScript 和 React 中更灵活地操控 SVG，例如添加样式、控制交互等。但是，内联 SVG 会使 React 组件变得难以阅读和维护，并可能增加组件的大小，而且无法享受 Image 组件的内置优势。
+其次，可以选择手动导入 SVG 或使用 `@svgr/webpack` 工具将 SVG 内联到 Next.js 组件中。这种方法允许在 CSS、JavaScript 和 React 中更灵活地操控 SVG，例如添加样式、控制交互等。但是，内联 SVG 会使 React 组件变得难以阅读和维护，并可能增加组件的大小，而且无法享受 Image 组件的内置优势。
 
 
-另外，你还可以使用第三方包将 SVG 引入到 Next.js 项目中，比如前文提到的 `next-images` 包。这种方法可以通过 Base64 编码来减少 HTTP 请求，但它不像内置的 `Image` 组件那样执行内置图像优化和压缩。需要注意的是，使用第三方包会给应用程序带来额外的捆绑包，并需要考虑长期维护、安全性和许可要求等方面的问题。
+另外，还可以使用第三方包将 SVG 引入到 Next.js 项目中，比如前文提到的 `next-images` 包。这种方法可以通过 Base64 编码来减少 HTTP 请求，但它不像内置的 `Image` 组件那样执行内置图像优化和压缩。需要注意的是，使用第三方包会给应用程序带来额外的捆绑包，并需要考虑长期维护、安全性和许可要求等方面的问题。
 
 
 这些方式都各有利弊，选择合适的导入方式取决于项目的需求和优先级。
@@ -453,10 +438,10 @@ export default function Home() {
 ## 在 Next.js 中使用内联 SVG 和外部 SVG
 
 
-尽管在将 SVG 集成到 Next.js 项目中有多种方法，但对于 Web 开发者而言，实际上主要分为两种：**内联 SVG** 和**外部 SVG**。这两种方式各有优劣，对于项目的性能、可维护性、可访问性和 SEO 都有影响。
+尽管将 SVG 集成到 Next.js 项目中有多种方法，但从使用形态上看，实际上主要分为两种：**内联 SVG** 和**外部 SVG**。这两种方式各有优劣，对项目的性能、可维护性、可访问性和 SEO 都有影响。
 
 
-内联 SVG 直接将代码嵌入到你的 Next.js 组件中。这种方法允许你使用 CSS 或 JavaScript 轻松地操作 SVG 属性，如颜色或大小。内联 SVG 可以通过减少所需的 HTTP 请求数量来提高应用的性能。然而，这可能会增加 HTML 文档的大小，对于大型 SVG 文件可能会影响页面初始加载时间。
+内联 SVG 直接将代码嵌入到 Next.js 组件中。这种方法允许使用 CSS 或 JavaScript 轻松地操作 SVG 属性（如颜色或大小），并且可以通过减少所需的 HTTP 请求数量来提高应用的性能。然而，这可能会增加 HTML 文档的大小，对于大型 SVG 文件可能会影响页面初始加载时间。
 
 
 ```JavaScript
@@ -468,7 +453,7 @@ const InlineSVGExample = () => (
 ```
 
 
-另一方面，外部 SVG 是通过 `img` 标签中的 URL 引用或通过 Next.js 的 `Image` 组件加载的，以进行优化。这种方法使你的 HTML 文档保持精简，但对于每个 SVG 需要额外的 HTTP 请求。这对于缓存用于多个页面的 SVG 文件很有益。
+另一方面，外部 SVG 是通过 `img` 标签中的 URL 引用或通过 Next.js 的 `Image` 组件加载的，以进行优化。这种方法使 HTML 文档保持精简，但对于每个 SVG 需要额外的 HTTP 请求。这种方式对于缓存用于多个页面的 SVG 文件很有益。
 
 
 ```JavaScript
@@ -481,28 +466,28 @@ const ExternalSVGExample = () => (
 ```
 
 
-在 Next.js 项目中选择内联 SVG 和外部 SVG 取决于你的应用程序的具体需求。内联 SVG 提供更多的控制和即时渲染，这对于交互式或动态样式的图形非常理想。外部 SVG 更适用于静态图像和图标，这些图像和图标受益于缓存机制。
+在 Next.js 项目中选择内联 SVG 还是外部 SVG，取决于应用程序的具体需求。内联 SVG 提供更多的控制和即时渲染，适合交互式或动态样式的图形；外部 SVG 更适用于静态图像和图标等受益于缓存机制的资源。
 
 
 ## SVG 在 Next.js 应用中的实践
 
 
-在前面的讨论中，我们详细探讨了在 Next.js 应用中导入 SVG 的各种方式以及它们的优缺点。接下来，通过一些实际用例，我希望能够更好地帮助大家理解在 Next.js 应用中如何使用 SVG。
+前文详细探讨了在 Next.js 应用中导入 SVG 的各种方式及其优缺点，下面通过几个实际用例演示 SVG 在 Next.js 应用中的使用。
 
 
 ### 案例一：动态化 SVG 图标
 
 
-Next.js 提供了一个图像组件，即 `Image`，它支持传统的位图图像和 SVG 文件。它使用了 HTML 的 `<img>` 元素，并且可以从 `public` 目录加载图像，这对于静态图像（如插图）来说非常有效。但是，如果你想要对 SVG 图像进行更多的动态操作，那么 `Image` 组件的功能就显得有些受限了。不过，在 Next.js 应用中，你有几个选项可以考虑。
+Next.js 提供了一个图像组件 `Image`，它支持传统的位图图像和 SVG 文件。它基于 HTML 的 `<img>` 元素实现，并且可以从 `public` 目录加载图像，这对于静态图像（如插图）来说非常有效。但是如果想要对 SVG 图像进行更多的动态操作，`Image` 组件的功能就显得有些受限。此时在 Next.js 应用中有两个可选方案。
 
 
-第一个选项是，使用 JSX 创建 SVG 组件。它的好处是，由于它变成了一个 React 组件，你可以更灵活地定制 SVG。然而，缺点是它不再是一个独立的 SVG 图像。另一个选项是，使用 `@svgr/webpack` 加载器，直接将 SVG 以组件的方式导入到 Next.js 应用中。
+第一个方案是使用 JSX 创建 SVG 组件。由于它变成了一个 React 组件，可以更灵活地定制 SVG；缺点是它不再是一个独立的 SVG 图像。另一个方案是使用 `@svgr/webpack` 加载器，直接将 SVG 以组件的方式导入到 Next.js 应用中。
 
 
-需要注意的是，当使用这种解决方案时，SVG 图像将直接导入到你的 JavaScript 包中。因此，与原生 Next.js 版本的异步加载图像相比，页面总大小会增加。出于这个原因，我不建议将此解决方案用于大型插图，除非它们需要动态功能。然而，对于图标来说，这是一个很好的解决方案，因为它们成为页面的一部分，消除了图像加载时的闪烁。
+需要注意的是，使用 `@svgr/webpack` 方案时，SVG 图像将直接导入到 JavaScript 包中，与 Next.js 原生的异步加载图像相比，页面总大小会增加。因此不建议将该方案用于大型插图，除非它们需要动态功能；而对于图标来说，这是一个很好的解决方案，因为图标成为页面的一部分，消除了图像加载时的闪烁。
 
 
-接下来，我们使用 `@svgr/webpack` 加载器，直接将“点赞”图标（`heart.svg`）导入 Next.js 项目中。
+下面使用 `@svgr/webpack` 加载器，直接将“点赞”图标（`heart.svg`）导入 Next.js 项目。
 
 
 首先，`heart.svg` 文件存放在 `public/assets/icons` 目录下，相应的 SVG 代码如下：
@@ -515,10 +500,7 @@ Next.js 提供了一个图像组件，即 `Image`，它支持传统的位图图�
 ```
 
 
-非常干净的一段 SVG 源码。
-
-
-接下来，在 `page.js` 中来显示 SVG 文件：
+接下来在 `page.js` 中显示 SVG 文件：
 
 
 ```JavaScript
@@ -536,17 +518,17 @@ export default function Home() {
 ```
 
 
-现在，如果我们启动 Next.js 应用并加载页面，我们应该会在中心看到一个黑色的“心形”图形。
+启动 Next.js 应用并加载页面后，页面中心会显示一个黑色的“心形”图形。
 
 
-假设，我们需要的一个具有点赞功能的“心形”图标。
+假设需要一个具有点赞功能的“心形”图标：
 
 
 -   点赞前，“心形”图标具有一个灰色描边效果
 -   点赞后，“心形”图标具有一个红色填充效果
 
 
-基于上面的代码，我们给 `<Heart>` 组件传入几个关键属性，例如 `stroke` （描边颜色）、`strokeWidth` （描边粗细）和 `fill` （填充颜色）。
+基于上面的代码，给 `<Heart>` 组件传入几个关键属性，例如 `stroke`（描边颜色）、`strokeWidth`（描边粗细）和 `fill`（填充颜色）：
 
 
 ```JavaScript
@@ -569,16 +551,16 @@ export default function Home() {
 ```
 
 
-正如你所看到的，在浏览器中默认呈现的就是“点赞”前的心形图标。这主要得益于 `@svgr/webpack` ，一旦使用它将 SVG 文件以组件的方式集成到 Next.js 应用中时，你就可以像使用 React 组件那样，使用该组件。如上面代码所示，将 `fill` 、`stroke` 和 `strokeWidth` 当作组件的 `props` 传入。一旦构建完成，你会发现，渲染出来的 SVG 代码中，`<Heart>` 组件传入的 `proprs` 自动透传到 SVG 的 `<svg>` 元素上，从而影响到它的子元素 `<path>` ，相应的就改变了 SVG 图形的效果：
+浏览器中默认呈现的就是“点赞”前的心形图标。这主要得益于 `@svgr/webpack`：一旦使用它将 SVG 文件以组件的方式集成到 Next.js 应用中，就可以像使用 React 组件那样使用该组件。如上面代码所示，`fill`、`stroke` 和 `strokeWidth` 作为组件的 `props` 传入；构建完成后，渲染出来的 SVG 代码中，`<Heart>` 组件传入的 props 会自动透传到 SVG 的 `<svg>` 元素上，进而影响其子元素 `<path>`，相应地改变 SVG 图形的效果。
 
 
-你可能已经注意到了，上面的效果中，“心形”描边效果有部分被裁剪了，这是因为图标在设计的时候，并没有考虑到描边粗细的扩展问题。上面的示例中，`strokeWidth="10"` 致使 SVG 图形比其视图框（`viewBox`）更大，因此超出的部分被裁剪掉了（`svg` 的 `overflow` 属性默认为 `hidden`）。
+上述效果中，“心形”描边效果有部分被裁剪了。这是因为图标在设计的时候，并没有考虑到描边粗细的扩展问题：示例中 `strokeWidth="10"` 致使 SVG 图形比其视图框（`viewBox`）更大，因此超出的部分被裁剪掉了（`svg` 的 `overflow` 属性默认为 `hidden`）。
 
 
-最快速的修复办法是在 CSS 中将 `svg` 元素的 `overflow` 属性设置为 `visible` 。但这种修复方案，并没有解决核心问题，SVG 图形依旧比它的视图框更大。
+最快速的修复办法是在 CSS 中将 `svg` 元素的 `overflow` 属性设置为 `visible`。但这种修复方案并没有解决核心问题，SVG 图形依旧比它的视图框更大。
 
 
-另外一种修复方案是通过调整视图框（`viewBox`）的大小，并将 `viewBox` 的 `<min-x>` 和 `<min-y>` 的值设置为负值，使图形保持在视图框的中间。例如：
+另外一种修复方案是通过调整视图框（`viewBox`）的大小，并将 `viewBox` 的 `<min-x>` 和 `<min-y>` 的值设置为负值，使图形保持在视图框的中间，例如：
 
 
 ```JavaScript
@@ -601,10 +583,10 @@ export default function Home() {
 ```
 
 
-现在“心形”在视图框（虚线所示）的中间，整个形状也是完整的。
+调整后“心形”位于视图框（虚线所示）的中间，整个形状也是完整的。
 
 
-虽然这种人工修改 `viewBox` 属性的值，可以解决问题，但其灵活性不够，一旦调整 `strokeWidth` 的值，很有可能还是会致使图形被视图框裁剪掉。庆幸的是，我们在 Next.js 应用中，我们有更好的方式来解决这个问题。可以创建一个组件来处理这个问题。你可以在 `components` 目录下创建一个名为 `SVGMargin` 组件：
+人工修改 `viewBox` 属性的值虽然可以解决问题，但其灵活性不够，一旦调整 `strokeWidth` 的值，图形仍有可能被视图框裁剪掉。在 Next.js 应用中有更好的方式来解决这个问题——创建一个组件来处理。例如在 `components` 目录下创建一个名为 `SVGMargin` 的组件：
 
 
 ```JavaScript
@@ -696,7 +678,7 @@ export const SVGMargin = ({ children, size: marginRatio }) => {
 ```
 
 
-可以像这样使用它：
+使用方式如下：
 
 
 ```JavaScript
@@ -722,10 +704,10 @@ export default function Home() {
 ```
 
 
-这里最大的挑战是由于 `@svgr/webpack` 加载器返回的是一个功能性组件，它不具备与原始组件相同的扩展功能。这意味着，为了添加这个功能，我们必须使用像 `React.cloneElement` 这样的 API，而 React 并不推荐使用它。甚至是为了实现某些功能，不得不进一步使用 `.type()` 这样的内部 React API，这在官方 React 资源中没有记录。
+这里最大的挑战在于 `@svgr/webpack` 加载器返回的是一个功能性组件，它不具备与原始组件相同的扩展功能。这意味着为了添加这个功能，必须使用像 `React.cloneElement` 这样的 API，而 React 并不推荐使用它；甚至为了实现某些功能，不得不进一步使用 `.type()` 这样的内部 React API，而这类 API 在官方 React 资源中没有记录。
 
 
-这意味着，你不得不为 `@svgr/webpack` 加载器写个包装器来实现一些常见的功能。因此，如果你定制一个高可用的组件，我更推荐的是将 SVG 代码内联到组件中。例如，我们不再依赖 `@svgr/webpack` 加载器直接将 SVG 文件转换为一个组件，而且单独在 `components` 中创建一个名为 `Heart` 的组件，然后从 `heart.svg` 文件中，复制所有 SVG 代码到 `Heart` 组件中：
+因此，若要定制一个高可用的组件，更推荐的做法是将 SVG 代码内联到组件中：不再依赖 `@svgr/webpack` 加载器直接将 SVG 文件转换为一个组件，而是在 `components` 中单独创建一个名为 `Heart` 的组件，然后把 `heart.svg` 文件中的所有 SVG 代码复制到 `Heart` 组件中：
 
 
 ```JavaScript
@@ -792,7 +774,7 @@ export default Heart;
 ```
 
 
-现在，你可以像下面这样使用 `Heart` 组件：
+随后即可按如下方式使用 `Heart` 组件：
 
 
 ```JavaScript
@@ -885,7 +867,7 @@ export default Heart;
 ```
 
 
-在引用 `Heart` 组件的地方定义点击事件函数，主要处理图形 `fill` 和 `stroke` 的颜色变换。从而实现点赞前和点赞后的两种视觉效果：
+在引用 `Heart` 组件的地方定义点击事件函数，主要处理图形 `fill` 和 `stroke` 的颜色变换，从而实现点赞前和点赞后的两种视觉效果：
 
 
 ```JavaScript
@@ -930,7 +912,7 @@ export default function Home() {
 ```
 
 
-上面的示例只是改变了 SVG 元素的样式属性。其实，还可以动态渲染 SVG 图形元素。这个与在 Vue 和 React 应用是相似的。我直接把上一篇（SVG 在 React 中的应用）中条件渲染 SVG 的 `Bars` 组件移入到 Next.js 中。
+上面的示例只是改变了 SVG 元素的样式属性，其实还可以动态渲染 SVG 图形元素，这与在 Vue 和 React 应用中的做法是相似的。以下将 SVG 在 React 应用中条件渲染 SVG 的 `Bars` 组件直接迁移到 Next.js 中。
 
 
 ```JavaScript
@@ -1080,22 +1062,19 @@ export default function Home() {
 ### 案例二：SVG 变形动效（Morph Shapes）
 
 
-SVG 变形动效是非常常见的一种效果，我们来看看如何在 Next.js 项目中使用 [Framer Motion](https://www.framer.com/motion/) 混合器与 [Flubber.js](https://github.com/veltman/flubber) 创建 SVG 变形动画。
+SVG 变形动效是非常常见的一种效果。下面介绍如何在 Next.js 项目中使用 [Framer Motion](https://www.framer.com/motion/) 混合器与 [Flubber.js](https://github.com/veltman/flubber) 创建 SVG 变形动画。
 
 
-借助它们实现的就是 SVG 变形动画。你是不是也想自己实现一个类似的动画效果？如果是的话，请继续往下阅读。
-
-
-需要知道的是，不管是在 CSS 中还是在 SVG 中，如果要从一个具有相同点数的 SVG （包括 CSS 的 `clip-path` 绘制的形状）变形为另一个 SVG，那么这是非常容易做到的。你不需要依赖任何库就能实现：
+需要知道的是，不管是在 CSS 中还是在 SVG 中，如果要从一个具有相同点数的 SVG（包括 CSS 的 `clip-path` 绘制的形状）变形为另一个 SVG，这是非常容易做到的，不需要依赖任何库就能实现：
 
 
 > Demo 地址：https://codepen.io/airen/full/MWdpaBX
 
 
-然而，如果希望能够将任何形状变形为你选择的另一个形状，这就比较棘手了。一旦你开始将两个完全不同的形状进行变形，你就会遇到跳跃、错误和反向变形等问题。为了解决这个问题，社区有很多人创建了一种算法，试图猜没两个形状之间的插值。例如 [GSAP 的 MorphSVGPlugin](https://gsap.com/docs/v3/Plugins/MorphSVGPlugin) 和 [Flubber.js](https://github.com/veltman/flubber) 等。
+然而，如果希望能够将任何形状变形为另一个任意选择的形状，这就比较棘手了。一旦将两个完全不同的形状进行变形，就会遇到跳跃、错误和反向变形等问题。为了解决这个问题，社区提供了多种猜测两个形状之间插值的算法实现，例如 [GSAP 的 MorphSVGPlugin](https://gsap.com/docs/v3/Plugins/MorphSVGPlugin) 和 [Flubber.js](https://github.com/veltman/flubber) 等。
 
 
-接下来，要向你展示的是使用 [Framer Motion ](https://www.framer.com/motion/)混合器与 [Flubber.js](https://github.com/veltman/flubber) 创建 SVG 变形动画。我们首先得在项目中安装这两个库的依赖包：
+下面演示使用 [Framer Motion](https://www.framer.com/motion/) 混合器与 [Flubber.js](https://github.com/veltman/flubber) 创建 SVG 变形动画，首先在项目中安装这两个库的依赖包：
 
 
 ```
@@ -1103,7 +1082,7 @@ pnpm install -D framer-motion flubber
 ```
 
 
-安装完相关的依赖之后，我们就可以使用 Flubber.js 库的 `Interpolate` 函数将一个形状变形为另一个形状，而且不断的循环这样的变形过程。然后借助 Framer Motion 给变形添加缓动效果。我们通过一个 `SVGMorph` 组件来实现这些功能：
+安装完相关的依赖之后，就可以使用 Flubber.js 库的 `interpolate` 函数将一个形状变形为另一个形状，并且不断循环这样的变形过程，再借助 Framer Motion 给变形添加缓动效果。这些功能通过一个 `SVGMorph` 组件来实现：
 
 
 ```JavaScript
@@ -1171,7 +1150,7 @@ export default SVGMorph;
 `SVGMorph` 组件使用 `flubber` 和 `framer-motion` 库实现了 SVG 路径的平滑形变动画。其中，通过 `useState` 管理当前路径索引，`useMotionValue` 和 `useTransform` 实现路径插值，`useEffect` 钩子管理动画的生命周期。
 
 
-接下来，我们使用 `SVGMorph` 组件来创建一个笑脸的图形变形动效。我把这个组件命名为 `Smile` 组件，在这个组件中，通过一个 `paths.js` 文件来管理变形图形用到的路径数据。通常为 SVG 图形的 `<path>` 元素的 `d` 属性对应的值。假设这个笑脸由以下这些数据组成：
+接下来使用 `SVGMorph` 组件创建一个笑脸的图形变形动效，组件命名为 `Smile`。在这个组件中，通过一个 `paths.js` 文件来管理变形图形用到的路径数据，通常为 SVG 图形的 `<path>` 元素的 `d` 属性对应的值。假设这个笑脸由以下数据组成：
 
 
 ```JavaScript
@@ -1243,15 +1222,13 @@ export default function Home() {
 ```
 
 
-最终你将在浏览器中看到的效果如下：
-
-
-刚才提到了，实现这种变形动效，还可以使用 [GSAP 的 MorphSVGPlugin](https://gsap.com/docs/v3/Plugins/MorphSVGPlugin) 实现。例如，[@tiffany choong 在 Codepen 提供了一个在 Vue 应用环境中使用 MorphSVGPlugin 实现的变形交互动画](https://codepen.io/tiffachoo/full/BaQpVeR)：
+最终在浏览器中呈现的效果如下。实现这种变形动效，还可以使用 [GSAP 的 MorphSVGPlugin](https://gsap.com/docs/v3/Plugins/MorphSVGPlugin) 实现，例如 [@tiffany choong 在 Codepen 提供了一个在 Vue 应用环境中使用 MorphSVGPlugin 实现的变形交互动画](https://codepen.io/tiffachoo/full/BaQpVeR)：
 
 
 > Demo 地址：https://codepen.io/tiffachoo/full/BaQpVeR
 
-在 Codepen 上，类似这样的变形动效还有很多，如果你感兴趣的话，可以尝试着将它们转换为 Next.js 组件（也可以是 Vue）：
+
+在 Codepen 上，类似这样的变形动效还有很多，都可以尝试将它们转换为 Next.js 组件（也可以是 Vue）：
 
 
 > Demo 集合：https://codepen.io/collection/naMaNQ
@@ -1260,13 +1237,13 @@ export default function Home() {
 ### 案例三：粘稠的数字变形
 
 
-在 SVG 中，我们使用 SVG 的滤镜功能可以轻易制作出各式各样的粘稠效果。例如下面这个带有粘稠的按钮效果：
+在 SVG 中，使用 SVG 的滤镜功能可以轻易制作出各式各样的粘稠效果，例如下面这个带有粘稠效果的按钮：
 
 
 > Demo地址：https://codepen.io/Unleashed-Design/full/gOrEvMV （来源于 [@Unleashed Design](https://codepen.io/Unleashed-Design)）
 
 
-实现上面的效果，最为关键是使用了下面这段代码，使用 SVG 制作了一个粘稠的滤镜（`#gooey`）效果：
+实现上面的效果，最为关键的是使用了下面这段代码，使用 SVG 制作了一个粘稠的滤镜（`#gooey`）效果：
 
 
 ```XML
@@ -1285,16 +1262,13 @@ export default function Home() {
 然后通过 CSS 的 `filter` 属性，将该滤镜应用于元素上。
 
 
-可以在 Next.js 应用中快速复制该效果。例如使用 SVG 滤镜和 [Framer Motion ](https://www.framer.com/motion/)（或 [GSAP 的 MorphSVGPlugin](https://gsap.com/docs/v3/Plugins/MorphSVGPlugin)）制作一个数字倒计时的效果，而且数字具有粘稠的变形动画效果：
+可以在 Next.js 应用中快速复制该效果，例如使用 SVG 滤镜和 [Framer Motion](https://www.framer.com/motion/)（或 [GSAP 的 MorphSVGPlugin](https://gsap.com/docs/v3/Plugins/MorphSVGPlugin)）制作一个数字倒计时效果，并且数字具有粘稠的变形动画效果。
 
 
-上面是一个 `5~1` 数字倒计时的效果。接下来，简单的向大家介绍一下，在 Next.js 应用中是如何使用 SVG 实现这个效果。
+下面以一个 `5~1` 数字倒计时效果为例，介绍在 Next.js 应用中如何使用 SVG 实现该效果。
 
 
-首先，我们需要每个数字对应的路径数据。这个很容易获得，你可以在一些图标库中获得，只不过它的路径数据比较复杂，会对性能有直接影响。在这里，我自己在 Figma 软件中使用钢笔工具描绘了这几个数字：
-
-
-然后将它导出为 SVG ，我们就获得了相应数字的路径数据：
+首先需要每个数字对应的路径数据。路径数据很容易获得，在一些图标库中都可以找到，只不过图标库中的路径数据比较复杂，会对性能有直接影响。示例中的数字是在 Figma 软件中使用钢笔工具描绘的，将其导出为 SVG 后就获得了相应数字的路径数据：
 
 
 ```XML
@@ -1313,7 +1287,7 @@ export default function Home() {
 ```
 
 
-在使用之前，最好是通过 [SVGOMG 工具](https://jakearchibald.github.io/svgomg/)对其进行优化。将优化之后每个 `<path>` 元素的 `d` 属性的值提取出来，保存在 `GooeyMorph` 组件中的 `paths.js` 文件中：
+在使用之前，最好通过 [SVGOMG 工具](https://jakearchibald.github.io/svgomg/)对其进行优化。将优化之后每个 `<path>` 元素的 `d` 属性的值提取出来，保存在 `GooeyMorph` 组件中的 `paths.js` 文件中：
 
 
 ```JavaScript
@@ -1437,10 +1411,10 @@ export default GooeyMorph;
 ```
 
 
-上面代码通过显示不同的数字路径，实现了路径的动态变换。与此同时，根据当前显示的数字路径，计算圆圈在路径上的位置，并通过动画让圆圈沿路径移动。并且通过 SVG 路径对图形进行处理，增加了视觉效果——粘稠的数字变换动效。
+上面代码通过显示不同的数字路径，实现了路径的动态变换。与此同时，根据当前显示的数字路径，计算圆圈在路径上的位置，并通过动画让圆圈沿路径移动。再通过 SVG 滤镜对图形进行处理，就增加了额外的视觉效果——粘稠的数字变换动效。
 
 
-这个效果不仅仅可以用于数字变换上，你可以用于任意你想要的图形变换上，例如下面这个使用 MorphSVGPlugin 制作的粘稠字母变形的动效：
+这个效果不仅仅可以用于数字变换上，也可以用于任意图形变换上，例如下面这个使用 MorphSVGPlugin 制作的粘稠字母变形的动效：
 
 
 > Demo 地址：https://codepen.io/AlikinVV/full/Bxoyww （来源于：[@Valery Alikin](https://codepen.io/AlikinVV)）

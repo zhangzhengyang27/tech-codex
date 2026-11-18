@@ -1146,6 +1146,14 @@ exporter.parse(
 5. **错误处理**：完善的加载失败处理和重试机制
 6. **资源释放**：不再使用的模型及时释放内存
 
+## 小结
+
+- GLTF/GLB 是 Web 3D 首选格式：GLB 单文件适合生产部署（单次请求、体积小），GLTF 多文件便于开发调试；完整覆盖几何体、PBR 材质、纹理、动画、骨骼蒙皮与变形目标。
+- GLTFLoader 返回对象的四个核心成员：`scene`（默认场景图）、`animations`（动画片段）、`cameras`、`asset`（元数据）；模型处理统一通过 `traverse` 遍历或 `getObjectByName` 定位。
+- 模型规范化三步：Box3 计算边界 → 按最大维度缩放到目标尺寸 → 按中心点居中；动画必须由渲染循环中的 `mixer.update(delta)` 驱动，切换动画用 `fadeOut`/`reset().fadeIn` 平滑过渡。
+- DRACO（网格压缩）与 KTX2（纹理压缩）解码器需显式配置解码器路径并调用 `detectSupport(renderer)`；错误信息含 DRACO/CORS/404 等关键字可据此分流处理。
+- 生产环境组合策略：GLB + DRACO 压缩（体积可减 60-80%）+ LoadingManager 统一进度 + 缓存克隆复用 + 懒加载按距离装载卸载，闲置模型及时释放。
+
 ## 相关链接
 
 - [OBJ 与其他格式](02-OBJ与其他格式.md)

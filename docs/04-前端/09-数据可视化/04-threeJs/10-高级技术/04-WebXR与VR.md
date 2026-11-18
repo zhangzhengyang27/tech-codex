@@ -1614,6 +1614,10 @@ renderer.xr.addEventListener('sessionstart', async () => {
 });
 ```
 
+## 小结
+
+WebXR 应用的骨架由四部分组成：启用 `renderer.xr.enabled` 并以 `setAnimationLoop`（而非 `requestAnimationFrame`）驱动渲染循环；通过 `navigator.xr.isSessionSupported()` 检测 VR/AR 能力后用 VRButton/ARButton 或自定义按钮发起 `requestSession()`；以 `XRReferenceSpace`（通常 `local-floor`）定义坐标原点与边界；再通过 `getController/getControllerGrip/getHand` 接入控制器事件与手部关节追踪。AR 模式额外依赖 hit-test 命中测试放置物体、anchors 锚点固定位置、light-estimation 光照估计匹配现实环境，且要求透明背景。工程实践上，VR 需以 72 FPS 为目标做渲染预算控制（简化材质、LOD、固定注视点渲染），会话初始化用 `requiredFeatures` 与 `optionalFeatures` 区分必需与增强能力，并通过 `sessionstart/sessionend` 事件管理资源与 UI 状态。
+
 ## 相关链接
 
 - [着色器编程](01-着色器编程.md)

@@ -1,6 +1,6 @@
 ---
 title: API参考
-description: 本章节提供 SVG DOM API 的快速参考，涵盖 SVGSVGElement、SVGGraphicsElement 等常用接口，getBBox、getCTM、坐标转换与元素创建等要点
+description: SVG DOM API 快速参考，涵盖 SVGSVGElement、SVGGraphicsElement 等常用接口，getBBox、getCTM、坐标转换与元素创建等要点
 keywords: [API参考]
 category: 前端
 tags: [可视化, ECharts, D3, Canvas]
@@ -8,7 +8,7 @@ tags: [可视化, ECharts, D3, Canvas]
 
 # API 参考
 
-本章节提供 SVG DOM API 的快速参考,包括常用属性、方法和事件。
+以下为 SVG DOM API 的快速参考,包括常用属性、方法和事件。
 
 ## SVG 元素接口
 

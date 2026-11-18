@@ -8,19 +8,19 @@ tags: [pytest, Python, 单元测试, fixtures, 参数化, 插件体系]
 
 # pytest 9 实战（fixtures 与参数化与插件）
 
-pytest 是 Python 生态中最主流的测试框架，凭借**简单的断言、显式的 fixture 依赖注入、灵活的参数化、可扩展的插件体系**，早已成为绝大多数 Python 项目（含 FastAPI、PyTorch、LangChain 等明星项目）的默认测试底座。本文基于 pytest **9.1.1**（2026 年最新稳定版）撰写，重点讲解 fixtures、参数化、mark、插件体系与 conftest.py 工程化用法，并系统梳理 pytest 9 相对 pytest 6/7/8 的破坏性变更与迁移指南。Python 工程化视角的 pytest 基础（夹具生命周期、Mock/Fake、覆盖率配置与 TDD 实践）见《[Python 工程化：测试](../../03-Python/03-工程化与运维/01-工程化/03-测试.md)》。
+pytest 是 Python 生态中最主流的测试框架，凭借简单的断言、显式的 fixture 依赖注入、灵活的参数化与可扩展的插件体系，成为绝大多数 Python 项目的默认测试底座。本文基于 pytest **9.1.1** 讲解 fixtures、参数化、mark、插件体系与 conftest.py 工程化用法，并梳理 pytest 9 相对 6/7/8 的破坏性变更与迁移清单。
 
-## 一、核心概念
+> 前置知识：[Python 工程化：测试](../../03-Python/03-工程化与运维/01-工程化/03-测试.md)。
 
-### 1.1 pytest 是什么
+## pytest 的定位与设计哲学
 
-pytest 是一个**第三方测试框架**，它通过**约定优于配置**的方式发现并执行测试用例：只要文件名以 `test_*.py` 或 `*_test.py` 命名、类以 `Test` 开头（且无 `__init__`）、函数以 `test_` 开头，pytest 即可自动收集并运行。其官方设计的三大支柱为：
+pytest 通过**约定优于配置**的方式发现并执行测试用例：只要文件名以 `test_*.py` 或 `*_test.py` 命名、类以 `Test` 开头（且无 `__init__`）、函数以 `test_` 开头，pytest 即可自动收集并运行。其官方设计的三大支柱为：
 
 - **assert 重写**：通过 AST 改写让原生 `assert` 输出失败中间值，无需 `self.assertEqual` 类断言；
 - **fixture 依赖注入**：以函数参数显式声明依赖，pytest 自动按 scope 复用并解析；
 - **插件体系**：通过 `pytest_addoption`、`pytest_runtest_*` 等 hook 与 `entry_points` 机制，几乎所有行为都可被插件替换。
 
-### 1.2 pytest vs unittest
+### pytest vs unittest
 
 | 维度 | unittest | pytest 9 |
 |------|----------|----------|
@@ -34,7 +34,7 @@ pytest 是一个**第三方测试框架**，它通过**约定优于配置**的�
 | 异步支持 | 无原生 | `pytest-asyncio` |
 | 兼容性 | 标准库 | 兼容 unittest 用例 |
 
-### 1.3 设计哲学
+### 设计哲学
 
 pytest 的设计哲学可概括为三条：
 
@@ -42,9 +42,9 @@ pytest 的设计哲学可概括为三条：
 2. **显式依赖**：测试函数**通过参数名声明它依赖的 fixture**，pytest 自动解析并按需注入，依赖关系一眼可见；
 3. **插件即代码**：所有内置功能（mark、parametrize、fixture）本质上都是 hook 的实现，第三方插件可覆盖任意阶段。
 
-## 二、环境搭建
+## 环境搭建
 
-### 2.1 安装与版本要求
+### 安装与版本要求
 
 pytest 9 自 9.0 起**最低要求 Python 3.10**（Drop Python 3.9），与 Python 3.13、3.14 完全兼容。建议在虚拟环境中安装：
 
@@ -67,7 +67,7 @@ pytest --version
 pip install pytest-asyncio pytest-xdist pytest-html pytest-cov pytest-mock pytest-rerunfailures
 ```
 
-### 2.2 项目结构约定
+### 项目结构约定
 
 推荐的 pytest 工程目录结构如下：
 
@@ -104,7 +104,7 @@ markers = [
 ]
 ```
 
-### 2.3 conftest.py 角色
+### conftest.py 角色
 
 `conftest.py` 是 pytest 的**fixture 与 hook 注册中心**，无需 `import` 即被自动加载，按目录层级生效：
 
@@ -112,9 +112,9 @@ markers = [
 - **子目录 `conftest.py`**：覆盖或扩展上层 fixture，仅对当前子树生效；
 - **同名 fixture 就近原则**：子目录 fixture 覆盖父目录同名 fixture。
 
-## 三、fixtures：依赖注入的核心
+## fixtures 依赖注入
 
-### 3.1 基础用法
+### 基础用法
 
 fixture 是 pytest 的灵魂，用 `@pytest.fixture` 装饰一个工厂函数，测试函数通过**参数名**声明依赖：
 
@@ -142,7 +142,7 @@ def db_connection():
     conn.close()
 ```
 
-### 3.2 scope：fixture 作用域
+### scope：fixture 作用域
 
 通过 `scope` 参数控制 fixture 实例的生命周期，复用粒度从粗到细：
 
@@ -163,9 +163,11 @@ def app_container():
     container.stop()
 ```
 
-> **pytest 注意**：fixture 依赖的 scope 必须**等于或宽于**当前 fixture 的 scope（如 `session` fixture 不能依赖 `function` fixture），否则会抛出 `ScopeMismatch`。
+::: warning scope 依赖约束
+fixture 依赖的 scope 必须**等于或宽于**当前 fixture 的 scope（如 `session` fixture 不能依赖 `function` fixture），否则会抛出 `ScopeMismatch`。
+:::
 
-### 3.3 params：参数化 fixture
+### params：参数化 fixture
 
 fixture 自身也可参数化，每个参数会生成一个独立的测试用例：
 
@@ -180,7 +182,7 @@ def test_positive(number):
 # 等价生成 3 个用例：test_positive[一] / [二] / [三]
 ```
 
-### 3.4 autouse：自动注入
+### autouse：自动注入
 
 `autouse=True` 让 fixture 在不显式声明参数的情况下被自动调用，常用于环境准备：
 
@@ -192,7 +194,7 @@ def reset_env(monkeypatch):
         monkeypatch.delenv(key, raising=False)
 ```
 
-### 3.5 fixture 依赖注入流程
+### fixture 依赖注入流程
 
 fixture 之间可相互依赖，pytest 按**拓扑排序**解析依赖图。下图为一次 fixture 解析与执行的完整流程：
 
@@ -217,9 +219,9 @@ flowchart TD
     I --> P[session scope 会话结束才销毁]
 ```
 
-## 四、参数化：用例数据驱动
+## 参数化：用例数据驱动
 
-### 4.1 基础参数化
+### 基础参数化
 
 `@pytest.mark.parametrize` 是 pytest 的内置 mark，用于将一组数据展开成多个用例：
 
@@ -234,7 +236,7 @@ def test_double(input, expected):
     assert input * 2 == expected
 ```
 
-### 4.2 ids：自定义用例 ID
+### ids：自定义用例 ID
 
 通过 `ids` 让用例 ID 更具语义化，便于筛选失败用例：
 
@@ -261,7 +263,7 @@ def test_data(data):
     assert len(data) == 2
 ```
 
-### 4.3 indirect：与 fixture 联动
+### indirect：与 fixture 联动
 
 `indirect` 让 parametrize 的值**先传入 fixture 处理**再注入测试，是处理"延迟构造对象"的常用模式：
 
@@ -276,7 +278,7 @@ def test_query(db):
     assert db.execute("SELECT 1") == 1
 ```
 
-### 4.4 多组参数叠加
+### 多组参数叠加
 
 多个 `parametrize` 装饰器叠加会形成**笛卡尔积**，而同一装饰器内是多组并列：
 
@@ -288,9 +290,9 @@ def test_runner(browser, env):
     ...
 ```
 
-## 五、mark 与跳过
+## mark 与跳过
 
-### 5.1 内置 mark
+### 内置 mark
 
 | mark | 语义 |
 |------|------|
@@ -301,7 +303,7 @@ def test_runner(browser, env):
 | `@pytest.mark.usefixtures("fix")` | 仅触发 fixture 不接收返回值 |
 | `@pytest.mark.filterwarnings("error")` | 警告过滤 |
 
-### 5.2 自定义 mark 与注册
+### 自定义 mark 与注册
 
 ```python
 import pytest
@@ -333,7 +335,7 @@ pytest -m "smoke and not slow"
 pytest -m "integration"
 ```
 
-### 5.3 xfail 与 strict
+### xfail 与 strict
 
 ```python
 @pytest.mark.xfail(reason="bug #1234 待修复", strict=True)
@@ -341,11 +343,13 @@ def test_known_bug():
     assert buggy_func() == 42
 ```
 
+::: tip 实践要点
 `strict=True` 表示若测试**意外通过**则报失败，避免 xfail 成为"安慰剂"。
+:::
 
-## 六、插件体系
+## 插件体系
 
-### 6.1 常用插件速览
+### 常用插件速览
 
 | 插件 | 用途 | 关键参数 |
 |------|------|----------|
@@ -358,7 +362,7 @@ def test_known_bug():
 | `pytest-timeout` | 用例超时 | `@pytest.mark.timeout(5)` |
 | `allure-pytest` | Allure 报告 | `--alluredir=allure_results` |
 
-### 6.2 pytest-asyncio：异步测试
+### pytest-asyncio：异步测试
 
 pytest 9 中**同步测试函数直接依赖 async fixture 会报错**，必须配合 `pytest-asyncio`：
 
@@ -377,7 +381,7 @@ async def test_fetch():          # auto 模式下无需 @pytest.mark.asyncio
     assert data["status"] == "ok"
 ```
 
-### 6.3 pytest-xdist：并行执行
+### pytest-xdist：并行执行
 
 ```bash
 # 自动按 CPU 核数并行
@@ -389,7 +393,7 @@ pytest -n 8 --dist loadfile
 
 `--dist` 模式：`load`（默认，按用例均摊）、`loadfile`（按文件）、`loadscope`（按类/模块）、`no`（顺序执行仅多进程隔离）。
 
-### 6.4 pytest-mock：mocker fixture
+### pytest-mock：mocker fixture
 
 ```python
 def test_http_call(mocker):
@@ -402,7 +406,7 @@ def test_http_call(mocker):
     mock_get.assert_called_once_with("https://api.example.com")
 ```
 
-### 6.5 自定义 conftest 插件
+### 自定义 conftest 插件
 
 通过实现 hook 编写自检插件，例如自动统计慢用例：
 
@@ -436,16 +440,16 @@ def env(request):
     return request.config.getoption("--env")
 ```
 
-## 七、pytest 9 新特性与迁移指南
+## pytest 9 破坏性变更与迁移
 
-pytest 9.0 于 2025 年发布，是继 8.0 后的又一次**破坏性大版本**，旧项目升级前必须重点核对以下变更。
+pytest 9.0 是继 8.0 后的又一次**破坏性大版本**，旧项目升级前必须重点核对以下变更。
 
-### 7.1 Drop Python 3.9
+### Python 版本要求提升到 3.10
 
 - pytest 9.0 起最低要求 **Python 3.10**，9.1 同时支持 3.10、3.11、3.12、3.13、3.14；
 - 升级前用 `pyupgrade --py310-plus` 与 `ruff check --target-version=py310` 检查代码。
 
-### 7.2 PytestRemovedIn9Warning 默认变 error
+### PytestRemovedIn9Warning 默认变 error
 
 pytest 8 中以 `PytestRemovedIn9Warning` 提示的所有废弃特性在 9.0 **彻底移除并直接报错**，常见命中点：
 
@@ -454,7 +458,7 @@ pytest 8 中以 `PytestRemovedIn9Warning` 提示的所有废弃特性在 9.0 **�
 - `yield_fixture`（自 3.0 起等同 `fixture`，9.0 完全移除该别名）；
 - `--strict` 选项（拆分为 `--strict-markers` 与 `--strict-config`，9.0 移除旧名）。
 
-### 7.3 sync 测试依赖 async fixture 报错
+### sync 测试依赖 async fixture 报错
 
 pytest 9 收紧了异步语义，**同步测试函数不能依赖 async fixture**：
 
@@ -473,7 +477,7 @@ async def test_query(async_db):
     assert await async_db.query("SELECT 1") == 1
 ```
 
-### 7.4 py.path.local → pathlib.Path
+### py.path.local → pathlib.Path
 
 pytest 9 全面使用 `pathlib.Path` 替换 `py.path.local`，影响所有 hook 参数：
 
@@ -491,19 +495,19 @@ def pytest_ignore_collect(collection_path, config):
 
 涉及的主要 hook：`pytest_ignore_collect`（`collection_path` 参数）、`pytest_collect_file`（`file_path` 参数）等。
 
-### 7.5 重叠参数处理
+### 重叠参数处理
 
 旧版本 `pytest a a/b` 等价于 `pytest a/b`，9.0 起**等价于 `pytest a`**——会收集 `a` 下所有文件，不再"被更具体的路径覆盖"。CI 中若依赖旧的去重行为需重新校对参数列表。
 
-### 7.6 config.args 只能含字符串
+### config.args 只能含字符串
 
 `config.args` 在 9.0 起严格要求**元素为字符串**，传入 `Path` 会抛 `TypeError`。自定义插件若直接操作 `config.args` 需显式 `str()` 转换。
 
-### 7.7 CI 模式检测变更
+### CI 模式检测变更
 
 旧版本只要存在 `$CI` 或 `$BUILD_NUMBER` 环境变量即视为 CI 模式，9.0 起**要求变量值非空**。若你的 CI 注入了空字符串（如 `CI=`），需要在流水线脚本中显式赋值。
 
-### 7.8 迁移清单
+### 迁移清单
 
 | 检查项 | 命令/动作 |
 |--------|----------|
@@ -516,7 +520,7 @@ def pytest_ignore_collect(collection_path, config):
 | async fixture | 同步用例改为 `async def test_xxx` |
 | 插件兼容 | 升级 `pytest-asyncio>=0.24`、`pytest-xdist>=3.6` |
 
-## 八、pytest 测试执行生命周期
+## 测试执行生命周期
 
 理解 pytest 的 hook 顺序，对排查 fixture 时机、插件冲突、收集失败至关重要。完整生命周期如下图：
 
@@ -543,9 +547,9 @@ flowchart TD
 
 掌握每个阶段的 hook 名后，调试"为什么我的 fixture 没生效""为什么某个用例被跳过""为什么插件没被加载"等问题即可定位。
 
-## 九、常见陷阱与最佳实践
+## 陷阱与工程实践
 
-### 9.1 陷阱清单
+### 陷阱清单
 
 1. **类内 `__init__`**：以 `Test` 开头但定义了 `__init__`，pytest **不会收集**该类——这是新手最常见的"测试没执行"原因；
 2. **fixture 名冲突**：子 conftest 覆盖父 conftest 同名 fixture 时，父级 fixture 的 teardown **不会**再执行，需手动链式调用；
@@ -556,7 +560,7 @@ flowchart TD
 7. **fixture teardown 异常吞没**：teardown 抛异常会让后续 teardown 不执行，必要时用 `try/finally` 包裹；
 8. **CI 模式误判**：pytest 9 要求 `$CI` 非空，CI 脚本中 `CI=true` 而非 `CI=`。
 
-### 9.2 最佳实践
+### 工程实践
 
 - **配置下沉到 `pyproject.toml`**：放弃 `pytest.ini` 与 `setup.cfg`，所有配置集中到 `[tool.pytest.ini_options]`；
 - **`--strict-markers --strict-config` 默认开启**：拼写错误的 mark 会立即报错，避免"标记没生效"；
@@ -567,7 +571,7 @@ flowchart TD
 - **CI 中失败重试用 `pytest-rerunfailures`**，但限制 `--reruns` 次数，避免掩盖真问题；
 - **并行执行首选 `pytest-xdist -n auto --dist loadscope`**：按 scope 分配 worker 减少 fixture 重复创建。
 
-### 9.3 一个完整的 conftest.py 示例
+### 完整 conftest.py 示例
 
 ```python
 # tests/conftest.py
@@ -604,8 +608,13 @@ def _reset_db(db):
     db.truncate_all()
 ```
 
-## 十、总结
+## 小结
 
-pytest 9 在保持"约定优于配置"哲学的同时，进一步收紧了类型与异步语义、彻底移除了多年累积的废弃特性。对于新项目，直接基于 **Python 3.12 + pytest 9.1.1 + pytest-asyncio + pytest-xdist + pytest-cov** 起步即可；对于存量项目，按本文第七节的迁移清单逐项核对，先在 pytest 8 上将 `PytestRemovedIn9Warning` 全部修为 0 再升级，可避免 9.0 升级带来的"红海"。
+新项目可直接基于 **Python 3.12 + pytest 9.1.1 + pytest-asyncio + pytest-xdist + pytest-cov** 起步；存量项目按迁移清单逐项核对，先在 pytest 8 上将 `PytestRemovedIn9Warning` 全部清零再升级。fixtures 依赖注入、parametrize 数据驱动、conftest 分层组织与插件 hook 扩展，支撑起绝大多数 Python 项目的单元测试、集成测试与端到端测试需求。
 
-掌握 fixtures 的依赖注入、parametrize 的数据驱动、conftest 的分层组织、插件的 hook 扩展，再加上对 pytest 9 生命周期的清晰理解，已足以应对绝大多数 Python 项目的单元测试、集成测试与端到端测试需求。
+## 延伸阅读
+
+- [单元测试基础与测试替身](01-单元测试基础与测试替身) —— Mock/Fake 与测试替身选型
+- [TDD 红-绿-重构循环](04-TDD%20红-绿-重构循环) —— 用 pytest 演示的红绿重构节奏
+- [测试覆盖率工具（JaCoCo 与 coverage.py 与 SonarQube）](06-测试覆盖率工具（JaCoCo%20与%20coverage.py%20与%20SonarQube）) —— pytest-cov 与质量门禁配置
+- [pytest 官方文档](https://docs.pytest.org/en/stable/) —— fixtures、mark 与 hook 的权威参考

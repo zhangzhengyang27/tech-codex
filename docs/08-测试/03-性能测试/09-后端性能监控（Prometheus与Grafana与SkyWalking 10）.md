@@ -8,13 +8,13 @@ tags: [Prometheus, Grafana, SkyWalking, APM, OpenTelemetry]
 
 # 后端性能监控（Prometheus 与 Grafana 与 SkyWalking 10）
 
-后端性能测试不仅要回答"系统能撑多少并发"，更要回答"瓶颈在哪一层、哪一个服务、哪一段调用"。在微服务、容器化、云原生已经成为主流的今天，单靠 `top`、`iostat` 这类命令行工具已经无法覆盖一次跨服务请求所经过的全部链路。本文基于 Prometheus 2.x、Grafana 11、SkyWalking 10.4.0（2026-04-01 发布）、OpenTelemetry 1.x 等当前主流工具链，系统梳理后端性能监控的体系与方法论，取代旧文档中基于 SkyWalking 8.0.1 + CentOS 7.0 的内容。
+后端性能测试不仅要回答"系统能撑多少并发"，更要回答"瓶颈在哪一层、哪一个服务、哪一段调用"。单靠 `top`、`iostat` 这类命令行工具无法覆盖一次跨服务请求经过的全部链路。本文基于 Prometheus 2.x、Grafana 11、SkyWalking 10.4.0（2026-04-01 发布）与 OpenTelemetry 1.x，梳理命令行排查、指标监控、链路追踪、统一采集与告警体系。SkyWalking 已是 Apache 顶级项目（2019-04 毕业），下文统一按当前状态描述。
 
-需要特别说明的是：SkyWalking 已于 2019 年 4 月从 Apache 孵化器毕业成为顶级项目，至今已 7 年。旧文档中"项目已经提交到 Apache 孵化组织"的表述已经过时，本文统一按当前状态描述。
+> 前置知识:[性能测试指标与方法论](01-性能测试指标与方法论)。
 
-## 一、核心概念
+## 监控目标与可观测性三支柱
 
-### 1.1 后端性能监控的目标
+### 监控目标
 
 后端性能监控的核心目标是建立**从硬件表象到代码根因的可观测链路**，回答四个层次的问题：
 
@@ -25,7 +25,7 @@ tags: [Prometheus, Grafana, SkyWalking, APM, OpenTelemetry]
 
 只有贯通这四层，才能避免"看到一个高 CPU 就重启服务"的运维式短路。
 
-### 1.2 可观测性三支柱
+### 可观测性三支柱
 
 现代可观测性（Observability）以三支柱为骨架，三者通过统一的 TraceID 串联：
 
@@ -72,7 +72,7 @@ flowchart TB
 
 三支柱不是孤立的：SkyWalking 10.x 的 Trace Exemplar 可以将慢调用样本回填到 Prometheus 指标上，Grafana 11 支持从指标点直接下钻到 Trace 与 Log，形成"指标发现异常 → 链路定位服务 → 日志确认根因"的闭环。
 
-## 二、监控工具的演进
+## 监控工具的演进
 
 理解工具演进有助于选型。后端监控大致经历三个阶段：
 
@@ -92,7 +92,7 @@ flowchart TB
 
 CNCF 体系将 Metrics 与 Tracing 拆为两条主线：Prometheus 主导 Metrics，OpenTelemetry 主导 Tracing 与 Logging 的统一采集。SkyWalking 10.x 已全面兼容 OTel 协议，可作为 OTel Collector 的后端。
 
-## 三、命令行监控要点（精简版）
+## 命令行监控要点
 
 命令行工具的开销几乎为零，是性能测试现场第一时间排查的利器。下表只保留最高频的指标与判断阈值。
 
@@ -140,11 +140,13 @@ ss -s                         # 连接概览
 mysql -e "SHOW PROCESSLIST;"  # 数据库侧快速锁定慢查询会话（MySQL）
 ```
 
-> **注意**：旧文档提到的 CentOS 7.0 已于 2024-06 EOL，当前推荐使用 CentOS Stream 9 或 Ubuntu 22.04 LTS 作为监控目标与运行环境。
+::: warning 环境 EOL
+CentOS 7.0 已停止维护（EOL），监控目标与运行环境建议使用 CentOS Stream 9 或 Ubuntu 22.04 LTS。
+:::
 
-## 四、Prometheus + Grafana 监控体系
+## Prometheus + Grafana 指标监控
 
-### 4.1 架构与组件
+### 架构与组件
 
 Prometheus 是 CNCF 第二个毕业项目（仅次于 Kubernetes），其拉模型（Pull）与多维度标签数据模型已成为云原生监控的事实标准。核心组件：
 
@@ -153,7 +155,7 @@ Prometheus 是 CNCF 第二个毕业项目（仅次于 Kubernetes），其拉模�
 - **Alertmanager**：告警路由、抑制、分组、静默，对接钉钉/飞书/Slack；
 - **Grafana**：可视化层，支持 Prometheus、Loki、Tempo、SkyWalking 等多数据源。
 
-### 4.2 抓取配置示例
+### 抓取配置示例
 
 `prometheus.yml` 的核心是 `scrape_configs`，下面示例同时抓取主机、MySQL 与一个 Spring Boot 应用：
 
@@ -194,7 +196,7 @@ scrape_configs:
       - targets: ['order-service:8080']
 ```
 
-### 4.3 PromQL 查询示例
+### PromQL 查询示例
 
 PromQL 是 Prometheus 的查询语言，掌握下面几个常用模式即可覆盖 80% 场景：
 
@@ -215,13 +217,13 @@ jvm_memory_used_bytes{area="heap"}
   / jvm_memory_max_bytes{area="heap"}
 ```
 
-### 4.4 Grafana 大屏
+### Grafana 大屏
 
 Grafana 的优势是数据源无关与面板可复用：同一张大盘可以同时叠加 Prometheus（指标）、Loki（日志）、SkyWalking（链路）三个数据源。官方模板库（grafana.com/dashboards）提供了 `Node Exporter Full`（ID 1860）、`Spring Boot Statistics`（ID 11378）等成熟模板，导入即可使用，无需从零搭建。
 
-## 五、SkyWalking 10.4.0 分布式链路追踪
+## SkyWalking 10 链路追踪
 
-### 5.1 架构总览
+### 架构总览
 
 SkyWalking 10 的架构仍保持 `Agent → OAP Server → Storage → UI` 的四段式，但每一层在 10.x 都有显著升级。下图展示了完整架构：
 
@@ -263,7 +265,7 @@ flowchart LR
     class UI ui;
 ```
 
-### 5.2 与 Pinpoint、CAT 的对比（2026 年现状）
+### 与 Pinpoint、CAT 的对比
 
 | 维度 | SkyWalking 10.4 | Pinpoint 2.5 | CAT 3.x |
 |------|-----------------|--------------|---------|
@@ -276,7 +278,7 @@ flowchart LR
 
 结论：SkyWalking 10 是当前中文社区最值得投入的 APM。Pinpoint 仍可作为方法级追踪的可选项，但生态与更新节奏已落后；CAT 适合需要业务监控的存量系统，新项目不建议采用。
 
-### 5.3 10.x 关键新特性
+### 10.x 关键新特性
 
 **1. GenAI Observability（AI 应用可观测性）**
 
@@ -306,7 +308,7 @@ Hierarchy V2 自动识别跨注册中心、跨命名空间的服务依赖关系�
 
 OAP Server 支持在 Java 21 上运行，可享受 ZGC、虚拟线程等收益。
 
-### 5.4 Agent 启动示例
+### Agent 启动示例
 
 SkyWalking Agent 仍以 `-javaagent` 形式挂载，10.x 的参数与 8.x 基本兼容：
 
@@ -325,11 +327,11 @@ nohup java -server \
   -jar order-service.jar > order-service.log 2>&1 &
 ```
 
-## 六、OpenTelemetry 统一可观测
+## OpenTelemetry 统一采集
 
 OpenTelemetry（OTel）是 CNCF 主导的可观测数据采集标准，目标是统一 Metrics、Logging、Tracing 三类数据的采集与上报协议，避免被厂商锁定。
 
-### 6.1 OTel 与 SkyWalking / Prometheus 的关系
+### OTel 与 SkyWalking / Prometheus 的关系
 
 三者不是竞争而是分工：
 
@@ -339,7 +341,7 @@ OpenTelemetry（OTel）是 CNCF 主导的可观测数据采集标准，目标是
 
 典型部署是 `应用 → OTel SDK → OTel Collector → (Prometheus / SkyWalking / Loki)`， Collector 做协议转换、采样、重试、脱敏。这种架构下，更换后端只需改 Collector 配置，应用代码零改动。
 
-### 6.2 何时该引入 OTel
+### 何时该引入 OTel
 
 满足以下任一条件时，引入 OTel 的收益明显大于成本：
 
@@ -350,13 +352,17 @@ OpenTelemetry（OTel）是 CNCF 主导的可观测数据采集标准，目标是
 
 纯 Java 单体或小规模微服务，直接用 SkyWalking Java Agent 更简单，无需引入 OTel，否则会增加一层 Collector 的运维成本而无对应收益。
 
-### 6.3 OTel Collector 部署要点
+### OTel Collector 部署要点
 
-OTel Collector 推荐以 Agent 模式（DaemonSet）部署在每个节点，负责本节点应用的指标、日志、链路采集与转发。关键配置原则有三：一是 `memory_limiter` 必须开启，否则在高负载下 Collector 自身会 OOM；二是 `batch` processor 不可省略，单条上报会拖垮后端；三是 `tail_sampling` processor 应放在 Collector 层而非 SDK 层，这样可以基于完整链路做采样决策（如只保留包含错误状态的 trace），而 SDK 层采样只能基于单条 span 决策，容易漏掉关键链路。
+OTel Collector 推荐以 Agent 模式（DaemonSet）部署在每个节点，负责本节点应用的指标、日志、链路采集与转发。
 
-## 七、告警体系
+::: tip Collector 配置三原则
+一是 `memory_limiter` 必须开启，否则在高负载下 Collector 自身会 OOM；二是 `batch` processor 不可省略，单条上报会拖垮后端；三是 `tail_sampling` processor 应放在 Collector 层而非 SDK 层——Collector 层可以基于完整链路做采样决策（如只保留包含错误状态的 trace），SDK 层采样只能基于单条 span 决策，容易漏掉关键链路。
+:::
 
-### 7.1 Prometheus Alertmanager
+## 告警体系
+
+### Prometheus Alertmanager
 
 Alertmanager 与 Prometheus 解耦，负责告警的去重、分组、抑制与路由。典型告警规则：
 
@@ -390,7 +396,7 @@ groups:
 
 Alertmanager 路由到飞书/钉钉通常通过 webhook 转发，社区有 `prometheus-webhook-dingtalk`、`catalert` 等成熟组件。
 
-### 7.2 SkyWalking 告警
+### SkyWalking 告警
 
 SkyWalking 内置告警规则在 `config/alarm-settings.yml`，10.x 同样支持 webhook 推送。相比 Prometheus，SkyWalking 告警更聚焦链路维度，如"某服务 P99 持续超阈值"、"某端点错误率突增"。两者可以并存：Prometheus 负责资源与指标告警，SkyWalking 负责链路与端点告警。
 
@@ -411,7 +417,7 @@ webhooks:
   - http://alarm-bridge:8080/skywalking-alarm
 ```
 
-## 八、常见陷阱与最佳实践
+## 常见陷阱与实践要点
 
 **陷阱一：只监控硬件，不监控链路。** CPU 高只是表象，必须能下钻到具体服务与方法。建议 Prometheus 与 SkyWalking 同时部署，前者看资源、后者看链路。
 
@@ -425,4 +431,14 @@ webhooks:
 
 **陷阱六：忽略 OpenTelemetry 的迁移成本。** OTel SDK 在多语言场景才显价值，纯 Java 项目强行替换 SkyWalking Agent 反而增加复杂度。
 
-**最佳实践总结**：以 Prometheus + Grafana 为 Metrics 基座，以 SkyWalking 10 为 Tracing 主力，以 OTel Collector 作为统一采集层，以 Alertmanager + 飞书/钉钉为告警出口，命令行工具作为现场排障的兜底。这套组合在云原生时代既能覆盖三支柱，又保留了向后兼容与厂商中立。
+::: tip 技术栈组合
+以 Prometheus + Grafana 为 Metrics 基座，以 SkyWalking 10 为 Tracing 主力，以 OTel Collector 作为统一采集层，以 Alertmanager + 飞书/钉钉为告警出口，命令行工具作为现场排障的兜底。这套组合既能覆盖三支柱，又保留了向后兼容与厂商中立。
+:::
+
+## 延伸阅读
+
+- → 下一章:[JVM 性能分析（JFR 与 Arthas 4.3 与 async-profiler）](10-JVM%20性能分析（JFR与Arthas%204.3与async-profiler）) —— 从监控指标下钻到 JVM 根因
+- [性能测试指标与方法论](01-性能测试指标与方法论) —— 监控指标的方法论源头
+- [MySQL 性能优化与慢 SQL 治理](11-MySQL%20性能优化与慢%20SQL%20治理) —— 数据库侧的专项监控与优化
+- [可观测性：稳定性指标、监控组件与统一日志](../../05-后端/03-分布式/11-可观测性：稳定性指标、监控组件与统一日志.md) —— 分布式体系中的可观测性全景
+- [Prometheus 官方文档](https://prometheus.io/docs/introduction/overview/) —— 指标模型与 PromQL 权威参考

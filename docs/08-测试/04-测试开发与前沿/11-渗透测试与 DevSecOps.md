@@ -8,14 +8,11 @@ tags: [渗透测试, DevSecOps, 安全测试, OWASP, SAST/DAST]
 
 # 渗透测试与 DevSecOps
 
+**渗透测试**（Penetration Testing，简称 Pentest）是模拟真实攻击者视角的安全测试方法——通过主动寻找并利用系统漏洞，评估系统的安全防御能力。**DevSecOps** 是将安全实践融入 DevOps 全流程的理念——安全不再是上线前的"安检关卡"，而是贯穿开发、测试、部署、运维的持续活动。在《数据安全法》《个人信息保护法》、欧盟 GDPR 等法规约束下，安全测试是合规必需品。本文系统阐述渗透测试方法论、DevSecOps 工具链集成、OWASP Top 10 防御实践，以及安全测试的自动化策略。
 
-**渗透测试**（Penetration Testing，简称 Pentest）是一种模拟真实攻击者视角的安全测试方法——通过主动寻找并利用系统漏洞，评估系统的安全防御能力。**DevSecOps** 则是将安全实践融入 DevOps 全流程的理念——安全不再是上线前的"安检关卡"，而是贯穿开发、测试、部署、运维的持续活动。
+## 安全测试方法论
 
-在网络安全法规日益严格（如《数据安全法》《个人信息保护法》、欧盟 GDPR）的背景下，安全测试已从"可选加分项"变为"合规必需品"。本文系统阐述渗透测试方法论、DevSecOps 工具链集成、OWASP Top 10 防御实践，以及安全测试的自动化策略。
-
-## 一、安全测试方法论
-
-### 1.1 安全测试分层体系
+### 安全测试分层体系
 
 ```mermaid
 ---
@@ -54,7 +51,7 @@ flowchart TB
     L1 --> L2 --> L3 --> L4 --> L5
 ```
 
-### 1.2 渗透测试方法论
+### 渗透测试方法论（PTES）
 
 渗透测试遵循 **PTES**（Penetration Testing Execution Standard）标准流程：
 
@@ -74,7 +71,7 @@ flowchart LR
     P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
 ```
 
-### 1.3 OWASP Top 10（2025）与防御
+### OWASP Top 10（2025）与防御
 
 | 排名 | 漏洞类型 | 说明 | 防御措施 |
 | --- | --- | --- | --- |
@@ -89,9 +86,9 @@ flowchart LR
 | A09 | 安全日志与告警失效 | 无法检测攻击 | 集中日志 + 异常告警 |
 | A10 | 异常条件处理不当 | 异常未捕获、错误信息泄露 | 统一异常处理 + 错误信息脱敏 |
 
-## 二、DevSecOps 集成流程
+## DevSecOps 集成流程
 
-### 2.1 DevSecOps CI/CD 集成
+### DevSecOps CI/CD 集成
 
 ```mermaid
 ---
@@ -136,7 +133,7 @@ flowchart LR
     Gate3 -->|失败| Block
 ```
 
-### 2.2 威胁建模流程
+### 威胁建模流程
 
 威胁建模是安全测试左移的核心实践，在架构设计阶段识别潜在威胁：
 
@@ -175,9 +172,9 @@ flowchart TB
     Model --> Threats --> Risk --> Mitigation
 ```
 
-## 三、工具与实践
+## 工具与实践
 
-### 3.1 SAST 集成：Semgrep
+### SAST 集成：Semgrep
 
 ```yaml
 # .github/workflows/security-sast.yml
@@ -215,7 +212,7 @@ jobs:
           fi
 ```
 
-### 3.2 DAST 集成：OWASP ZAP
+### DAST 集成：OWASP ZAP
 
 ```yaml
 # GitLab CI DAST 扫描配置
@@ -242,7 +239,11 @@ dast:
       fi
 ```
 
-### 3.3 渗透测试实战：SQL 注入
+### 渗透测试实战：SQL 注入
+
+::: warning 渗透测试必须在授权范围内进行
+本节的检测脚本只能用于自有测试环境或已获书面授权的目标。对未授权系统发起注入测试属违法行为。
+:::
 
 ```python
 """
@@ -328,7 +329,7 @@ for r in results:
         print(f"    证据: {r.evidence}")
 ```
 
-### 3.4 安全工具链全景
+### 安全工具链全景
 
 | 类别 | 工具 | 说明 |
 | --- | --- | --- |
@@ -343,47 +344,46 @@ for r in results:
 | **渗透测试** | Metasploit / Nmap / Burp Suite | 人工渗透工具 |
 | **WAF** | ModSecurity / Cloudflare / AWS WAF | 运行时防护 |
 
-## 四、常见误区
+## 常见误区
 
-### 4.1 "安全测试是安全团队的事"
+### "安全测试是安全团队的事"
 
 **误区**：开发与测试团队认为安全由安全团队负责，代码中不关注安全。
 
 **纠正**：DevSecOps 的核心理念是 **"安全人人有责"**（Security is Everyone's Responsibility）。安全团队负责策略与审计，开发负责安全编码，测试负责安全验证。安全左移到开发阶段成本最低。
 
-### 4.2 SAST/DAST 覆盖一切
+### SAST/DAST 覆盖一切
 
 **误区**：部署了 SAST 和 DAST 工具就认为安全测试已完成。
 
 **纠正**：SAST 误报率高、DAST 覆盖率有限。两者结合仍需人工渗透测试补充——业务逻辑漏洞（如越权访问）、组合攻击链路、社会工程攻击等无法被自动化工具发现。
 
-### 4.3 一次性渗透测试
+### 一次性渗透测试
 
 **误区**：每年做一次渗透测试，通过后全年放心。
 
 **纠正**：系统持续变更，每次重大功能上线都可能引入新漏洞。应将安全扫描纳入 CI/CD（自动化持续扫描），每季度或重大版本前做人工渗透测试。
 
-### 4.4 忽视第三方依赖安全
+### 忽视第三方依赖安全
 
 **误区**：只关注自研代码安全，忽视引入的开源库漏洞。
 
 **纠正**：Log4Shell（Log4j 漏洞）事件证明第三方库是最大攻击面之一。依赖扫描必须纳入 CI，高危 CVE 需在 24-48 小时内修复。
 
-## 五、进阶扩展与参考
+## 进阶扩展
 
-### 5.1 AI 在安全测试中的应用
+### AI 在安全测试中的应用
 
-2025-2026 年趋势：AI 驱动的安全测试正在兴起——LLM 能从代码模式推断安全漏洞、自动生成攻击 Payload、分析渗透测试报告摘要。AI 辅助的"红队即服务"（Red Teaming as a Service）开始出现，降低渗透测试的人才门槛。
+AI 驱动的安全测试正在兴起——LLM 能从代码模式推断安全漏洞、自动生成攻击 Payload、分析渗透测试报告摘要。AI 辅助的"红队即服务"（Red Teaming as a Service）开始出现，降低渗透测试的人才门槛。
 
-### 5.2 零信任架构与测试
+### 零信任架构与测试
 
 **零信任架构**（Zero Trust Architecture，ZTA）要求"永不信任，始终验证"。安全测试需验证：每次访问是否都经过身份验证、最小权限是否严格落实、网络分段是否有效。ZTA 的测试与传统边界安全测试有本质差异。
 
-### 5.3 推荐参考
+## 延伸阅读
 
-- 标准：OWASP Top 10（owasp.org/Top10）
-- 标准：OWASP Testing Guide（WSTG）v4.2
-- 标准：PTES（pentest-standard.org）
+- [测试工程师的非测试知识（架构-K8s-DevOps）](../01-测试基础与流程/06-测试工程师的非测试知识（架构-K8s-DevOps）) —— DevSecOps 所依赖的工程背景
+- [混沌工程与故障注入](12-混沌工程与故障注入) —— 运行时韧性与故障演练
+- [OWASP Top 10](https://owasp.org/Top10/) —— Web 安全风险权威清单；配套 OWASP WSTG v4.2 与 PTES（pentest-standard.org）
 - 图书：《The Web Application Hacker's Handbook》Dafydd Stuttard
-- 工具：OWASP ZAP（zaproxy.org）
-- 认证：OSCP（Offensive Security Certified Professional）
+- 工具与认证：OWASP ZAP（zaproxy.org）、OSCP（Offensive Security Certified Professional）

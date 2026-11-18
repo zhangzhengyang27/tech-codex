@@ -8,11 +8,13 @@ tags: [Locust, Python, 性能测试, 分布式压测, gevent, CI/CD]
 
 # Locust Python 压测实战
 
-Locust 是 Python 生态最主流的开源分布式压测工具，由 Jonatan Heyman 发起，本文以 2.44.x（2026 年）为基准。它以"代码即脚本"为核心设计理念，使用 Python 描述用户行为，依托 `gevent` 协程库在单机内模拟数万级并发用户，并通过内置 Web UI 实时呈现 RPS、响应时间分位数、失败率等关键指标。本文系统讲解 Locust 的核心概念、脚本编写、进阶实战、分布式部署、Headless 与 CI/CD 集成，并梳理常见陷阱与最佳实践，帮助读者在生产级压测场景中构建可维护、可扩展的 Python 压测工作流。
+Locust 是 Python 生态最主流的开源分布式压测工具，以"代码即脚本"为设计理念：用 Python 描述用户行为，依托 `gevent` 协程在单机内模拟数万级并发，内置 Web UI 实时呈现 RPS、响应时间分位数与失败率。本文以 2.44.x 为基准，讲解核心概念、脚本编写、进阶实战、分布式部署、Headless 与 CI/CD 集成。
 
-## 一、核心概念
+> 前置知识:[性能测试指标与方法论](01-性能测试指标与方法论)。
 
-### 1.1 Locust 是什么
+## Locust 的定位与核心概念
+
+### Locust 是什么
 
 Locust 是一款用 Python 编写的负载测试工具，其执行引擎基于 `gevent` 的轻量级协程（greenlet），每个虚拟用户对应一个 greenlet 而非 OS 线程，因此单机即可发起数万级并发请求，远高于基于线程模型的 JMeter。测试脚本本身就是普通的 Python 文件（默认命名为 `locustfile.py`），可纳入 Git 版本管理、走 Code Review 流程，并直接复用业务侧的 Python 工具链（如 `requests`、`pydantic`、`sqlalchemy`、业务 SDK 等）。
 
@@ -25,7 +27,7 @@ Locust 解决的核心问题包括：
 - **Python 生态融合**：可直接 `import` 业务库进行数据构造、签名计算、数据库校验，无需额外插件机制；
 - **协议无关扩展**：通过自定义 `User` 类可压测 gRPC、WebSocket、MQTT、数据库甚至自定义二进制协议。
 
-### 1.2 适用场景
+### 适用场景
 
 | 场景 | 适用性 | 说明 |
 |------|--------|------|
@@ -37,7 +39,7 @@ Locust 解决的核心问题包括：
 | GUI 录制脚本 | 不适用 | Locust 不提供录制功能，脚本需手写 |
 | 协议覆盖广度 | 一般 | 不如 JMeter 的数十种协议采样器 |
 
-### 1.3 vs JMeter vs k6
+### vs JMeter vs k6
 
 三者代表了三种截然不同的工程哲学：JMeter 是 GUI 主导的"配置即脚本"，k6 是 Go 引擎 + JS 脚本的"高性能 CLI 优先"，Locust 则是"Python 代码即脚本"。下表从工程视角对比关键维度：
 
@@ -55,7 +57,7 @@ Locust 解决的核心问题包括：
 
 选型建议：**协议丰富性与企业资产沉淀**偏 JMeter；**极致单机性能与云原生可观测**偏 k6；**业务逻辑复杂、需复用 Python 业务库、团队 Python 栈熟练**则首选 Locust。三者并非互斥，实际工程中常见 Locust 编写业务链路压测、k6 做大规模基准对比的组合。
 
-### 1.4 核心概念术语表
+### 核心概念术语表
 
 | 概念 | 含义 |
 |------|------|
@@ -68,9 +70,9 @@ Locust 解决的核心问题包括：
 | **Shape** | 负载形状类，可编程控制并发数与加压曲线 |
 | **Master / Worker** | 分布式角色，Master 负责调度与汇总，Worker 实际产生负载 |
 
-## 二、安装与快速入门
+## 安装与快速入门
 
-### 2.1 安装
+### 安装
 
 Locust 是标准 Python 包，推荐在独立虚拟环境中安装以避免依赖冲突。Locust 2.44.x 要求 Python 3.10+。
 
@@ -87,7 +89,7 @@ locust --version
 # locust 2.44.1
 ```
 
-### 2.2 第一个压测脚本
+### 第一个压测脚本
 
 新建 `locustfile.py`，描述一个对课程列表接口与登录接口施加负载的虚拟用户：
 
@@ -132,9 +134,9 @@ locust -f locustfile.py
 
 点击 **Start swarming** 即可开始压测，页面实时展示 RPS、响应时间分位数（P50/P95/P99）、失败率与图表。
 
-## 三、脚本编写
+## 脚本编写
 
-### 3.1 HttpUser 与 task 装饰器
+### HttpUser 与 task 装饰器
 
 `HttpUser` 是 Locust 内置的 HTTP 协议用户，每个用户实例持有一个 `self.client`，其 API 与 `requests.Session` 几乎一致：
 
@@ -163,7 +165,7 @@ class ApiUser(HttpUser):
 
 `@task` 装饰器可指定权重，权重决定任务被随机选中调用的相对概率。例如 `@task(3)` 与 `@task(1)` 表示前者被调用的频率是后者的 3 倍。
 
-### 3.2 TaskSet 与任务编排
+### TaskSet 与任务编排
 
 当多个任务之间存在业务上下文关联时，可将它们封装为 `TaskSet`，使一个用户的流量更接近真实业务链路：
 
@@ -208,7 +210,7 @@ class WebsiteUser(HttpUser):
 
 `TaskSet` 内部任务的权重独立计算；`self.interrupt()` 用于退出当前 TaskSet 回到父级，避免永久停留在子流程中。
 
-### 3.3 wait_time 思考时间
+### wait_time 思考时间
 
 `wait_time` 决定用户在两次任务之间的间隔，常见的几种策略：
 
@@ -227,9 +229,9 @@ class UserC(HttpUser):
 
 `constant_pacing` 适合需要稳定 RPS 的场景——若任务执行耗时 1 秒，则实际等待 2 秒，确保每 3 秒产生一次请求。
 
-## 四、进阶实战
+## 进阶实战
 
-### 4.1 参数化
+### 参数化
 
 参数化的核心是让每个虚拟用户使用不同的测试数据。Locust 提供 `@task` 内联数据、`on_start` 初始化数据、以及通过 `events.test_start` 预加载 CSV 数据等方式。
 
@@ -268,7 +270,7 @@ class ApiUser(HttpUser):
         })
 ```
 
-### 4.2 关联（响应提取）
+### 关联（响应提取）
 
 关联是指从上一个接口的响应中提取参数，传递给下一个接口。Locust 不提供内置提取器，但 Python 的字典/正则操作天然支持：
 
@@ -307,7 +309,7 @@ class OrderUser(HttpUser):
             self.client.post("/submit", data={"csrf_token": csrf})
 ```
 
-### 4.3 自定义客户端（gRPC 示例）
+### 自定义客户端（gRPC 示例）
 
 当被测协议非 HTTP 时，可继承 `User` 基类并自定义 `client`，使其行为与 `HttpUser` 一致——即自动记录请求耗时与成功/失败状态：
 
@@ -368,7 +370,7 @@ class RouteGuideUser(GrpcUser):
         self.client.send("GetFeature", point)
 ```
 
-### 4.4 事件钩子
+### 事件钩子
 
 Locust 提供完整的事件钩子体系，覆盖请求级、用户级、测试级三个粒度。常见用途包括：自定义日志、指标上报到 Prometheus、失败请求落库、测试前后初始化与清理等。
 
@@ -423,9 +425,9 @@ flowchart TD
     style G fill:#fff4e1
 ```
 
-## 五、分布式压测
+## 分布式压测
 
-### 5.1 Master-Worker 架构
+### Master-Worker 架构
 
 当单机并发无法满足需求时，Locust 通过 Master-Worker 架构水平扩展。Master 负责调度、汇总指标与提供 Web UI，Worker 实际产生负载。Master 与 Worker 之间通过 ZeroMQ 进行通信，单个 Master 通常可挂载数十个 Worker 节点。
 
@@ -475,7 +477,7 @@ locust -f locustfile.py --worker --master-host=192.168.1.10
 - **指标汇总**：Worker 周期性将本地统计上报 Master，Master 聚合后展示在 Web UI；
 - **数据隔离**：若脚本中使用了 `on_start` 加载测试数据，需注意每个 Worker 独立加载数据，避免重复消费同一份数据导致冲突。
 
-### 5.2 Docker Compose 部署
+### Docker Compose 部署
 
 生产级压测推荐用 Docker Compose 一键拉起 Master 与多个 Worker，便于在压测集群中复用：
 
@@ -517,9 +519,9 @@ docker compose up -d
 # 浏览器访问 http://localhost:8089 开始压测
 ```
 
-## 六、Headless 模式与 CI/CD 集成
+## Headless 模式与 CI/CD 集成
 
-### 6.1 Headless 模式
+### Headless 模式
 
 CI 环境无 GUI，需通过 `--headless` 启动纯命令行模式，并通过 `--only-summary`、`--csv`、`--html` 等参数控制输出。典型参数组合如下：
 
@@ -538,7 +540,7 @@ locust -f locustfile.py \
 
 退出码语义：默认情况下，测试结果中存在失败请求时，Locust 会以 `--exit-code-on-error`（默认 1）指定的退出码结束，可直接作为 CI 门禁；也可通过 `events.quitting` 钩子自定义判定逻辑。
 
-### 6.2 GitHub Actions 集成
+### GitHub Actions 集成
 
 将压测脚本纳入版本库后，可在 CI 流水线中执行回归压测。下例在每次主分支合并后对预发环境执行 5 分钟压测，并在失败率超阈值时让流水线失败：
 
@@ -586,7 +588,7 @@ jobs:
             report_stats.csv
 ```
 
-### 6.3 自定义负载形状（LoadTestShape）
+### 自定义负载形状（LoadTestShape）
 
 当需要复杂加压曲线（如阶梯加压、浪涌、长尾保持）时，可继承 `LoadTestShape` 类，按时间动态返回 `(用户数, 加压速率)`：
 
@@ -614,9 +616,9 @@ class StepLoadShape(LoadTestShape):
 
 将 `StepLoadShape` 类定义放入 `locustfile.py`，Locust 会自动识别并使用该形状；启动时无需指定 `--users` 与 `--spawn-rate`。
 
-## 七、常见陷阱与最佳实践
+## 常见陷阱与实践要点
 
-### 7.1 常见陷阱
+### 陷阱清单
 
 | 陷阱 | 现象 | 根因与解决 |
 |------|------|-----------|
@@ -629,7 +631,7 @@ class StepLoadShape(LoadTestShape):
 | **CSV 数据量不足** | 部分用户拿到空数据 | 数据量应不少于 `users × 重复次数`；或使用随机生成策略 |
 | **HTTPS 证书校验失败** | 自签证书环境报错 | `self.client.verify = False` 或在 `HttpUser` 类级别设置 |
 
-### 7.2 最佳实践
+### 实践要点
 
 **脚本组织**：将不同业务链路拆分到独立的 `locustfile_xxx.py`，通过 `-f` 切换；公共逻辑（鉴权、签名、数据生成）抽取为 `utils.py` 模块复用。
 
@@ -637,14 +639,24 @@ class StepLoadShape(LoadTestShape):
 
 **指标外发**：除 Web UI 与 CSV 外，建议通过 `events.request` 钩子将指标实时推送到 Prometheus Pushgateway 或 InfluxDB，与 Grafana 联动形成长期趋势看板。
 
-**资源监控**：压测本身也是一次资源消耗。监控 Worker 节点的 CPU、内存、网络 IO，确保瓶颈在被测系统而非压测机——否则所有数据都不可信。一个经验法则：Worker CPU 占用超过 80% 时即应横向扩容而非继续加压。
+::: warning 压测机自身也是资源消耗
+监控 Worker 节点的 CPU、内存、网络 IO，确保瓶颈在被测系统而非压测机——否则所有数据都不可信。Worker CPU 占用超过 80% 时应横向扩容而非继续加压。
+:::
 
 **渐进加压**：不要一开始就拉满目标用户数。先用 `LoadTestShape` 阶梯加压，观察系统在哪个量级出现拐点（响应时间骤增、错误率上升），再针对性地做长时间稳态压测。
 
 **结果可复现**：每次压测保留 `locustfile.py` 的 Git commit、被测系统的镜像 tag、压测参数与结果 CSV/HTML，形成可追溯的压测档案。这是性能回归测试的基础。
 
-**对比基准**：单独看一次压测数据意义有限。建议固定一组"基准场景"作为回归基线，每次重大变更后执行同场景压测，对比 P95、P99、吞吐量与资源占用，判断是否出现性能回退。
+::: tip 固定基准场景
+单独看一次压测数据意义有限。固定一组"基准场景"作为回归基线，每次重大变更后执行同场景压测，对比 P95、P99、吞吐量与资源占用，判断是否出现性能回退。
+:::
 
----
+Locust 的优势集中在需要复用 Python 业务库、业务链路复杂的压测场景：事件钩子支撑指标外发与自定义统计，自定义 `User` 子类扩展协议覆盖，Master-Worker 架构支撑规模化加压，Headless 模式打通 CI/CD 回归门禁。
 
-综上，Locust 凭借 Python 代码即脚本的工程友好性、gevent 协程驱动的并发能力、以及成熟的 Master-Worker 分布式架构，在复杂业务链路压测、需要复用 Python 业务库的场景中具备不可替代的优势。掌握其事件钩子、自定义客户端与分布式部署后，即可构建从开发联调到 CI/CD 回归的完整 Python 压测工作流。
+## 延伸阅读
+
+- → 下一章:[前端性能测试（Lighthouse 与 Core Web Vitals）](08-前端性能测试（Lighthouse与Core%20Web%20Vitals）) —— 从服务端视角切换到用户感知视角
+- [性能测试指标与方法论](01-性能测试指标与方法论) —— 指标体系与工具选型全景
+- [k6 云原生压测实战](06-k6%20云原生压测实战) —— Go 引擎代码化压测的对照方案
+- [JMeter 参数化与分布式压测](04-JMeter%20参数化与分布式压测) —— 参数化与分布式思路的另一种实现
+- [Locust 官方文档](https://docs.locust.io/) —— User、TaskSet 与事件钩子的权威参考

@@ -19,9 +19,9 @@ tags: [ATDD, BDD, SBE, Cucumber, Gherkin]
 | BDD | 表达与自动化 | 如何用业务可读的语言描述行为并自动验证？ |
 | SBE | 需求与文档 | 如何用例子提炼领域知识并形成活文档？ |
 
-## 一、ATDD、BDD 与 SBE 方法论
+## ATDD、BDD 与 SBE 方法论
 
-### 1.1 ATDD 三阶段循环
+### ATDD 三阶段循环
 
 ATDD 由 Kent Beck 与 Eric Lefever 提出，核心是一个"红-绿-重构"的变体循环：
 
@@ -58,7 +58,7 @@ flowchart LR
 
 ATDD 的关键不在于"先写测试"，而在于"讨论"阶段——在编写任何代码前，三方通过对话将模糊需求转化为具体的验收条件。这个讨论过程往往能暴露需求中的歧义与遗漏。
 
-### 1.2 BDD 与 Gherkin 语法
+### BDD 与 Gherkin 语法
 
 BDD 由 Dan North 提出，是 ATDD 在表达层面的进化。BDD 使用结构化的 **Gherkin 语法**描述行为，强制使用"Given-When-Then"三段式：
 
@@ -68,7 +68,11 @@ BDD 由 Dan North 提出，是 ATDD 在表达层面的进化。BDD 使用结构�
 
 Gherkin 的核心价值是**消除自然语言歧义**，同时保持业务可读性。它既是需求文档，也是可执行的自动化测试脚本。
 
-### 1.3 实例化需求（SBE）六步法
+::: tip Gherkin 描述业务行为，不描述技术实现
+Feature 文件中不应出现 `点击 id="login-btn" 的元素`、`发送 POST /api/login 请求` 这类技术细节，正确写法是 `点击登录按钮`。步骤定义层负责将业务语言映射到技术操作。
+:::
+
+### 实例化需求（SBE）六步法
 
 Gojko Adzic 在《Specification by Example》中总结了 SBE 的六个关键流程：
 
@@ -79,9 +83,9 @@ Gojko Adzic 在《Specification by Example》中总结了 SBE 的六个关键流
 5. **自动化验证**（Automating validation）——将例子转为可执行测试
 6. **频繁验证**（Validating frequently）——纳入 CI 持续运行
 
-## 二、场景编写与协作流程
+## 场景编写与协作流程
 
-### 2.1 BDD 场景编写流程
+### BDD 场景编写流程
 
 ```mermaid
 ---
@@ -117,7 +121,7 @@ flowchart TB
     A3 --> L1 --> L2
 ```
 
-### 2.2 Three Amigos 会议实践
+### Three Amigos 会议实践
 
 Three Amigos（三个火枪手）会议是 BDD 的核心协作仪式，在 Sprint 计划或待办梳理阶段进行。参与者至少包含三个视角：
 
@@ -138,9 +142,9 @@ Three Amigos（三个火枪手）会议是 BDD 的核心协作仪式，在 Sprin
 └── 问题: 第三方登录是否在本期范围？（→ 延后）
 ```
 
-## 三、工具与实践
+## 工具与实践
 
-### 3.1 Cucumber 与 Gherkin 自动化
+### Cucumber 与 Gherkin 自动化
 
 Cucumber 是 BDD 领域最主流的工具，支持 Java、Python、JavaScript、Ruby 等多语言。以下是一个完整的 Python Cucumber（behave）实践：
 
@@ -232,7 +236,7 @@ def step_verify_login_page(context):
     assert context.response.json().get("redirect") is None
 ```
 
-### 3.2 Serenity BDD 报告
+### Serenity BDD 报告
 
 Serenity BDD 是 Java 生态中 BDD 报告的标杆工具，能将 Cucumber 场景执行结果转化为业务可读的需求覆盖报告：
 
@@ -248,7 +252,7 @@ Serenity BDD 是 Java 生态中 BDD 报告的标杆工具，能将 Cucumber 场�
 
 Serenity 报告的核心价值是**将测试结果映射回业务需求**，产品经理看到的是"用户故事覆盖率"而非"测试用例通过率"。
 
-### 3.3 活文档生成
+### 活文档生成
 
 活文档（Living Documentation）是 SBE 的终极产出物——它是自动生成的、永远与代码同步的、业务可读的需求文档。工具链推荐：
 
@@ -259,46 +263,51 @@ Serenity 报告的核心价值是**将测试结果映射回业务需求**，产�
 | Allure BDD 适配 | 多语言 | 支持 BDD 场景展示 |
 | Relish | Ruby/JS | 在线协作式活文档 |
 
-## 四、常见误区
+## 常见误区
 
-### 4.1 "BDD 就是自动化测试工具"
+### "BDD 就是自动化测试工具"
 
 **误区**：团队引入 Cucumber 后直接从编写 Feature 文件开始，跳过协作讨论。
 
 **纠正**：BDD 的核心价值在"发现"（Discovery）和"表述"（Formulation）阶段，而非"自动化"（Automation）阶段。如果没有 Three Amigos 协作，Gherkin 只是另一种形式的测试脚本，丧失了业务沟通价值。
 
-### 4.2 Gherkin 过度技术化
+### Gherkin 过度技术化
 
-**误区**：Feature 文件中出现 `点击 id="login-btn" 的元素`、`发送 POST /api/login 请求` 等技术细节。
+见上文"Tip: Gherkin 描述业务行为，不描述技术实现"。技术细节属于步骤定义层，这是 BDD 的"翻译层"职责。
 
-**纠正**：Gherkin 应描述**业务行为**而非**技术实现**。正确写法是 `点击登录按钮`。步骤定义层负责将业务语言映射到技术操作，这是 BDD 的"翻译层"职责。
-
-### 4.3 场景数量爆炸
+### 场景数量爆炸
 
 **误区**：为每个边界条件编写独立场景，导致 Feature 文件臃肿难以维护。
 
 **纠正**：使用 `Scenario Outline` + `Examples` 表格合并同类场景。核心业务路径用独立场景详写，边界条件用数据表批量覆盖。
 
-### 4.4 将验收测试等同单元测试
+### 将验收测试等同单元测试
 
 **误区**：用 ATDD/BDD 替代单元测试。
 
 **纠正**：ATDD/BDD 验收测试是**黑盒级别**的外部行为验证，位于测试金字塔的顶层；单元测试是**白盒级别**的内部结构验证，位于测试金字塔的底层。两者互补而非替代。
 
-## 五、进阶扩展与参考
+## 契约测试关联与 AI 辅助
 
-### 5.1 与契约测试的关系
+### 与契约测试的关系
 
 在微服务架构中，BDD 场景可转化为**消费者驱动的契约测试**（Consumer-Driven Contract Testing）。Pact 框架支持在消费者端测试运行时生成契约文件，在提供者端验证。这使得 BDD 不仅验证业务行为，还验证服务间契约一致性。
 
-### 5.2 AI 辅助 BDD 场景生成
+### AI 辅助 BDD 场景生成
 
-2025-2026 年趋势：LLM 可从用户故事自动生成候选场景与边界用例。例如输入 `作为会员，我希望用手机号登录`，AI 输出包含正常路径、验证码过期、账户锁定、频率限制等场景草案。但 AI 生成的场景必须经 Three Amigos 评审后才能采纳——AI 能扩展思路，但业务意图的最终裁定权在人。
+LLM 可从用户故事自动生成候选场景与边界用例。例如输入 `作为会员，我希望用手机号登录`，AI 输出包含正常路径、验证码过期、账户锁定、频率限制等场景草案。但 AI 生成的场景必须经 Three Amigos 评审后才能采纳——AI 能扩展思路，但业务意图的最终裁定权在人。
 
-### 5.3 推荐参考
+### 推荐参考
 
 - 图书：《Specification by Example》Gojko Adzic
 - 图书：《BDD in Action》John Ferguson Smart
 - 工具：Cucumber（cucumber.io）
 - 工具：Serenity BDD（serenity-bdd.github.io）
 - 实践：Example Mapping 工作坊（cucumber.io/blog/example-mapping）
+
+## 延伸阅读
+
+- [敏捷测试思维与 Sprint 流程](09-敏捷测试思维与 Sprint 流程) —— Three Amigos 会议所处的 Sprint 语境
+- [微服务契约测试（Pact 与 Spring Cloud Contract）](../02-自动化测试/11-微服务契约测试（Pact 与 Spring Cloud Contract）) —— BDD 场景向契约测试的转化
+- [测试用例设计方法（等价类与边界值与错误推测与正交）](02-测试用例设计方法（等价类与边界值与错误推测与正交）) —— 场景中边界条件的系统化设计
+- [GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）](../02-自动化测试/20-GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）) —— BDD 场景结果的报告呈现

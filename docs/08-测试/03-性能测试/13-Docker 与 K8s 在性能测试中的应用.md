@@ -8,9 +8,11 @@ tags: [Docker, Kubernetes, 容器化压测, 云原生, Argo Workflows, eBPF]
 
 # Docker 与 K8s 在性能测试中的应用
 
-容器化与云原生技术已经成为性能测试的基础设施标准。从单机 Docker 镜像分发，到 Docker Compose 多工具编排，再到 Kubernetes 弹性调度压测 Worker，最终演进到 Argo Workflows 与 Operator 编排的云原生压测流水线——容器化让压测环境的一致性、可重复性与横向扩展能力都得到了数量级提升。本文基于 JMeter 5.6.3、JDK 17+、CentOS Stream 9 / Ubuntu 22.04 的实战版本，系统讲解 Docker 与 K8s 在性能测试中的应用。
+容器化与云原生技术已经成为性能测试的基础设施。从单机 Docker 镜像分发、Docker Compose 多工具编排，到 Kubernetes 弹性调度压测 Worker，再到 Argo Workflows 与 Operator 编排压测流水线，容器化让压测环境的一致性、可重复性与横向扩展能力都有数量级提升。本文基于 JMeter 5.6.3、JDK 17+ 的实战版本，讲解 Docker 与 K8s 在性能测试中的应用。
 
-## 一、核心概念：容器化对性能测试的影响与价值
+> 前置知识:[JMeter 参数化与分布式压测](04-JMeter%20参数化与分布式压测)。
+
+## 容器化对性能测试的价值
 
 性能测试长期受困于三个核心痛点：**环境一致性差**（开发、测试、生产环境差异导致压测结果失真）、**压力机扩缩容慢**（高峰期临时申请物理机往往以小时计）、**多工具协同复杂**（JMeter Master/Slave、k6、Locust、InfluxDB、Grafana 需要联动）。容器化与云原生技术恰好对症下药。
 
@@ -22,11 +24,13 @@ tags: [Docker, Kubernetes, 容器化压测, 云原生, Argo Workflows, eBPF]
 - **可观测性内建**：cAdvisor、Prometheus、Grafana 与 eBPF 形成开箱即用的监控链路，无需再为每个压测任务单独搭建监控。
 - **版本与依赖治理**：不同压测任务可以并行使用不同版本的 JMeter、JDK 甚至不同 JVM 厂商（HotSpot / OpenJ9 / GraalVM），互不干扰。
 
-需要特别注意的是：**容器并非零开销**。容器网络 NAT、存储 overlay、CPU CFS 调度都会引入额外延迟，对极限吞吐场景需要谨慎评估。在压测中需要区分两种场景：**功能性压测**（验证系统能否承受目标 QPS）可以无脑容器化；**基线对比压测**（测量绝对性能数值）则应记录容器开销作为变量，必要时使用裸金属对照。这一点会在后文"常见陷阱"中详细展开。
+::: warning 容器并非零开销
+容器网络 NAT、存储 overlay、CPU CFS 调度都会引入额外延迟，对极限吞吐场景需谨慎评估。功能性压测（验证能否承受目标 QPS）可以放心容器化；基线对比压测（测量绝对性能数值）应记录容器开销作为变量，必要时使用裸金属对照。
+:::
 
-## 二、Docker 在性能测试中的应用
+## Docker 层：镜像与编排
 
-### 2.1 镜像制作：JMeter / k6 / Locust
+### 镜像制作：JMeter / k6 / Locust
 
 性能测试工具的镜像化是容器化压测的第一步。下面以 JMeter 5.6.3 + JDK 17 为例，给出一份生产可用的 Dockerfile。
 
@@ -91,7 +95,7 @@ docker run --rm -p 8089:8089 -v $PWD:/mnt locustio/locust \
     -f /mnt/locustfile.py --headless -u 1000 -r 50
 ```
 
-### 2.2 Docker Compose 多工具编排
+### Docker Compose 多工具编排
 
 单容器只能解决工具分发问题，真正的价值在于多工具协同。下面这份 `docker-compose.yml` 同时拉起 JMeter Master、3 个 JMeter Worker、InfluxDB 与 Grafana，形成完整的分布式压测栈：
 
@@ -149,7 +153,7 @@ volumes:
 
 通过 `docker compose up -d` 一键启动，`docker compose up -d --scale jmeter-worker=10` 可以临时将 Worker 扩展到 10 个，配合 `replicas` 实现 Worker 的动态扩容。
 
-### 2.3 容器监控：从 docker stats 到 cAdvisor
+### 容器监控：从 docker stats 到 cAdvisor
 
 最基础的容器监控是 `docker stats`，可以实时查看每个容器的 CPU、内存、网络、Block I/O：
 
@@ -159,15 +163,17 @@ docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"
 
 `docker stats` 适合快速排查，但无法持久化与聚合，且只覆盖本机容器。压测过程中常见的排查场景——比如"第 15 分钟时 Worker 3 为什么吞吐掉了一半"——`docker stats` 无法回放。生产场景推荐使用 cAdvisor 自动采集容器指标，详见第五节"容器化性能监控"。
 
-需要注意 `docker stats` 显示的 CPU% 是相对于宿主机总核数的比例，而非相对于 `limits.cpu`。一个被限制为 1 核的容器在 `docker stats` 中显示 100% 时，实际上已达到 limit 上限，但宿主机视角下可能只占 1/8。这一显示差异是排查压测 Worker 性能瓶颈时常见的认知陷阱。
+::: warning docker stats 的 CPU% 口径
+`docker stats` 显示的 CPU% 相对于宿主机总核数，而非 `limits.cpu`。被限制为 1 核的容器显示 100% 时实际已达到 limit 上限，但宿主机视角下可能只占 1/8。排查 Worker 瓶颈时注意这一口径差异。
+:::
 
-## 三、K8s 在性能测试中的应用
+## K8s 层：调度与隔离
 
 Docker Compose 解决了单机多容器编排，但在大规模压测场景下，**Worker 数量超过单机容量、跨节点调度、压测任务生命周期管理**等需求会推动压测基础设施向 K8s 演进。K8s 的 Job、Deployment、HPA、Namespace、ConfigMap 等原生能力恰好与压测场景天然契合。
 
 相较于 Docker Compose，K8s 带来了三个量级的能力跃升：第一，**跨节点调度**让 Worker 池可以横跨数十台物理机，单次压测可发起数十万乃至百万级并发；第二，**声明式 API**让压测环境本身可被版本化、可被 GitOps 管理，整个压测集群的定义就是一个 YAML 仓库；第三，**Operator 模式**让压测工具的运维知识被编码进控制器，普通测试同学无需理解 K8s 细节即可发起分布式压测。
 
-### 3.1 K8s 压测整体架构
+### 压测整体架构
 
 ```mermaid
 flowchart TB
@@ -211,7 +217,7 @@ flowchart TB
     W1 & W2 & W3 -.指标.-> CAD
 ```
 
-### 3.2 K8s Job 调度压测任务
+### K8s Job 调度压测任务
 
 压测任务天然是"运行到完成"的工作负载，与 K8s Job 的语义完全匹配。下面是 JMeter Master 以 Job 方式运行的 YAML：
 
@@ -255,7 +261,7 @@ spec:
           emptyDir: {}
 ```
 
-### 3.3 HPA 弹性伸缩 Worker
+### HPA 弹性伸缩 Worker
 
 压测流量往往呈脉冲式（如秒杀场景预热期低、抢购瞬间峰值），固定 Worker 数量既浪费资源又难以应对峰值。HPA（Horizontal Pod Autoscaler）可以根据 CPU 或自定义指标动态调整 Worker 副本数：
 
@@ -290,7 +296,7 @@ spec:
 
 配合 Prometheus Adapter，HPA 可以基于 `jmeter_active_threads`、`http_req_rate` 等自定义指标进行扩容，比纯 CPU 阈值更贴合压测语义。
 
-### 3.4 ConfigMap 管理压测脚本
+### ConfigMap 管理压测脚本
 
 压测脚本与参数化文件（CSV）应与镜像解耦，通过 ConfigMap 挂载，便于版本管理与热更新：
 
@@ -313,7 +319,7 @@ data:
 
 敏感数据（如被测系统的 API Token）应使用 Secret 而非 ConfigMap。
 
-### 3.5 Namespace 隔离
+### Namespace 隔离
 
 不同团队、不同压测任务应通过 Namespace 进行资源与网络隔离，避免互相干扰：
 
@@ -340,13 +346,13 @@ spec:
 
 配合 NetworkPolicy 可以进一步限制 Worker 只能访问被测系统，无法触达生产数据库等敏感资源。Namespace 隔离在多团队共享压测集群时尤其重要——A 团队的压测流量意外打到 B 团队的被测环境，是共享集群中最常见的事故类型。通过 Namespace + ResourceQuota + NetworkPolicy 三层隔离，可以将事故半径控制在单个 Namespace 内。
 
-## 四、云原生压测流水线：Argo Workflows 与 Operator
+## 压测流水线：Argo Workflows 与 Operator
 
 K8s Job 解决了"一次性压测"，但实际工程中的压测是一个**多阶段流水线**：准备数据 → 启动压测 → 等待稳态 → 采集指标 → 生成报告 → 清理环境。用 K8s Job 手写这些阶段会陷入 bash 脚本编排的泥潭——错误处理、重试、并行、产物传递都需要自己实现。Argo Workflows 与 Operator 分别从"声明式 DAG"与"CRD 控制器"两个方向解决这一问题。
 
-Argo Workflows 的核心优势在于**声明式 DAG**：每个步骤是一个容器，步骤间的依赖关系用 YAML 描述，引擎自动调度执行顺序、处理重试、传递产物。压测团队只需关注"做什么"，不需要关注"怎么调度"。对于 2024-2026 年逐渐成熟的云原生压测生态，Argo Workflows 已经成为事实上的流水线编排标准，Tekton 与 Argo 之间的争论基本以 Argo 在数据分析与批处理场景的胜出而告终。
+Argo Workflows 的核心优势在于**声明式 DAG**：每个步骤是一个容器，步骤间的依赖关系用 YAML 描述，引擎自动调度执行顺序、处理重试、传递产物。压测团队只需关注"做什么"，不需要关注"怎么调度"。Argo Workflows 已成为云原生流水线编排的事实标准，Tekton 与 Argo 的竞争中，Argo 在数据分析与批处理场景胜出。
 
-### 4.1 Argo Workflows 编排压测流水线
+### Argo Workflows 编排压测流水线
 
 ```mermaid
 flowchart LR
@@ -418,7 +424,7 @@ spec:
         command: [python, /app/report.py, --jtl, /results/result.jtl]
 ```
 
-### 4.2 k6 Operator 与 JMeter Operator
+### k6 Operator 与 JMeter Operator
 
 如果不想自己编排 DAG，可以使用专用压测 Operator。以 k6 Operator 为例，只需声明一个 `K6` CRD 即可自动调度分布式压测：
 
@@ -446,9 +452,9 @@ Operator 会自动创建 10 个 runner Pod、分发脚本、聚合结果、回�
 
 Operator 与 Argo Workflows 并非二选一，而是互补关系：Argo 擅长编排跨工具的多阶段流水线（数据准备→压测→报告→通知），Operator 擅长把单一压测工具的分布式协调封装成"一键"操作。成熟的云原生压测平台通常以 Argo Workflows 为顶层编排，在压测阶段调用 k6 Operator 或 JMeter Operator 的 CRD，由 Operator 完成 Worker 的细节调度。
 
-## 五、容器化性能监控：cAdvisor + Prometheus + Grafana + eBPF
+## 容器化性能监控：cAdvisor + Prometheus + Grafana + eBPF
 
-### 5.1 cAdvisor + Prometheus + Grafana
+### cAdvisor + Prometheus + Grafana
 
 cAdvisor 由 Google 开源，原生集成 Docker / containerd，自动采集每个容器的 CPU、内存、文件系统、网络指标并暴露为 Prometheus 格式。典型部署：
 
@@ -467,7 +473,7 @@ scrape_configs:
 
 Grafana 中可以直接使用官方的 cAdvisor Dashboard（ID 14282），按容器维度查看 CPU Throttle、Memory Working Set、Network RX/TX。
 
-### 5.2 eBPF 监控：Hubble / Cilium
+### eBPF 监控：Hubble / Cilium
 
 传统监控只能看到容器层指标，无法解释"为什么容器间延迟突然升高"。eBPF（Extended Berkeley Packet Filter）通过在内核态注入探针，可以无侵入地观测容器网络流量、TCP 重传、函数调用栈。
 
@@ -489,21 +495,25 @@ eBPF 在压测中的典型应用场景：
 - **Sidecar 注入延迟**：Istio 等 Sidecar 在压测链路中引入的额外开销。线上常被忽视的 Sidecar 在 10 万 QPS 下可能贡献 20% 以上的延迟，eBPF 可以精确度量。
 - **内核态函数追踪**：通过 bpftrace 追踪 `tcp_sendmsg`、`sock_recvmsg` 等内核函数，定位容器网络栈的具体瓶颈点。
 
-## 六、常见陷阱与最佳实践
+## 常见陷阱与调优要点
 
-### 6.1 容器网络开销
+### 容器网络开销
 
 容器默认走 bridge 网络，每次跨容器通信都要经过 iptables NAT，对 P99 敏感的场景可能引入 0.1～1ms 的额外延迟。**最佳实践**：压测 Worker 使用 `hostNetwork: true`，或使用 Calico/Cilium 的 BGP 直连模式绕过 iptables。
 
-### 6.2 CPU Share 与 CFS 调度
+### CPU Share 与 CFS 调度
 
 K8s 默认通过 CFS（Completely Fair Scheduler）进行 CPU 限流，`limits.cpu` 设置过低会导致 Worker 被频繁限流，吞吐量上不去；设置过高则可能挤占其他 Pod。**最佳实践**：压测 Worker 的 `requests.cpu` 与 `limits.cpu` 保持一致，避免 Burst 行为引入抖动；对延迟敏感的 Master 节点使用 `cpuManagerPolicy=static` 绑定核。
 
-### 6.3 Memory Limit 与 OOMKill
+### Memory Limit 与 OOMKill
 
-`limits.memory` 触发的 OOMKill 会让 Worker 突然死亡，导致压测结果不可信。JVM 容器化场景需要特别关注：JDK 17 默认识别 cgroup 限制，但 `-Xmx` 设置不应超过 `limits.memory` 的 75%，预留空间给 Metaspace、Direct Buffer 与堆外内存。
+`limits.memory` 触发的 OOMKill 会让 Worker 突然死亡，导致压测结果不可信。
 
-### 6.4 资源 Limit 设置参考
+::: warning JVM 容器内存预留
+JDK 17 默认识别 cgroup 限制，但 `-Xmx` 不应超过 `limits.memory` 的 75%，预留空间给 Metaspace、Direct Buffer 与堆外内存。
+:::
+
+### 资源 Limit 设置参考
 
 | 工作负载 | requests.cpu | limits.cpu | requests.memory | limits.memory |
 |----------|--------------|------------|-----------------|---------------|
@@ -513,14 +523,21 @@ K8s 默认通过 CFS（Completely Fair Scheduler）进行 CPU 限流，`limits.c
 | InfluxDB | 2 | 4 | 4Gi | 8Gi |
 | Grafana | 0.5 | 1 | 256Mi | 512Mi |
 
-### 6.5 镜像分层与构建缓存
+### 镜像分层与构建缓存
 
 JMeter 镜像如果每次都从源码编译，构建时间动辄 10 分钟。**最佳实践**：将不常变化的层（基础镜像、JDK、JMeter）放在前面，脚本与参数化文件放在后面，配合 BuildKit 缓存可将构建时间压缩到 1 分钟内。
 
-### 6.6 镜像安全
+### 镜像安全
 
 压测镜像常常携带被测系统 Token，必须避免推送到公共仓库。**最佳实践**：使用私有镜像仓库（Harbor）+ 镜像签名（Cosign）+ 运行时扫描（Trivy），并通过 K8s `imagePullSecrets` 管理凭据。
 
-## 总结
+容器化压测的分层路径：Docker 镜像解决工具分发与环境一致性，Compose 解决单机多工具编排，K8s Job/HPA/Namespace 解决调度与隔离，Argo Workflows 与 Operator 把压测流水线化，cAdvisor + Prometheus + Grafana + eBPF 构成容器可观测闭环。同时注意容器网络开销、CFS 限流与 OOMKill 这些副作用对压测数据的影响。
 
-容器化与云原生技术已从"可选项"变为性能测试基础设施的"必选项"。Docker 解决了工具分发与环境一致性问题，Docker Compose 解决了单机多工具编排，K8s Job/HPA/Namespace 解决了分布式压测的调度与隔离，Argo Workflows 与 Operator 进一步将压测流水线化，而 cAdvisor + Prometheus + Grafana + eBPF 构成了完整的容器可观测性闭环。理解这些技术背后的权衡——容器网络开销、CFS 限流、Memory OOM——才能在压测中真正发挥云原生的优势，而不是被其副作用反噬。
+## 延伸阅读
+
+- → 下一章:[Nginx 性能调优与负载均衡](14-Nginx%20性能调优与负载均衡) —— 流量入口层的调优与压测
+- [JMeter 参数化与分布式压测](04-JMeter%20参数化与分布式压测) —— JMeter Worker 容器化部署的直接前置
+- [k6 云原生压测实战](06-k6%20云原生压测实战) —— k6 Operator 的用法
+- [全链路压测与影子库表设计](15-全链路压测与影子库表设计) —— 压测流水线的业务侧落地
+- [Dockerfile 编写与优化](../../12-运维/05-容器化与Kubernetes/21-Dockerfile%20编写与优化.md) —— 镜像分层与构建优化
+- [Docker Compose 多容器编排](../../12-运维/05-容器化与Kubernetes/05-Docker%20Compose多容器编排.md) —— Compose 语法基础

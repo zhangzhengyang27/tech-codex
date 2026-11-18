@@ -8,11 +8,11 @@ tags: [MySQL, 慢SQL, 索引优化, 执行计划, 分库分表]
 
 # MySQL 性能优化与慢 SQL 治理
 
-数据库往往是企业应用链路中"最难横向扩展"的一环，也是性能测试中最容易暴露瓶颈的环节。本文基于 **MySQL 8.4 LTS（2024 发布）** 与创新版 **9.x**，系统梳理性能优化的方法论、索引设计、执行计划分析、慢 SQL 治理全流程，以及架构层优化方案。旧文档基于 MySQL 5.0/5.7，而 5.7 已于 **2023 年 10 月 EOL**，本文完全替换为 8.x 体系下的实践。
+数据库往往是企业应用链路中"最难横向扩展"的一环，也是性能测试中最容易暴露瓶颈的环节。本文基于 **MySQL 8.4 LTS（2024 发布）** 与创新版 **9.x**，梳理性能优化的方法论、索引设计、执行计划分析、慢 SQL 治理全流程与架构层优化方案。MySQL 5.7 已 EOL，生产环境应统一在 8.x 体系下实践。
 
-## 一、核心概念：性能优化的方法论与层次
+## 性能优化的方法论与层次
 
-### 1.1 五层优化模型
+### 五层优化模型
 
 MySQL 性能优化遵循"**由近及远、由软及硬**"的漏斗原则，从上到下投入产出比依次递减：
 
@@ -22,9 +22,13 @@ MySQL 性能优化遵循"**由近及远、由软及硬**"的漏斗原则，从�
 4. **架构层**：读写分离、分库分表、缓存前置；
 5. **硬件层**：CPU、内存、NVMe SSD、网络。
 
-绝大多数线上问题集中在第一层，也是测试工程师与开发同学最常介入的层面。**永远不要先动硬件**——这是性能调优的铁律。
+绝大多数线上问题集中在第一层，也是测试工程师与开发同学最常介入的层面。
 
-### 1.2 MySQL 查询执行流程
+::: warning 铁律：最后才动硬件
+性能调优遵循"由近及远、由软及硬"的漏斗原则，投入产出比从 SQL 与索引到硬件逐层递减。永远不要先动硬件。
+:::
+
+### 查询执行流程
 
 理解 SQL 在服务端如何被解析、优化、执行，是判断"为什么会慢"的前提。下图展示了从客户端发起到结果返回的关键阶段：
 
@@ -43,9 +47,9 @@ flowchart TD
 
 **关键变化**：MySQL 8.0 已彻底移除查询缓存（Query Cache），原因是其在高并发与高更新场景下反而成为锁竞争热点，命中率极低。对应策略是将缓存前置到 Redis 层。
 
-## 二、索引优化
+## 索引优化
 
-### 2.1 B+树与 InnoDB 索引结构
+### B+树与 InnoDB 索引结构
 
 InnoDB 的索引基于 B+树，核心特征为：
 
@@ -54,7 +58,7 @@ InnoDB 的索引基于 B+树，核心特征为：
 - **聚簇索引**：主键索引的叶子节点存储完整行数据，一张表只有一个；
 - **二级索引**：叶子节点存储主键值，查询需要的列不在索引内时需**回表**。
 
-### 2.2 最左前缀与联合索引
+### 最左前缀与联合索引
 
 联合索引 `(c1, c2, c3)` 等价于同时为 `(c1)`、`(c1,c2)`、`(c1,c2,c3)` 三种前缀建立索引。**最左前缀**指的是索引匹配从最左列开始，但优化器会自动调整 AND 条件的顺序，所以 `WHERE c2='2' AND c1='1'` 仍可命中。
 
@@ -69,11 +73,11 @@ WHERE subject = 'english' ORDER BY score;
 -- Extra 显示 Using index，覆盖索引 + 避免排序
 ```
 
-### 2.3 覆盖索引与回表
+### 覆盖索引与回表
 
 若 SELECT 的列全部包含在索引中，称为**覆盖索引**，可在 Extra 中看到 `Using index`，避免回表 IO。设计索引时应优先让高频查询的 SELECT 列落入联合索引覆盖范围。
 
-### 2.4 索引下推（ICP）
+### 索引下推（ICP）
 
 MySQL 5.6 引入的 Index Condition Pushdown，在 8.x 中已成为默认行为。它在**存储引擎层**对联合索引的多列条件进行过滤，减少回表次数。
 
@@ -84,7 +88,7 @@ SELECT * FROM t WHERE a = '1' AND b LIKE '%xyz%';
 -- 有 ICP：在索引层即对 b 进行 like 过滤，只对满足的行回表
 ```
 
-### 2.5 不可见索引（Invisible Index）
+### 不可见索引（Invisible Index）
 
 MySQL 8.0 引入，可用于"**软下线**"索引而不实际删除，便于回滚：
 
@@ -99,7 +103,7 @@ ALTER TABLE t DROP INDEX idx_old;
 ALTER TABLE t ALTER INDEX idx_old VISIBLE;
 ```
 
-### 2.6 降序索引
+### 降序索引
 
 MySQL 8.0 真正支持降序索引（5.7 仅语法支持但实际仍按升序存储），对 `ORDER BY ... DESC` 场景可避免反向扫描与 filesort：
 
@@ -107,9 +111,9 @@ MySQL 8.0 真正支持降序索引（5.7 仅语法支持但实际仍按升序存
 CREATE INDEX idx_create_time_desc ON orders(create_time DESC, user_id ASC);
 ```
 
-## 三、执行计划分析
+## 执行计划分析
 
-### 3.1 EXPLAIN 字段详解
+### EXPLAIN 字段详解
 
 ```sql
 EXPLAIN SELECT * FROM orders WHERE user_id = 10086 ORDER BY create_time DESC;
@@ -124,7 +128,7 @@ EXPLAIN SELECT * FROM orders WHERE user_id = 10086 ORDER BY create_time DESC;
 | `filtered` | 过滤后剩余比例 | 100 最佳，过低说明扫描浪费 |
 | `Extra` | 附加信息 | `Using filesort`/`Using temporary` 需立即优化 |
 
-### 3.2 EXPLAIN ANALYZE（8.0.18+）
+### EXPLAIN ANALYZE（8.0.18+）
 
 `EXPLAIN ANALYZE` 会**真正执行** SQL 并输出实际耗时，是判断"优化器预估是否准确"的利器：
 
@@ -135,7 +139,7 @@ EXPLAIN SELECT * FROM orders WHERE user_id = 10086 ORDER BY create_time DESC;
 
 `cost=... rows=10` 是预估，`actual time=... rows=8` 是实测。两者差距过大说明统计信息过期，应执行 `ANALYZE TABLE`。
 
-### 3.3 SET_VAR Hint（8.4 增强）
+### SET_VAR Hint（8.4 增强）
 
 8.4 LTS 增强了 `SET_VAR` 优化器 hint，可针对单条 SQL 临时调整参数，不影响全局：
 
@@ -145,9 +149,9 @@ SELECT /*+ SET_VAR(sort_buffer_size = 8M) */
        * FROM big_table WHERE category = 'A' ORDER BY create_time;
 ```
 
-## 四、慢 SQL 治理全流程
+## 慢 SQL 治理全流程
 
-### 4.1 慢查询日志采集
+### 慢查询日志采集
 
 ```ini
 # my.cnf 关键配置
@@ -160,7 +164,7 @@ min_examined_row_limit = 100        # 扫描少于 100 行不记录，减少噪�
 
 实时排查则用 `SHOW FULL PROCESSLIST`，重点关注 `State` 列：长时间停留在 `Sending data`、`Copying to tmp table`、`Sorting result` 都是危险信号。
 
-### 4.2 pt-query-digest 聚合分析
+### pt-query-digest 聚合分析
 
 `mysqldumpslow` 功能较弱，Percona Toolkit 的 `pt-query-digest` 是事实标准：
 
@@ -177,7 +181,7 @@ pt-query-digest --processlist h=127.0.0.1,u=root,p=xxx --interval 1
 
 输出重点关注：**总耗时占比、平均执行时长、扫描行数与返回行数的比值**。`Rows examined / Rows returned` 大于 100 通常意味着索引设计有问题。
 
-### 4.3 慢 SQL 治理决策树
+### 慢 SQL 治理决策树
 
 ```mermaid
 flowchart TD
@@ -199,7 +203,7 @@ flowchart TD
     STAT --> OK
 ```
 
-### 4.4 典型改写案例
+### 典型改写案例
 
 ```sql
 -- ① 隐式类型转换：score 为 varchar，忘加引号导致全表扫描
@@ -223,17 +227,17 @@ INNER JOIN (
 -- 若 (status) 已有索引，Extra 应为 Using index，无需回表
 ```
 
-## 五、MySQL 8.x 性能特性
+## MySQL 8.x 性能特性
 
-### 5.1 Hash Join（8.0.18+）
+### Hash Join（8.0.18+）
 
 之前 MySQL 只支持 Nested Loop Join，无索引的等值关联极其缓慢。8.0.18 引入 Hash Join 作为兜底，9.x 进一步优化。对于无法走索引的 `JOIN ... ON a.col = b.col`，性能可提升数倍到数十倍。但仍应优先补索引，Hash Join 只是"无索引时的安全网"。
 
-### 5.2 Skip Scan（8.0.13+）
+### Skip Scan（8.0.13+）
 
 联合索引 `(a, b)` 在 `a` 缺失的情况下，若 `a` 的基数较低，优化器可对 `a` 的每个取值分别扫描 `b`，从而利用索引。避免了"必须把 a 放进 WHERE"的硬性约束。
 
-### 5.3 并行查询（InnoDB Parallel Read）
+### 并行查询（InnoDB Parallel Read）
 
 InnoDB 并行读自 **8.0.14** 起引入（`innodb_parallel_read_threads`），8.4/9.x 持续增强，针对大表全表扫描、COUNT(*) 聚合等场景：
 
@@ -243,9 +247,11 @@ SET innodb_parallel_read_threads = 8;
 SELECT COUNT(*) FROM big_table WHERE create_time BETWEEN '2024-01-01' AND '2024-12-31';
 ```
 
-注意：并行查询对**短查询和 OLTP 场景几乎无效**，甚至因线程调度开销变慢，它面向的是分析型大查询。
+::: warning 并行查询的适用边界
+并行查询对短查询和 OLTP 场景几乎无效，甚至因线程调度开销变慢，它面向的是分析型大查询。
+:::
 
-### 5.4 统计信息持久化
+### 统计信息持久化
 
 8.x 默认将统计信息持久化到 `mysql.innodb_table_stats` 与 `innodb_index_stats`，避免每次重启后计划抖动。可手动触发：
 
@@ -256,9 +262,9 @@ ANALYZE TABLE orders DROP HISTOGRAM ON user_id;
 
 直方图（Histogram）让优化器对数据分布有更准确的认知，尤其适合"列上无索引但分布极不均匀"的场景。
 
-## 六、架构层优化
+## 架构层优化
 
-### 6.1 读写分离
+### 读写分离
 
 主库承担写，从库承担读。常见中间件：
 
@@ -268,7 +274,7 @@ ANALYZE TABLE orders DROP HISTOGRAM ON user_id;
 
 注意从库延迟问题：强一致读必须走主库，可通过事务内强制主库或会话变量 `session_track_gtids` 控制。
 
-### 6.2 分库分表
+### 分库分表
 
 单表数据超过 1000 万或单库超过 100GB 时应考虑分片。主流方案：
 
@@ -279,9 +285,11 @@ ANALYZE TABLE orders DROP HISTOGRAM ON user_id;
 | **Vitess / PlanetScale** | 云原生分片 | 源自 YouTube，MySQL 协议兼容，支持在线 Schema 变更 |
 | **MyCAT** | 代理分片 | 老牌方案，社区活跃度下降 |
 
-分片键选择是**一次性决策**，常见陷阱：按自增 ID 取模导致热点、按时间分片导致写入热点。建议按业务维度（如 user_id）哈希分片，并预留扩容倍数。
+::: warning 分片键是一次性决策
+按自增 ID 取模会导致写入热点，按时间分片会导致新数据集中。建议按业务维度（如 user_id）哈希分片，并预留扩容倍数，事后修改分片键的迁移成本极高。
+:::
 
-### 6.3 缓存层
+### 缓存层
 
 热点数据前置到 Redis，能将 QPS 从 MySQL 的数千提升到 Redis 的数十万。设计要点：
 
@@ -290,26 +298,26 @@ ANALYZE TABLE orders DROP HISTOGRAM ON user_id;
 - **缓存雪崩**：过期时间随机化，多级缓存兜底；
 - **一致性**：先更新 DB 再删缓存（Cache Aside），结合 binlog 订阅做最终一致。
 
-### 6.4 MySQL HeatWave（云端 OLAP 加速）
+### MySQL HeatWave（云端 OLAP 加速）
 
-HeatWave 是 MySQL 8.0.25 起在 OCI（Oracle Cloud）推出的内存列存加速引擎，2024 后逐步支持 AWS / Azure。它将 OLAP 查询下推到分布式内存节点，对 AP 查询加速可达数百倍，且无需 ETL。适合"既要 OLTP 又要轻量 OLAP"的场景，是 2024-2026 年云原生 MySQL 的标志性能力。
+HeatWave 是 MySQL 8.0.25 起在 OCI（Oracle Cloud）推出的内存列存加速引擎，后续逐步支持 AWS / Azure。它将 OLAP 查询下推到分布式内存节点，对 AP 查询加速可达数百倍，且无需 ETL，适合"既要 OLTP 又要轻量 OLAP"的场景。
 
-## 七、监控与持续治理
+## 监控与持续治理
 
-### 7.1 监控三件套
+### 监控三件套
 
 - **mysqld_exporter + Prometheus + Grafana**：采集 `mysql_global_status_*`、`mysql_innodb_*` 等指标，关注 QPS、TPS、Slow Queries、Buffer Pool 命中率、连接数；
 - **MySQL Enterprise Monitor**：Oracle 官方商业产品，提供查询分析与配置告警；
 - **Percona PMM**：开源一体化平台，集成 QAN（Query Analytics）。
 
-### 7.2 持续治理机制
+### 持续治理机制
 
 1. **慢 SQL 日报**：每日定时跑 `pt-query-digest`，按总耗时 Top 10 自动派单；
 2. **索引巡检**：每周扫描冗余索引（`sys.schema_unused_indexes`、`sys.schema_redundant_indexes`）；
 3. **变更卡点**：DDL 上线前用 `pt-online-schema-change` 或 GitHub 的 `gh-ost` 在线变更；
 4. **容量评估**：结合压测数据建立"单表行数 / 单库容量"红线。
 
-## 八、常见陷阱与最佳实践
+## 常见陷阱与实践清单
 
 | 陷阱 | 表现 | 对策 |
 | --- | --- | --- |
@@ -321,7 +329,7 @@ HeatWave 是 MySQL 8.0.25 起在 OCI（Oracle Cloud）推出的内存列存加�
 | `COUNT(*)` 误用 | InnoDB `COUNT(*)` 需要扫描 | 业务允许误差时用估算表或 Redis 计数 |
 | 5.7 EOL 风险 | 2023.10 后无安全补丁 | 必须升级至 8.4 LTS，9.x 仅创新版用于尝鲜 |
 
-### 最佳实践清单
+### 实践清单
 
 1. **主键必为整型自增或有序**（如雪花 ID），避免 UUID 作主键导致 B+树页分裂；
 2. **`TEXT`/`BLOB` 单独拆表**，避免主表行膨胀；
@@ -332,8 +340,13 @@ HeatWave 是 MySQL 8.0.25 起在 OCI（Oracle Cloud）推出的内存列存加�
 7. **新索引先用不可见索引验证**，确认命中后再可见化；
 8. **生产参数灰度发布**，`SET_VAR` 单 SQL 级验证后再 `SET GLOBAL`。
 
-## 总结
+MySQL 性能优化的主线是"把该走的索引走对、不该扫的行不扫、该分布的数据分布出去"：压测中发现慢 SQL 候选，用 EXPLAIN / EXPLAIN ANALYZE 量化诊断，推动改写与索引调整，再以慢 SQL 日报与索引巡检建立持续治理闭环。
 
-MySQL 性能优化本质是"**把该走的索引走对、把不该扫的行不扫、把该分布的数据分布出去**"。从 SQL 到索引、到 Schema、到配置、再到架构，每一层都有对应的工具与方法论。MySQL 8.4 LTS 相较旧版 5.7，在 Hash Join、Skip Scan、并行查询、不可见索引、降序索引、SET_VAR Hint、EXPLAIN ANALYZE 等能力上有质的飞跃，再配合 pt-query-digest、Prometheus、ShardingSphere、Vitess、HeatWave 等生态工具，足以支撑从 OLTP 到轻量 OLAP 的全场景需求。
+## 延伸阅读
 
-性能测试工程师的核心价值在于：**在压测中发现慢 SQL 候选，用 EXPLAIN/EXPLAIN ANALYZE 量化诊断，推动开发改写与索引调整，并通过监控建立持续治理闭环**——这正是"测试驱动性能优化"的真正落地。
+- → 下一章:[Redis 8 性能调优（含 Vector Set）](12-Redis%208%20性能调优（含%20Vector%20Set）) —— 数据库前置缓存层的调优
+- [后端性能监控（Prometheus 与 Grafana 与 SkyWalking 10）](09-后端性能监控（Prometheus与Grafana与SkyWalking%2010）) —— mysqld_exporter 监控接入
+- [Explain 详解](../../05-后端/01-MySQL/03-索引与查询优化/07-Explain详解.md) —— 执行计划逐字段深入
+- [基于成本的优化](../../05-后端/01-MySQL/03-索引与查询优化/04-基于成本的优化.md) —— 优化器成本模型原理
+- [分布式缓存：多级体系、穿透击穿雪崩、一致性与高可用](../../05-后端/03-分布式/09-分布式缓存：多级体系、穿透击穿雪崩、一致性与高可用.md) —— 缓存层设计的体系化展开
+- [MySQL 8.4 Reference Manual](https://dev.mysql.com/doc/refman/8.4/en/) —— 官方权威参考

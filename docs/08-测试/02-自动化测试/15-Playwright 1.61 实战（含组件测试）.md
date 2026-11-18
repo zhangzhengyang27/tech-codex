@@ -8,11 +8,13 @@ tags: [Playwright, E2E, 组件测试, TypeScript, CI/CD, Trace Viewer]
 
 # Playwright 1.61 实战（含组件测试）
 
-Playwright 是 Microsoft 主导开发的现代端到端（E2E）Web 测试框架，以"零配置、自动等待、内置断言、跨浏览器、跨语言"为核心特征，自 2020 年发布以来逐步成为 GUI 自动化测试的事实标准。本文基于 Playwright 1.61.0（2026 年最新稳定版，配套 Chromium 149、Firefox 151、WebKit 26.5），系统讲解核心概念、环境搭建、API 体系、测试编写、组件测试、1.61 新特性、CI/CD 集成与最佳实践，帮助读者在前端工程化体系中建立稳定可维护的 GUI 测试工作流。
+Playwright 是 Microsoft 主导开发的现代端到端（E2E）Web 测试框架，以"零配置、自动等待、内置断言、跨浏览器、跨语言"为核心特征，是当前 GUI 自动化测试的主流方案之一。本文基于 Playwright 1.61.0（配套 Chromium 149、Firefox 151、WebKit 26.5），覆盖核心概念、环境搭建、核心 API、测试编写、组件测试、1.61 新特性与 CI/CD 集成。
 
-## 一、核心概念
+> 前置知识:[GUI 自动化测试策略与 ROI](13-GUI%20自动化测试策略与%20ROI)。
 
-### 1.1 Playwright 是什么
+## 核心概念与选型
+
+### Playwright 是什么
 
 Playwright 是一套开源的浏览器自动化框架，通过单一 API 同时驱动 Chromium、Firefox、WebKit 三大浏览器内核，并官方支持 JavaScript/TypeScript、Python、Java 与 .NET 四种语言绑定。其底层基于 CDP（Chrome DevTools Protocol）与各浏览器自带的调试协议，对每个浏览器打补丁后打包发布，从而保证 API 行为在三套内核上完全一致。
 
@@ -25,7 +27,7 @@ Playwright 解决的核心痛点包括：
 - **内置可观测**：开箱即用的截图、视频、Trace Viewer，失败排查无需额外工具；
 - **零配置**：`npm init playwright@latest` 一条命令完成脚手架、浏览器与配置文件初始化。
 
-### 1.2 Playwright vs Selenium
+### Playwright vs Selenium
 
 Selenium 经历十余年演进，企业生态与协议标准化（W3C WebDriver）成熟，但在现代前端工程化场景下，其架构特征逐渐显出短板。两者关键差异如下：
 
@@ -44,7 +46,7 @@ Selenium 经历十余年演进，企业生态与协议标准化（W3C WebDriver�
 
 选型结论：**新项目、现代前端框架、CI 重度依赖**首选 Playwright；**存量 Java 生态、W3C 协议合规要求、跨多浏览器版本兼容测试**仍可保留 Selenium。两者并非互斥，可在不同业务线并行。
 
-### 1.3 核心架构层级
+### 核心架构层级
 
 Playwright 的 API 严格遵循"浏览器实例 → 上下文 → 页面 → 定位器"的层级模型，理解层级是正确编写测试的前提。
 
@@ -68,9 +70,9 @@ graph TD
 
 层级设计的关键含义：Browser 启动开销大，应尽量复用；BrowserContext 创建极快（毫秒级），是测试隔离的最小单元；Page 对应一个标签页或弹窗；Locator 是惰性求值的元素句柄，DOM 变化后自动重新解析，避免了 Selenium 中 `StaleElementReferenceException` 的痛点。
 
-## 二、环境搭建
+## 环境搭建
 
-### 2.1 初始化项目
+### 初始化项目
 
 Playwright 提供 `create-playwright` 脚手架，一条命令完成依赖安装、浏览器下载与配置文件生成：
 
@@ -88,7 +90,7 @@ npx playwright install chromium firefox
 npx playwright install-deps
 ```
 
-### 2.2 项目结构
+### 项目结构
 
 脚手架生成的标准结构如下：
 
@@ -102,7 +104,7 @@ my-e2e/
 └── playwright-report/       # 测试报告（gitignore）
 ```
 
-### 2.3 配置文件详解
+### 配置文件详解
 
 `playwright.config.ts` 是 Playwright 的中枢，控制浏览器、并发、重试、报告、Trace 等所有运行时行为：
 
@@ -144,9 +146,9 @@ export default defineConfig({
 });
 ```
 
-## 三、核心 API
+## 核心 API
 
-### 3.1 Browser / BrowserContext / Page
+### Browser / BrowserContext / Page
 
 三者构成 Playwright 操作的骨架。测试用例通常通过 fixture 注入 `page`，无需手动管理 Browser 生命周期；但理解底层模型有助于排查复杂场景：
 
@@ -165,7 +167,7 @@ test('登录后跳转主页', async ({ page, context }) => {
 });
 ```
 
-### 3.2 Locator 定位器
+### Locator 定位器
 
 Locator 是 Playwright 推荐的元素定位方式，惰性求值、自动重试，应**完全避免**使用 `page.$`、`page.waitForSelector` 等旧 API：
 
@@ -194,11 +196,15 @@ test('Locator 最佳实践', async ({ page }) => {
 });
 ```
 
-### 3.3 auto-waiting 机制
+### auto-waiting 机制
 
-所有交互动作（`click`、`fill`、`check`、`selectOption`、`press`）在执行前会自动等待元素满足以下条件：已附加到 DOM、可见、可交互（非 disabled）、稳定（无动画）。这消除了 Selenium 时代大量显式等待的负担。但需注意：**auto-wait 只对交互动作生效，对 `page.textContent()` 这类读取方法不生效**，读取前应配合 web-first 断言。
+所有交互动作（`click`、`fill`、`check`、`selectOption`、`press`）在执行前会自动等待元素满足以下条件：已附加到 DOM、可见、可交互（非 disabled）、稳定（无动画）。这消除了 Selenium 时代大量显式等待的负担。
 
-### 3.4 Web-first assertions
+::: warning auto-wait 的边界
+auto-wait 只对交互动作生效，对 `page.textContent()` 这类读取方法不生效，读取前应配合 web-first 断言。
+:::
+
+### Web-first assertions
 
 web-first 断言是 Playwright 区别于其他框架的关键能力。断言会在超时窗口内自动重试，避免因异步渲染导致的偶发失败：
 
@@ -221,9 +227,9 @@ test('异步列表加载', async ({ page }) => {
 });
 ```
 
-## 四、测试编写
+## 测试编写
 
-### 4.1 测试执行生命周期
+### 测试执行生命周期
 
 Playwright 提供完整的 hooks 体系，理解其触发顺序对编写稳定的前置/后置逻辑至关重要。
 
@@ -281,7 +287,7 @@ test.describe('订单管理', () => {
 });
 ```
 
-### 4.2 Fixture 系统
+### Fixture 系统
 
 Fixture 是 Playwright 的依赖注入机制，用于复用自定义资源（如登录态、Mock 服务、测试数据），避免 `beforeEach` 中堆积重复代码。Fixture 按需创建、自动销毁，并支持依赖传递：
 
@@ -322,7 +328,7 @@ test('查询订单列表', async ({ apiClient, authedPage }) => {
 });
 ```
 
-### 4.3 参数化测试
+### 参数化测试
 
 Playwright 通过 `for` 循环配合 `test.describe` 实现参数化，比 `test.each` 更直观，且能保留独立的测试报告条目：
 
@@ -341,7 +347,7 @@ for (const { user, expectRole } of cases) {
 }
 ```
 
-### 4.4 Trace Viewer 排障
+### Trace Viewer 排障
 
 Trace Viewer 是 Playwright 的杀手级排障工具，记录每次动作的 DOM 快照、网络请求、控制台日志、截图，可在本地以时间轴回放失败用例：
 
@@ -358,11 +364,15 @@ npx playwright show-report
 
 Trace 界面提供四大视图：**Timeline**（动作时间轴）、**Snapshot**（每步 DOM 快照，可前后切换）、**Network**（请求瀑布图）、**Console**（日志与错误）。对于偶发失败，重试 + Trace 是定位根因的最高效组合。
 
-## 五、组件测试
+## 组件测试
 
-组件测试（Component Testing）允许直接挂载 React/Vue/Svelte 组件进行隔离测试，无需启动完整应用，介于单元测试与 E2E 之间，适合验证组件交互逻辑与样式。1.61 中通过 `@playwright/experimental-ct-react` 等包提供，仍为实验性但已可用于生产。（注：官方已在 1.62 之后移除这些实验性 CT 包，使用更高版本时需按官方迁移指南改用基于 Story gallery 的内置 `mount` 方案。）
+组件测试（Component Testing）允许直接挂载 React/Vue/Svelte 组件进行隔离测试，无需启动完整应用，介于单元测试与 E2E 之间，适合验证组件交互逻辑与样式。1.61 中通过 `@playwright/experimental-ct-react` 等包提供，仍为实验性但已可用于生产。
 
-### 5.1 安装与配置
+::: warning 版本注意
+官方已在 1.62 之后移除这些实验性 CT 包，使用更高版本时需按官方迁移指南改用基于 Story gallery 的内置 `mount` 方案。
+:::
+
+### 安装与配置
 
 ```bash
 # React 项目
@@ -390,7 +400,7 @@ export default defineConfig({
 });
 ```
 
-### 5.2 挂载组件与交互断言
+### 挂载组件与交互断言
 
 ```typescript
 import { test, expect } from '@playwright/experimental-ct-react';
@@ -423,9 +433,9 @@ test('透传 props 与事件', async ({ mount }) => {
 
 组件测试相比 E2E 的优势在于**毫秒级启动、定位精确、可断言内部状态**；相比单元测试的优势在于**真实浏览器渲染、真实事件、可断言 DOM 与样式**。建议将组件测试用于：复杂表单交互、受控组件逻辑、UI 状态机验证、视觉回归。
 
-## 六、1.61 新特性
+## 1.61 新特性
 
-### 6.1 Video 模式增强
+### Video 模式增强
 
 1.61 重构了视频录制策略，新增三种粒度模式，可精确控制磁盘占用与排障价值的平衡：
 
@@ -447,7 +457,7 @@ use: {
 
 旧版本仅有 `off / on / retain-on-failure / retain-on-first-failure` 四种；1.61 新增 `on-first-retry / on-all-retries / retain-on-failure-and-retries` 三种粒度，让大型测试套件的 CI 存储成本可控。
 
-### 6.2 UI Mode
+### UI Mode
 
 UI Mode 是 Playwright 的本地调试利器，提供时间旅行、DOM 检视、Watch 模式：
 
@@ -461,7 +471,7 @@ npx playwright test --ui --project=chromium
 
 UI Mode 集成 Trace 预览、Source Map、过滤器，是本地开发阶段替代反复 `console.log` 的首选方式。
 
-### 6.3 Codegen 录制
+### Codegen 录制
 
 `codegen` 通过监听用户操作自动生成测试代码，是快速搭建脚手架与学习 Locator 的利器：
 
@@ -479,11 +489,13 @@ npx playwright codegen --load-storage=auth.json https://demo.example.com
 npx playwright codegen --device='iPhone 15' https://demo.example.com
 ```
 
-录制生成的代码应作为**起点而非终点**，需人工重构为 Page Object 或 fixture，避免脆弱的选择器。
+::: tip 实践要点
+录制生成的代码应作为起点而非终点，需人工重构为 Page Object 或 fixture，避免脆弱的选择器。
+:::
 
-## 七、CI/CD 集成
+## CI/CD 集成
 
-### 7.1 GitHub Actions
+### GitHub Actions
 
 Playwright 官方提供 Action 一键集成，包含浏览器缓存与依赖管理：
 
@@ -530,7 +542,7 @@ jobs:
           retention-days: 14
 ```
 
-### 7.2 Docker 与并行执行
+### Docker 与并行执行
 
 CI 中推荐使用官方镜像避免系统依赖问题；大规模套件通过 `--shard` 拆分到多个 Job 并行执行：
 
@@ -555,9 +567,7 @@ npx playwright test --shard=4/4
 npx playwright merge-reports --reporter html ./blob-report
 ```
 
-## 八、常见陷阱与最佳实践
-
-### 8.1 常见陷阱
+## 常见陷阱
 
 1. **滥用 `page.waitForTimeout`**：硬等待是 flaky 测试的头号来源。应使用 web-first 断言或 `page.waitForResponse`，仅在无法观察 DOM 变化的场景（如第三方动画）下作为兜底，并配合断言而非单独使用。
 
@@ -569,7 +579,7 @@ npx playwright merge-reports --reporter html ./blob-report
 
 5. **忽略网络条件**：Mock 不全的第三方接口会导致 flaky。应使用 `page.route` 拦截关键请求返回确定性数据。
 
-### 8.2 最佳实践
+## 工程实践要点
 
 - **测试金字塔**：E2E 仅覆盖核心业务链路（占比 < 10%），细节由单元测试与组件测试覆盖，避免 E2E 套件膨胀拖慢 CI；
 - **Page Object + Fixture 组合**：用 Page Object 封装页面结构与操作，用 Fixture 注入 Page Object 实例，兼顾可读性与可维护性；
@@ -578,6 +588,11 @@ npx playwright merge-reports --reporter html ./blob-report
 - **失败可观测**：默认开启 `trace: 'on-first-retry'`、`screenshot: 'only-on-failure'`、`video: 'retain-on-first-failure'`，在磁盘成本与排障效率间取得平衡；
 - **定期清理 Trace**：CI 中 `retention-days` 设为 7-14 天，避免对象存储膨胀。
 
-## 结语
+Playwright 1.61 的基线能力由 auto-waiting、web-first assertions、测试隔离与 Trace Viewer 构成，组件测试填补单元测试与 E2E 之间的断层，新的 video 模式细化了 CI 可观测性。落地时遵循测试金字塔分层、Fixture 注入共享逻辑、断言单一职责，可避免 flaky 侵蚀套件可信度。
 
-Playwright 1.61 凭借 auto-waiting、web-first assertions、test isolation 与 Trace Viewer 构成了现代 GUI 测试的基线能力，组件测试填补了单元测试与 E2E 之间的断层，新的 video 模式让 CI 可观测性进一步细化。落地时应遵循测试金字塔分层、Fixture 注入共享逻辑、断言单一职责，方能避免 flaky 测试侵蚀团队对自动化套件的信任。掌握 Playwright 不仅是掌握一个工具，更是建立"测试即代码、可观测、可演进"的工程文化。
+## 延伸阅读
+
+- [GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）](20-GUI%20测试报告（Allure%20与%20Trace%20Viewer%20与%20ReportPortal）) —— Trace Viewer 在报告体系中的定位
+- [Page Object 与 Screenplay 模式](17-Page%20Object%20与%20Screenplay%20模式) —— Locator 与 Fixture 的工程化组织
+- [Playwright 调试模式与 Trace Viewer](../../04-前端/11-调试/07-浏览器自动化/05-Playwright调试模式与Trace-Viewer.md) —— 前端调试视角的 Inspector 与 Trace 用法
+- [Playwright 官方文档](https://playwright.dev/docs/intro) —— 配置项、API 与 CI 指南的权威来源

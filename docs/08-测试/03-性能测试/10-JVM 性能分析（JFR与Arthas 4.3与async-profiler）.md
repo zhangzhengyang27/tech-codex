@@ -8,11 +8,13 @@ tags: [JVM, Arthas, 性能调优, 火焰图]
 
 # JVM 性能分析（JFR 与 Arthas 4.3 与 async-profiler）
 
-性能测试不仅要回答"系统能撑多少并发"，更要回答"瓶颈在哪里"。当吞吐量上不去、响应时间抖动、CPU 或内存异常时，瓶颈往往隐藏在 JVM 内部——某条热点调用链、某段失控的循环、某类未释放的对象。本文基于 JDK 17/21 LTS、Arthas 4.3.2、async-profiler 3.x、JFR 等当前主流工具链，系统梳理 JVM 性能分析的方法论与实战路径，取代旧文档中基于 JDK 1.8 + Arthas 3.3.3 的内容。
+性能测试不仅要回答"系统能撑多少并发"，更要回答"瓶颈在哪里"。当吞吐量上不去、响应时间抖动、CPU 或内存异常时，瓶颈往往隐藏在 JVM 内部——热点调用链、失控的循环、未释放的对象。本文基于 JDK 17/21 LTS、Arthas 4.3.2、async-profiler 3.x 与 JFR，梳理 JVM 性能分析的方法论与实战路径。
 
-## 一、核心概念
+> 前置知识:[后端性能监控（Prometheus 与 Grafana 与 SkyWalking 10）](09-后端性能监控（Prometheus与Grafana与SkyWalking%2010）)。
 
-### 1.1 JVM 性能分析的目标
+## 分析目标与方法论
+
+### 分析目标
 
 JVM 性能分析并非"找一个慢方法"这么简单，它的核心目标是建立**从表象到根因的可追溯链路**：
 
@@ -24,7 +26,7 @@ JVM 性能分析并非"找一个慢方法"这么简单，它的核心目标是�
 
 只有贯通这五层，才能避免"看到一个高 CPU 就重启"的运维式短路。
 
-### 1.2 方法论
+### 方法论
 
 性能分析遵循"先观测、再下钻、后验证"的三段式：
 
@@ -32,9 +34,11 @@ JVM 性能分析并非"找一个慢方法"这么简单，它的核心目标是�
 2. **下钻**：在异常时刻用更精准的工具切入（Arthas watch/trace、async-profiler 火焰图、heap dump）；
 3. **验证**：通过 `redefine` 热替换或重新压测复现，确认根因。
 
-关键原则是**开销匹配场景**：生产环境优先选择 JFR 这类开销低于 1% 的工具；预发/压测环境可以放开 Arthas 的 watch/trace；线下排查才允许做 full heap dump。
+::: tip 开销匹配场景
+生产环境优先选择 JFR 这类开销低于 1% 的工具；预发/压测环境可以放开 Arthas 的 watch/trace；线下排查才允许做 full heap dump。
+:::
 
-## 二、工具链全景
+## 工具链全景
 
 不同工具定位不同，互为补充而非替代。下图展示了主流工具的适用场景与开销分布。
 
@@ -72,9 +76,9 @@ flowchart LR
 - **async-profiler 3.x**：基于 AsyncGetCallTrace 的低开销采样器，可生成 SVG/HTML 火焰图，是 CPU/内存/锁分析的金标准，比 JFR 在 CPU 火焰图维度更直观。
 - **JDK 原生命令**（jstack/jmap/jstat/jcmd）：兜底方案，几乎无依赖，但功能割裂、信息密度低，建议作为最后兜底而非首选。
 
-## 三、Arthas 4.3.2 实战
+## Arthas 4.3.2 实战
 
-### 3.1 安装与启动
+### 安装与启动
 
 旧文档使用的 `alibaba.github.io` 域名已迁至 `arthas.aliyun.com`，下载命令需更新为：
 
@@ -88,7 +92,7 @@ java -jar arthas-boot.jar
 
 启动后会出现进程选择列表，输入序号回车即可 attach。若需直接指定 PID 可使用 `java -jar arthas-boot.jar <pid>`；通过 `--tunnel-server` 参数可接入 Arthas Tunnel Server，实现 Web 控制台远程操作。
 
-### 3.2 核心命令速查
+### 核心命令速查
 
 | 命令 | 用途 | 备注 |
 |---|---|---|
@@ -103,7 +107,7 @@ java -jar arthas-boot.jar
 | `redefine 类.class` | 热替换字节码 | 无需重启验证修复 |
 | `line --class 类 --method 方法 --line 行号` | 在源码行插入探针 | **4.x 新增**，下文详述 |
 
-### 3.3 4.x 新特性
+### 4.x 新特性
 
 **（1）line 命令**
 
@@ -133,7 +137,7 @@ java -jar arthas-boot.jar -c 'thread -n 3; dashboard -n 1'
 
 支持按 ClassLoader hash 过滤（`-c <hash>`），避免同名的多实例类混淆；返回数据大小由全局选项 `options object-size-limit`（默认 10MB）兜底限制，防止观测大对象时把 Arthas 自身打爆。
 
-## 四、CPU 飙升定位流程
+## CPU 飙升定位流程
 
 CPU 飙升是性能测试中最常见的现象。下图给出从告警到根因的完整决策树。
 
@@ -161,7 +165,7 @@ flowchart TD
     class TRACE,WATCH,FIX,GC,TUNE action;
 ```
 
-### 4.1 快速定位步骤
+### 快速定位步骤
 
 ```bash
 # 1. 在目标服务器找出 Java 进程 PID
@@ -186,7 +190,7 @@ jstack 6937 | grep 645f -A 30
 
 `thread -n 3` 输出会自动换算 nid、展示线程名称、CPU 占比与完整堆栈，业务代码行直接高亮定位。
 
-### 4.2 从堆栈到方法
+### 从堆栈到方法
 
 拿到堆栈后按特征分类处理：
 
@@ -214,7 +218,7 @@ jstat -gc 6937 1000 10
 
 - **Native 线程**：堆栈在 `lib*.so` → 用 async-profiler 生成 CPU 火焰图（见第六节）。
 
-### 4.3 watch 精准观测
+### watch 精准观测
 
 定位到方法后，用 `watch` 看真实入参出参，确认是数据特征触发的热点：
 
@@ -226,9 +230,9 @@ jstat -gc 6937 1000 10
     '{params[0], params[1], returnObj}' -x 2 -n 5
 ```
 
-## 五、内存分析流程
+## 内存分析流程
 
-### 5.1 观测 GC 频次
+### 观测 GC 频次
 
 `dashboard` 的 GC 区域可以一屏看到 YGC/FGC 次数与耗时；更细粒度的分析用 `jstat -gc <pid> <间隔> <次数>`，关注 FGC 是否持续增长、FGCT 是否线性上升。JDK 17/21 上推荐直接用 JFR：
 
@@ -240,7 +244,7 @@ jcmd 6937 JFR.start name=mem-profile duration=300s \
 
 JMC 打开后可在"GC 配置""GC 暂停""GC 堆"三个视图交叉对比，比 jstat 的数字表格直观得多。
 
-### 5.2 内存对象定位
+### 内存对象定位
 
 Arthas 4.3.2 的 `dashboard` 直接展示 Eden/Survivor/Old/Metaspace 实时使用量，比 `jmap -heap` 更易读。如果要看对象维度分布：
 
@@ -255,7 +259,7 @@ jmap -histo 6937 | head -n 20
 
 `jmap -histo` 输出中 `[C`/`[B`/`[I` 分别表示 char[]、byte[]、int[]，业务类（如 `com.cctest.entity.User`）才是排查重点。如果某业务类实例数随压测时长线性增长且不回落，基本可判断为泄漏。
 
-### 5.3 引用链分析
+### 引用链分析
 
 确认泄漏对象后，需要找到"谁持有它的引用"。最稳妥的方式是 dump 后用 MAT（Memory Analyzer Tool）分析：
 
@@ -274,7 +278,7 @@ Arthas 4.3.2 也可用 `vmtool` 直接在线查引用链，免去 dump 大文件
     --express 'instances.size()'
 ```
 
-### 5.4 classloader-metaspace 排查
+### classloader-metaspace 排查
 
 对于动态生成类的场景（Groovy、CGLib、反射 Proxy），堆没涨但 metaspace 涨，需要用 4.x 新命令：
 
@@ -285,9 +289,9 @@ Arthas 4.3.2 也可用 `vmtool` 直接在线查引用链，免去 dump 大文件
 
 输出会列出每个 ClassLoader 实例加载的类数与 metaspace 占用，定位到具体的脚本引擎或框架。
 
-## 六、火焰图分析
+## 火焰图分析
 
-### 6.1 什么是火焰图
+### 什么是火焰图
 
 火焰图（Flame Graph）由 Brendan Gregg 提出，把采样得到的所有调用栈画成一堆"火苗"：
 
@@ -297,7 +301,7 @@ Arthas 4.3.2 也可用 `vmtool` 直接在线查引用链，免去 dump 大文件
 
 读图口诀是"找最宽的平顶"。火焰图把"top -Hp + jstack + 脑内拼接堆栈"的过程一次性可视化，是 CPU/锁/内存分析的金标准。
 
-### 6.2 async-profiler 3.x 实战
+### async-profiler 3.x 实战
 
 async-profiler 3.x 支持 CPU、Alloc（内存分配）、Lock、Wall-clock、Cache Misses 等多种事件，输出格式包括 SVG、HTML、JFR。下面演示最常用的 CPU 火焰图：
 
@@ -317,7 +321,7 @@ curl -L https://github.com/async-profiler/async-profiler/releases/download/v3.0/
 
 3.x 相对旧版的关键改进包括：原生支持 Apple Silicon（arm64 macOS）、内置 JFR 输出可与 JFR/JMC 互补、HTML 报告交互更友好（支持搜索、缩放、子树聚焦）、`--reverse` 反向火焰图便于从叶子节点回溯调用方。
 
-### 6.3 JFR 的火焰图
+### JFR 的火焰图
 
 JFR 在 JDK 17/21 上也能生成火焰图，且开销更低，适合生产持续采样：
 
@@ -330,11 +334,13 @@ jcmd 6937 JFR.start name=cpu duration=300s \
 java -jar jfr2flame.jar /tmp/cpu.jfr /tmp/cpu.svg
 ```
 
-JFR 与 async-profiler 的取舍：生产持续观测优先 JFR（开销低、事件全），异常时刻的精准剖析用 async-profiler（采样精度更高、火焰图更直观）。
+::: tip 工具取舍
+生产持续观测优先 JFR（开销低、事件全），异常时刻的精准剖析用 async-profiler（采样精度更高、火焰图更直观）。
+:::
 
-## 七、常见陷阱与最佳实践
+## 常见陷阱与实践要点
 
-### 7.1 常见陷阱
+### 陷阱
 
 - **生产环境直接 `jmap -dump`**：full dump 会触发 STW，几 GB 的堆可能停顿数十秒。生产环境务必使用 `jcmd PID GC.heap_dump` 或 JFR 的对象分配采样。
 - **Arthas watch 大对象未限制大小**：4.x 之前 `watch` 观测大 List 会把 Arthas 自身的 console 线程打爆，必须用 `-x` 限制展开层级（输出大小另由全局选项 `options object-size-limit` 兜底）。
@@ -343,7 +349,7 @@ JFR 与 async-profiler 的取舍：生产持续观测优先 JFR（开销低、�
 - **火焰图采样时长过短**：低于 30 秒的火焰图统计意义不大，建议至少采样 60 秒以上，让热方法充分显现。
 - **top -Hp 看到的 nid 与 jstack 不一致**：容器化场景下 PID namespace 隔离会导致宿主机 PID 与容器内 nid 不对应，需用 `jstack` 自带的 nid 列对齐。
 
-### 7.2 最佳实践
+### 生产实践要点
 
 - **生产常驻 JFR**：用 `jcmd PID JFR.start name=continuous settings=default maxage=24h maxsize=100m disk=true filename=/var/log/jfr/app.jfr` 常驻录制，遇到问题随时 `JFR.dump` 取最近 24 小时。
 - **建立性能基线**：每次发版后跑一次标准压测，用 async-profiler 生成基线火焰图存档，发现性能回退时与基线 diff。
@@ -351,6 +357,13 @@ JFR 与 async-profiler 的取舍：生产持续观测优先 JFR（开销低、�
 - **JDK 17/21 优先使用 ZGC/Shenandoah**：低延迟场景下，G1 的 STW 仍是热点；ZGC 在 JDK 21 上已支持分代，亚毫秒级停顿，配合 JFR 的 GC 事件可以做到无感切换。
 - **告警与工具联动**：Prometheus 告警触发后自动调用 Arthas Agent（4.x MCP 协议）执行 `thread -n 3` 与 `dashboard` 快照，把"先抓现场"自动化，避免错过偶发问题的第一现场。
 
-## 小结
+JVM 性能分析依赖工具链协作：JFR 负责生产持续观测，Arthas 4.3.2 负责在线精准下钻，async-profiler 负责深度剖析，JDK 原生命令兜底。配合"观测 → 下钻 → 验证"三段式，排障过程即可变成可复现、可追溯、可验证的工程流程。
 
-JVM 性能分析不是单一工具的胜利，而是工具链的协作：JFR 负责持续观测、Arthas 4.3.2 负责在线精准下钻、async-profiler 负责深度剖析、JDK 原生命令作为兜底。掌握这套工具链，配合"观测 → 下钻 → 验证"的方法论，就能把过去靠经验、靠重启、靠瞎猜的排障过程，转化为可复现、可追溯、可验证的工程化流程。
+## 延伸阅读
+
+- → 下一章:[MySQL 性能优化与慢 SQL 治理](11-MySQL%20性能优化与慢%20SQL%20治理) —— 压测瓶颈最常见的落点：数据库层
+- [后端性能监控（Prometheus 与 Grafana 与 SkyWalking 10）](09-后端性能监控（Prometheus与Grafana与SkyWalking%2010）) —— 告警触发后先抓现场的上游环节
+- [性能测试指标与方法论](01-性能测试指标与方法论) —— 指标体系与压测方法
+- [高级进阶：JVM 常见优化参数](../../01-Java/06-性能与调优/01-性能优化实战/19-高级进阶：JVM%20常见优化参数.md) —— JVM 参数调优清单
+- [Arthas 官方文档](https://arthas.aliyun.com/doc/) —— 命令与选项权威参考
+- [async-profiler GitHub](https://github.com/async-profiler/async-profiler) —— 火焰图采样工具的源码与发布

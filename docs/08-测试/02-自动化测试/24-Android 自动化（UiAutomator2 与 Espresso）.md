@@ -8,11 +8,13 @@ tags: [Android, UiAutomator2, Espresso, Compose Testing, Macrobenchmark, Baselin
 
 # Android 自动化（UiAutomator2 与 Espresso）
 
-Android 自动化测试在 2026 年已经形成了清晰的分层体系。Google 官方维护的 **Espresso** 与 **UiAutomator2** 构成了 Android 端 UI 测试的双基石：前者面向应用内白盒测试，主攻单 App 内部交互的快速回归；后者面向系统级黑盒测试，主攻跨应用、跨进程、系统设置等场景。在此基础上，**Compose Testing** 成为 Jetpack Compose 应用的官方测试方案，**Macrobenchmark** 与 **Baseline Profiles** 则补齐了性能基准与启动优化的能力闭环。本文基于 **Android Studio 2026.1** 与 **AndroidX Test 1.6.x** 系统梳理这一工具链的核心概念、实战写法与工程化最佳实践，旧文档中关于 Appium Desktop 录制、UIAutomatorViewer 抓取 page source、`uiautomator1` 等内容均已淘汰，本文不再保留。
+Google 官方维护的 **Espresso** 与 **UiAutomator2** 构成了 Android 端 UI 测试的双基石：前者面向应用内白盒测试，主攻单 App 内部交互的快速回归；后者面向系统级黑盒测试，主攻跨应用、跨进程、系统设置等场景。**Compose Testing** 是 Jetpack Compose 应用的官方测试方案，**Macrobenchmark** 与 **Baseline Profiles** 补齐性能基准与启动优化。本文基于 Android Studio 2026.1 与 AndroidX Test 1.6.x 梳理这一工具链的核心概念、实战写法与工程化实践，旧文档中关于 Appium Desktop 录制、UIAutomatorViewer 抓取 page source、`uiautomator1` 等内容均已淘汰，不再保留。
 
-## 一、核心概念
+> 前置知识:[Appium 3 架构与实战](23-Appium%203%20架构与实战)。
 
-### 1.1 Android 自动化测试框架全景
+## Android 自动化分层体系
+
+### 框架全景
 
 Android 测试框架按"测试代码与被测应用的相对位置"分为三层：
 
@@ -58,7 +60,7 @@ flowchart TB
     class AP,MB,BP ext;
 ```
 
-### 1.2 白盒 vs 黑盒：选型决策
+### 白盒 vs 黑盒：选型决策
 
 理解两个框架的边界，是选型的第一步。Espresso 与 UiAutomator2 并非互相替代，而是互补关系。
 
@@ -74,9 +76,9 @@ flowchart TB
 
 工程实践中通常采用"Espresso 主内、UiAutomator2 主外"的策略：单 App 内的快速回归交给 Espresso 跑在 PR 流水线（< 2 分钟），跨应用端到端流程交给 UiAutomator2 跑在 Nightly 流水线（10–30 分钟）。
 
-## 二、Espresso 实战
+## Espresso 实战
 
-### 2.1 三大核心 API：ViewMatchers / ViewActions / ViewAssertions
+### 三大核心 API：ViewMatchers / ViewActions / ViewAssertions
 
 Espresso 的所有测试代码都遵循 `onView(Matcher).perform(Action).check(Assertion)` 的链式结构，分别对应"找到—操作—断言"三段式。
 
@@ -120,9 +122,11 @@ class LoginEspressoTest {
 }
 ```
 
-需要特别注意的是，Espresso 的 `onView` 在视图层级中查找时，**匹配到多个或零个都会抛异常**。对于 RecyclerView 的子项，应使用 `onView(withId(...))` 配合 `RecyclerViewActions` 而非直接 `onData`——后者只能用于 ListView/Spinner 等 AdapterView，对 RecyclerView 无效。
+::: warning onView 的匹配约束
+Espresso 的 `onView` 在视图层级中查找时，匹配到多个或零个都会抛异常。对于 RecyclerView 的子项，应使用 `onView(withId(...))` 配合 `RecyclerViewActions` 而非直接 `onData`——后者只能用于 ListView/Spinner 等 AdapterView，对 RecyclerView 无效。
+:::
 
-### 2.2 IdlingResource：异步同步的关键
+### IdlingResource：异步同步的关键
 
 Espresso 默认会同步主线程的 Looper 与 AsyncTask 队列，但对自定义线程池、RxJava、协程的异步任务无感知。`IdlingResource` 是官方提供的同步扩展点，让 Espresso 知道"何时应用处于空闲状态"。
 
@@ -167,9 +171,9 @@ class AsyncLoginTest {
 }
 ```
 
-### 2.3 Test Rules：测试生命周期编排
+### Test Rules：测试生命周期编排
 
-Espresso 的 Test Rule 体系决定了 Activity 启动、Intent 注入、权限授予等行为的编排方式。`ActivityScenarioRule` 是 2026 年的默认选择（旧版 `ActivityTestRule` 已弃用）；`GrantPermissionRule` 用于一次性授予运行时权限；`IntentsTestRule` / `IntentsRule` 用于验证对外 Intent。
+Espresso 的 Test Rule 体系决定了 Activity 启动、Intent 注入、权限授予等行为的编排方式。`ActivityScenarioRule` 是当前的默认选择（旧版 `ActivityTestRule` 已弃用）；`GrantPermissionRule` 用于一次性授予运行时权限；`IntentsTestRule` / `IntentsRule` 用于验证对外 Intent。
 
 ```kotlin
 @RunWith(AndroidJUnit4::class)
@@ -221,9 +225,9 @@ sequenceDiagram
     UI-->>T: 断言结果
 ```
 
-## 三、UiAutomator2 实战
+## UiAutomator2 实战
 
-### 3.1 UiDevice / UiObject / UiSelector 三件套
+### UiDevice / UiObject / UiSelector 三件套
 
 UiAutomator2 的核心模型是：通过 `UiDevice` 拿到设备的全局句柄，通过 `UiSelector` 描述要查找的控件特征，最终得到 `UiObject2` 进行操作。它运行在被测应用之外，因此**不需要被测 App 的源码**，只要 APK 能装上就能测。
 
@@ -287,7 +291,7 @@ class CrossAppUiAutomatorTest {
 }
 ```
 
-### 3.2 系统设置与权限弹窗测试
+### 系统设置与权限弹窗测试
 
 UiAutomator2 在系统级场景中的价值是 Espresso 无法替代的，典型场景包括：通知权限开关、定位模式切换、系统权限弹窗一键授权、安装外部 APK 等。
 
@@ -317,9 +321,11 @@ fun 授予定位权限_后端拿到经纬度_上报服务() {
 }
 ```
 
-需要注意的是，国内厂商 ROM（MIUI、ColorOS、HarmonyOS）的系统设置页面结构差异巨大，`By.text("权限")` 在不同 ROM 上可能找不到，应优先使用 `By.res("android:id/title")` + 文本兜底，并通过 `device.wait` 增加鲁棒性。
+::: warning ROM 差异
+国内厂商 ROM（MIUI、ColorOS、HarmonyOS）的系统设置页面结构差异巨大，`By.text("权限")` 在不同 ROM 上可能找不到，应优先使用 `By.res("android:id/title")` + 文本兜底，并通过 `device.wait` 增加鲁棒性。
+:::
 
-## 四、Compose Testing
+## Compose Testing
 
 Jetpack Compose 已成为 Android 官方推荐的 UI 框架，传统 Espresso 的 `onView(withId(...))` 无法穿透 Compose 的语义树，必须使用 `compose-ui-test` 提供的独立 API。
 
@@ -365,7 +371,7 @@ class LoginComposeTest {
 
 Compose Testing 的关键差异点：① 测试代码不依赖 View ID，而是依赖 `testTag`，团队需统一约定 tag 命名规范；② 可通过 `mainClock.autoAdvance = false` 冻结动画，避免动画过程导致的 flaky；③ `onNodeWith*` 在匹配到多个节点时直接抛异常，需用 `onAllNodesWith*` + `[0]` 索引。
 
-## 五、Appium + UiAutomator2：能力对比
+## Appium + UiAutomator2 能力对比
 
 Appium 3.x（当前最新版 3.5.0，与《Appium 3 架构与实战》一致）已全面插件化，UiAutomator2 driver 是 Android 端唯一主流驱动。其底层架构是：Appium Server 收到 WebDriver 协议的 HTTP 请求 → 通过 ADB 推送 `appium-uiautomator2-server-vX.apk` 与 `appium-uiautomator2-server-debug-androidTest.apk` 到设备 → 启动 UiAutomator2 服务进程 → 通过 HTTP 转发到设备端的 UiAutomator2 调用。
 
@@ -381,9 +387,9 @@ Appium 3.x（当前最新版 3.5.0，与《Appium 3 架构与实战》一致）�
 
 选型建议：① 如果团队是 Python/JS 技术栈、需要复用 Web 测试基础设施、或需要单套脚本同时跑 Android 与 iOS → 选 Appium；② 如果团队是纯 Android 团队、追求执行速度与稳定性、且希望直接访问 AndroidX Test API → 选原生 UiAutomator2。
 
-## 六、性能测试：Macrobenchmark 与 Baseline Profiles
+## 性能测试：Macrobenchmark 与 Baseline Profiles
 
-### 6.1 Macrobenchmark
+### Macrobenchmark
 
 Macrobenchmark 是 AndroidX 推出的宏基准测试库，可在真机上对 App 启动、滚动、自定义操作做端到端性能测量。它独立于 `app` 模块，需单独建一个 `:macrobenchmark` Gradle 模块。
 
@@ -441,7 +447,7 @@ class StartupBenchmark {
 }
 ```
 
-### 6.2 Baseline Profiles
+### Baseline Profiles
 
 Baseline Profiles 是 AGP 8.x 起官方力推的性能优化机制：通过 Macrobenchmark 在典型用户路径下采集 AOT 编译热点，生成 `baseline-prof.txt`，随 APK 一起发布。安装时 ART 会预编译这些类与函数到原生代码，**冷启动时间可降低 20%–40%**。
 
@@ -475,31 +481,39 @@ android {
 
 CI 流水线推荐做法：每周 Nightly 跑一次 Baseline Profile 生成任务，将产物提交回主分支，下次发版自动享受最新热点优化。
 
-## 七、常见陷阱与最佳实践
+## 常见陷阱与稳定性
 
-### 7.1 同步陷阱
+### 同步陷阱
 
 - **Espresso 不感知协程**：默认只同步主线程 Looper 与 AsyncTask，自定义线程池必须注册 IdlingResource，否则会出现"找不到 View"的 flaky。
 - **UiAutomator2 无内置同步**：必须显式调用 `device.wait(Until.hasObject(...), timeout)`，直接 `findObject` 在页面未加载时返回 `null`。
 - **Compose 测试动画**：需先 `mainClock.autoAdvance = false` 冻结动画，长动画测试再手动 `mainClock.advanceTimeBy` 推进。
 
-### 7.2 测试稳定性
+### 测试稳定性
 
 - **不要 hardcode 设备尺寸**：滑动操作应使用 `device.displayWidth / 2` 而非 `1080`。
 - **资源 ID 优先级**：`resource-id` > `content-desc` > `text` > `className`，避免使用 XPath，性能差且易碎。
 - **测试独立性**：每个 `@Test` 之间应通过 `@Before`/`@After` 重置状态，禁止依赖执行顺序。
 
-### 7.3 工程化建议
+## 工程实践要点
+
+### 分层运行与并行
 
 - **分层运行**：单元测试（< 1 分钟）跑 PR；Espresso 用例（5–10 分钟）跑 Merge 前；UiAutomator2 + Macrobenchmark（20+ 分钟）跑 Nightly。
 - **Shard 并行**：AndroidX Test 支持 `numShards`/`shardIndex` 插桩参数（`adb shell am instrument -e numShards N -e shardIndex i`），将用例分散到多台设备并行执行，可把 30 分钟的套件压到 5 分钟。
 - **测试标签**：用自定义注解（如 `@SmokeTest`）区分烟雾测试与全量回归，CI 中按注解挑选。
 - **Flaky 重试**：借助 `androidx.test.rule.RetryRule` 对已知 flaky 用例做最多 2 次重试，但要警惕"重试掩盖真实问题"。
 
-### 7.4 版本对齐
+### 版本对齐
 
-2026 年的关键版本基线：AndroidX Test Core 1.6.1、Espresso 3.6.1、UiAutomator 2.3.0、Compose UI Test 1.7.x、Macrobenchmark 1.3.4、AGP 8.7+。建议在 `gradle/libs.versions.toml` 中统一管理这些版本，避免子模块漂移。
+关键版本基线：AndroidX Test Core 1.6.1、Espresso 3.6.1、UiAutomator 2.3.0、Compose UI Test 1.7.x、Macrobenchmark 1.3.4、AGP 8.7+。建议在 `gradle/libs.versions.toml` 中统一管理这些版本，避免子模块漂移。
 
-## 总结
+Espresso 与 UiAutomator2 是 Android UI 测试的双支柱，通过 AndroidX Test 共享同一套插桩基础设施；Compose 应用使用 Compose Testing，性能基准与启动优化交给 Macrobenchmark + Baseline Profiles。框架选型服从场景：单 App 内回归用 Espresso，跨应用流程用 UiAutomator2。Appium UiAutomator2 Driver 适合跨语言、跨平台复用，但其 HTTP 转发有延迟成本，性能敏感场景优先使用原生方案。
 
-Espresso 与 UiAutomator2 构成了 Android 端 UI 测试的双支柱，前者专注应用内白盒快速回归，后者覆盖系统级黑盒端到端场景，两者通过 AndroidX Test 共享同一套插桩基础设施。Compose Testing 顺应了声明式 UI 的演进，Macrobenchmark + Baseline Profiles 则把"测试"从功能正确性扩展到了性能正确性。在实际工程中，框架选型应服从场景需求：单 App 内回归用 Espresso，跨应用流程用 UiAutomator2，Compose 应用必用 Compose Testing，性能基准与启动优化交给 Macrobenchmark。Appium UiAutomator2 Driver 在跨语言、跨平台复用场景下仍有不可替代的价值，但要清醒认知其 HTTP 转发带来的延迟成本，在性能敏感场景优先使用原生方案。
+## 延伸阅读
+
+- → 下一章:[iOS 自动化（XCUITest）](25-iOS%20自动化（XCUITest）) —— Apple 平台的原生 UI 测试体系
+- [Appium 3 架构与实战](23-Appium%203%20架构与实战) —— UiAutomator2 Driver 的上层跨语言封装
+- [WebView 与混合应用测试](26-WebView%20与混合应用测试) —— Android WebView 的调试与 Context 切换
+- [移动应用测试方法（Web与Native与Hybrid与跨平台）](22-移动应用测试方法（Web与Native与Hybrid与跨平台）) —— 移动测试全景与方法论
+- [Android 官方测试文档](https://developer.android.com/training/testing/espresso/) —— Espresso 与 UiAutomator 的权威参考

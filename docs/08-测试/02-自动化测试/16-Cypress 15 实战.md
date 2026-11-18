@@ -8,11 +8,13 @@ tags: [Cypress, E2E, 同源运行, Component Testing, Cypress Cloud, TypeScript]
 
 # Cypress 15 实战
 
-Cypress 是面向现代 Web 应用的下一代端到端测试框架，以"开发者友好、同源运行、时间旅行调试、零配置上手"为核心特征。本文基于 **Cypress 15.x（2026 年最新稳定主线）** 系统讲解其核心架构、环境搭建、核心 API、网络拦截、自定义命令、组件测试、CI/CD 与 Cypress Cloud 集成以及常见陷阱，帮助读者在前端工程化体系中建立稳定可维护的 GUI 测试工作流。
+Cypress 是面向现代 Web 应用的端到端测试框架，以"开发者友好、同源运行、时间旅行调试、零配置上手"为核心特征。本文基于 Cypress 15.x 讲解其同源运行架构、环境搭建、核心 API、网络拦截、自定义命令、组件测试以及 CI/CD 与 Cypress Cloud 集成。
 
-## 一、核心概念
+> 前置知识:[GUI 自动化测试策略与 ROI](13-GUI%20自动化测试策略与%20ROI)。
 
-### 1.1 Cypress 是什么
+## 同源运行架构
+
+### Cypress 是什么
 
 Cypress 是一套开源的 Web 自动化测试框架，专为现代前端应用（React、Vue、Angular、Svelte 等）设计。与传统 E2E 工具相比，Cypress 最大的差异化在于其**同源运行（same-origin execution）**架构：测试脚本与被测应用运行在同一个浏览器进程内，由 Cypress 注入的运行时（Cypress Runner）直接驱动 DOM 与 Window 对象，而非通过外部 Driver 进程跨进程通信。
 
@@ -25,7 +27,7 @@ Cypress 解决的核心痛点包括：
 - **组件测试**：原生支持 React/Vue/Svelte/Angular 组件挂载测试，与 E2E 共享同一套工具链；
 - **Cypress Cloud**：内置的并行执行、失败分析、测试编排与录屏回放平台。
 
-### 1.2 同源运行 vs WebDriver：架构差异
+### 同源运行 vs WebDriver：架构差异
 
 理解 Cypress 的关键在于理解其"同源运行"与 WebDriver"跨进程驱动"的本质差异。Selenium 与 Playwright 均采用外部进程通过协议（W3C WebDriver / CDP）驱动浏览器，而 Cypress 将测试运行时直接注入被测应用的同一浏览器实例，测试代码与应用共享同一个事件循环。
 
@@ -69,9 +71,13 @@ graph TB
     class A2 app
 ```
 
-同源架构带来三个直接收益：一是命令执行延迟更低（无 HTTP 往返）；二是可直接访问应用内部状态（`cy.window()`、`cy.state()`），便于断言业务模型而非仅断言 DOM；三是网络拦截天然内置（同源可劫持 `fetch`/`XHR`）。代价是 Cypress 长期只能驱动 Chromium 内核与 Firefox，**不支持 WebKit**，且历史上面向同源策略的限制较多——Cypress 12 起 `cy.origin()` 已转正稳定，多源支持随之可用。
+同源架构带来三个直接收益：一是命令执行延迟更低（无 HTTP 往返）；二是可直接访问应用内部状态（`cy.window()`、`cy.state()`），便于断言业务模型而非仅断言 DOM；三是网络拦截天然内置（同源可劫持 `fetch`/`XHR`）。
 
-### 1.3 Cypress vs Selenium vs Playwright
+::: warning 浏览器与多源限制
+Cypress 长期只能驱动 Chromium 内核与 Firefox，不支持 WebKit；同源策略带来的历史限制较多，Cypress 12 起 `cy.origin()` 已转正稳定，多源支持随之可用。
+:::
+
+### Cypress vs Selenium vs Playwright
 
 | 维度 | Selenium 4 | Playwright 1.61 | Cypress 15 |
 |------|-----------|-----------------|-----------|
@@ -89,7 +95,7 @@ graph TB
 
 选型结论：**前端团队主导、React/Vue 项目、重视调试体验与开发反馈**首选 Cypress；**跨内核矩阵测试、Java/Python 生态、CI 重度并行**仍以 Playwright 为优；**Selenium 适合存量 W3C 协议合规场景与 Safari 兼容性验证**。三者并非互斥，可按业务线组合使用。
 
-### 1.4 Cypress 测试执行流程
+### 测试执行流程
 
 Cypress 一次完整的测试执行涉及插件初始化、配置加载、浏览器启动、用例执行与产物落盘五个阶段，理解该流程有助于排查"为什么我的 mock 没生效""为什么 beforeEach 失败"等问题。
 
@@ -118,9 +124,9 @@ flowchart TD
 
 流程中几个关键点：`setupNodeEvents` 在 Node 侧运行，可访问文件系统、启动数据库容器或注册任务（`cy.task`）；`cy.intercept` 必须在 `cy.visit` 之前注册，否则首次请求会绕过 stub；`cy.session` 在 15.x 已是稳定 API，跨用例复用登录态显著加速套件。
 
-## 二、环境搭建
+## 环境搭建
 
-### 2.1 初始化项目
+### 初始化项目
 
 ```bash
 # 1. 安装 Cypress（最新 15.x）
@@ -152,7 +158,7 @@ my-app/
 └── package.json
 ```
 
-### 2.2 配置文件详解
+### 配置文件详解
 
 `cypress.config.ts` 是 Cypress 的中枢，控制 baseUrl、视口、超时、浏览器、截图视频策略、Cloud 集成等：
 
@@ -201,7 +207,7 @@ export default defineConfig({
 });
 ```
 
-### 2.3 TypeScript 支持
+### TypeScript 支持
 
 Cypress 内置 TypeScript 转译，无需额外构建配置。在 `cypress/support/e2e.ts` 中添加：
 
@@ -219,9 +225,9 @@ declare global {
 }
 ```
 
-## 三、核心 API
+## 核心 API
 
-### 3.1 基础命令链
+### 基础命令链
 
 Cypress 命令采用链式 API，每条命令返回 `Chainable` 对象，命令按队列顺序异步执行：
 
@@ -247,7 +253,7 @@ describe('登录流程', () => {
 });
 ```
 
-### 3.2 断言与别名
+### 断言与别名
 
 Cypress 断言基于 Chai、Sinon 与 Chai-jQuery，使用 `should` / `and` 链式调用，且**自带重试**——断言失败会自动重试直到 `defaultCommandTimeout`：
 
@@ -271,7 +277,7 @@ cy.get('@firstUser').should('contain', '张三');
 cy.get('@firstUser').find('.role').should('have.text', '管理员');
 ```
 
-### 3.3 命令执行的本质
+### 命令执行的本质
 
 Cypress 命令**并非立即执行**，而是被推入命令队列，由 Runner 在事件循环空闲时依次消费。这意味着 `cy.get()` 返回的不是元素本身，而是 `Chainable`。理解这一点是规避"变量赋值无效"陷阱的前提：
 
@@ -289,9 +295,9 @@ cy.get('.name').invoke('text').then((name) => {
 });
 ```
 
-## 四、网络拦截与 Mock
+## 网络拦截与 Mock
 
-### 4.1 cy.intercept 基础
+### cy.intercept 基础
 
 `cy.intercept` 是 Cypress 的核心网络层 API，可拦截 `fetch` 与 `XHR`，支持 stub、动态修改、延迟注入等场景。相比旧版 `cy.route`，它不再依赖 jQuery，且能拦截非同源请求：
 
@@ -316,7 +322,7 @@ cy.intercept('GET', '/api/products', (req) => {
 }).as('getProducts');
 ```
 
-### 4.2 fixture 与延迟模拟
+### fixture 与延迟模拟
 
 `cypress/fixtures/users.json`：
 
@@ -345,9 +351,9 @@ cy.visit('/dashboard');
 cy.wait('@slowDashboard').its('request.url').should('include', '/dashboard');
 ```
 
-## 五、自定义命令与插件
+## 自定义命令与插件
 
-### 5.1 Cypress.Commands.add
+### Cypress.Commands.add
 
 将常用业务流程封装为自定义命令，可显著提升用例可读性与可维护性：
 
@@ -371,7 +377,7 @@ Cypress.Commands.add('resetDb', () => {
 });
 ```
 
-### 5.2 cy.session 与 cypress-data-session
+### cy.session 与 cypress-data-session
 
 `cy.session` 在 15.x 是稳定 API，用于跨用例复用浏览器状态（如登录态），大幅降低重复登录开销：
 
@@ -390,7 +396,7 @@ it('查看仪表盘', () => {
 
 对于更复杂的会话共享（跨 spec、跨浏览器实例），社区生态 `cypress-data-session` 提供了基于 localStorage 与后端缓存的会话管理。典型场景包括：跨用例复用 OAuth 令牌、共享数据库快照、复用第三方 SSO 会话。
 
-### 5.3 插件体系
+### 插件体系
 
 Cypress 插件分两类：**Node 端插件**（在 `setupNodeEvents` 中注册，可访问文件系统、子进程、网络）与**浏览器端插件**（通过 `import` 在 support 中加载）。常用生态插件包括：
 
@@ -400,7 +406,7 @@ Cypress 插件分两类：**Node 端插件**（在 `setupNodeEvents` 中注册�
 - `@cypress/grep`：按标签筛选用例（`@smoke`、`@regression`）；
 - `cypress-mailhog`：邮件捕获与断言。
 
-### 5.4 视觉回归与无障碍扫描
+### 视觉回归与无障碍扫描
 
 视觉回归（Visual Regression）与无障碍（Accessibility）扫描是 Cypress 在前端质量门禁中两类高频场景。视觉回归通过对比基线截图与当前截图的像素差异，捕获 UI 意外变更；无障碍扫描则基于 axe-core 规则集，自动检测违反 WCAG 与 ARIA 标准的元素。
 
@@ -434,13 +440,15 @@ describe('无障碍合规检查', () => {
 });
 ```
 
+::: tip 基线与门禁
 视觉回归基线应纳入版本控制，并通过 PR 触发"更新基线"工作流；无障碍扫描建议作为 CI 必过门禁（gate），避免在迭代中累积 a11y 债务。
+:::
 
-## 六、组件测试
+## 组件测试
 
 Cypress 15 的组件测试（CT）模块已完全稳定，支持 React、Vue、Angular、Svelte、Preact、Lit、Html 等 7 个框架。CT 模式不启动完整 E2E 浏览器，而是直接挂载单个组件至隔离的容器中，适合验证组件的交互、状态与边界条件。
 
-### 6.1 React 组件测试
+### React 组件测试
 
 ```tsx
 // cypress/component/Button.cy.tsx
@@ -464,7 +472,7 @@ describe('Button 组件', () => {
 });
 ```
 
-### 6.2 Vue 组件测试
+### Vue 组件测试
 
 ```typescript
 // cypress/component/Counter.cy.ts
@@ -482,9 +490,9 @@ describe('Counter 组件', () => {
 
 CT 模式与 E2E 共享同一套断言、`cy.intercept`、`cy.fixture` 与运行时调试能力，使组件级回归与端到端回归可在同一仓库中无缝协作。
 
-## 七、CI/CD 与 Cypress Cloud
+## CI/CD 与 Cypress Cloud
 
-### 7.1 命令行执行
+### 命令行执行
 
 ```bash
 # Headless 运行全部 E2E 用例
@@ -503,7 +511,7 @@ npx cypress run --env grepTags=@smoke
 npx cypress run --reporter junit --reporter-options "mochaFile=results/test-output.xml"
 ```
 
-### 7.2 GitHub Actions 集成
+### GitHub Actions 集成
 
 ```yaml
 name: E2E
@@ -530,7 +538,7 @@ jobs:
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
 ```
 
-### 7.3 Cypress Cloud 能力
+### Cypress Cloud 能力
 
 Cypress Cloud（商业服务）在 15.x 阶段提供四类核心能力：
 
@@ -541,9 +549,7 @@ Cypress Cloud（商业服务）在 15.x 阶段提供四类核心能力：
 
 对开源团队，亦可使用 `cypress-split` 插件配合 GitHub Actions 矩阵实现本地并行，无需付费即可获得 80% 的加速效果。
 
-## 八、常见陷阱与最佳实践
-
-### 8.1 陷阱速查
+## 常见陷阱
 
 | 陷阱 | 现象 | 规避 |
 |------|------|------|
@@ -555,7 +561,7 @@ Cypress Cloud（商业服务）在 15.x 阶段提供四类核心能力：
 | 选择器脆弱 | DOM 重构后失效 | 优先 `data-cy` 语义化属性 |
 | Webpack 重复编译 | CT 模式启动慢 | 启用 `devServer.bundler: 'vite'` |
 
-### 8.2 最佳实践
+## 工程实践要点
 
 1. **`data-cy` 优先于 CSS/XPath**：业务样式可能被重构，但测试钩子属性应稳定；
 2. **Page Object 适度使用**：Cypress 推荐 `custom command` + `app-actions`（直接调用应用内部方法登录）而非传统 Page Object；
@@ -566,7 +572,7 @@ Cypress Cloud（商业服务）在 15.x 阶段提供四类核心能力：
 7. **测试分层**：组件测试覆盖 70% 逻辑、E2E 覆盖 20% 关键路径、手工探索式测试覆盖 10% 边界；
 8. **避免 `cy.pause()` 进入仓库**：调试用，提交前必须移除。
 
-### 8.3 何时不要用 Cypress
+## 适用边界：何时不选 Cypress
 
 虽然 Cypress 在前端 E2E 与组件测试领域体验优秀，但以下场景应审慎评估：
 
@@ -575,6 +581,11 @@ Cypress Cloud（商业服务）在 15.x 阶段提供四类核心能力：
 - **后端服务协议测试**：Cypress 偏前端，纯接口契约测试更适合 Pact；
 - **Java/Python 技术栈主导团队**：Cypress 仅支持 JS/TS，跨语言协作成本较高。
 
-## 结语
+Cypress 15 的同源运行架构在调试体验与开发反馈上优势明显，`cy.session`、`cy.origin`、稳定的组件测试与 Cypress Cloud 编排补齐了规模化场景下的短板。选型时基于团队技术栈、浏览器矩阵与 CI 投入综合判断，与 Playwright、Selenium 协同构建分层、稳定、可维护的 GUI 自动化测试体系。
 
-Cypress 15 在保持"开发者友好"初心十余年的演进后，已成为现代前端工程化体系中 E2E 与组件测试的首选工具之一。其同源运行架构在调试体验与开发反馈上仍具不可替代性，而 `cy.session`、`cy.origin`、稳定的 Component Testing、Cypress Cloud 编排等能力补齐了其在大型项目规模化场景下的短板。在选型时，应基于团队技术栈、浏览器矩阵与 CI 投入综合判断，与 Playwright、Selenium 协同构建分层、稳定、可维护的 GUI 自动化测试体系。
+## 延伸阅读
+
+- [Playwright 1.61 实战（含组件测试）](15-Playwright%201.61%20实战（含组件测试）) —— 同为前端 E2E 框架的对照选型
+- [Selenium 4 WebDriver 实战](14-Selenium%204%20WebDriver%20实战) —— W3C 协议下的跨浏览器方案
+- [GUI 测试稳定性（同步等待与自愈与Flaky 治理）](19-GUI%20测试稳定性（同步等待与自愈与Flaky%20治理）) —— 重试策略与 Flaky 治理闭环
+- [Cypress 官方文档](https://docs.cypress.io/) —— 命令 API 与配置项的权威参考

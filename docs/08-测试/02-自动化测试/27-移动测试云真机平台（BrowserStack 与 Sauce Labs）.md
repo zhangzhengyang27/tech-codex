@@ -48,14 +48,14 @@ tags: [云真机, BrowserStack, Sauce Labs, Firebase Test Lab, Appium, CI/CD, �
 | 平台 | 设备规模 | 平台覆盖 | 自动化框架 | CI 集成 | 定价模型 | 适用场景 |
 |------|---------|---------|-----------|--------|---------|---------|
 | **BrowserStack** | 4000+ 真机 | iOS/Android/Win/macOS/Web | Appium/Espresso/XCUITest/Detox | 原生插件全覆盖 | 按席位/并行槽位 | 出海产品、跨国团队 |
-| **Sauce Labs** | 2500+ 真机 | iOS/Android/Web | Appium/Espresso/XCUITest/Robotium | Sauce Connect/Ops | 按分钟/并行槽位 | 美国市场、合规要求高 |
+| **Sauce Labs** | 2500+ 真机 | iOS/Android/Web | Appium/Espresso/XCUITest | Sauce Connect/Ops | 按分钟/并行槽位 | 美国市场、合规要求高 |
 | **LambdaTest** | 3000+ 真机 | iOS/Android/Web | Appium/Espresso/XCUITest | HyperExecute | 按分钟 | 中小团队、性价比 |
 | **Firebase Test Lab** | Android 优先 | Android/iOS 有限 | Espresso/UI Automator/Robo | gcloud/Gradle 插件 | 免费额度+按次 | Google 生态、Android 优先 |
-| **AWS Device Farm** | 350+ 真机 | iOS/Android | Appium/Espresso/XCUITest/Calabash | CodePipeline | 按设备分钟 | AWS 生态、按需付费 |
+| **AWS Device Farm** | 350+ 真机 | iOS/Android | Appium/Espresso/XCUITest | CodePipeline | 按设备分钟 | AWS 生态、按需付费 |
 | **阿里云 MQC**（并入 EMAS 移动测试） | 1000+ 真机 | Android/iOS | Appium/Espresso/脚本录制 | 云效/FunctionCompute | 按次/包年 | 国内项目、阿里生态 |
 | **腾讯 WeTest** | 1500+ 真机 | Android/iOS/Web | Appium/脚本录制/PerfDog | 代码仓库/CI | 按次/包年 | 国内项目、性能专项 |
 
-> 注:百度 MTC 等早期国内云测平台已停止运营，不再列入本矩阵；阿里云 MQC 已并入阿里云 EMAS 移动测试服务，选型时可从 EMAS 入口评估相关能力。
+> 注:百度 MTC 等早期国内云测平台已停止运营，不再列入本矩阵；阿里云 MQC 已并入阿里云 EMAS 移动测试服务，选型时可从 EMAS 入口评估相关能力；Robotium/Calabash 等已停维框架不再列入。
 
 ### 平台架构共性
 

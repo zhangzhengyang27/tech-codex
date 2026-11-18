@@ -304,7 +304,7 @@ TDD 关注"是否把事做正确"（代码级），BDD 关注"是否做了正确
 flowchart TB
     subgraph 三层测试驱动开发
         ATDD["ATDD<br/>验收测试驱动开发<br/>Given-When-Then 例子 / 业务方参与<br/>范围：特性"]
-        BDD["BDD<br/>行为驱动开发<br/>Cucumber / SpecFlow<br/>范围：场景"]
+        BDD["BDD<br/>行为驱动开发<br/>Cucumber / Reqnroll<br/>范围：场景"]
         TDD["TDD<br/>测试驱动开发<br/>JUnit 5 / pytest<br/>范围：函数/类"]
     end
     ATDD -->|拆解为场景| BDD
@@ -314,7 +314,7 @@ flowchart TB
 ```
 
 - **ATDD**：从业务验收视角先写验收测试（如 FitNesse、Selenium），驱动团队对"做什么"达成共识；
-- **BDD**：使用 Given-When-Then 自然语言描述场景（Cucumber、SpecFlow），是业务与开发之间的桥梁；
+- **BDD**：使用 Given-When-Then 自然语言描述场景（Cucumber、Reqnroll），是业务与开发之间的桥梁；
 - **TDD**：将场景拆解为函数级单元测试，驱动代码实现。
 
 边界关系：上层测试通过下层测试支撑；下层测试不直接覆盖业务语义，但为上层提供快速反馈。三者并非替代，而是层层细化。

@@ -265,7 +265,7 @@ LLM（Large Language Model）辅助生成用户故事的验收标准、自动从
 - 图书：《Agile Testing: A Practical Guide for Testers and Agile Teams》Lisa Crispin & Janet Gregory
 - 图书：《More Agile Testing: Learning Journeys for the Whole Team》Janet Gregory & Lisa Crispin
 - 框架：Scrum Guide（scrumguides.org，2020 最新版）
-- 实践：ISTQB Agile Tester Extension 认证大纲
+- 实践：ISTQB Certified Tester Agile Testing（CT-AT）认证大纲
 
 ## 延伸阅读
 

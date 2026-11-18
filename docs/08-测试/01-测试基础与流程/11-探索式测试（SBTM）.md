@@ -219,8 +219,8 @@ ERROR_CHECKLIST = {
 
 | 工具 | 类型 | 特点 |
 | --- | --- | --- |
-| **Session Tester** | 开源 | 时间盒 + 笔记 + 截图集成 |
-| **Rapid Reporter** | 开源 | 轻量级会话记录，截图自动归档 |
+| **Session Tester** | 开源 | 时间盒 + 笔记 + 截图集成（已停止维护，仅作历史方案参考） |
+| **Rapid Reporter** | 开源 | 轻量级会话记录，截图自动归档（已停止维护，仅作历史方案参考） |
 | **TestRail** | 商业 | 支持探索式测试会话管理模块 |
 | **Obsidian + 模板** | 通用 | 灵活的 Markdown 知识库 |
 | **CHARIWISE** | 商业 | AI 辅助章程生成与会话分析 |

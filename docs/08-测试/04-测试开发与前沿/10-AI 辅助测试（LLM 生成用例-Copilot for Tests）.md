@@ -204,6 +204,8 @@ flowchart LR
 
 ### LLM 用例生成 Prompt 工程
 
+以下示例以 OpenAI Python SDK 演示，示例模型以当前可用模型为准：
+
 ```python
 """
 使用 LLM 生成测试用例的 Prompt 工程实践
@@ -252,7 +254,7 @@ USER_PROMPT_TEMPLATE = """
 def generate_test_cases(requirement, acceptance_criteria,
                         existing_cases="", technical_constraints=""):
     response = openai.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-5",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": USER_PROMPT_TEMPLATE.format(
@@ -373,7 +375,7 @@ class SelfHealingDriver:
         """
 
         response = openai.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-5",
             messages=[{"role": "user", "content": prompt}],
             temperature=0
         )
@@ -433,7 +435,7 @@ class SelfHealingDriver:
 
 **误区**：将生产代码、敏感数据直接发给公共 LLM API。
 
-**纠正**：发送给 LLM 的内容可能被用于模型训练。需脱敏处理（替换真实密钥、域名、用户数据），或使用私有部署的 LLM（如 Llama、Code Llama 本地部署）。
+**纠正**：发送给 LLM 的内容可能被用于模型训练。需脱敏处理（替换真实密钥、域名、用户数据），或使用私有部署的 LLM（如 Llama 3+、Qwen、GLM 系列等开权重模型本地部署）。
 
 ## 进阶扩展与参考
 
@@ -443,7 +445,7 @@ AI 生成测试用例若遗漏关键场景导致线上事故，责任在谁？�
 
 ### 多模态 AI 测试
 
-多模态 LLM（如 GPT-4o）能"看"截图、"听"音频，实现视觉回归测试（比对 UI 截图差异）、语音交互测试（验证语音助手）。这拓展了 AI 测试的边界——从代码级到视觉级到交互级。
+多模态 LLM（如 GPT-5 系列）能"看"截图、"听"音频，实现视觉回归测试（比对 UI 截图差异）、语音交互测试（验证语音助手）。这拓展了 AI 测试的边界——从代码级到视觉级到交互级。
 
 ## 延伸阅读
 

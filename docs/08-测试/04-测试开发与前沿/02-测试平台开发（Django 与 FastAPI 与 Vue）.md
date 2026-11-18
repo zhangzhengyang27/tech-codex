@@ -23,7 +23,7 @@ tags: [测试平台, FastAPI, Django, Vue3, K8s, WebSocket, 低代码, AI测试]
 业内常见两条路径：
 
 - **SaaS 路线**：直接采购 MeterPlus、Apifox、Postman Enterprise、Datadog Synthetics 等。优势是开箱即用、免运维；劣势是数据合规受限、与内部 IDP/CMDB/权限系统对接成本高。
-- **自建路线**：基于开源（MeterSphere、HttpRunner、AutoMeter-api、Hitchhiker）二次开发或完全自研。优势是流程契合度高、可深度集成；劣势是研发与运维投入大。
+- **自建路线**：基于开源（MeterSphere、HttpRunner、AutoMeter-api、Hitchhiker——已停止维护，不推荐作为新项目基础）二次开发或完全自研。优势是流程契合度高、可深度集成；劣势是研发与运维投入大。
 
 判断清单（满足 3 项以上再考虑自建）：
 

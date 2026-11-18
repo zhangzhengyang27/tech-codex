@@ -402,9 +402,9 @@ Cypress 插件分两类：**Node 端插件**（在 `setupNodeEvents` 中注册�
 
 - `@cypress/code-coverage`：合并前端代码覆盖率；
 - `cypress-axe`：基于 axe-core 的无障碍扫描；
-- `cypress-image-snapshot`：像素级视觉回归；
+- `cypress-image-snapshot`：像素级视觉回归（原版上游停更，可用维护中的 `@simonsmith/cypress-image-snapshot`）；
 - `@cypress/grep`：按标签筛选用例（`@smoke`、`@regression`）；
-- `cypress-mailhog`：邮件捕获与断言。
+- `cypress-mailhog`：邮件捕获与断言（MailHog 上游已于 2022 年归档，继任者 Mailpit）。
 
 ### 视觉回归与无障碍扫描
 

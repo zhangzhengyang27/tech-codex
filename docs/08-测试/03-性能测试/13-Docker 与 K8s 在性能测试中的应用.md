@@ -143,7 +143,7 @@ services:
 
   # Grafana：可视化压测实时指标
   grafana:
-    image: grafana/grafana:10.4
+    image: grafana/grafana:11.4
     ports: ["3000:3000"]
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PWD:-admin}
@@ -438,7 +438,7 @@ metadata:
   namespace: perf-test
 spec:
   runner:
-    image: grafana/k6:0.51.0
+    image: grafana/k6:1.2.0
     env:
       - name: K6_STATSD_ENABLE_TAGS
         value: "true"

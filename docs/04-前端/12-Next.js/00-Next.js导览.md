@@ -20,7 +20,7 @@ category: Next.js
 - 教程主体基于 Next.js 13.4+ 稳定后的 App Router 体系编写，示例代码以 Next.js 14 为准（含 React 18 Server Components、Server Actions、Partial Prerendering 讨论等）。
 - Pages Router 相关内容仅在对照说明与迁移场景中出现，不再作为主线展开。
 - Next.js 15 / React 19 的变化（如 `async` 请求 API、Turbopack 默认化、缓存语义调整）暂不纳入本系列，阅读时请以官方当前版本文档为准校对新 API。
-- 阅读建议：如你使用的是 Next.js 15 及以上版本，注意文中 `cookies`、`headers`、`searchParams`、`params` 等同步用法在新版本中已变为异步，需自行对照官方迁移指南调整。
+- 阅读建议：如使用的是 Next.js 15 及以上版本，注意文中 `cookies`、`headers`、`searchParams`、`params` 等同步用法在新版本中已变为异步，需自行对照官方迁移指南调整。
 
 ## 目录分组索引
 

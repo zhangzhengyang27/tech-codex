@@ -8,15 +8,15 @@ tags: [Next.js]
 
 # Shadcn UI 与组件库
 
-要问 2023 年 JavaScript 领域 GitHub Stars 增长最多的开源项目是什么？那便是 [Shadcn UI](https://github.com/shadcn-ui/ui)，2023 年 1 月创建的项目，一年便涨了 39.5K Star，足以看出其火爆程度。
+2023 年 JavaScript 领域 GitHub Stars 增长最多的开源项目是 [Shadcn UI](https://github.com/shadcn-ui/ui)，2023 年 1 月创建的项目，一年便涨了 39.5K Star，足以看出其火爆程度。
 
-Shadcn UI 是一个 React UI 组件库，当然用组件库这样的说法并不算准确，与我们常用的 Ant Design 等组件库不同，Shadcn UI 并不是可下载的 NPM 包，相反，你可以通过终端命令将 Shadcn UI 的组件代码添加到代码仓库中，这样开发者就可以方便的进行修改。准确的说，Shadcn UI 是能让我们复制粘贴代码的组件集合。
+Shadcn UI 是一个 React UI 组件库，当然用组件库这样的说法并不算准确，与 Ant Design 等常用组件库不同，Shadcn UI 并不是可下载的 NPM 包，而是可以通过终端命令将组件代码添加到代码仓库中，这样开发者就可以方便地进行修改。准确地说，Shadcn UI 是可以复制粘贴代码的组件集合。
 
-Shadcn UI 采用的是 Tailwind CSS，你可以通过 Tailwind CSS 自定义样式。所以 Next.js 项目的组件库使用 Shadcn UI 也是非常流行的选择。
+Shadcn UI 采用的是 Tailwind CSS，可通过 Tailwind CSS 自定义样式。所以 Next.js 项目的组件库使用 Shadcn UI 也是非常流行的选择。
 
 ## Shadcn UI
 
-Next.js 项目如何使用 Shadcn UI 呢？
+以下是 Next.js 项目使用 Shadcn UI 的步骤。
 
 ### 1. 项目初始化
 
@@ -28,13 +28,13 @@ npx create-next-app@latest
 
 因为 Shadcn UI 基于 Tailwind CSS，所以至少要选择使用 Tailwind CSS：
 
-你可以在运行的时候添加 `--tailwind`直接跳过 Tailwind CSS 的选择：
+也可以在运行的时候添加 `--tailwind`直接跳过 Tailwind CSS 的选择：
 
 ```bash
 npx create-next-app@latest project-name --tailwind
 ```
 
-Shadcn 全面使用 TypeScript，如果项目使用 TypeScript，你也可以直接运行：
+Shadcn 全面使用 TypeScript，如果项目使用 TypeScript，可以直接运行：
 
 ```bash
 npx create-next-app@latest project-name --typescript --tailwind --eslint
@@ -68,7 +68,7 @@ Shadcn UI 的组件样式都有两种风格，一种风格为 “Default”，�
 *   Default 风格文字更大，输入框更大，图标使用 [lucide-react](https://lucide.dev/icons/)，使用 tailwindcss-animate 实现动画
 *   New York 风格整体更加紧凑、padding 更小，图标使用 [Radix Icons](https://www.radix-ui.com/icons)
 
-你可以简单的理解为：普通型（Default）与紧凑型（New York）。
+可以简单理解为：普通型（Default）与紧凑型（New York）。
 
 这里选择哪一种都行，这些选择会写入配置文件 `components.json`，如果后面需要修改，直接更改配置文件即可。
 
@@ -86,9 +86,9 @@ Which color would you like to use as base color?
 5. Stone
 ```
 
-这里相当于选择组件的主题色，打开 Shadcn UI 的[主题页面](https://ui.shadcn.com/themes)，你可以查看不同的主题色效果：
+这里相当于选择组件的主题色，打开 Shadcn UI 的[主题页面](https://ui.shadcn.com/themes)，可查看不同的主题色效果：
 
-注意：这里选择的 Slate、Gray、Zinc、Neutral、Stone 差别不大，在这些主题色之间切换，你甚至可能没有发现差别，但其实还是有些细微的差别，切换到 dark 模式下差别会更加明显一些。
+注意：这里选择的 Slate、Gray、Zinc、Neutral、Stone 差别不大，在这些主题色之间切换，甚至可能没有明显差别，但其实还是有些细微的差别，切换到 dark 模式下差别会更加明显一些。
 
 #### 2.3. CSS 变量
 
@@ -110,7 +110,7 @@ Would you like to use CSS variables for colors?
 
 总的来说，**使用 CSS 变量更为推荐**。CSS 变量可以更自由的定制主题，且可以在[主题配置](https://ui.shadcn.com/themes)页面直接拷贝 CSS 变量，使用起来也很方便。
 
-选择完成后，你会发现多个文件都发生了修改。
+选择完成后，多个文件会发生修改。
 
 首先是 `package.json`，安装了相关依赖。
 
@@ -118,7 +118,7 @@ Would you like to use CSS variables for colors?
 
 再然后是新建了 `components.json`和 `lib/utils.js`文件，`components.json` 是 Shadcn UI 的配置文件，`lib/utils.js` 是 Shadcn UI 会用到的一个工具函数。
 
-最后你会发现新建了 `components`文件夹，使用 Shadcn UI CLI 添加的组件会放到该文件夹下。
+最后是新建的 `components`文件夹，使用 Shadcn UI CLI 添加的组件会放到该文件夹下。
 
 ### 3. 配置字体（非必须）
 
@@ -126,7 +126,7 @@ Would you like to use CSS variables for colors?
 
 ### 4. 使用组件
 
-打开 Shadcn UI 的[组件页面](https://ui.shadcn.com/docs/components/accordion)，选择需要用到的组件，每个组件页面下方都会有对应的 CLI 命令，我们以 [Card 组件](https://ui.shadcn.com/docs/components/card)为例：
+打开 Shadcn UI 的[组件页面](https://ui.shadcn.com/docs/components/accordion)，选择需要用到的组件，每个组件页面下方都会有对应的 CLI 命令。以 [Card 组件](https://ui.shadcn.com/docs/components/card)为例：
 
 首先添加组件：
 
@@ -201,15 +201,15 @@ export default function CardWithForm() {
 }
 ```
 
-注意：这里的代码我们是复制的 Card 组件页面的代码，用在 Next.js Page 的时候，注意添加一个 `export default`，否则页面会报错。
+注意：这里的代码复制自 Card 组件页面的代码，用在 Next.js Page 的时候，注意添加一个 `export default`，否则页面会报错。
 
-这里我们很快的就实现了一个 Card 组件，如果要修改其中的内容，直接修改 components 下的组件代码即可。
+这样就快速实现了一个 Card 组件，如果要修改其中的内容，直接修改 components 下的组件代码即可。
 
 ## 主题
 
 ### 1. 主题切换与 Dark Mode
 
-Shadcn UI 组件支持 Dark Mode，现在让我们来实现一个 Dark Mode 切换效果。
+Shadcn UI 组件支持 Dark Mode，以下实现一个 Dark Mode 切换效果。
 
 安装 `next-themes`：
 
@@ -341,15 +341,15 @@ export default function CardWithForm() {
 
 ### 2. 修改主题
 
-上节讲到，主题色的改变可以通过 CSS 变量来实现。现在我们的主题色是黑色，如果我们想改为其他色比如红色该怎么做呢？
+前文提到，主题色的改变可以通过 CSS 变量来实现。假设当前主题色是黑色，要改为其他色比如红色，做法如下。
 
-其实很简单，打开 [Shadcn UI 主题页面](https://ui.shadcn.com/themes)，选择主题色，拷贝对应的 CSS 变量代码：
+打开 [Shadcn UI 主题页面](https://ui.shadcn.com/themes)，选择主题色，拷贝对应的 CSS 变量代码：
 
 将这段代码替换掉 `app/globals.css` 中的 `@layer base {}` 代码，主题色就完成了修改。
 
 ### 3. 新增主题
 
-如果我想要新增一个主题呢，当点击主题切换按钮的时候，新增一个 Rose 主题色，然后页面就对应切换为 Rose 主题。
+如果想要新增一个主题，比如点击主题切换按钮的时候，新增一个 Rose 主题色，然后页面就对应切换为 Rose 主题，配置如下。
 
 修改 `app/layout.js`，代码如下：
 
@@ -464,8 +464,8 @@ export function ModeToggle() {
 }
 ```
 
-## 最后
+## 小结
 
 Shadcn UI 目前提供了 40+ 组件，设计干净整洁、支持通过 CSS 变量快速配置主题，支持 Dark Mode，可访问性也做的很好，算是 Next.js 项目常选择的组件库之一。
 
-要说缺点的话，图表和表格方面（尤其是高性能的表格）做的有些弱，真要做后台管理系统这种，我个人觉得还是 Ant Design 更好用一些。不过 Shadcn UI 热度如此之高，相信以后会做的越来越好。
+要说缺点的话，图表和表格方面（尤其是高性能的表格）做的有些弱，如果要开发后台管理系统这类产品，Ant Design 更合适一些。不过 Shadcn UI 热度如此之高，后续迭代值得期待。

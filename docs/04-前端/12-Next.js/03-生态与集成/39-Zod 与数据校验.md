@@ -8,11 +8,11 @@ tags: [Next.js]
 
 # Zod 与数据校验
 
-前面讲的 Clerk、Crowdin、Storybook 都可以不学，但 Zod 几乎是开发 Next.js 项目的必学内容，因为大部分的全栈项目都会有数据校验的场景。而 Next.js [官方文档](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#server-side-validation-and-error-handling)推荐的正是 [Zod](https://zod.dev/)。
+Clerk、Crowdin、Storybook 都属于可选的集成方案，但 Zod 几乎是开发 Next.js 项目的必学内容，因为大部分的全栈项目都会有数据校验的场景。而 Next.js [官方文档](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#server-side-validation-and-error-handling)推荐的正是 [Zod](https://zod.dev/)。
 
 目前 Zod GitHub 31.5k Star，Npm 周均下载量 784W，几乎是前端做数据校验的第一选择。
 
-本篇带大家快速上手 Zod。
+以下内容帮助快速上手 Zod。
 
 ## Zod 介绍
 
@@ -20,7 +20,7 @@ tags: [Next.js]
 
 Zod 是一个 **TypeScript 优先（TypeScript-first）**的**模式声明（schema declaration）**和**验证库（validation library）**。
 
-第一次听到这个介绍可能会“不明觉厉”，但其实很简单，举个简单的例子：
+这个介绍听起来有些抽象，其实很简单，举一个简单的例子：
 
 ```javascript
 import { z } from "zod";
@@ -33,9 +33,9 @@ schema.parse("tuna"); // => "tuna"
 schema.parse(12); // => throws ZodError
 ```
 
-这就是一个基本的模式声明和数据验证的例子。那什么是 TypeScript 优先呢？
+这就是一个基本的模式声明和数据验证的例子。TypeScript 优先的含义是：
 
-简单来说，就是和 TypeScript 搭配使用，效果更佳。Zod 的目的在于消除重复的类型声明。使用 Zod，你只需声明一次验证器（validator），Zod 就会自动推断出静态 TypeScript 类型。细看 Zod 的 API，你会发现 Zod 与 TypeScript 的类型系统几乎是一对一的映射。
+简单来说，就是和 TypeScript 搭配使用，效果更佳。Zod 的目的在于消除重复的类型声明。使用 Zod，只需声明一次验证器（validator），Zod 就会自动推断出静态 TypeScript 类型。细看 Zod 的 API，会发现 Zod 与 TypeScript 的类型系统几乎是一对一的映射。
 
 ```typescript
 import { z } from "zod";
@@ -57,11 +57,11 @@ type User = z.infer<typeof User>;
 
 ### 2. 运行时校验
 
-那你可能就好奇了，不都是数据校验，我都有 TypeScript 了，用 Zod 干嘛？
+既然 TypeScript 已经提供了类型检查，为什么还需要 Zod？
 
 简单来说，TypeScript 是静态类型检查，但 Zod 不仅能在编译时提供类型检查，还能在运行时进行数据校验。这样就可以从源头上防止数据不合法而导致的错误，提高应用的稳定性。
 
-举个例子，我们调用接口，获取返回的数据并进行处理：
+举个例子，调用接口，获取返回的数据并进行处理：
 
 ```javascript
 export async function GET() {
@@ -78,7 +78,7 @@ export async function GET() {
 
 在这段代码中，data 肯定会被推断为 any，因为 data 是运行时返回的数据，TypeScript 并不知道。
 
-我们当然可以补全类型声明：
+当然可以补全类型声明：
 
 ```typescript
 type Product = {
@@ -94,11 +94,11 @@ export async function GET() {
 }
 ```
 
-现在 price 字段声明了数字类型，如果我们使用了字符串的方法，TypeScript 就会报错。
+现在 price 字段声明了数字类型，如果使用了字符串的方法，TypeScript 就会报错。
 
-但问题在于，即便我们不使用，但接口的返回数据类型突然改了呢？比如本来是 Number 类型，后端改为了 String 类型？因为 String 类型没有 toFixed 方法，那这段代码运行的时候就会报错。
+但问题在于，即便类型声明正确，接口的返回数据类型也可能突然改变——比如本来是 Number 类型，后端改为了 String 类型。因为 String 类型没有 toFixed 方法，这段代码运行的时候就会报错。
 
-为了防止运行时产生问题，我们还需要做判断，比如：
+为了防止运行时产生问题，还需要做判断，比如：
 
 ```typescript
 type Product = {
@@ -145,24 +145,24 @@ export async function GET() {
 
 ```
 
-整体代码更加简洁优雅，而且你也不需要再写类型声明。
+整体代码更加简洁优雅，而且不需要再写类型声明。
 
 先对接口返回的数据进行校验，通过后再进行后续操作，从源头上防止数据不合法而导致的错误，提高应用的稳定性，而且还能帮助 TypeScript 进行推断，使用起来非常方便。
 
 ### 3. 如何学习 Zod
 
-那具体如何学习 Zod 呢？就我个人看法，学习 Zod 的最好方法就是看 Zod 的官方文档：
+学习 Zod 的最好方法就是看 Zod 的官方文档：
 
 1.  英文：<https://zod.dev/>
 2.  中文：<https://zod.dev/README_ZH>
 
 内容并不算多，20 分钟就可以看个大概。首要目的是了解 Zod 有哪些功能，具体要用的时候边查文档边学习。
 
-如果文档看不下去，这是一个 30 分钟学习 Zod 的 [Youtube 视频](https://www.youtube.com/watch?v=L6BE-U3oy80\&ab_channel=WebDevSimplified)。
+如果文档看不下去，可以参考这个 30 分钟学习 Zod 的 [Youtube 视频](https://www.youtube.com/watch?v=L6BE-U3oy80\&ab_channel=WebDevSimplified)。
 
 ## Next.js + Zod
 
-具体 Zod 在 Next.js 中如何使用呢？我们先举个简单的使用示例。
+以下是 Zod 在 Next.js 中的使用示例。
 
 ### 1. 纯后端数据校验
 
@@ -246,7 +246,7 @@ export async function validate(prevState, formData) {
 
 ### 2. 前后端数据校验
 
-我们知道，在实际开发中，前后端数据校验都是必须的，前端校验是为了避免浪费后端资源，后端校验是因为不能相信来自客户端的数据。所以往往同样的校验，前后端都需要做一次。这就需要将 Schema 抽离出来，方便前后端使用。
+在实际开发中，前后端数据校验都是必须的，前端校验是为了避免浪费后端资源，后端校验是因为不能相信来自客户端的数据。所以往往同样的校验，前后端都需要做一次。这就需要将 Schema 抽离出来，方便前后端使用。
 
 新建 `app/todo/page.js`，代码如下：
 
@@ -271,7 +271,7 @@ export default async function Page() {
 }
 ```
 
-这里我们将 Form 抽离为单独的组件，是因为 Form 需要使用客户端组件，本着尽可能减少客户端组件范围的原则，所以抽离成了单独的组件。
+这里将 Form 抽离为单独的组件，是因为 Form 需要使用客户端组件，本着尽可能减少客户端组件范围的原则，所以抽离成了单独的组件。
 
 新建 `app/todo/form.js`，代码如下：
 
@@ -332,7 +332,7 @@ export default function Form() {
 }
 ```
 
-这段代码并不复杂，唯独要注意一点，那就是我们提交给服务端的数据，并不是我们自己构建的 `submitTodo`，而是校验后的 `result.data`，这是不一样的。举个例子：
+这段代码并不复杂，唯独要注意一点：提交给服务端的数据，并不是构建出来的 `submitTodo`，而是校验后的 `result.data`，这是不一样的。举个例子：
 
 ```javascript
 // Schema 只定义了 content 字段
@@ -419,7 +419,7 @@ export type Todo = z.infer<typeof TodoSchema>
 
 注意：当数据为空进行提交的时候，走的是浏览器本身的非空校验，当数据不为空提交的时候，才是 Zod 的数据校验。
 
-至此我们就完成了一个前后端校验的例子，当然这个例子还可以做的更完善一点，比如：
+至此就完成了一个前后端校验的例子，这个例子还可以做得更完善一点，比如：
 
 1.  将 actions.js、type.ts 抽离到单独的文件夹下，使用 alias 地址引入
 2.  使用 useFormStatus 添加按钮状态

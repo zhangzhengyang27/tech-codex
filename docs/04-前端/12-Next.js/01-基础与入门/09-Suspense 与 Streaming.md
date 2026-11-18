@@ -8,11 +8,11 @@ tags: [Next.js]
 
 # Suspense 与 Streaming
 
-Suspense 是 Next.js 项目中常用的一个组件，了解其原理和背景有助于我们正确使用 Suspense 组件。
+Suspense 是 Next.js 项目中常用的一个组件，了解其原理和背景有助于正确使用 Suspense 组件。
 
 ## 传统 SSR
 
-在最近的两篇文章里，我们已经介绍了 SSR 的原理和缺陷。简单来说，使用 SSR，需要经过一系列的步骤，用户才能查看页面、与之交互。具体这些步骤是：
+前文已介绍 SSR 的原理和缺陷。简单来说，使用 SSR，需要经过一系列的步骤，用户才能查看页面、与之交互。具体这些步骤是：
 
 1.  服务端获取所有数据
 2.  服务端渲染 HTML
@@ -22,7 +22,7 @@ Suspense 是 Next.js 项目中常用的一个组件，了解其原理和背景�
 
 这些步骤是连续的、阻塞的。这意味着服务端只能在获取所有数据后渲染 HTML，React 只能在下载了所有组件代码后才能进行水合。
 
-还记得上篇总结的 SSR 的几个缺点吗？
+前文总结的 SSR 的几个缺点回顾如下：
 
 1.  SSR 的数据获取必须在组件渲染之前
 2.  组件的 JavaScript 必须先加载到客户端，才能开始水合
@@ -30,13 +30,13 @@ Suspense 是 Next.js 项目中常用的一个组件，了解其原理和背景�
 
 ## Suspense
 
-为了解决这些问题，React 18 引入了 [\<Suspense\>](https://react.dev/reference/react/Suspense) 组件。我们来介绍下这个组件：
+为了解决这些问题，React 18 引入了 [\<Suspense\>](https://react.dev/reference/react/Suspense) 组件。介绍下这个组件：
 
-`<Suspense>` 允许你推迟渲染某些内容，直到满足某些条件（例如数据加载完毕）。
+`<Suspense>` 允许推迟渲染某些内容，直到满足某些条件（例如数据加载完毕）。
 
-你可以将动态组件包装在 Suspense 中，然后向其传递一个 fallback UI，以便在动态组件加载时显示。如果数据请求缓慢，使用 Suspense 流式渲染该组件，不会影响页面其他部分的渲染，更不会阻塞整个页面。
+可以将动态组件包装在 Suspense 中，然后向其传递一个 fallback UI，以便在动态组件加载时显示。如果数据请求缓慢，使用 Suspense 流式渲染该组件，不会影响页面其他部分的渲染，更不会阻塞整个页面。
 
-让我们来写一个例子，新建 `app/dashboard/page.js`，代码如下：
+写一个例子，新建 `app/dashboard/page.js`，代码如下：
 
 ```jsx
 import { Suspense } from 'react'
@@ -75,11 +75,9 @@ export default function Dashboard() {
 }
 ```
 
-在这个例子中，我们用 Suspense 包装了三个组件，并通过 sleep 函数模拟了数据请求耗费的时长。加载效果如下。
+在这个例子中，用 Suspense 包装了三个组件，并通过 sleep 函数模拟了数据请求耗费的时长。加载效果如下。
 
-可是 Next.js 是怎么实现的呢？
-
-让我们观察下 dashboard 这个 HTML 文件的加载情况，你会发现它一开始是 2.03s，然后变成了 5.03s，最后变成了 8.04s，这不就正是我们设置的 sleep 时间吗？
+Next.js 的实现机制可以从 dashboard 这个 HTML 文件的加载情况观察：它一开始是 2.03s，然后变成了 5.03s，最后变成了 8.04s，正对应设置的 sleep 时间。
 
 查看 dashboard 请求的响应头。
 
@@ -87,7 +85,7 @@ export default function Dashboard() {
 
 > 分块传输编码（Chunked transfer encoding）是超文本传输协议（HTTP）中的一种数据传输机制，允许 HTTP 由网页服务器发送给客户端应用（通常是网页浏览器）的数据可以分成多个部分。分块传输编码只在 HTTP 协议1.1版本（HTTP/1.1）中提供。
 
-再查看 dashboard 返回的数据（这里我们做了简化）：
+再查看 dashboard 返回的数据（这里做了简化）：
 
 ```html
 <!DOCTYPE html>
@@ -140,7 +138,7 @@ export default function Dashboard() {
 
 可以看到使用 Suspense 组件的 fallback UI 和渲染后的内容都会出现在该 HTML 文件中，说明该请求持续与服务端保持连接，服务端在组件渲染完后会将渲染后的内容追加传给客户端，客户端收到新的内容后进行解析，执行类似于 `$RC("B:2", "S:2")`这样的函数交换 DOM 内容，使 fallback UI 替换为渲染后的内容。
 
-这个过程被称之为 Streaming Server Rendering（流式渲染），它解决了上节说的传统 SSR 的第一个问题，那就是数据获取必须在组件渲染之前。使用 Suspense，先渲染 Fallback UI，等数据返回再渲染具体的组件内容。
+这个过程被称之为 Streaming Server Rendering（流式渲染），它解决了前文说的传统 SSR 的第一个问题，那就是数据获取必须在组件渲染之前。使用 Suspense，先渲染 Fallback UI，等数据返回再渲染具体的组件内容。
 
 使用 Suspense 还有一个好处就是 Selective Hydration（选择性水合）。简单的来说，当多个组件等待水合的时候，React 可以根据用户交互决定组件水合的优先级。比如 Sidebar 和 MainContent 组件都在等待水合，快要到 Sidebar 了，但此时用户点击了 MainContent 组件，React 会在单击事件的捕获阶段同步水合 MainContent 组件以保证立即响应，Sidebar 稍后水合。
 
@@ -157,9 +155,9 @@ export default function Dashboard() {
 
 ### Suspense 如何控制渲染顺序？
 
-在刚才的例子中，我们是将三个组件同时进行渲染，哪个组件的数据先返回，就先渲染哪个组件。
+在刚才的例子中，三个组件是同时进行渲染，哪个组件的数据先返回，就先渲染哪个组件。
 
-但有的时候，希望按照某种顺序展示组件，比如先展示 `PostFeed`，再展示`Weather`，最后展示`Recommend`，此时你可以将 Suspense 组件进行嵌套：
+但有的时候，希望按照某种顺序展示组件，比如先展示 `PostFeed`，再展示`Weather`，最后展示`Recommend`，此时可以将 Suspense 组件进行嵌套：
 
 ```javascript
 import { Suspense } from 'react'
@@ -198,11 +196,11 @@ export default function Dashboard() {
 }
 ```
 
-那么问题来了，此时页面的最终加载时间是多少秒？是请求花费时间最长的 8s 还是 2 + 8 + 5 = 15s 呢？让我们看下效果。
+此时页面的最终加载时间是多少秒？是请求花费时间最长的 8s 还是 2 + 8 + 5 = 15s？看下效果。
 
 答案是 8s，这些数据请求是同时发送的，所以当 Weather 组件返回的时候，Recommend 组件立刻就展示了出来。
 
-注意：这也是因为这里的数据请求并没有前后依赖关系，如果有那就另讲了。
+注意：这也是因为这里的数据请求并没有前后依赖关系，如果有则情况不同。
 
 ## Streaming
 
@@ -223,7 +221,7 @@ Streaming 可以有效的阻止耗时长的数据请求阻塞整个页面加载�
 1.  页面级别，使用 `loading.jsx`
 2.  特定组件，使用 `<Suspense>`
 
-`<Suspense>` 上节已经介绍过，`loading.jsx` 在 《路由篇 | App Router》也介绍过。这里分享一个使用 `loading.jsx` 的小技巧，那就是当多个页面复用一个 loading.jsx 效果的时候可以借助路由组来实现。
+`<Suspense>` 前文已经介绍过，`loading.jsx` 在《App Router》篇中也介绍过。这里分享一个使用 `loading.jsx` 的小技巧，那就是当多个页面复用一个 loading.jsx 效果的时候可以借助路由组来实现。
 
 目录结构如下：
 
@@ -289,11 +287,11 @@ export default async function About() {
 
 ### 缺点
 
-Suspense 和 Streaming 确实很好，将原本只能先获取数据、再渲染水合的传统 SSR 改为渐进式渲染水合，但还有一些问题没有解决。就比如用户下载的 JavaScript 代码，该下载的代码还是没有少，可是用户真的需要下载那么多的 JavaScript 代码吗？又比如所有的组件都必须在客户端进行水合，对于不需要交互性的组件其实没有必要进行水合。
+Suspense 和 Streaming 确实很好，将原本只能先获取数据、再渲染水合的传统 SSR 改为渐进式渲染水合，但还有一些问题没有解决。就比如用户下载的 JavaScript 代码，该下载的代码还是没有少；又比如所有的组件都必须在客户端进行水合，对于不需要交互性的组件其实没有必要进行水合。
 
-为了解决这些问题，目前的最终方案就是上一篇介绍的 RSC。
+为了解决这些问题，目前的最终方案就是前文介绍的 RSC。
 
-当然这并不是说 RSC 可以替代 Suspense，实际上两者可以组合使用，带来更好的性能体验。我们会在实战篇的项目中慢慢体会。
+当然这并不是说 RSC 可以替代 Suspense，实际上两者可以组合使用，带来更好的性能体验。
 
 ## 参考链接
 

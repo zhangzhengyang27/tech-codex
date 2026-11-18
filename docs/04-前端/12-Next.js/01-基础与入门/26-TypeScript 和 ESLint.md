@@ -8,7 +8,9 @@ tags: [Next.js]
 
 # TypeScript 和 ESLint
 
-使用 `create-next-app`创建项目的时候，Next.js 会提示是否使用 TypeScript 和 ESLint，本篇会详细介绍 TypeScript 和 ESLint 的配置内容，帮助大家了解默认设置中支持的功能和逻辑。
+## 概念说明
+
+使用 `create-next-app`创建项目的时候，Next.js 会提示是否使用 TypeScript 和 ESLint。本节详细介绍 TypeScript 和 ESLint 的配置内容，说明默认设置中支持的功能和逻辑。
 
 ## TypeScript
 
@@ -16,7 +18,7 @@ Next.js 内置了对 TypeScript 的支持，会自动安装所需依赖以及进
 
 ### 1. 新项目
 
-当你运行 `create-next-app` 创建项目的时候，就会让你选择是否使用 TypeScript，默认是 `Yes`：
+运行 `create-next-app` 创建项目的时候，会被询问是否使用 TypeScript，默认是 `Yes`：
 
 ```bash
 npx create-next-app@latest
@@ -26,11 +28,11 @@ npx create-next-app@latest
 
 将文件重命名为 `.ts`或者 `.tsx`，然后运行 `next dev`和 `next build`，Next.js 会自动安装所需依赖，以及添加一个包含推荐配置项的 `tsconfig.json`文件。
 
-如果你已经有了一个 `jsconfig.json` 文件，那就需要你手动拷贝 `jsconfig.json`中的内容（比如 `paths`）到 `tsconfig.json`中，然后删除掉之前的 `jsconfig.json`文件。
+如果项目中已经有了一个 `jsconfig.json` 文件，则需要手动拷贝 `jsconfig.json`中的内容（比如 `paths`）到 `tsconfig.json`中，然后删除掉之前的 `jsconfig.json`文件。
 
 ### 3. TypeScript 插件
 
-Next.js 包含了一个自定义的 TypeScript 插件和类型检查器。VScode 和其他代码编辑器可以用其实现高级类型检查和自动补写功能。
+Next.js 包含了一个自定义的 TypeScript 插件和类型检查器。VSCode 和其他代码编辑器可以用其实现高级类型检查和自动补写功能。
 
 在 VSCode 中开启：
 
@@ -38,7 +40,7 @@ Next.js 包含了一个自定义的 TypeScript 插件和类型检查器。VScode
 2.  搜索 `TypeScript: Select TypeScript Version`
 3.  选择“`Use Workspace Version`”
 
-现在，当你编辑文件的时候，自定义 TypeScript 插件就会启用。当运行 `next build`的时候，会执行自定义类型检查器。
+开启后，编辑文件的时候自定义 TypeScript 插件就会启用。当运行 `next build`的时候，会执行自定义类型检查器。
 
 插件功能介绍：
 
@@ -118,7 +120,7 @@ function Card<T extends string>({ href }: { href: Route<T> | URL }) {
 
 ### 6. next.config.js 中的类型检查
 
-`next.config.js` 必须是一个 JavaScript 文件，它不会被 TypeScript 或者 Babel 解析，但你可以使用 JSDoc 添加一些类型检查，举个例子：
+`next.config.js` 必须是一个 JavaScript 文件，它不会被 TypeScript 或者 Babel 解析，但可以使用 JSDoc 添加一些类型检查，举个例子：
 
 ```javascript
 // @ts-check
@@ -135,7 +137,7 @@ module.exports = nextConfig
 
 ### 7. 忽略 TypeScript 错误
 
-当出现 TypeScript 错误的时候，使用 `next build` 构建生产版本会失败。但如果你希望即使有错误，也要构建出生产代码，那你可以禁用内置的类型检查。打开 `next.config.ts`启用 `typescript.ignoreBuildErrors` 选项：
+当出现 TypeScript 错误的时候，使用 `next build` 构建生产版本会失败。如果希望即使有错误也要构建出生产代码，可以禁用内置的类型检查，在 `next.config.ts`中启用 `typescript.ignoreBuildErrors` 选项：
 
 ```javascript
 // next.config.ts
@@ -155,7 +157,7 @@ export default nextConfig
 
 ### 1. ESLint 配置选项
 
-Next.js 提供了开箱即用的 ESLint 功能（如果你创建项目的时候选择了 ESLint），查看 `package.json`会看到：
+Next.js 提供了开箱即用的 ESLint 功能（前提是创建项目的时候选择了 ESLint），查看 `package.json`会看到：
 
 ```json
 // package.json
@@ -172,7 +174,7 @@ Next.js 提供了开箱即用的 ESLint 功能（如果你创建项目的时候�
 yarn lint
 ```
 
-如果应用中并没有 ESLint 相关的配置，则会引导你安装和配置：
+如果应用中并没有 ESLint 相关的配置，则会引导安装和配置：
 
 ```shell
 ? How would you like to configure ESLint?
@@ -182,7 +184,7 @@ Base
 Cancel
 ```
 
-这个时候你会看到三个选项：
+此时有三个选项：
 
 1.  **Strict**
 
@@ -206,15 +208,15 @@ Cancel
 }
 ```
 
-这个时候你可能困惑 `Strict` 模式下不是包含了基础 ESLint 配置吗？为什么 `Strict` 下的 `extends` 没有 `"next"`呢？这是因为 `"next/core-web-vitals"` 的规则拓展了 `"next"`，也就是说包含了 `"next"` ，所以无须再次 extends 了。
+一个常见的困惑是：`Strict` 模式下明明包含了基础 ESLint 配置，为什么 `Strict` 下的 `extends` 没有 `"next"`？这是因为 `"next/core-web-vitals"` 的规则拓展了 `"next"`，也就是说包含了 `"next"` ，所以无须再次 extends 了。
 
 3.  **Cancel**
 
-不包括任何 ESLint 配置。当你需要自定义 ESLint 配置的时候，选择此项。
+不包括任何 ESLint 配置。当需要自定义 ESLint 配置的时候，选择此项。
 
-如果选择了前两个配置项的任何一个，Next.js 都会自动安装 `eslint` 和 `eslint-config-next` 作为应用的依赖项，以及在项目的根目录创建一个包含你选择的配置的 `.eslintrc.json` 文件。
+如果选择了前两个配置项的任何一个，Next.js 都会自动安装 `eslint` 和 `eslint-config-next` 作为应用的依赖项，以及在项目的根目录创建一个包含所选择配置的 `.eslintrc.json` 文件。
 
-现在你就可以运行 `next lint`捕获错误。一般 ESLint 设置完成后，它会在每次 `next build` 的时候自动运行。如果有错误会导致构建失败，警告则不会。
+此时即可运行 `next lint`捕获错误。一般 ESLint 设置完成后，它会在每次 `next build` 的时候自动运行。如果有错误会导致构建失败，警告则不会。
 
 ### 2. ESLint 配置
 
@@ -224,9 +226,9 @@ Cancel
 *   [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks)
 *   [eslint-plugin-next](https://www.npmjs.com/package/@next/eslint-plugin-next)
 
-初次接触 ESLint 的同学可能对 ESLint 的 `config` 和 `plugin` 概念有些困惑。我们简单讲一下区别。
+初次接触 ESLint 时，容易对 ESLint 的 `config` 和 `plugin` 概念产生困惑。二者区别如下。
 
-现在假设你是 Next.js 的开发者，为了让用户更好的使用 Next.js，需要根据 Next.js 的用法自定义一些 ESLint 规则，就比如我们在讲 `<Script>` 组件的时候讲到内联脚本：
+假设作为 Next.js 的开发者，为了让用户更好地使用 Next.js，需要根据 Next.js 的用法自定义一些 ESLint 规则。比如 `<Script>` 组件的内联脚本：
 
 ```javascript
 <Script id="show-banner">
@@ -234,7 +236,7 @@ Cancel
 </Script>
 ```
 
-Next.js 要求必须为内联脚本分配一个 id，以保证 Next.js 追踪和优化脚本。如果用户没有传入 id，就可以使用 ESLint 提示一个错误。为了实现这个自定义规则，我们就需要编写一个插件，名为 `eslint-plugin-next`，其中 `eslint-plugin-`这个前缀是 ESLint 要求的。它的代码结构类似于：
+Next.js 要求必须为内联脚本分配一个 id，以保证 Next.js 追踪和优化脚本。如果用户没有传入 id，就可以使用 ESLint 提示一个错误。为了实现这个自定义规则，需要编写一个插件，名为 `eslint-plugin-next`，其中 `eslint-plugin-`这个前缀是 ESLint 要求的。它的代码结构类似于：
 
 ```javascript
 const plugin = {
@@ -247,7 +249,7 @@ const plugin = {
 module.exports = plugin
 ```
 
-开发了一堆规则还不够，正如打游戏的时候，游戏难度有简单、适中、困难、地狱，规则集合也是一样，我们也可以用这些规则建立多个分类，比如推荐、严格、宽松等，这个也可以写在插件代码中，代码结构类似于：
+仅有规则还不够，规则集合同样需要分出强度层次，可以用这些规则建立多个分类，比如推荐、严格、宽松等，这个也可以写在插件代码中，代码结构类似于：
 
 ```javascript
 const plugin = {
@@ -278,9 +280,9 @@ const plugin = {
 module.exports = plugin
 ```
 
-在这个示例中，我们为我们的 `eslint-plugin-next`插件定义了两套配置，一套名为 `recommended`，一套名为 `strict`。其中 `plugins: ['next']` 表示加载名为 `eslint-plugin-next`的插件（ESLint 会自动补全名字），其实就是自己，然后 `rules`设定使用哪些规则和规则的提示，比如同样是 `inline-script-id` 这条规则，在 `recommended` 中，我们设定为 `warn`，但是在 `strict` 中，既然是严格，我们就设定为 `error`。
+在这个示例中，为 `eslint-plugin-next`插件定义了两套配置，一套名为 `recommended`，一套名为 `strict`。其中 `plugins: ['next']` 表示加载名为 `eslint-plugin-next`的插件（ESLint 会自动补全名字），其实就是自己，然后 `rules`设定使用哪些规则和规则的提示。比如同样是 `inline-script-id` 这条规则，在 `recommended` 中设定为 `warn`，在 `strict` 中则设定为 `error`。
 
-有了这个插件还不够，Next.js 是基于 React 的，关于 React 的用法，也有一些 ESLint 规则，React 的开发者对应开发了 eslint-plugin-react 插件。这个插件虽然不错，但是个别规则我不想用，又该怎么办呢？为了帮助开发者提供一个更加“成品”的配置项，你可以定义一个 `eslint-config-next`配置，其中 `eslint-config-`这个前缀是 ESLint 要求的。它的代码结构类似于：
+有了这个插件还不够，Next.js 是基于 React 的，关于 React 的用法，也有一些 ESLint 规则，React 的开发者对应开发了 eslint-plugin-react 插件。为了帮助开发者提供一个更加“成品”的配置项，可以定义一个 `eslint-config-next`配置，其中 `eslint-config-`这个前缀是 ESLint 要求的。它的代码结构类似于：
 
 ```javascript
 const config = {
@@ -297,9 +299,9 @@ const config = {
 module.exports = config
 ```
 
-在这个例子中，我们使用 extends 表示使用已有的配置，`'plugin:next/recommended'`表示的就是 `eslint-plugin-next`插件中的 recommended 配置。plugins 表示加载的插件，但是这只是加载，具体使用哪些规则，你还需要写 rules 自定义。
+在这个例子中，`extends` 表示使用已有的配置，`'plugin:next/recommended'`表示的就是 `eslint-plugin-next`插件中的 recommended 配置。plugins 表示加载的插件，但这只是加载，具体使用哪些规则，还需要编写 `rules` 自定义。
 
-这个成品的配置，我们可以在 `.eslintrc.json`中，使用 extends 语法直接继承：
+这个成品的配置，可以在 `.eslintrc.json`中，使用 extends 语法直接继承：
 
 ```javascript
 {
@@ -317,7 +319,7 @@ Next.js 提供了一个 ESLint 插件 [eslint-plugin-next](https://www.npmjs.com
 
 ### 4. 自定义应用目录
 
-如果你正在使用 `eslint-plugin-next`，但是没有在根目录里安装 Next.js（比如 monorepo 项目），你可以使用 `.eslintrc` 的 `settings` 属性告诉 `eslint-plugin-next` 哪里找到你的 Next.js 应用：
+如果项目正在使用 `eslint-plugin-next`，但是没有在根目录里安装 Next.js（比如 monorepo 项目），可以使用 `.eslintrc` 的 `settings` 属性告诉 `eslint-plugin-next` 去哪里找到 Next.js 应用：
 
 ```json
 // .eslintrc.json
@@ -335,7 +337,7 @@ Next.js 提供了一个 ESLint 插件 [eslint-plugin-next](https://www.npmjs.com
 
 ### 5. 自定义检查目录和文件
 
-默认情况下，Next.js 会为 `pages/`、`app/`、`components/`、`lib/`和 `src/` 目录下的所有文件运行 ESLint。不过你可以使用`next.config.ts` 的 `eslint.dirs` 选项指定检查的目录：
+默认情况下，Next.js 会为 `pages/`、`app/`、`components/`、`lib/`和 `src/` 目录下的所有文件运行 ESLint。不过可以使用`next.config.ts` 的 `eslint.dirs` 选项指定检查的目录：
 
 ```javascript
 // next.config.ts
@@ -348,7 +350,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-同样，你可以使用 `next lint` 的 `--dir` 和 `--file` 指定检查的目录和文件：
+同样，可以使用 `next lint` 的 `--dir` 和 `--file` 指定检查的目录和文件：
 
 ```bash
 next lint --dir pages --dir utils --file bar.js
@@ -364,7 +366,7 @@ next lint --no-cache
 
 ### 7. 禁用规则
 
-如果你希望修改或者禁用插件（`react`、`react-hooks`、`next`）中的规则，你可以直接在 `.eslintrc` 中使用 `rules` 属性更改它们：
+如果希望修改或者禁用插件（`react`、`react-hooks`、`next`）中的规则，可以直接在 `.eslintrc` 中使用 `rules` 属性更改它们：
 
 ```json
 // .eslintrc.json
@@ -379,7 +381,7 @@ next lint --no-cache
 
 ### 8. core-web-vitals
 
-前面讲到，首次运行 `next lint`并选择 `Strict` 选项，会开启使用 `next/core-web-vitals`规则集：
+首次运行 `next lint`并选择 `Strict` 选项，会开启使用 `next/core-web-vitals`规则集：
 
 ```json
 {
@@ -418,7 +420,7 @@ const plugin = {
 module.exports = plugin
 ```
 
-其实目前也就将 2 条规则设定的更严格了一些，一条是 `no-html-link-for-pages`，也就是不要用 `<a>` 标签，而是用 Link 组件替代：
+其实目前也就将 2 条规则设定的更严格了一些。一条是 `no-html-link-for-pages`，也就是不要用 `<a>` 标签，而是用 Link 组件替代：
 
 ```javascript
 function Home() {
@@ -430,7 +432,7 @@ function Home() {
 }
 ```
 
-你应该改为使用：
+应改为使用：
 
 ```javascript
 import Link from 'next/link'
@@ -446,7 +448,7 @@ function Home() {
 export default Home
 ```
 
-另外一条是 `no-sync-scripts`，不要用同步脚本，也就推荐使用 Script 组件或者为 script 添加 defer 或者 async 属性：
+另外一条是 `no-sync-scripts`，不要用同步脚本，推荐使用 Script 组件或者为 script 添加 defer 或者 async 属性。
 
 使用 Script 组件：
 
@@ -476,7 +478,7 @@ export default Home
 
 #### 9.1. prettier
 
-ESLint 也包含代码格式化规则，可能会跟已经存在的 Prettier 配置冲突。我们推荐使用 `eslint-config-prettier` 让 ESLint 和 Prettier 能够协同工作。
+ESLint 也包含代码格式化规则，可能会跟已经存在的 Prettier 配置冲突。推荐使用 `eslint-config-prettier` 让 ESLint 和 Prettier 能够协同工作。
 
 首先安装依赖：
 
@@ -501,9 +503,9 @@ bun add --dev eslint-config-prettier
 
 #### 9.2. lint-staged
 
-开发的时候，你肯定不希望修改了一个文件后，对所有文件都执行一次 ESLint 检查，那你就可以使用 lint-staged，它会在暂存的 git 文件上（git add 的那些文件）执行 ESLint 检查。
+开发时并不希望修改了一个文件后，对所有文件都执行一次 ESLint 检查。lint-staged 可以解决这个问题，它会在暂存的 git 文件上（git add 的那些文件）执行 ESLint 检查。
 
-为了搭配使用 lint-staged，你需要将以下内容添加到根目录的 `.lintstagedrc.js` 文件：
+为了搭配使用 lint-staged，需要将以下内容添加到根目录的 `.lintstagedrc.js` 文件：
 
 ```javascript
 // .lintstagedrc.js
@@ -521,7 +523,7 @@ module.exports = {
 
 ### 10. 迁移现有配置
 
-如果你已经有了单独的 ESLint 配置，并且想要保持原有的配置，那你可以基于目前的配置，直接从 Next.js ESLint 插件（eslint-plugin-next）中拓展规则：
+如果项目已经有了单独的 ESLint 配置，并且想要保持原有的配置，可以基于目前的配置，直接从 Next.js ESLint 插件（eslint-plugin-next）中拓展规则：
 
 ```javascript
 const config = {
@@ -534,7 +536,7 @@ const config = {
 module.exports = config
 ```
 
-或者是引入 `eslint-config-next`，不过确保它在其他配置项后，举个例子：
+或者是引入 `eslint-config-next`，不过要确保它在其他配置项之后，举个例子：
 
 ```json
 // .eslintrc.json
@@ -542,6 +544,10 @@ module.exports = config
   "extends": ["eslint:recommended", "next"]
 }
 ```
+
+## 小结
+
+Next.js 内置 TypeScript 支持：新项目经 `create-next-app` 选项开启，现有项目改后缀后由 `next dev`/`next build` 自动补齐依赖与 `tsconfig.json`；自定义 TS 插件提供路由段配置校验、客户端 hooks 检查等能力；`typedRoutes` 可静态化 `next/link` 的 href 类型。ESLint 通过 `next lint` 引导配置，提供 Strict（`next/core-web-vitals`）、Base（`next`）、Cancel 三个档位；`plugin` 侧重编写规则，`config` 侧重配置规则，`eslint-config-next` 已聚合 react、react-hooks、next 三个插件。构建时 ESLint 错误会导致构建失败，TypeScript 错误亦然（除非显式设置 `ignoreBuildErrors`，该操作有风险）。
 
 ## 参考链接
 

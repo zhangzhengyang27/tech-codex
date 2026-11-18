@@ -8,13 +8,30 @@ tags: [Next.js]
 
 # t3-app 实战  创建任务
 
-本篇我们接着上篇，实现清单中任务的创建和完成。
+## 概念说明
 
-## 1. 功能：创建任务
+本篇在清单功能的基础上，实现清单内任务的创建、展示与完成，并解决项目构建阶段的 TypeScript 报错问题。
+
+任务功能与清单功能共用同一套技术链路（RHF + Zod 校验、Server Actions、Prisma），新增的知识点集中在三处：
+
+- **关联模型**：Task 与 List 建立一对多关系，并通过 `onDelete: Cascade` 实现级联删除。
+- **复合表单控件**：日期选择使用 Popover + Calendar + dayjs 组合。
+- **状态更新**：任务完成状态通过 `setTaskDone` Server Action 更新并触发页面刷新。
+
+## 核心要点
+
+- Prisma 关联建模：`List` 侧声明 `tasks Task[]`，`Task` 侧声明外键 `ListId` 与 `@relation`；删除清单时任务随 `onDelete: Cascade` 一并删除。
+- Server Action 写关联数据时使用 `list: { connect: { id: todoId } }`，而非直接写外键字段。
+- 任务完成更新与清单删除一样，`where` 条件包含 `id + userId` 双重校验，保证数据权限。
+- `expiresAt` 是可选字段（`DateTime?`），过期任务在 UI 上以红色日期标示，判断逻辑为 `Date.now() - task.expiresAt.getTime() > 0`。
+- Shadcn UI 与 t3-app 的代码风格差异会在 `npm run build` 时产生 TypeScript 错误，处理方式包括删除未用组件、调整 ESLint 规则或放宽构建配置。
+- ⚠️ 常见误区：新增 schema 后忘记运行 `npx prisma migrate dev`，导致 Prisma Client 类型与数据库不同步。
+
+## 功能一：创建任务
 
 ### 1.1. 数据库 Schema 定义
 
-我们首先定义任务相关的数据库字段，修改 `prisma/schema.prisma`，完整代码如下：
+首先定义任务相关的数据库字段，修改 `prisma/schema.prisma`，完整代码如下：
 
 ```prisma
 // This is your Prisma schema file,
@@ -89,7 +106,7 @@ export default function CheckListFooter({ checkList }: Props) {
 }
 ```
 
-在这段代码中，我们将创建任务表单的代码放到 `<CreateTaskModal>` 组件中。
+在这段代码中，创建任务表单的代码被放到 `<CreateTaskModal>` 组件中。
 
 新建 `src/components/CreateTaskModal.tsx`，代码如下：
 
@@ -263,7 +280,7 @@ export default function CreateTaskModal({ checkList }: Props) {
 }
 ```
 
-这段代码跟上节创建清单很像，我们使用 React Hook Form 和 Zod 做前端数据校验，当提交的数据通过校验的时候，使用 `toast()`提示信息。
+这段代码与创建清单的实现思路一致：React Hook Form 和 Zod 负责前端数据校验，提交的数据通过校验后使用 `toast()` 提示信息。区别在于增加了日期选择控件（Popover + Calendar），并引入清单 `id` 作为隐藏字段。
 
 因为需要处理时间，安装 `dayjs`：
 
@@ -286,8 +303,6 @@ export const createTaskZodSchema = z.object({
 
 export type createTaskZodSchemaType = z.infer<typeof createTaskZodSchema>;
 ```
-
-此时我们已经完成了前台界面的展示，接下来实现具体的服务端逻辑。
 
 ### 1.3. 添加服务端逻辑
 
@@ -363,11 +378,11 @@ export async function createTask(data: createTaskZodSchemaType) {
   };
 ```
 
-此时我们就完成了任务的创建。
+至此任务创建功能完成。
 
-效果描述：我们可以在 prisma studio 中查看新增的数据。
+效果描述：在 prisma studio 中可以查看新增的数据。
 
-## 2. 功能：展示任务
+## 功能二：展示任务
 
 修改 `src/components/CheckLists.tsx`，完整代码如下：
 
@@ -449,6 +464,8 @@ export async function CheckLists() {
 }
 ```
 
+关键变化是 `prisma.list.findMany` 增加了 `include: { tasks: true }`，一次查询同时取回清单及其任务列表。
+
 新建 `src/components/TaskItem.tsx`，代码如下：
 
 ```tsx
@@ -495,7 +512,7 @@ function TaskItem({ task }: { task: Task }) {
 export default TaskItem;
 ```
 
-## 3. 功能：完成任务
+## 功能三：完成任务
 
 修改 `src/actions/task.ts`，添加代码如下：
 
@@ -570,17 +587,17 @@ function TaskItem({ task }: { task: Task }) {
 export default TaskItem;
 ```
 
-## 4. 修复：构建错误
+## 修复：构建错误
 
-假设项目开发完毕，准备上线。运行：
+项目开发完毕准备上线时，运行：
 
 ```bash
 npm run build
 ```
 
-你会发现会有一些 TypeScript 错误出现。主要集中在 Shadcn UI 的组件代码中。这是 Shadcn UI 和 t3-app 代码风格不一样导致，暂时两边都没有解决。
+会出现一些 TypeScript 错误，主要集中在 Shadcn UI 的组件代码中。这是 Shadcn UI 和 t3-app 代码风格不一样导致，暂时两边都没有解决。
 
-为了避免这些错误导致构建失败，你可以：
+为了避免这些错误导致构建失败，有两种处理方式：
 
 1.  删除 `components/ui/chart.tsx` 和 `components/ui/input-otp.tsx`这两个没有用到的组件
 2.  修改 `next-t3-todo/.eslintrc.cjs`，添加规则如下：
@@ -604,11 +621,21 @@ module.exports = config;
 
 此时应该可以通过 TypeScript 校验。
 
-当然你也可以禁用某些规则、或者设置 `next.config.ts` 的配置项，即使有错误也继续构建。
+此外，也可以禁用某些规则、或者设置 `next.config.ts` 的配置项，即使有错误也继续构建。
 
-## 最后
+## 实践要点
 
-就我个人感觉，当前 Next.js 最流行的技术选型就是这套了：
+- 关联查询用 `include: { tasks: true }` 一次取回嵌套数据，避免在组件中逐个清单再查任务造成 N+1 查询。
+- Server Action 中建立关联使用 `connect` 语法，删除断言 `id + userId` 双条件，这是贯穿全项目的权限约定。
+- 日期展示统一交给 dayjs 格式化，过期判断在渲染层完成，字段本身保持 `DateTime?` 可空。
+- 构建失败先定位错误来源（第三方组件代码 vs 自身代码），对未使用的第三方组件优先删除，再考虑放宽 lint 规则。
+- Shadcn UI 组件源码在项目内，遇到风格冲突可以按需修改或删除具体组件文件，而不必等待上游修复。
+
+## 小结
+
+本篇完成了任务维度的功能闭环：定义 Task 与 List 的一对多关联模型并级联删除；通过 Dialog + RHF + Zod + Popover/Calendar 创建任务（含可选截止日期）；清单查询用 `include` 带出任务并由 `TaskItem` 渲染；勾选任务触发 `setTaskDone` 更新状态并刷新页面。最后针对 Shadcn UI 与 t3-app 的代码风格差异给出了构建报错的两种处理路径。
+
+当前 Next.js 社区最流行的技术选型即本项目所用这套：
 
 1. Next.js App Router + Server Actions
 2. TypeScript
@@ -617,4 +644,4 @@ module.exports = config;
 5. Zod + Shadcn UI + React Hook Form
 6. Clerk / Supabase / Next-Auth
 
-熟悉这套技术选型可以更高效的帮助我们开发 Next.js 项目。
+熟悉这套技术选型可以更高效地开发 Next.js 项目。

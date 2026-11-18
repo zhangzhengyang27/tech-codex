@@ -8,7 +8,9 @@ tags: [Next.js]
 
 # MDX
 
-Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成有效的 HTML 文档。它通常用于在网站和博客上编写内容。比如当你这样书写：
+## 概念说明
+
+Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成有效的 HTML 文档。它通常用于在网站和博客上编写内容。比如这样书写：
 
 ```markdown
 **love** using [Next.js](https://nextjs.org/)
@@ -32,15 +34,13 @@ Markdown 是一种轻量级标记语言，它允许人们使用易读易写的�
 </div>
 ```
 
-在这个例子中，标题是 markdown 格式，而那些类似 HTML 的标签则是 JSX 格式。markdown 侧重于编写内容，JSX 侧重于组件添加交互性，看起来是不是很棒？
+在这个例子中，标题是 markdown 格式，而那些类似 HTML 的标签则是 JSX 格式。markdown 侧重于编写内容，JSX 侧重于组件添加交互性。
 
-而 Next.js 既可以支持本地的 MDX 内容，也可以支持服务端动态获取 MDX 文件。Next.js 插件会将 markdown 和 React 组件转换为 HTML。
-
-那就让我们赶紧看看该如何使用 MDX 吧！
+Next.js 既可以支持本地的 MDX 内容，也可以支持服务端动态获取 MDX 文件。Next.js 插件会将 markdown 和 React 组件转换为 HTML。
 
 ## 1. 本地 MDX
 
-本地使用  MDX 需要借助 `@next/mdx`这个包，它从本地文件中获取数据，能够处理 markdown 和 MDX。你需要在 `/pages` 或者`/app` 目录下创建一个以 `.mdx`为扩展名的页面文件。具体的配置和用法如下：
+本地使用  MDX 需要借助 `@next/mdx`这个包，它从本地文件中获取数据，能够处理 markdown 和 MDX。需要在 `/pages` 或者`/app` 目录下创建一个以 `.mdx`为扩展名的页面文件。具体的配置和用法如下：
 
 ### 1.1. 开始配置
 
@@ -81,7 +81,7 @@ export default withMDX(nextConfig)
 
 ### 1.2. 基本用法
 
-现在在 `/app` 目录下创建一个 MDX 页面：
+在 `/app` 目录下创建一个 MDX 页面：
 
 ```javascript
   your-project
@@ -91,7 +91,7 @@ export default withMDX(nextConfig)
   └── package.json
 ```
 
-现在你可以在 MDX 页面使用 markdown 和导入 React 组件：
+此时可以在 MDX 页面使用 markdown 和导入 React 组件：
 
 ```javascript
 import ComponentA from '../components/a'
@@ -111,16 +111,18 @@ Checkout my React component:
 <ComponentA />
 ```
 
-打开 `/my-mdx-page` 查看渲染的结果。
+访问 `/my-mdx-page` 即可查看渲染的结果。
 
 ## 2. 远程 MDX
 
-如果你的 markdown 或者 MDX 文件位于其他位置，你可以在服务端动态获取它，有两个常用的社区包用于获取 MDX 内容：
+如果 markdown 或者 MDX 文件位于其他位置，可以在服务端动态获取它。有两个常用的社区包用于获取 MDX 内容：
 
 *   [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote#react-server-components-rsc--nextjs-app-directory-support)
 *   [contentlayer](https://www.contentlayer.dev/)
 
-使用外部内容的时候要注意，因为 MDX 会编译成 JavaScript，并且在服务端执行。所以你应该从信任的地方获取 MDX 内容，否则可能导致“远程代码执行”（remote code execution，简写：RCE，让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统）
+::: warning 安全提示
+使用外部内容的时候要注意，因为 MDX 会编译成 JavaScript，并且在服务端执行。所以应该从信任的地方获取 MDX 内容，否则可能导致“远程代码执行”（remote code execution，简写：RCE，让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统）。
+:::
 
 下面的例子中使用了 `next-mdx-remote`：
 
@@ -141,7 +143,7 @@ export default function Home() {
 }
 ```
 
-当然这个例子中，没有远程获取，而是直接使用了 mdx 文本，打开 `/my-mdx-page-remote` 查看渲染的 MDX。
+这个例子中，没有远程获取，而是直接使用了 mdx 文本，访问 `/my-mdx-page-remote` 即可查看渲染的 MDX。
 
 结合远程获取的示例代码为：
 
@@ -157,7 +159,7 @@ export default async function RemoteMdxPage() {
 }
 ```
 
-那你可能要问，组件呢？组件怎么传进去？一个示例代码如下：
+组件如何传入？一个示例代码如下：
 
 ```javascript
 // app/my-mdx-page-remote/page.js
@@ -178,7 +180,7 @@ export default function Home(props) {
 
 ```
 
-ComponentA 的组件代码很简单：
+ComponentA 的组件代码如下：
 
 ```javascript
 // app/components/a.js
@@ -187,11 +189,11 @@ export default function Page() {
 }
 ```
 
-打开 `/my-mdx-page-remote` 查看渲染的 MDX。
+访问 `/my-mdx-page-remote` 即可查看渲染的 MDX。
 
 ## 3. 共享布局
 
-要在 MDX 页面之间共享布局，你可以使用 App Router 内置的布局功能：
+要在 MDX 页面之间共享布局，可以使用 App Router 内置的布局功能：
 
 ```javascript
 // app/my-mdx-page/layout.js
@@ -202,7 +204,7 @@ export default function MdxLayout({ children }) {
 
 ## 4. 使用插件拓展功能
 
-如果 MDX 样式和功能并不能满足你的要求，那你可能就需要自定义使用和开发插件了。为了帮助你了解如何使用和开发插件，你需要先了解下 MDX 的原理。
+如果 MDX 的样式和功能无法满足要求，就需要自定义使用和开发插件。在此之前，先了解 MDX 的原理。
 
 简单的来说，MDX 的编译分为两步，一步处理 Markdown，一步处理 HTML。处理的伪代码如下：
 
@@ -229,9 +231,9 @@ async function main() {
 
 处理 Markdown 的这部分工具体系统称为 [Remark](https://github.com/remarkjs/remark)，处理 HTML 的这部分工具体系统称为 [Rehype](https://github.com/rehypejs/rehype)。Remark 和 Rehype 目前已经有不少的生态插件，比如[语法高亮（rehype-pretty-code）](https://github.com/atomiks/rehype-pretty-code)、[标题自动链接（rehype-autolink-headings）](https://github.com/rehypejs/rehype-autolink-headings)、[生成目录（remark-toc）](https://github.com/remarkjs/remark-toc)等。
 
-如果你想直接使用这些插件，就比如支持 [GFM](https://github.github.com/gfm/)（GitHub Flavored Markdown，目前最流行的 Markdown 扩展语法，它提供了包括表格、任务列表、删除线、围栏代码、Emoji 等在内的标记语法），对应插件是 [remark-gfm](https://github.com/remarkjs/remark-gfm)，可以通过修改 `next.config.ts` 来加载插件。
+如果想直接使用这些插件，就比如支持 [GFM](https://github.github.com/gfm/)（GitHub Flavored Markdown，目前最流行的 Markdown 扩展语法，它提供了包括表格、任务列表、删除线、围栏代码、Emoji 等在内的标记语法），对应插件是 [remark-gfm](https://github.com/remarkjs/remark-gfm)，可以通过修改 `next.config.ts` 来加载插件。
 
-不过因为 remark 和 rehype 都是 ESM（ECMAScript modules），你需要使用 `next.config.ts` 作为配置文件：
+不过因为 remark 和 rehype 都是 ESM（ECMAScript modules），需要使用 `next.config.ts` 作为配置文件：
 
 ```javascript
 // next.config.ts
@@ -266,7 +268,7 @@ GFM 新增了删除线语法：
 
 ## 5. 自定义元素
 
-正常我们书写 markdown，比如写个标题：
+正常书写 markdown 时，比如写一个标题：
 
 ```markdown
 # header
@@ -278,9 +280,7 @@ GFM 新增了删除线语法：
 <h1>header</h1>
 ```
 
-如果我们希望自定义这个输出的结果以及样式，该怎么实现呢？
-
-为了实现这个功能，打开应用根目录定义的 `mdx-components.js`文件，然后添加自定义元素：
+如果希望自定义输出的结果和样式，可以在应用根目录定义的 `mdx-components.js`文件中添加自定义元素：
 
 ```javascript
 // mdx-components.js
@@ -296,7 +296,7 @@ export function useMDXComponents(components) {
 
 此时的效果为：标题会以 30px 的字号渲染出来。
 
-那么问题来了，我怎么知道 markdown 语法都对应的什么标签呢？又可以修改哪些标签呢？这个可以查看 MDX 的文档：<https://mdxjs.com/table-of-components/>
+markdown 语法分别对应什么标签、可以修改哪些标签，可查看 MDX 的文档：<https://mdxjs.com/table-of-components/>
 
 这里要注意的是当使用 img 的时候，如果直接使用 Markdown 的图片语法加载本地图片，并不会成功。
 
@@ -364,7 +364,7 @@ Hello World!
 *   [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter)
 *   [gray-matter](https://github.com/jonschlinkert/gray-matter)
 
-我们以 [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter) 为例进行讲解，当搭配 MDX 的时候，还需要使用 [remark-mdx-frontmatter](https://github.com/remcohaszing/remark-mdx-frontmatter)。
+以 [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter) 为例进行讲解，当搭配 MDX 的时候，还需要使用 [remark-mdx-frontmatter](https://github.com/remcohaszing/remark-mdx-frontmatter)。
 
 首先安装依赖：
 
@@ -402,7 +402,7 @@ const withMDX = createMDX({
 export default withMDX(nextConfig)
 ```
 
-基本配置就完成了，但是要注意，这两个插件的效果并不是像我们写 VuePress 中的 md 文档一样，可以用 frontmatter 中的数据定义页面的标题等数据，我们现在建立一个 mdx 文档：
+基本配置就完成了，但要注意，这两个插件的效果并不像在 VuePress 中写 md 文档那样，可以用 frontmatter 中的数据定义页面的标题等数据。现在建立一个 mdx 文档：
 
 ```markdown
 ---
@@ -413,7 +413,7 @@ author: 冴羽
 # header1
 ```
 
-页面不会有什么变化，页面的标题不会变成 frontmatter 中设置的这个标题，也不会输出 `<meta name="author" content="冴羽">`这种 HTML 标签，这两个插件的作用就是储存元数据，用转换后的 JS 描述就是：
+页面不会有什么变化，页面的标题不会变成 frontmatter 中设置的这个标题，也不会输出 `<meta name="author" content="冴羽">`这种 HTML 标签。这两个插件的作用就是储存元数据，用转换后的 JS 描述就是：
 
 ```javascript
 export const frontmatter = {
@@ -426,7 +426,7 @@ export default function MDXContent() {
 }
 ```
 
-也就是说，使用这两个插件后，如果导入这个 MDX 文档，会有一个 frontmatter 导出对象，让你能够获取到在 MDX 文档中通过 frontmatter 格式设置的值，仅此而已。我们新建一个 `page.js`验证一下：
+也就是说，使用这两个插件后，如果导入这个 MDX 文档，会有一个 frontmatter 导出对象，通过它能够获取到在 MDX 文档中通过 frontmatter 格式设置的值，仅此而已。新建一个 `page.js`验证：
 
 ```javascript
 import {frontmatter} from '../my-mdx-page/page.mdx'
@@ -439,11 +439,9 @@ export default function Page() {
 
 可以在命令行中看到输出。
 
-那你可能想，这有什么用呢？
+frontmatter 的价值在于为内容型开发提供便利。以博客功能为例：在 `contents` 文件夹下建立多个 MDX 文档作为博客内容，访问 `article/1` 的时候，导入对应 id 的 MDX 文档，然后获取其中的元数据，渲染通用的一些展示内容，比如标题、作者、更新时间、标签等。
 
-这可以为我们的开发提供很多便利。试想我们开发一个博客功能，在 `contents` 文件夹下建立多个 MDX 文档，作为我们的博客内容。当我们访问比如 `article/1`的时候，导入对应 id 的 MDX 文档，然后获取其中的元数据，渲染通用的一些展示内容，比如标题、作者、更新时间、标签等，这不就是一个很实用的功能嘛\~
-
-当然这样说有些抽象，我们简单写个 demo，文件目录结构如下：
+通过一个简单的示例说明，文件目录结构如下：
 
 ```javascript
   your-project
@@ -469,7 +467,7 @@ author: 冴羽
 这是正文内容
 ```
 
-这是我们要获取的文章具体内容。`article/[id]/page.js`的代码如下：
+这是要获取的文章具体内容。`article/[id]/page.js`的代码如下：
 
 ```javascript
 // article/[id]/page.js
@@ -487,9 +485,9 @@ export default async function Page({ params: {id} }) {
 }
 ```
 
-在这个例子中，我们通过 import() 获取到了模块内容，然后解构出了 frontmatter 对象和页面内容组件。打开 `http://localhost:3000/article/1`，即可看到渲染出的文章标题、作者和正文内容。
+在这个例子中，通过 import() 获取到了模块内容，然后解构出了 frontmatter 对象和页面内容组件。打开 `http://localhost:3000/article/1`，即可看到渲染出的文章标题、作者和正文内容。
 
-当然了，如果你对 frontmatter 没有那么热爱，其实你也可以直接在`.mdx` 文件导出一个 meta 对象，示例代码如下：
+如果不需要使用 frontmatter 格式，也可以直接在`.mdx` 文件导出一个 meta 对象，示例代码如下：
 
 ```javascript
 export const meta = {
@@ -521,11 +519,11 @@ export default async function Page({ params: {id} }) {
 
 也可以正常渲染。
 
-所以就看你是否想要使用 Frontmatter 这种格式。
+所以就看是否想要使用 Frontmatter 这种格式。
 
 ## 7. 使用基于 Rust 的 MDX 编译器
 
-Next.js 支持一个用 Rust 编写的 MDX 编译器。目前这个编译器还在实验中，不建议生产环境中使用。但如果你想要尝试这个新编译器，在`next.config.ts`中开启配置：
+Next.js 支持一个用 Rust 编写的 MDX 编译器。目前这个编译器还在实验中，不建议生产环境中使用。如果想要尝试这个新编译器，在`next.config.ts`中开启配置：
 
 ```javascript
 // next.config.ts
@@ -535,6 +533,10 @@ export default withMDX({
   },
 })
 ```
+
+## 小结
+
+MDX 是 Markdown 的超集，可在 Markdown 中直接书写 JSX 并导入 React 组件。Next.js 支持两类内容来源：本地 MDX（`@next/mdx` + `mdx-components.js` + `pageExtensions` 配置）与远程 MDX（next-mdx-remote 等社区包，需注意只从可信来源获取内容以防 RCE）。MDX 编译链由 Remark（处理 Markdown）与 Rehype（处理 HTML）构成，通过 `next.config.ts` 的 `remarkPlugins` / `rehypePlugins` 加载生态插件（如 remark-gfm、remark-mdx-images）；通过 `mdx-components.js` 可自定义元素渲染；通过 remark-frontmatter + remark-mdx-frontmatter 可提取文档元数据。基于 Rust 的 `mdxRs` 编译器为实验特性，暂不建议在生产环境使用。
 
 ## 参考链接
 

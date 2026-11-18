@@ -8,11 +8,24 @@ tags: [Next.js]
 
 # t3-app 实战  身份认证与主题切换
 
-我们使用 **TypeScript + Tailwind + Prisma + MySQL + Zod + Shadcn UI + React Hook Form + Clerk + Server Actions** 开发一个清单项目。
+## 概念说明
 
-项目效果如下。
+本篇以 **TypeScript + Tailwind + Prisma + MySQL + Zod + Shadcn UI + React Hook Form + Clerk + Server Actions** 的技术组合开发一个清单项目，聚焦其中两个基础功能：使用 Clerk 实现身份认证、使用 next-themes 实现主题切换。
 
-## 1. 项目初始化
+身份认证是整个项目的基础——创建清单时需要关联用户信息；主题切换则用于支持暗黑模式，保证应用在多场景下的可用性。二者都是后续业务功能（清单与任务的增删改查）的前置依赖。
+
+## 核心要点
+
+- Clerk 采用 Provider + 组件的接入模式：`<ClerkProvider>` 包裹根布局，`<SignedIn>`、`<SignedOut>`、`<UserButton>`、`<SignInButton>` 按登录状态控制界面展示。
+- Clerk 默认跳转其托管登录页；通过 `[[...sign-in]]` 可选 catch-all 路由配合 `NEXT_PUBLIC_CLERK_SIGN_IN_URL` 环境变量，可将登录注册迁回应用自身路由。
+- 界面汉化分三层：`@clerk/localizations` 提供官方语言包，`lodash.merge` 合并自定义翻译补全语言包缺口，`<SignInButton>` 的子文案单独覆盖。
+- 路由保护由 middleware 实现：`createRouteMatcher` 标记公共路由，其余路由调用 `auth().protect()` 强制登录。
+- 启用路由保护后，`<SignedIn>` 和 `<SignedOut>` 组件会导致报错，header 相关代码需注释或删除。
+- 深色模式由 next-themes 驱动：`ThemeProvider` 把主题写入 `class` 属性，Shadcn UI 组件依据 `dark` class 切换样式；`<html>` 需添加 `suppressHydrationWarning` 以避免水合警告。
+- ⚠️ 常见误区：`middleware.ts` 并不一定放在项目根目录，应放在与 `app` 同级的位置。
+- ⚠️ 常见误区：接入 Clerk 时如果选择 create-t3-app 自带的鉴权选项，会与 Clerk 冲突；脚手架选型阶段鉴权应选 None。
+
+## 项目初始化
 
 运行：
 
@@ -69,13 +82,11 @@ npm run dev
 git commit -m "initial commit"
 ```
 
-我们的项目就正式开始了。
+项目初始化到此完成。
 
-## 2. 功能：身份认证
+## 功能一：身份认证
 
-我们先做身份认证，毕竟身份认证是基础，且创建清单的时候需要用户信息。
-
-为了快速实现，最便捷的方式是接入 Clerk。我们将接入 Clerk 并实现界面的汉化。
+身份认证需要先行完成，因为创建清单时要使用用户信息。接入 Clerk 的同时一并实现界面汉化。
 
 ### 2.1. 接入 Clerk
 
@@ -154,11 +165,11 @@ export default function RootLayout({
 }
 ```
 
-重新运行 `npm run dev`，此时效果如下。
+重新运行 `npm run dev` 即可看到登录按钮与用户按钮生效。
 
 ### 2.2. 自定义登录和注册地址
 
-当我们点击 `Sign in` 的时候，跳转的其实是 Clerk 的地址，如果要修改为我们自己的路由地址该怎么做呢？
+点击 `Sign in` 时，默认跳转的是 Clerk 托管的地址。如果要改为应用自己的路由地址，需要两步：在应用内创建登录注册页面，并通过环境变量告知 Clerk。
 
 新建 `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx`，代码为：
 
@@ -243,7 +254,7 @@ export default function RootLayout({
 
 此时界面基本完成汉化。
 
-但查看用户界面，你就会发现，这个汉化并不全面！就比如删除按钮这里的文案依然是英文……
+但查看用户界面会发现汉化并不全面——例如删除账户相关的文案依然是英文。
 
 新建 `src/locales/zh.json`，代码如下：
 
@@ -313,15 +324,15 @@ export default function RootLayout({
 
 此时删除账户界面就改为了中文。
 
-那么问题来了：如果还有其他需要汉化的位置，怎么知道具体的字段位置呢？就比如为什么“删除账户”，它对应的字段位置是 userProfile.start.dangerSection.deleteAccountButton 呢？
+如果还有其他需要汉化的位置，如何确定对应的字段位置？例如「删除账户」为什么对应 `userProfile.start.dangerSection.deleteAccountButton`？
 
-其实这是个体力活：打开原本的[英文](https://github.com/clerk/javascript/blob/main/packages/localizations/src/en-US.ts)，搜索对应文案，就可以找到具体的字段位置了。
+查找方法很直接：打开官方的[英文](https://github.com/clerk/javascript/blob/main/packages/localizations/src/en-US.ts)语言文件，搜索对应文案，即可定位到具体的字段路径。
 
 > 注意：目前中文翻译并不全面，这是一个给 Clerk 提 PR 的好机会！
 
 ### 2.4. 设置路由保护
 
-毕竟我们开发的是一个清单项目，当用户打开首页的时候，应该是登录后才能查看到自己创建的清单。所以我们实现一个路由保护，当用户访问 `/`的时候，会跳转到 `/sign-in`，引导用户登录。
+清单项目的预期行为是：用户打开首页时，只有登录后才能查看自己创建的清单。因此需要实现路由保护——当用户访问 `/` 时，跳转到 `/sign-in` 引导登录。
 
 修改  `src/middleware.ts`，完整代码如下：
 
@@ -341,7 +352,7 @@ export const config = {
 };
 ```
 
-在这段代码中，我们设置了 `/sign-in` 和 `/sign-up` 为公共路由，访问其他路由，都会触发路由保护，跳转到登录页面。
+在这段代码中，`/sign-in` 和 `/sign-up` 被设置为公共路由，访问其他路由都会触发路由保护，跳转到登录页面。
 
 > 注意：这里中间件的 matcher 逻辑是，除了内部路由 `_next` 和静态文件之外，其他都会受到保护
 
@@ -395,13 +406,13 @@ export default function RootLayout({
 
 这是因为使用 `<SignedIn>` 和 `<SignedOut>` 组件会导致报错。
 
-现在我们就完成了 Clerk 的基础设置。
+至此 Clerk 的基础设置完成。
 
-效果描述：访问首页，会跳转到登录页面，登录完成后，跳转回首页。
+效果描述：访问首页会跳转到登录页面，登录完成后跳转回首页。
 
-## 3. 功能：支持深色模式
+## 功能二：支持深色模式
 
-接下来我们支持深色模式，我们借助 Shadcn UI 实现。
+深色模式借助 Shadcn UI 与 next-themes 实现。
 
 ### 3.1. 接入 Shadcn UI
 
@@ -411,15 +422,13 @@ export default function RootLayout({
 npx shadcn-ui@latest init
 ```
 
-命令行效果如下。
-
 添加组件：
 
 ```bash
 npx shadcn-ui@latest add
 ```
 
-因为用到的组件很多，干脆全装了。敲击键盘的`a`，作用是全选组件（再敲击一次就是取消全选），然后进行安装。
+项目用到的组件较多，可以直接全量安装：敲击键盘的 `a` 即全选组件（再敲击一次取消全选），然后进行安装。
 
 ### 3.2. 实现主题切换器
 
@@ -562,10 +571,9 @@ export default function ModeToggle() {
 }
 ```
 
-
 > 注：更复杂的效果，比如修改主题色、增加主题请查看《Shadcn UI 与组件库》
 
-## 4. 功能：欢迎信息
+## 功能三：欢迎信息
 
 修改 `src/app/page.tsx`，完整代码如下：
 
@@ -619,7 +627,7 @@ export default function HomePage() {
 }
 ```
 
-在这段代码中，我们创建了一个 `<Welcome>`组件，当涉及到服务端请求时，应该尽可能将请求放到 `<Suspense>` 中，这样就不会阻塞页面的请求和渲染。
+在这段代码中，`<Welcome>` 组件负责获取并展示当前用户信息。涉及服务端请求时，应尽可能把请求放到 `<Suspense>` 中，这样就不会阻塞页面的请求和渲染。
 
 新建 `src/components/CreateListModal.tsx`，代码如下：
 
@@ -679,11 +687,17 @@ export default function CreateListModal() {
 }
 ```
 
+## 实践要点
 
-## 下一篇
+- 环境变量按用途拆分文件：`.env` 存数据库连接，`.env.local` 存 Clerk 密钥与登录路由配置，两者都不应提交到版本控制。
+- 汉化采用「官方语言包 + lodash.merge 合并自定义翻译」的组合，既复用官方翻译又能按需补全缺口；字段路径通过官方英文语言文件检索获得。
+- 路由保护与界面组件的适配容易被忽略：启用 `auth().protect()` 后，`<SignedIn>`/`<SignedOut>` 会报错，导航栏的用户状态展示需迁移到其他组件（如 Header 中的 `UserButton`）。
+- `ThemeProvider` 配置中 `attribute="class"` 与 Shadcn UI 的暗黑样式约定（`.dark` class）对应；`suppressHydrationWarning` 是主题服务端渲染的必备配置。
+- 服务端数据请求放入 `<Suspense>` 并配骨架屏 fallback，可避免慢请求阻塞首屏渲染。
 
-> 1.  功能实现：t3-app 身份认证和深色模式
-> 2.  源码地址：<https://github.com/mqyqingfeng/next-app-demo/tree/next-t3-todo>
-> 3.  下载代码：`git clone -b next-t3-todo git@github.com:mqyqingfeng/next-app-demo.git`
+## 源码与小结
 
-目前我们已经用 Clerk 实现了身份认证，使用 Shadcn UI + next-themes 实现了深色模式切换。当点击“添加清单”按钮的时候，右侧会弹出创建清单的表单，现在我们只是简单模拟了下大致效果。下一篇我们会用 Shadcn UI + React Hook Form + Zod + Server Actions 实现清单的创建和查询功能。
+- 源码地址：<https://github.com/mqyqingfeng/next-app-demo/tree/next-t3-todo>
+- 下载代码：`git clone -b next-t3-todo git@github.com:mqyqingfeng/next-app-demo.git`
+
+本篇完成了清单项目的三项基础能力：用 Clerk 实现身份认证与路由保护（登录注册页迁入应用路由并完成汉化）、使用 Shadcn UI + next-themes 实现深色模式切换、在首页通过 `<Suspense>` 渲染欢迎信息并模拟了「添加清单」弹窗的大致效果。后续将使用 Shadcn UI + React Hook Form + Zod + Server Actions 实现清单的创建和查询功能。

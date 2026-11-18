@@ -10,9 +10,9 @@ tags: [Next.js]
 
 React Hook Form（40.1k Star）是一个老牌的用于 React 应用程序的表单验证和状态管理库。它提供了一组钩子，可以轻松创建和管理表单，而无需编写大量样板代码。
 
-之所以讲 React Hook Form，是因为 **Shadcn UI + React Hook Form + Zod** 是 Next.js 项目处理表单提交常见的一套“组合拳”。
+之所以介绍 React Hook Form，是因为 **Shadcn UI + React Hook Form + Zod** 是 Next.js 项目处理表单提交常见的一套“组合拳”。
 
-为了循序渐进掌握这套组合拳，我们先从传统的表单实现开始讲起。
+为了循序渐进掌握这套组合拳，先从传统的表单实现开始讲起。
 
 ## 传统表单
 
@@ -116,15 +116,15 @@ export default function FormWithoutReactHookForm() {
 }
 ```
 
-这样的代码想必大家都写过，其实有很多“问题”：
+这样的代码很常见，但其实有很多“问题”：
 
-我们需要声明多个状态用于将输入框改为受控组件，需要手动处理提交态，在出现错误的时候，还要再修改提交态，需要手动处理错误和展示错误信息，每次表单提交都要先阻止默认行为，再进行前端校验，再提交数据，最后重置表单……再看每个 input 元素，都要设置 value 和 onChange……
+需要声明多个状态用于将输入框改为受控组件，需要手动处理提交态，在出现错误的时候，还要再修改提交态，需要手动处理错误和展示错误信息，每次表单提交都要先阻止默认行为，再进行前端校验，再提交数据，最后重置表单……再看每个 input 元素，都要设置 value 和 onChange……
 
-这就是最一开始说的“样板代码”，每次写表单都要重复写这些代码。
+这就是前文所说的“样板代码”，每次写表单都要重复写这些代码。
 
 ## React Hook Form
 
-React Hook Form 可以有效的解决样板代码问题，我们使用 React Hook Form 再写一版。
+React Hook Form 可以有效地解决样板代码问题，下面使用 React Hook Form 再写一版。
 
 新建 `app/form2/page.js`，代码如下：
 
@@ -232,7 +232,7 @@ const { onChange, onBlur, name, ref } = register('firstName');
 <input {...register('firstName')} />
 ```
 
-2.  handleSubmit 用于在表单验证成功后，接收表单数据，它需要你手动传入一个表单处理函数作为参数：
+2.  handleSubmit 用于在表单验证成功后，接收表单数据，它需要手动传入一个表单处理函数作为参数：
 
 ```jsx
 // 异步提交表单
@@ -249,17 +249,17 @@ const onSubmit = async () => {
 <form onSubmit={handleSubmit(onSubmit)} />
 ```
 
-3.  formState 对象包含了整个表单状态的信息，我们从中获取了 errors 错误信息和 isSubmitting 提交中状态，其实还有很多其他信息字段，查看 [formstate 介绍](https://react-hook-form.com/docs/useform/formstate)
+3.  formState 对象包含了整个表单状态的信息，上例从中获取了 errors 错误信息和 isSubmitting 提交中状态，其实还有很多其他信息字段，查看 [formstate 介绍](https://react-hook-form.com/docs/useform/formstate)
 4.  reset 函数，顾名思义，用于重置整个表单状态
 5.  getValues 函数，顾名思义，用于读取表单值
 
 其实返回的对象远不止这些字段，还有监控指定输入框的 watch、手动设置错误的 setError、清除错误的 clearErrors、设置焦点的 setFocus、手动触发验证的 trigger 等等，具体查看[ useForm 介绍](https://react-hook-form.com/docs/useform)。
 
-现在比较之前传统表单的实现代码，我们不需要再声明多个 useState，而是从 useForm 中获取了所有需要的函数和字段，表单处理代码也更加简洁。
+现在比较传统表单的实现代码，不再需要声明多个 useState，而是从 useForm 中获取所有需要的函数和字段，表单处理代码也更加简洁。
 
 ## RHF + Zod
 
-那么问题来了，React Hook Form 都这么好用了，我为什么还要用 Zod 呢？
+React Hook Form 已经很好用了，为什么还要用 Zod？
 
 主要的原因在于 React Hook Form 的校验只能用在客户端，实际开发中，前后端往往需要相同的验证，使用 Zod 可创建一个复用的 Schema 用于前后端验证。
 
@@ -269,7 +269,7 @@ const onSubmit = async () => {
 npm install @hookform/resolvers
 ```
 
-这是 React Hook Form 提供的解析器，可以让你使用各种验证库，如 [Yup](https://github.com/jquense/yup)、[Zod](https://github.com/vriad/zod)、[Joi](https://github.com/hapijs/joi)、[Vest](https://github.com/ealush/vest)、[Ajv](https://github.com/ajv-validator/ajv) 等。
+这是 React Hook Form 提供的解析器，可以使用各种验证库，如 [Yup](https://github.com/jquense/yup)、[Zod](https://github.com/vriad/zod)、[Joi](https://github.com/hapijs/joi)、[Vest](https://github.com/ealush/vest)、[Ajv](https://github.com/ajv-validator/ajv) 等。
 
 新建 `app/form3/page.js`，代码如下：
 
@@ -357,11 +357,11 @@ export const signUpSchema = z
   });
 ```
 
-注意：在这段代码中，我们为了实现字段非空验证，使用的是 `.min(1, {message: 'xxxx'})`，而非 Zod 原本的 `z.string({ required_error: "xxxx" })`，这是因为当提交数据的时候，React Hook Form 提交给 Zod 的并不是 undefined，而是空字符串，所以不会触发 Zod 原本的 `required_error` 校验，使用 `min()` 算是一个“曲线救国”的做法。
+注意：在这段代码中，为了实现字段非空验证，使用的是 `.min(1, {message: 'xxxx'})`，而非 Zod 原本的 `z.string({ required_error: "xxxx" })`，这是因为当提交数据的时候，React Hook Form 提交给 Zod 的并不是 undefined，而是空字符串，所以不会触发 Zod 原本的 `required_error` 校验，使用 `min()` 算是一个“曲线救国”的做法。
 
 ## RHF + Zod + Server Actions
 
-既然创建了 Schema 是为了前后端验证复用，那我们就再写写如何结合 Server Actions 实现一个完整的前后端验证。
+既然创建了 Schema 是为了前后端验证复用，下面继续说明如何结合 Server Actions 实现一个完整的前后端验证。
 
 新建 `app/form4/page.js`，代码如下：
 
@@ -483,11 +483,11 @@ export async function signUp(data) {
 
 此时如果提交的数据有问题（可通过 Mock 数据来实现），错误信息就会显示在对应的输入框底部。
 
-注：这些错误其实是后端返回的，我们使用 setError 将错误信息显示在对应的输入框底部。
+注：这些错误其实是后端返回的，通过 setError 将错误信息显示在对应的输入框底部。
 
 ## RHF + Zod + Server Actions + Shadcn UI
 
-现在我们使用 Shadcn UI 实现这个界面。
+最后使用 Shadcn UI 实现这个界面。
 
 初始化 Shadcn UI，选项随意选择：
 
@@ -605,11 +605,11 @@ export default function ProfileForm() {
 
 在这段代码中，要注意：
 
-1.  调用 useForm 的时候，我们传入了 defaultValues，从某种角度来说，这是必须的，如果没有传，浏览器会有报错。
+1.  调用 useForm 的时候，传入了 defaultValues，从某种角度来说，这是必须的，如果没有传，浏览器会有报错。
 
-2.  稍微复杂一点的是 Form 相关的组件，初次看的时候有些奇怪，写习惯就好了…… 组件的解释可以查看 Shadcn UI 的官方[接入教程](https://ui.shadcn.com/docs/components/form)，这其中 `<FormField />`用于构建受控表单字段，在 `<FormControl/>`下书写具体的表单字段，`<FormMessage />`会自动读取上下文中的错误信息用于展示。
+2.  稍微复杂一点的是 Form 相关的组件，初次看的时候有些奇怪，熟悉后即可掌握。组件的解释可以查看 Shadcn UI 的官方[接入教程](https://ui.shadcn.com/docs/components/form)，这其中 `<FormField />`用于构建受控表单字段，在 `<FormControl/>`下书写具体的表单字段，`<FormMessage />`会自动读取上下文中的错误信息用于展示。
 
-## 最后
+## 小结
 
 哪怕不使用 Shadcn UI，React Hook Form 和 Zod 也是常见的搭配，堪称表单处理的利器。
 

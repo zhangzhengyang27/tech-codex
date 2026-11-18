@@ -8,7 +8,7 @@ tags: [Next.js]
 
 # Storybook 与 UI 开发
 
-本篇我们介绍 [Storybook](https://storybook.js.org/)，根据官网的介绍，它是：
+先看官网对 [Storybook](https://storybook.js.org/) 的介绍：
 
 > Storybook is a frontend workshop for building UI components and pages in isolation. Thousands of teams use it for UI development, testing, and documentation. It's open source and free.
 >
@@ -16,11 +16,11 @@ tags: [Next.js]
 
 简单总结一下就是：**Storybook 是一个支持 React、Vue、Angular 的 UI 组件开发工具，独立于开发环境，常被用于 UI 开发、组件测试和编写组件文档**。
 
-之所以出现 Storybook，是因为传统开发的 UI 组件，随着不断迭代越发复杂，组件所拥有的状态不再容易追溯。当你需要查看组件的某种状态时，可能需要麻烦的运行项目、Mock 接口数据亦或者手动修改组件 props 才能查看效果，查看完后还要再更改回来……这就造成了组件开发和使用的繁琐。而 Storybook 可以独立于开发环境，让你能够快捷查看到组件的不同状态。
+之所以出现 Storybook，是因为传统开发的 UI 组件，随着不断迭代越发复杂，组件所拥有的状态不再容易追溯。当需要查看组件的某种状态时，可能需要麻烦地运行项目、Mock 接口数据亦或者手动修改组件 props 才能查看效果，查看完后还要再更改回来……这就造成了组件开发和使用的繁琐。而 Storybook 可以独立于开发环境，使开发者能够快捷查看到组件的不同状态。
 
 **目前 Storybook GitHub 83k Stars，Npm 周均下载量 2400W，算是这个细分领域最主流的技术选型了。**
 
-只谈论背景和功能还是比较抽象，我们以 Next.js 项目为例，具体讲解 Storybook 如何使用。
+只谈论背景和功能还是比较抽象，下面以 Next.js 项目为例，具体讲解 Storybook 如何使用。
 
 ## Storybook
 
@@ -59,7 +59,7 @@ Storybook 会自动探测项目类型，根据 Next.js 项目类型安装依赖�
 
 ### 2. 支持 Tailwind CSS
 
-如果我们书写自己的组件，很有可能用到 Tailwind CSS。为了让 Tailwind CSS 在 Storybook 中生效，我们还需要额外做一点修改。
+如果书写自己的组件，很有可能用到 Tailwind CSS。为了让 Tailwind CSS 在 Storybook 中生效，还需要额外做一点修改。
 
 修改 `tailwind.config.js`，代码如下：
 
@@ -108,11 +108,11 @@ export default preview;
 
 ### 3. 组件与 Story
 
-为了由浅入深的讲解如何写 Storybook 组件，我们先删除掉 stories 文件夹下的内容，从头开始实现。
+为了由浅入深地讲解如何写 Storybook 组件，先删除掉 stories 文件夹下的内容，从头开始实现。
 
-我们以 Ant Design 的 `<Button>` 组件为例。根据 `type` 属性的值不同，Ant Design 提供了五种基本类型。
+以 Ant Design 的 `<Button>` 组件为例。根据 `type` 属性的值不同，Ant Design 提供了五种基本类型。
 
-我们尝试模仿下这个效果。但为了避免复杂，我们就先完成主按钮、次按钮类型。
+下面尝试模仿这个效果。但为了避免复杂，先只完成主按钮、次按钮类型。
 
 新建 `stories/Button.jsx`，代码如下：
 
@@ -167,13 +167,13 @@ export const Primary = () => <Button type="primary" label="Primary Button" />;
 export const Default = () => <Button type="default" label="Default Button" />;
 ```
 
-在这段代码中，我们引入了 Button 组件的代码，导出了两种状态的组件。
+在这段代码中，引入了 Button 组件的代码，导出了两种状态的组件。
 
 此时打开 <http://localhost:6006/>。
 
-在这个页面，我们可以预览组件的两种状态。这就是 Storybook 最基本的两个组织级别：组件和它的子故事（stories）。也就是说，每一个组件都有多个 story，共同组成了“storybook”。
+在这个页面，可以预览组件的两种状态。这就是 Storybook 最基本的两个组织级别：组件和它的子故事（stories）。也就是说，每一个组件都有多个 story，共同组成了“storybook”。
 
-注意下方的 Controls 面板，里面的值（比如 label、type、onClick）可以理解，是根据 Button.propTypes 生成，可是当组件切换的时候，这些值的内容并未发生改变。如果你需要定义这些值，并希望能够随时修改，修改 `stories/Button.stories.js`，代码如下：
+注意下方的 Controls 面板，里面的值（比如 label、type、onClick）是根据 Button.propTypes 生成的，可是当组件切换的时候，这些值的内容并未发生改变。如果需要定义这些值，并希望能够随时修改，修改 `stories/Button.stories.js`，代码如下：
 
 ```javascript
 import Button from './Button';
@@ -198,7 +198,7 @@ export const Default = {
 };
 ```
 
-我们甚至可以在面板中修改传入的值，并实时查看效果。
+甚至可以在面板中修改传入的值，并实时查看效果。
 
 ### 4. 组件设置
 
@@ -240,11 +240,11 @@ export const Default = {
 };
 ```
 
-其中，parameters.layout 用于设置组件的位置，`tags: ['autodocs']`用于自动生成组件文档，查看效果时你会发现组件下多了一个 Docs 文档。argTypes 用于设置组件的类型，之前都是输入框类型，在这里可以设置更多样的类型，就比如单选框。args 设置组件的默认传入参数。
+其中，parameters.layout 用于设置组件的位置，`tags: ['autodocs']`用于自动生成组件文档，查看效果时组件下会多出一个 Docs 文档。argTypes 用于设置组件的类型，之前都是输入框类型，在这里可以设置更多样的类型，就比如单选框。args 设置组件的默认传入参数。
 
 ### 5. Story 设置
 
-我们也可以设置 Story，继续修改 `stories/Button.stories.js`，代码如下：
+也可以设置 Story，继续修改 `stories/Button.stories.js`，代码如下：
 
 ```javascript
 import { fn, within, userEvent, expect } from '@storybook/test';
@@ -306,9 +306,9 @@ export const Default = {
 
 ### 6. 添加 MDX 文档
 
-上节讲到可以自动生成组件文档，你也可以完全自定义组件文档，Storybook 支持 MDX 文档格式。
+前文提到可以自动生成组件文档，也可以完全自定义组件文档，Storybook 支持 MDX 文档格式。
 
-举个例子，先注释掉 `stories/Button.stories.js` 中的 `tags: ['autodocs']` 这行，因为它会与你自定义的文档造成冲突。
+举个例子，先注释掉 `stories/Button.stories.js` 中的 `tags: ['autodocs']` 这行，因为它会与自定义文档造成冲突。
 
 然后新建 `stories/Button.mdx`，代码如下：
 
@@ -334,20 +334,20 @@ import * as ButtonStories from './Button.stories';
 
 ## 组件驱动开发
 
-至此我们就展示了 Storybook 的基本功能：1. 展示 UI、2. 组件测试、3. 编写组件文档
+至此就展示了 Storybook 的基本功能：1. 展示 UI、2. 组件测试、3. 编写组件文档
 
 其实使用 Storybook 的大前提是遵循**组件驱动开发**（Component Driven Development）的编程方式。
 
 所谓组件驱动开发，将复杂的页面拆解为简单的组件，每个组件都有一个定义良好的 API 和一系列被模拟的固定状态。开发者就可以通过重组来构建不同的 UI。
 
-那组件驱动开发的流程是什么样的呢？
+组件驱动开发的流程如下：
 
 1.  编写单个组件：单独构建每个组件并定义其相关状态，比如 Avatar、Button、Input、Tooltip
 2.  组合复杂组件：将单个组件进行组合构建更复杂的组件，比如 Form、Header、List、Table
 3.  组装页面：通过组合复杂组件构建页面，使用模拟数据模拟边缘 Case，比如主页、设置页面、个人信息页面
 4.  集成到项目：将页面添加到项目中，与后端 API 和服务进行连接，比如 Web 应用、文档网站、商城网站
 
-我们在运行 Storybook 初始化命令的时候，示例代码包含三个组件，分别是 Button、Header、Page，其实就代表了这样一个开发流程。
+运行 Storybook 初始化命令的时候，示例代码包含三个组件，分别是 Button、Header、Page，其实就代表了这样一个开发流程。
 
 ## 类似工具
 

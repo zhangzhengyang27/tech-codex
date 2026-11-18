@@ -21,7 +21,7 @@ export default nextConfig
 
 无论扩展名是 `.js` 还是 `.ts`，`next.config` 都是一个常规的 Node.js 模块，而不是一个 JSON 文件。它会在 Next.js server 和构建阶段被用到，并且不包含在浏览器构建中（代码不会打包到客户端）。
 
-如果你需要 ECMAScript 模块，你可以使用 `next.config.mjs`：
+如果需要 ECMAScript 模块，可以使用 `next.config.mjs`：
 
 ```javascript
 /**
@@ -34,7 +34,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-你也可以使用一个函数：
+也可以使用一个函数：
 
 ```javascript
 export default (phase, { defaultConfig }) => {
@@ -50,7 +50,7 @@ export default (phase, { defaultConfig }) => {
 export default nextConfig
 ```
 
-从 Next.js 12.1.0 起，你还可以使用一个异步函数：
+从 Next.js 12.1.0 起，还可以使用一个异步函数：
 
 ```javascript
 export default async (phase, { defaultConfig }) => {
@@ -94,13 +94,11 @@ export default (phase, { defaultConfig }) => {
 }
 ```
 
-在这个例子中，注释行的地方就是你可以放配置的地方，实际上，Next.js 定义的配置非常多，可以查看[源码配置文件](https://github.com/vercel/next.js/blob/canary/packages/next/src/server/config-shared.ts)。
+在这个例子中，注释行的地方就是放置配置的地方。实际上，Next.js 定义的配置非常多，可以查看[源码配置文件](https://github.com/vercel/next.js/blob/canary/packages/next/src/server/config-shared.ts)。
 
 然而，这些配置又都不是必须的，也没有必要清楚的了解每个配置的作用，大致看一下，有个印象即可，需要用到的时候再去细查。
 
-因为要讲解的配置有 34 个，内容繁琐细节且庞大，所以 `next.config.ts` 的配置部分拆分为上下两篇。上篇讲解请求相关的 headers、redirects、rewrites，这是 Next.js 中常用的配置，且内容有很多相似之处，放在一起方便触类旁通。下篇讲解剩余的 31 个配置，每个配置内容都不多，了解即可。
-
-现在让我们开始学习吧！
+`next.config.ts` 定义的配置共有 34 个，内容繁琐且庞大。其中 headers、redirects、rewrites 是请求相关的配置，属于 Next.js 中的常用配置，且三者内容有很多相似之处，放在一起讲解便于触类旁通；其余 31 个配置每个内容都不多，了解即可。
 
 ## 1. headers
 
@@ -148,7 +146,7 @@ export default nextConfig
 
 headers 会在文件系统（包括页面和 `/public` 文件）之前被触发。
 
-这些字段我们来一一举例介绍。
+这些字段逐项举例介绍如下。
 
 ### 1.2. source
 
@@ -271,7 +269,7 @@ const nextConfig = {
 
 ### 1.3. headers
 
-headers 无须多说，我们聊聊 headers 的覆盖行为。
+headers 本身的用法已如上所示，这里重点说明 headers 的覆盖行为。
 
 如果两个 headers 匹配相同的路径以及设置了相同的 header key，最后一个 header 的 key 会覆盖前一个。举个例子：
 
@@ -307,7 +305,7 @@ export default nextConfig
 
 在这个例子中，当访问 `/hello` 时，既匹配 `/:path*`，又匹配 `/hello`，而两个 source 对应设置的 `x-hello` 的 key 值不同，因为`/hello` 是最后一个 header，所以最终的值是 `world`。
 
-那如果匹配了相同的路径，但设置的  header key 不冲突呢？那就都会添加，举个例子：
+如果匹配了相同的路径，但设置的  header key 不冲突，则都会添加，举个例子：
 
 ```javascript
 const nextConfig = {
@@ -385,15 +383,15 @@ const nextConfig = {
 export default nextConfig
 ```
 
-在这个例子中，设置了 `basePath` 为 `/docs`，正常 headers 中的 source 会匹配 basePath + source 构成的链接，除非你设置了 `basePath` 为 `false`。
+在这个例子中，设置了 `basePath` 为 `/docs`，正常 headers 中的 source 会匹配 basePath + source 构成的链接，除非设置了 `basePath` 为 `false`。
 
 ### 1.5. locale
 
 `locale` 的值为 `false` 或者 `undefined`，决定匹配时是否应该包含 locale，其实效果跟 basePath 类似。
 
-考虑到部分同学对 `locale` 不太熟悉，我们先简单的讲下 `locale`配置项，locale 的作用就是国际化（i18n），`next.config.ts` 针对 Pages Router 提供了 i18n 配置项，注意是在 Pages Router 下，在 App Router 下 Next.js 已经不再提供直接的支持，具体内容查看本系列国际化章节。
+先简单介绍 `locale` 配置项的背景知识。locale 的作用就是国际化（i18n），`next.config.ts` 针对 Pages Router 提供了 i18n 配置项，注意是在 Pages Router 下，在 App Router 下 Next.js 已经不再提供直接的支持，具体内容查看《国际化》。
 
-比如我们在 `pages` 目录下新建一个 `article.js` 文件：
+比如在 `pages` 目录下新建一个 `article.js` 文件：
 
 ```javascript
 // pages/article.js
@@ -418,11 +416,11 @@ export default nextConfig
 
 此时，访问 `/en/article`、`/fr/article`、`/de/article` 都会重写为 `/article`，注意是重写，就是路由地址不变，但内容是 `/article`的内容。访问 `/zh/article` 会重定向到 `/article`。
 
-而如果你在 `app/article` 目录下新建一个 `page.js` 文件，文件内容同上。
+而如果在 `app/article` 目录下新建一个 `page.js` 文件，文件内容同上。
 
 此时，访问 `/en/article`、`/fr/article`、`/de/article` 都会 404 错误。访问 `/zh/article` 会重写为 `/article`。说明在 App Router 下只有 `i18n.defaultLocale` 是生效的。
 
-好了，基本介绍完毕，主要是为了让大家了解配置项中的 i18n 的作用。我们再看 headers 中的 locales 设置，举个例子：
+以上基本介绍是为了说明配置项中 i18n 的作用。再看 headers 中的 locale 设置，举个例子：
 
 ```javascript
 const nextConfig = {
@@ -485,7 +483,7 @@ const nextConfig = {
 }
 ```
 
-注意，虽然 i18n.locales 配置在 App Router 下不生效，但这也只是导致页面出现 404 错误而已，并不会影响处理标头，即便页面 404，你可以正常的查看标头。
+注意，虽然 i18n.locales 配置在 App Router 下不生效，但这也只是导致页面出现 404 错误而已，并不会影响处理标头，即便页面 404，也能正常的查看标头。
 
 ### 1.6. has 和 missing
 
@@ -611,7 +609,7 @@ host 就是主机名 + 端口，query 表示参数。以 `'http://user:pass@host
 
 ### 1.7. Cache-Control
 
-你不能在 `next.config.ts` 中为页面或静态资源设置 `Cache-Control`标头，因为该标头会在生产中被覆盖，以确保有效缓存响应和静态资源。
+无法在 `next.config.ts` 中为页面或静态资源设置 `Cache-Control`标头，因为该标头会在生产中被覆盖，以确保有效缓存响应和静态资源。
 
 ### 1.8. 选项
 
@@ -707,10 +705,10 @@ export default nextConfig
 `redirects` 是一个异步函数，该函数返回一个包含 `source`、`destination` 和 `permanent` 属性的对象数组，其中：
 
 *   `source` 表示传入的请求路径
-*   `destination` 表示你重定向的目标路径
+*   `destination` 表示重定向的目标路径
 *   `permanent` 值为 true 或者  false。如果为 true，使用 308 状态码，表示客户端或搜索引擎永久缓存重定向。如果是 false，使用 307 状态码表示临时未缓存。
 
-为什么 Next.js 使用 307 和 308 呢？传统都是使用 302 表示临时重定向，301 表示永久重定向，但是很多浏览器会将重定向的请求方法修改为 GET，而不管原本的方法是什么。举个例子，如果浏览器发送了一个 POST 请求，`/v1/users` ，然后返回了 302 状态码，新地址是 `/v2/users`，则后续的请求会是 GET `/V2/users` 而不是 POST `/v2/users`，Next.js 用 307 临时重定向和 308 永久重定向状态码就是为了显式保留之前使用的请求方法。
+Next.js 之所以使用 307 和 308 状态码，是因为传统上 302 表示临时重定向、301 表示永久重定向，但很多浏览器会将重定向的请求方法修改为 GET，而不管原本的方法是什么。举个例子，如果浏览器发送了一个 POST 请求，`/v1/users` ，然后返回了 302 状态码，新地址是 `/v2/users`，则后续的请求会是 GET `/V2/users` 而不是 POST `/v2/users`，Next.js 用 307 临时重定向和 308 永久重定向状态码就是为了显式保留之前使用的请求方法。
 
 除了这三个值外，还可以设置：
 
@@ -820,7 +818,7 @@ const nextConfig = {
 
 ### 2.3. basePath
 
-当使用 `basePath` 的时候，每一个 `source` 和 `destination` 都会自动添加 `basePath` 作为前缀，除非你为重定向设置 `basePath: false`：
+当使用 `basePath` 的时候，每一个 `source` 和 `destination` 都会自动添加 `basePath` 作为前缀，除非为重定向设置 `basePath: false`：
 
 ```javascript
 // next.config.ts
@@ -850,7 +848,7 @@ export default nextConfig
 
 ### 2.4. locale
 
-当使用 `i18n`的时候，每一个 `source` 和 `destination` 都会自动根据 `locales`添加前缀进行处理，除非你为重定向设置 `locale: false`。如果设置 `locale: false`，你必须使用一个 `locale` 作为 `source` 和 `destination` 的前缀才能够正确匹配，让我们看个例子：
+当使用 `i18n`的时候，每一个 `source` 和 `destination` 都会自动根据 `locales`添加前缀进行处理，除非为重定向设置 `locale: false`。如果设置 `locale: false`，必须使用一个 `locale` 作为 `source` 和 `destination` 的前缀才能够正确匹配，看下面的例子：
 
 ```javascript
 // next.config.ts
@@ -1013,7 +1011,7 @@ const nextConfig = {
 
 ### 3.1. 介绍
 
-重写允许你将传入的请求路径映射到其他目标路径。它与重定向的不同之处在于，重写相当于扮演了 URL 代理的角色，会屏蔽目标路径，地址还是这个地址，但路由逻辑发生了变化。而重定向则是导航至新的页面，浏览器中的 URL 也会发生更改。配置重写，使用 `next.config.ts` 的 `rewrites`，示例如下：
+重写允许将传入的请求路径映射到其他目标路径。它与重定向的不同之处在于，重写相当于扮演了 URL 代理的角色，会屏蔽目标路径，地址还是这个地址，但路由逻辑发生了变化。而重定向则是导航至新的页面，浏览器中的 URL 也会发生更改。配置重写，使用 `next.config.ts` 的 `rewrites`，示例如下：
 
 ```javascript
 // next.config.ts
@@ -1036,7 +1034,7 @@ export default nextConfig
 `rewrites` 是一个异步函数，该函数可以返回一个包含 `source`、`destination` 属性的对象数组，其中：
 
 *   `source` 表示传入的请求路径
-*   `destination` 表示你重写的目标路径
+*   `destination` 表示重写的目标路径
 *   `basePath`：`false` 或者 `undefined`。当值为 `false` ，匹配时不会包含 `basePath`，只能用于外部重写
 *   `locale`：`false` 或者 `undefined`，匹配时是否应该包含 locale
 *   `has`：一个有 `type`、`key`、`value` 属性的对象数组
@@ -1143,7 +1141,7 @@ export default nextConfig
 
 访问 `/docs/about?id=1`，可以看到查询参数 `id` 并不会出现在 searchParams 中。
 
-如果 `destination`使用了参数，你依然可以手动传递参数：
+如果 `destination`使用了参数，依然可以手动传递参数：
 
 ```javascript
 // next.config.ts
@@ -1161,7 +1159,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-在这个例子中，因为 `destination` 使用了 `:first` 参数，所以 `:second` 参数不会自动被添加到 query 中，但我们可以通过例子中的方式手动添加，使得能够在 query 中获取。
+在这个例子中，因为 `destination` 使用了 `:first` 参数，所以 `:second` 参数不会自动被添加到 query 中，但可以通过例子中的方式手动添加，使得能够在 query 中获取。
 
 访问 `/about/article?id=1`，可以看到手动添加的 `second` 参数出现在了 searchParams 中。
 
@@ -1246,7 +1244,7 @@ const nextConfig = {
 
 ### 3.4. basePath
 
-当使用 `basePath` 的时候，每一个 `source` 和 `destination` 都会自动添加 `basePath` 作为前缀，除非你为重写设置 `basePath: false`：
+当使用 `basePath` 的时候，每一个 `source` 和 `destination` 都会自动添加 `basePath` 作为前缀，除非为重写设置 `basePath: false`：
 
 ```javascript
 // next.config.ts
@@ -1274,7 +1272,7 @@ export default nextConfig
 
 ### 3.5. locale
 
-当使用 `i18n`的时候，每一个 `source` 和 `destination` 都会自动根据 `locales`添加前缀进行处理，除非你为重写设置 `locale: false`。如果设置 `locale: false`，你必须使用一个 `locale` 作为 `source` 和 `destination` 的前缀才能够正确匹配，让我们看个例子：
+当使用 `i18n`的时候，每一个 `source` 和 `destination` 都会自动根据 `locales`添加前缀进行处理，除非为重写设置 `locale: false`。如果设置 `locale: false`，必须使用一个 `locale` 作为 `source` 和 `destination` 的前缀才能够正确匹配，看下面的例子：
 
 ```javascript
 // next.config.ts
@@ -1443,7 +1441,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-如果设置了 `trailingSlash:true`，你也需要在 `source` 中插入一个尾部斜杠。如果目标地址也需要尾部斜杠，也应该包含在 `destination` 参数中。
+如果设置了 `trailingSlash:true`，也需要在 `source` 中插入一个尾部斜杠。如果目标地址也需要尾部斜杠，也应该包含在 `destination` 参数中。
 
 ```javascript
 // next.config.ts
@@ -1468,7 +1466,7 @@ export default nextConfig
 
 ### 3.8. 增量采用 Next.js
 
-可以让 Next.js 在检查所有 Next.js 路由后，如果没有对应的路由，那就代理现有的网站。这样你将更多页面迁移成 Next.js 时，就无需重写配置：
+可以让 Next.js 在检查所有 Next.js 路由后，如果没有对应的路由，那就代理现有的网站。这样将更多页面迁移成 Next.js 时，就无需重写配置：
 
 ```javascript
 // next.config.ts
@@ -1522,8 +1520,8 @@ Next.js 会自动为从 `/_next`路径（`.next/static/`文件夹）加载的 Ja
 
 注意：
 
-1.  你应该上传到 CDN 的只有 `.next/static/`的内容，不要上传 `.next/` 剩余的部分，这会导致你暴露服务端代码和其他配置。
-2.  `assetPrefix`不会影响 `public` 文件夹下的文件。对于 `public` 下的资源，你需要自己处理前缀。
+1.  上传到 CDN 的应该只有 `.next/static/`的内容，不要上传 `.next/` 剩余的部分，否则会暴露服务端代码和其他配置。
+2.  `assetPrefix`不会影响 `public` 文件夹下的文件。对于 `public` 下的资源，需要自行处理前缀。
 
 ## 2. basePath
 
@@ -1552,9 +1550,9 @@ export default function HomePage() {
 }
 ```
 
-使用 `basePath` 后，直接访问 `/`会导致 404 错误。你应该访问 `/docs`。
+使用 `basePath` 后，直接访问 `/`会导致 404 错误，应访问 `/docs`。
 
-如果你不希望访问 `/` 导致 404 错误，那你可以来个重写或者重定向：
+如果不希望访问 `/` 导致 404 错误，可以通过重写或者重定向解决：
 
 ```javascript
 // next.config.ts
@@ -1575,7 +1573,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-当你使用 `next/link` 和 `next/router` （App Router 下使用 `next/navigation`）链接到其他页面时，`basePath` 就会自动应用。举个例子，`/about` 会自动变成 `/docs/about`：
+使用 `next/link` 和 `next/router` （App Router 下使用 `next/navigation`）链接到其他页面时，`basePath` 会自动应用。举个例子，`/about` 会自动变成 `/docs/about`：
 
 ```javascript
 export default function HomePage() {
@@ -1593,7 +1591,7 @@ export default function HomePage() {
 <a href="/docs/about">About Page</a>
 ```
 
-当你使用 `next/image`组件的时候，你应该在 `src` 前添加 `basePath`（如果你使用静态导入就正常处理即可）：
+使用 `next/image`组件的时候，应在 `src` 前添加 `basePath`（使用静态导入就正常处理即可）：
 
 ```javascript
 import Image from 'next/image'
@@ -1620,7 +1618,7 @@ export default Home
 
 ## 3. compress
 
-Next.js 提供 gzip 压缩来压缩渲染的内容和静态文件。如果你想禁用压缩功能：
+Next.js 提供 gzip 压缩来压缩渲染的内容和静态文件。如果要禁用压缩功能：
 
 ```javascript
 // next.config.ts
@@ -1633,9 +1631,9 @@ export default nextConfig
 
 ## 4. devIndicators
 
-当你编辑代码，Next.js 正在编译应用的时候，页面右下角会有一个编译指示器。
+编辑代码、Next.js 正在编译应用的时候，页面右下角会有一个编译指示器。
 
-这个指示器只会在开发模式下展示，生产环境中不会展示。如果你想更改它的位置，就比如它跟页面的其他元素位置发生冲突了：
+这个指示器只会在开发模式下展示，生产环境中不会展示。如果要更改它的位置，比如它跟页面的其他元素位置发生冲突了：
 
 ```javascript
 const nextConfig = {
@@ -1649,7 +1647,7 @@ export default nextConfig
 
 默认值是 `bottom-right`，其他值还有 `bottom-left`、`top-right`、`top-left`。
 
-如果你想禁用它：
+如果要禁用它：
 
 ```javascript
 const nextConfig = {
@@ -1675,11 +1673,11 @@ const nextConfig = {
 export default nextConfig
 ```
 
-现在如果你运行 `next build`，Next.js 会使用 `build` 文件夹而不是 `.next`文件夹。注意：`distDir` 不能离开你的项目目录，举个例子，`../build`就是一个无效目录。
+现在如果运行 `next build`，Next.js 会使用 `build` 文件夹而不是 `.next`文件夹。注意：`distDir` 不能离开项目目录，举个例子，`../build`就是一个无效目录。
 
 ## 6. env
 
-Next.js 9.4 后使用新的方式添加环境变量，新的方式更加直观方便、功能强大，具体内容参考本系列《环境变量、路径别名与 src 目录》。
+Next.js 9.4 后使用新的方式添加环境变量，新的方式更加直观方便、功能强大，具体内容参考《环境变量、路径别名与 src 目录》。
 
 添加一个环境变量到 JavaScript bundle 中，举个例子：
 
@@ -1693,7 +1691,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-现在你可以在代码中通过 `process.env.customKey` 获取：
+现在可以在代码中通过 `process.env.customKey` 获取：
 
 ```javascript
 function Page() {
@@ -1721,7 +1719,7 @@ return <h1>The value of customKey is: {'my-value'}</h1>
 
 如果项目中检测到 ESLint，Next.js 会在出现错误的时候，让生产构建（`next build`）失败。
 
-如果你希望即使有错误，也要构建生产代码，可以禁止内置的 ESLint：
+如果希望即使有错误，也要构建生产代码，可以禁止内置的 ESLint：
 
 ```javascript
 const nextConfig = {
@@ -1737,7 +1735,7 @@ export default nextConfig
 
 Next.js 会在 `next build` 的时候生成一个 ID，用于标示应用正在使用的版本，适用于在多个 Docker 容器中运行多个应用实例的场景。
 
-如果你要为环境的每个阶段进行重建，你需要在不同的容器间生成一致的构建 ID（比如测试、开发、预生产、生产等不同的阶段对应不同的容器，但最好使用相同的构建 ID），使用 `next.config.ts` 的 `generateBuildId`：
+如果要为环境的每个阶段进行重建，需要在不同的容器间生成一致的构建 ID（比如测试、开发、预生产、生产等不同的阶段对应不同的容器，但最好使用相同的构建 ID），使用 `next.config.ts` 的 `generateBuildId`：
 
 ```javascript
 const nextConfig = {
@@ -1752,7 +1750,7 @@ export default nextConfig
 
 ## 9. generateEtags
 
-Next.js 默认会为每个页面生成 [etags](https://en.wikipedia.org/wiki/HTTP_ETag)，如果你希望禁用 HTML 页面生成 etags，使用 `next.config.ts` 的 `generateEtags`：
+Next.js 默认会为每个页面生成 [etags](https://en.wikipedia.org/wiki/HTTP_ETag)，如果希望禁用 HTML 页面生成 etags，使用 `next.config.ts` 的 `generateEtags`：
 
 ```javascript
 const nextConfig = {
@@ -1766,7 +1764,7 @@ export default nextConfig
 
 在 Nodejs 18 之前，Next.js 会自动使用 [undici](https://github.com/nodejs/undici) 作为 `fetch()` 的 polyfill，并且默认开启 HTTP [Keep-Alive](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Keep-Alive)。
 
-如果禁用服务端所有 fetch() 请求的 HTTP Keep-Alive ，使用 `next.config.ts` 的 `httpAgentOptions` 配置：
+要禁用服务端所有 fetch() 请求的 HTTP Keep-Alive ，使用 `next.config.ts` 的 `httpAgentOptions` 配置：
 
 ```javascript
 const nextConfig = {
@@ -1780,7 +1778,7 @@ export default nextConfig
 
 ## 11. images
 
-如果你想要使用云提供商优化图片而不使用 Next.js 内置的图像优化 API，那可以在 `next.config.ts` 中进行如下配置：
+如果想使用云提供商优化图片而不使用 Next.js 内置的图像优化 API，可以在 `next.config.ts` 中进行如下配置：
 
 ```javascript
 const nextConfig = {
@@ -1801,7 +1799,7 @@ export default function myImageLoader({ src, width, quality }) {
 }
 ```
 
-就比如你想要使用 Cloudflare，参考 Cloudflare 的 [url-format](https://developers.cloudflare.com/images/url-format) 文档：
+比如想要使用 Cloudflare，参考 Cloudflare 的 [url-format](https://developers.cloudflare.com/images/url-format) 文档：
 
 ```javascript
 // Docs: https://developers.cloudflare.com/images/url-format
@@ -1811,7 +1809,7 @@ export default function cloudflareLoader({ src, width, quality }) {
 }
 ```
 
-此为全局修改，如果你只想更改部分图片，那你可以使用 `loader` prop：
+此为全局修改，如果只想更改部分图片，可以使用 `loader` prop：
 
 ```javascript
 'use client'
@@ -1876,7 +1874,7 @@ module.exports = class CacheHandler {
 
 ## 13. logging
 
-当在开发模式运行 Next.js ，你可以配置日志等级以及控制台是否记录完整 URL。目前，logging 只应用于使用 fetch API 的数据获取，还不能用于 Next.js 其他日志。
+在开发模式运行 Next.js 时，可以配置日志等级以及控制台是否记录完整 URL。目前，logging 只应用于使用 fetch API 的数据获取，还不能用于 Next.js 其他日志。
 
 ```javascript
 const nextConfig = {
@@ -1947,13 +1945,13 @@ export default nextConfig
 
 在构建的时候，Next.js 会自动追踪每个页面和它的依赖项，以确定部署一个生产版本所需要的所有文件。
 
-这个功能会帮你大幅减少部署的大小。之前使用 Docker 部署的时候，你需要安装 `dependencies` 中的所有文件才能运行 `run start`。从 Next.js 12 起，你可以追踪 `.next/` 目录中的输出文件以实现只包含必要的文件。
+这个功能会大幅减少部署的大小。之前使用 Docker 部署的时候，需要安装 `dependencies` 中的所有文件才能运行 `run start`。从 Next.js 12 起，可以追踪 `.next/` 目录中的输出文件以实现只包含必要的文件。
 
 之所以能够实现，是因为在 `next build` 的时候，Next.js 会使用 `@vercel/nft` 静态分析 `import`、`require` 和` fs` 使用情况来确定页面加载的所有文件。
 
 Next.js 的生产服务器也会在 `.next/next-server.js.nft.json`中追踪所有它所需要的文件和输出。这个文件就可以被用来在每次追踪的时候，读取文件列表，然后将文件拷贝到部署位置上。
 
-现在让我们在 `next.config.ts` 中开启：
+在 `next.config.ts` 中开启：
 
 ```javascript
 const nextConfig = {
@@ -2019,7 +2017,7 @@ export default nextConfig
 
 ## 21. productionBrowserSourceMaps
 
-SourceMap 默认在开发环境中开启，在生产构建的时候会禁用以防止源码泄漏，但如果你非要开启：
+SourceMap 默认在开发环境中开启，在生产构建的时候会禁用以防止源码泄漏，但如需开启：
 
 ```javascript
 const nextConfig = {
@@ -2031,7 +2029,7 @@ export default nextConfig
 
 ## 22. reactStrictMode
 
-从 Next.js 13.4 起，严格模式在 App Router 下默认为 `true`，所以这个配置仅用于 Pages Router。不过你依然可以设置 `reactStrictMode: false` 来禁用严格模式。
+从 Next.js 13.4 起，严格模式在 App Router 下默认为 `true`，所以这个配置仅用于 Pages Router。不过依然可以设置 `reactStrictMode: false` 来禁用严格模式。
 
 React 的严格模式是一个为了突出应用中潜在问题的功能，在开发模式中使用会有助于识别不安全的生命周期、过期的 API 用法以及其他功能。使用严格模式，在 `next.config.ts` 中配置：
 
@@ -2047,7 +2045,7 @@ export default nextConfig
 
 ## 23. serverExternalPackages
 
-Next.js 会自动打包服务端组件和路由处理程序中的依赖项。如果某一个依赖项使用了 Nodejs 特定的功能，那你可以选择从 Bundle 中去除该依赖项，然后使用原生的 Nodejs `require`。
+Next.js 会自动打包服务端组件和路由处理程序中的依赖项。如果某一个依赖项使用了 Nodejs 特定的功能，可以选择从 Bundle 中去除该依赖项，然后使用原生的 Nodejs `require`。
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -2060,7 +2058,7 @@ export default nextConfig
 
 ## 24. trailingSlash
 
-默认情况下，Next.js 会将带尾部斜杠的 URL 重定向到没有尾部斜杠的地址。举个例子，`/about/`会重定向到 `/about`。你也可以进行相反的配置，将没有尾部斜杠的地址重定向到带尾部斜杠的地址：
+默认情况下，Next.js 会将带尾部斜杠的 URL 重定向到没有尾部斜杠的地址。举个例子，`/about/`会重定向到 `/about`。也可以进行相反的配置，将没有尾部斜杠的地址重定向到带尾部斜杠的地址：
 
 ```javascript
 const nextConfig = {
@@ -2089,7 +2087,7 @@ export default nextConfig
 
 这些功能是实验性的，只有当使用 `next dev` 的时候才会开启。
 
-目前，Turbopack 支持 webpack loader API 的子集，允许你在 Turbopack 中使用一些 webpack loader 转换代码。举个例子：
+目前，Turbopack 支持 webpack loader API 的子集，允许在 Turbopack 中使用一些 webpack loader 转换代码。举个例子：
 
 ```javascript
 const nextConfig = {
@@ -2114,7 +2112,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-现在，你可以在应用中使用：
+现在，可以在应用中使用：
 
 ```javascript
 import MyDoc from './my-doc.mdx'
@@ -2159,7 +2157,7 @@ export default nextConfig
 
 ## 28. typescript
 
-如果出现 TypeScript 错误，生产构建（`next build`）会失败。如果你希望即便有错误，也要构建生产代码：
+如果出现 TypeScript 错误，生产构建（`next build`）会失败。如果希望即便有错误，也要构建生产代码：
 
 ```javascript
 const nextConfig = {
@@ -2177,9 +2175,9 @@ export default nextConfig
 
 ## 29. urlImports
 
-URL 导入是一项实验性功能，允许你从外部服务器导入模块。
+URL 导入是一项实验性功能，允许从外部服务器导入模块。
 
-如果你要使用该功能，使用示例如下：
+如果要使用该功能，使用示例如下：
 
 ```javascript
 const nextConfig = {
@@ -2193,7 +2191,7 @@ export default nextConfig
 
 在这个例子中，添加了允许的资源前缀（毕竟要保证安全）。
 
-然后你就可以直接通过 URL 导入模块：
+然后就可以直接通过 URL 导入模块：
 
 ```javascript
 import { a, b, c } from 'https://example.com/assets/some/module.js'
@@ -2252,7 +2250,7 @@ console.log(logo.pathname)
 
 ## 30. 自定义 Webpack 配置
 
-为了扩展 webpack 的用法，你需要在 next.config.ts 中定义一个函数用于扩展它的配置，举个例子：
+为了扩展 webpack 的用法，需要在 next.config.ts 中定义一个函数用于扩展它的配置，举个例子：
 
 ```javascript
 const nextConfig = {
@@ -2268,7 +2266,7 @@ const nextConfig = {
 export default nextConfig
 ```
 
-webpack 函数会被执行两次，一次在服务端，一次在客户端，你可以使用 isServer 属性来区分是客户端配置还是服务端配置。
+webpack 函数会被执行两次，一次在服务端，一次在客户端，可以使用 isServer 属性来区分是客户端配置还是服务端配置。
 
 webpack 函数的第二个参数是一个具有以下属性的对象：
 
@@ -2306,9 +2304,9 @@ export default nextConfig
 
 ## 31. webVitalsAttribution
 
-在调试 Web Vitals 相关的问题时，如果能查明根源通常会很有帮助。比如在 CLS 中，我们可能想知道最大的布局偏移发生时偏移的第一个元素，或者 LCP 中，我们可能想要知道 LCP 对应的元素。如果该元素是图片，知道它的 URL 有助于我们进行优化。
+在调试 Web Vitals 相关的问题时，如果能查明根源通常会很有帮助。比如在 CLS 中，可能想知道最大的布局偏移发生时偏移的第一个元素，或者 LCP 中，可能想知道 LCP 对应的元素。如果该元素是图片，知道它的 URL 有助于进行优化。
 
-这就需要用到 `experimental.webVitalsAttribution` 配置项，它会帮助我们获取更深层的信息如 [PerformanceEventTiming](https://developer.mozilla.org/docs/Web/API/PerformanceEventTiming)、[PerformanceNavigationTiming](https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming)、[PerformanceResourceTiming](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming)。
+这就需要用到 `experimental.webVitalsAttribution` 配置项，它用于获取更深层的信息如 [PerformanceEventTiming](https://developer.mozilla.org/docs/Web/API/PerformanceEventTiming)、[PerformanceNavigationTiming](https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming)、[PerformanceResourceTiming](https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming)。
 
 ```javascript
 const nextConfig = {
@@ -2330,7 +2328,7 @@ export type NextWebVitalsMetric = {
       label: 'web-vital'
       name: 'FCP' | 'LCP' | 'CLS' | 'FID' | 'TTFB' | 'INP'
     }
-  | {
+      | {
       label: 'custom'
       name:
         | 'Next.js-hydration'
@@ -2339,6 +2337,10 @@ export type NextWebVitalsMetric = {
     }
 )
 ```
+
+## 小结
+
+`next.config.ts` 是一个常规的 Node.js 模块（支持 `.js`/`.mjs`/`.ts` 及函数、异步函数形式，可通过 `phase` 区分构建阶段），共定义 34 个配置项。请求相关的三个核心配置 headers、redirects、rewrites 共享同一套 source 匹配模式（路径参数、通配符、正则）与 basePath/locale/has/missing 修饰项，区别在于：headers 追加响应标头，redirects 以 307/308 状态码改变浏览器地址，rewrites 作为 URL 代理屏蔽目标路径并作用于客户端路由。其余 31 个配置覆盖资源前缀（assetPrefix）、路径前缀（basePath）、构建产物（distDir/output/generateBuildId）、环境变量（env）、编译（transpilePackages/turbopack/webpack）、实验特性（ppr/urlImports/mdxRs/webVitalsAttribution）等场景。
 
 ## 参考链接
 

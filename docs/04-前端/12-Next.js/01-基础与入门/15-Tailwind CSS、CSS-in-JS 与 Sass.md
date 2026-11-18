@@ -8,6 +8,8 @@ tags: [Next.js]
 
 # Tailwind CSS、CSS-in-JS 与 Sass
 
+## 概念说明
+
 Next.js 支持多种方式添加样式：
 
 1.  内联 CSS
@@ -18,9 +20,7 @@ Next.js 支持多种方式添加样式：
 6.  CSS-in-JS：将 CSS 直接嵌入到 JavaScript 组件中，实现动态和局部样式
 7.  Sass：最流行的 CSS 预处理器
 
-让我们来一一讲解。
-
-## 1. 内联 CSS
+## 内联 CSS
 
 最基础的添加样式的方式便是使用内联 CSS，举个例子：
 
@@ -33,15 +33,13 @@ export default function About() {
 }
 ```
 
-## 2. CSS 模块
+## CSS 模块
 
-Next.js 内置了对 CSS 模块的支持。使用 CSS 模块，你只需要使用 `.module.css`作为文件后缀名，Next.js 就会自动进行处理。
+Next.js 内置了对 CSS 模块的支持。使用 CSS 模块，只需要使用 `.module.css` 作为文件后缀名，Next.js 就会自动进行处理。
 
-CSS 模块的作用在于实现局部 CSS，本质是创建一个不会重复的类名。这样你就可以在不同的文件里使用相同的类名，而不用担心发生样式冲突。这是最理想的实现组件级别 CSS 的方式。
+CSS 模块的作用在于实现局部 CSS，本质是创建一个不会重复的类名。这样就可以在不同的文件里使用相同的类名，而不用担心发生样式冲突。这是最理想的实现组件级别 CSS 的方式。
 
-让我们举个例子：
-
-首先，创建一个 `styles.module.css`文件，样式书写方式如同正常的 CSS 文件：
+首先，创建一个 `styles.module.css` 文件，样式书写方式如同正常的 CSS 文件：
 
 ```css
 // app/dashboard/styles.module.css
@@ -50,7 +48,7 @@ CSS 模块的作用在于实现局部 CSS，本质是创建一个不会重复的
 }
 ```
 
-然后，CSS 模块可以被导入到 `app` 目录下的任意文件，让我们导入并使用该样式：
+然后，CSS 模块可以被导入到 `app` 目录下的任意文件，导入并使用该样式：
 
 ```javascript
 // app/dashboard/layout.js
@@ -61,13 +59,11 @@ export default function DashboardLayout({ children }) {
 }
 ```
 
-## 3. 全局样式
+## 全局样式
 
-全局样式，顾名思义，应用到所有路由的样式，像我们传统写页面 CSS 的时候，都会引入 `normalize.css` 或者 `reset.css`等，这种场景就适合使用全局样式。
+全局样式，顾名思义，应用到所有路由的样式。传统写页面 CSS 的时候，都会引入 `normalize.css` 或者 `reset.css` 等，这种场景就适合使用全局样式。
 
-全局样式可以被导入 `app` 目录下的任意 layout、page 或者组件中。（为什么总是强调任意呢？因为在 `pages` 目录下，也就是之前的 Pages Router 模式，全局样式只能被导入到 `_app.js` 文件，这是一个新的改变。）
-
-具体怎么使用呢？让我们举个例子：
+全局样式可以被导入 `app` 目录下的任意 layout、page 或者组件中。（强调"任意"的原因：在 `pages` 目录下，也就是之前的 Pages Router 模式，全局样式只能被导入到 `_app.js` 文件，这是 App Router 的一个新改变。）
 
 首先，创建一个 `app/global.css` 样式文件：
 
@@ -94,9 +90,9 @@ export default function RootLayout({ children }) {
 }
 ```
 
-## 4. 外部样式表
+## 外部样式表
 
-你也可以通过导入外部包的方式添加样式，举个例子：
+通过导入外部包的方式也可以添加样式，举个例子：
 
 ```javascript
 // app/layout.js
@@ -111,11 +107,9 @@ export default function RootLayout({ children }) {
 }
 ```
 
-不过要注意，该外部包必须是从 npm 包直接导入或者下载完和你的代码放在一起。
+不过要注意，该外部包必须是从 npm 包直接导入，或者下载完与项目代码放在一起。
 
-如果我想引用外部 CDN CSS 文件呢？就比如https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css 这种文件？
-
-那你可以使用 `<link>` 标签添加在 Root Layout 中，就像这样：
+如果要引用外部 CDN CSS 文件，比如 https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css 这种文件，可以使用 `<link>` 标签添加在 Root Layout 中，就像这样：
 
 ```jsx
 // app/layout.js
@@ -135,19 +129,19 @@ export default function RootLayout({ children }) {
 
 使用样式的时候要注意：
 
-**即时刷新：** 在本地使用`next dev` 运行项目的时候，本地样式（无论是全局样式还是 CSS 模块），都会在你保存更改后立刻刷新，你可以即时看到样式变化。
+**即时刷新：** 在本地使用 `next dev` 运行项目的时候，本地样式（无论是全局样式还是 CSS 模块），都会在保存更改后立刻刷新，即时看到样式变化。
 
 **打包构建** ：当使用 `next build` 的时候，CSS 文件会被打包成更少的压缩 `.css` 文件，这是为了减少网络请求，从而提高加载速度，所以不用担心创建多个 css 文件而影响了性能。
 
-**禁用 JS：** 当你禁用 JavaScript 的时候，在生产版本（`next start`），样式依然会被加载。也就是说，打包构建后的代码中的 CSS 并不是通过 JS 注入的。但是开发的时候（`next dev`），为了开启快速刷新，JavaScript 依然是有必要的。
+**禁用 JS：** 禁用 JavaScript 的时候，在生产版本（`next start`），样式依然会被加载。也就是说，打包构建后的代码中的 CSS 并不是通过 JS 注入的。但是开发的时候（`next dev`），为了开启快速刷新，JavaScript 依然是有必要的。
 
-## 5. Tailwind CSS
+## Tailwind CSS
 
-[Tailwind CSS](https://tailwindcss.com/) 是一个非常知名的 CSS 框架，本质是一个工具集，包含了大量比如 `flex`、`pt-4`、`text-center`、`rotate-90`等工具类，可以组合使用并直接在 HTML 代码上实现任何 UI 设计。与 Next.js 搭配使用非常顺手。Next.js 官方便是用的 Tailwind CSS。
+[Tailwind CSS](https://tailwindcss.com/) 是一个非常知名的 CSS 框架，本质是一个工具集，包含了大量比如 `flex`、`pt-4`、`text-center`、`rotate-90` 等工具类，可以组合使用并直接在 HTML 代码上实现任何 UI 设计。与 Next.js 搭配使用非常顺手，Next.js 官方便是用的 Tailwind CSS。
 
-在使用 `create-next-app`创建项目的时候，如果你在命令行中选择了使用 Tailwind CSS，则相关配置都会自动生成，可以直接使用。如果没有选择，希望引入 Tailwind CSS，可以参考此步骤。其实 Tailwind CSS 官方也提供了针对各个框架的[使用指南](https://tailwindcss.com/docs/installation/framework-guides)：
+在使用 `create-next-app` 创建项目的时候，如果在命令行中选择了使用 Tailwind CSS，则相关配置都会自动生成，可以直接使用。如果没有选择，希望引入 Tailwind CSS，可以参考此步骤。其实 Tailwind CSS 官方也提供了针对各个框架的[使用指南](https://tailwindcss.com/docs/installation/framework-guides)：
 
-### 5.1. 安装
+### 安装
 
 在项目根目录执行以下命令：
 
@@ -156,9 +150,9 @@ npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
-会同时生成 `tailwind.config.js`和 `postcss.config.js`文件。
+会同时生成 `tailwind.config.js` 和 `postcss.config.js` 文件。
 
-### 5.2. 配置 Tailwind
+### 配置 Tailwind
 
 `postcss.config.js` 不需要修改。在 `tailwind.config.js` 中添加使用 Tailwind CSS 类名的文件路径：
 
@@ -181,7 +175,7 @@ module.exports = {
 }
 ```
 
-### 5.3. 导入样式
+### 导入样式
 
 添加 Tailwind CSS 指令，将 Tailwind 的样式注入到全局样式中。使用方式如下：
 
@@ -192,7 +186,7 @@ module.exports = {
 @tailwind utilities;
 ```
 
-在根布局（`app/layout.tsx`），导入 `globals.css` ：
+在根布局（`app/layout.tsx`），导入 `globals.css`：
 
 ```javascript
 // app/layout.js 
@@ -212,9 +206,9 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### 5.4. 使用类名
+### 使用类名
 
-然后你就可以在应用里使用 Tailwind 的工具类名：
+然后就可以在应用里使用 Tailwind 的工具类名：
 
 ```javascript
 // app/page.js
@@ -223,19 +217,19 @@ export default function Page() {
 }
 ```
 
-### 5.5. 辅助使用
+### 辅助使用
 
-在 VSCode 中使用的时候，可以安装 [Tailwind CSS IntelliSense ](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)这个插件，提供自动功能、语法校验、悬停预览等功能。
+在 VSCode 中使用的时候，可以安装 [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) 这个插件，提供自动功能、语法校验、悬停预览等功能。
 
 Tailwind CSS 中的工具类众多，记不清的时候也可以查询这个[速查表](https://tailwindcomponents.com/cheatsheet/)。
 
-## 6. CSS-in-JS
+## CSS-in-JS
 
-### 6.1. 介绍
+### 介绍
 
-CSS-in-JS，顾名思义，将 CSS 写在 JS 文件里，而不是单独新建如 `.css`、`.scss`等文件。这样就可以在 CSS 中使用 JS 的变量定义、函数调用、条件判断等功能。
+CSS-in-JS，顾名思义，将 CSS 写在 JS 文件里，而不是单独新建如 `.css`、`.scss` 等文件。这样就可以在 CSS 中使用 JS 的变量定义、函数调用、条件判断等功能。
 
-之所以能够流行，也跟 React、Vue 等框架的流行有关，“组件”的概念开始深入人心。因为 Vue 本身有自己的 CSS 方案，React 没有，所以 CSS-in-JS 也多在 React 社区中讨论。
+之所以能够流行，也跟 React、Vue 等框架的流行有关，"组件"的概念开始深入人心。因为 Vue 本身有自己的 CSS 方案，React 没有，所以 CSS-in-JS 也多在 React 社区中讨论。
 
 实现 CSS-in-JS 的库有很多，每个库的实现、使用方式、语法也不尽相同。目前 Next.js 客户端组件中支持使用的库有：
 
@@ -251,9 +245,9 @@ CSS-in-JS，顾名思义，将 CSS 写在 JS 文件里，而不是单独新建�
 
 [emotion](https://github.com/emotion-js/emotion/issues/2928) 正在支持中……
 
-如果你希望设置服务端组件的样式，推荐使用 CSS 模块或者其他输出 CSS 文件的解决方案比如 PostCSS 或者 Tailwind CSS。
+如果希望设置服务端组件的样式，推荐使用 CSS 模块或者其他输出 CSS 文件的解决方案比如 PostCSS 或者 Tailwind CSS。
 
-### 6.2. 配置方式
+### 配置方式
 
 在 Next.js 中配置 CSS-in-JS 的基本原理分为三步：
 
@@ -261,9 +255,9 @@ CSS-in-JS，顾名思义，将 CSS 写在 JS 文件里，而不是单独新建�
 2.  使用 `useServerInsertedHTML` hook 在内容被使用前注入样式规则
 3.  使用包含样式注册表的客户端组件包裹应用
 
-### 6.3. styled-jsx
+### styled-jsx
 
-这三步听起来有些复杂，让我们以 `styled-jsx` 为例进行讲解。注意在客户端组件使用 `styled-jsx`至少需要使用 `v5.1.0`版本。
+以 `styled-jsx` 为例讲解这三步。注意在客户端组件使用 `styled-jsx` 至少需要使用 `v5.1.0` 版本。
 
 首先创建一个新的注册表：
 
@@ -304,7 +298,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-然后你就可以在 `page.js` 中使用：
+然后就可以在 `page.js` 中使用：
 
 ```jsx
 export default function Page() {
@@ -333,7 +327,7 @@ export default function Page() {
 
 示例代码地址：<https://github.com/vercel/app-playground/tree/main/app/styling/styled-jsx>
 
-### 6.4. Styled Components
+### Styled Components
 
 Styled Components 的配置也大致如此，注意使用 `styled-components@6` 或者更高版本。
 
@@ -382,7 +376,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-然后你就可以在 page.js 中使用：
+然后就可以在 page.js 中使用：
 
 ```javascript
 'use client';
@@ -440,23 +434,23 @@ export default function Page() {
 
 示例代码地址：<https://github.com/vercel/app-playground/tree/main/app/styling/styled-components>
 
-## 7. Sass
+## Sass
 
-### 7.1. Sass 使用
+### Sass 使用
 
-Sass 作为知名的 CSS 预处理器已无须过多介绍。Next.js 内置了对 Sass 文件的支持，你需要使用 `.scss`和 `.sass`作为文件后缀。
+Sass 作为知名的 CSS 预处理器已无须过多介绍。Next.js 内置了对 Sass 文件的支持，需要使用 `.scss` 和 `.sass` 作为文件后缀。
 
-你也可以结合 CSS 模块使用组件级别的 Sass， 你需要使用`.module.scss`或者 `.module.sass`作为文件后缀。
+也可以结合 CSS 模块使用组件级别的 Sass，需要使用 `.module.scss` 或者 `.module.sass` 作为文件后缀。
 
-使用 sass，你需要首先安装 [sass](https://github.com/sass/sass)：
+使用 sass，首先安装 [sass](https://github.com/sass/sass)：
 
 ```bash
 npm install --save-dev sass
 ```
 
-### 7.2. 自定义配置
+### 自定义配置
 
-如果你希望配置 Sass 编译器，使用 `next.config.js` 的 `sassOptions`选项：
+如果希望配置 Sass 编译器，使用 `next.config.js` 的 `sassOptions` 选项：
 
 ```javascript
 // next.config.js
@@ -471,7 +465,7 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-### 7.3 Sass 变量
+### Sass 变量
 
 Next.js 支持从 CSS 模块文件导出 Sass 变量。这是一个示例代码：
 
@@ -494,6 +488,14 @@ export default function Page() {
   return <h1 style={{ color: variables.primaryColor }}>Hello, Next.js!</h1>
 }
 ```
+
+## 实践要点
+
+- 组件级样式首选 CSS 模块（`.module.css` / `.module.scss`），局部类名从根本上避免冲突。
+- 全局样式在 App Router 中可导入 `app` 目录下任意位置，但通常只在根布局引入一次。
+- 服务端组件的样式应使用 CSS 模块、PostCSS 或 Tailwind CSS 等输出 CSS 文件的方案；CSS-in-JS 库目前仅支持在客户端组件中使用。
+- CSS-in-JS 在 App Router 中需要三步配置：样式注册表 + `useServerInsertedHTML` 注入 + 注册表组件包裹应用，styled-jsx 需 `v5.1.0+`，styled-components 需 `v6+`。
+- 生产构建时 CSS 会被打包压缩，且不依赖 JS 注入，禁用 JavaScript 时样式仍可加载。
 
 ## 参考链接
 

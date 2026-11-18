@@ -306,6 +306,10 @@ export function NavigationEvents() {
 
 > Cache = 触发缓存，Revalidate = 触发重新验证，Opt out = 触发退出缓存
 
+## 小结
+
+四层缓存各有分工：请求记忆（React 层）在单次渲染期间去重组件树内的相同请求；数据缓存（Next.js 层）跨请求、跨部署复用数据 fetch 结果；完整路由缓存持久保存路由的 RSC Payload 与 HTML 渲染产物；路由缓存在客户端会话期间存储 RSC Payload 以实现即时导航。排查"数据没有更新"问题时，按层定位：渲染期间重复请求看请求记忆，跨请求旧数据看数据缓存，构建产物旧看完整路由缓存，导航后旧内容看路由缓存，再依据速查表选择对应的重新验证或退出手段。
+
 ## 参考链接
 
 - [Building Your Application: Caching | Next.js](https://nextjs.org/docs/app/building-your-application/caching)

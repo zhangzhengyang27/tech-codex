@@ -8,15 +8,15 @@ tags: [Next.js]
 
 # Clerk 与登录注册
 
-登录与注册，一个说简单也简单，说复杂也复杂的功能。
+登录与注册是一个说简单也简单、说复杂也复杂的功能。
 
-往简单的说，注册的时候搞两个输入框，将数据写入数据库，登录的时候校验一下数据是否正确即可。
+往简单的说，注册时提供两个输入框，将数据写入数据库，登录时校验数据是否正确即可。
 
-往复杂的说，除了登录注册，还有账号注销、忘记密码、密码重置、邮箱验证、更新个人资料、更新密码、删除账号等功能，此外，数据的安全性如何保证？Magic Links、Multi-Factor Auth (MFA)、社交媒体登录 (Google, Facebook, Twitter, GitHub, Apple, and more) 是否要支持？是不是还要做个后台统计用户登录数据？想一想都是工作量。
+往复杂的说，除了登录注册，还有账号注销、忘记密码、密码重置、邮箱验证、更新个人资料、更新密码、删除账号等功能，此外，数据的安全性如何保证？Magic Links、Multi-Factor Auth (MFA)、社交媒体登录 (Google, Facebook, Twitter, GitHub, Apple, and more) 是否要支持？是否还要做个后台统计用户登录数据？这些都是不小的工作量。
 
-所以虽然可以自己从头做，但有现成的还是用现成的吧。
+所以虽然可以从零自研，但通常优先选用现成的方案。
 
-所幸关于登录注册的技术方案，并不像评论系统那么多，推荐 3 个主流的技术选型：
+所幸关于登录注册的技术方案，并不像评论系统那么多，主流的技术选型有 3 个：
 
 1.  [**Clerk**](https://clerk.com/)
 
@@ -43,15 +43,15 @@ Clerk 提供了一个开发人员友好的身份验证和用户管理解决方�
 1.  [Clerk：Integrate Supabase with Clerk](https://clerk.com/docs/integrations/databases/supabase)
 2.  [Supabase：Integrate Clerk](https://supabase.com/partners/integrations/clerk)
 
-注意：这两个平台都提供了免费版，但免费版毕竟有一些限制，比如 Clerk 会限制 10000 月活跃用户等，Supabase 会限制 50000 月活跃用户，数据库大小为 500 MB 等等。
+注意：这两个平台都提供了免费版，但免费版毕竟有一些限制，比如 Clerk 会限制 10000 月活跃用户等，Supabase 会限制 50000 月活跃用户，数据库大小为 500 MB 等等。
 
 3.  [**Next-Auth**](https://next-auth.js.org/getting-started/introduction)
 
-我们在《React Notes 全栈项目实战》介绍的便是 Next-Auth，Next-auth 不是平台，是一个开源库，可以帮助我们快速实现登录注册等功能。
+《React Notes 全栈项目实战》中使用的便是 Next-Auth。Next-auth 不是平台，是一个开源库，用于快速实现登录注册等功能。
 
 总的来说，如果要快速接入登录注册功能，最好还是使用平台，也就是 Clerk 和 Supabase，其中 Clerk 提供的功能更为丰富，但免费版月活限制用户数更少。
 
-本篇我们对 Clerk 的使用进行讲解。
+以下围绕 Clerk 的使用展开。
 
 ## Clerk
 
@@ -65,7 +65,7 @@ Clerk 提供了一个开发人员友好的身份验证和用户管理解决方�
 
 ### 2. 接入 Clerk
 
-为了演示如何[接入 Clerk](https://clerk.com/docs/quickstarts/nextjs)，我们使用官方脚手架创建一个新项目：
+为了演示如何[接入 Clerk](https://clerk.com/docs/quickstarts/nextjs)，先使用官方脚手架创建一个新项目：
 
 ```bash
 npx create-next-app@latest
@@ -128,21 +128,21 @@ export default function RootLayout({
 }
 ```
 
-解释下这段代码中用到的组件：
+这段代码中用到的组件解释如下：
 
-所有 Clerk hooks 和组件都必须是 `<ClerkProvider>` 的子组件，所以我们用 `<ClerkProvider>` 将整个页面代码包裹，该组件会存储 session 和用户上下文数据。
+所有 Clerk hooks 和组件都必须是 `<ClerkProvider>` 的子组件，因此需要用 `<ClerkProvider>` 将整个页面代码包裹，该组件会存储 session 和用户上下文数据。
 
 `<SignedIn>`下的子组件仅在登录状态时显示。`<SignedOut>`下的子组件仅在非登录状态时显示。
 
 `<SignInButton>` 是一个链接至登录页面的无样式组件。`<UserButton>`是一个 Clerk 提供的自带样式的组件，用于展示用户头像。
 
-此时我们就实现了 Clerk 的接入，并已经实现了账号的登录、注册、账号管理、注销等功能。
+此时即完成了 Clerk 的接入，并实现了账号的登录、注册、账号管理、注销等功能。
 
 打开 <http://localhost:3000/> 即可查看效果。
 
 ### 3. 添加中文
 
-虽然 Clerk 实现了登录注册的功能，但有一个问题，那就是界面都是英文，如何改成中文界面呢？Clerk 也考虑到了这一点，并提供了[本地化方法](https://clerk.com/docs/components/customization/localization)。
+Clerk 实现的登录注册界面默认都是英文的。Clerk 也考虑到了这一点，并提供了[本地化方法](https://clerk.com/docs/components/customization/localization)，可将界面改为中文。
 
 安装依赖项：
 
@@ -186,17 +186,17 @@ export default function RootLayout({
 }
 ```
 
-注意：这里`<SignInButton>` 的 `mode` 设置为了 `"modal"` 才让登录界面的本地化生效。如果不设置为 modal 则会直接跳转到登录界面，此时本地化不会生效。如果让跳转登录界面也实现本地化的话，可以参考接下来讲到的 Next-js-Boilerplate 的实现方式。
+注意：这里`<SignInButton>` 的 `mode` 设置为了 `"modal"` 才让登录界面的本地化生效。如果不设置为 modal 则会直接跳转到登录界面，此时本地化不会生效。要让跳转登录界面也实现本地化，可参考下文 Next-js-Boilerplate 的实现方式。
 
 ### 4. 后台界面
 
 Clerk 提供了后台界面，可以查看登录用户数据以及进行登录相关的设置。
 
-当然，Clerk 实现的功能远不止如此，你可以完全自定义登录界面、使用内置的组件自定义开发、构架自己的登录流程等等，Clerk 都提供了详细的文档：<https://clerk.com/docs>
+当然，Clerk 实现的功能远不止如此，完全自定义登录界面、使用内置的组件自定义开发、构架自己的登录流程等等都有支持，并提供了详细的文档：<https://clerk.com/docs>
 
 ## Next-js-Boilerplate
 
-既然我们已经知道了 Next.js 项目如何接入 Clerk，那回到我们之前讲到的 Next-js-Boilerplate 模板。
+了解 Next.js 项目如何接入 Clerk 后，再来看 Next-js-Boilerplate 模板中的 Clerk 用法。
 
 ### 1. 基础设置
 
@@ -206,7 +206,7 @@ Clerk 提供了后台界面，可以查看登录用户数据以及进行登录�
 
 ### 2. 登录路由
 
-但与之前简易接入 Clerk 的方式不同，在 Next-js-Boilerplate 中，当用户点击 Sign In 的时候，跳转的并不是 Clerk 的登录页面，而是 <http://localhost:3000/sign-in>，这是因为在 `.env`中，我们通过 `CLERK_SIGN_IN_URL` 环境变量重新设置了登录的跳转地址：
+但与上文简易接入 Clerk 的方式不同，在 Next-js-Boilerplate 中，当用户点击 Sign In 的时候，跳转的并不是 Clerk 的登录页面，而是 <http://localhost:3000/sign-in>，这是因为在 `.env`中通过 `CLERK_SIGN_IN_URL` 环境变量重新设置了登录的跳转地址：
 
 ```bash
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
@@ -229,11 +229,11 @@ export default SignInPage;
 
 ```
 
-在这个页面路由中，我们使用了 Clerk 提供的 `<SignIn>` 组件来渲染登录界面，其中 `path` 属性用来设置组件挂载的路径。
+在这个页面路由中，使用了 Clerk 提供的 `<SignIn>` 组件来渲染登录界面，其中 `path` 属性用来设置组件挂载的路径。
 
 ### 3. 中文设置
 
-如果我们的 Next-js-Boilerplate 要实现默认中文登录界面的效果，该如何实现呢？
+如果 Next-js-Boilerplate 要实现默认中文登录界面的效果，配置方式如下。
 
 首先，修改 `src/utils/AppConfig.ts`，完整代码如下：
 
@@ -305,7 +305,7 @@ export default function AuthLayout(props: {
 }
 ```
 
-当然在这里我们只翻译了登录相关的文字，其他内容的翻译我们会在下篇借助 Crowdin 来实现。
+这里只翻译了登录相关的文字，其他内容的翻译可借助 Crowdin 平台实现，参见《Crowdin 与本地化》。
 
 ## 总结
 
@@ -313,4 +313,4 @@ export default function AuthLayout(props: {
 
 总的来说，为了快速接入，会优先选择接入 Clerk 和 Supabase，这两个平台自带数据库实现，但免费版都有一些限制。但两者也不冲突，Clerk 和 Supabase 可以一起使用。
 
-本篇我们在本地化的时候，只翻译了很小一部分内容，下一篇我们会借助 Crowdin 平台实现所有内容的自动翻译。
+在本地化方面，上文只翻译了很小一部分内容，所有内容的自动翻译可借助 Crowdin 平台实现，参见《Crowdin 与本地化》。

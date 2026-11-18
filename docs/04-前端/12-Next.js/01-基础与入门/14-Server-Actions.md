@@ -347,6 +347,10 @@ export async function createPost(id) {
 3. 使用 useFormState 时函数签名为 `(prevState, formData)`
 4. 修改数据后必须调用 revalidatePath 或 revalidateTag
 
+## 小结
+
+Server Actions 以 `"use server"` 指令声明，按位置分为函数级（服务端组件内联）与模块级（独立文件，可被客户端组件导入）两种定义方式，底层通过 POST 当前页面地址并携带 `$ACTION_ID` 完成 RPC 调用，返回 RSC Payload 实现无刷新更新。工程实践中围绕表单展开：`useFormStatus` 读取提交状态、`useFormState` 管理表单状态、Zod 做服务端校验、`useOptimistic` 实现乐观更新；数据变更后必须通过 `revalidatePath`/`revalidateTag` 重新验证缓存，并保证参数与返回值可序列化。
+
 ## 参考链接
 
 - [Data Fetching: Forms and Mutations | Next.js](https://nextjs.org/docs/app/building-your-application/data-fetching/forms-and-mutations)

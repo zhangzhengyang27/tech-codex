@@ -8,11 +8,28 @@ tags: [Next.js]
 
 # t3-app 实战  创建清单
 
-本篇我们将实现清单的增删查功能。
+## 概念说明
 
-那就让我们接着开始吧！
+本篇在已完成的身份认证与主题切换基础上，实现清单的增删查功能，完整走通「表单校验 → Server Actions → Prisma 数据库操作 → 页面刷新展示」的全栈链路。
 
-## 1. 功能：创建清单
+该链路涉及的核心机制：
+
+- **前端校验**：React Hook Form（RHF）负责表单状态，Zod 负责 schema 校验，`@hookform/resolvers` 把二者衔接起来。
+- **服务端逻辑**：Server Actions 文件以 `"use server"` 声明，内部对数据做二次校验（`safeParse`）后再写库，并调用 `revalidatePath` 刷新页面缓存。
+- **数据操作**：Prisma Client 通过单例模式在开发环境复用连接，schema 变更后用 `prisma migrate dev` 同步数据库。
+- **UI 反馈**：Shadcn UI 的 `<Toaster>` 提供操作结果提示，删除等危险操作用 `AlertDialog` 二次确认。
+
+## 核心要点
+
+- 表单校验在客户端和服务端各做一次：RHF + Zod 提供即时反馈，Server Action 内 `safeParse` 兜底，防止绕过前端直接调用。
+- Server Action 写库成功后必须调用 `revalidatePath("/")`，否则首页的 Server Component 仍读取缓存，新清单不会出现。
+- Shadcn UI 组件的默认行为可以改源码定制——Toast 的弹出位置与停留时长直接修改 `toast.tsx` 与 `toaster.tsx` 即可。
+- Prisma Client 在 Next.js 开发模式的热重载下会反复实例化，需要挂在 `globalThis` 上做单例，生产环境则正常创建。
+- 删除操作按 `id + userId` 双条件删除，保证用户只能删除自己的清单。
+- ⚠️ 常见误区：依赖 `<SheetTrigger>`/`<SheetClose>` 自动关闭弹窗。校验通过才应关闭 Sheet，因此需要改为受控模式（`open` + `onOpenChange`）。
+- ⚠️ 常见误区：修改 Prisma schema 后忘记运行 `npx prisma migrate dev`，导致 Client 类型与数据库结构不一致。
+
+## 功能一：创建清单
 
 ### 实现前端校验（RHF + Zod）
 
@@ -216,8 +233,8 @@ export default function CreateListModal() {
 
 在这段代码中，有几点需要注意：
 
-1.  我们使用 React Hook Form 的 useForm 和 zodResolver 完成了前端数据校验
-2.  Shadcn UI 虽然提供了 `<SheetTrigger>` 和 `<SheetClose>`用于控制 Sheet 的打开和关闭，但是当用户提交数据，验证通过的时候才能关闭 Sheet，所以需要改为手动控制：
+1.  React Hook Form 的 useForm 和 zodResolver 完成了前端数据校验
+2.  Shadcn UI 虽然提供了 `<SheetTrigger>` 和 `<SheetClose>`用于控制 Sheet 的打开和关闭，但是当用户提交数据、验证通过的时候才能关闭 Sheet，所以需要改为手动控制：
 
 ```javascript
 const [open, setOpen] = useState(false);
@@ -304,7 +321,7 @@ export default function CreateListModal() {
 
 ### 添加 toast 效果（Shadcn UI）
 
-当创建的时候，无论成功还是失败，都应该有一个消息提示，所以我们引入 Shadcn UI 的 `<Toaster>` 组件。
+创建时无论成功还是失败都应有消息提示，因此引入 Shadcn UI 的 `<Toaster>` 组件。
 
 修改 `src/app/layout.tsx`，添加代码如下：
 
@@ -381,12 +398,12 @@ export default function CreateListModal() {
 
 效果描述：当创建成功的时候，会有一个 Toast 提示。
 
-但是吧：
+默认的 Toast 有两处与预期不符：
 
 1.  Toast 从下面弹出，如果是从上面弹出就好了……
 2.  Toast 停留的时间太久了，如果时间短点就好了……
 
-这就要说到 Shadcn UI 的好处了，那就是可以直接改组件源码。
+这正是 Shadcn UI 的优势所在：组件源码就在项目内，可以直接修改。
 
 修改 `src/components/ui/toast.tsx` 第 19 行左右位置的样式代码，修改代码如下：
 
@@ -513,7 +530,7 @@ export async function createList(data: createListZodSchemaType) {
 }
 ```
 
-为了检查是否真的写入数据库，运行：
+数据是否真的写入数据库，可以用 Prisma 自带的可视化工具检查，运行：
 
 ```bash
 npx prisma studio
@@ -521,7 +538,7 @@ npx prisma studio
 
 效果描述：清单创建成功后，数据库的数据也确实发生了更新
 
-## 2. 功能：展示清单
+## 功能二：展示清单
 
 修改 `src/app/page.tsx`，添加代码如下：
 
@@ -683,7 +700,7 @@ export default function CheckListFooter({ checkList }: Props) {
 
 效果描述：当创建清单后，首页会刷新出新建的任务列表，点击删除按钮，会出现删除弹窗。
 
-## 3. 功能：删除清单
+## 功能三：删除清单
 
 修改 `src/actions/list.ts`，添加代码如下：
 
@@ -787,10 +804,17 @@ export default function CheckListFooter({ checkList }: Props) {
 
 ```
 
-## 下一篇
+## 实践要点
 
-> 1.  功能实现：t3-app 清单增删查
-> 2.  源码地址：<https://github.com/mqyqingfeng/next-app-demo/tree/next-t3-todo-2>
-> 3.  下载代码：`git clone -b next-t3-todo-2 git@github.com:mqyqingfeng/next-app-demo.git`
+- Sheet 弹窗改为受控模式（`useState` + `open` + `onOpenChange`），并在 `onOpenChange` 中调用 `form.reset()`，保证每次打开表单都是初始状态。
+- Server Action 的返回结构统一为 `{ success, message }`，客户端据此分支处理成功与失败提示；登录态缺失则直接抛错。
+- Toast 位置与时长这类「库默认值不合需求」的问题，直接改 Shadcn UI 生成的组件源码即可，这也是它区别于传统黑盒组件库的核心优势。
+- `prisma.list.delete` 的 `where` 条件同时包含 `id` 与 `userId`，是数据权限的最后一道防线，不可省略。
+- 展示类组件（`CheckLists`）是异步 Server Component，配合 `<Suspense>` 与骨架屏渲染，避免数据库查询阻塞首屏。
 
-目前我们已经实现了清单的增删查，接下来我们实现清单中的具体任务的增改功能。
+## 源码与小结
+
+- 源码地址：<https://github.com/mqyqingfeng/next-app-demo/tree/next-t3-todo-2>
+- 下载代码：`git clone -b next-t3-todo-2 git@github.com:mqyqingfeng/next-app-demo.git`
+
+本篇实现了清单的增删查三个功能：创建清单走「RHF + Zod 前端校验 → Server Action 二次校验 → Prisma 写库 → revalidatePath 刷新」链路；展示清单由异步 Server Component 按当前用户查询并渲染；删除清单通过 AlertDialog 二次确认后按 `id + userId` 删除。清单的容器功能已经齐备，下一环节是实现清单内具体任务的新增与状态修改。

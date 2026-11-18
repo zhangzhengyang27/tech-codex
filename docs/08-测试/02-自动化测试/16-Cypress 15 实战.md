@@ -84,7 +84,7 @@ Cypress 长期只能驱动 Chromium 内核与 Firefox，不支持 WebKit；同�
 | 架构 | 跨进程 WebDriver | 跨进程 CDP | 同源运行（注入浏览器） |
 | 浏览器支持 | Chrome/Firefox/Edge/Safari | Chromium/Firefox/WebKit | Chromium/Firefox/Edge |
 | 自动等待 | 需显式 `WebDriverWait` | 内置 auto-waiting | 内置 retry |
-| 断言机制 | 第三方（TestNG/Jest） | web-first assertions | `should` 链式重试 |
+| 断言机制 | 第三方（TestNG/JUnit/pytest） | web-first assertions | `should` 链式重试 |
 | 网络拦截 | BiDi 增强 | `route()` | `cy.intercept()` |
 | 组件测试 | 不支持 | 实验性 ct-react/vue | 原生稳定（CT 模块） |
 | 录制 | Selenium IDE | `codegen` | Cypress Studio（实验性） |

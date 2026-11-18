@@ -80,7 +80,7 @@ flowchart LR
 
 ### 安装与启动
 
-旧文档使用的 `alibaba.github.io` 域名已迁至 `arthas.aliyun.com`，下载命令需更新为：
+Arthas 的 `alibaba.github.io` 下载域名已迁至 `arthas.aliyun.com`，下载命令需使用新地址：
 
 ```bash
 # 下载最新版 arthas-boot.jar（4.3.2，2026-07-19 发布）
@@ -131,7 +131,7 @@ java -jar arthas-boot.jar -c 'thread -n 3; dashboard -n 1'
 
 **（3）classloader-metaspace 命令**
 
-旧文档只能用 `sc -d` 看单个类的 ClassLoader，4.x 新增 `classloader-metaspace` 按实例维度统计 metaspace 占用，便于排查动态类加载导致的 metaspace 泄漏（如 Groovy 脚本、反射 Proxy）。
+4.x 之前只能用 `sc -d` 看单个类的 ClassLoader，4.x 新增 `classloader-metaspace` 按实例维度统计 metaspace 占用，便于排查动态类加载导致的 metaspace 泄漏（如 Groovy 脚本、反射 Proxy）。
 
 **（4）watch/trace 增强**
 
@@ -216,7 +216,7 @@ jstat -gc 6937 1000 10
 
 - **JIT 编译线程**：堆栈在 `C2 CompilerThread` → 通常是大量热方法集中编译，等预热结束会缓解；若长期不缓解，需检查是否关闭了分层编译或方法过大。
 
-- **Native 线程**：堆栈在 `lib*.so` → 用 async-profiler 生成 CPU 火焰图（见第六节）。
+- **Native 线程**：堆栈在 `lib*.so` → 用 async-profiler 生成 CPU 火焰图（见下文『火焰图分析』一节）。
 
 ### watch 精准观测
 
@@ -342,7 +342,7 @@ java -jar jfr2flame.jar /tmp/cpu.jfr /tmp/cpu.svg
 
 ### 陷阱
 
-- **生产环境直接 `jmap -dump`**：full dump 会触发 STW，几 GB 的堆可能停顿数十秒。生产环境务必使用 `jcmd PID GC.heap_dump` 或 JFR 的对象分配采样。
+- **生产环境临时全堆 dump**：`jmap -dump` 与 `jcmd PID GC.heap_dump` 均为全堆 dump，都会触发 STW，几 GB 的堆可能停顿数十秒。生产环境应避免临时全堆 dump，优先用 JFR 的对象分配采样定位内存问题；确需 dump 时选业务低峰，并提前评估停顿影响。
 - **Arthas watch 大对象未限制大小**：4.x 之前 `watch` 观测大 List 会把 Arthas 自身的 console 线程打爆，必须用 `-x` 限制展开层级（输出大小另由全局选项 `options object-size-limit` 兜底）。
 - **JFR 默认 settings=profile 仍偏重**：在低延迟（P99 < 10ms）场景下，profile 配置可能引入 2-3% 开销，应切到 `settings=default`。
 - **未关闭 Arthas attach**：Arthas attach 会持续占用一个端口（默认 3658），生产排查后应及时 `stop` 退出，避免端口与字节码增强残留。

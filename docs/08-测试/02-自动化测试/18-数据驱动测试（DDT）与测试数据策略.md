@@ -169,7 +169,7 @@ flowchart TD
 
 ### @faker-js/faker v9 概览
 
-`@faker-js/faker` 是 Faker.js 社区维护的现代分支，最新稳定版为 v9.x。相比 v8.4.1，v9 的关键改进包括：完整的 ESM 支持、TypeScript 类型增强、新增 `finance.iban` / `science` 等模块、移除已废弃的 `faker.name.*`（统一至 `faker.person.*`）、本地化数据扩充至 70+ 区域。
+`@faker-js/faker` 是 Faker.js 社区维护的现代分支，最新稳定版为 v9.x。它提供完整的 ESM 支持、增强的 TypeScript 类型与 `finance.iban`、`science` 等丰富模块，本地化数据覆盖 70+ 区域；旧式的 `faker.name.*` 访问方式已统一迁移至 `faker.person.*`。
 
 ```bash
 # 安装最新版

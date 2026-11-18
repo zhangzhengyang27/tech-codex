@@ -1,6 +1,6 @@
 ---
 title: AI 辅助测试（LLM 生成用例/Copilot for Tests）
-description: 系统讲解 AI 辅助测试能力地图、LLM 在测试中的三种应用模式与人机协作模型、LLM 生成测试用例的 Prompt 工程、测试脚本自愈与 Flaky 诊断，覆盖 GitHub Copilot 与主流 AI 测试工具生态，并澄清 AI 测试的局限与风险
+description: 覆盖 AI 辅助测试能力地图、LLM 在测试中的三种应用模式与人机协作模型、LLM 生成测试用例的 Prompt 工程、测试脚本自愈与 Flaky 诊断的实践指南，包含 GitHub Copilot 与主流 AI 测试工具生态，并澄清 AI 测试的局限与风险。
 keywords: [AI 测试, LLM, Copilot, 用例生成, 脚本自愈, Flaky]
 category: 测试前沿与质量管理
 tags: [AI 测试, LLM, Copilot, 自动化用例生成, 自愈测试]
@@ -8,7 +8,7 @@ tags: [AI 测试, LLM, Copilot, 自动化用例生成, 自愈测试]
 
 # AI 辅助测试（LLM 生成用例/Copilot for Tests）
 
-AI 辅助测试是以大语言模型（Large Language Model，LLM）为核心的测试能力升级：从需求分析、用例生成、脚本编写到失败定位、Flaky 治理，LLM 在各环节均有落地模式。**Copilot for Tests** 指的是 AI 作为测试工程师的"副驾驶"——不替代人类决策，辅助完成重复性高、创造性低的工作，让测试工程师聚焦于策略设计与探索式测试。本文系统阐述 AI 辅助测试的能力地图、LLM 在各测试环节的应用实践、工具生态，以及当前局限与风险。
+AI 辅助测试是以大语言模型（Large Language Model，LLM）为核心的测试能力升级：从需求分析、用例生成、脚本编写到失败定位、Flaky 治理，LLM 在各环节均有落地模式。**Copilot for Tests** 指的是 AI 作为测试工程师的"副驾驶"——不替代人类决策，辅助完成重复性高、创造性低的工作，让测试工程师聚焦于策略设计与探索式测试。本文覆盖 AI 辅助测试的能力地图、LLM 在各测试环节的应用实践、工具生态，以及当前局限与风险。
 
 ## AI 辅助测试能力框架
 
@@ -450,6 +450,8 @@ AI 生成测试用例若遗漏关键场景导致线上事故，责任在谁？�
 - [自动化测试框架设计 13 原则](03-自动化测试框架设计%2013%20原则) —— AI 维护所依赖的框架设计原则
 - [GUI 测试稳定性（同步等待与自愈与Flaky 治理）](../02-自动化测试/19-GUI%20测试稳定性（同步等待与自愈与Flaky%20治理）) —— 自愈与 Flaky 治理的工程体系
 - [数据驱动与参数化框架](04-数据驱动与参数化框架) —— LLM 生成测试数据的 Schema 校验落点
-- 论文：Automated Test Case Generation using Large Language Models
-- 工具官网：Qodo（qodo.ai，原 CodiumAI）、Mabl（mabl.com）、ReportPortal AI（reportportal.io）
-- 实践：Microsoft Copilot for Testing 官方博客
+- 论文：《Automated Test Case Generation using Large Language Models》—— LLM 生成用例的学术基线，可在 arXiv（arxiv.org）或 Google Scholar 按标题检索
+- 工具官网：[Qodo](https://qodo.ai/) —— 原 CodiumAI，AI 生成单测与代码行为分析
+- 工具官网：[Mabl](https://mabl.com/) —— 低代码云端 E2E 测试平台，内置 AI 自愈
+- 工具官网：[ReportPortal](https://reportportal.io/) —— 测试报告平台的 AI 失败分类与归因
+- 实践：[Microsoft Dev Blogs](https://devblogs.microsoft.com/) —— 官方博客，可检索 Copilot 测试相关主题跟进一线实践

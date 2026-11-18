@@ -52,9 +52,10 @@ tags: [云真机, BrowserStack, Sauce Labs, Firebase Test Lab, Appium, CI/CD, �
 | **LambdaTest** | 3000+ 真机 | iOS/Android/Web | Appium/Espresso/XCUITest | HyperExecute | 按分钟 | 中小团队、性价比 |
 | **Firebase Test Lab** | Android 优先 | Android/iOS 有限 | Espresso/UI Automator/Robo | gcloud/Gradle 插件 | 免费额度+按次 | Google 生态、Android 优先 |
 | **AWS Device Farm** | 350+ 真机 | iOS/Android | Appium/Espresso/XCUITest/Calabash | CodePipeline | 按设备分钟 | AWS 生态、按需付费 |
-| **阿里云 MQC** | 1000+ 真机 | Android/iOS | Appium/Espresso/脚本录制 | 云效/FunctionCompute | 按次/包年 | 国内项目、阿里生态 |
+| **阿里云 MQC**（并入 EMAS 移动测试） | 1000+ 真机 | Android/iOS | Appium/Espresso/脚本录制 | 云效/FunctionCompute | 按次/包年 | 国内项目、阿里生态 |
 | **腾讯 WeTest** | 1500+ 真机 | Android/iOS/Web | Appium/脚本录制/PerfDog | 代码仓库/CI | 按次/包年 | 国内项目、性能专项 |
-| **百度 MTC** | 800+ 真机 | Android/iOS | Appium/脚本录制 | 百度云函数 | 按次 | 国内项目、百度生态 |
+
+> 注:百度 MTC 等早期国内云测平台已停止运营，不再列入本矩阵；阿里云 MQC 已并入阿里云 EMAS 移动测试服务，选型时可从 EMAS 入口评估相关能力。
 
 ### 平台架构共性
 
@@ -401,7 +402,7 @@ CI/CD 集成的关键设计有四点：**应用上传与版本绑定**（每次�
 6. **成本监控**：按项目/团队维度统计月度执行分钟数，设置预算告警阈值，避免失控；
 7. **混合策略**：核心机型本地真机柜（利用率高、响应快），长尾机型用云真机（覆盖广、无需维护），综合成本最优。
 
-云真机平台不解决测试设计问题，但决定了测试覆盖的天花板与执行效率的下限。选型基于目标市场机型分布、CI 工具链与预算模型做组合决策：BrowserStack 与 Sauce Labs 适合出海与跨国团队，Firebase Test Lab 是 Google 生态与预算敏感团队的默认选择，国内平台（MQC/WeTest/MTC）在机型覆盖与延迟上对国内项目优势明显。用分层执行策略把每个平台的优势用在最合适的场景，比追求单一最全平台更有效。
+云真机平台不解决测试设计问题，但决定了测试覆盖的天花板与执行效率的下限。选型基于目标市场机型分布、CI 工具链与预算模型做组合决策：BrowserStack 与 Sauce Labs 适合出海与跨国团队，Firebase Test Lab 是 Google 生态与预算敏感团队的默认选择，国内平台（MQC/WeTest）在机型覆盖与延迟上对国内项目优势明显。用分层执行策略把每个平台的优势用在最合适的场景，比追求单一最全平台更有效。
 
 ## 延伸阅读
 

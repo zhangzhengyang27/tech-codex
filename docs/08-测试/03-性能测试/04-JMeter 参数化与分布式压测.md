@@ -282,7 +282,7 @@ JMeter 分布式压测基于 RMI 通信：Master 节点通过 `jmeter.properties
 
 ### 物理机部署（CentOS Stream 9 + JDK 17）
 
-旧文档基于 CentOS 7.0 + JDK 1.8，当前生产环境应升级到 **CentOS Stream 9 + JDK 17+**：
+早期环境基于 CentOS 7.0 + JDK 1.8，已无法满足当前压测要求，生产环境应使用 **CentOS Stream 9 + JDK 17+**：
 
 ```bash
 # CentOS Stream 9 安装 JDK 17 与 JMeter 5.6.3
@@ -442,7 +442,7 @@ CI/CD 场景下，可使用 Argo Workflows 或 Tekton 编排：`部署 Worker �
 
 ### InfluxDB 2.x 升级要点
 
-旧文档使用 InfluxDB 1.x，通过 `http://host:8086/write?db=jmeter` 写入，鉴权靠用户名密码。**InfluxDB 2.x 完全废弃了该模型**，改为 `org/bucket/token` 三要素：
+InfluxDB 1.x 通过 `http://host:8086/write?db=jmeter` 写入、鉴权靠用户名密码的模式已过时。**InfluxDB 2.x 完全废弃了该模型**，改为 `org/bucket/token` 三要素：
 
 | 维度 | InfluxDB 1.x | InfluxDB 2.x |
 |------|--------------|--------------|
@@ -479,13 +479,13 @@ Grafana 数据源配置：选择 InfluxDB，URL 指向 `http://influxdb:8086`，
 
 JMeter 社区最常用的 Grafana Dashboard 模板 ID 为 **5496**（Apache JMeter Dashboard using Core InfluxdbBackendListenerClient，基于 InfluxQL）；如需 Flux 查询的模板，可在 Grafana Dashboards 站点检索 "JMeter InfluxDB 2" 或基于 5496 自行迁移查询语句。导入方式：`Dashboards → New → Import → 输入 ID → Load → 选择数据源`。模板内置 RPS、响应时间分位、错误率、活跃线程数等核心面板。
 
-混合场景下区分接口的关键 Flux 查询示例：
+混合场景下区分接口的平均响应时间（Backend Listener 写入的 `avg` 字段）Flux 查询示例：
 
 ```flux
 from(bucket: "jmeter")
   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
   |> filter(fn: (r) => r._measurement == "jmeter" and r.application == "order-api")
-  |> filter(fn: (r) => r._field == "rt")
+  |> filter(fn: (r) => r._field == "avg")
   |> aggregateWindow(every: v.windowPeriod, fn: mean)
 ```
 

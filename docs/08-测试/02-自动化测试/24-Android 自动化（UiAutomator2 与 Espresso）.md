@@ -8,7 +8,7 @@ tags: [Android, UiAutomator2, Espresso, Compose Testing, Macrobenchmark, Baselin
 
 # Android 自动化（UiAutomator2 与 Espresso）
 
-Google 官方维护的 **Espresso** 与 **UiAutomator2** 构成了 Android 端 UI 测试的双基石：前者面向应用内白盒测试，主攻单 App 内部交互的快速回归；后者面向系统级黑盒测试，主攻跨应用、跨进程、系统设置等场景。**Compose Testing** 是 Jetpack Compose 应用的官方测试方案，**Macrobenchmark** 与 **Baseline Profiles** 补齐性能基准与启动优化。本文基于 Android Studio 2026.1 与 AndroidX Test 1.6.x 梳理这一工具链的核心概念、实战写法与工程化实践，旧文档中关于 Appium Desktop 录制、UIAutomatorViewer 抓取 page source、`uiautomator1` 等内容均已淘汰，不再保留。
+Google 官方维护的 **Espresso** 与 **UiAutomator2** 构成了 Android 端 UI 测试的双基石：前者面向应用内白盒测试，主攻单 App 内部交互的快速回归；后者面向系统级黑盒测试，主攻跨应用、跨进程、系统设置等场景。**Compose Testing** 是 Jetpack Compose 应用的官方测试方案，**Macrobenchmark** 与 **Baseline Profiles** 补齐性能基准与启动优化。本文基于 Android Studio 2026.1 与 AndroidX Test 1.6.x 梳理这一工具链的核心概念、实战写法与工程化实践。早期的 UIAutomatorViewer 抓取 page source 方式已被 Appium Inspector 取代，UiAutomator v1 也已停止维护，新项目应统一使用 UiAutomator2。
 
 > 前置知识:[Appium 3 架构与实战](23-Appium%203%20架构与实战)。
 
@@ -302,10 +302,13 @@ fun 授予定位权限_后端拿到经纬度_上报服务() {
     val app = context.packageManager.getLaunchIntentForPackage("com.demo.app")!!
     context.startActivity(app)
 
-    // 用 By.text 兜底匹配系统的"仅在使用时允许"按钮（不同 ROM 文案不同）
+    // 匹配系统的"仅在使用时允许"按钮：By/BySelector 无 or 组合器，按 ROM 文案做两次兜底尝试
     val allowBtn = device.wait(
-        Until.findObject(By.textStartsWith("仅在使用时允许").or(By.text("While in use"))),
+        Until.findObject(By.textStartsWith("仅在使用时允许")),
         10_000
+    ) ?: device.wait(
+        Until.findObject(By.text("While in use")),
+        2_000
     )
     allowBtn?.click()
 

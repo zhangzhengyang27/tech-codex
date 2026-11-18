@@ -155,8 +155,6 @@ IntelliJ IDEA 自 2017 年起原生支持 JUnit 5，无需额外插件；VS Code
 
 ## 生命周期与基础注解
 
-### 基础注解与生命周期
-
 Jupiter 将 JUnit 4 的 `@Before`/`@After` 拆分为更细粒度的生命周期：
 
 | 注解 | 执行时机 | 静态要求 |
@@ -509,7 +507,7 @@ class SmokeTestSuite {
 | `@BeforeClass` | `@BeforeAll` | 必须 `static` |
 | `@AfterClass` | `@AfterAll` | 必须 `static` |
 | `@Ignore` | `@Disabled` | 语义相同，名称更直观 |
-| `@RunWith(Supplier.class)` | `@ExtendWith(Supplier.class)` | 单一扩展模型 |
+| `@RunWith(MockitoJUnitRunner.class)` | `@ExtendWith(MockitoExtension.class)` | 单一扩展模型 |
 | `@Rule` / `@ClassRule` | `@ExtendWith` 自定义 Extension | 统一 SPI |
 | `Assert.assertEquals` | `Assertions.assertEquals` | 包路径变化，断言签名增加 Lambda 消息支持 |
 

@@ -1,6 +1,6 @@
 ---
 title: 测试覆盖率工具（JaCoCo 与 coverage.py 与 SonarQube）
-description: 系统讲解测试覆盖率的核心概念、类型体系（行/分支/函数/类/MC/DC）与强弱对比，并给出 JaCoCo 0.8.x、coverage.py 7.x、SonarQube 10.x Quality Gate、diff-cover 增量覆盖率的主流落地实践，以及 AI 识别盲区、MC/DC 安全关键、Codecov 云端服务等 2024-2026 新趋势
+description: 系统讲解测试覆盖率的核心概念、类型体系（行/分支/函数/类/MC/DC）与强弱对比，并给出 JaCoCo 0.8.x、coverage.py 7.x、SonarQube 10.x Quality Gate、diff-cover 增量覆盖率的主流落地实践，以及 AI 识别盲区、MC/DC 安全关键、Codecov 云端服务等延伸方向
 keywords: [测试覆盖率, JaCoCo, coverage.py, SonarQube, Quality Gate, diff-cover, MC/DC, Codecov, 增量覆盖率]
 category: 单元测试与代码级测试
 tags: [测试覆盖率, JaCoCo, coverage.py, SonarQube, 质量门禁, 增量覆盖率, MC/DC]
@@ -248,7 +248,7 @@ Quality Gate 由一组"条件"构成，metric 使用 SonarQube 的真实指标�
 ```
 
 ::: warning 注意
-实际配置通过 Web 界面或 Web API 完成，如 `POST api/qualitygates/create_condition`（参数 `metric`、`op` 取值 `LT`/`GT`、`error` 为阈值），而非直接提交上述 JSON 文件。
+实际配置通过 Web 界面或 Web API 完成，如 `POST api/qualitygates/create_condition`（参数 `metricKey`、`op` 取值 `LT`/`GT`、`error` 为阈值），而非直接提交上述 JSON 文件。
 :::
 
 ### 质量门禁流程

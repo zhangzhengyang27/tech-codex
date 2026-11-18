@@ -261,7 +261,7 @@ Serenity 报告的核心价值是**将测试结果映射回业务需求**，产�
 | Cucumber Reports | 多语言 | 基础 HTML 报告 |
 | Serenity BDD | Java/Kotlin | 需求覆盖 + 截图 + 时序 |
 | Allure BDD 适配 | 多语言 | 支持 BDD 场景展示 |
-| Relish | Ruby/JS | 在线协作式活文档 |
+| Relish | Ruby/JS | 在线协作式活文档（已停止服务） |
 
 ## 常见误区
 

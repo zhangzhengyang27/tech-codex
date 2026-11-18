@@ -1,6 +1,6 @@
 ---
 title: Page Object 与 Screenplay 模式
-description: 系统讲解 Page Object、Component Object、Screenplay 三种 GUI 自动化设计模式，把"流水账脚本"重构为可读、可复用、可演进的工程化代码，并给出 2024-2026 现代框架下的落地实践。
+description: 系统讲解 Page Object、Component Object、Screenplay 三种 GUI 自动化设计模式，把"流水账脚本"重构为可读、可复用、可演进的工程化代码，并给出当前主流框架（Playwright/Cypress/Selenium 4）下的落地实践。
 keywords: [Page Object, Screenplay, 设计模式, GUI 自动化, 可维护性]
 category: GUI自动化测试
 tags: [Page Object, Screenplay, Component Object, 设计模式, Playwright, Selenium]
@@ -450,7 +450,7 @@ App Actions 的本质是把"通过 UI 触发的应用内行为"直接暴露为�
 - **页面跳转返回目标 Page**：实现类型安全的页面流，编译期即可发现导航错误；
 - **Fixture 作用域最小化**：默认 `function` 作用域，仅会话级 Fixture 用 `worker`；
 - **混合 API/UI 策略**：数据准备用 API（快 10 倍），核心验证用 UI，缩短反馈周期；
-- **AI 辅助维护**：Playwright、Mabl 等工具已内置 AI 自愈定位器能力，可在元素属性漂移时自动重定位，配合 PO 使用可显著降低维护成本。
+- **AI 辅助维护**：Mabl 等商业工具内置 AI 自愈定位器，可在元素属性漂移时自动重定位；Playwright 本身无内置自愈引擎，靠 `getByRole` 等语义选择器 + auto-wait 覆盖大部分漂移场景，配合 PO 使用可显著降低维护成本。
 
 模式选型按项目特征组合：小型项目用薄 PO，中大型稳定项目用 PO + Component，复杂多角色业务用 Screenplay，混合场景用 API + UI 分层，而非盲目套用单一模式。
 

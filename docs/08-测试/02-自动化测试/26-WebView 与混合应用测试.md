@@ -8,7 +8,7 @@ tags: [WebView, Hybrid App, Appium, Chrome DevTools Protocol, CDP, React Native,
 
 # WebView 与混合应用测试
 
-混合应用（Hybrid App）在原生壳内嵌 WebView 渲染 H5 业务，是电商、金融、内容类 App 的主流形态。WebView 自动化测试的核心难点不在脚本本身，而在**调试通道的建立**与**原生-Web 上下文（Context）的切换**。旧文档基于 Chrome 44 + ChromeDriver 2.20 的方案早已失效，本文基于 Chrome 149 + chromedriver 自动下载 + Appium 3.5 + CDP 直连的现代体系重写，覆盖 Android / iOS 双端与 Cordova/Capacitor/React Native/Flutter 等主流混合框架。旧文档中所有 `images/` 图片引用与课程方标识均已移除。
+混合应用（Hybrid App）在原生壳内嵌 WebView 渲染 H5 业务，是电商、金融、内容类 App 的主流形态。WebView 自动化测试的核心难点不在脚本本身，而在**调试通道的建立**与**原生-Web 上下文（Context）的切换**。Chrome 44 + ChromeDriver 2.20 的旧式方案早已失效，本文基于 Chrome 149 + chromedriver 自动下载 + Appium 3.5 + CDP 直连的现代体系，覆盖 Android / iOS 双端与 Cordova/Capacitor/React Native/Flutter 等主流混合框架。
 
 > 前置知识:[Appium 3 架构与实战](23-Appium%203%20架构与实战)。
 
@@ -524,7 +524,7 @@ WebView 性能问题常见于首屏加载慢、JS 执行卡顿、内存泄漏。
 
 | 时间 | 里程碑 |
 |------|--------|
-| 2015 | Chrome 44 + ChromeDriver 2.20（旧文档方案，已淘汰） |
+| 2015 | Chrome 44 + ChromeDriver 2.20（历史上的 WebView 测试方案，已淘汰） |
 | 2018 | Chrome 70+ 强制 ChromeDriver 版本号同步 |
 | 2022 | Appium 2.0 Driver 插件化，ChromeDriver 独立安装 |
 | 2022 | Selenium 4.6 引入 Selenium Manager，自动管理 ChromeDriver |

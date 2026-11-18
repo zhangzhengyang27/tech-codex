@@ -1,6 +1,6 @@
 ---
 title: Mock Server 搭建与复用实践
-description: 从测试开发与平台工程视角系统讲解 Mock Server 工具实战：WireMock 3.x、MockServer 5.x、Mountebank、Prism 5.x 与 Postman Mock Server 的核心用法与选型决策树，覆盖 Schema 驱动 Mock、契约协同、AI 辅助生成、服务虚拟化与平台化治理。
+description: 从测试开发与平台工程视角讲解 Mock Server 工具实战：WireMock 3.x、MockServer 5.x、Mountebank、Prism 5.x 与 Postman Mock Server 的核心用法与选型决策树，覆盖 Schema 驱动 Mock、契约协同、AI 辅助生成、服务虚拟化与平台化治理。
 keywords: [Mock Server, WireMock, MockServer, Mountebank, Prism, OpenAPI, 契约测试]
 category: 测试开发与平台工程
 tags: [Mock Server, WireMock, MockServer, Mountebank, Prism, 契约测试, OpenAPI, 服务虚拟化, AI 辅助 Mock]
@@ -171,7 +171,7 @@ curl -X POST http://localhost:8080/__admin/recordings/stop
 
 ### JUnit 5 集成
 
-WireMock 通过 `@WireMockTest` 注解即可在测试中启动嵌入式实例并注册桩、执行 verify 断言。完整的接口测试级实战——JUnit 5 扩展写法、状态机场景（Scenario）、超时降级验证与调用次数断言——见《[服务虚拟化与 Mock Server](../02-自动化测试/12-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89.md)》4.1 节，此处不再重复。
+WireMock 通过 `@WireMockTest` 注解即可在测试中启动嵌入式实例并注册桩、执行 verify 断言。完整的接口测试级实战——JUnit 5 扩展写法、状态机场景（Scenario）、超时降级验证与调用次数断言——见《[服务虚拟化与 Mock Server（Mountebank/WireMock）](../02-自动化测试/12-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89.md)》"WireMock Java 实战"一节，此处不再重复。
 
 ::: tip 嵌入式还是独立部署
 嵌入式 WireMock 适合单测/集成测试；平台化场景应统一走独立部署（见上文"独立部署"）+ Git 管理的 mapping。
@@ -447,7 +447,7 @@ Mock Server 与测试环境一体化部署已成常态。典型模式是每个�
 
 ## 常见陷阱
 
-> "Mock 与真实行为脱节""过度 Mock""Mock 数据与契约不同步""忽视负向场景"等接口测试视角的误区剖析，见《[服务虚拟化与 Mock Server](../02-自动化测试/12-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89.md)》第五章，此处聚焦平台治理侧陷阱。
+> "Mock 与真实行为脱节""过度 Mock""Mock 数据与契约不同步""忽视负向场景"等接口测试视角的误区剖析，见《[服务虚拟化与 Mock Server（Mountebank/WireMock）](../02-自动化测试/12-%E6%9C%8D%E5%8A%A1%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%20Mock%20Server%EF%BC%88Mountebank-WireMock%EF%BC%89.md)》"常见误区"一节，此处聚焦平台治理侧陷阱。
 
 - **硬编码敏感数据**：录制流量时把真实手机号、身份证号写进 mapping。**对策**：录制后强制脱敏流水线，禁止未脱敏 mapping 入库。
 - **Mock 状态泄漏**：状态机 Mock 在用例间未重置，导致用例间隐式依赖。**对策**：每个测试用例后调用 `__admin/reset` 或重建 imposter。
@@ -460,7 +460,7 @@ Mock Server 与测试环境一体化部署已成常态。典型模式是每个�
 3. **录制 + 模板化**：录制真实流量作为基线，再人工模板化与参数化，平衡真实度与可维护性；
 4. **分层 Mock 策略**：单测用 Stub（轻量）、集成测试用 Mock Server（带 verify）、端到端用真实服务 + 少量 Mock（隔离不可控依赖）；
 5. **可观测性优先**：开启 Mock Server 的请求日志与命中率统计，定期审计"哪些 Mock 规则从未命中"以清理冗余；
-6. **环境隔离**：不同测试环境（DEV/STG/UAT）使用独立 Mock Server 实例，规则通过环境变量差异化配置，避免共用一份 mapping 导致冲突。
+6. **环境隔离**：不同测试环境（DEV/STG/PRE/PROD）使用独立 Mock Server 实例，规则通过环境变量差异化配置，避免共用一份 mapping 导致冲突。
 
 ## 延伸阅读
 

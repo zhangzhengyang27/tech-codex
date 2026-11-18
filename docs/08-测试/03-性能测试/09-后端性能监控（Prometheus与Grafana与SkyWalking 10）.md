@@ -202,7 +202,6 @@ PromQL 是 Prometheus 的查询语言，掌握下面几个常用模式即可覆�
 
 ```promql
 # 1. CPU 使用率：100 减去空闲率（按 5 分钟平均）
-# ignore(mode) 表示在相减时忽略 mode 标签
 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
 
 # 2. HTTP 接口 P99 延迟（直方图分位数）

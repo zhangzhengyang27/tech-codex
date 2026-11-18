@@ -145,7 +145,7 @@ npx lighthouse https://example.com \
   --throttling-method=simulate \
   --throttling.cpuSlowdownMultiplier=4
 
-# 输出 JSON 报告（lighthouse CLI 每次只跑一轮；多次运行取中位数需用 Lighthouse CI 的 numberOfRuns，见 7.1）
+# 输出 JSON 报告（lighthouse CLI 每次只跑一轮；多次运行取中位数需用 Lighthouse CI 的 numberOfRuns，见下文『lighthouserc.js 配置』）
 npx lighthouse https://example.com \
   --output=json \
   --output-path=./report.json

@@ -8,7 +8,7 @@ tags: [Selenium, WebDriver, W3C, BiDi, RelativeLocators]
 
 # Selenium 4 WebDriver 实战
 
-Selenium 是 Web 自动化测试领域历史最悠久、生态最完整的开源框架，由 IDE、Grid、WebDriver 三大组件构成，其中 WebDriver 是工程化测试的核心。本文基于 Selenium 4.42.0 梳理核心架构、环境搭建、WebDriver API 体系与 W3C 协议、Selenium Manager、Relative Locators、WebDriver BiDi 等 4.x 关键能力，并归纳从旧版本升级时需要规避的常见陷阱。旧文档中通过 `npm.taobao.org/mirrors/chromedriver` 手动下载驱动、Chrome 44 等内容均已被淘汰，不再保留。
+Selenium 是 Web 自动化测试领域历史最悠久、生态最完整的开源框架，由 IDE、Grid、WebDriver 三大组件构成，其中 WebDriver 是工程化测试的核心。本文基于 Selenium 4.42.0 梳理核心架构、环境搭建、WebDriver API 体系与 W3C 协议、Selenium Manager、Relative Locators、WebDriver BiDi 等 4.x 关键能力，并归纳从旧版本升级时需要规避的常见陷阱。
 
 > 前置知识:[GUI 自动化测试策略与 ROI](13-GUI%20自动化测试策略与%20ROI)。
 
@@ -101,7 +101,7 @@ Selenium 3 时代，Driver 之间使用 Selenium 自定义的 JSON Wire Protocol
 
 ### Selenium Manager 自动驱动管理
 
-Selenium 4.6 起内置 **Selenium Manager**，它会在创建 WebDriver 实例时自动探测本机浏览器版本，从官方 CDN 下载匹配的 Driver，并缓存到用户目录。旧文档中通过 `npm.taobao.org/mirrors/chromedriver` 手动下载驱动的做法已不再需要，且该镜像也已停用。Selenium Manager 的工作流程为：扫描本机浏览器版本 → 查询官方 Driver 版本矩阵 → 下载匹配版本到缓存目录 → 校验签名 → 自动设置启动路径。整个过程对开发者透明，无需任何配置。
+Selenium 4.6 起内置 **Selenium Manager**，它会在创建 WebDriver 实例时自动探测本机浏览器版本，从官方 CDN 下载匹配的 Driver，并缓存到用户目录。早期社区曾流行通过 `npm.taobao.org/mirrors/chromedriver` 手动下载驱动，该镜像现已停用，驱动统一由 Selenium Manager 自动下载管理。Selenium Manager 的工作流程为：扫描本机浏览器版本 → 查询官方 Driver 版本矩阵 → 下载匹配版本到缓存目录 → 校验签名 → 自动设置启动路径。整个过程对开发者透明，无需任何配置。
 
 ```text
 默认缓存路径：
@@ -151,7 +151,7 @@ pip install pytest==8.4.0
 | JDK | 17+ |
 | Python | 3.11+ |
 
-旧文档中提到的 Chrome 44 已严重过期，现代 Selenium 测试应以近一年的浏览器版本为基线，并优先验证 Headless 模式与新版渲染引擎的兼容性。
+现代 Selenium 测试应以近一年发布的浏览器版本为基线，并优先验证 Headless 模式与新版渲染引擎的兼容性。
 
 ## WebDriver 核心 API
 
@@ -344,11 +344,11 @@ Python 版本：
 
 ```python
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.relative_locator import with_tag
+from selenium.webdriver.support.relative_locator import locate_with
 
 password = driver.find_element(By.ID, "password")
-username = driver.find_element(with_tag("input").above(password))
-login_btn = driver.find_element(with_tag("button").below(password))
+username = driver.find_element(locate_with(By.TAG_NAME, "input").above(password))
+login_btn = driver.find_element(locate_with(By.TAG_NAME, "button").below(password))
 ```
 
 ### WebDriver BiDi 协议
@@ -405,7 +405,7 @@ BiDi 的工程价值在于：以前需要在浏览器里手动查看 console 排
 
 ### Selenium Manager 与 Grid 4
 
-- **Selenium Manager**：除本地 Driver 管理外，4.42 版本能识别 Edge、Firefox、Brave 等多种浏览器，并在浏览器升级后自动重新匹配 Driver，无需重新下载；旧文档中的"下载 Driver 并放入 PATH"流程已彻底废弃。
+- **Selenium Manager**：除本地 Driver 管理外，4.42 版本能识别 Edge、Firefox、Brave 等多种浏览器，并在浏览器升级后自动重新匹配 Driver，无需手动下载或配置 PATH。
 - **Grid 4 Distributed Mode**：完全重写的 Grid 架构，支持 Router / Distributor / Node / SessionQueue / EventBus 多角色分离部署，可在 K8s 上以分布式模式横向扩展。相比 Grid 3 的 Hub-Node 模式，Grid 4 的优势在于：SessionQueue 支持 FIFO 与优先级队列、Distributor 可独立扩容、EventBus（基于 JeroMQ/ZeroMQ 的自研轻量消息总线）解耦组件通信、原生支持 Docker 与 Helm 部署。在数千并发场景下，Grid 4 是稳定运行的唯一选择。
 
 ## 浏览器选项与能力

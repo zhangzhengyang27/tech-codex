@@ -8,7 +8,7 @@ tags: [Appium, 移动自动化, WebDriver, XCUITest, UIAutomator2, W3C]
 
 # Appium 3 架构与实战
 
-Appium 是目前移动端自动化测试领域生态最完整、跨平台能力最强的开源框架，原生支持 iOS、Android、Windows、macOS、浏览器与混合应用。本文基于 Appium 3.5.0 梳理其架构原理、版本演进、环境搭建、核心 API、Capabilities 体系、3.x 新特性与实战示例。旧文档中关于 Appium Desktop、Xcode 8、`DesiredCapabilities` 类、JSON Wire Protocol、`find_element_by_id` 等内容均已淘汰，不再保留。
+Appium 是目前移动端自动化测试领域生态最完整、跨平台能力最强的开源框架，原生支持 iOS、Android、Windows、macOS、浏览器与混合应用。本文基于 Appium 3.5.0 梳理其架构原理、版本演进、环境搭建、核心 API、Capabilities 体系、3.x 新特性与实战示例。
 
 > 前置知识:[移动应用测试方法（Web与Native与Hybrid与跨平台）](22-移动应用测试方法（Web与Native与Hybrid与跨平台）)。
 
@@ -450,6 +450,8 @@ import pytest
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class TestAndroidLogin:
     def setup_method(self):
@@ -464,11 +466,15 @@ class TestAndroidLogin:
         options.set_capability("appium:autoGrantPermissions", True)
         options.set_capability("appium:newCommandTimeout", 120)
         self.driver = webdriver.Remote("http://127.0.0.1:4723", options)
-        # 隐式等待，移动端建议 ≥ 15 秒
-        self.driver.implicitly_wait(15)
+        # 仅启动等待场景使用一次性显式等待：等首屏元素出现，之后不再设置全局隐式等待
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (AppiumBy.ACCESSIBILITY_ID, "username_input")
+            )
+        )
 
     def test_login_success(self):
-        # 通过 accessibility id 定位用户名输入框
+        # 显式等待优先：通过 accessibility id 定位，按条件等待关键元素
         username = self.driver.find_element(
             AppiumBy.ACCESSIBILITY_ID, "username_input"
         )
@@ -482,9 +488,11 @@ class TestAndroidLogin:
         username.send_keys("test_user")
         password.send_keys("P@ssw0rd123")
         login_btn.click()
-        # 断言登录成功后的欢迎语
-        welcome = self.driver.find_element(
-            AppiumBy.ACCESSIBILITY_ID, "welcome_label"
+        # 断言登录成功后的欢迎语（显式等待出现后再取值）
+        welcome = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(
+                (AppiumBy.ACCESSIBILITY_ID, "welcome_label")
+            )
         )
         assert welcome.text == "欢迎, test_user"
 
@@ -501,6 +509,8 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.AppiumBy;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.*;
 
 import java.net.URL;
@@ -522,7 +532,12 @@ public class iOSLoginTest {
             // 复用预编译的 WDA，避免每次启动重新编译
             .setUsePrebuiltWDA(true);
         driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        // 仅启动等待场景使用一次性显式等待：等首屏元素出现，之后不再设置全局隐式等待
+        new WebDriverWait(driver, Duration.ofSeconds(30)).until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.accessibilityId("username_input")
+            )
+        );
     }
 
     @Test
@@ -541,9 +556,11 @@ public class iOSLoginTest {
         password.sendKeys("P@ssw0rd123");
         loginBtn.click();
 
-        // 等待欢迎语出现并断言
-        WebElement welcome = driver.findElement(
-            AppiumBy.accessibilityId("welcome_label")
+        // 显式等待欢迎语出现并断言
+        WebElement welcome = new WebDriverWait(driver, Duration.ofSeconds(10)).until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.accessibilityId("welcome_label")
+            )
         );
         assert welcome.getText().equals("欢迎, test_user") :
             "登录失败，实际文案: " + welcome.getText();
@@ -560,7 +577,7 @@ public class iOSLoginTest {
 
 ## 常见陷阱
 
-- **隐式等待缺失**：移动端应用启动慢、网络延迟高，缺少隐式等待会导致首屏元素查找失败，建议设置为 15~30 秒；
+- **首屏等待缺失**：移动端应用启动慢、网络延迟高，首屏元素查找容易先于渲染完成而失败；应在会话建立后对首屏元素做一次性显式等待（WebDriverWait），而非配置全局隐式等待；
 - **xpath 滥用**：xpath 需要遍历整个 DOM 树，性能差且对 UI 变化敏感，应优先使用 accessibility id；
 - **`noReset` 误用**：`noReset=true` 会保留上一次登录状态，登录类用例之间需要主动清理，否则容易串数据；
 - **WDA 编译慢**：iOS 首次启动会重新编译 WebDriverAgent，CI 场景应使用 `usePrebuiltWDA=true` 配合预编译产物；
@@ -572,7 +589,7 @@ public class iOSLoginTest {
 
 - **统一元素标识**：研发在控件上设置 `accessibilityIdentifier`（iOS）和 `content-desc`（Android），使测试代码跨平台复用，这是降低维护成本最有效的手段；
 - **Page Object 模式**：将每个页面封装为独立类，测试用例只调用页面对象方法，UI 变化时只改一处，用例本身保持稳定；
-- **显式等待优先**：对关键元素使用 `WebDriverWait` 显式等待，避免隐式等待的全局副作用，二者混用会导致等待时间不可预测；
+- **显式等待优先**：对关键元素使用 `WebDriverWait` 显式等待，避免隐式等待的全局副作用，二者混用会导致等待时间不可预测；仅应用启动/首屏类场景使用一次性显式等待；
 - **Capability 分层**：基础 Capability 放在配置文件，环境相关 Capability（设备名、版本）通过环境变量注入，实现"一份代码多环境运行"；
 - **Session 复用**：同一测试类内复用 Session，类间清理状态，平衡启动开销与隔离性，移动端 Session 创建通常需要 10-30 秒，频繁创建会显著拖慢用例；
 - **CI 中预装 Agent**：将 WDA、UiAutomator2 Server 等设备端代理预装到基础镜像，避免每次 CI 运行重复安装，可以节省 30 秒以上的启动时间；

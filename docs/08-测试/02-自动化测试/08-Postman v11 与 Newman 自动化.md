@@ -1,6 +1,6 @@
 ---
 title: Postman v11 与 Newman 自动化
-description: 以 Postman v11（2024+）与 Newman v6 为核心，系统讲解 Collection 三层组织、Pre-request/Tests 脚本、变量体系、数据驱动、Newman CLI 自动化、CI/CD 集成、Mock Server、Flows 可视化编排与 AI Agent 等进阶能力，覆盖 2024-2026 API 测试新趋势
+description: 以 Postman v11（2024+）与 Newman v6 为核心，系统讲解 Collection 三层组织、Pre-request/Tests 脚本、变量体系、数据驱动、Newman CLI 自动化、CI/CD 集成、Mock Server、Flows 可视化编排与 AI Agent 等进阶能力
 keywords: [Postman v11, Newman v6, Collection, Pre-request Script, Tests Script, 数据驱动, CI/CD, Postman Flows, Mock Server, Postman API, AI Agent]
 category: API测试
 tags: [Postman, Newman, API自动化, CI/CD, Postman Flows]
@@ -208,7 +208,7 @@ Postman 的数据驱动机制以 Collection Runner / Newman 的迭代执行为�
 
 ### 数据文件格式
 
-Postman 支持通过 CSV 或 JSON 文件为 Collection Runner / Newman 提供迭代数据。每一行（或每一个对象）对应一次迭代，文件中的字段以 `data.字段名` 形式注入变量作用域。
+数据文件支持 CSV 与 JSON 两种格式：
 
 **users.csv**（适合大批量扁平数据，Excel 直接编辑）：
 
@@ -288,7 +288,7 @@ npm install -g newman-reporter-htmlextra
 
 ```bash
 # 基础执行：指定 Collection 与 Environment
-# -e：环境变量文件；-d：数据驱动文件；--iteration-count：迭代次数（与 -d 二选一）
+# -e：环境变量文件；-d：数据驱动文件；--iteration-count：迭代次数，省略时按数据文件行数执行
 # --folder：只执行指定 Folder；--env-var：命令行覆盖变量
 # --delay-request：请求间隔（ms），避免压垮被测系统；--timeout-request：单请求超时
 # --bail：失败即退出（CI 推荐）；--reporters：报告输出
@@ -333,7 +333,7 @@ Postman 官方在 2022 年推出 **Postman CLI**（命令 `postman`），定位�
 | 部署形态 | 纯开源 npm 包，离线可用 | 闭源二进制，需 Postman 账号 |
 | 认证 | 无 | API Key / OAuth |
 | Collection 源 | 本地 JSON 文件 | 本地 + 云端工作区 |
-| Flows 执行 | 不支持 | 支持 |
+| Flows 执行 | 不支持 | 不支持（仅 GUI / 触发 URL） |
 | 历史结果 | 仅本地报告 | 自动同步到 Postman 云端 |
 | CI 适配 | 离线、私有网络友好 | 需联网拉取云端资源 |
 | 自定义 Reporter | 支持（npm 包） | 不支持 |
@@ -513,12 +513,11 @@ Postman Flows 是 v11 引入的可视化 API 编排能力，用拖拽的 Block �
 - **Assert Block**：执行断言；
 - **Log Block**：输出调试信息。
 
-Flows 也可通过 Postman CLI 在 CI 中执行：
+Postman CLI 无法执行 Flows（`postman` 仅提供 `login`/`collection run`/`api run` 等子命令，没有 Flows 相关子命令）。在 CI 中执行 Flows 的官方方式是**触发 URL**：在 Flow 的设置中启用 Trigger Flow 后获得一个专属 URL，CI 作业以 HTTP POST 触发即可无头执行：
 
 ```bash
-# 执行 Flows（Postman CLI，需 Postman 账号认证）
-postman login --with-api-key $POSTMAN_API_KEY
-postman flow run <flow-id> --environment staging
+# 通过触发 URL 在 CI 中执行 Flows（在 Flow 设置中启用 Trigger Flow 后获得该 URL）
+curl -X POST "https://<your-flow-trigger-url>.postman.run"
 ```
 
 ### Postman API 编程式管理

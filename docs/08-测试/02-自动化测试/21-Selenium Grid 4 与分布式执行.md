@@ -1,6 +1,6 @@
 ---
 title: Selenium Grid 4 与分布式执行
-description: 从分布式执行的内在驱动出发，系统讲解 Selenium Grid 4.41 的 Distributed Mode 架构（Router/Distributor/SessionMap/Node 四组件解耦）、Standalone 与 Docker Compose 部署、Kubernetes 原生 Helm Chart 部署与 HPA 弹性伸缩、Selenoid 轻量替代方案、BrowserStack/Sauce Labs/LambdaTest 云测平台对比、TaaS 测试基础架构设计与大型电商落地案例，并归纳常见陷阱与最佳实践
+description: 从分布式执行的内在驱动出发，系统讲解 Selenium Grid 4.42 的 Distributed Mode 架构（Router/Distributor/SessionMap/Node 四组件解耦）、Standalone 与 Docker Compose 部署、Kubernetes 原生 Helm Chart 部署与 HPA 弹性伸缩、Selenoid 轻量替代方案、BrowserStack/Sauce Labs/LambdaTest 云测平台对比、TaaS 测试基础架构设计与大型电商落地案例，并归纳常见陷阱与最佳实践
 keywords: [Selenium Grid 4, Distributed Mode, Kubernetes, Helm Chart, Selenoid, BrowserStack, Sauce Labs, LambdaTest, TaaS, 分布式执行, 测试基础架构]
 category: GUI自动化测试
 tags: [GUI自动化, Selenium Grid, 分布式执行, Kubernetes, Selenoid, 云测平台, TaaS]
@@ -8,7 +8,7 @@ tags: [GUI自动化, Selenium Grid, 分布式执行, Kubernetes, Selenoid, 云�
 
 # Selenium Grid 4 与分布式执行
 
-当 GUI 自动化用例从几百条增长到上万条，"一台机器串行跑完"的方案会失效——构建队列堆积，回归测试从 30 分钟膨胀到 4 小时，发布窗口被一再压缩。分布式执行解决的是测试执行机与用例关系的透明调度问题。本文围绕 Selenium Grid 4.41 展开，覆盖 Distributed Mode 架构、容器化部署、Kubernetes 原生编排、轻量替代方案 Selenoid、云测平台选型，以及 TaaS 测试基础架构的落地实践。
+当 GUI 自动化用例从几百条增长到上万条，"一台机器串行跑完"的方案会失效——构建队列堆积，回归测试从 30 分钟膨胀到 4 小时，发布窗口被一再压缩。分布式执行解决的是测试执行机与用例关系的透明调度问题。本文围绕 Selenium Grid 4.42 展开，覆盖 Distributed Mode 架构、容器化部署、Kubernetes 原生编排、轻量替代方案 Selenoid、云测平台选型，以及 TaaS 测试基础架构的落地实践。
 
 > 前置知识:[Selenium 4 WebDriver 实战](14-Selenium%204%20WebDriver%20实战)。
 
@@ -36,7 +36,7 @@ Selenium Grid 正是为解决上述透明性问题而生。它的演进分为两
 | **Grid 3** | Hub-Node | Hub（单点）、Node | Hub 是单点瓶颈，无法水平扩展，宕机即全局不可用 |
 | **Grid 4** | Distributed Mode | Router、Distributor、SessionMap、Node（+Session Queue、Event Bus） | 组件更多，但可独立扩展、容错性强 |
 
-Grid 4 于 2021 年 10 月随 Selenium 4 正式发布，是一次完全重写，最新稳定版本为 **4.41.0**。Docker 镜像官方仓库也从 Docker Hub 迁移并同步至 GHCR（`ghcr.io/selenium/...`），缓解了 Docker Hub 拉取限流问题。
+Grid 4 于 2021 年 10 月随 Selenium 4 正式发布，是一次完全重写，当前最新稳定版为 **4.42.0**（与 [Selenium 4 WebDriver 实战](14-Selenium%204%20WebDriver%20实战) 一篇的版本基线一致）。Docker 镜像官方仓库也从 Docker Hub 迁移并同步至 GHCR（`ghcr.io/selenium/...`），缓解了 Docker Hub 拉取限流问题。
 
 ## Distributed Mode 架构：四核心组件
 
@@ -102,13 +102,13 @@ Grid 4 支持三种部署模式，对应不同规模场景：
 Standalone 模式下所有组件合并为单进程，一条命令即可启动，适合本地开发与调试：
 
 ```bash
-# 拉取 Grid 4.41.0 Standalone Chrome 镜像（GHCR 镜像源，避免 Docker Hub 限流）
-docker pull ghcr.io/selenium/standalone-chrome:4.41.0
+# 拉取 Grid 4.42.0 Standalone Chrome 镜像（GHCR 镜像源，避免 Docker Hub 限流）
+docker pull ghcr.io/selenium/standalone-chrome:4.42.0
 
 # 启动单容器 Grid（内置 Chrome 浏览器）
 docker run -d -p 4444:4444 -p 7900:7900 \
   --shm-size=2g \
-  ghcr.io/selenium/standalone-chrome:4.41.0
+  ghcr.io/selenium/standalone-chrome:4.42.0
 
 # 4444：WebDriver 端点；7900：noVNC 网页查看浏览器界面
 # 浏览器 http://localhost:4444/ui 查看 Grid 控制台
@@ -117,7 +117,7 @@ docker run -d -p 4444:4444 -p 7900:7900 \
 测试代码侧只需将 `RemoteWebDriver` 指向 Grid 入口：
 
 ```java
-// Selenium 4.41 + Java 示例
+// Selenium 4.42 + Java 示例
 ChromeOptions options = new ChromeOptions();  // Selenium 4 已废弃 DesiredCapabilities
 WebDriver driver = new RemoteWebDriver(
     new URL("http://localhost:4444/wd/hub"),  // 指向 Grid，而非具体测试机
@@ -131,11 +131,11 @@ WebDriver driver = new RemoteWebDriver(
 
 ```yaml
 # docker-compose.yml - Selenium Grid 4 Distributed Mode
-# 版本：Selenium 4.41.0，镜像源 GHCR
+# 版本：Selenium 4.42.0，镜像源 GHCR
 services:
   # 事件总线 - 组件间通信的基础
   selenium-event-bus:
-    image: ghcr.io/selenium/event-bus:4.41.0
+    image: ghcr.io/selenium/event-bus:4.42.0
     container_name: selenium-event-bus
     ports:
       - "4442:4442"   # 事件发布端口
@@ -144,7 +144,7 @@ services:
 
   # 会话队列 - 管理等待分配的会话请求
   selenium-session-queue:
-    image: ghcr.io/selenium/session-queue:4.41.0
+    image: ghcr.io/selenium/session-queue:4.42.0
     container_name: selenium-session-queue
     depends_on: [selenium-event-bus]
     environment:
@@ -154,7 +154,7 @@ services:
 
   # 会话映射 - 维护 Session ID 与 Node 的映射
   selenium-sessions:
-    image: ghcr.io/selenium/sessions:4.41.0
+    image: ghcr.io/selenium/sessions:4.42.0
     container_name: selenium-sessions
     depends_on: [selenium-event-bus]
     ports: ["5556:5556"]
@@ -165,7 +165,7 @@ services:
 
   # 分发器 - 将会话请求分配到合适的 Node
   selenium-distributor:
-    image: ghcr.io/selenium/distributor:4.41.0
+    image: ghcr.io/selenium/distributor:4.42.0
     container_name: selenium-distributor
     depends_on: [selenium-event-bus, selenium-sessions, selenium-session-queue]
     ports: ["5553:5553"]
@@ -180,7 +180,7 @@ services:
 
   # 路由器 - 系统入口，路由所有外部请求
   selenium-router:
-    image: ghcr.io/selenium/router:4.41.0
+    image: ghcr.io/selenium/router:4.42.0
     container_name: selenium-router
     depends_on: [selenium-distributor, selenium-sessions, selenium-session-queue]
     ports: ["4444:4444"]
@@ -194,7 +194,7 @@ services:
 
   # Chrome Node - 执行 Chrome 浏览器测试
   chrome-node:
-    image: ghcr.io/selenium/node-chrome:4.41.0
+    image: ghcr.io/selenium/node-chrome:4.42.0
     depends_on: [selenium-event-bus]
     environment:
       - SE_EVENT_BUS_HOST=selenium-event-bus
@@ -207,7 +207,7 @@ services:
 
   # Firefox Node - 执行 Firefox 浏览器测试
   firefox-node:
-    image: ghcr.io/selenium/node-firefox:4.41.0
+    image: ghcr.io/selenium/node-firefox:4.42.0
     depends_on: [selenium-event-bus]
     environment:
       - SE_EVENT_BUS_HOST=selenium-event-bus
@@ -310,7 +310,7 @@ spec:
     spec:
       containers:
       - name: selenium-node
-        image: ghcr.io/selenium/node-chrome:4.41.0
+        image: ghcr.io/selenium/node-chrome:4.42.0
         env:
         - name: SE_EVENT_BUS_HOST
           value: "selenium-event-bus.selenium-grid.svc.cluster.local"
@@ -405,7 +405,7 @@ K8s 部署相比 Docker Compose 带来三方面提升：**自愈能力**（Node 
 
 ### Selenoid 是什么
 
-Selenoid 是 Selenium Grid 的轻量级替代方案，用 Golang 编写，由 Aerokube 团队维护。它的核心特点是**完全 Docker 原生**：每个浏览器会话对应一个独立 Docker 容器，会话结束即销毁容器，环境天然隔离。
+Selenoid 是 Selenium Grid 的轻量级替代方案，用 Golang 编写，由 Aerokube 团队维护。它的核心特点是**完全 Docker 原生**：每个浏览器会话对应一个独立 Docker 容器，会话结束即销毁容器，环境天然隔离。需要注意的是，Selenoid 目前处于维护模式（Aerokube 官方重心已转向同门的商业产品 Moon），存量使用没有问题，新项目选型时可一并评估 Moon。
 
 ### Selenoid vs Grid 4
 
@@ -503,7 +503,7 @@ docker run -d --name selenoid -p 4444:4444 \
 - **Node 注册延迟导致首测失败**：Node 启动到向 Event Bus 注册有时间差，CI 中应在测试前增加 readiness probe 或重试逻辑；
 - **HPA 仅基于 CPU 误判**：浏览器测试 CPU 利用率往往不高但内存压力大，建议加入会话队列深度等自定义指标；
 - **Session 泄漏**：测试异常退出未调用 `driver.quit()`，Session 在 Node 上残留占用 Slot。建议设置 `SE_NODE_SESSION_TIMEOUT` 自动回收；
-- **镜像版本与 WebDriver 不匹配**：Selenium 4.41 镜像已内置对应版本 ChromeDriver，但若自行挂载浏览器版本需确保与 WebDriver 兼容。
+- **镜像版本与 WebDriver 不匹配**：Selenium 4.42 镜像已内置对应版本 ChromeDriver，但若自行挂载浏览器版本需确保与 WebDriver 兼容。
 
 ## 工程实践要点
 

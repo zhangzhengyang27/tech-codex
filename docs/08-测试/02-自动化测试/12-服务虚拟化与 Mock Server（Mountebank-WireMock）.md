@@ -15,7 +15,7 @@ tags: [服务虚拟化, Service Virtualization, Mock Server, WireMock, Mounteban
 
 本文系统阐述服务虚拟化的核心原理、WireMock 与 Mountebank 两大主流工具的实践、Mock 策略设计、以及与契约测试的关系。
 
-> **本文定位（分工卡）**：本文从 **API 测试视角**讲解服务虚拟化与 Mock Server——聚焦依赖解耦的测试设计、WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、verify 断言、故障注入）与契约测试衔接。Mock Server 工具横评与选型决策树、Schema 驱动 Mock、平台化治理（规则版本化、GitOps、AI 辅助生成）等测试开发与平台工程视角的内容，见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》。
+> **本文定位（分工卡）**：本文从 **API 测试视角**讲解服务虚拟化与 Mock Server——聚焦依赖解耦的测试设计、WireMock/Mountebank 在接口测试中的深度实战（状态机场景、超时降级、verify 断言、故障注入）与契约测试衔接。Mock Server 工具横评与选型决策树、Schema 驱动 Mock、平台化治理（规则版本化、GitOps、AI 辅助生成）等测试开发与平台工程视角的内容，见《[Mock Server 搭建与复用实践](../04-测试开发与前沿/07-Mock%20Server%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%A4%8D%E7%94%A8%E5%AE%9E%E8%B7%B5.md)》。
 
 ## 服务虚拟化核心概念
 
@@ -254,6 +254,10 @@ class PaymentServiceMockTest {
         .options(wireMockConfig().dynamicPort())
         .build();
 
+    // 被测服务地址：被测服务的支付网关 base-url 已配置为指向 WireMock（wireMock.baseUrl()），
+    // 因此被测服务发出的网关调用会命中本文设置的 stub 规则
+    static final String paymentServiceUrl = "http://localhost:8080";
+
     @Test
     void shouldReturnSuccessWhenPaymentApproved() {
         // 设置 Mock：模拟支付网关成功响应
@@ -287,7 +291,7 @@ class PaymentServiceMockTest {
 
     @Test
     void shouldHandlePaymentGatewayTimeout() {
-        // 模拟支付网关超时（延迟 10 秒，超过客户端超时）
+        // 模拟支付网关超时（延迟 10 秒，超过被测服务对网关的读超时阈值）
         wireMock.stubFor(post(urlPathEqualTo("/api/payments"))
             .willReturn(aResponse()
                 .withFixedDelay(10000)
@@ -295,14 +299,14 @@ class PaymentServiceMockTest {
                 .withBody("{}")
             ));
 
-        // 验证被测系统的超时处理与降级逻辑
+        // 请求发往被测服务端点（而非 WireMock）：被测服务调用网关超时后走降级逻辑
         given()
             .header("Content-Type", "application/json")
             .body("{\"orderId\":\"ord-002\",\"amount\":\"50.00\"}")
             .when()
-            .post(wireMock.baseUrl() + "/api/payments")
+            .post(paymentServiceUrl + "/api/payments")
             .then()
-            .statusCode(503)  // 被测服务应返回服务不可用
+            .statusCode(503)  // 被测服务降级返回服务不可用
             .body("error", containsString("timeout"));
     }
 
@@ -393,8 +397,7 @@ services:
   wiremock:
     image: wiremock/wiremock:3.10
     ports:
-      - "8080:8080"   # Mock 服务端口
-      - "8081:8081"   # 管理API端口
+      - "8080:8080"   # Mock 服务与 Admin API 端口（WireMock 默认同端口提供 /__admin）
     volumes:
       - ./mappings:/home/wiremock/mappings     # Stub 映射文件
       - ./__files:/home/wiremock/__files       # 响应体文件
@@ -492,7 +495,7 @@ curl -X POST http://localhost:2525/imposters -H 'Content-Type: application/json'
 }'
 ```
 
-接口测试中 Mountebank 最有价值的场景是**非 HTTP 协议验证**：例如创建 SMTP Imposter 模拟邮件服务器，测试用例触发"告警邮件"流程后，通过 `GET /smtp/4546/messages` 断言"邮件确实发出、主题与收件人正确"——这是 WireMock 无法覆盖的邮件类集成测试。imposter/stubs 模型、行为注入（`inject` 状态机）等更多细节见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第四章。
+接口测试中 Mountebank 最有价值的场景是**非 HTTP 协议验证**：例如创建 SMTP Imposter 模拟邮件服务器，测试用例触发"告警邮件"流程后，通过 `GET /smtp/4546/messages` 断言"邮件确实发出、主题与收件人正确"——这是 WireMock 无法覆盖的邮件类集成测试。imposter/stubs 模型、行为注入（`inject` 状态机）等更多细节见《[Mock Server 搭建与复用实践](../04-测试开发与前沿/07-Mock%20Server%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%A4%8D%E7%94%A8%E5%AE%9E%E8%B7%B5.md)》「Mountebank 实战」一节。
 
 ### Hoverfly 录制与回放
 
@@ -530,11 +533,11 @@ curl https://real-api.example.com/users  # 实际返回录制的响应
 | **Mockoon** | Electron | HTTP/HTTPS | 桌面 GUI、易用 | 本地开发调试 |
 | **Pact** | 多语言 | HTTP/HTTPS | 契约驱动 Mock | 微服务契约测试 |
 
-完整的选型决策树（含 Prism/MockServer/Postman 的分支判断）见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第五章。
+完整的选型决策树（含 Prism/MockServer/Postman 的分支判断）见《[Mock Server 搭建与复用实践](../04-测试开发与前沿/07-Mock%20Server%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%A4%8D%E7%94%A8%E5%AE%9E%E8%B7%B5.md)》「Prism 5.x 实战」一节。
 
 ## 常见误区
 
-> Mock 规则版本化、GitOps 同步、命中率审计等**平台化治理**层面的最佳实践，见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第八章；本节聚焦接口测试视角的典型误区。
+> Mock 规则版本化、GitOps 同步、命中率审计等**平台化治理**层面的最佳实践，见《[Mock Server 搭建与复用实践](../04-测试开发与前沿/07-Mock%20Server%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%A4%8D%E7%94%A8%E5%AE%9E%E8%B7%B5.md)》「治理要点」一节；本节聚焦接口测试视角的典型误区。
 
 ### Mock 与真实行为脱节
 
@@ -578,12 +581,12 @@ curl https://real-api.example.com/users  # 实际返回录制的响应
 
 ### AI 辅助 Mock 生成
 
-LLM 能从 OpenAPI 规范自动生成 WireMock/Mountebank 配置，能基于历史真实请求学习响应模式生成智能 Mock。AI 生成的 Mock 仍需人工校准，但能将 Mock 配置编写时间从小时级压缩到分钟级。"LLM 生成 → Schema 校验 → 入库"的完整工程流程见《[Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80.md)》第七章。
+LLM 能从 OpenAPI 规范自动生成 WireMock/Mountebank 配置，能基于历史真实请求学习响应模式生成智能 Mock。AI 生成的 Mock 仍需人工校准，但能将 Mock 配置编写时间从小时级压缩到分钟级。"LLM 生成 → Schema 校验 → 入库"的完整工程流程见《[Mock Server 搭建与复用实践](../04-测试开发与前沿/07-Mock%20Server%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%A4%8D%E7%94%A8%E5%AE%9E%E8%B7%B5.md)》「AI 辅助与平台化治理」一节。
 
 ## 延伸阅读
 
 - [微服务契约测试（Pact 与 Spring Cloud Contract）](11-微服务契约测试（Pact%20与%20Spring%20Cloud%20Contract）) —— 用契约文件驱动 Mock 配置
-- [Mock Server 必杀技](../04-测试开发与前沿/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80) —— 工具横评、Schema 驱动 Mock 与平台化治理
+- [Mock Server 搭建与复用实践](../04-测试开发与前沿/07-Mock%20Server%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%A4%8D%E7%94%A8%E5%AE%9E%E8%B7%B5) —— 工具横评、Schema 驱动 Mock 与平台化治理
 - [Postman v11 与 Newman 自动化](08-Postman%20v11%20与%20Newman%20自动化) —— Postman Mock Server 的轻量用法
 - [WireMock 官方文档](https://wiremock.org/docs/) —— Stub、状态机与故障注入参考
 - [Mountebank 官方文档](http://www.mbtest.org/docs) —— 多协议 Imposter 与行为注入参考

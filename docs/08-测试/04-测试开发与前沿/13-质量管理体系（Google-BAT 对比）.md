@@ -1,6 +1,6 @@
 ---
 title: 质量管理体系（Google/BAT 对比）
-description: 对比分析 Google SETI 模式与 BAT 质量管理体系：阿里的质量红线、腾讯星级测试、百度质量中台，系统讲解质量度量指标体系、质量分模型与质量文化落地实践，并澄清照搬大厂体系等常见误区
+description: 对比分析 Google SETI 模式与 BAT 质量管理体系：阿里的质量红线、腾讯星级测试、百度质量中台，覆盖质量度量指标体系、质量分模型与质量文化落地实践，并澄清照搬大厂体系等常见误区。
 keywords: [质量管理体系, Google SETI, 质量红线, 质量度量, 质量文化]
 category: 测试前沿与质量管理
 tags: [质量管理体系, Google测试, BAT测试, 质量文化, 质量度量]
@@ -104,7 +104,7 @@ quadrantChart
 | **测试角色** | 测试开发（测开一体化） | 测试工程师（T 级序列） | 测试工程师 + 质量架构师 |
 | **自动化重点** | 全链路压测平台 | 专项测试工具链 | 智能测试平台 |
 | **质量度量** | 红线指标 + 质量分 | 星级评定 + 缺陷率 | 质量看板 + 预测模型 |
-| **特色实践** | 影子库表全链路压测 | 代码质量平台 + CodeDoge | APM + 智能故障预测 |
+| **特色实践** | 影子库表全链路压测 | 代码质量平台 + CodeDog | APM + 智能故障预测 |
 | **组织架构** | 质量中台 + 业务线 QA | 质量委员会 + 各 BG 测试 | 质量平台部 + 业务 QA |
 
 ## 大厂质量体系实践
@@ -409,7 +409,10 @@ def calculate_quality_score(metrics: dict) -> QualityScore:
 ## 延伸阅读
 
 - [测试成熟度模型与演进](14-测试成熟度模型与演进) —— 组织级测试能力的分级评估
-- [测试报告体系与质量门禁](08-测试报告与团队影响力) —— 质量度量指标与发布门禁的落地
+- [测试报告体系与质量门禁](08-测试报告体系与质量门禁) —— 质量度量指标与发布门禁的落地
 - [测试覆盖率与质量门禁](../01-测试基础与流程/03-测试覆盖率与质量门禁) —— 代码级质量门禁设计
-- 图书：《How Google Tests Software》James Whittaker；《Software Engineering at Google》Titus Winters 等（含测试与质量章节）
-- 标准：ISO 9001 质量管理体系标准
+- 图书：《How Google Tests Software》（James Whittaker，Addison-Wesley）—— Google 测试角色分工与流程原典，可在出版社官网或书店检索
+- 图书：[Software Engineering at Google](https://abseil.io/resources/swe-book) —— Google 官方免费在线版，含测试与质量章节
+- 标准：[ISO 9001 质量管理体系](https://www.iso.org/iso-9001-quality-management.html) —— ISO 官方标准页
+- 案例：阿里技术博客质量体系系列文章 —— 可在阿里云开发者社区/淘系技术博客检索"质量"专题
+- 案例：腾讯 DevOps 与质量工程实践分享 —— 可在腾讯大讲堂与各技术大会实录中检索

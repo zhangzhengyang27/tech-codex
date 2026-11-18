@@ -1,0 +1,12 @@
+[
+ {
+  "source": "/docs/testing/04-%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91%E4%B8%8E%E5%89%8D%E6%B2%BF/07-Mock%20Server%20%E5%BF%85%E6%9D%80%E6%8A%80",
+  "destination": "/docs/testing/04-测试开发与前沿/07-Mock Server 搭建与复用实践",
+  "permanent": true
+ },
+ {
+  "source": "/docs/testing/04-%E6%B5%8B%E8%AF%95%E5%BC%80%E5%8F%91%E4%B8%8E%E5%89%8D%E6%B2%BF/08-%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%E4%B8%8E%E5%9B%A2%E9%98%9F%E5%BD%B1%E5%93%8D%E5%8A%9B",
+  "destination": "/docs/testing/04-测试开发与前沿/08-测试报告体系与质量门禁",
+  "permanent": true
+ }
+]

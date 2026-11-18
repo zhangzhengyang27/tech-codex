@@ -70,12 +70,12 @@ RUN curl -fsSL \
     https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.10/jmeter-plugins-manager-1.10.jar \
     -o ${JMETER_HOME}/lib/ext/jmeter-plugins-manager.jar
 
-# 压测脚本目录
+# 非 root 用户运行（先 mkdir/chown，再声明 VOLUME：VOLUME 之后的层内对挂载点的变更会被丢弃）
+RUN mkdir -p /scripts /results && useradd -m jmeter && chown -R jmeter:jmeter /opt /scripts /results
+
+# 压测脚本与结果目录（运行时通过 -v 挂载覆盖）
 VOLUME ["/scripts", "/results"]
 WORKDIR ${JMETER_HOME}
-
-# 非 root 用户运行（VOLUME 声明不会创建目录，需先 mkdir 否则 chown 会失败）
-RUN mkdir -p /scripts /results && useradd -m jmeter && chown -R jmeter:jmeter /opt /scripts /results
 USER jmeter
 
 # 入口：以 non-GUI 方式执行脚本
@@ -117,6 +117,8 @@ services:
   # JMeter Worker：实际产生压力，通过 -R 参数被 Master 调度
   jmeter-worker:
     image: perf/jmeter:5.6.3
+    entrypoint: ["jmeter"]         # 覆盖镜像默认的非 GUI 压测入口
+    command: -s                    # -s 启动 jmeter-server 模式，等待 Master 通过 -R 调度
     deploy:
       replicas: 3            # 横向扩展 3 个 Worker
       resources:
@@ -161,7 +163,7 @@ volumes:
 docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"
 ```
 
-`docker stats` 适合快速排查，但无法持久化与聚合，且只覆盖本机容器。压测过程中常见的排查场景——比如"第 15 分钟时 Worker 3 为什么吞吐掉了一半"——`docker stats` 无法回放。生产场景推荐使用 cAdvisor 自动采集容器指标，详见第五节"容器化性能监控"。
+`docker stats` 适合快速排查，但无法持久化与聚合，且只覆盖本机容器。压测过程中常见的排查场景——比如"第 15 分钟时 Worker 3 为什么吞吐掉了一半"——`docker stats` 无法回放。生产场景推荐使用 cAdvisor 自动采集容器指标，详见下文『容器监控：从 docker stats 到 cAdvisor』一节。
 
 ::: warning docker stats 的 CPU% 口径
 `docker stats` 显示的 CPU% 相对于宿主机总核数，而非 `limits.cpu`。被限制为 1 核的容器显示 100% 时实际已达到 limit 上限，但宿主机视角下可能只占 1/8。排查 Worker 瓶颈时注意这一口径差异。
@@ -228,7 +230,7 @@ metadata:
   name: jmeter-load-test
   namespace: perf-test
 spec:
-  # 并行运行的 Worker Pod 数量（HPA 不作用于 Job，弹性伸缩见 3.3 节）
+  # 并行运行的 Worker Pod 数量（HPA 不作用于 Job，弹性伸缩见下文『HPA 弹性伸缩 Worker』一节）
   parallelism: 5
   completions: 5
   backoffLimit: 2                # 失败重试次数
@@ -256,7 +258,7 @@ spec:
       volumes:
         - name: scripts
           configMap:
-            name: jmeter-scripts      # 见 3.4 节
+            name: jmeter-scripts      # 见下文『ConfigMap 管理压测脚本』一节
         - name: results
           emptyDir: {}
 ```

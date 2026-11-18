@@ -1,6 +1,6 @@
 ---
 title: 移动应用测试方法（Web与Native与Hybrid与跨平台）
-description: 系统阐述移动应用测试的核心挑战、四类应用（Web/Native/Hybrid/跨平台）测试策略、功能与非功能测试方法，并补充 2024-2026 跨平台框架测试、Visual Regression、AI 辅助测试与 5G/弱网测试等新趋势
+description: 系统阐述移动应用测试的核心挑战、四类应用（Web/Native/Hybrid/跨平台）测试策略、功能与非功能测试方法，并补充跨平台框架测试、Visual Regression、AI 辅助测试与 5G/弱网测试等新趋势
 keywords: [移动测试, Appium, XCUITest, UiAutomator2, Detox, Flutter integration_test, KMP, 视觉回归, AI辅助测试, 5G测试, 弱网测试]
 category: 移动端测试
 tags: [移动测试, Appium, 跨平台测试, 兼容性测试, 弱网测试, AI测试]
@@ -322,11 +322,11 @@ AI 在移动测试的应用已进入落地期：
 - **Testim Mobile / Mabl Mobile**：AI 驱动的自愈定位器，UI 变更后自动重定位元素。
 - **Appium AI 插件**：基于 LLM 的元素自然语言定位（如"登录按钮"），降低脚本维护成本。
 
-AI 辅助测试的核心价值不是"替代测试工程师"，而是**降低脚本维护成本与提升元素定位鲁棒性**，让团队能把更多资源投入到测试设计本身。
+AI 辅助测试的核心价值在于**降低脚本维护成本与提升元素定位鲁棒性**，让团队能把更多资源投入到测试设计本身；AI 承担辅助角色，测试设计仍由工程师主导。
 
 ### 5G 与新一代网络测试
 
-5G 不是"4G 的更快版"，而是 eMBB（高带宽）、uRLLC（低延迟高可靠）、mMTC（海量连接）三种场景的复合。**5G 测试需要模拟不同切片下的网络特性**，而非简单的带宽与延迟。Charles 2024+ 已内置 5G 预设，Network Link Conditioner 在 iOS 16+ 提供 5G 场景模板，QNET 支持 5G SA/NSA 模式切换。同时，**卫星通信**（iPhone 14+ 卫星 SOS、华为 Mate 60 卫星通话）的兴起也引入了"卫星-蜂窝"切换的边界测试场景。
+5G 是 eMBB（高带宽）、uRLLC（低延迟高可靠）、mMTC（海量连接）三种场景的复合，能力维度较 4G 有本质差异。**5G 测试需要模拟不同切片下的网络特性**，而非简单的带宽与延迟。Charles 2024+ 已内置 5G 预设，Network Link Conditioner 在 iOS 16+ 提供 5G 场景模板，QNET 支持 5G SA/NSA 模式切换。同时，**卫星通信**（iPhone 14+ 卫星 SOS、华为 Mate 60 卫星通话）的兴起也引入了"卫星-蜂窝"切换的边界测试场景。
 
 ## 常见陷阱
 

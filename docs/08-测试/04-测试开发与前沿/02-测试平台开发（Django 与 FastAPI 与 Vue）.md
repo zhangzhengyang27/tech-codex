@@ -1,6 +1,6 @@
 ---
 title: 测试平台开发（Django 与 FastAPI 与 Vue）
-description: 基于 Django 5.x LTS、FastAPI 0.115+ 与 Vue 3 系统讲解测试平台开发：用例管理、任务调度、执行引擎、报告展示与数据治理的中枢系统设计与实现。
+description: 基于 Django 5.x LTS、FastAPI 0.115+ 与 Vue 3 的测试平台开发实践：用例管理、任务调度、执行引擎、报告展示与数据治理的中枢系统设计与实现。
 keywords: [测试平台, Django, FastAPI, Vue, 平台开发]
 category: 测试开发与平台工程
 tags: [测试平台, FastAPI, Django, Vue3, K8s, WebSocket, 低代码, AI测试]
@@ -381,7 +381,7 @@ MeterPlus、Apifox、Datadog Synthetics 等持续吞噬中小团队的自建预�
 ## 延伸阅读
 
 - [测试开发技术栈选型](01-测试开发技术栈选型) —— 选型原则与决策树
-- [Mock Server 搭建与复用实践](07-Mock%20Server%20必杀技) —— 环境管理与 Mock 服务的平台化治理
+- [Mock Server 搭建与复用实践](07-Mock%20Server%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%A4%8D%E7%94%A8%E5%AE%9E%E8%B7%B5) —— 环境管理与 Mock 服务的平台化治理
 - [测试数据持久化与统一数据平台](05-测试数据持久化与统一数据平台) —— 数据管理模块的完整设计
 - [Docker 与 K8s 在性能测试中的应用](../03-性能测试/13-Docker%20与%20K8s%20在性能测试中的应用) —— 执行层容器化部署的展开
 - [Django 官方文档](https://docs.djangoproject.com/) —— ORM 与 Admin 官方参考

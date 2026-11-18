@@ -1,6 +1,6 @@
 ---
 title: Nginx 性能调优与负载均衡
-description: 基于 Nginx 1.27.x 稳定分支系统讲解 Nginx 性能调优（进程模型、连接优化、IO 模型、缓冲区、压缩）、六种负载均衡策略与主动/被动健康检查、HTTP/3（QUIC）支持、API 网关场景（限流、熔断、灰度发布）以及 OpenResty/Lua 扩展实践，并给出常见陷阱与最佳实践。
+description: 基于 Nginx 1.27.x 主线（mainline）分支系统讲解 Nginx 性能调优（进程模型、连接优化、IO 模型、缓冲区、压缩）、六种负载均衡策略与主动/被动健康检查、HTTP/3（QUIC）支持、API 网关场景（限流、熔断、灰度发布）以及 OpenResty/Lua 扩展实践，并给出常见陷阱与最佳实践。
 keywords: [Nginx, 负载均衡, HTTP/3, API 网关, OpenResty]
 category: 性能测试
 tags: [Nginx, 负载均衡, HTTP/3, API 网关, OpenResty]
@@ -8,7 +8,7 @@ tags: [Nginx, 负载均衡, HTTP/3, API 网关, OpenResty]
 
 # Nginx 性能调优与负载均衡
 
-Nginx 是现代架构的核心流量入口：HTTP/3（QUIC）已进入主线并稳定支持，动态模块机制让第三方扩展无需重编译主体，OpenResty 与 Lua 生态让它具备 API 网关所需的复杂逻辑处理能力。本文基于 Nginx 1.27.x 稳定分支（官方稳定分支已演进至 1.30.x），讲解其角色定位、性能调优、负载均衡策略、HTTP/3 支持、API 网关能力与 OpenResty 扩展实践。
+Nginx 是现代架构的核心流量入口：HTTP/3（QUIC）已进入主线并稳定支持，动态模块机制让第三方扩展无需重编译主体，OpenResty 与 Lua 生态让它具备 API 网关所需的复杂逻辑处理能力。本文基于 Nginx 1.27.x 主线（mainline）分支（官方稳定分支已演进至 1.30.x），讲解其角色定位、性能调优、负载均衡策略、HTTP/3 支持、API 网关能力与 OpenResty 扩展实践。
 
 ## Nginx 的角色定位
 
@@ -337,6 +337,9 @@ http {
     # 限流区域定义：基于客户端 IP，每秒 100 请求，突发 50
     # zone=api_rl:10m 表示用 10MB 内存存 IP 状态，约可记录 16 万个 IP
     limit_req_zone $binary_remote_addr zone=api_rl:10m rate=100r/s;
+    # 分级限流：rate 定义在 zone 上，不同速率的接口需分别定义 zone
+    limit_req_zone $binary_remote_addr zone=login_rl:10m rate=10r/s;
+    limit_req_zone $binary_remote_addr zone=search_rl:10m rate=200r/s;
     
     # 并发连接数限流：单 IP 同时最多 50 个连接
     limit_conn_zone $binary_remote_addr zone=conn_rl:10m;
@@ -354,16 +357,16 @@ http {
             proxy_pass http://backend;
         }
         
-        # 分级限流：不同接口不同速率
+        # 分级限流：不同接口引用各自的 zone
         location /api/login {
-            # 登录接口：每秒 10 请求，防止暴力破解
-            limit_req zone=api_rl burst=5 nodelay;
+            # 登录接口：login_rl zone 限速 10r/s，防止暴力破解
+            limit_req zone=login_rl burst=5 nodelay;
             proxy_pass http://backend;
         }
-        
+
         location /api/search {
-            # 搜索接口：每秒 200 请求
-            limit_req zone=api_rl burst=100 nodelay;
+            # 搜索接口：search_rl zone 限速 200r/s
+            limit_req zone=search_rl burst=100 nodelay;
             proxy_pass http://backend;
         }
     }
@@ -529,7 +532,7 @@ Nginx Plus 是商业版本，在以下场景有显著优势：
 
 ### 实践清单
 
-1. **版本锁定**：生产环境使用 1.27.x 稳定分支，避免使用 mainline 主线版本（注：截至 2026-09，1.27 分支已从官网下架停止维护，当前 stable 为 1.30.x，新部署建议评估升级）；
+1. **版本锁定**：生产环境应使用偶数次版本号的稳定分支（当前 stable 为 1.30.x），避免使用奇数次版本号的主线（mainline）分支；本文示例基于 1.27.x 主线分支，截至 2026-09 该分支已从官网下架停止维护，新部署建议评估升级；
 2. **配置即代码**：nginx.conf 纳入 Git 管理，CI 自动校验 `nginx -t`，变更通过 CI/CD 滚动 reload；
 3. **监控指标**：`active connections`、`accepts/handled/requests`、`reading/writing/waiting`、`upstream_response_time` 等指标接入 Prometheus，配合 `nginx_exporter`；
 4. **日志结构化**：使用 `log_format` 输出 JSON，便于 ELK/Loki 解析，关键字段：`$request_time`、`$upstream_response_time`、`$upstream_addr`、`$status`；

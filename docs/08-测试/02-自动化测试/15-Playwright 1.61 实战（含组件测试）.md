@@ -1,6 +1,6 @@
 ---
 title: Playwright 1.61 实战（含组件测试）
-description: 基于 Playwright 1.61 系统讲解核心概念、环境搭建、定位器与断言、自动等待、网络拦截、组件测试与工程化实践，覆盖 Chromium/Firefox/WebKit 跨浏览器测试。
+description: 基于 Playwright 1.61 系统讲解核心概念、环境搭建、定位器与断言、自动等待、组件测试与工程化实践，覆盖 Chromium/Firefox/WebKit 跨浏览器测试。
 keywords: [Playwright, E2E 测试, GUI 自动化, 组件测试, 跨浏览器]
 category: GUI自动化测试
 tags: [Playwright, E2E, 组件测试, TypeScript, CI/CD, Trace Viewer]
@@ -437,7 +437,7 @@ test('透传 props 与事件', async ({ mount }) => {
 
 ### Video 模式增强
 
-1.61 重构了视频录制策略，新增三种粒度模式，可精确控制磁盘占用与排障价值的平衡：
+1.61 的视频录制策略提供六种粒度模式，可精确控制磁盘占用与排障价值的平衡：
 
 | 模式 | 行为 | 适用场景 |
 |------|------|---------|
@@ -445,7 +445,6 @@ test('透传 props 与事件', async ({ mount }) => {
 | `on-first-retry` | 仅首次重试时录制 | 排查"重试后通过"的用例 |
 | `retain-on-failure` | 仅失败用例保留视频 | 推荐：失败可回放、成功不占盘 |
 | `retain-on-first-failure` | 仅首次失败保留 | 节省磁盘，避免重试重复录制 |
-| `retain-on-failure-and-retries` | 失败及其重试均保留 | 排查重试后偶发成功 |
 | `on-all-retries` | 所有重试都录制 | 重试行为分析 |
 
 ```typescript
@@ -455,7 +454,7 @@ use: {
 }
 ```
 
-旧版本仅有 `off / on / retain-on-failure / retain-on-first-failure` 四种；1.61 新增 `on-first-retry / on-all-retries / retain-on-failure-and-retries` 三种粒度，让大型测试套件的 CI 存储成本可控。
+至此 1.61 集齐了 `off / on / retain-on-failure / retain-on-first-failure / on-first-retry / on-all-retries` 六种 video 模式，从全量录制到按重试粒度保留均可表达，让大型测试套件的 CI 存储成本可控。
 
 ### UI Mode
 
@@ -588,7 +587,7 @@ npx playwright merge-reports --reporter html ./blob-report
 - **失败可观测**：默认开启 `trace: 'on-first-retry'`、`screenshot: 'only-on-failure'`、`video: 'retain-on-first-failure'`，在磁盘成本与排障效率间取得平衡；
 - **定期清理 Trace**：CI 中 `retention-days` 设为 7-14 天，避免对象存储膨胀。
 
-Playwright 1.61 的基线能力由 auto-waiting、web-first assertions、测试隔离与 Trace Viewer 构成，组件测试填补单元测试与 E2E 之间的断层，新的 video 模式细化了 CI 可观测性。落地时遵循测试金字塔分层、Fixture 注入共享逻辑、断言单一职责，可避免 flaky 侵蚀套件可信度。
+Playwright 1.61 的基线能力由 auto-waiting、web-first assertions、测试隔离与 Trace Viewer 构成，组件测试填补单元测试与 E2E 之间的断层，video 模式细化了 CI 可观测性。落地时遵循测试金字塔分层、Fixture 注入共享逻辑、断言单一职责，可避免 flaky 侵蚀套件可信度。
 
 ## 延伸阅读
 

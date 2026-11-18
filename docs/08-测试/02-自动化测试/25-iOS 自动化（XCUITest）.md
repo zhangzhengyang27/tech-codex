@@ -8,7 +8,7 @@ tags: [iOS, XCUITest, Swift Testing, Xcode 16, Appium, Xcode Cloud]
 
 # iOS 自动化（XCUITest）
 
-XCUITest 自 Xcode 8 引入后完成了从 UIAutomation 的彻底切换，至今是 Apple 平台 UI 测试的事实标准。本文基于 Xcode 16 / Swift 6 梳理 iOS 自动化的框架全景、XCUITest API 体系、手势与异步等待、Swift Testing、Appium XCUITest driver 封装与 Xcode Cloud CI/CD。旧文档以 Appium + Xcode 8 为背景、依赖 WDA 编译与 Python 2 的内容已不再适用，不再保留。
+XCUITest 自 Xcode 8 引入后完成了从 UIAutomation 的彻底切换，至今是 Apple 平台 UI 测试的事实标准。本文基于 Xcode 16 / Swift 6 梳理 iOS 自动化的框架全景、XCUITest API 体系、手势与异步等待、Swift Testing、Appium XCUITest driver 封装与 Xcode Cloud CI/CD。
 
 > 前置知识:[Appium 3 架构与实战](23-Appium%203%20架构与实战)。
 
@@ -68,7 +68,7 @@ XCUITest 是 XCTest 框架的子模块（`import XCTest`），专门用于 UI �
 
 ### Xcode 8 → Xcode 16 的关键演进
 
-| 维度 | Xcode 8（2016） | Xcode 16（2026） |
+| 维度 | Xcode 8（2016） | Xcode 16（2024） |
 |------|----------------|-----------------|
 | UI 测试框架 | XCUITest 初版 | XCUITest 成熟期 + Swift Testing 协同 |
 | 测试语言 | Swift 3 | Swift 6（严格并发） |

@@ -1,6 +1,6 @@
 ---
 title: Linux 与 Shell 测试开发必备
-description: 从测试开发真实场景出发，系统梳理 2024-2026 主流工具链下的 Linux/Shell 技能矩阵、环境部署、日志排查、性能定位、CI 脚本与网络抓包实战，并给出 Shell 与 Python 的协作边界。
+description: 从测试开发真实场景出发，系统梳理主流工具链下的 Linux/Shell 技能矩阵、环境部署、日志排查、性能定位、CI 脚本与网络抓包实战，并给出 Shell 与 Python 的协作边界。
 keywords: [Linux, Shell, 测试开发, CI 脚本, 日志排查]
 category: 测试开发与平台工程
 tags: [Linux, Shell, 日志分析, 网络调试, eBPF, Kubernetes, CI/CD]

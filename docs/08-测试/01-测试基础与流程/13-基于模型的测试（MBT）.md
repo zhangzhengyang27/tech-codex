@@ -302,7 +302,7 @@ public class OrderTest implements OrderLifecycle {
 | 工具 | 模型类型 | 语言生态 | 特点 |
 | --- | --- | --- | --- |
 | **Graphwalker** | 状态机/JSON | Java/Python | 开源、轻量、CI 友好 |
-| **Spec Explorer** | 状态机/契约 | .NET | 微软出品、Visual Studio 集成 |
+| **Spec Explorer** | 状态机/契约 | .NET | 微软出品、Visual Studio 集成（已停止维护） |
 | **Conformiq** | 状态机/UML | Java/多语言 | 商业、企业级、自动生成代码 |
 | **ModelJUnit** | 状态机 | Java | 学术、JUnit 集成 |
 | **PyModel** | 状态机 | Python | 学术、轻量 |

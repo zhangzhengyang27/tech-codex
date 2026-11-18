@@ -625,7 +625,7 @@ class StepLoadShape(LoadTestShape):
 | **测试数据被并发消费** | 用户登录失败、数据冲突 | `on_start` 中读取的共享数据需用 `itertools.cycle` 或分片；分布式下每个 Worker 独立加载，需通过环境变量等节点标识分片 |
 | **忘记设置 wait_time** | RPS 异常高、服务被打爆 | 默认 `wait_time=0` 会让用户全速请求；务必显式设置 `between` 或 `constant_pacing` |
 | **业务逻辑写在 task 外** | 数据未初始化、报 KeyError | 依赖 `on_start` 初始化的状态必须在 `on_start` 中完成；类变量在分布式下每个 Worker 独立 |
-| **GIL 与 gevent 不兼容库** | 协程阻塞、并发骤降 | 避免使用阻塞型库（如 `psycopg2` 同步驱动），改用 `psycopg2-binary` 配合 `gevent.monkey.patch_all()` 或 `asyncpg` |
+| **GIL 与 gevent 不兼容库** | 协程阻塞、并发骤降 | 避免在协程内使用阻塞型 C 驱动（如 `psycopg2` 同步驱动，`psycopg2-binary` 亦是同步驱动）；可配 `psycogreen` 对等待点打补丁、改用对 gevent 友好的驱动或 `asyncpg` |
 | **DNS 解析阻塞** | 大量用户启动时延迟突增 | 启动前预热 DNS（`on_start` 中先请求一次），或使用 IP 直连 + Host 头 |
 | **Master 单点性能瓶颈** | Worker 多时 Web UI 卡顿 | Master 仅做调度，不要在 Master 上产生负载；指标聚合压力大时精简实时统计输出（如 `--only-summary`） |
 | **CSV 数据量不足** | 部分用户拿到空数据 | 数据量应不少于 `users × 重复次数`；或使用随机生成策略 |

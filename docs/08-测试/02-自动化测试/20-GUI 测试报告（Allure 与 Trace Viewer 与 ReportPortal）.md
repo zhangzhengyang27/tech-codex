@@ -1,6 +1,6 @@
 ---
 title: GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）
-description: 从受众差异化出发，系统讲解 Allure 报告（含 TestOps 企业版）、Playwright Trace Viewer v1.61、ReportPortal 实时报告与 AI 失败分析、HTML/自定义报告、CI/CD 集成与 2024-2026 AI 报告分析、Grafana 测试看板等新趋势
+description: 从受众差异化出发，系统讲解 Allure 报告（含 TestOps 企业版）、Playwright Trace Viewer v1.61、ReportPortal 实时报告与 AI 失败分析、HTML/自定义报告、CI/CD 集成与 AI 报告分析、Grafana 测试看板等新趋势
 keywords: [GUI测试报告, Allure, Allure TestOps, Playwright Trace Viewer, ReportPortal, AI失败分析, Grafana测试看板, CI/CD报告]
 category: GUI自动化测试
 tags: [GUI自动化, 测试报告, Allure, Trace Viewer, ReportPortal, AI分析, CI/CD]
@@ -413,7 +413,8 @@ e2e-test:
   image: mcr.microsoft.com/playwright:v1.61-jammy
   script:
     - npm ci
-    - npx playwright test --reporter=junit,html
+    # PLAYWRIGHT_JUNIT_OUTPUT_NAME 指定 junit reporter 落盘文件，供 artifacts:reports:junit 消费
+    - PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit,html
   artifacts:
     when: always
     paths:
@@ -486,7 +487,7 @@ ReportPortal 的实时收集模式正在成为大型测试集的标准配置。�
 ## 延伸阅读
 
 - [Playwright 1.61 实战（含组件测试）](15-Playwright%201.61%20实战（含组件测试）) —— trace 配置与 reporter 的框架上下文
-- [测试报告与团队影响力](../04-测试开发与前沿/08-测试报告与团队影响力) —— 报告对团队与组织的影响力视角
+- [测试报告体系与质量门禁](../04-测试开发与前沿/08-测试报告体系与质量门禁) —— 质量度量指标与发布门禁的落地
 - [AI 辅助测试（LLM 生成用例-Copilot for Tests）](../04-测试开发与前沿/10-AI%20辅助测试（LLM%20生成用例-Copilot%20for%20Tests）) —— AI 在测试链路中的其他落地
 - [Allure 官方文档](https://allurereport.org/docs/) —— 注解体系与各框架适配器说明
 - [ReportPortal 文档](https://reportportal.io/docs) —— 部署、集成与 AI 分析配置指南

@@ -1,6 +1,6 @@
 ---
 title: TDD 红-绿-重构循环
-description: 系统讲解测试驱动开发（TDD）的核心理念、Robert Martin 三定律与红-绿-重构循环，给出 JUnit 5 与 pytest 的逐步演示，并覆盖 TDD 与重构、BDD/ATDD 三层关系，以及 2024-2026 AI 辅助 TDD、Property-Based Testing、Mutation Testing、微服务 TDD 等新趋势
+description: 系统讲解测试驱动开发（TDD）的核心理念、Robert Martin 三定律与红-绿-重构循环，给出 JUnit 5 与 pytest 的逐步演示，并覆盖 TDD 与重构、BDD/ATDD 三层关系，以及 AI 辅助 TDD、Property-Based Testing、变异测试与微服务 TDD 等延伸实践
 keywords: [TDD, 红绿重构, Robert Martin 三定律, JUnit 5, pytest, BDD, ATDD, Property-Based Testing, Mutation Testing, AI 辅助 TDD]
 category: 单元测试与代码级测试
 tags: [TDD, 红绿重构, JUnit5, pytest, BDD, ATDD, Property-Based Testing, Mutation Testing]
@@ -387,7 +387,7 @@ def test_结果长度不超过8(n):
 - **服务虚拟化**：**WireMock / Mountebank** 在 CI 中模拟第三方 HTTP/gRPC 服务，让 TDD 循环不被外部依赖卡住；
 - **事件驱动**：对 Kafka/NATS 消息流，使用 `EmbeddedKafka` 或 Testcontainers + `awaitility` 编写"消息级"红绿循环。
 
-测试金字塔在微服务下被重塑为"测试奖杯"——大量契约测试 + 单元测试，少量端到端测试，强调反馈速度。
+测试金字塔在微服务下常演进为"菱形"（契约/集成层为重心）——大量契约与集成测试，少量端到端测试，强调反馈速度。
 
 ## 陷阱与工程实践
 

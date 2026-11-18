@@ -232,10 +232,10 @@ public class GrpcSampler extends AbstractJavaSamplerClient {
 
 ### 自定义函数助手
 
-函数助手用于在脚本中通过 `${__funcName(arg)}` 调用，常用于生成测试数据（手机号、身份证号、UUID 等）。开发时需特别注意：**类所在包名必须以 `functions` 结尾**，否则 JMeter 的函数扫描器无法识别。
+函数助手用于在脚本中通过 `${__funcName(arg)}` 调用，常用于生成测试数据（手机号、身份证号、UUID 等）。开发时需特别注意：**类所在包名需包含 `.functions.`**（由 JMeter 的 `classfinder.functions.contain` 扫描规则决定，如 `com.example.functions` 或 `com.functions.example` 均可），否则 JMeter 的函数扫描器无法识别。
 
 ```java
-package com.example.functions;  // 包名必须以 functions 结尾
+package com.example.functions;  // 包名需包含 .functions.
 
 import org.apache.jmeter.engine.util.CompoundVariable;
 import org.apache.jmeter.functions.AbstractFunction;
@@ -247,7 +247,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-/** 自定义函数：${__PhoneNo()} 随机生成 11 位手机号 */
+/** 自定义函数：${__PhoneNo()} 随机生成 11 位手机号；${__PhoneNo(138)} 生成以 138 开头的 11 位手机号 */
 public class PhoneNoFunction extends AbstractFunction {
 
     private static final String KEY = "__PhoneNo";
@@ -256,17 +256,23 @@ public class PhoneNoFunction extends AbstractFunction {
         DESC.add("前缀（可选），如 138");
     }
 
+    private CompoundVariable prefix;  // 可选前缀参数
+
     @Override
     public String execute(SampleResult prev, Sampler sampler) {
-        String prefix = "1" + (3 + (int)(Math.random() * 6));  // 第二位 3~8，即 13~18 号段
-        StringBuilder sb = new StringBuilder(prefix);
-        for (int i = 0; i < 9; i++) sb.append((int)(Math.random() * 10));
+        // 未传前缀时随机生成号段：第一位 1，第二位 3~8，即 13~18 号段
+        String head = (prefix != null && !prefix.execute().isEmpty())
+                ? prefix.execute()
+                : "1" + (3 + (int)(Math.random() * 6));
+        StringBuilder sb = new StringBuilder(head);
+        for (int i = head.length(); i < 11; i++) sb.append((int)(Math.random() * 10));
         return sb.toString();
     }
 
     @Override
     public void setParameters(Collection<CompoundVariable> args) throws InvalidVariableException {
-        // 入参校验，本例无强制参数
+        checkParameterCount(args, 0, 1);  // 入参校验：0 或 1 个参数
+        prefix = args.isEmpty() ? null : args.iterator().next();
     }
 
     @Override
@@ -448,7 +454,7 @@ flowchart TB
 
 ### 整体分层
 
-现代压测平台普遍采用"前后端分离 + 任务调度 + 弹性执行层 + 实时监控"的四层架构（见上图）。相比旧文档中"Java 后端 + Vue 前端 + JMeter Engine 单机调用"的简单形态，当前主流架构在执行层引入了 K8s 弹性调度，在监控层引入了时序数据库与流计算，使平台具备多租户、高并发、长时压测的能力。技术选型上：
+现代压测平台普遍采用"前后端分离 + 任务调度 + 弹性执行层 + 实时监控"的四层架构（见上图）。相比早期"Java 后端 + Vue 前端 + JMeter Engine 单机调用"的简单形态，当前主流架构在执行层引入了 K8s 弹性调度，在监控层引入了时序数据库与流计算，使平台具备多租户、高并发、长时压测的能力。技术选型上：
 
 - **前端**：Vue3 + TypeScript + ECharts，或 React + AntV，提供脚本编辑（Monaco Editor）、压测配置、实时大盘；
 - **后端**：Spring Boot 3（JDK 17，Jakarta EE 9+）或 Python FastAPI，对外提供 REST/gRPC 接口；
@@ -523,7 +529,7 @@ JMeter 二次开发与平台建设过程中，陷阱往往不在 API 用法本�
 
 ### 自定义组件陷阱
 
-- **函数助手包名不以 `functions` 结尾**：JMeter 启动时不会扫描到该类，函数下拉框中不显示，且无任何错误日志；
+- **函数助手包名未包含 `.functions.`**：JMeter 启动时不会扫描到该类，函数下拉框中不显示，且无任何错误日志；
 - **Java Sampler 中创建连接未在 `teardownTest` 关闭**：高并发下会迅速耗尽目标系统连接池；
 - **`sampleStart/sampleEnd` 不成对**：极端情况下 `try` 中提前 `return` 会导致 RT 统计异常；
 - **JAR 与 JMeter 自带依赖版本冲突**：如 `httpclient`、`slf4j`，建议统一使用 `provided` scope。

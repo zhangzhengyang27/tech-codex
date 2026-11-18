@@ -61,7 +61,7 @@ flowchart TB
 
 ### 部署 Redis 8.8
 
-旧文档中 `docker pull redis` 未指定标签，在生产环境会导致版本漂移。Redis 8.8 应明确指定版本：
+`docker pull redis` 不指定标签在生产环境会导致版本漂移。Redis 8.8 应明确指定版本：
 
 ```bash
 # 拉取 Redis 8.8 GA 镜像（明确版本，避免 latest 漂移）
@@ -246,7 +246,7 @@ Redis 8.8 新增 INCREX 命令，内置窗口计数语义，相比纯 Lua 实现
 ```
 # 窗口 1 秒、阈值 100 的限流计数
 # INCREX key BYINT <增量> UBOUND <阈值> EX <窗口秒数> ENX
-INCREX ratelimit:uid_1001 BYINT 1 UBOUND 100 EX 1000 ENX
+INCREX ratelimit:uid_1001 BYINT 1 UBOUND 100 EX 1 ENX
 # 返回 [当前计数值, 本次实际增量] 二元数组；实际增量为 0 表示已达上限被限流
 ```
 

@@ -1,6 +1,6 @@
 ---
 title: 渗透测试与 DevSecOps
-description: 系统讲解安全测试分层体系、渗透测试方法论与 OWASP Top 10（2025）防御、DevSecOps CI/CD 集成与威胁建模流程，覆盖 Semgrep SAST、OWASP ZAP DAST 与 SQL 注入实战，并澄清安全测试的常见误区
+description: 覆盖安全测试分层体系、渗透测试方法论与 OWASP Top 10（2025）防御、DevSecOps CI/CD 集成与威胁建模流程的实践指南，包含 Semgrep SAST、OWASP ZAP DAST 与 SQL 注入实战，并澄清安全测试的常见误区。
 keywords: [渗透测试, DevSecOps, OWASP, SAST, DAST, 威胁建模]
 category: 测试前沿与质量管理
 tags: [渗透测试, DevSecOps, 安全测试, OWASP, SAST/DAST]
@@ -8,7 +8,7 @@ tags: [渗透测试, DevSecOps, 安全测试, OWASP, SAST/DAST]
 
 # 渗透测试与 DevSecOps
 
-**渗透测试**（Penetration Testing，简称 Pentest）是模拟真实攻击者视角的安全测试方法——通过主动寻找并利用系统漏洞，评估系统的安全防御能力。**DevSecOps** 是将安全实践融入 DevOps 全流程的理念——安全不再是上线前的"安检关卡"，而是贯穿开发、测试、部署、运维的持续活动。在《数据安全法》《个人信息保护法》、欧盟 GDPR 等法规约束下，安全测试是合规必需品。本文系统阐述渗透测试方法论、DevSecOps 工具链集成、OWASP Top 10 防御实践，以及安全测试的自动化策略。
+**渗透测试**（Penetration Testing，简称 Pentest）是模拟真实攻击者视角的安全测试方法——通过主动寻找并利用系统漏洞，评估系统的安全防御能力。**DevSecOps** 是将安全实践融入 DevOps 全流程的理念——安全不再是上线前的"安检关卡"，而是贯穿开发、测试、部署、运维的持续活动。在《数据安全法》《个人信息保护法》、欧盟 GDPR 等法规约束下，安全测试是合规必需品。本文覆盖渗透测试方法论、DevSecOps 工具链集成、OWASP Top 10 防御实践，以及安全测试的自动化策略。
 
 ## 安全测试方法论
 
@@ -385,5 +385,6 @@ AI 驱动的安全测试正在兴起——LLM 能从代码模式推断安全漏�
 - [测试工程师的非测试知识（架构-K8s-DevOps）](../01-测试基础与流程/06-测试工程师的非测试知识（架构-K8s-DevOps）) —— DevSecOps 所依赖的工程背景
 - [混沌工程与故障注入](12-混沌工程与故障注入) —— 运行时韧性与故障演练
 - [OWASP Top 10](https://owasp.org/Top10/) —— Web 安全风险权威清单；配套 OWASP WSTG v4.2 与 PTES（pentest-standard.org）
-- 图书：《The Web Application Hacker's Handbook》Dafydd Stuttard
-- 工具与认证：OWASP ZAP（zaproxy.org）、OSCP（Offensive Security Certified Professional）
+- 图书：《The Web Application Hacker's Handbook》（Dafydd Stuttard，Wiley）—— Web 渗透测试经典教程，可在出版社官网或书店检索配套资源
+- 工具：[OWASP ZAP](https://www.zaproxy.org/) —— 开源 DAST 扫描器官方网站（Zed Attack Proxy）
+- 认证：[OSCP](https://www.offsec.com/) —— OffSec 官方渗透测试认证（Offensive Security Certified Professional）

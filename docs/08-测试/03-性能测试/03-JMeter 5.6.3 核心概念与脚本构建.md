@@ -8,7 +8,7 @@ tags: [JMeter, 性能测试, 压测工具]
 
 # JMeter 5.6.3 核心概念与脚本构建
 
-Apache JMeter 是使用最广泛的开源性能测试工具之一，覆盖 HTTP/HTTPS、FTP、JDBC、JMS、SMTP、TCP、LDAP、SOAP/REST 等协议。本文面向已具备一定编程与测试基础的工程师，梳理 5.6.3 的核心概念、组件体系、脚本构建规范与分布式压测要点。
+Apache JMeter 是使用最广泛的开源性能测试工具之一，支持多种应用层协议的负载模拟。本文面向已具备一定编程与测试基础的工程师，梳理 5.6.3 的核心概念、组件体系、脚本构建规范与分布式压测要点。
 
 > 前置知识:[性能测试指标与方法论](01-性能测试指标与方法论)。
 
@@ -45,7 +45,7 @@ JMeter 6.0 已发布 GA，最低要求 Java 17 并升级至 Groovy 5。二进制
 
 ### 5.6.3 关键变更
 
-相比旧文档中使用的 5.2.1（2019）/ 5.5（2022），5.6.3 值得关注的改进包括：
+相比 5.2.1（2019）/ 5.5（2022）等早期版本，5.6.3 值得关注的改进包括：
 
 - **Constant Throughput Timer NullPointerException 修复**：在 Target Throughput 字段中使用变量（`vars.get`）不再触发 NPE；
 - **InfluxDB 2.x Backend Listener 稳定**：可直接写入 InfluxDB v2 token 鉴权的 bucket；
@@ -89,7 +89,7 @@ apache-jmeter-5.6.3/
 └── licenses/             # 许可证
 ```
 
-**启动模式**：GUI 模式用于测试计划设计、调试与结果可视化（`sh bin/jmeter.sh`，Windows 双击 `jmeter.bat`）；CLI 模式用于容器、服务器与 CI/CD（`jmeter -n -t test_plan.jmx -l result.jtl`），规范详见第四节。
+**启动模式**：GUI 模式用于测试计划设计、调试与结果可视化（`sh bin/jmeter.sh`，Windows 双击 `jmeter.bat`）；CLI 模式用于容器、服务器与 CI/CD（`jmeter -n -t test_plan.jmx -l result.jtl`），规范详见『脚本构建规范』一节。
 
 **高分屏界面配置**：默认字体和图标在高分屏下偏小，修改 `bin/jmeter.properties` 后重启生效：
 
@@ -158,11 +158,11 @@ flowchart TD
 示例：100 线程 / 10 秒 = 每 0.1 秒启动一个线程
 ```
 
-同一线程组内的多个线程组默认并发执行；若业务流程存在接口依赖，可勾选测试计划中的 "Run Thread Groups consecutively" 改为顺序执行。此外测试计划还支持 setUp 线程组（前置准备，如登录造数）与 tearDown 线程组（清理资源），类比测试框架的 `beforeAll` / `afterAll`。
+同一测试计划内的多个线程组默认并发执行；若业务流程存在接口依赖，可勾选测试计划中的 "Run Thread Groups consecutively" 改为顺序执行。此外测试计划还支持 setUp 线程组（前置准备，如登录造数）与 tearDown 线程组（清理资源），类比测试框架的 `beforeAll` / `afterAll`。
 
 ### 采样器
 
-采样器承担发起请求的核心职责。常用采样器包括 HTTP Request、JDBC Request、FTP Request、TCP Sampler、JMS Publisher 等。HTTP Request 在 5.6.3 中支持 HTTP/2（实验性）、HTTP Client 4 与 HTTP Client 5 双实现，并对 307/308 重定向处理做了修正。
+采样器承担发起请求的核心职责。常用采样器包括 HTTP Request、JDBC Request、FTP Request、TCP Sampler、JMS Publisher 等。HTTP Request 在 5.6.3 中支持 HTTP/2（实验性），提供 HTTP Client 4 与 Java 两种实现，并对 307/308 重定向处理做了修正。
 
 ### 监听器
 
@@ -239,7 +239,7 @@ CLI 执行过程中若需查看实时报错内容，应在脚本中通过 JSR223
 
 ### JSR223 + Groovy 替代 BeanShell
 
-旧文档中的 BeanShell 示例存在性能差、语法陈旧的问题。5.6.3 推荐使用 JSR223 Sampler/PreProcessor/PostProcessor + Groovy，并启用缓存编译以获得接近原生 Java 的执行性能。相比 BeanShell，Groovy 在以下方面具有明显优势：
+BeanShell 解释执行性能差、语法陈旧，已不再推荐。5.6.3 推荐使用 JSR223 Sampler/PreProcessor/PostProcessor + Groovy，并启用缓存编译以获得接近原生 Java 的执行性能。相比 BeanShell，Groovy 在以下方面具有明显优势：
 
 - **执行性能**：Groovy 在勾选 `Cache compiled script` 后会将脚本编译为字节码并缓存，重复执行时性能与 Java 接近，BeanShell 每次都解释执行；
 - **语法现代化**：支持闭包、字符串模板、类型推断、安全导航操作符 `?.`；

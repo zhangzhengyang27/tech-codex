@@ -1,6 +1,6 @@
 ---
 title: pytest 9 实战（fixtures 与参数化与插件）
-description: 基于 pytest 9.1.1 系统讲解 fixtures 依赖注入、参数化、mark 标记、插件体系与 conftest 工程实践，覆盖 FastAPI/PyTorch 等真实项目的测试底座用法。
+description: 基于 pytest 9.1.1 系统讲解 fixtures 依赖注入、参数化、mark 标记、插件体系与 conftest 工程实践。
 keywords: [pytest, Python 测试, fixtures, 参数化, 插件体系]
 category: 单元测试与代码级测试
 tags: [pytest, Python, 单元测试, fixtures, 参数化, 插件体系]

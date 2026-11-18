@@ -179,7 +179,7 @@ graph LR
 - 《DevOps 实践指南》
 - 《持续交付：发布可靠软件的系统方法》
 
-> 📖 **相关理论延伸**：本文从 DevOps 文化视角俯瞰 CI/CD。CI/CD 概念全景与流水线设计见 [CI/CD](../02-持续交付36讲/40-CI-CD 流水线实战.md)；GitHub Actions / GitLab CI / Jenkins 的工具化对比与选型见 [GitHub Actions 与 GitLab CI 对比](../02-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)；部署策略（蓝绿 / 金丝雀 / 滚动更新）的完整理论体系见《持续交付36讲》[部署策略：蓝绿、金丝雀、渐进式交付](../02-持续交付36讲/16-部署策略：蓝绿、金丝雀、渐进式交付.md)。
+> 📖 **相关理论延伸**：本文从 DevOps 文化视角俯瞰 CI/CD。CI/CD 概念全景与流水线设计见 [CI/CD](../01-持续交付36讲/40-CI-CD 流水线实战.md)；GitHub Actions / GitLab CI / Jenkins 的工具化对比与选型见 [GitHub Actions 与 GitLab CI 对比](../01-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)；部署策略（蓝绿 / 金丝雀 / 滚动更新）的完整理论体系见《持续交付36讲》[部署策略：蓝绿、金丝雀、渐进式交付](../01-持续交付36讲/16-部署策略：蓝绿、金丝雀、渐进式交付.md)。
 
 ---
 

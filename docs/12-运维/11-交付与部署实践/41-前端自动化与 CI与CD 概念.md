@@ -143,7 +143,7 @@ graph LR
 - 《持续交付：发布可靠软件的系统方法》
 - 《DevOps 实践指南》
 
-> 📖 **相关理论延伸**：CI/CD 的核心概念、流水线设计与部署/回滚的完整理论体系，见 [CI/CD](../02-持续交付36讲/40-CI-CD 流水线实战.md)；GitHub Actions / GitLab CI 的对比选型见 [GitHub Actions 与 GitLab CI 对比](../02-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)。
+> 📖 **相关理论延伸**：CI/CD 的核心概念、流水线设计与部署/回滚的完整理论体系，见 [CI/CD](../01-持续交付36讲/40-CI-CD 流水线实战.md)；GitHub Actions / GitLab CI 的对比选型见 [GitHub Actions 与 GitLab CI 对比](../01-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)。
 
 ---
 

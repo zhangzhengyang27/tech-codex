@@ -256,5 +256,5 @@ Git Push → Webhook 触发 → Jenkins 构建 → Docker 镜像打包 → 推�
 - **监控告警**：Prometheus + Grafana + AlertManager 全链路监控
 - **安全加固**：RBAC 权限控制、NetworkPolicy 网络隔离、镜像漏洞扫描
 
-> 📖 **相关理论延伸**：本文是本系列（实操教学）的入门总览。CI/CD 概念全景与流水线设计理论见 [CI/CD](../02-持续交付36讲/40-CI-CD 流水线实战.md)；GitHub Actions / GitLab CI / Jenkins 的工具化对比与选型见 [GitHub Actions 与 GitLab CI 对比](../02-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)；部署策略（蓝绿 / 金丝雀 / 滚动 / 渐进式交付）的理论体系见《持续交付36讲》[部署策略：蓝绿、金丝雀、渐进式交付](../02-持续交付36讲/16-部署策略：蓝绿、金丝雀、渐进式交付.md)。
+> 📖 **相关理论延伸**：本文是本系列（实操教学）的入门总览。CI/CD 概念全景与流水线设计理论见 [CI/CD](../01-持续交付36讲/40-CI-CD 流水线实战.md)；GitHub Actions / GitLab CI / Jenkins 的工具化对比与选型见 [GitHub Actions 与 GitLab CI 对比](../01-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)；部署策略（蓝绿 / 金丝雀 / 滚动 / 渐进式交付）的理论体系见《持续交付36讲》[部署策略：蓝绿、金丝雀、渐进式交付](../01-持续交付36讲/16-部署策略：蓝绿、金丝雀、渐进式交付.md)。
 

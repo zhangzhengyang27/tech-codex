@@ -1445,4 +1445,4 @@ jobs:
         run: pnpm deploy
 ```
 
-> 📖 **相关理论延伸**：GitHub Actions 与 GitLab CI 在架构、语法、执行模型与选型上的对比见 [GitHub Actions 与 GitLab CI 对比](../02-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)；CI/CD 概念全景见 [CI/CD](../02-持续交付36讲/40-CI-CD 流水线实战.md)。
+> 📖 **相关理论延伸**：GitHub Actions 与 GitLab CI 在架构、语法、执行模型与选型上的对比见 [GitHub Actions 与 GitLab CI 对比](../01-持续交付36讲/43-GitHub%20Actions%20与%20GitLab%20CI%20对比.md)；CI/CD 概念全景见 [CI/CD](../01-持续交付36讲/40-CI-CD 流水线实战.md)。

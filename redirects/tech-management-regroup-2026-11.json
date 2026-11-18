@@ -921,11 +921,11 @@
   },
   {
     "source": "/docs/tech-management/13-运维体系管理/:path*",
-    "destination": "/docs/ops/14-运维体系管理/:path*"
+    "destination": "/docs/ops/12-运维体系管理/:path*"
   },
   {
     "source": "/docs/tech-management/13-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E7%AE%A1%E7%90%86/:path*",
-    "destination": "/docs/ops/14-运维体系管理/:path*"
+    "destination": "/docs/ops/12-运维体系管理/:path*"
   },
   {
     "source": "/docs/agile-pm",

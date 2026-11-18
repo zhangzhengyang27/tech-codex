@@ -1,0 +1,37 @@
+[
+  {
+    "source": "/docs/ops/01-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%8ECI-CD/00-CI-CD",
+    "destination": "/docs/ops/02-持续交付36讲/40-CI-CD 流水线实战",
+    "permanent": true
+  },
+  {
+    "source": "/docs/ops/01-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%8ECI-CD/01-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%BD%93%E7%B3%BB%E4%B8%8E%20BVT",
+    "destination": "/docs/ops/02-持续交付36讲/41-持续集成体系与 BVT",
+    "permanent": true
+  },
+  {
+    "source": "/docs/ops/01-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%8ECI-CD/02-Jenkins%202.5%2B%20LTS%20%E4%B8%8E%20Pipeline",
+    "destination": "/docs/ops/02-持续交付36讲/42-Jenkins 2.5%2B LTS 与 Pipeline",
+    "permanent": true
+  },
+  {
+    "source": "/docs/ops/01-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%8ECI-CD/03-GitHub%20Actions%20%E4%B8%8E%20GitLab%20CI%20%E5%AF%B9%E6%AF%94",
+    "destination": "/docs/ops/02-持续交付36讲/43-GitHub Actions 与 GitLab CI 对比",
+    "permanent": true
+  },
+  {
+    "source": "/docs/ops/01-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%8ECI-CD/04-Docker-K8s%20%E6%B5%8B%E8%AF%95%E6%89%A7%E8%A1%8C%E7%8E%AF%E5%A2%83",
+    "destination": "/docs/ops/02-持续交付36讲/44-Docker-K8s 测试执行环境",
+    "permanent": true
+  },
+  {
+    "source": "/docs/ops/01-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%8ECI-CD/05-%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84%E4%B8%8E%20TaaS%20%E8%AE%BE%E8%AE%A1",
+    "destination": "/docs/ops/02-持续交付36讲/45-测试基础架构与 TaaS 设计",
+    "permanent": true
+  },
+  {
+    "source": "/docs/ops/01-%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E4%B8%8ECI-CD/06-%E5%A4%A7%E5%9E%8B%E7%94%B5%E5%95%86%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84%E6%A1%88%E4%BE%8B",
+    "destination": "/docs/ops/02-持续交付36讲/46-大型电商测试基础架构案例",
+    "permanent": true
+  }
+]

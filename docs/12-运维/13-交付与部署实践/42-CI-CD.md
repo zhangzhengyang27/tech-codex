@@ -2375,4 +2375,4 @@ CI/CD 是现代软件开发的重要组成部分，通过自动化构建、测�
 3. **快速反馈**：及时发现和修复问题
 4. **可追溯性**：每次部署都有完整记录
 
-> 📖 **相关理论延伸**：本文为 CI/CD 的工程速查。概念与流水线设计的权威体系见 [CI/CD](../01-持续交付与CI-CD/00-CI-CD.md)；GitHub Actions 深入实操见 43：[GitHub Actions](43-GitHub%20Actions.md)；Jenkins 权威教程见本系列 [Jenkins 简介与安装准备](13-Jenkins%20简介与安装准备.md) 及 [Jenkins 2.5+ LTS 与 Pipeline](../01-持续交付与CI-CD/02-Jenkins%202.5+%20LTS%20与%20Pipeline.md)；部署与回滚理论见《持续交付36讲》[回滚策略与故障恢复](../02-持续交付36讲/19-回滚策略与故障恢复.md)。
+> 📖 **相关理论延伸**：本文为 CI/CD 的工程速查。概念与流水线设计的权威体系见 [CI/CD](../02-持续交付36讲/40-CI-CD 流水线实战.md)；GitHub Actions 深入实操见 43：[GitHub Actions](43-GitHub%20Actions.md)；Jenkins 权威教程见本系列 [Jenkins 简介与安装准备](13-Jenkins%20简介与安装准备.md) 及 [Jenkins 2.5+ LTS 与 Pipeline](../02-持续交付36讲/42-Jenkins%202.5+%20LTS%20与%20Pipeline.md)；部署与回滚理论见《持续交付36讲》[回滚策略与故障恢复](../02-持续交付36讲/19-回滚策略与故障恢复.md)。

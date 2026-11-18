@@ -1,5 +1,5 @@
 ---
-title: Day库基本使用
+title: Day.js 基本使用指南
 description: "Day.js 基本使用：安装与导入、字符串/时间戳/对象/数组/UTC 等多种解析方式、取值赋值、格式化占位符、add/subtract/startOf/endOf 操作、比较查询 API 与常用插件、国际化配置。"
 keywords: [Day库基本使用]
 category: tools

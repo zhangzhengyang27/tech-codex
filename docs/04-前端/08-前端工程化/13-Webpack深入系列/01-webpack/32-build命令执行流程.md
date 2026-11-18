@@ -1,5 +1,5 @@
 ---
-title: build 命令执行流程
+title: Webpack CLI build 命令执行流程
 description: Webpack CLI build 命令的详细执行流程，从参数解析到编译输出
 keywords: [build, 命令流程, 编译, 输出, 参数解析]
 category: tools

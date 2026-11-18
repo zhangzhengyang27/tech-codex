@@ -1,5 +1,5 @@
 ---
-title: "EL和JSTL"
+title: EL 和 JSTL 核心技术
 description: "EL（Expression Language）表达式提供了在 JSP 中简化表达式的方法，可以方便地访问各种数据并输出"
 keywords: [EL和JSTL]
 category: "Java"

@@ -1,5 +1,5 @@
 ---
-title: Server-Sent Events
+title: Server-Sent Events (SSE)
 description: 基于 HTTP 的服务器单向推送技术，对比 WebSocket 的轻量方案
 keywords: [SSE, EventSource, 服务器推送, 长连接]
 category: HTML5

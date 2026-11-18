@@ -1,12 +1,12 @@
 ---
-title: "表单验证库 VeeValidate"
+title: 表单验证库 VeeValidate
 description: 介绍 Vue3 生态的表单验证库 VeeValidate v4：安装与中文本地化配置（@vee-validate/i18n）、全局注册校验规则（@vee-validate/rules），以及 Form/Field/ErrorMessage 组件完成表单校验的完整示例。
 category: Vue
 tags: [Vue3, VeeValidate, 表单验证, 生态]
 keywords: [VeeValidate, 表单验证, Vue3, 前端校验]
 ---
 
-# VeeValidate
+# 表单验证库 VeeValidate
 
 官方文档：https://vee-validate.logaretm.com/v4/
 

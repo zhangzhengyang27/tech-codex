@@ -6,7 +6,7 @@ category: Vue
 tags: [Vue3, Electron, 打包发布]
 ---
 
-# Electron Builder 打包资源目录、DMG 背景与应用图标定制
+# Electron-Builder打包资源目录buildResources、DMG背景与应用图标定制
 
 ## 概述
 

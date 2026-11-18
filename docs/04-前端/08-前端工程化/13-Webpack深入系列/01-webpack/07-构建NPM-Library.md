@@ -1,5 +1,5 @@
 ---
-title: 构建 NPM Library
+title: 使用 Webpack 构建 NPM Library 的正确方式
 description: 使用 Webpack 构建 NPM 库的完整方案，涵盖多格式输出、Tree-shaking 和发布流程
 keywords: [NPM Library, UMD, ESM, CJS, 库开发]
 category: tools

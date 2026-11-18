@@ -5,7 +5,7 @@ category: 前端
 
 ---
 
-# CSS-in-JS
+# CSS-in-JS - 运行时与编译时样式方案深度指南
 
 CSS-in-JS 是一种将 CSS 样式编写在 JavaScript 代码中的技术范式，通过 JavaScript 的能力实现样式的动态化、组件化和类型安全，是 React 生态系统中广泛采用的样式解决方案。自 2014 年 Christopher Chedeau（Vjeux）在 @Scale 大会上发表《CSS in JS》演讲提出这一概念以来，CSS-in-JS 已经发展出众多成熟方案，涵盖了运行时和编译时两大技术路线。
 

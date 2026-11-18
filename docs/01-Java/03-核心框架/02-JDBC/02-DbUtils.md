@@ -1,5 +1,5 @@
 ---
-title: "DbUtils"
+title: DBUtils 工具
 description: "DBUtils 不是 ORM 框架，而是轻量级工具库，适合需要直接使用 SQL 的场景。它在 JDBC 和 ORM 框架之间提供了一个中间层——比原生 JDBC 简洁，比 MyBatis 轻量。"
 keywords: [DbUtils]
 category: "Java"

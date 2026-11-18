@@ -1,5 +1,5 @@
 ---
-title: CSS渲染器
+title: CSS2D / CSS3D 渲染器
 description: "CSS2DRenderer 和 CSS3DRenderer 允许在 Three.js 3D 场景中使用 HTML 元素作为渲染对象。这使得我们可以将常规的 HTML/CSS 内容（文字、图片、表单、动画等）与 3D 对象结合，实现标签、信息面板、悬浮提示等丰富的交互效果。"
 keywords: [CSS渲染器]
 category: 前端

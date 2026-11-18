@@ -1,5 +1,5 @@
 ---
-title: "Java 后端项目打包方式（JAR/WAR/Docker 镜像）"
+title: Java 后端项目打包方式（JAR/WAR/Docker 镜像）
 description: "从 JAR/WAR/EAR 打包格式选型，到 Maven/Gradle 打包配置、Spring Boot 分层打包、多模块聚合、Docker 多阶段构建与 K8s 部署，系统梳理 Java 后端项目的打包方式与优化技巧。"
 keywords: [JAR, WAR, Maven, Gradle, Spring Boot, Docker, 分层打包]
 category: "Java"
@@ -7,7 +7,7 @@ tags: [Java, 最佳实践]
 ---
 
 
-# Java 后端项目打包方式
+# Java 后端项目打包方式（JAR/WAR/Docker 镜像）
 
 ## 1. 打包格式分类
 

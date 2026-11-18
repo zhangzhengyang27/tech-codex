@@ -1,5 +1,5 @@
 ---
-title: ESLint 集成
+title: TypeScript ESLint 集成实践指南
 description: "ESLint 是现代前端工程化体系中不可或缺的代码质量保障工具。它通过静态分析识别代码中的问题，并提供自动修复能力，确保代码风格的统一性和代码质量的可靠性。"
 keywords: [ESLint, 集成]
 category: TypeScript

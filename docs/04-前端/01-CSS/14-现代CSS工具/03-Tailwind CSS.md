@@ -5,7 +5,7 @@ category: 前端
 
 ---
 
-# Tailwind CSS
+# Tailwind CSS - 实用优先的原子化 CSS 框架深度指南
 
 Tailwind CSS 是一个实用优先（Utility-First）的原子化 CSS 框架，通过组合预定义的原子类快速构建用户界面，无需编写自定义 CSS。自 2017 年由 Adam Wathan 创建以来，Tailwind CSS 已经成为现代前端开发中最受欢迎的样式解决方案之一，在 2024 年 State of CSS 调查中位列最受喜爱框架榜首。
 

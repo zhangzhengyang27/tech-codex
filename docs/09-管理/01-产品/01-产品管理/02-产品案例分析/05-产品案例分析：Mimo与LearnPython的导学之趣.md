@@ -7,7 +7,7 @@ tags: [产品设计, 用户体验, 需求分析]
 ---
 
 
-# 15 | 产品案例分析：Mimo 与 Learn Python 的导学之趣
+# 产品案例分析：Mimo与LearnPython的导学之趣
 
 ## 1. 导言
 

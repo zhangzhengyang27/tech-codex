@@ -1,5 +1,5 @@
 ---
-title: Document
+title: Document 节点详解
 description: "Document 是浏览器中 DOM 树的根节点，代表当前已被解析或加载的文档。几乎所有的 DOM 操作都以 document 为入口：查找元素、创建节点、挂载到页面、注册事件、读取元信息等。"
 keywords: [Document]
 category: JavaScript

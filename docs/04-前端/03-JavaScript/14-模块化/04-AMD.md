@@ -1,5 +1,5 @@
 ---
-title: AMD
+title: AMD 异步模块定义
 description: "系统讲解 AMD 异步模块定义规范：define/require 核心 API、依赖前置设计、RequireJS 与 r.js 打包实践，以及与 CommonJS/ESM 的多维度对比。"
 keywords: [AMD]
 category: JavaScript

@@ -1,5 +1,5 @@
 ---
-title: Day库进阶使用
+title: Day.js 库进阶使用
 description: "Day.js 进阶使用：add/subtract/startOf/endOf 操作与支持单位、UTC/local/utcOffset 转换、format 占位符与本地化格式、fromNow/from 相对时间、diff 差值计算、各类查询 API 与国际化配置。"
 keywords: [Day库进阶使用]
 category: tools

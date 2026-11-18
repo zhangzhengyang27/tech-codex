@@ -1,5 +1,5 @@
 ---
-title: Day库插件
+title: Day.js 插件
 description: "Day.js 官方插件一览：加载方式（NodeJS/浏览器）、自定义插件模板，以及 AdvancedFormat、UTC、Timezone、RelativeTime、Duration、IsBetween、MinMax、LocaleData 等插件的用法示例。"
 keywords: [Day库插件]
 category: tools
@@ -8,7 +8,7 @@ tags: [Day.js, 日期处理, 时间]
 
 
 
-# 插件
+# Day.js 插件
 
 - 插件是一些独立的程序，可以给 Day.js 增加新功能和扩展已有功能
 - 默认情况下，Day.js 只包含核心的代码，并没有安装任何插件

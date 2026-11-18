@@ -10,7 +10,7 @@ category: Python
 
 ---
 
-# typing 模块
+# typing 模块 — 类型注解完全指南
 
 ## 是什么
 

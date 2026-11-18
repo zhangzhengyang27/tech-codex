@@ -1,5 +1,5 @@
 ---
-title: WebComponents
+title: Web Components 完全指南
 description: "Web Components 完全指南：Custom Elements 生命周期与属性反射、Shadow DOM 封装与 Constructable Stylesheets、模板与插槽机制、React/Vue/Angular 集成与调试测试实践。"
 keywords: [Web Components, Custom Elements, Shadow DOM, Slots, Lit]
 category: HTML5

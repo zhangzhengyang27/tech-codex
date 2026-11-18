@@ -1,12 +1,12 @@
 ---
-title: "HTML5概览"
+title: HTML5概览
 description: "本模块用于系统整理 HTML（含 HTML5 相关能力）与常用浏览器 API 的学习笔记，并以 MDN（mozilla）作为主要权威参考来源，方便你在\"概念理解 → 示例验证 → 规范查阅\"之间快速切换。"
 keywords: [HTML5]
 category: HTML5
 tags: [HTML5, 语义化, Canvas, Web API]
 ---
 
-# HTML5
+# HTML5概览
 
 本模块用于系统整理 HTML（含 HTML5 相关能力）与常用浏览器 API 的学习笔记，并以 MDN（mozilla）作为主要权威参考来源，方便你在"概念理解 → 示例验证 → 规范查阅"之间快速切换。
 

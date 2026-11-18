@@ -1,5 +1,5 @@
 ---
-title: 08-Scrapy分布式与生产部署
+title: Scrapy 分布式与生产部署
 version: 2.0
 author: 文档维护组
 created: 2026-06-05

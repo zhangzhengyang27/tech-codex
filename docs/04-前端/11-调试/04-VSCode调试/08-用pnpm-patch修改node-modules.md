@@ -1,6 +1,6 @@
 ---
 title: 用pnpm-patch修改node-modules
-description: `node_modules` 下的改动不会提交到 git 仓库，重新安装就会丢失。本节介绍通过 pnpm patch（或 patch-package）持久化修改依赖代码的方式。
+description: "`node_modules` 下的改动不会提交到 git 仓库，重新安装就会丢失。本节介绍通过 pnpm patch（或 patch-package）持久化修改依赖代码的方式。"
 keywords: [VSCode调试, pnpm patch, patch-package]
 category: 调试
 tags: [调试原理]

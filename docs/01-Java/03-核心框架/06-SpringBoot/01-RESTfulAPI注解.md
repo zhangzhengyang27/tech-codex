@@ -1,5 +1,5 @@
 ---
-title: "RESTfulAPI注解"
+title: RESTful API 注解详解
 description: "@RestController、@RequestMapping、@GetMapping 等 Web 注解的用法、参数绑定与常见坑位，覆盖 Spring Boot 中构建 RESTful 接口的核心注解。"
 keywords: ["RESTful", "@RestController", "@RequestMapping", "Spring MVC", "参数绑定"]
 category: "Java"

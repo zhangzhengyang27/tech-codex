@@ -1,5 +1,5 @@
 ---
-title: "Servlet"
+title: Servlet 完全指南
 description: "随着 Web 技术发展，B/S 架构的劣势逐渐被弥补（如前端框架让界面更丰富），而其跨平台、易维护的优势越来越明显，因此现代 Web 应用主要采用 B/S 架构。"
 keywords: [Servlet]
 category: "Java"

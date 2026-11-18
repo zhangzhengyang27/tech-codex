@@ -1,5 +1,5 @@
 ---
-title: 每个工程师都应该了解的：API的设计和实现
+title: API 设计与实现：现代技术架构指南
 description: 每个工程师都应该了解的：API的设计和实现的核心要点与实践方法论
 keywords: [API的设计和实现]
 category: 架构与工程

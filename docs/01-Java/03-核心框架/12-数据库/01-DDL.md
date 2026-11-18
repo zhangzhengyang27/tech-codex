@@ -1,5 +1,5 @@
 ---
-title: "DDL"
+title: DDL 操作
 description: "DDL(Data Definition Language,数据定义语言) 是SQL语言的重要组成部分,用于定义和管理数据库对象的结构。与DML(数据操作语言)不同,DDL不涉及具体数据的增删改查,而是专注于数据库架构的创建、修改和删除。"
 keywords: [DDL]
 category: "Java"

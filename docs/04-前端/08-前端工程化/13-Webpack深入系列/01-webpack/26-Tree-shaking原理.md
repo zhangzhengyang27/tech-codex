@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# Tree-shaking：如何删除无用模块导出？
+# Tree-shaking 原理
 
 
 ## 📋 版本差异对照表

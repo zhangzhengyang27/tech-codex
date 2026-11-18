@@ -1,7 +1,7 @@
 ---
 title: "缓存与Redis实战"
 description: "Spring Boot 缓存与 Redis 实战：缓存抽象源码机制、RedisTemplate 配置与序列化、五大的数据结构实战、缓存穿透/击穿/雪崩深度方案、Redisson 集成与多级缓存。"
-keywords: [缓存, Redis, @Cacheable, RedisTemplate, 缓存一致性, Redisson]
+keywords: [缓存, Redis, "@Cacheable", RedisTemplate, 缓存一致性, Redisson]
 category: "Java"
 tags: [Java, SpringBoot]
 ---

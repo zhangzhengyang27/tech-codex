@@ -6,7 +6,7 @@ category: CSS
 tags: [Flexbox, 布局, CSS3, 响应式]
 ---
 
-# Flex 布局
+# Flex 布局总览
 
 > Flexbox 是 CSS 的一维弹性布局模型，通过容器与项目的双轴协作，让空间分配与对齐从"手动计算"变为"声明式驱动"。
 

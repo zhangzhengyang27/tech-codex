@@ -1,6 +1,6 @@
 ---
 title: GUI 测试报告（Allure 与 Trace Viewer 与 ReportPortal）
-description: 从受众差异化出发，系统讲解 Allure 报告（含 TestOps 企业版）、Playwright Trace Viewer v1.61、ReportPortal 实时报告与 AI 失败分析、HTML/自定义报告、CI/CD 集成与 AI 报告分析、Grafana 测试看板等新趋势
+description: 从受众差异化出发，系统讲解 Allure 报告（含 TestOps 企业版）、Playwright Trace Viewer v1.61、ReportPortal 实时报告与 AI 失败分析、HTML/自定义报告、CI/CD 集成与 AI 报告分析、Grafana 测试看板等延伸实践
 keywords: [GUI测试报告, Allure, Allure TestOps, Playwright Trace Viewer, ReportPortal, AI失败分析, Grafana测试看板, CI/CD报告]
 category: GUI自动化测试
 tags: [GUI自动化, 测试报告, Allure, Trace Viewer, ReportPortal, AI分析, CI/CD]

@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# 如何借助 Babel+TS+ESLint 构建现代 JS 工程环境？
+# Babel + TypeScript + ESLint 工程环境
 
 > **v1 → v2 差异对照表**
 

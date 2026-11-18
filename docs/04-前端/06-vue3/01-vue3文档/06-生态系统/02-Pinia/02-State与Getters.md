@@ -6,7 +6,7 @@ category: Vue
 tags: [Vue3, Pinia, 状态管理]
 ---
 
-# State
+# State与Getters
 
 > State 是 Store 的核心数据，存储应用状态。
 

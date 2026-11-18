@@ -1,5 +1,5 @@
 ---
-title: platform
+title: platform — 跨平台系统信息探测的瑞士军刀
 version: 2.0
 author: 文档维护组
 created: 2026-02-23

@@ -7,7 +7,7 @@ tags: [Node.js, Nest, passport, JWT, GitHub, Google, 服务端, OAuth]
 ---
 
 
-# passport 身份认证与三方登录
+# passport 身份认证与三方登录（GitHub、Google）
 
 之前都是自己实现身份认证，比如基于用户名密码的认证，基于 jwt 的认证。像这种身份认证逻辑其实很通用，每个项目都会有，自然可以抽取成一个库。passport 就是这样一个身份认证库。
 

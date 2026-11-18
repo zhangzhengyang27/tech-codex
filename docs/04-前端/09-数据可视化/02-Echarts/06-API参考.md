@@ -1,5 +1,5 @@
 ---
-title: API参考
+title: ECharts API 参考
 description: "ECharts API 参考：涵盖全局 echarts 对象（init/connect/registerMap/use 等）、echartsInstance 实例方法（setOption/on/dispatchAction/convertToPixel 等）及常用使用示例。"
 keywords: [API参考]
 category: 前端

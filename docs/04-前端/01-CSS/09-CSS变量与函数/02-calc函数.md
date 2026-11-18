@@ -1,11 +1,11 @@
 ---
-title: "CSS calc() 函数"
+title: CSS calc() 函数
 description: "深入理解CSS calc()函数的运算符规则、类型推断、嵌套用法，掌握与CSS变量、min/max/clamp组合的高级计算技巧，实现精确的响应式布局"
 category: 前端
 
 ---
 
-# calc() 函数
+# CSS calc() 函数
 
 ## 背景与动机
 

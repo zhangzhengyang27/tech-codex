@@ -1,5 +1,5 @@
 ---
-title: itertools 模块
+title: itertools 模块：构建高效迭代器的工具箱
 version: 2.0
 author: 文档维护组
 created: 2026-06-05

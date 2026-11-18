@@ -1,5 +1,5 @@
 ---
-title: "XML"
+title: XML 可扩展标记语言
 description: "XML（Extensible Markup Language，可扩展标记语言）是一种用于存储和传输数据的标记语言。W3C 于 1998 年发布 1.0 版本，2004 年发布 1.1 版本，但由于 1.1 版本不能向下兼容 1.0，实际开发中主要使用 1.0 版本。本文覆盖 XML 语法、DTD/Schema 约束与 DOM/SAX/StAX/DOM4J 解析。"
 keywords: [XML]
 category: "Java"

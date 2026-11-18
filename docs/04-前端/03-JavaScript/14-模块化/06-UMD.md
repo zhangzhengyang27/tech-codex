@@ -1,5 +1,5 @@
 ---
-title: UMD
+title: UMD (Universal Module Definition) 模块规范
 description: "UMD (Universal Module Definition) 是一种为了兼容 CommonJS 和 AMD 这两种流行模块系统而设计的 JavaScript 模块模式。"
 keywords: [UMD]
 category: JavaScript

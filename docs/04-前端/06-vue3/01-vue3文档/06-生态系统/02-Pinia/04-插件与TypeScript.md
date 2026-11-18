@@ -6,7 +6,7 @@ category: Vue
 tags: [Vue3, Pinia, 状态管理, TypeScript]
 ---
 
-# 插件
+# 插件与TypeScript
 
 > Pinia 插件用于扩展 Store 功能，可以添加全局属性、响应状态变化、实现持久化等。
 

@@ -1,5 +1,5 @@
 ---
-title: CommonJS
+title: CommonJS 模块化规范
 description: "系统讲解 CommonJS 规范：模块包装器与 module.exports/exports 关系、require 缓存与循环引用行为、Node.js 模块加载源码原理（路径解析/编译/缓存）与工程实践。"
 keywords: [CommonJS]
 category: JavaScript

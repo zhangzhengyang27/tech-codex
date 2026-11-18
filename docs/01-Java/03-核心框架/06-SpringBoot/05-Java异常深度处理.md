@@ -1,5 +1,5 @@
 ---
-title: "Java异常深度处理"
+title: SpringBoot 异常处理
 description: "Java 与 Spring Boot 的异常处理体系：异常层次、全局异常处理 @ControllerAdvice、自定义异常与统一响应结构。"
 keywords: ["异常处理", "@ControllerAdvice", "@ExceptionHandler", "自定义异常", "统一响应"]
 category: "Java"

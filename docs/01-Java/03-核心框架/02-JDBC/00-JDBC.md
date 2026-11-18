@@ -1,5 +1,5 @@
 ---
-title: "JDBC"
+title: JDBC 入门
 description: "JDBC（Java Database Connectivity）是 Java 访问关系型数据库的标准 API。无论你后面使用的是 MyBatis、JPA、Spring JDBC 还是其他数据访问框架，底层都离不开 JDBC。"
 keywords: [JDBC]
 category: "Java"

@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# 如何正确使用 SplitChunks 提升应用性能？
+# SplitChunks 代码分割
 
 
 ## 📋 版本差异对照表

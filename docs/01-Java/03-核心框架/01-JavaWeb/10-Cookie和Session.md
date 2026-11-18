@@ -1,5 +1,5 @@
 ---
-title: "10-Cookie和Session"
+title: Cookie 和 Session
 description: "Cookie 与 Session 的概念、区别与 Java Web 中的使用方法：Cookie 存于客户端（4KB 限制、maxAge 生命周期、易被篡改），Session 存于服务端（JSESSIONID 关联、超时失效、相对安全），含创建/读取/销毁的 Servlet API 代码示例与现代分布式会话（Spring Session Redis、JWT）演进对比。"
 keywords: [Cookie, Session, JSESSIONID, 会话管理, Spring Session]
 category: "Java"

@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# 如何搭建 Vue 全栈开发环境？
+# Vue 全栈开发环境
 
 <!--
   title: 如何搭建 Vue 全栈开发环境？

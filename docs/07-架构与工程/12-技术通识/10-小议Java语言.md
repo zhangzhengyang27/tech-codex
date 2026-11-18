@@ -1,5 +1,5 @@
 ---
-title: 小议Java语言
+title: Java 语言：从经典到现代的工程化演进
 description: 小议Java语言的核心要点与实践方法论
 keywords: [小议Java语言]
 category: 架构与工程

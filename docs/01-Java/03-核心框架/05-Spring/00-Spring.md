@@ -1,5 +1,5 @@
 ---
-title: "Spring"
+title: Spring 框架深度解析
 description: "Spring 框架的整体设计思想、模块组成、IoC/AOP 核心特性与历史演进，以及 Spring 6 / Boot 3 的版本基准。"
 keywords: ["Spring", "IoC", "AOP", "Spring MVC", "容器"]
 category: "Java"

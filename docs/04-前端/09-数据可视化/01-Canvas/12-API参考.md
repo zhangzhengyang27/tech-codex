@@ -1,5 +1,5 @@
 ---
-title: API参考
+title: Canvas API 参考
 description: "Canvas 2D API 参考：涵盖 Canvas 元素、OffscreenCanvas、绘图/路径/样式/变换/文本/图像方法、像素操作、合成属性、滤镜与 Path2D 等接口速查。"
 keywords: [API参考]
 category: 前端

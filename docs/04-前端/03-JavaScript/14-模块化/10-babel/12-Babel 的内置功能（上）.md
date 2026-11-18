@@ -1,5 +1,5 @@
 ---
-title: Babel 的内置功能
+title: Babel 的内置功能（上）
 description: "讲解 babel 的内置功能：syntax/transform/proposal 三类插件与 preset 的关系、helper 的两种形态（注入 AST 的运行时函数与操作 AST 的工具函数）、runtime 包（corejs/regenerator/helper）的构成。"
 keywords: [Babel, preset, helper, runtime]
 category: tools

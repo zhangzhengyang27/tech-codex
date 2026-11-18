@@ -1,5 +1,5 @@
 ---
-title: "Spring 事务传播机制"
+title: Spring Boot 事务传播机制详解
 description: "事务传播机制定义了事务方法被另一个事务方法调用时事务如何传播。本文覆盖 Spring Boot 事务自动配置与 @EnableTransactionManagement 的适用场景、REQUIRED/REQUIRES_NEW/SUPPORTS/NOT_SUPPORTED/MANDATORY/NEVER/NESTED 七种传播行为的语义与示例、事务失效场景与 rollbackFor/readOnly/timeout/isolation 实践要点。"
 keywords: [事务传播, Transactional, Spring Boot, REQUIRED, REQUIRES_NEW, NESTED]
 category: "Java"

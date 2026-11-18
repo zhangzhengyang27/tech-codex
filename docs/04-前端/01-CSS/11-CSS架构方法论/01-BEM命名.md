@@ -5,7 +5,7 @@ category: CSS
 
 ---
 
-# BEM 命名规范
+# BEM 命名规范 - CSS 架构方法论
 
 BEM（Block Element Modifier）是一种 CSS 命名规范，由 Yandex 公司提出，旨在创建可复用、可维护的组件化代码。
 

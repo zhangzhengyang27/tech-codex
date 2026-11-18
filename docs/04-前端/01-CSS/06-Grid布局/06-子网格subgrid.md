@@ -1,5 +1,5 @@
 ---
-title: 子网格subgrid
+title: CSS 子网格（subgrid）
 description: "CSS Grid 的 subgrid 是解决嵌套网格无法继承父网格轨道的关键特性。它让子网格能够\"共享\"父网格的轨道定义，实现真正的跨层级对齐。"
 keywords: [子网格subgrid]
 category: CSS

@@ -1,5 +1,5 @@
 ---
-title: Dialog与Popover
+title: Dialog 与 Popover API
 description: "HTML5 新增的 <dialog> 元素和 Popover API 为 Web 应用提供了原生的对话框和弹出层能力，替代了长期以来依赖 JavaScript 和 ARIA 实现的方案。"
 keywords: [dialog, Popover API, Top Layer, 可访问性]
 category: HTML5

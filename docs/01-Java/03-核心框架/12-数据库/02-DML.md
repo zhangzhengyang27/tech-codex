@@ -1,5 +1,5 @@
 ---
-title: "DML"
+title: DML 数据操作语言
 description: "DML（Data Manipulation Language，数据操作语言） 是 SQL 语言的重要组成部分，用于对数据库表中的数据进行增删改查操作。"
 keywords: [DML]
 category: "Java"

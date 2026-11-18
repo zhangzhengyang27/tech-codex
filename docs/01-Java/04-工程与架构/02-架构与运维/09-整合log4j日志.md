@@ -1,5 +1,5 @@
 ---
-title: "整合log4j日志"
+title: Spring Boot 整合 Log4j
 description: "Spring Boot 日志框架整合：排除默认 Logback 并引入 spring-boot-starter-log4j2（含 log4j2.xml 配置与使用示例），以及 slf4j + log4j 1.x 的历史整合方式（已 EOL 有安全漏洞，仅作参考），附 AOP 记录 Service 执行时间切面与 log4j1→log4j2 版本差异表。"
 keywords: [Log4j2, Logback, SLF4J, Spring Boot 日志, AOP 日志]
 category: "Java"
@@ -7,7 +7,7 @@ tags: [Java, 架构与运维]
 ---
 
 
-# Spring Boot 整合 Log4j 
+# Spring Boot 整合 Log4j
 
 在 Spring Boot 项目中整合 Log4j 可以帮助你更好地管理和记录日志。以下是如何在 Spring Boot 项目中配置 Log4j 的步骤
 

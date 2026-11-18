@@ -1,5 +1,5 @@
 ---
-title: "jsp"
+title: JSP (Java Server Pages)
 description: "JSP (Java Server Pages) 是 Java 平台的一种服务端视图技术,允许在 HTML 页面中嵌入 Java 代码片段和 JSP 标签,动态生成 Web 页面。"
 keywords: [jsp]
 category: "Java"

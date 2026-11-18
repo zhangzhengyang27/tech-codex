@@ -1,6 +1,6 @@
 ---
 title: 移动应用测试方法（Web与Native与Hybrid与跨平台）
-description: 系统阐述移动应用测试的核心挑战、四类应用（Web/Native/Hybrid/跨平台）测试策略、功能与非功能测试方法，并补充跨平台框架测试、Visual Regression、AI 辅助测试与 5G/弱网测试等新趋势
+description: 系统阐述移动应用测试的核心挑战、四类应用（Web/Native/Hybrid/跨平台）测试策略、功能与非功能测试方法，并补充跨平台框架测试、Visual Regression、AI 辅助测试与 5G/弱网测试等延伸实践
 keywords: [移动测试, Appium, XCUITest, UiAutomator2, Detox, Flutter integration_test, KMP, 视觉回归, AI辅助测试, 5G测试, 弱网测试]
 category: 移动端测试
 tags: [移动测试, Appium, 跨平台测试, 兼容性测试, 弱网测试, AI测试]

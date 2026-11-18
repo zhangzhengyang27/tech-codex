@@ -1,5 +1,5 @@
 ---
-title: "AOP"
+title: AOP 面向切面编程
 description: "AOP 解决横切关注点的思路、JDK 动态代理与 CGLIB 原理、通知类型、切点表达式与实战避坑。"
 keywords: ["AOP", "代理", "切面", "切点", "通知"]
 category: "Java"

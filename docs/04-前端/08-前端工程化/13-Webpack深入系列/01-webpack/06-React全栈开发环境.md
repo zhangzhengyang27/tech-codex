@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# 如何搭建 React 全栈开发环境？
+# React 全栈开发环境
 
 
 ## 📋 版本差异对照表

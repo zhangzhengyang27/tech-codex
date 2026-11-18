@@ -5,7 +5,7 @@ category: 前端
 
 ---
 
-# CSS Modules
+# CSS Modules - 编译时样式隔离方案深度指南
 
 CSS Modules 是一种 CSS 文件的编译时转换方案，通过自动生成唯一类名实现样式隔离，是现代前端工程化中解决 CSS 全局污染问题的标准方案之一。自 2015 年由 Glen Maddern 和 Mark Dalgleish 提出以来，CSS Modules 已经成为 React、Vue 等框架生态中最广泛采用的样式隔离方案。
 

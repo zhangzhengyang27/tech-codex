@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# HMR：如何动态替换页面代码？
+# HMR 热更新原理
 
 ## 差异对照表
 

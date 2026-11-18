@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# 如何借助 Webpack 开发 PWA、Node、Electron 应用？
+# PWA、Node 与 Electron 应用
 
 > **v1 → v2 差异对照表**
 

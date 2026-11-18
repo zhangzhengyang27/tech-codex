@@ -113,7 +113,7 @@ export type CascaderLoadFunction = (
 ) => void;
 ```
 
-参数是**原始 option 对象**（plain data），只有 `resolve` 没有 `reject`。这与同库 tree 的懒加载协议形成鲜明对照——`packages/components/tree/src/tree.type.ts:66-70` 的 `LoadFunction` 是 `(rootNode: Node, resolve, reject) => void`：传的是节点**实例**（带方法、带状态），且有失败通道。EP 的 `lazyLoad` 介于两者之间：传 Node 实例但同样没有 `reject`，失败靠 resolve 空数组表达。本库 cascader 选了最"数据"的那一端：业务方拿到的就是自己传进来的那个对象，load 完成后把子数组 resolve 回来，组件负责写回 `children` 字段——连接收侧与回写侧的字段名都由 `props.fieldNames.children` 决定。失败怎么办？resolve 空数组即可，空数组的叶子判定会把它当成叶子节点，交互上"点了没下文"，这是一个粗糙但自洽的答案，第八节我们再看它付出了什么。
+参数是**原始 option 对象**（plain data），只有 `resolve` 没有 `reject`。这与同库 tree 的懒加载协议形成鲜明对照——`packages/components/tree/src/tree.type.ts:66-70` 的 `LoadFunction` 是 `(rootNode: Node, resolve, reject) => void`：传的是节点**实例**（带方法、带状态），且有失败通道。EP 的 `lazyLoad` 介于两者之间：传 Node 实例但同样没有 `reject`，失败靠 resolve 空数组表达。本库 cascader 选了最"数据"的那一端：业务方拿到的就是自己传进来的那个对象，load 完成后把子数组 resolve 回来，组件负责写回 `children` 字段——连接收侧与回写侧的字段名都由 `props.fieldNames.children` 决定。失败怎么办？resolve 空数组即可，空数组的叶子判定会把它当成叶子节点，交互上"点了没下文"，这是一个粗糙但自洽的答案，收拢处我们再看它付出了什么。
 
 ## 二、路径回显：findPath 与"无 parent 指针的回溯"
 

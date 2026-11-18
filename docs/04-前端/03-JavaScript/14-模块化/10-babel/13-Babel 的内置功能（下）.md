@@ -1,5 +1,5 @@
 ---
-title: Babel 的内置功能
+title: Babel 的内置功能（下）
 description: "讲解 babel 从 preset-es20xx 到 @babel/preset-env 的演进：compat-data 与 browserslist 按需转换、targets/useBuiltIns/corejs 配置、helper 到 runtime 的抽离，以及 babel8 polyfill provider 方案。"
 keywords: [Babel, preset-env, browserslist, polyfill]
 category: tools

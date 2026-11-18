@@ -1,5 +1,5 @@
 ---
-title: Chunk 打包逻辑
+title: Chunk：三种产物的打包逻辑
 description: Webpack 三种 Chunk 产物（Entry Chunk、Async Chunk、Runtime Chunk）的打包逻辑
 keywords: [Chunk, Entry, Async, Runtime, 打包逻辑, ChunkGraph]
 category: tools

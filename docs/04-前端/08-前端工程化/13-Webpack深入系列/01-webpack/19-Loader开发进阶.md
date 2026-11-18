@@ -6,7 +6,7 @@ category: tools
 tags: [Webpack, 构建工具]
 ---
 
-# Loader 开发进阶：如何用好 Loader 扩展开发工具？
+# Loader 开发进阶
 
 > **文档元信息**
 >

@@ -26,9 +26,9 @@ tags: [Webpack, 构建工具]
 
 ## 核心概念回顾
 
-在前面章节中，我们已经介绍了 Webpack 从模块解析到 Chunk 封装的完整流程。构建过程会根据 `Module` 之间的引用关系构建 `ModuleGraph` 对象；接下来按照内置规则将 `Module` 组织进不同 `Chunk` 对象中，形成 `ChunkGraph` 关系图。
+Webpack 构建过程会根据 `Module` 之间的引用关系构建 `ModuleGraph` 对象；随后按照内置规则将 `Module` 组织进不同 `Chunk` 对象中，形成 `ChunkGraph` 关系图。
 
-接下来，构建流程将来到最后一个重要步骤：**生成产物代码**。这个过程会将所有 `Module` 内容转换为适当的产物代码形态，并以 `Chunk` 为单位合并 `Module` 产物代码，之后根据 `Module` 中出现的特性依赖，补充相应运行时代码，最终构建出我们日常所见的 Webpack Bundle 代码文件。
+构建流程的最后一个重要步骤是**生成产物代码**：该过程将所有 `Module` 内容转换为适当的产物代码形态，并以 `Chunk` 为单位合并 `Module` 产物代码，之后根据 `Module` 中出现的特性依赖补充相应运行时代码，最终构建出日常所见的 Webpack Bundle 代码文件。
 
 ## 什么是模块转译？
 
@@ -61,11 +61,11 @@ console.log(`hello ${name}`);
 - 源码 `console` 语句所使用的 `name` 变量被转译为 `_name__WEBPACK_IMPORTED_MODULE_0__.default`
 - 添加若干注释
 
-这种代码转换功能具体是怎么实现的呢？让我们深入源码一探究竟。
+这种代码转换功能的具体实现，可以从源码层面分析。
 
 ## 模块转译主流程
 
-在上一章《Chunk：三种产物的打包逻辑》中，我们已介绍 `compilation.seal` 函数内会调用 `buildChunkGraph` 生成 Chunk 依赖关系图。在此之后，`seal` 函数会触发一堆优化钩子，借助插件对 ChunkGraph 做优化操作，并在最后调用 [compilation.codeGeneration](https://github.com/webpack/webpack/blob/v5.107.0/lib/Compilation.js#L3160-L3162) 方法：
+《Chunk：三种产物的打包逻辑》一篇中已介绍 `compilation.seal` 函数内会调用 `buildChunkGraph` 生成 Chunk 依赖关系图。在此之后，`seal` 函数会触发一堆优化钩子，借助插件对 ChunkGraph 做优化操作，并在最后调用 [compilation.codeGeneration](https://github.com/webpack/webpack/blob/v5.107.0/lib/Compilation.js#L3160-L3162) 方法：
 
 ```js
 // Webpack 5.107
@@ -326,7 +326,7 @@ console.log(_bar__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 ### 自定义 Template.apply 示例
 
-为了加深理解，接下来我们尝试开发一个简单的 Banner 插件：实现在每个模块前自动插入一段字符串：
+以下通过开发一个简单的 Banner 插件加深理解，功能是在每个模块前自动插入一段字符串：
 
 ```js
 const { Dependency, Template } = require("webpack");
@@ -366,7 +366,7 @@ module.exports = class DemoPlugin {
 1. 编写 `DemoDependency` 与 `DemoDependencyTemplate` 类，其中 `DemoDependencyTemplate` 在其 `apply` 中调用 `source.insert` 插入字符串
 2. 使用 `compilation.dependencyTemplates` 注册映射关系
 3. 使用 `thisCompilation` 钩子取得 `compilation` 对象
-4. 使用 `succeedModule` 钩子订阅模块构建完毕事件，并调用 `module.addDependency` 方法添加依赖
+4. 使用 `succeedModule` 钩子监听模块构建完毕事件，并调用 `module.addDependency` 方法添加依赖
 
 ---
 
@@ -664,7 +664,7 @@ flowchart TD
 
 ## 合并最终产物
 
-讲完单个模块转译以及运行时模块收集过程后，我们终于来到最后一步：**模块合并打包**。
+完成单个模块转译以及运行时模块收集后，构建流程的最后一步是**模块合并打包**。
 
 ### 模块合并主流程
 
@@ -729,7 +729,7 @@ class JavascriptModulesPlugin {
 
 ### JavascriptModulesPlugin.renderMain 函数
 
-`renderMain` 函数涉及比较多场景判断，我摘了几个重点步骤：
+`renderMain` 函数涉及较多场景判断，以下摘取几个重点步骤：
 
 ```js
 // Webpack 5.107
@@ -816,7 +816,7 @@ class JavascriptModulesPlugin {
 
 ### 最终产物模板框架
 
-示例右边 bundle 文件中，红框部分为用户代码文件及运行时模块生成的产物，其余部分撑起了一个 IIFE 形式的运行框架，即为**模板框架**：
+以下 bundle 文件中，用户代码文件及运行时模块生成的产物之外的部分，撑起了一个 IIFE 形式的运行框架，即为**模板框架**：
 
 ```js
 (() => { // webpackBootstrap
@@ -972,7 +972,7 @@ flowchart LR
 
 ## 总结
 
-从《Init、Make、Seal：真正读懂 Webpack 核心流程》开始，我们花了四节篇幅，终于讲完了 Webpack 构建主流程中方方面面的原理：
+Webpack 构建主流程的原理可归纳为以下要点：
 
 - Webpack 构建过程可以简单划分为 **Init、Make、Seal** 三个阶段
 - **Init** 阶段负责初始化 Webpack 内部若干插件与状态
@@ -982,7 +982,7 @@ flowchart LR
   - 遍历 ChunkGraph，转译每一个模块代码
   - 将所有模块与模块运行时依赖合并为最终输出的 Bundle
 
-**本章重点**：
+**本篇重点**：
 
 1. **`__webpack_require__` 函数族**：理解了 9 个核心运行时函数的作用和实现原理
 2. **模块转译机制**：`JavascriptGenerator` + `Template.apply` 体系的协作模式
@@ -990,17 +990,17 @@ flowchart LR
 4. **ESM vs CJS Runtime**：两种输出模式的差异和适用场景
 5. **v5.107 新增特性**：`__webpack_require__.dn` 辅助函数优化默认导出处理
 
-这些内容都是介绍 Webpack 实现原理的核心知识，能够帮助你：
+这些内容是 Webpack 实现原理的核心知识，掌握后可以：
 
-- 分析、理解复杂开源代码的能力
-- 理解 Webpack 架构及实现细节，遇到问题时能迅速定位根源
-- 理解 Webpack 为 hooks、loader 提供的上下文，自如地实现自己的组件
+- 提升分析、理解复杂开源代码的能力
+- 理解 Webpack 架构及实现细节，遇到问题时迅速定位根源
+- 理解 Webpack 为 hooks、loader 提供的上下文，自如地实现自定义组件
 
-希望你能沿着这个思路，反复、仔细阅读这些章节，深入理解底层实现原理，成为真正意义上的 **Webpack 专家**。
+建议沿此思路反复、仔细研读相关文档与源码，深入理解底层实现原理，逐步达到精通 Webpack 的水平。
 
 ---
 
-## 思考题
+## 关键问题
 
 1. **Dependency、Module 之间是什么关系？为什么需要设计 Dependency 这个看似可有可无的结构？**
 

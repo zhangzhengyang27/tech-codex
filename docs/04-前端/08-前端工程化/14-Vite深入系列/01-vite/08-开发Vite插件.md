@@ -8,7 +8,9 @@ tags: [Vite, 插件开发, 构建工具, 工程化]
 
 # 开发 Vite 插件
 
-虽然 Vite 的插件机制是基于 Rollup 来设计的，但实际上 Vite 的插件机制也包含了自己独有的一部分，与 Rollup 的各个插件 Hook 并非完全兼容，而对于 Vite 和 Rollup 中相同的 Hook (如 resolveId 、load 、 transform )只是稍微提及，就不再展开赘述了
+## 概念说明
+
+Vite 的插件机制基于 Rollup 设计，但同时也包含了自己独有的一部分，与 Rollup 的各个插件 Hook 并非完全兼容。对于 Vite 和 Rollup 中相同的 Hook (如 resolveId 、load 、 transform )，本文只做简要提及；重点放在 Vite 独有的 Hook 上。
 
 Vite 插件与 Rollup 插件结构类似，为一个 name 和各种插件 Hook 的对象，一个简单的插件示例如下:
 
@@ -60,7 +62,7 @@ Vite **开发阶段**会模拟 Rollup 的行为:其中 Vite 会调用一系列�
 
 ### 独有 Hook
 
-Vite 中特有的一些 Hook，而放到 Rollup 中会被直接忽略
+Vite 中特有的一些 Hook，放到 Rollup 中会被直接忽略。
 
 #### 添加配置 config
 
@@ -161,7 +163,7 @@ const myPlugin = () => ({
 
 #### transformIndexHtml
 
-这个钩子用来灵活控制 HTML 的内容，你可以拿到原始的 html 内容后进行任意的转换:
+这个钩子用来灵活控制 HTML 的内容，可以拿到原始的 html 内容后进行任意的转换:
 
 ```javascript
 const htmlPlugin = () => {
@@ -235,17 +237,15 @@ if (import.meta.hot) {
 }
 ```
 
-以上就是 Vite 独有的五个钩子，我们来重新梳理一下:
+### Vite 独有 Hook 汇总
 
-config : 用来进一步修改配置。
+Vite 独有的五个钩子梳理如下:
 
-configResolved : 用来记录最终的配置信息。
-
-configureServer : 用来获取 Vite Dev Server 实例，添加中间件。
-
-transformIndexHtml : 用来转换 HTML 的内容。
-
-handleHotUpdate : 用来进行热更新模块的过滤，或者进行自定义的热更新处理。
+- config : 用来进一步修改配置。
+- configResolved : 用来记录最终的配置信息。
+- configureServer : 用来获取 Vite Dev Server 实例，添加中间件。
+- transformIndexHtml : 用来转换 HTML 的内容。
+- handleHotUpdate : 用来进行热更新模块的过滤，或者进行自定义的热更新处理。
 
 ### 插件 Hook 执行顺序
 
@@ -340,7 +340,7 @@ Vite 中插件的执行顺序如下图所示:
 
 ## 插件开发实战
 
-接下来将一起编写两个 Vite 插件，分别是 虚拟模块加载插件 和 Svgr 插件。
+接下来编写两个 Vite 插件，分别是 虚拟模块加载插件 和 Svgr 插件。
 
 ### 虚拟模块加载
 
@@ -404,7 +404,7 @@ import fib from 'virtual:fib';
 alert(`结果: ${fib(10)}`)
 ```
 
-这里使用了 virtual:fib 这个虚拟模块，虽然这个模块不存在真实的文件系统中，但你打开浏览器后可以发现这个模块导出的函数是可以正常执行的
+这里使用了 virtual:fib 这个虚拟模块，虽然这个模块不存在真实的文件系统中，但打开浏览器后可以发现这个模块导出的函数是可以正常执行的
 
 接着来尝试一下通过虚拟模块来读取内存中的变量，在 virtual-module.ts 中增加如下代码:
 
@@ -444,7 +444,7 @@ export default function virtualFibModulePlugin(): Plugin {
 }
 ```
 
-在新增的这些代码中，注册了一个新的虚拟模块 virtual:env ，紧接着我们去项目去使用:
+在新增的这些代码中，注册了一个新的虚拟模块 virtual:env ，紧接着在项目中使用:
 
 ```javascript
 // main.tsx
@@ -463,11 +463,11 @@ declare module 'virtual:*' {
 
 这样就解决了类型报错的问题。接着去浏览器观察一下输出的情况:Vite 环境变量能正确地在浏览器中打印出来，说明在内存中计算出来的 virtual:env 模块的确被成功地加载了。
 
-从中你可以看到，虚拟模块的内容完全能够被动态计算出来，因此它的灵活性和可定制程度非常高，实用性也很强，在 Vite 内部的插件被深度地使用，社区当中也有不少知名的插件(如 vite-plugin-windicss 、 vite-plugin-svg-icons 等)也使用了虚拟模块的技术
+虚拟模块的内容完全能够被动态计算出来，因此它的灵活性和可定制程度非常高，实用性也很强，在 Vite 内部的插件被深度地使用，社区当中也有不少知名的插件(如 vite-plugin-windicss 、 vite-plugin-svg-icons 等)也使用了虚拟模块的技术
 
 ### Svg 组件形式加载
 
-Vite 本身并不支持将 svg 转换为组件的代码，需要通过插件来实现。写一个 Vite 插件，实现在 React 项目能够通过组件方式来使用 svg 资源。
+Vite 本身并不支持将 svg 转换为组件的代码，需要通过插件来实现。下面开发一个 Vite 插件，实现在 React 项目中能够通过组件方式来使用 svg 资源。
 
 首先安装一下需要的依赖:
 
@@ -528,7 +528,7 @@ import logoUrl, { ReactComponent as Logo } from './logo.svg';
 - 处理默认导出为 url 的情况
 - 将组件的 jsx 代码转译为浏览器可运行的代码
 
-下面是插件的完整的代码，你可以参考学习:
+下面是插件的完整的代码，可供参考学习:
 
 ```ts
 import { Plugin } from "vite";
@@ -579,7 +579,7 @@ export default function viteSvgrPlugin(options: SvgrOptions): Plugin {
 }
 ```
 
-接下来让我们在项目中使用这个插件:
+接下来在项目中使用这个插件:
 
 ```javascript
 // vite.config.ts
@@ -594,7 +594,7 @@ import svgr from './plugins/svgr';
 }
 ```
 
-接着我们在项目中用组件的方式引入 svg:
+接着在项目中用组件的方式引入 svg:
 
 ```jsx
 // App.tsx
@@ -612,7 +612,7 @@ export default App;
 
 ## 调试技巧
 
-另外，在开发调试插件的过程，推荐大家在本地装上 vite-plugin-inspect 插件，并在 Vite 中使用它:
+在开发调试插件的过程，推荐在本地安装 vite-plugin-inspect 插件，并在 Vite 中使用它:
 
 ```javascript
 // vite.config.ts
@@ -627,10 +627,18 @@ import inspect from 'vite-plugin-inspect';
 }
 ```
 
-这样当你再次启动项目时，会发现多出一个调试地址:
+再次启动项目时会发现多出一个调试地址:
 
 ![image-20240322002330524](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403220023288.png)
 
-可以通过这个地址来查看项目中各个模块的编译结果，点击特定的文件后，你可以看到这个模块经过各个插件处理后的中间结果
+可以通过这个地址来查看项目中各个模块的编译结果，点击特定的文件后，可以看到这个模块经过各个插件处理后的中间结果
 
 ![image-20240322002358955](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403220024482.png)
+
+## 小结
+
+- Vite 插件结构为 `name` + 各类 Hook 的对象，实际开发中通常实现为返回插件对象的工厂函数以便传参。
+- 通用 Hook 在开发阶段分三个阶段执行：启动（options/buildStart）、请求响应（resolveId/load/transform）、关闭（buildEnd/closeBundle）；生产构建因直接使用 Rollup，所有 Rollup 钩子均生效。
+- 五个 Vite 独有 Hook：config（追加/修改配置）、configResolved（记录最终配置）、configureServer（扩展 Dev Server 中间件）、transformIndexHtml（转换 HTML）、handleHotUpdate（自定义热更新）。
+- 插件应用位置由 `apply`（serve/build/函数）控制，执行顺序由 `enforce`（pre/normal/post）控制。
+- 虚拟模块通过 resolveId 返回 `\0` 前缀路径 + load 返回内容实现，可加载内存中动态计算的模块；vite-plugin-inspect 是插件调试的常用工具。

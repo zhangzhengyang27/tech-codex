@@ -80,7 +80,7 @@ h3 {
 </style>
 ```
 
-> **v2 更新说明**：上述示例已从 v1 的 Options API（`export default { data() {...} }`）升级为 Vue 3.4+ 推荐的 **`<script setup>` + Composition API** 写法。`<script setup>` 是编译时宏，相比普通 `<script>` 具有更好的类型推导性能、更少的样板代码，且是当前 Vue 社区的最佳实践。
+> **说明**：上述示例采用 Vue 3.4+ 推荐的 **`<script setup>` + Composition API** 写法（替代旧版 Options API `export default { data() {...} }`）。`<script setup>` 是编译时宏，相比普通 `<script>` 具有更好的类型推导性能、更少的样板代码，且是当前 Vue 社区的最佳实践。
 
 这种将整个页面拆解成组件的开发方式能够极大降低页面开发的复杂度，提升开发效率，但代价则是需要搭建一套适用的工程化环境，将 MVVM 框架组件转换为能够被普通浏览器兼容、运行的 HTML、CSS、JavaScript 代码。
 
@@ -97,7 +97,7 @@ h3 {
 
 ## 方案总览：三条路线
 
-在正式深入配置细节之前，我们先从宏观层面理解搭建 Vue 开发环境的三条主流路线：
+搭建 Vue 开发环境有三条主流路线，先从宏观层面理解：
 
 ```mermaid
 flowchart TB
@@ -161,7 +161,7 @@ flowchart TB
 
 ### 安装依赖
 
-> **v2 重要变更**：Vue 3 不再使用 `vue-template-compiler`，而是使用 **`@vue/compiler-sfc`** 作为模板编译器。这是 Vue 3 的架构性变更——编译器与运行时完全解耦。
+> **重要变更**：Vue 3 不再使用 `vue-template-compiler`，而是使用 **`@vue/compiler-sfc`** 作为模板编译器。这是 Vue 3 的架构性变更——编译器与运行时完全解耦。
 
 ```bash
 yarn add -D webpack webpack-cli vue-loader@^22 @vue/compiler-sfc
@@ -276,7 +276,7 @@ module.exports = {
 
 #### 方案 B：Webpack 5 原生 CSS 支持（experiments.css）
 
-> **v2 新增**：Webpack 5.107+ 提供了实验性的原生 CSS 支持，无需 css-loader 和 style-loader：
+> **提示**：Webpack 5.107+ 提供了实验性的原生 CSS 支持，无需 css-loader 和 style-loader：
 
 ```js
 const { VueLoaderPlugin } = require('vue-loader')
@@ -302,14 +302,14 @@ module.exports = {
 
 ## 运行页面
 
-上例接入的 `vue-loader` 使得 Webpack 能够正确理解、翻译 Vue SFC 文件的内容，接下来我们还需要让页面真正运行起来，这里会用到：
+上例接入的 `vue-loader` 使得 Webpack 能够正确理解、翻译 Vue SFC 文件的内容，接下来还需要让页面真正运行起来，这里会用到：
 
 - 使用 `html-webpack-plugin` 自动生成 HTML 页面；
 - 使用 **webpack-dev-server v5** 让页面真正运行起来，并具备热更新能力。
 
 ### html-webpack-plugin 配置
 
-`html-webpack-plugin` 是一款根据编译产物自动生成 HTML 文件的 Webpack 插件，借助这一插件我们无需手动维护产物数量、路径、hash 值更新等问题。
+`html-webpack-plugin` 是一款根据编译产物自动生成 HTML 文件的 Webpack 插件，借助这一插件无需手动维护产物数量、路径、hash 值更新等问题。
 
 ```bash
 yarn add -D html-webpack-plugin
@@ -358,7 +358,7 @@ module.exports = {
 
 ### webpack-dev-server v5 配置
 
-> **v2 重要变更**：webpack-dev-server v5 配置方式有显著变化，且需要配合 **webpack-cli v7** 使用。
+> **重要变更**：webpack-dev-server v5 配置方式有显著变化，且需要配合 **webpack-cli v7** 使用。
 
 ```bash
 yarn add -D webpack-dev-server@^5 webpack-cli@^7
@@ -440,7 +440,7 @@ module.exports = {
 
 ### 入口文件（main.js）
 
-不要忘记创建 Vue 应用的入口文件：
+此外需要创建 Vue 应用的入口文件：
 
 ```js
 // src/main.js
@@ -501,13 +501,13 @@ flowchart LR
 
 ## 复用其它编译工具
 
-到这里，我们还是在用原生 JavaScript、CSS 编写 Vue 组件代码，在现代 Web 开发中，我们通常还会搭配其它工程化工具力求提升开发效率、质量。好消息是经过精妙的设计，`vue-loader` 能够复合使用其它 Webpack Loader 的能力处理各个模块内容，包括：
+到这里仍在使用原生 JavaScript、CSS 编写 Vue 组件代码。现代 Web 开发中，通常还会搭配其它工程化工具提升开发效率、质量。经过精妙的设计，`vue-loader` 能够复合使用其它 Webpack Loader 的能力处理各个模块内容，包括：
 
 - 使用 `swc-loader`、`ts-loader` 等处理 SFC 的 `<script>` / `<script setup>` 模块；
 - 使用 `less-loader`、`sass-loader` 等处理 `<style>` 模块；
 - 使用 `pug-plain-loader` 等处理 `<template>` 模块。
 
-为了达到这种效果，用法上我们需要为每种模块配置相应的 Webpack 处理规则，并正确设置模块的 `lang` 属性值。
+为了达到这种效果，用法上需要为每种模块配置相应的 Webpack 处理规则，并正确设置模块的 `lang` 属性值。
 
 ### TypeScript 支持（三种方案）
 
@@ -553,7 +553,7 @@ const props = defineProps<MessageProps>()
 
 #### 方案 B：swc-loader（高性能方案，推荐）
 
-> **v2 新增**：[swc](https://swc.rs/) 是基于 Rust 编写的 JavaScript/TypeScript 编译器，比 ts-loader 快 **20 倍以上**，是当前主流的高性能替代方案。
+> **说明**：[swc](https://swc.rs/) 是基于 Rust 编写的 JavaScript/TypeScript 编译器，比 ts-loader 快 **20 倍以上**，是当前主流的高性能替代方案。
 
 ```bash
 npm install -D swc-loader @swc/core
@@ -587,7 +587,7 @@ module.exports = {
 
 #### 方案 C：experiments.typescript（Webpack 5.107+ 实验特性）
 
-> **v2 新增**：Webpack 5.107+ 内置了实验性的 TypeScript 支持，无需额外安装 Loader：
+> **提示**：Webpack 5.107+ 内置了实验性的 TypeScript 支持，无需额外安装 Loader：
 
 ```js
 module.exports = {
@@ -653,7 +653,7 @@ h3 {
 </style>
 ```
 
-> **v2 补充**：`scoped` 属性会为当前组件的样式添加 `data-v-xxxxx` 哈希属性选择器，实现样式隔离。此外还可以使用 `module` 属性启用 **CSS Modules**：
+> **补充**：`scoped` 属性会为当前组件的样式添加 `data-v-xxxxx` 哈希属性选择器，实现样式隔离。此外还可以使用 `module` 属性启用 **CSS Modules**：
 
 ```vue
 <!-- CSS Modules 模式 -->
@@ -848,7 +848,7 @@ sequenceDiagram
 
 ### 手动搭建 SSR 环境
 
-接下来，我们使用 **Webpack 5.107**、**Vue 3.4+**、Express、`@vue/server-renderer` 搭建一套完备的 Vue SSR 应用。
+以下使用 **Webpack 5.107**、**Vue 3.4+**、Express、`@vue/server-renderer` 搭建一套完备的 Vue SSR 应用。
 
 #### 项目目录结构
 
@@ -1147,7 +1147,7 @@ SSR 不是银弹，依然带来了不少新问题：
 | **prerender-spa-plugin** | Puppeteer | 遗留 SPA 项目预渲染 | **不兼容 Webpack 5**，不推荐新项目使用 |
 | **自定义脚本** | `@vue/server-renderer` | 完全自定义需求 | 参考 SSR 章节，在构建时遍历路由批量渲染 |
 
-> **v2 说明**：在 Webpack 4 时代常用的 `prerender-spa-plugin` 由于依赖 Puppeteer 且内部机制与 Webpack 5 的 chunk 图不兼容，目前无法正常工作。对于 Webpack 5 项目，建议迁移到 Nuxt 3 或自行基于 `@vue/server-renderer` 实现 SSG 脚本。
+> **说明**：在 Webpack 4 时代常用的 `prerender-spa-plugin` 由于依赖 Puppeteer 且内部机制与 Webpack 5 的 chunk 图不兼容，目前无法正常工作。对于 Webpack 5 项目，建议迁移到 Nuxt 3 或自行基于 `@vue/server-renderer` 实现 SSG 脚本。
 
 ---
 
@@ -1205,7 +1205,7 @@ npm create vue@latest my-app
 
 ### 3. create-webpack-app（Webpack 官方脚手架）
 
-> **v2 新增**：Webpack 官方提供了自己的脚手架工具，可以快速创建包含 Vue 支持的 Webpack 项目：
+> **提示**：Webpack 官方提供了自己的脚手架工具，可以快速创建包含 Vue 支持的 Webpack 项目：
 
 ```bash
 npm create webpack-app@latest my-app -- --template vue
@@ -1239,17 +1239,17 @@ npm create webpack-app@latest my-app -- --template vue
 
 1. 虽然 **Vite 已成为 Vue 官方推荐的构建工具**，凭借极速的 HMR 和优秀的开发体验赢得了大量用户，但 **Webpack 在企业级应用、深度定制、monorepo 统一构建等场景下仍有不可替代的优势**。
 2. 理解 vue-loader 的 SFC 编译流程（template→render 函数、script→setup()、style→CSS 处理链），是掌握 Vue 工程化的基础。
-3. 从零搭建 Vue + Webpack 环境的过程虽然繁琐，但能帮助你深入理解前端工程化的每一个环节，这对于解决复杂的构建问题和进行深层次优化至关重要。
+3. 从零搭建 Vue + Webpack 环境的过程虽然繁琐，但有助于深入理解前端工程化的每一个环节，这对于解决复杂的构建问题和进行深层次优化至关重要。
 
 ---
 
-## 思考题
+## 关键问题
 
-1. 同样用于构建 Vue 应用时，与 Vite 相比，Webpack 有哪些明显优势？在什么场景下你会优先选择 Webpack？
-2. `vue-loader` 的 `VueLoaderPlugin` 为什么是必须的？如果去掉它会发生什么？尝试从源码角度分析其作用。
+1. 同样用于构建 Vue 应用时，与 Vite 相比，Webpack 有哪些明显优势？什么场景下应优先选择 Webpack？
+2. `vue-loader` 的 `VueLoaderPlugin` 为什么是必须的？去掉它会发生什么？其作用机制是什么？
 3. SSR 场景下，为什么服务端构建配置要使用 `vue-style-loader` 替代 `style-loader`？两者的实现机制有何不同？
-4. 对于 TypeScript 支持，你会在 ts-loader、swc-loader、experiments.typescript 中如何选择？请结合项目规模和团队情况说明理由。
-5. 如果让你为一个大型 monorepo 项目统一构建工具（包含 Vue 应用、React 组件库、Node.js 包），你会选择 Webpack 还是 Vite？为什么？
+4. TypeScript 支持应如何在 ts-loader、swc-loader、experiments.typescript 之间选择？可结合项目规模和团队情况评估。
+5. 为一个大型 monorepo 项目统一构建工具（包含 Vue 应用、React 组件库、Node.js 包）时，应选择 Webpack 还是 Vite？为什么？
 
 ---
 

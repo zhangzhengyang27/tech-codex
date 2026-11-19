@@ -25,11 +25,11 @@ tags: [Webpack, 构建工具]
 ---
 
 
-毋庸置疑，对前端开发者而言，当下正是一个日升月恒的美好时代！在久远的过去，Web 页面的开发技术链条非常原始而粗糙，那时候的 JavaScript 更多用来点缀 Web 页面交互而不是用来构建一个完整的应用。直到 2009 年 5 月 [Ryan Dahl](https://en.wikipedia.org/wiki/Ryan_Dahl) 正式发布 Node.js，JavaScript 终于有机会脱离 Web 浏览器独立运行，随之而来的是，基于 JavaScript 构建应用程序的能力被扩展到越来越多场景，我们得以用相同的语言、技术栈、工具独立开发桌面端、服务端、命令行、微前端、PWA 等应用形态。
+Web 页面的开发技术链条在早期非常原始而粗糙，那时的 JavaScript 更多用来点缀 Web 页面交互，而不是用于构建完整的应用。直到 2009 年 5 月 [Ryan Dahl](https://en.wikipedia.org/wiki/Ryan_Dahl) 正式发布 Node.js，JavaScript 终于有机会脱离 Web 浏览器独立运行；基于 JavaScript 构建应用程序的能力随之扩展到越来越多场景，开发者得以用相同的语言、技术栈、工具独立开发桌面端、服务端、命令行、微前端、PWA 等应用形态。
 
-相应地，我们需要更好的构建、模块化以及打包能力来应对不同形态的工程化需求，所幸 Webpack 5.107 提供的功能特性，能够充分支撑这些场景。
+相应地，应对不同形态的工程化需求需要更好的构建、模块化以及打包能力，Webpack 5.107 提供的功能特性能充分支撑这些场景。
 
-前面章节我们已经详细介绍了如何使用 Webpack 构建 NPM Library，以及如何基于 Module Federation 搭建微前端架构。本章将继续汇总这些特化场景需求，包括：
+在 NPM Library 构建、微前端（Module Federation）等特化场景之外，本篇继续汇总以下场景的构建方法，包括：
 
 - 如何使用 Webpack 5.107 + Workbox 7 构建 Progressive Web Apps 应用；
 - 如何使用 Webpack 5.107 构建 Node.js 应用（含 ESM 支持）；
@@ -38,7 +38,7 @@ tags: [Webpack, 构建工具]
 
 ## 多目标构建总览
 
-在深入各具体场景之前，我们先从宏观视角理解 Webpack 的多目标构建体系。Webpack 5.107 通过 `target` 配置项与 `experiments` 实验特性，实现了对多种运行环境的统一构建支持：
+在深入各具体场景之前，先从宏观视角理解 Webpack 的多目标构建体系。Webpack 5.107 通过 `target` 配置项与 `experiments` 实验特性，实现了对多种运行环境的统一构建支持：
 
 ```mermaid
 graph TB
@@ -70,7 +70,7 @@ graph TB
 
 ```
 
-上图展示了 Webpack 5.107 的完整多目标构建能力矩阵。接下来我们逐一深入每个场景的具体实践。
+上图展示了 Webpack 5.107 的完整多目标构建能力矩阵。接下来逐一深入每个场景的具体实践。
 
 ---
 
@@ -78,7 +78,7 @@ graph TB
 
 ### 1.1 PWA 核心概念
 
-PWA 全称 Progressive Web Apps（渐进式 Web 应用），可以简单理解为 **一系列将网页如同独立 APP 般安装到本地的技术集合**，借此，我们可以保留普通网页轻量级、可链接（SEO 友好）、低门槛（只要有浏览器就能访问）等优秀特点，同时具备独立 APP 离线运行、可安装等优势。
+PWA 全称 Progressive Web Apps（渐进式 Web 应用），可以简单理解为 **一系列将网页如同独立 APP 般安装到本地的技术集合**，借此可以保留普通网页轻量级、可链接（SEO 友好）、低门槛（只要有浏览器就能访问）等优秀特点，同时具备独立 APP 离线运行、可安装等优势。
 
 实现上，PWA 与普通 Web 应用的开发方法大致相同，都是用 CSS、JS、HTML 定义应用的样式、逻辑、结构，两者主要区别在于 PWA 需要用一些新技术实现离线与安装功能：
 
@@ -109,7 +109,7 @@ PWA 全称 Progressive Web Apps（渐进式 Web 应用），可以简单理解�
 
 ### 1.2 Workbox 7 集成方案
 
-我们可以选择自行开发维护 ServiceWorker 及 Manifest 文件，也可以使用 Google 开源的 [Workbox 7](https://developer.chrome.com/docs/workbox) 套件自动生成 PWA 应用壳。Workbox 7 是目前最新的稳定版本，带来了更精细的缓存控制策略和更好的 Tree-shaking 支持。
+可以选择自行开发维护 ServiceWorker 及 Manifest 文件，也可以使用 Google 开源的 [Workbox 7](https://developer.chrome.com/docs/workbox) 套件自动生成 PWA 应用壳。Workbox 7 是目前最新的稳定版本，带来了更精细的缓存控制策略和更好的 Tree-shaking 支持。
 
 #### 安装依赖
 
@@ -257,7 +257,7 @@ dist/
 
 #### 配置方式二：InjectManifest（高级定制）
 
-当需要完全掌控 ServiceWorker 缓存逻辑时，使用 `InjectManifest` 模式。你需要自行编写 SW 源码，Workbox 只负责将预缓存清单（precache manifest）注入其中：
+当需要完全掌控 ServiceWorker 缓存逻辑时，使用 `InjectManifest` 模式。此模式下需自行编写 SW 源码，Workbox 只负责将预缓存清单（precache manifest）注入其中：
 
 ```javascript
 // webpack.config.js — InjectManifest 模式
@@ -267,7 +267,7 @@ module.exports = {
   // ... 其他配置
   plugins: [
     new InjectManifest({
-      swSrc: "./src/service-worker.js",       // 你的自定义 SW 源文件
+      swSrc: "./src/service-worker.js",       // 自定义 SW 源文件
       swDest: "service-worker.js",            // 输出文件路径
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       // Workbox 7: 可传入额外参数给 swSrc 编译
@@ -464,7 +464,7 @@ module.exports = {
 
 ### 2.4 动态 require 的陷阱
 
-在 Node 代码中请务必慎用动态 `require` 语句，你很可能会得到预期之外的效果！
+在 Node 代码中请务必慎用动态 `require` 语句，否则很可能得到预期之外的效果。
 
 例如对于下面的目录结构：
 
@@ -512,7 +512,7 @@ const modules = ["foo", "bar"].map((r) => require(`./${r}.js`));
 
 ### 3.1 Electron 进程模型回顾
 
-Electron 是一种使用 JavaScript、HTML、CSS 等技术构建跨平台桌面应用的开发框架，这意味着我们能用熟悉的大部分 Web 技术（React、Vue、Webpack 等）开发桌面级应用程序。实际上，许多知名应用如 VSCode、Discord、Slack、Figma 都是基于 Electron 实现的。
+Electron 是一种使用 JavaScript、HTML、CSS 等技术构建跨平台桌面应用的开发框架，这意味着开发者能用熟悉的大部分 Web 技术（React、Vue、Webpack 等）构建桌面级应用程序。实际上，许多知名应用如 VSCode、Discord、Slack、Figma 都是基于 Electron 实现的。
 
 与普通 Web 页面不同，Electron 应用由三类进程组成，进程之间以 IPC（Inter-Process Communication）方式通讯：
 
@@ -553,7 +553,7 @@ graph TB
 
 ### 3.2 Electron + Webpack 分离打包架构
 
-Electron 这种多进程结构要求我们在同一个项目中同时支持主进程、渲染进程、预加载脚本的构建，三者打包需求各有侧重。以下是推荐的完整项目结构与构建配置：
+Electron 这种多进程结构要求在同一个项目中同时支持主进程、渲染进程、预加载脚本的构建，三者打包需求各有侧重。以下是推荐的完整项目结构与构建配置：
 
 ```bash
 my-electron-app/
@@ -1022,11 +1022,11 @@ Webpack 5.107 不仅能构建一般的 Web 应用，理论上还适用于一切�
 | **WASM 应用** | `'web'` | experiments.asyncWebAssembly | 无需特殊插件 |
 | **远程资源** | 任意 | experiments.buildHttp | 无需特殊插件 |
 
-这种强大、普适的构建能力正是 Webpack 的核心优势之一。站在学习的角度，你可以将主要精力放在 Webpack 基础构建逻辑、配置规则、常用组件上，遇到特殊场景时再灵活查找相应 Loader、Plugin 以及生态工具，就可以搭建出适用的工程化环境。
+这种强大、普适的构建能力正是 Webpack 的核心优势之一。实践中可将主要精力放在 Webpack 基础构建逻辑、配置规则、常用组件上，遇到特殊场景时再灵活查找相应 Loader、Plugin 以及生态工具，即可搭建出适用的工程化环境。
 
 ---
 
-## 思考题
+## 关键问题
 
 1. **对比调研**：Rollup、Parcel、esbuild 等同类工具能否用于构建 PWA、Node、Electron 应用？各自的优劣是什么？
 2. **Workbox 策略设计**：对于一个频繁更新的内容型 PWA（如新闻客户端），应该如何设计 ServiceWorker 的缓存策略以保证新鲜度和离线体验的平衡？

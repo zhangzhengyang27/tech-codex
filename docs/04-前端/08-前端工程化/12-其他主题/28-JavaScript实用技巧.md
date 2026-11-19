@@ -7,9 +7,24 @@ keywords: [JavaScript, 技巧, 动态加载, 优化]
 
 # JavaScript 实用技巧
 
+## 概念说明
+
+本篇收录一组 JavaScript 常用代码片段，覆盖动态脚本加载、函数参数控制、设计模式（单例/once）、浏览器 API（全屏、屏幕录制、MutationObserver、IntersectionObserver、visibilitychange）、DOM 调试，以及解构赋值与数组操作等场景。每个技巧按"场景 → 实现"组织，代码可直接复用。
+
+## 核心要点
+
+- 动态加载 JS：Promise.all + script 标签 load 事件，实现多脚本并发加载与统一回调。
+- 参数默认值：普通默认值用 `value = 0`，必填参数用默认值表达式抛错（`value = required()`）。
+- once 与单例：闭包标记 `called` 控制函数只执行一次；缓存变量控制类只实例化一次。
+- 浏览器兼容：全屏、退出全屏等 API 在不同浏览器有 webkit/moz/ms 前缀差异，需逐个探测调用。
+- 调试技巧：`console.dir` 打印 dom 元素内部属性；`MutationObserver` 监听属性变化。
+- 解构赋值可作用于字符串（取 `length`）与数组（结合 length 取首尾项）。
+- 数组随机打乱：`sort(() => 0.5 - Math.random())` 双重排序法不够随机，企业级场景应使用洗牌算法（Fisher–Yates）。
+- ⚠️ 注意：`arguments.callee` 已被废弃，严格模式下不可用，现代写法推荐具名函数表达式。
+
 ## 动态加载 JS 文件
 
-在一些特殊的场景下，特别是一些库和框架的开发中，我们有时会去动态的加载 JS 文件并执行，下面是利用 Promise 进行了简单的封装
+在一些特殊的场景下，特别是一些库和框架的开发中，有时需要动态加载 JS 文件并执行。以下实现利用 Promise 进行了简单的封装：
 
 - 利用 Promise 处理异步的逻辑 
 - 利用 script 标签进行 js 的加载并执行
@@ -40,7 +55,7 @@ loadJS(["test1.js", "test2.js"], () => {
 
 ## 添加默认值
 
-有时候一个方法需要用户传入一个参数，通常情况下我们有两种处理方式，如果用户不传，我们通常会给一个默认值，亦或是用户必须要传一个参数，不传直接抛错。
+一个方法需要使用者传入参数时，通常有两种处理方式：不传则给一个默认值；或者参数必传，不传直接抛错。
 
 ```javascript
 function double(value) {
@@ -69,7 +84,7 @@ double() // throw Error
 
 ## 函数只执行一次
 
-有些情况下我们有一些特殊的场景，某一个函数只允许执行一次，或者绑定的某一个方法只允许执行一次。
+某些特殊场景下，某一个函数只允许执行一次，或者绑定的某一个方法只允许执行一次：
 
 ```javascript
 export function once (fn) {
@@ -86,7 +101,7 @@ export function once (fn) {
 
 ## 实现单例模式
 
-JavaScript 的单例模式是一种常用的设计模式，它可以确保一个类只有一个实例，并提供对该实例的全局访问点，在JS中有广泛的应用场景，如购物车，缓存对象，全局的状态管理等等
+JavaScript 的单例模式是一种常用的设计模式，它可以确保一个类只有一个实例，并提供对该实例的全局访问点，在 JS 中有广泛的应用场景，如购物车，缓存对象，全局的状态管理等等。
 
 ```javascript
 let cache;
@@ -107,7 +122,7 @@ console.log(x === y); // true
 
 ## 全屏/退出全屏
 
-当你需要将当前屏幕显示为全屏时
+将当前屏幕显示为全屏：
 
 ```javascript
 function fullScreen() {
@@ -124,7 +139,7 @@ function fullScreen() {
 fullScreen()
 ```
 
-当你需要退出全屏时
+退出全屏：
 
 ```javascript
 function exitScreen() {
@@ -143,13 +158,13 @@ exitScreen()
 
 ## 自定义打印样式
 
-当您需要打印当前页面时
+打印当前页面：
 
 ```javascript
 window.print()
 ```
 
-当需要打印出当前页面，但又需要修改当前布局时
+需要打印当前页面、但又要修改打印布局时，使用 `@media print` 调整打印样式：
 
 ```html
 <style>
@@ -166,7 +181,7 @@ window.print()
 
 ## 阻止关闭事件
 
-当需要阻止用户刷新或关闭浏览器时，可以选择触发 beforeunload 事件，部分浏览器无法自定义文本内容
+需要阻止用户刷新或关闭浏览器时，可以触发 beforeunload 事件，部分浏览器无法自定义文本内容：
 
 ```javascript
 window.onbeforeunload = function(){    
@@ -176,7 +191,7 @@ window.onbeforeunload = function(){
 
 ## 屏幕录制
 
-当您需要录制当前屏幕并上传或下载屏幕录像时
+需要录制当前屏幕并上传或下载屏幕录像时，使用 `getDisplayMedia` 与 `MediaRecorder`：
 
 ```javascript
 const streamPromise = navigator.mediaDevices.getDisplayMedia()
@@ -215,6 +230,8 @@ streamPromise.then(stream => {
 
 ## 横竖屏
 
+通过 `window.orientation` 监听横竖屏切换：
+
 ```javascript
 function hengshuping(){
     if(window.orientation==180||window.orientation==0){
@@ -227,7 +244,7 @@ function hengshuping(){
 window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", hengshuping, false);
 ```
 
-修改横竖屏的样式
+修改横竖屏的样式：
 
 ```html
 <style>
@@ -246,7 +263,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 
 ## 标签页隐藏
 
-当你需要监听标签显示和隐藏的事件时
+需要监听标签页显示和隐藏的事件时，使用 `visibilitychange`：
 
 ```javascript
 const {hidden, visibilityChange} = (() => {
@@ -281,7 +298,7 @@ document.addEventListener(
 
 ## 本地图片预览
 
-当你从客户端获取图片但不能立即上传到服务器，需要预览时
+从客户端获取图片但不能立即上传到服务器、需要预览时，使用 Object URL：
 
 ```html
 <div class="test">
@@ -311,7 +328,7 @@ document.querySelector('input').addEventListener('change', (event) => {
 
 ## 递归函数名解耦
 
-当你需要写一个递归函数时，你声明了一个函数名，但是每次修改函数名时，你总是忘记修改内部函数名。arguments 是函数的内部对象，包括传入函数的所有参数，arguments.callee 代表函数名
+`arguments` 是函数的内部对象，包括传入函数的所有参数，`arguments.callee` 代表函数名本身，可用于递归函数与函数名解耦——避免每次修改函数名时忘记修改内部递归调用。
 
 > 注：`arguments.callee` 已被废弃，在严格模式下不可用（ES5 起严格模式禁止访问）。现代写法推荐直接使用函数名或具名函数表达式。
 
@@ -326,7 +343,7 @@ function fibonacci (n) {
 
 ## 判断 dom 是否显示在页面上
 
-当需要判断一个 dom 元素当前是否出现在视口（viewport）中时，可以尝试使用 IntersectionObserver 来判断
+需要判断一个 dom 元素当前是否出现在视口（viewport）中时，可以使用 IntersectionObserver：
 
 ```html
 <style>
@@ -365,13 +382,15 @@ if (window?.IntersectionObserver) {
 
 ## 元素可编辑
 
-当你需要编辑一个 dom 元素时，让它像 textarea 一样点击
+需要让一个 dom 元素像 textarea 一样点击后可编辑时，使用 `contenteditable` 属性：
 
 ```html
 <div contenteditable="true">here can be edited</div>
 ```
 
 ## 监听元素属性变化
+
+使用 MutationObserver 监听 dom 元素的属性变化：
 
 ```html
 <!DOCTYPE html>
@@ -408,7 +427,7 @@ if (window?.IntersectionObserver) {
 
 ## 打印 dom 元素
 
-在开发过程中需要打印 dom 元素时，使用 console.log 往往只能打印出整个 dom 元素，无法查看 dom 元素的内部属性。您可以尝试使用 console.dir
+开发过程中需要打印 dom 元素时，使用 console.log 往往只能打印出整个 dom 元素，无法查看 dom 元素的内部属性，此时可以使用 console.dir：
 
 ```javascript
 console.log(document.body)
@@ -417,7 +436,7 @@ console.dir(document.body)
 
 ## 解构赋值
 
-日常使用解构赋值，一般都是先解构，再赋值，当然我们也可以一行就完成解构加赋值操作，看起来非常简化，当然可读性你懂得！
+日常使用解构赋值一般都是先解构再赋值，一行也可以同时完成解构加赋值操作，写法简洁但可读性有所下降：
 
 ```javascript
 let people = { name: null, age: null };
@@ -429,7 +448,7 @@ console.log(people) // {"name":"张三","age":16}
 
 ### 对基础数据类型进行解构
 
-日常中我们应该用不到这样的场景，但是实际上我们也可以对基础数据类型解构
+基础数据类型也可以解构，例如解构字符串：
 
 ```javascript
 const {length : a} = '1234';
@@ -438,7 +457,7 @@ console.log(a) // 4
 
 ### 对数组解构拿到最后一项
 
-实际上我们是可以对数组解构赋值拿到 **length** 属性的，通过这个特性也可以做更多的事情
+对数组解构赋值可以拿到 **length** 属性，结合该属性可一次取出首项和最后一项：
 
 ```javascript
 const arr = [1, 2, 3];
@@ -483,7 +502,7 @@ function isInteger(obj) {
 
 ### 数组随机打乱顺序
 
-通过 `0.5-Math.random()` 得到一个随机数，再通过两次sort排序打乱的更彻底,但是这个方法实际上并不够随机，如果是企业级运用，建议使用第二种洗牌算法
+通过 `0.5-Math.random()` 得到一个随机数，再通过两次 sort 排序打乱的更彻底，但是这个方法实际上并不够随机，企业级应用建议使用第二种洗牌算法：
 
 ```javascript
 function shuffleSimple(arr) {
@@ -509,7 +528,7 @@ function randomBool() {
 
 ### 获取随机颜色
 
-日常我们经常会需要获取一个随机颜色，通过随机数即可完成
+获取随机颜色通过随机数即可完成：
 
 ```javascript
 function getRandomColor(){
@@ -539,7 +558,7 @@ function moveLastToFirst(arr){
 
 ## 检测是否为空对象
 
-通过使用 ES6 的 Reflect 静态方法判断它的长度就可以判断是否是空对象了，也可以通过 Object.keys() 来判断
+使用 ES6 的 Reflect 静态方法判断键的长度，也可以通过 Object.keys() 来判断：
 
 ```javascript
 function isEmpty(obj){
@@ -549,7 +568,7 @@ function isEmpty(obj){
 
 ## 比较两个时间大小
 
-通过调用 getTime 获取时间戳比较就可以了
+通过调用 getTime 获取时间戳比较：
 
 ```javascript
 function compare(a, b){
@@ -559,7 +578,7 @@ function compare(a, b){
 
 ## 判断一个参数是不是函数
 
-有时候我们的方法需要传入一个函数回调，但是需要检测其类型，我们可以通过 Object 的原型方法去检测，当然这个方法可以准确检测任何类型
+方法需要传入函数回调并检测其类型时，可以通过 Object 的原型方法去检测，这个方法可以准确检测任何类型：
 
 ```javascript
 function isFunction(v){
@@ -569,10 +588,14 @@ function isFunction(v){
 
 ## 判断是否 Node.js 环境
 
-通过判断全局环境来检测是否是 Node.js 环境
+通过判断全局环境来检测是否是 Node.js 环境：
 
 ```javascript
 function isNode(){
     return typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
 }
 ```
+
+## 小结
+
+以上技巧围绕三类场景展开：语言能力（参数默认值、once、单例、解构赋值、类型判断），浏览器 API（动态加载、全屏、屏幕录制、横竖屏、标签页可见性、IntersectionObserver、MutationObserver），以及开发调试（console.dir、contenteditable、打印样式）。多数片段涉及浏览器兼容前缀探测或废弃 API（如 `arguments.callee`），落地使用时应结合目标环境的支持情况选择实现方式。

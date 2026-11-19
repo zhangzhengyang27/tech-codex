@@ -8,11 +8,11 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 # 如何基于 JUnit 5 的服务实现单元测试
 
-本节将介绍“如何使用 JUnit 5 实现服务的单元测试”。
+本文介绍"如何使用 JUnit 5 实现服务的单元测试"。
 
-第 11 节对“数据库驱动的微服务实现”做了简要的介绍，本节将介绍如何使用 JUnit 5 进行单元测试。你可能会好奇，实现相关的内容比较多却用一个节来讲解，而内容相对较少的单元测试部分也同样用一个节？
+前文对"数据库驱动的微服务实现"做了简要的介绍，本文将介绍如何使用 JUnit 5 进行单元测试。可能的疑问是：实现相关的内容比较多却只用一小节讲解，而内容相对较少的单元测试部分也同样用一节？
 
-这是因为市面上与实现相关的参考资料已经非常多了，而单元测试的介绍则相对较少，甚至被忽略了。单元测试的重要性怎么强调都不过分。没有覆盖率足够高的自动化单元测试，就无法安全的更新代码和进行重构。单元测试是开发人员所依赖的安全网。基于这些原因，本节将对单元测试进行具体的介绍。
+这是因为市面上与实现相关的参考资料已经非常多了，而单元测试的介绍则相对较少，甚至被忽略了。单元测试的重要性怎么强调都不过分。没有覆盖率足够高的自动化单元测试，就无法安全的更新代码和进行重构。单元测试是开发人员所依赖的安全网。基于这些原因，本文对单元测试进行具体的介绍。
 
 ## JUnit 5 介绍
 
@@ -57,7 +57,7 @@ Spring Boot 已经提供了对 JUnit 5 的集成，在项目中可以直接使�
 
 ## 领域对象测试
 
-领域对象类中包含了相关的业务逻辑，我们需要添加相应的单元测试，由于领域对象类通常没有其他依赖，这使得测试起来很方便。
+领域对象类中包含了相关的业务逻辑，需要添加相应的单元测试。由于领域对象类通常没有其他依赖，这使得测试起来很方便。
 
 下面代码中的 PassengerTest 是领域对象类 Passenger 的单元测试用例。PassengerTest 中的测试方法都很直接，只需要创建 Passenger 对象，调用其中的方法，再进行验证即可。
 
@@ -124,19 +124,19 @@ private UserAddress createUserAddress() {
 
 对于数据库驱动的微服务来说，数据库相关的测试是重点，一种常见的做法是在测试时使用专门的数据库来实现，比如 H2 和 HSQLDB，这两个数据库都是纯 Java 语言实现的，支持内存数据库或使用文件存储。从测试的角度来说，这两个数据库可以通过嵌入式的方式在当前 Java 进程中启动，这就降低了测试数据库服务器的管理复杂度。测试中使用的数据本来就是临时性的，只是在测试运行时有用，内存数据库的使用，则进一步省去了管理测试数据库的工作。
 
-Spring Boot 提供了对嵌入式数据库的支持，我们只需要添加 H2 或 HSQLDB 的运行时依赖，Spring Boot 则会在测试时自动配置相应的数据源。
+Spring Boot 提供了对嵌入式数据库的支持，只需添加 H2 或 HSQLDB 的运行时依赖，Spring Boot 则会在测试时自动配置相应的数据源。
 
-这种做法有一个很大的问题，那就是在运行单元测试时使用的数据库和生产环境的数据库是不一致的。H2 和 HSQLDB 这样的数据库并不适用于生产环境，生产环境中需要使用 PostgreSQL、MySQL 和 SQL Server 这样的数据库。虽然都是使用 JDBC 来访问数据库，我们并不能因此就忽略这些数据库实现之间的区别。这就意味着，通过单元测试的代码，在运行时有可能会由于数据库实现的差异而产生问题。如果发生了这样的情况，则会降低开发人员对单元测试的信任度。
+这种做法有一个很大的问题，那就是在运行单元测试时使用的数据库和生产环境的数据库是不一致的。H2 和 HSQLDB 这样的数据库并不适用于生产环境，生产环境中需要使用 PostgreSQL、MySQL 和 SQL Server 这样的数据库。虽然都是使用 JDBC 来访问数据库，也不能因此就忽略这些数据库实现之间的区别。这就意味着，通过单元测试的代码，在运行时有可能会由于数据库实现的差异而产生问题。如果发生了这样的情况，则会降低开发人员对单元测试的信任度。
 
-在第 11 节，我提到了推荐使用数据库迁移工具和手动管理数据库的表模式。如果在单元测试和生产环境中使用不同的数据库实现，则需要维护两套不同的 SQL 脚本，这无疑增加了维护成本。更好的做法是在运行单元测试时，使用与生产环境一样的数据库实现，这看起来很复杂，所幸的是，Docker 可以帮助我们简化很多工作。另外一个附加的好处是，单元测试时 Docker 的使用也与生产环境中的 Kubernetes 中 Docker 的使用保持一致。
+前文提到过推荐使用数据库迁移工具和手动管理数据库的表模式。如果在单元测试和生产环境中使用不同的数据库实现，则需要维护两套不同的 SQL 脚本，这无疑增加了维护成本。更好的做法是在运行单元测试时，使用与生产环境一样的数据库实现，这看起来很复杂，所幸的是，Docker 可以帮助简化很多工作。另外一个附加的好处是，单元测试时 Docker 的使用也与生产环境中的 Kubernetes 中 Docker 的使用保持一致。
 
-在单元测试中使用 Docker 时，我们需要用到 Testcontainers 这个第三方库，以及它提供的 Spring Boot 集成。在进行单元测试时，会启动一个 PostgreSQL 的 Docker 容器，并创建一个数据源来指向这个容器中的 PostgreSQL 服务器，其中的具体工作由 Testcontainers 来完成，我们只需要进行配置即可。
+在单元测试中使用 Docker 时，需要用到 Testcontainers 这个第三方库，以及它提供的 Spring Boot 集成。在进行单元测试时，会启动一个 PostgreSQL 的 Docker 容器，并创建一个数据源来指向这个容器中的 PostgreSQL 服务器，其中的具体工作由 Testcontainers 来完成，开发人员只需要进行配置即可。
 
 下面的代码是乘客管理服务中 PassengerService 的单元测试用例，其中比较重要的是几个注解的使用。
 
 @DataJpaTest 注解由 Spring Boot 提供，其作用是限制 Spring 在扫描 bean 时的范围，只会选择与 Spring Data JPA 相关的 bean。
 
-@AutoConfigureTestDatabase(replace = Replace.NONE) 的作用是禁止 Spring Boot 用嵌入式数据库替换掉当前的数据源。默认情况下，在运行单元测试时，Spring Boot 会配置一个使用嵌入式数据库的数据源，并替换掉应用中声明的数据源。由于我们使用的是 Docker 容器中的数据库，那么需要禁用这个默认行为。Replace.NONE 的作用是要求 Spring Boot 不进行替换，而是继续使用代码中声明的数据源。
+@AutoConfigureTestDatabase(replace = Replace.NONE) 的作用是禁止 Spring Boot 用嵌入式数据库替换掉当前的数据源。默认情况下，在运行单元测试时，Spring Boot 会配置一个使用嵌入式数据库的数据源，并替换掉应用中声明的数据源。由于这里使用的是 Docker 容器中的数据库，那么需要禁用这个默认行为。Replace.NONE 的作用是要求 Spring Boot 不进行替换，而是继续使用代码中声明的数据源。
 
 @ContextConfiguration 注解声明了使用的配置类 EmbeddedPostgresConfiguration。
 
@@ -199,7 +199,7 @@ public class PassengerServiceTest {
 
 ```
 
-下面代码中的 EmbeddedPostgresConfiguration 类用来配置运行单元测试时的数据源。以 embedded.postgresql 开头的属性值由 Testcontainers 生成，包含运行的 PostgreSQL 容器的连接信息。通过这些属性，我创建了一个 HikariDataSource 数据源，在运行单元测试时使用。
+下面代码中的 EmbeddedPostgresConfiguration 类用来配置运行单元测试时的数据源。以 embedded.postgresql 开头的属性值由 Testcontainers 生成，包含运行的 PostgreSQL 容器的连接信息。通过这些属性创建了一个 HikariDataSource 数据源，在运行单元测试时使用。
 
 ```
 @Configuration
@@ -224,11 +224,11 @@ public class EmbeddedPostgresConfiguration {
 
 ## 使用 mock 对象
 
-一个对象通常有很多依赖的对象，这些被依赖的对象又有各自的依赖对象。在对当前对象进行单元测试时，我们希望仅测试当前对象的行为，比如，对象 A 依赖对象 B、C，而对象 B、C 则分别依赖对象 D、E。在编写对象 A 的单元测试用例时，我们希望可以模拟对象 B、C 的行为，从而测试对象 A 在不同情况下的行为，这就需要用到 mock 对象。
+一个对象通常有很多依赖的对象，这些被依赖的对象又有各自的依赖对象。在对当前对象进行单元测试时，希望仅测试当前对象的行为。比如，对象 A 依赖对象 B、C，而对象 B、C 则分别依赖对象 D、E。在编写对象 A 的单元测试用例时，希望可以模拟对象 B、C 的行为，从而测试对象 A 在不同情况下的行为，这就需要用到 mock 对象。
 
 mock 对象可以模拟一个对象的行为。举例来说，对象 A 的方法 methodA 调用了对象 B 中的方法 methodB，并根据 methodB 的返回值进行不同的操作。在编写对象 A 的 methodA 方法的测试用例时，则需要覆盖不同的代码路径。对象 B 的 mock 可以很好的解决这个问题。在创建了对象 B 的 mock 之后，就可以直接指定 methodB 的返回值了，从而验证 methodA 在不同情况下的行为。
 
-行程派发服务的 TripServiceTest 类用到了 mock 对象。不过 TripServiceTest 类的逻辑比较复杂，因此我选择另外一个更简单的例子来说明 mock 对象的用法，你也可以直接参考示例应用中的 TripServiceTest 类。
+行程派发服务的 TripServiceTest 类用到了 mock 对象。不过 TripServiceTest 类的逻辑比较复杂，因此这里选择另外一个更简单的例子来说明 mock 对象的用法，也可以直接参考示例应用中的 TripServiceTest 类。
 
 下面代码中的 ActionService 类依赖 ValueUpdater 和 EventPublisher 两个对象，其中 ValueUpdater 的 updateValue 方法用来更新值。如果 updateValue 方法的返回值是 true，则 EventPublisher 的 publishEvent 方法会被调用来发布一个 ValueUpdatedEvent 事件。
 
@@ -255,7 +255,7 @@ public int performAction(Integer value) {
 
 ```
 
-在对 ActionService 类进行单元测试时，我们需要创建 ValueUpdater 和 EventPublisher 的 mock 对象。在下面的代码中，我使用 @MockBean 注解把 ValueUpdater 和 EventPublisher 都声明为 mock 对象（注：Spring Boot 3.4 起废弃 @MockBean，现行替代为 Spring Framework 6.2 提供的 @MockitoBean）。使用 @Captor 注解声明的 eventCaptor 对象用来捕获 EventPublisher 的 publishEvent 方法被调用时的实际参数值。
+在对 ActionService 类进行单元测试时，需要创建 ValueUpdater 和 EventPublisher 的 mock 对象。在下面的代码中，使用 @MockBean 注解把 ValueUpdater 和 EventPublisher 都声明为 mock 对象（注：Spring Boot 3.4 起废弃 @MockBean，现行替代为 Spring Framework 6.2 提供的 @MockitoBean）。使用 @Captor 注解声明的 eventCaptor 对象用来捕获 EventPublisher 的 publishEvent 方法被调用时的实际参数值。
 
 在 testValueUpdated 方法中，given(valueUpdater.updateValue(value)).willReturn(true) 的作用是指定 ValueUpdater 的 mock 对象的 updateValue 方法在参数为 value 时，其返回值是 true；接着验证 EventPublisher 的 publishEvent 方法被调用一次，并捕获实际的参数值；最后验证 eventCaptor 中捕获的 ValueUpdatedEvent 参数值的内容。
 
@@ -304,4 +304,4 @@ public class ActionServiceTest {
 
 ## 总结
 
-单元测试在微服务开发中起着重要的作用。本节对单元测试进行了详细的介绍，包括 JUnit 5 介绍，如何测试领域对象，如何使用 Docker 来使用与生产环境相同的数据库进行测试，以及如何在单元测试中使用 mock 对象。
+单元测试在微服务开发中起着重要的作用。本文对单元测试进行了详细的介绍，包括 JUnit 5 介绍，如何测试领域对象，如何使用 Docker 来使用与生产环境相同的数据库进行测试，以及如何在单元测试中使用 mock 对象。

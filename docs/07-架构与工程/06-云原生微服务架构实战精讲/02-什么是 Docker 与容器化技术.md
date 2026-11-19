@@ -8,27 +8,27 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 # 什么是 Docker 与容器化技术
 
-本节我将带你学习容器化技术与 Docker 的使用。
+本文介绍容器化技术与 Docker 的使用。
 
 微服务架构的应用本质是一个分布式系统，分布式系统早在微服务架构之前就已经出现了。分布式系统的复杂性除了体现在开发时，对运维也提出了更高的要求，需要部署的应用数量从一个变成了几个甚至几十个。如果在运维方面没有相应的技术提升，微服务架构也不可能得到广泛的应用。
 
 容器化技术的出现，为系统运维带来了新的可能性，微服务架构应用的部署离不开容器化技术。
 
-下面我将首先介绍应用部署方面的技术发展。下图给出了应用部署发展的阶段，即从传统部署到硬件虚拟化，再到容器化。这里我们首先介绍其中的硬件虚拟化技术。
+下面首先介绍应用部署方面的技术发展。下图给出了应用部署发展的阶段，即从传统部署到硬件虚拟化，再到容器化。这里首先介绍其中的硬件虚拟化技术。
 
 应用部署技术的发展
 
 ## 硬件虚拟化技术
 
-在早期的时候，应用都是直接被安装在操作系统中的。在进行扩展时，我们需要在新的物理机器上安装操作系统，再安装应用，这种方式的问题在于当多个应用共享物理资源时，一个应用可能占用过多的资源，从而影响其他应用的性能。另外，这种方式进行扩展的速度也很慢，需要从物理机器开始，无法快速响应业务的需求。
+在早期的时候，应用都是直接被安装在操作系统中的。在进行扩展时，需要在新的物理机器上安装操作系统，再安装应用，这种方式的问题在于当多个应用共享物理资源时，一个应用可能占用过多的资源，从而影响其他应用的性能。另外，这种方式进行扩展的速度也很慢，需要从物理机器开始，无法快速响应业务的需求。
 
 硬件虚拟化技术的出现，为扩展提供了新的解决方案，硬件虚拟化指的是对计算机的虚拟化，虚拟化对用户隐藏了计算平台的物理特征，仅提供一个抽象的计算平台。
 
-用来控制虚拟化的程序称为 Hypervisor，它可以创建和运行虚拟机。在虚拟机上我们可以安装不同类型的操作系统，包括 Windows、Linux 和 MacOS，虚拟机实例共享虚拟化的硬件资源。Hypervisor 通常分成两类：第一类 Hypervisor 直接在硬件上运行，如 Xen 和微软的 Hyper-V；第二类 Hypervisor 运行在已有的操作系统上，如 VMware Workstation、VMware Player、VirtualBox 和 QEMU。
+用来控制虚拟化的程序称为 Hypervisor，它可以创建和运行虚拟机。在虚拟机上可以安装不同类型的操作系统，包括 Windows、Linux 和 MacOS，虚拟机实例共享虚拟化的硬件资源。Hypervisor 通常分成两类：第一类 Hypervisor 直接在硬件上运行，如 Xen 和微软的 Hyper-V；第二类 Hypervisor 运行在已有的操作系统上，如 VMware Workstation、VMware Player、VirtualBox 和 QEMU。
 
-硬件虚拟化使得我们可以更充分的利用硬件资源，在创建集群时，可以用少数大型服务器替换掉数量较多的小型服务器。在这些服务器上运行 Hypervisor，并根据需要创建和运行虚拟机；在虚拟机上运行操作系统，而在操作系统上运行应用。
+硬件虚拟化使得可以更充分地利用硬件资源，在创建集群时，可以用少数大型服务器替换掉数量较多的小型服务器。在这些服务器上运行 Hypervisor，并根据需要创建和运行虚拟机；在虚拟机上运行操作系统，而在操作系统上运行应用。
 
-在创建虚拟机时我们可以限制虚拟机的 CPU、内存和硬盘等资源，硬件虚拟化可以更好的支持扩展。Hypervisor 可以从镜像文件中快速创建出虚拟机实例，当需要增加应用实例时，我们可以从保存的镜像中创建虚拟机并运行。处理应用的失败也变得简单，只需要创建新的虚拟机实例替换掉出错的即可。
+在创建虚拟机时可以限制虚拟机的 CPU、内存和硬盘等资源，硬件虚拟化可以更好的支持扩展。Hypervisor 可以从镜像文件中快速创建出虚拟机实例，当需要增加应用实例时，可以从保存的镜像中创建虚拟机并运行。处理应用的失败也变得简单，只需要创建新的虚拟机实例替换掉出错的即可。
 
 硬件虚拟化的不足之处在于只能以操作系统为单位来进行扩展，操作系统本身也需要占用资源。当虚拟机的数量增加时，很多资源都被虚拟机中的操作系统占用。操作系统级别的虚拟化，也就是容器化，可以在隔离的容器中运行程序。容器中运行的程序只能访问操作系统的部分资源，包括 CPU、内存、文件系统和网络等。目前最流行的容器化实现是 Docker，除此之外，还有 LXC 和 Container Linux 等其他实现。
 
@@ -64,7 +64,7 @@ tags: [架构, 06-云原生微服务架构实战精讲]
 
 虽然容器对所运行的进程数量没有限制，但是一般容器只运行一个进程。为了运行应用，除了应用本身的容器之外，应用所需的其他服务也运行在各自的容器中，这就要求协调不同容器的运行。容器编排工具的作用就是解决这个问题，常见的容器编排工具包括 Kubernetes、Docker Swarm 和 Apache Mesos。
 
-在本系列中将使用 Kubernetes 作为容器编排平台，但在开发中，会需要用到 Docker。
+后文示例将使用 Kubernetes 作为容器编排平台，但在开发中，会需要用到 Docker。
 
 ## Docker 的使用
 
@@ -76,7 +76,7 @@ Docker 中两个最重要的概念是镜像和容器，镜像是创建容器的�
 
 Docker 的安装很简单。在本地开发环境中，Windows 和 macOS 可以安装 Docker Desktop，对于 Docker Desktop 不支持的 Windows 版本，可以安装 Docker Toolbox（注：Docker Toolbox 已被官方废弃，现行方案是使用基于 WSL 2 后端的 Docker Desktop）；在 Linux 上则需要安装 Docker Engine。
 
-安装完成之后，相关的操作可通过 docker 命令来执行。下面我们就一起来运行容器。
+安装完成之后，相关的操作可通过 docker 命令来执行。下面从运行容器开始。
 
 ### 运行容器
 
@@ -84,7 +84,7 @@ Docker 的安装很简单。在本地开发环境中，Windows 和 macOS 可以�
 
 $ docker run --name nginx nginx:1.17
 
-docker run 运行的容器默认在前台运行，我们也可以使用 -d 参数让容器在后台运行。容器启动之后，可通过 docker ps 命令来查看运行容器的状态，容器运行之后，我们可以使用 docker exec 在容器中执行命令。下面的命令在名为 nginx 的容器中执行 hostname 命令。
+docker run 运行的容器默认在前台运行，也可以使用 -d 参数让容器在后台运行。容器启动之后，可通过 docker ps 命令来查看运行容器的状态，容器运行之后，可以使用 docker exec 在容器中执行命令。下面的命令在名为 nginx 的容器中执行 hostname 命令。
 
 $ docker exec nginx hostname
 
@@ -92,11 +92,11 @@ $ docker exec nginx hostname
 
 $ docker exec -it nginx sh
 
-我们分别使用 docker start、docker pause、docker stop 和 docker rm 来启动、暂停、停止和删除容器。Docker Desktop 提供了图形化界面来管理容器。
+分别使用 docker start、docker pause、docker stop 和 docker rm 来启动、暂停、停止和删除容器。Docker Desktop 提供了图形化界面来管理容器。
 
 Docker Desktop
 
-容器通常可以对外提供服务，为了在本地访问容器中的服务，我们需要把容器中开放的端口暴露到本地机器上。Nginx 容器暴露了 80 端口，可以使用 -p 参数来暴露端口。在下面的代码中，我们使用 -p 参数把容器的 80 端口暴露在本地机器上的 10080 端口，再使用 curl 来访问。
+容器通常可以对外提供服务，为了在本地访问容器中的服务，需要把容器中开放的端口暴露到本地机器上。Nginx 容器暴露了 80 端口，可以使用 -p 参数来暴露端口。在下面的代码中，使用 -p 参数把容器的 80 端口暴露在本地机器上的 10080 端口，再使用 curl 来访问。
 
 $ docker run --name nginx -p 10080:80 nginx:1.17
 $ curl http://localhost:10080
@@ -107,7 +107,7 @@ $ curl http://localhost:10080
 
 $ docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=myrootpassword -e MYSQL_DATABASE=demo mysql:8
 
-运行容器的另外一个常见需求是在本地机器和容器中共享文件，我们可以使用 -v 参数来指定本机目录到容器目录的绑定关系。下面代码中的命令使用的是 OpenJDK 8 的镜像来编译当前目录下的 Java 源文件：
+运行容器的另外一个常见需求是在本地机器和容器中共享文件，可以使用 -v 参数来指定本机目录到容器目录的绑定关系。下面代码中的命令使用的是 OpenJDK 8 的镜像来编译当前目录下的 Java 源文件：
 
 - 使用 -v 参数把本机上的当前目录绑定到容器上的 /tmp 路径上；
 
@@ -121,7 +121,7 @@ $ docker run --rm -v `pwd`:/tmp -w /tmp openjdk:8 javac Hello.java
 
 ### 创建 Docker 镜像
 
-在应用开发中，我们通常需要从已有的镜像中创建自定义的镜像，镜像的创建方式可通过 Dockerfile 文件来描述。以 Java 应用为例，我们需要以 OpenJDK 的镜像为基础（注：Docker Hub 官方 openjdk 镜像已废弃、不再更新，现行推荐使用 Eclipse Temurin 的 eclipse-temurin 等镜像作为替代），把 JAR 文件作为镜像的一部分，并设置正确的启动参数。
+在应用开发中，通常需要从已有的镜像中创建自定义的镜像，镜像的创建方式可通过 Dockerfile 文件来描述。以 Java 应用为例，需要以 OpenJDK 的镜像为基础（注：Docker Hub 官方 openjdk 镜像已废弃、不再更新，现行推荐使用 Eclipse Temurin 的 eclipse-temurin 等镜像作为替代），把 JAR 文件作为镜像的一部分，并设置正确的启动参数。
 
 以 Spring Boot 应用为例，下面的 Dockerfile 文件被用来创建该应用的镜像。在 Dockerfile 中：
 
@@ -135,11 +135,11 @@ FROM openjdk:8
 ADD target/*.jar /opt/app.jar
 CMD java -jar /opt/app.jar
 
-完成之后我们再通过 docker build 命令构建镜像，-t 参数为创建的镜像指定名称和标签，在构建时需要提供 Dockerfile 所在的目录，命令中的“.”表示当前目录。
+完成之后再通过 docker build 命令构建镜像，-t 参数为创建的镜像指定名称和标签，在构建时需要提供 Dockerfile 所在的目录，命令中的“.”表示当前目录。
 
 $ docker build -t myapp:1.0 .
 
-镜像创建完成之后，我们通过 docker run 命令来运行：
+镜像创建完成之后，通过 docker run 命令来运行：
 
 $ docker run myapp:1.0
 
@@ -147,7 +147,7 @@ $ docker run myapp:1.0
 
 Docker Compose 是 Docker 提供的容器管理工具，相对于其他编排工具，该工具使用简单，适用于本地开发，可以同时启动多个容器，并定义容器之间的关联关系。
 
-以一个使用 Spring Data JPA 的 Spring Boot 应用为例，该应用在运行时依赖数据库服务，而且应用需要通过网络访问该数据库服务。我们可以用 Docker Compose 来同时启动两个容器，并定义其中的关联。Docker Compose 使用的是 YAML 文件来声明容器（注：本节示例保留了 Compose V1 时代的顶层 version 字段，Compose V2 已将其弃用，新配置可以直接省略该字段）。
+以一个使用 Spring Data JPA 的 Spring Boot 应用为例，该应用在运行时依赖数据库服务，而且应用需要通过网络访问该数据库服务。可以用 Docker Compose 来同时启动两个容器，并定义其中的关联。Docker Compose 使用的是 YAML 文件来声明容器（注：本文示例保留了 Compose V1 时代的顶层 version 字段，Compose V2 已将其弃用，新配置可以直接省略该字段）。
 
 下面代码中的 docker-compose.yml 文件是用来启动应用和 MySQL 服务器的。在 services 中定义了两个服务：db 服务使用的是 MySQL 8 镜像，同时声明了所需的环境变量；app 服务没有使用已有的镜像，而是要求通过 docker build 命令来构建出镜像。app 服务也有同样的环境变量，其中 MYSQL_HOST 的值是 db，是 MySQL 服务的名称。这是因为 Docker Compose 会用服务名称来作为容器的主机名，当 2 个容器出现在同一个网络中，这时 app 服务就可以访问到 MySQL 服务器了。depends_on 声明了 app 服务对 db 服务的依赖关系，这样可以保证正确的容器启动顺序。
 
@@ -170,7 +170,7 @@ services:
     depends_on:
       - db
 
-在 Spring Boot 应用的 application.properties 文件中，我们直接引用环境变量来配置数据库连接。
+在 Spring Boot 应用的 application.properties 文件中，直接引用环境变量来配置数据库连接。
 
 spring.datasource.url=jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE}
 spring.datasource.username=${MYSQL_USER}
@@ -178,13 +178,13 @@ spring.datasource.password=${MYSQL_PASSWORD}
 
 使用 docker-compose up 命令可以运行 docker-compose.yml 文件描述的全部容器。
 
-在上面代码的 docker-compose.yml 文件中，MySQL 相关的环境变量在两个服务的定义中重复出现。为了避免代码重复，我们可以把相同的环境变量放在一个文件中，如下面代码所示的 db.env 文件。
+在上面代码的 docker-compose.yml 文件中，MySQL 相关的环境变量在两个服务的定义中重复出现。为了避免代码重复，可以把相同的环境变量放在一个文件中，如下面代码所示的 db.env 文件。
 
 MYSQL_USER=mysqluser
 MYSQL_PASSWORD=mysqlpassword
 MYSQL_DATABASE=demo
 
-接着我们可以在 docker-compose.yml 文件中使用 env_file 来引用该文件。
+接着可以在 docker-compose.yml 文件中使用 env_file 来引用该文件。
 
 version: '3'
 services:
@@ -203,8 +203,8 @@ services:
     depends_on:
       - db
 
-Docker 和 Docker Compose 是本系列中会用到的重要工具。在此我们对这两个工具做了简要介绍，这对于本节中示例应用的开发已经足够了。
+Docker 和 Docker Compose 是后续内容中会用到的重要工具。本文对这两个工具做了简要介绍，这对于示例应用的开发已经足够了。
 
 ## 总结
 
-容器化技术对微服务架构云原生应用的部署至关重要。本节首先介绍了硬件虚拟化技术；接着介绍了容器化技术，以及容器化技术对于微服务应用部署的重要意义，Docker 是容器化技术的主流实现，本节对 Docker 的使用做了简要的介绍；最后介绍了在开发环境中常用的容器编排工具 Docker Compose。
+容器化技术对微服务架构云原生应用的部署至关重要。本文首先介绍了硬件虚拟化技术；接着介绍了容器化技术，以及容器化技术对于微服务应用部署的重要意义，Docker 是容器化技术的主流实现，本文对 Docker 的使用做了简要的介绍；最后介绍了在开发环境中常用的容器编排工具 Docker Compose。

@@ -10,13 +10,13 @@ tags: [Node.js, 编译与底层原理]
 
 ## **摘要**
 
-本指南将详细介绍如何使用 Rollup 从零开始打包一个 React 组件库。内容涵盖从创建 React 组件、配置 Rollup、处理 CSS 和 TypeScript，到最终发布到 npm 的全过程。还将探讨打包过程中的最佳实践和常见问题，旨在为您提供一个全面、可复用的组件库打包方案。
+本指南详细介绍如何使用 Rollup 从零开始打包一个 React 组件库。内容涵盖从创建 React 组件、配置 Rollup、处理 CSS 和 TypeScript，到最终发布到 npm 的全过程，并探讨打包过程中的最佳实践和常见问题，旨在沉淀一套全面、可复用的组件库打包方案。
 
 ## **目录**
 
 1.  [引言](#1-引言)
 2.  [环境准备](#2-环境准备)
-3.  [创建你的第一个 React 组件](#3-创建你的第一个-react-组件)
+3.  [创建第一个 React 组件](#3-创建第一个-react-组件)
 4.  [搭建组件库打包环境](#4-搭建组件库打包环境)
 5.  [深入解析 Rollup 配置](#5-深入解析-rollup-配置)
 6.  [执行打包与配置 `package.json`](#6-执行打包与配置-packagejson)
@@ -29,33 +29,33 @@ tags: [Node.js, 编译与底层原理]
 
 ## **1. 引言**
 
-在现代前端开发中，组件化是提高代码复用性、可维护性的核心思想。无论是 React、Vue 还是其他框架，构建自己的组件库已成为团队和个人开发者的常见需求。Rollup 作为一个高效的 JavaScript 模块打包器，凭借其对 ES Modules 的原生支持和 Tree Shaking 的强大功能，成为打包组件库的首选工具。
+在现代前端开发中，组件化是提高代码复用性、可维护性的核心思想。无论是 React、Vue 还是其他框架，构建组件库已成为团队和个人开发者的常见需求。Rollup 作为一个高效的 JavaScript 模块打包器，凭借其对 ES Modules 的原生支持和 Tree Shaking 的强大功能，成为打包组件库的首选工具。
 
-与 Webpack 这类更侧重于应用打包的工具不同，Rollup 专注于生成更小、更快的库代码。本指南将带你一步步完成以下目标：
+与 Webpack 这类更侧重于应用打包的工具不同，Rollup 专注于生成更小、更快的库代码。本指南的目标包括：
 
 - **创建并组织 React 组件**：使用 TypeScript 和 SCSS 构建一个基础的 `Button` 组件。
 - **配置 Rollup 打包**：支持 `ESM`、`CJS` 和 `UMD` 三种主流模块格式。
 - **处理样式与类型定义**：自动抽离 CSS 文件并生成 `.d.ts` 类型声明。
-- **发布到 npm**：将你的组件库发布，供他人或跨项目使用。
+- **发布到 npm**：将组件库发布，供他人或跨项目使用。
 - **掌握最佳实践**：学习组件库开发中的高级技巧和注意事项。
 
 下面开始实战。
 
 ## **2. 环境准备**
 
-在开始之前，请确保你的开发环境中已安装以下工具：
+开始之前，开发环境中需预先安装以下工具：
 
 - **Node.js**: `v18.0.0` 或更高版本。
 - **npm**: `v9.0.0` 或更高版本，或使用 `yarn`、`pnpm` 等其他包管理工具。
 - **代码编辑器**: 推荐使用 VS Code。
 
-## **3. 创建你的第一个 React 组件**
+## **3. 创建第一个 React 组件**
 
-为了演示打包过程，首先需要一个可用的 React 组件。将创建一个简单的 `Button` 组件作为示例。
+为了演示打包过程，首先需要一个可用的 React 组件。本节以一个简单的 `Button` 组件作为示例。
 
 ### **3.1 初始化一个 Vite + React 项目**
 
-可以使用 Vite 快速创建一个 React 开发环境，以便实时预览和测试我们的组件。
+可以使用 Vite 快速创建一个 React 开发环境，以便实时预览和测试组件。
 
 ```bash
 # 创建一个名为 react-comp 的 Vite + React 项目
@@ -147,7 +147,7 @@ npm install --save sass
 
 ### **3.3 在 App 中使用组件**
 
-修改 `src/App.tsx` 来测试我们的 `Button` 组件：
+修改 `src/App.tsx` 来测试 `Button` 组件：
 
 ```typescript
 import Button from "./Button"
@@ -174,7 +174,7 @@ export default App
 npm run dev
 ```
 
-现在，你应该能在浏览器中看到两个样式不同的按钮，并且点击第二个按钮会触发弹窗。这证明我们的组件已经可以正常工作了。
+此时浏览器中将显示两个样式不同的按钮，点击第二个按钮会触发弹窗，证明组件已可正常工作。
 
 
 ## **4. 搭建组件库打包环境**
@@ -279,7 +279,7 @@ npm install --save-dev rollup @rollup/plugin-commonjs @rollup/plugin-node-resolv
 
 ### **5.2 `rollup.config.mjs`**
 
-这是 Rollup 打包的核心配置文件。将配置它以生成 `ESM`、`CJS` 和 `UMD` 三种格式的产物。
+这是 Rollup 打包的核心配置文件。将其配置为生成 `ESM`、`CJS` 和 `UMD` 三种格式的产物。
 
 ```javascript
 import postcss from "rollup-plugin-postcss"
@@ -398,7 +398,7 @@ dist/
 
 ### **6.2 配置 `package.json`**
 
-为了让 npm 和打包工具能正确识别我们的库，需要对 `package.json` 进行详细配置。
+为了让 npm 和打包工具能正确识别该库，需要对 `package.json` 进行详细配置。
 
 ```json
 {
@@ -435,14 +435,14 @@ dist/
 - **`types`**: TypeScript 类型声明入口，指向 `index.d.ts`。
 - **`unpkg`**: UMD 入口，供 CDN 服务（如 unpkg）使用。
 - **`files`**: 一个数组，指定发布到 npm 时应包含哪些文件或目录。只需要发布 `dist` 目录。
-- **`peerDependencies`**: 对等依赖。声明你的库需要宿主环境提供 `react` 和 `react-dom`。这可以防止版本冲突。
-- **`publishConfig`**: 发布相关的配置。`"access": "public"` 允许你发布公共作用域包。
+- **`peerDependencies`**: 对等依赖。声明组件库需要宿主环境提供 `react` 和 `react-dom`，这可以防止版本冲突。
+- **`publishConfig`**: 发布相关的配置。`"access": "public"` 允许发布公共作用域包。
 
 ## **7. 发布与使用组件库**
 
 ### **7.1 发布到 npm**
 
-首先，你需要在 [npm 网站](https://www.npmjs.com/)上注册一个账户。如果你的包名带有 `@scope`，还需要创建一个对应的组织。
+首先，需要在 [npm 网站](https://www.npmjs.com/)上注册一个账户。如果包名带有 `@scope`，还需要创建一个对应的组织。
 
 登录 npm CLI：
 
@@ -456,11 +456,11 @@ npm login
 npm publish
 ```
 
-发布成功后，你就可以在 npm 上看到你的组件库了。
+发布成功后，即可在 npm 上看到该组件库。
 
 ### **7.2 在其他项目中使用**
 
-现在，来测试一下刚刚发布的组件库。创建一个新的 Vite + React 项目：
+接下来测试刚刚发布的组件库。创建一个新的 Vite + React 项目：
 
 ```bash
 npx create-vite my-app --template react-ts
@@ -468,7 +468,7 @@ cd my-app
 npm install
 ```
 
-安装你的组件库：
+安装组件库：
 
 ```bash
 npm install @your-scope/react-comp-lib
@@ -497,7 +497,7 @@ function App() {
 export default App
 ```
 
-运行项目，你应该能看到与之前开发时完全一致的按钮效果。
+运行项目，可以看到与开发阶段完全一致的按钮效果。
 
 ### **7.3 UMD 用法**
 
@@ -538,53 +538,53 @@ UMD 产物可以直接在 HTML 中通过 `<script>` 标签使用。创建一个 
 </html>
 ```
 
-在浏览器中打开此文件，你将看到通过 UMD 方式渲染的按钮。
+在浏览器中打开此文件，即可看到通过 UMD 方式渲染的按钮。
 
 ## **8. 最佳实践**
 
 1.  **Tree Shaking 优化**：
 
-    - 确保你的代码是 "side-effect-free"（无副作用）的。在 `package.json` 中添加 `"sideEffects": false` 或 `["*.css"]` 可以帮助打包工具更好地进行 Tree Shaking。
+    - 确保代码是 "side-effect-free"（无副作用）的。在 `package.json` 中添加 `"sideEffects": false` 或 `["*.css"]` 可以帮助打包工具更好地进行 Tree Shaking。
     - 导出的模块应尽可能原子化，避免在一个文件中导出过多不相关的组件。
 
 2.  **CSS 处理策略**：
 
-    - **CSS-in-JS**: 如果你的组件库使用 CSS-in-JS（如 `styled-components` 或 `Emotion`），请确保将它们也列为 `peerDependencies`。
+    - **CSS-in-JS**: 如果组件库使用 CSS-in-JS（如 `styled-components` 或 `Emotion`），请确保将它们也列为 `peerDependencies`。
     - **CSS Modules**: `rollup-plugin-postcss` 支持 CSS Modules，可以为每个组件生成唯一的类名，避免全局样式污染。
     - **单独的 CSS 文件**: 本指南采用的策略。优点是简单直接，缺点是用户需要手动引入 CSS 文件。
 
 3.  **版本管理**：
 
     - 遵循 [Semantic Versioning (SemVer)](https://semver.org/) 规范。
-    - `major` (主版本号): 当你做了不兼容的 API 修改。
-    - `minor` (次版本号): 当你做了向下兼容的功能性新增。
-    - `patch` (修订号): 当你做了向下兼容的问题修正。
+    - `major` (主版本号): 做了不兼容的 API 修改时递增。
+    - `minor` (次版本号): 做了向下兼容的功能性新增时递增。
+    - `patch` (修订号): 做了向下兼容的问题修正时递增。
 
 4.  **文档与示例**：
-    - 使用 [Storybook](https://storybook.js.org/) 或 [Dumi](https://d.umijs.org/) 等工具为你的组件库创建交互式文档和示例，这将极大地方便用户使用。
+    - 使用 [Storybook](https://storybook.js.org/) 或 [Dumi](https://d.umijs.org/) 等工具为组件库创建交互式文档和示例，这将极大地方便用户使用。
 
 ## **9. 常见问题与解决方案 (FAQ)**
 
 **Q1: 为什么 `react` 和 `react-dom` 要放在 `peerDependencies` 而不是 `dependencies`?**
-**A:** 如果将 React 打包进你的库中，而用户的项目也依赖了 React，那么最终应用里会存在两个不同版本的 React 实例。这会导致一系列问题，比如 Hooks 失效（"Invalid hook call" 错误）、Context 无法共享等。`peerDependencies` 确保你的库和宿主应用共享同一个 React 实例。
+**A:** 如果将 React 打包进库中，而用户的项目也依赖了 React，那么最终应用里会存在两个不同版本的 React 实例。这会导致一系列问题，比如 Hooks 失效（"Invalid hook call" 错误）、Context 无法共享等。`peerDependencies` 确保组件库和宿主应用共享同一个 React 实例。
 
 **Q2: 打包时出现 `[!] Error: 'default' is not exported by ...` 错误怎么办？**
-**A:** 这个错误通常是因为你试图从一个 CommonJS 模块中 `import` 默认导出，但该模块实际上只有命名导出。`@rollup/plugin-commonjs` 通常能解决这个问题，但如果问题依然存在，请检查你的 `import` 语句。尝试使用 `import * as name from 'module'` 代替 `import name from 'module'`。
+**A:** 这个错误通常是因为试图从一个 CommonJS 模块中 `import` 默认导出，但该模块实际上只有命名导出。`@rollup/plugin-commonjs` 通常能解决这个问题，但如果问题依然存在，请检查 `import` 语句。尝试使用 `import * as name from 'module'` 代替 `import name from 'module'`。
 
 **Q3: 如何处理图片、字体等静态资源？**
-**A:** 你可以使用 `@rollup/plugin-url` 或 `rollup-plugin-copy`。
+**A:** 可以使用 `@rollup/plugin-url` 或 `rollup-plugin-copy`。
 
 - **`@rollup/plugin-url`**: 可以将小于某个阈值的资源转换为 Base64 Data URI，大于该阈值的则复制到输出目录。
 - **`rollup-plugin-copy`**: 可以直接将指定的文件或目录复制到输出目录。
 
 **Q4: 如何为不同的组件生成单独的 CSS 文件？**
-**A:** `rollup-plugin-postcss` 的 `extract` 选项默认会将所有 CSS 合并。如果你想为每个组件生成单独的 CSS，你需要更复杂的 Rollup 配置，可能需要为每个组件创建一个打包入口。对于大多数中小型组件库，单一的 CSS 文件是更简单实用的方案。
+**A:** `rollup-plugin-postcss` 的 `extract` 选项默认会将所有 CSS 合并。如果需要为每个组件生成单独的 CSS，则需要更复杂的 Rollup 配置，可能需要为每个组件创建一个打包入口。对于大多数中小型组件库，单一的 CSS 文件是更简单实用的方案。
 
 ## **10. 总结**
 
-通过本指南，学习了如何使用 Rollup 从零开始构建、打包和发布一个 React 组件库。涵盖了从项目设置、Rollup 配置、多格式输出，到最终发布和使用的完整流程。
+本指南介绍了如何使用 Rollup 从零开始构建、打包和发布一个 React 组件库，涵盖从项目设置、Rollup 配置、多格式输出，到最终发布和使用的完整流程。
 
-Rollup 是一个强大而灵活的工具，尤其适合库的打包。希望本指南能为你构建自己的高质量组件库提供坚实的基础。
+Rollup 是一个强大而灵活的工具，尤其适合库的打包。上述方案可为构建高质量组件库提供坚实的基础。
 
 > **代码仓库链接:**
 >

@@ -9,7 +9,7 @@ tags: [TypeScript, 类型系统, 泛型]
 
 # TypeScript AST 与编译器 API
 
-本章将深入探讨 TypeScript 的抽象语法树（AST）操作，帮助你掌握使用 TypeScript Compiler API 和 ts-morph 进行代码分析、转换和生成的核心技术。
+本文深入探讨 TypeScript 的抽象语法树（AST）操作，介绍使用 TypeScript Compiler API 和 ts-morph 进行代码分析、转换和生成的核心技术。
 
 ## 知识架构
 
@@ -48,7 +48,7 @@ mindmap
 
 ## 概述
 
-TypeScript AST（Abstract Syntax Tree，抽象语法树）是 TypeScript 编译器将源代码解析成的一种树形数据结构。通过操作 AST，我们可以实现：
+TypeScript AST（Abstract Syntax Tree，抽象语法树）是 TypeScript 编译器将源代码解析成的一种树形数据结构。通过操作 AST，可以实现：
 
 - **代码检查**：验证代码符合特定规范和约束
 - **代码转换**：自动重构和代码迁移
@@ -77,11 +77,11 @@ TypeScript AST（Abstract Syntax Tree，抽象语法树）是 TypeScript 编译�
        Token流     AST节点树           类型检查
 ```
 
-**注意**：本章不要求你具备编译原理专业背景，我们将从实用角度出发，帮助你快速上手 AST 操作。
+**注意**：阅读本文不要求具备编译原理专业背景，内容从实用角度出发，帮助开发者快速上手 AST 操作。
 
 ### Babel 的编译流程
 
-作为前端工程师，你可能已经接触过 Babel。了解 Babel 的工作流程有助于理解 TypeScript 编译器的设计思路。
+前端工程师大多接触过 Babel。了解 Babel 的工作流程有助于理解 TypeScript 编译器的设计思路。
 
 Babel 的核心功能是**语法降级**，将高版本 JavaScript 代码转换为向后兼容的版本。它的名字来源于圣经中的巴别塔，象征着**让不同版本的 JavaScript 代码都能在同一环境中运行**。
 
@@ -127,7 +127,7 @@ Babel 通过插件机制扩展功能，例如：
 
 ## TypeScript Compiler API
 
-TypeScript 编译器不仅是一个命令行工具，还暴露了完整的 Compiler API，允许你编程式地操作 TypeScript 代码。
+TypeScript 编译器不仅是一个命令行工具，还暴露了完整的 Compiler API，允许开发者编程式地操作 TypeScript 代码。
 
 ### 为什么使用 TypeScript Compiler API
 
@@ -309,7 +309,7 @@ module.exports = function (fileInfo, api) {
 - TypeScript 特有节点（Interface、TypeAlias、Decorator 等）
 - 节点间的组合关系
 
-学习成本较高，这也是我们引入 ts-morph 的原因。
+学习成本较高，这也是引入 ts-morph 的原因。
 
 ---
 
@@ -568,7 +568,7 @@ if (Node.isBlock(methodBody)) {
 - 具名导入的修改
 - 条件检查与错误抛出
 
-我们的源码如下：
+源码如下：
 
 ```typescript
 import { readFileSync } from 'fs';
@@ -582,7 +582,7 @@ import 'some_required_polyfill';
 import { readFile } from "fs/promises";
 ```
 
-在这个例子中，我们希望进行两种操作：
+在这个例子中，希望进行两种操作：
 
 - 将来自于 fs 的 sync api 导入，更换为来自 `fs/promise` 的 async api，如 `import { readFile } from 'fs/promises'`
 - 检查是否存在对 `some_required_polyfill` 的导入
@@ -677,7 +677,7 @@ for (const specifier of allSpecifiers) {
 console.log(source.getText());
 ```
 
-这里我们使用的 API 主要包括：
+这里使用的 API 主要包括：
 
 - `source.getImportDeclarations()`，获取源码的所有导入声明
 - `source.addImportDeclaration`，源码新增导入声明语句
@@ -739,7 +739,7 @@ class MessageHandler implements Handler {
 }
 ```
 
-这里我们使用抽象类来区分目标 Class，即只有实现了某一抽象类的 Class 才需要进行处理。
+这里使用抽象类来区分目标 Class，即只有实现了某一抽象类的 Class 才需要进行处理。
 
 首先分析 AST 结构：
 
@@ -790,7 +790,7 @@ for (const cls of filteredClassDeclarations) {
 console.log(source.getText());
 ```
 
-我们主要使用了这么几个 API：
+主要使用了这么几个 API：
 
 - `source.getClasses`，获取源码中所有的 Class 声明
 - `cls.getImplements`，获取 Class 声明实现的抽象类
@@ -808,7 +808,7 @@ console.log(source.getText());
 - 默认导出的修改
 - 表达式节点的操作
 
-我们的源码是这样的：
+源码是这样的：
 
 ```typescript
 import { useState } from 'react';
@@ -832,13 +832,13 @@ const Comp = () => {
 export default memo(Comp);
 ```
 
-也就是说，我们需要添加具名导入，以及修改默认导出表达式两个步骤。
+也就是说，需要添加具名导入，以及修改默认导出表达式两个步骤。
 
 首先分析 AST 结构：
 
 ![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/776e37d6052c4bf3a703d0bdcf7e146f~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
 
-可以看到，我们需要处理的两处分别为 NamedImports 与 ExportAssignment ，接下来就简单了：
+可以看到，需要处理的两处分别为 NamedImports 与 ExportAssignment ，接下来就简单了：
 
 ```typescript
 import path from 'path';
@@ -873,15 +873,15 @@ reactImport.insertNamedImport(0, 'memo');
 console.log(source.getText());
 ```
 
-我们主要调用了这些 API：
+主要调用了这些 API：
 
-- `source.getFirstChildByKind(SyntaxKind.SyntaxList)`，获取一个 AST 结点下首个目标类型的子结点，在上面我们都是直接使用 `source.getClasses()` 形式获取目标类型，而这里则是另外一种方式，`source.getFirstChildByKind(SyntaxKind.SyntaxList).getFirstChildByKind(SyntaxKind.ExportAssignment)` 即意味着拿到源码中的第一个导出语句。需要注意的是，使用这种方式必须首先拿到 `SyntaxKind.SyntaxList` 类型的子结点。
+- `source.getFirstChildByKind(SyntaxKind.SyntaxList)`，获取一个 AST 结点下首个目标类型的子结点，上面的案例都是直接使用 `source.getClasses()` 形式获取目标类型，而这里则是另外一种方式，`source.getFirstChildByKind(SyntaxKind.SyntaxList).getFirstChildByKind(SyntaxKind.ExportAssignment)` 即意味着拿到源码中的第一个导出语句。需要注意的是，使用这种方式必须首先拿到 `SyntaxKind.SyntaxList` 类型的子结点。
 - `source.getImportDeclaration`，获取源码中所有的导入声明
 - `imp.getModuleSpecifierValue`，获取导入的模块名
 - `import.insertNamedImport`，为导入声明插入一个具名导入
 - `exportDefaultAssignment.setExpression`，修改导出语句的表达式
 
-扩展：上面我们直接将默认导出语句作为了组件，然后通过修改它的表达式来实现添加 memo。不妨试试如何支持 `export const` 形式的组件导出？
+扩展：上面直接将默认导出语句作为了组件，然后通过修改它的表达式来实现添加 memo。不妨试试如何支持 `export const` 形式的组件导出？
 
 ### 案例4：JSON 转 TypeScript 类型（代码生成）
 
@@ -892,7 +892,7 @@ console.log(source.getText());
 - 类型推断与接口生成
 - 复杂类型（联合类型、数组）的处理
 
-我们输入的 json 是这样的：
+输入的 json 是这样的：
 
 ```json
 {
@@ -946,9 +946,9 @@ export interface IStructPets {
 }
 ```
 
-具体实现其实并不复杂，由于 JSON 的限制，我们无需处理函数之类的类型，但也无法实现字面量类型与枚举这样精确的定义。然而绝大部分情况下，JSON 中的值类型其实还是字符串、数字、布尔值以及对象与数组这五位。
+具体实现其实并不复杂，由于 JSON 的限制，无需处理函数之类的类型，但也无法实现字面量类型与枚举这样精确的定义。然而绝大部分情况下，JSON 中的值类型其实还是字符串、数字、布尔值以及对象与数组这五位。
 
-我们来整理一下思路：
+整理一下思路：
 
 - 遍历 JSON
 - 对于原始类型元素，直接使用 typeof （注意，是 JavaScript 中的 typeof，不是类型查询操作符）的值作为类型，调用 `interfaceDeclaration.addProperty` 方法新增属性
@@ -1050,7 +1050,7 @@ source.saveSync();
 console.log(source.getText());
 ```
 
-在这一部分，我们主要使用两个 API ：
+在这一部分，主要使用两个 API ：
 
 - `source.addInterface`，在源码中新增一个接口声明，如：
 - `interfaceDeclaration.addProperty`，为接口声明新增一个属性，如：
@@ -1087,7 +1087,7 @@ function tempSolution() {}
 function utils() {}
 ```
 
-由于 TS AST Viewer 目前不支持 JSDoc 的解析，这里我们直接来整理一下实现思路：
+由于 TS AST Viewer 目前不支持 JSDoc 的解析，这里直接整理一下实现思路：
 
 - 检查所有函数的 JSDoc 区域
 - 如果发现了 `@expires`，对比其标注的过期时间与当前的时间
@@ -1160,7 +1160,7 @@ for (const func of filteredFuncDeclarations) {
 
 扩展：上面的例子只能基于硬编码的日期进行处理，而另外一种可能的情况是基于版本来做检查，比如某一部分代码应该在 `package.json` 中的 `version` 到达 `1.0.0` 以前被再次优化一遍，不妨来试一下支持这种情况？
 
-以上的示例应该能帮助你领会到，使用 ts-morph 来进行源码检查与操作的窍门。同时你可能注意到了，上面的示例我们封装了不少方法，如 `getAllFunctionDeclarations`、`getClassDeclarations`、`getImportDeclarations` 等，这也是我比较推荐的一种方式：在 ts-morph 上进一步封装 AST 方法，让 AST 操作就像调用 Lodash 方法一样简单。
+以上的示例应该能帮助开发者领会到，使用 ts-morph 来进行源码检查与操作的窍门。同时可以注意到，上面的示例封装了不少方法，如 `getAllFunctionDeclarations`、`getClassDeclarations`、`getImportDeclarations` 等，这也是一种值得推荐的方式：在 ts-morph 上进一步封装 AST 方法，让 AST 操作就像调用 Lodash 方法一样简单。
 
 ### 案例6：接口转类型别名（CodeMod）
 
@@ -1384,15 +1384,15 @@ generateInterface(project, 'User', userSchema);
 
 ## 总结
 
-在本文中，我们主要学习了如何使用 TypeScript 的 Compiler API 和 ts-morph 来对 TS 源码进行操作，就像数据库的 CRUD 一样，对源码的常见操作其实也可以被归类为检查、变更、新增这么几类。
+本文主要介绍了如何使用 TypeScript 的 Compiler API 和 ts-morph 来对 TS 源码进行操作，就像数据库的 CRUD 一样，对源码的常见操作其实也可以被归类为检查、变更、新增这么几类。
 
-对没有系统学习过编译原理的同学，其实更推荐使用 ts-morph 来简化这些 AST 操作。原因上面我们也已经了解到了，ts-morph 通过更符合直觉的 API 封装掉了很多底层的操作，能够大大地简化使用成本与理解负担。
+对没有系统学习过编译原理的开发者，其实更推荐使用 ts-morph 来简化这些 AST 操作。原因如前文所述，ts-morph 通过更符合直觉的 API 封装掉了很多底层的操作，能够大大地简化使用成本与理解负担。
 
-当然，由于封装带来了黑盒的底层实现与各种不确定性，如果你对操作的稳定性要求高，最好的方式还是使用原生的 Compiler API 或 Babel 一点点进行实现。
+当然，由于封装带来了黑盒的底层实现与各种不确定性，如果对操作的稳定性要求高，最好的方式还是使用原生的 Compiler API 或 Babel 一点点进行实现。
 
-而通过 TS AST Viewer 的帮助，我们还可以更进一步简化操作。检查 AST 结构、确定目标 AST 结构、执行操作以及保存，就能完成一次处理。
+而通过 TS AST Viewer 的帮助，还可以更进一步简化操作。检查 AST 结构、确定目标 AST 结构、执行操作以及保存，就能完成一次处理。
 
-最后，除了本节给到的操作示例，你还可以根据自身的实际需要来探索更多有趣的例子，试着来感受"换一种方式使用 TypeScript"的乐趣吧！
+最后，除了本文给出的操作示例，还可以根据实际需要来探索更多有趣的例子，感受"换一种方式使用 TypeScript"的乐趣。
 
 ## 扩展阅读
 
@@ -1402,9 +1402,9 @@ generateInterface(project, 'User', userSchema);
 
 ![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/81a6a1eea91a40b3ba48dbebc48db056~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
 
-然而二者的差异实际上非常大。首先， Lint 不会涉及业务逻辑的检查，比如我们要求对某个 polyfill 的导入必须存在，或者要求必须调用某个全局的顶级方法，此时就应该是 AST Checker 的工作范畴，而非 Lint。Lint 更多关注的是纯粹的、完全不涉及业务逻辑的规则。
+然而二者的差异实际上非常大。首先， Lint 不会涉及业务逻辑的检查，比如要求对某个 polyfill 的导入必须存在，或者要求必须调用某个全局的顶级方法，此时就应该是 AST Checker 的工作范畴，而非 Lint。Lint 更多关注的是纯粹的、完全不涉及业务逻辑的规则。
 
-另外，Lint 规则的维度通常更高，比如我要求团队内的所有代码库都必须遵守一系列规则。而 AST Checker 的规则通常只是项目维度的，比如只在几个项目内要求遵守这条规则，这也就意味着 AST Checker 的规则不具备或很难具备可推广性。
+另外，Lint 规则的维度通常更高，比如要求团队内的所有代码库都必须遵守一系列规则。而 AST Checker 的规则通常只是项目维度的，比如只在几个项目内要求遵守这条规则，这也就意味着 AST Checker 的规则不具备或很难具备可推广性。
 
 ---
 
@@ -2138,7 +2138,7 @@ async function backupAndTransform(filePath: string) {
 
 ## 总结
 
-### 本章要点
+### 本文要点
 
 1. **编译原理基础**：理解了编译器工作流程和 AST 的作用
 2. **TypeScript Compiler API**：掌握了底层 API 的使用方法

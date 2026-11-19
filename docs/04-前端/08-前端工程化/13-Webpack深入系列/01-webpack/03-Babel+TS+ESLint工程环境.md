@@ -8,7 +8,7 @@ tags: [Webpack, 构建工具]
 
 # Babel + TypeScript + ESLint 工程环境
 
-> **v1 → v2 差异对照表**
+## 版本说明（v1 → v2 差异对照）
 
 | 维度 | v1 原版 | v2 本版 |
 |------|---------|---------|
@@ -22,9 +22,11 @@ tags: [Webpack, 构建工具]
 
 ---
 
-上一节我们聊到如何用结构化思维理解 Webpack 核心配置项，按惯例很多教程接下来会开始罗列各个配置项的作用，但这种方式记忆成本比较高，学习效率偏低。为此，接下来几章我会换一种思维模式，场景化介绍 Webpack 处理各种代码资源的工具与方法。
+## 概念说明
 
-本章我们先来聊聊 Webpack 场景下处理 JavaScript 的三种常用工具：Babel、TypeScript、ESLint 的历史背景、功能以及接入 Webpack 的步骤，并在此基础上引入 **SWC 高性能替代方案** 与 **Webpack 5.107+ 原生 TypeScript 支持**等最新实践，借助这些工具，我们能构建出更健壮、优雅的 JavaScript 应用。
+现代 JavaScript 工程离不开三类基础工具：**Babel**（语法转译）、**TypeScript**（类型约束）与 **ESLint**（代码风格检查）。三者解决的问题不同，但都需要接入 Webpack 工作流才能作用于构建产物。本篇梳理三者的历史背景、功能定位与接入 Webpack 的步骤，并在此基础上引入 **SWC 高性能替代方案** 与 **Webpack 5.107+ 原生 TypeScript 支持**等最新实践。
+
+技术选型可参照以下决策树：
 
 ```mermaid
 graph TD
@@ -55,6 +57,16 @@ graph TD
 
 ```
 
+## 核心要点
+
+- Babel 负责将高版本 ECMAScript 语法等价转译为向后兼容的低版本代码，`babel-loader` 是 Webpack 场景的标准接入方式。
+- Babel 配置中 `modules: false` 是 Tree-Shaking 生效的前提；`useBuiltIns: 'usage'` 配合 core-js 3 实现按需注入 polyfill；`targets` 基于 browserslist 只转译必要语法。
+- TypeScript 提供编译期类型检查，Webpack 场景有四种处理方案：ts-loader（完整类型检查）、babel-loader + preset-typescript（类型擦除）、swc-loader（高性能）、`experiments.typescript`（5.107+ 原生零依赖）。
+- 除 ts-loader 外，其余方案只做类型擦除不做类型检查，必须单独配置 `tsc --noEmit` 或 `fork-ts-checker-webpack-plugin`。
+- ESLint 通过 `eslint-webpack-plugin` 接入构建流程，可实时检查并自动修复风格问题；ESLint 9+ 推荐 Flat Config。
+- ⚠️ Webpack 5 不再自动注入 Node.js 内置模块 polyfill，需通过 `node-polyfill-webpack-plugin`、`resolve.fallback` 或现代替代库显式处理。
+- ⚠️ 常见误区：`modules` 保留默认值 `'auto'` 会把 ESM 转为 CommonJS，导致 Tree-Shaking 失效、产物体积膨胀。
+
 ## 使用 Babel
 
 ECMAScript 6.0(简称 ES6) 版本补充了大量提升 JavaScript 开发效率的新特性，包括 `class` 关键字、块级作用域、ES Module 方案、代理与反射等，使得 JavaScript 可以真正被用于编写复杂的大型应用程序，但直到现在浏览器、Node 等 JavaScript 引擎都或多或少存在兼容性问题。为此，现代 Web 开发流程中通常会引入 Babel 等转译工具。
@@ -71,9 +83,9 @@ arr.map(function (item){
 })
 ```
 
-示例中高版本的箭头函数语法经过 Babel 处理后被转译为低版本 `function` 语法，从而能在不支持箭头函数的 JavaScript 引擎中正确执行。借助 Babel 我们既可以始终使用最新版本 ECMAScript 语法编写 Web 应用，又能确保产物在各种环境下正常运行。
+示例中高版本的箭头函数语法经过 Babel 处理后被转译为低版本 `function` 语法，从而能在不支持箭头函数的 JavaScript 引擎中正确执行。借助 Babel 既可以始终使用最新版本 ECMAScript 语法编写 Web 应用，又能确保产物在各种环境下正常运行。
 
-> 提示：Babel 还提供了一个在线版的 REPL 页面，读者可在 [babeljs.io/repl](https://babeljs.io/repl) 实时体验功能效果。
+> 提示：Babel 还提供了一个在线版的 REPL 页面，可在 [babeljs.io/repl](https://babeljs.io/repl) 实时体验功能效果。
 
 ### 接入 babel-loader
 
@@ -112,7 +124,7 @@ module.exports = {
 npx webpack
 ```
 
-### Babel 配置最佳实践（v2 更新）
+### Babel 配置最佳实践
 
 接入后，可以使用 `.babelrc`、`babel.config.js` 文件或 `rule.options` 属性配置 Babel 功能逻辑。以下是 **2024-2026 年推荐的最佳实践配置**：
 
@@ -159,10 +171,10 @@ module.exports = {
 
 #### 🎯 为什么 `modules: false` 如此重要？
 
-这是 **v2 版本最重要的更新点之一**。当 `modules` 设为默认值 `'auto'` 时，Babel 会将 `import/export` 转换为 `require/module.exports`（CommonJS 格式）。这会带来两个严重问题：
+当 `modules` 设为默认值 `'auto'` 时，Babel 会将 `import/export` 转换为 `require/module.exports`（CommonJS 格式）。这会带来两个严重问题：
 
 1. **Tree-Shaking 失效**：Webpack 的 Tree-Shaking 依赖于 ESM 的静态结构（`import`/`export` 是静态可分析的），而 CommonJS 的 `require()` 是动态的，Webpack 无法静态分析哪些导出被使用
-2. **产物体积膨胀**：即使你只 import 了某个库的一个函数，整个模块（包括未使用的部分）都会被打包进去
+2. **产物体积膨胀**：即使只 import 了某个库的一个函数，整个模块（包括未使用的部分）都会被打包进去
 
 ```mermaid
 flowchart LR
@@ -190,7 +202,7 @@ flowchart LR
 - [`@babel/preset-typescript`](https://babeljs.io/docs/en/babel-preset-typescript)：用于转译 TypeScript 代码的规则集（仅做类型擦除，不做类型检查）
 - [`@babel/preset-flow`](https://babeljs.io/docs/en/babel-preset-flow/)：用于转译 [Flow](https://flow.org/en/docs/getting-started/) 代码的规则集
 
-> 提示：关于 Babel 的功能、用法、原理还有非常大的学习空间，感兴趣的同学可以前往阅读官方文档：[babeljs.io/docs](https://babeljs.io/docs/) ，这里点到为止，把注意力放回 Webpack + Babel 协作上。
+> 提示：关于 Babel 的功能、用法、原理还有非常大的学习空间，可参阅官方文档：[babeljs.io/docs](https://babeljs.io/docs/) ，此处不再展开，重点回到 Webpack + Babel 协作上。
 
 ## 使用 TypeScript
 
@@ -207,7 +219,7 @@ const result = num - str; // 编译报错：'-' 运算符不能用于 string 与
 
 示例中，用一个数字类型的变量 `num` 减去字符串类型的变量 `str`，这在 TypeScript 的代码编译过程就能提前发现问题，而 JavaScript 环境下则需要到启动运行后才报错。这种类型检查特性虽然一定程度上损失了语言本身的灵活性，但能够让问题在编译阶段提前暴露，确保运行阶段的类型安全性，**特别适合用于构建多人协作的大型 JavaScript 项目**，也因此，时至今日 TypeScript 依然是一项应用广泛的 JavaScript 超集语言。
 
-### TypeScript 处理方案全景对比（v2 重写）
+### TypeScript 处理方案全景对比
 
 Webpack 生态中处理 TypeScript 的方案经历了多次演进。截至 2026 年，主流方案有以下四种，它们各有优劣：
 
@@ -394,17 +406,17 @@ module.exports = {
 
 **关键特点：**
 - `@babel/preset-typescript` **仅做类型擦除**（移除类型注解、接口、type 别名等），不做类型检查
-- 不需要安装 TypeScript 编译器本体（除非你想单独运行 `tsc --noEmit`）
+- 不需要安装 TypeScript 编译器本体（除非需要单独运行 `tsc --noEmit`）
 - 代码转译能力由 `@babel/preset-env` 提供
 
-**⚠️ 重要提醒：** 由于不进行类型检查，你需要在以下方式中选择一种进行类型校验：
+**⚠️ 重要提醒：** 由于不进行类型检查，需要在以下方式中选择一种进行类型校验：
 - 在 `package.json` 的 scripts 中添加 `"typecheck": "tsc --noEmit"`
 - 在 CI/CD 流水线中执行 `tsc --noEmit`
 - 使用 VS Code 的 TypeScript 插件获得实时类型反馈
 
 ---
 
-### 方案三：swc-loader（高性能替代）（v2 新增）
+### 方案三：swc-loader（高性能替代）
 
 [SWC](https://swc.rs/)（Speedy Web Compiler）是用 **Rust** 编写的高性能 JavaScript/TypeScript 编译器，在转译速度上相比 Babel 有 **10-70 倍**的提升，已成为大型前端项目的首选方案（Next.js、Vite 等均已集成或支持）。
 
@@ -523,7 +535,7 @@ module.exports = {
 
 #### SWC vs Babel 迁移建议
 
-如果你正在考虑从 Babel 迁移到 SWC：
+从 Babel 迁移到 SWC 的决策参考：
 
 | 场景 | 建议 |
 |------|------|
@@ -535,7 +547,7 @@ module.exports = {
 
 ---
 
-### 方案四：experiments.typescript（Webpack 5.107+ 原生支持）（v2 重点新增）
+### 方案四：experiments.typescript（Webpack 5.107+ 原生支持）
 
 > **这是 2024 年底 Webpack 生态最重要的更新之一。**
 
@@ -595,7 +607,7 @@ module.exports = {
 };
 ```
 
-就这么简单！Webpack 会自动：
+开启后，Webpack 会自动：
 - 为 `.ts`、`.cts`、`.mts` 文件注册处理规则
 - 将 `resolve.extensions` 补充 TypeScript 后缀
 - 解析项目中的 `tsconfig.json` 配置
@@ -617,7 +629,7 @@ module.exports = {
 
 **4. 类型检查（必须单独配置）**
 
-由于 `experiments.typescript` **只做类型擦除，不做类型检查**，你需要单独配置类型检查：
+由于 `experiments.typescript` **只做类型擦除，不做类型检查**，需要单独配置类型检查：
 
 ```bash
 npx tsc --noEmit
@@ -670,7 +682,7 @@ flowchart TD
 
 ### 四种方案如何选择？（总结）
 
-根据你的项目特征，快速决策：
+根据项目特征快速决策：
 
 | 项目特征 | 推荐方案 | 理由
 | ---------|---------|------ |
@@ -696,7 +708,7 @@ ESLint 是一种扩展性极佳的 JavaScript 代码风格检查工具，它能�
 
 这里先忽略 ESLint 配置的具体规则，样例源码存在诸多风格不统一的地方，例如 1、2 行以 `;` 结尾，而第 3 行没有 `;`；第一行变量以 `const` 声明，第二行变量以 `let` 声明，等等。ESLint 会找出这些风格不一致的地方，并予以告警，甚至自动修复，生成如上表右上角的代码。
 
-### eslint-webpack-plugin 接入（v2 更新）
+### eslint-webpack-plugin 接入
 
 Webpack 下，可以使用 `eslint-webpack-plugin` 接入 ESLint 工具。以下是最新用法：
 
@@ -712,7 +724,7 @@ yarn add -D eslint-config-standard eslint-plugin-promise eslint-plugin-import es
 
 **2. 在项目根目录添加 ESLint 配置文件**
 
-> **v2 注意：** ESLint 9.x 引入了新的 **Flat Config**（`eslint.config.js`），与传统 `.eslintrc` 格式并存。如果你的项目使用 ESLint 9+，建议迁移到 Flat Config。
+> **注意：** ESLint 9.x 引入了新的 **Flat Config**（`eslint.config.js`），与传统 `.eslintrc` 格式并存。项目使用 ESLint 9+ 时，建议迁移到 Flat Config。
 
 **传统格式（.eslintrc / .eslintrc.json）：**
 
@@ -821,7 +833,7 @@ module.exports = [
 
 ### ESLint 推荐扩展
 
-除常规 JavaScript 代码风格检查外，我们还可以使用适当的 ESLint 插件、配置集实现更丰富的检查、格式化功能，这里推荐几种使用率较高的第三方扩展：
+除常规 JavaScript 代码风格检查外，还可以使用适当的 ESLint 插件、配置集实现更丰富的检查、格式化功能。以下几种第三方扩展使用率较高：
 
 | 扩展包 | 说明 | 适用场景
 | --------|------|--------- |
@@ -832,13 +844,13 @@ module.exports = [
 | [`@typescript-eslint/eslint-plugin`](https://typescript-eslint.io/docs/architecture/packages/) | TypeScript 代码风格检查 | TS 项目必备 |
 | [`eslint-plugin-sonarjs`](https://github.com/SonarSource/eslint-plugin-sonarjs) | 基于 Sonar 的代码质量检查 | 圈复杂度、代码重复率检测 |
 
-## Node.js Polyfill 处理（v2 新增）
+## Node.js Polyfill 处理
 
-> **这是一个 v2 版本新增的关键章节。** Webpack 5 不再自动注入 Node.js 内置模块的 polyfill，这是从 Webpack 4 迁移到 Webpack 5 时最常见的"坑"之一。
+> Webpack 5 不再自动注入 Node.js 内置模块的 polyfill，这是从 Webpack 4 迁移到 Webpack 5 时最常见的"坑"之一。
 
 ### 背景
 
-在 Webpack 4 及之前的版本中，当你使用 Node.js 内置模块（如 `fs`、`crypto`、`stream`、`buffer`、`process` 等）在前端代码中引用时，Webpack 会自动提供 polyfill。但从 **Webpack 5 开始，这一行为已被移除**，目的是：
+在 Webpack 4 及之前的版本中，前端代码引用 Node.js 内置模块（如 `fs`、`crypto`、`stream`、`buffer`、`process` 等）时，Webpack 会自动提供 polyfill。但从 **Webpack 5 开始，这一行为已被移除**，目的是：
 
 1. 减少不必要的产物体积（很多项目根本用不到这些 polyfill）
 2. 让开发者显式控制需要什么 polyfill
@@ -846,7 +858,7 @@ module.exports = [
 
 ### 常见报错信息
 
-如果你在升级到 Webpack 5 后遇到类似以下错误，就是 Node.js polyfill 问题：
+升级到 Webpack 5 后若遇到类似以下错误，即为 Node.js polyfill 问题：
 
 ```bash
 BREAKING CHANGE: webpack < 5 used to include polyfills for node.js core modules by default.
@@ -893,7 +905,7 @@ module.exports = {
 
 #### 方案二：按需手动配置（精细化控制）
 
-如果你知道具体需要哪些 polyfill，可以手动配置 `resolve.fallback`：
+若明确知道具体需要哪些 polyfill，可手动配置 `resolve.fallback`：
 
 ```js
 module.exports = {
@@ -919,7 +931,7 @@ module.exports = {
 
 #### 方案三：使用现代替代库
 
-很多情况下，你并不真的需要 Node.js 原生模块的完整 polyfill。可以考虑使用专门的现代化替代品：
+很多情况下，项目并不真的需要 Node.js 原生模块的完整 polyfill，可以考虑使用专门的现代化替代品：
 
 | 原始模块 | 现代替代 | 安装 |
 |---------|---------|------|
@@ -946,7 +958,7 @@ flowchart TD
 
 ## 综合示例
 
-最后，我们串联上述所有工具，构建一套功能完备的 JavaScript 应用开发环境。以下提供 **三种不同技术栈的完整配置模板**，你可以根据上一节的选型决策选择适合自己项目的方案。
+串联上述所有工具，即可构建一套功能完备的 JavaScript 应用开发环境。以下提供 **三种不同技术栈的完整配置模板**，可根据前文的选型决策选择适合项目的方案。
 
 ### 模板 A：Babel + TypeScript（经典方案）
 
@@ -1210,7 +1222,7 @@ module.exports = {
 };
 ```
 
-> **注意：** 开启 `experiments.typescript` 后，Webpack 会自动为 `.ts`、`.cts`、`.mts` 文件配置 loader 规则和 resolve.extensions，**无需手动编写对应的 rule**。你只需要关注 `.js` 文件的 Babel 转译规则（如果需要的话）。
+> **注意：** 开启 `experiments.typescript` 后，Webpack 会自动为 `.ts`、`.cts`、`.mts` 文件配置 loader 规则和 resolve.extensions，**无需手动编写对应的 rule**。只需关注 `.js` 文件的 Babel 转译规则（如确有需要）。
 
 ### 构建结果验证
 
@@ -1240,26 +1252,26 @@ const say = (statements) => {
 say("Hello from TypeScript!");
 ```
 
-至此，我们就搭建了一套支持 **Babel/SWC + TypeScript + ESLint + Node.js Polyfill** 的现代化开发环境，读者可根据上一节的技术选型决策，选择最适合自己项目的配置模板。
+至此，一套支持 **Babel/SWC + TypeScript + ESLint + Node.js Polyfill** 的现代化开发环境搭建完成，可根据前文的技术选型决策选择最适合项目的配置模板。
 
-## 总结
+## 小结
 
-本文介绍了 Babel、TypeScript、ESLint 三类工程化工具的历史背景、功能以及在 Webpack 中接入这些工具的具体步骤，并在 v2 版本中进行了重要更新：
+Babel、TypeScript、ESLint 是 Webpack 场景下构建现代 JavaScript 应用环境的三类基础设施：
 
-- **Babel** 提供的语言转译能力，能在确保产物兼容性的同时让我们大胆使用 ECMAScript 新特性。**v2 重点强调了 `modules: false` 配置的重要性**——这是 Tree-Shaking 生效的前提条件
-- **TypeScript** 提供的类型检查能力能有效提升应用代码的健壮性。**v2 全面重写了这部分内容**，提供了四种方案（ts-loader / babel-loader + preset-typescript / swc-loader / experiments.typescript）的深度对比，帮助读者根据项目规模、性能需求、依赖偏好做出合理选择
-- **ESLint** 提供的风格检查能力能确保多人协作时的代码一致性。**v2 更新了 eslint-webpack-plugin 最新用法**，并补充了 Flat Config 迁移提示
-- **Node.js Polyfill** 是 **v2 新增章节**，解决了 Webpack 5 迁移中最常见的坑，提供了多种解决方案
-- **SWC** 作为 **v2 新增的高性能替代方案**，为大型项目提供了数量级的构建速度提升
+- **Babel** 提供语言转译能力，在确保产物兼容性的同时支持使用 ECMAScript 新特性；`modules: false` 是 Tree-Shaking 生效的前提条件
+- **TypeScript** 提供类型检查能力，有效提升应用代码的健壮性；四种方案（ts-loader / babel-loader + preset-typescript / swc-loader / experiments.typescript）各有取舍，应根据项目规模、性能需求、依赖偏好选择
+- **ESLint** 提供风格检查能力，确保多人协作时的代码一致性；`eslint-webpack-plugin` 支持构建过程实时检查，ESLint 9+ 建议迁移 Flat Config
+- **Node.js Polyfill** 是 Webpack 4 迁移 5 的高频问题，可选择一键插件、`resolve.fallback` 按需配置或现代替代库三种解决路径
+- **SWC** 作为高性能替代方案，为大型项目提供数量级的构建速度提升
 
-它们已成为构建现代 JavaScript 应用的基础设施，建议读者遵循文章提及的学习建议，扩展学习各个工具的功能细节。
+建议在此基础上扩展了解各工具的功能细节。
 
-## 思考题
+## 关键问题
 
-1. **ESLint、TypeScript、Babel 三种工具都分别提供了独立 CLI 形态的使用方法，为何还需要被接入到 Webpack 工作流程中？这种做法有什么收益？**
+1. **ESLint、TypeScript、Babel 三种工具都分别提供独立 CLI 形态的使用方法，为何还需要接入到 Webpack 工作流程中？这种做法有什么收益？**
 
-2. **（v2 新增）在你的实际项目中，你会选择哪种 TypeScript 处理方案？请结合项目规模、团队习惯、构建速度需求说明理由。**
+2. **实际项目中应如何选择 TypeScript 处理方案？可结合项目规模、团队习惯、构建速度需求综合评估。**
 
-3. **（v2 新增）为什么 `modules: false` 对 Tree-Shaking 至关重要？如果设置为默认的 `'auto'`，Webpack 的依赖图会发生什么变化？请画图说明。**
+3. **为什么 `modules: false` 对 Tree-Shaking 至关重要？若设置为默认的 `'auto'`，Webpack 的依赖图会发生什么变化？**
 
-4. **（v2 新增）`experiments.typescript` 的"零依赖"优势在实际项目中意味着什么？它的限制条件（不支持 enum、namespace、TSX 等）会影响你的项目吗？**
+4. **`experiments.typescript` 的"零依赖"优势在实际项目中意味着什么？其限制条件（不支持 enum、namespace、TSX 等）会造成哪些影响？**

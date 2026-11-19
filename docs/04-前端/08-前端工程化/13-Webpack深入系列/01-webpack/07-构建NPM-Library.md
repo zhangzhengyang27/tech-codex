@@ -13,7 +13,6 @@ tags: [Webpack, 构建工具]
 > - **最后更新时间**: 2026-01-22
 > - **核心主题**: ESM-first 库构建、output.module、package.json exports、Tree-shaking 友好
 > - **前置知识**: Webpack 基础配置、模块化规范（CJS/ESM/UMD）
-> - **相关章节**: 第3章（Webpack 核心概念）、第5章（Loader 与 Plugin）、第6章（性能优化）
 
 ---
 
@@ -65,7 +64,7 @@ tags: [Webpack, 构建工具]
   - [11.4 Universal 模板（全格式双产物）](#11-universal-模板全格式双产物)
 - [12. 其他 NPM 配置优化](#12-其他-npm-配置优化)
 - [13. 总结与选型建议](#13-总结与选型建议)
-- [14. 思考题](#14-思考题)
+- [14. 关键问题](#14-关键问题)
 
 ---
 
@@ -92,7 +91,7 @@ tags: [Webpack, 构建工具]
 
 ## 2. 开发一个 NPM 库
 
-为方便讲解，假定我们正在开发一个全新的 NPM 库，暂且叫它 `test-lib` 吧，首先需要创建并初始化项目：
+为便于讲解，假定开发一个全新的 NPM 库，命名为 `test-lib`，首先需要创建并初始化项目：
 
 ```bash
 mkdir test-lib && cd test-lib
@@ -130,13 +129,13 @@ export const multiply = (a, b) => a * b
 │  │  └─ index.js
 ```
 
-> **提示**：本文代码均已上传到 [本系列仓库](https://github.com/Tecvan-fe/webpack-book-samples/tree/main/6-1_test-lib)。
+> **提示**：本文代码已上传到 [示例仓库](https://github.com/Tecvan-fe/webpack-book-samples/tree/main/6-1_test-lib)。
 
 ---
 
 ## 3. output.library 深度解析
 
-接下来，我们需要将上例 `test-lib` 构建为适合分发的产物形态。虽然 NPM 库与普通 Web 应用在形态上有些区别，但大体的编译需求趋同，因此可以复用前面章节介绍过的大多数知识点。
+接下来，需要将上例 `test-lib` 构建为适合分发的产物形态。虽然 NPM 库与普通 Web 应用在形态上有些区别，但大体的编译需求趋同，因此可以复用前面章节介绍过的大多数知识点。
 
 ### 基础编译配置
 
@@ -156,9 +155,9 @@ module.exports = {
 };
 ```
 
-> **提示**：我们还可以在上例基础上叠加任意 Loader、Plugin，例如： `babel-loader`、`eslint-loader`、`ts-loader` 等。
+> **提示**：还可以在上例基础上叠加任意 Loader、Plugin，例如： `babel-loader`、`eslint-loader`、`ts-loader` 等。
 
-上述配置会将代码编译成一个 IIFE 函数，但这并不适用于 NPM 库，我们需要修改 `output.library` 配置，以适当方式导出模块内容：
+上述配置会将代码编译成一个 IIFE 函数，但这并不适用于 NPM 库，需修改 `output.library` 配置，以适当方式导出模块内容：
 
 ```js
 module.exports = {
@@ -396,7 +395,7 @@ output: {
 
 ### 3.3 library.export 细粒度控制
 
-默认情况下，Webpack 会导出整个 entry point。但你可以使用 `library.export` 控制导出的内容：
+默认情况下，Webpack 会导出整个 entry point。但可以使用 `library.export` 控制导出的内容：
 
 ```js
 // src/index.js
@@ -706,7 +705,7 @@ exports > main/module/browser/types
 
 ### 5.1 基础 externals 配置
 
-假设我们需要在 `test-lib` 中使用其它 NPM 包，例如 `lodash`：
+假设需要在 `test-lib` 中使用其它 NPM 包，例如 `lodash`：
 
 ```js
 // src/index.js
@@ -717,11 +716,11 @@ export const add = (a, b) => a + b;
 export const max = _.max;
 ```
 
-此时执行编译命令 `npx webpack`，我们会发现产物文件的体积非常大：
+此时执行编译命令 `npx webpack`，会发现产物文件的体积非常大：
 
 这是因为 Webpack 默认会将所有第三方依赖都打包进产物中，这种逻辑能满足 Web 应用资源合并需求，但在开发 NPM 库时则很可能导致代码冗余。以 `test-lib` 为例，若使用者在业务项目中已经安装并使用了 `lodash`，那么最终产物必然会包含两份 `lodash` 代码！
 
-为解决这一问题，我们需要使用 [externals](https://webpack.js.org/configuration/externals/) 配置项，将第三方依赖排除在打包系统之外：
+为解决这一问题，需使用 [externals](https://webpack.js.org/configuration/externals/) 配置项，将第三方依赖排除在打包系统之外：
 
 ```js
 // webpack.config.js
@@ -741,7 +740,7 @@ module.exports = {
 
 > **提示**： Webpack 编译过程会跳过 [externals](https://webpack.js.org/configuration/externals/) 所声明的库，并假定消费场景已经安装了相关依赖，常用于 NPM 库开发场景；在 Web 应用场景下则常被用于优化性能。
 >
-> 例如，我们可以将 React 声明为外部依赖，并在页面中通过 `<script>` 标签方式引入 React 库，之后 Webpack 就可以跳过 React 代码，提升编译性能。
+> 例如，可将 React 声明为外部依赖，并在页面中通过 `<script>` 标签方式引入 React 库，之后 Webpack 就可以跳过 React 代码，提升编译性能。
 
 改造后，再次执行 `npx webpack`，编译结果如下：
 
@@ -750,7 +749,7 @@ module.exports = {
 1. 产物仅包含 `test-lib` 库代码，体积相比修改前大幅降低；
 2. UMD 模板通过 `require`、`define` 函数中引入 `lodash` 依赖并传递到 `factory`。
 
-至此，Webpack 不再打包 `lodash` 代码，我们可以顺手将 `lodash` 声明为 `peerDependencies`：
+至此，Webpack 不再打包 `lodash` 代码，可顺手将 `lodash` 声明为 `peerDependencies`：
 
 ```json
 {
@@ -779,7 +778,7 @@ module.exports = {
 
 > **⚠️ Webpack 5 重要变更**
 >
-> Webpack 5 不再自动 polyfill Node.js 核心模块（如 `crypto`、`fs`、`path` 等）。如果你的库使用了这些模块，需要显式配置。
+> Webpack 5 不再自动 polyfill Node.js 核心模块（如 `crypto`、`fs`、`path` 等）。如果库使用了这些模块，需要显式配置。
 
 #### 问题现象
 
@@ -902,9 +901,9 @@ externals: [nodeExternals({
 
 ## 6. 抽离 CSS 代码
 
-假设我们开发的 NPM 库中包含了 CSS 代码 —— 这在组件库中特别常见，我们通常需要使用 `mini-css-extract-plugin` 插件将样式抽离成单独文件，由用户自行引入。
+假设开发的 NPM 库中包含了 CSS 代码 —— 这在组件库中特别常见，通常需要使用 `mini-css-extract-plugin` 插件将样式抽离成单独文件，由用户自行引入。
 
-这是因为 Webpack 处理 CSS 的方式有很多，例如使用 `style-loader` 将样式注入页面的 `<head>` 标签；使用 `mini-css-extract-plugin` 抽离样式文件。作为 NPM 库开发者，如果我们粗暴地将 CSS 代码打包进产物中，有可能与用户设定的方式冲突。
+这是因为 Webpack 处理 CSS 的方式有很多，例如使用 `style-loader` 将样式注入页面的 `<head>` 标签；使用 `mini-css-extract-plugin` 抽离样式文件。作为 NPM 库开发者，若粗暴地将 CSS 代码打包进产物中，有可能与用户设定的方式冲突。
 
 为此，需要在前文基础上添加如下配置：
 
@@ -927,7 +926,7 @@ module.exports = {
 };
 ```
 
-> **提示**：关于 CSS 构建的更多规则，可参考《如何借助预处理器、PostCSS 等构建现代 CSS 工程环境？》章节。
+> **提示**：关于 CSS 构建的更多规则，可参考《CSS 工程环境》文档。
 
 **完整 CSS 处理配置（推荐）**：
 
@@ -1013,7 +1012,7 @@ module.exports = {
 
 此后，业务方只需使用 `source-map-loader` 就可以将这段 Sourcemap 信息加载到自己的业务系统中，实现框架级别的源码调试能力。关于 Sourcemap 的更多信息，可查阅：
 
-> **提示**：示例代码已上传到 [本系列仓库](https://github.com/Tecvan-fe/webpack-book-samples/tree/main/6-2_use-test-lib)。
+> **提示**：示例代码已上传到 [示例仓库](https://github.com/Tecvan-fe/webpack-book-samples/tree/main/6-2_use-test-lib)。
 
 #### Sourcemap 类型选择
 
@@ -1044,7 +1043,7 @@ module.exports = {
 
 ### 8.1 sideEffects 配置
 
-`package.json` 的 `sideEffects` 字段告诉打包工具你的代码是否有**副作用**。
+`package.json` 的 `sideEffects` 字段告诉打包工具库代码是否有**副作用**。
 
 #### 什么是副作用？
 
@@ -1928,7 +1927,7 @@ import 'test-lib-universal/styles';
 
 ## 12. 其他 NPM 配置优化
 
-至此，开发 NPM 库所需的 Webpack 配置就算是介绍完毕了，接下来我们还可以用一些小技巧优化 `test-lib` 的项目配置，提升开发效率，包括：
+至此，开发 NPM 库所需的 Webpack 配置介绍完毕。接下来还可以用一些小技巧优化 `test-lib` 的项目配置，提升开发效率，包括：
 
 ### 12.1 .npmignore 文件
 
@@ -2087,7 +2086,7 @@ coverage/
 
 ### 版本迁移路径
 
-如果你正在维护一个基于 v1 配置的老库，建议按以下步骤升级：
+若正在维护一个基于 v1 配置的老库，建议按以下步骤升级：
 
 1. **第一阶段**：添加 `exports` 字段（不影响现有用户）
 2. **第二阶段**：添加 ESM 产物（`output.module: true`）
@@ -2095,17 +2094,17 @@ coverage/
 4. **第四阶段**：标记 `type: "module"`，逐步引导用户迁移
 5. **第五阶段**（可选）：移除 UMD 产物，完全 ESM-first
 
-遵循上述规则，基本上就能满足开发一个 NPM 库所需的大部分需求。另外，文章代码均已上传到 [本系列仓库](https://github.com/Tecvan-fe/webpack-book-samples/tree/main/6-1_test-lib)，建议大家 Clone 阅读。
+遵循上述规则，基本上就能满足开发一个 NPM 库所需的大部分需求。另外，文章代码均已上传到 [示例仓库](https://github.com/Tecvan-fe/webpack-book-samples/tree/main/6-1_test-lib)，可 Clone 阅读。
 
 ---
 
-## 14. 思考题
+## 14. 关键问题
 
 1. **模块化规范对比**：请结合实际场景，详细比较 CommonJS、UMD、ES Module 三种模块化规范的优劣势，以及它们在不同运行环境下的表现。
 
 2. **ESM-first 迁移挑战**：如果要将一个现有的 UMD-only 库迁移为 ESM-first，可能会遇到哪些挑战？如何解决 Dual Package Hazard（双重包危害）问题？
 
-3. **构建工具选型**：有许多工具能被构建 NPM 库，例如 Webpack、Snowpack、Vite、Rollup、tsup、unbuild 等，这些工具各有什么特点？在 2026 年，你更倾向于使用哪种工具？为什么？
+3. **构建工具选型**：有许多工具能被构建 NPM 库，例如 Webpack、Snowpack、Vite、Rollup、tsup、unbuild 等，这些工具各有什么特点？在 2026 年应倾向选择哪种工具？为什么？
 
 4. **Tree-shaking 深度实践**：如何编写一个完全 Tree-shaking 友好的库？请列举至少 5 个常见的反模式（Anti-patterns），并提供解决方案。
 
@@ -2173,4 +2172,3 @@ ls -la dist/
 > **文档版本**：v2.0.0
 > **最后更新**：2026-01-22
 > **适用 Webpack**：5.96.1+（推荐 5.107）
-> **下一步学习**：第8章（Webpack 性能优化深度实践）

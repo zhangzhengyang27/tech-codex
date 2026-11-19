@@ -36,9 +36,9 @@ tags: [Webpack, 构建工具]
 
 ---
 
-在开发 Web 应用时，我们通常需要编写大量 JavaScript 代码 —— 用于控制页面逻辑；编写大量 CSS 代码 —— 用于调整页面呈现形式。问题在于，CSS 语言在过去若干年中一直在追求样式表现力方面的提升，工程化能力薄弱，例如缺乏成熟的模块化机制、依赖处理能力、逻辑判断能力等。为此，在开发现代大型 Web 应用时，通常会使用 Webpack 配合其它预处理器编写样式代码。
+开发 Web 应用时，通常需要编写大量 JavaScript 代码 —— 用于控制页面逻辑；编写大量 CSS 代码 —— 用于调整页面呈现形式。问题在于，CSS 语言在过去若干年中一直在追求样式表现力方面的提升，工程化能力薄弱，例如缺乏成熟的模块化机制、依赖处理能力、逻辑判断能力等。为此，在开发现代大型 Web 应用时，通常会使用 Webpack 配合其它预处理器编写样式代码。
 
-本章主要介绍 Webpack 中如何使用 CSS 代码处理工具，包括：
+本篇主要介绍 Webpack 中如何使用 CSS 代码处理工具，包括：
 
 - **传统方案**：如何使用 `css-loader`、`style-loader`、`mini-css-extract-plugin` 处理原生 CSS 文件？
 - **原生 CSS 方案（推荐）**：如何使用 Webpack v5.107+ 的 `experiments.css` 原生支持？
@@ -77,7 +77,7 @@ flowchart TB
 
 ```
 
-### 传统方案回顾（了解即可）
+### 传统方案回顾
 
 > ⚠️ **重要提示**：以下传统方案计划于 2026 年废弃，建议新项目直接使用[原生 CSS 方案](#原生-css-方案推荐)。
 
@@ -235,7 +235,7 @@ module.exports = {
 };
 ```
 
-就这么简单！现在 Webpack 可以原生理解 `.css` 文件了。
+完成上述配置后，Webpack 即可原生理解 `.css` 文件。
 
 #### 2️⃣ 基础示例
 
@@ -266,7 +266,7 @@ module.exports = {
 };
 ```
 
-无需任何 Loader 或 Plugin，Webpack 会自动处理 CSS 文件！
+无需任何 Loader 或 Plugin，Webpack 会自动处理 CSS 文件。
 
 ---
 
@@ -839,7 +839,7 @@ module.exports = {
 
 ### 🔄 从传统方案迁移指南
 
-如果你正在使用传统的 `css-loader` + `style-loader` + `mini-css-extract-plugin`，可以按照以下步骤迁移到原生 CSS：
+若正在使用传统的 `css-loader` + `style-loader` + `mini-css-extract-plugin`，可按照以下步骤迁移到原生 CSS：
 
 #### 步骤 1：安装 Webpack ≥ 5.107
 
@@ -893,7 +893,7 @@ module.exports = {
 
 #### 步骤 4：更新 import 语句
 
-如果你的代码依赖于 `css-loader` 的特殊导出（如 `locals`），可能需要调整：
+若代码依赖于 `css-loader` 的特殊导出（如 `locals`），可能需要调整：
 
 ```js
 // Before
@@ -1123,7 +1123,7 @@ module.exports = {
 
 CSS（Cascading Style Sheets，级联样式表）最初是一种用于描述 Web 界面样式的语言，经过这么多年的发展其样式表现力已经突飞猛进，但核心功能、基本语法没有发生太大变化，至今依然没有提供诸如循环、分支判断、扩展复用、函数、嵌套之类的特性，以至于原生 CSS 已经难以应对当代复杂 Web 应用的开发需求。
 
-为此，社区在 CSS 原生语法基础上扩展出一些更易用，功能更强大的 CSS 预处理器(Preprocessor)，比较知名的有 [Less](https://lesscss.org/)、[Sass](https://sass-lang.com/)、[Stylus](https://stylus-lang.com/) 。这些工具各有侧重，但都在 CSS 之上补充了一些逻辑判断、数学运算、嵌套封装等特性，基于这些特性，我们能写出复用性、可读性、可维护性更强，条理与结构更清晰的样式代码，以 Less 为例：
+为此，社区在 CSS 原生语法基础上扩展出一些更易用，功能更强大的 CSS 预处理器(Preprocessor)，比较知名的有 [Less](https://lesscss.org/)、[Sass](https://sass-lang.com/)、[Stylus](https://stylus-lang.com/) 。这些工具各有侧重，但都在 CSS 之上补充了一些逻辑判断、数学运算、嵌套封装等特性，基于这些特性，可以写出复用性、可读性、可维护性更强，条理与结构更清晰的样式代码，以 Less 为例：
 
 ```less
 // 变量
@@ -1193,7 +1193,7 @@ module.exports = {
 | **Sass** | `yarn add -D sass sass-loader`              | `{ test: /\.s(ac)ss$/, use: ['sass-loader'] }`              |
 | **Stylus** | `yarn add -D stylus stylus-loader`          | `{ test: /\.styl$/, use: ['stylus-loader'] }`               |
 
-大家可根据项目背景选择接入适当的预处理器框架。
+可根据项目背景选择接入适当的预处理器框架。
 
 ### 预处理器 + CSS Modules
 
@@ -1310,7 +1310,7 @@ PostCSS 最大的优势在于其简单、易用、丰富的插件生态，基本
 
 ### PostCSS + 预处理器协同工作
 
-PostCSS 与预处理器并非互斥关系，我们完全可以在同一个项目中同时使用两者：
+PostCSS 与预处理器并非互斥关系，完全可以在同一个项目中同时使用两者：
 
 ```js
 // webpack.config.js
@@ -1351,7 +1351,7 @@ module.exports = {
 };
 ```
 
-基于这一特性，我们既能复用预处理语法特性，又能应用 PostCSS 丰富的插件能力处理诸如雪碧图、浏览器前缀等问题。
+基于这一特性，既能复用预处理语法特性，又能应用 PostCSS 丰富的插件能力处理诸如雪碧图、浏览器前缀等问题。
 
 ### 完整配置示例
 
@@ -1550,21 +1550,21 @@ module.exports = {
 - 更强的类型安全
 - 更深度的 Tree Shaking
 
-这些工具几乎已经成为现代 Web 应用开发的标配，能够帮助我们写出更清晰简洁、可复用的样式代码，帮助我们解决诸多与样式有关的工程化问题。
+这些工具几乎已经成为现代 Web 应用开发的标配，能够帮助开发者写出更清晰简洁、可复用的样式代码，解决诸多与样式有关的工程化问题。
 
 ---
 
-## 思考题
+## 关键问题
 
-1. **对比题**：`exportType: "link"` 与 `exportType: "style"` 分别适用于什么场景？对页面性能会产生什么影响？
+1. **`exportType: "link"` 与 `exportType: "style"` 分别适用于什么场景？对页面性能会产生什么影响？**
 
-2. **实践题**：如何在一个项目中同时使用 Less 预处理器和 PostCSS？请写出完整的 Loader 链配置。
+2. **如何在一个项目中同时使用 Less 预处理器和 PostCSS？完整的 Loader 链如何配置？**
 
-3. **进阶题**：假设你需要实现一个支持亮色/暗色主题切换的系统，应该选择哪种 `exportType`？请给出完整的实现思路。
+3. **实现一个支持亮色/暗色主题切换的系统，应选择哪种 `exportType`？实现思路是什么？**
 
-4. **迁移题**：如果你有一个使用 `css-loader` + `mini-css-extract-plugin` 的项目，列出迁移到原生 CSS 的具体步骤和注意事项。
+4. **使用 `css-loader` + `mini-css-extract-plugin` 的项目迁移到原生 CSS，具体步骤和注意事项有哪些？**
 
-5. **优化题**：在生产环境中，如何利用 `scopeHoisting` 和 `pureMode` 优化 CSS Modules 的性能？
+5. **生产环境中，如何利用 `scopeHoisting` 和 `pureMode` 优化 CSS Modules 的性能？**
 
 ---
 

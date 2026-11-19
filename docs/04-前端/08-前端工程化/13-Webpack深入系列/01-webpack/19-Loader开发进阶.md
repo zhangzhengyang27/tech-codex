@@ -10,23 +10,18 @@ tags: [Webpack, 构建工具]
 
 > **文档元信息**
 >
-> - **章节编号**：第 20 章
 > - **适用版本**：Webpack v5.107+
 > - **更新日期**：2026-05-22
-> - **作者**：掘金本系列技术团队
-> - **版本**：v2（升级版）
-> - **前置知识**：[第19章 Loader 开发基础](18-Loader开发基础.md)
-> - **难度等级**：⭐⭐⭐⭐☆（高级）
+> - **维护**：文档维护组
+> - **前置知识**：[Loader 开发基础](18-Loader开发基础.md)
 
 ---
 
-## 🎯 本章导读
+## 🎯 导读
 
-在上一篇文章中，我们已经详细了解了开发 Webpack Loader 需要用到的基本技能，包括：Loader 基本形态、如何构建测试环境、如何使用 Loader Context 接口等。
+Loader 开发的基本技能涵盖：Loader 基本形态、测试环境构建、Loader Context 接口使用等。本文在此基础上深入探讨 Loader 开发的进阶主题，帮助开发者从"能写 Loader"升级到"写好 Loader"。
 
-**本章将深入探讨 Loader 开发的进阶主题，帮助你从"能写 Loader"升级到"写好 Loader"。**
-
-我们将系统学习以下核心能力：
+本篇系统覆盖以下核心能力：
 
 ```mermaid
 graph TB
@@ -73,7 +68,7 @@ graph TB
 
 ### 1.1 什么是虚拟模块？
 
-虚拟模块是指在 Loader 运行时动态生成的、**在磁盘上不存在**的模块。这是 Loader 开发中非常强大的能力，可以让你：
+虚拟模块是指在 Loader 运行时动态生成的、**在磁盘上不存在**的模块。这是 Loader 开发中非常强大的能力，可以：
 
 - 动态生成配置文件
 - 注入运行时代码
@@ -517,7 +512,7 @@ module.exports = {
 
 ### 3.1 为什么需要自定义文件系统？
 
-Webpack 5 引入了全新的持久化缓存系统，默认使用**内存文件系统（Memory File System）**来提升性能。作为 Loader 开发者，你需要了解如何正确地使用 `this.fs` API：
+Webpack 5 引入了全新的持久化缓存系统，默认使用**内存文件系统（Memory File System）**来提升性能。作为 Loader 开发者，需要了解如何正确地使用 `this.fs` API：
 
 **关键优势：**
 - ✅ 避免磁盘 I/O 操作，显著提升性能
@@ -1476,7 +1471,7 @@ module.exports = function(source) {
           });
 
           generator.addMapping({
-            generated: { line: lineNumber + 1, column: 0 }, // +1 因为我们添加了前缀行
+            generated: { line: lineNumber + 1, column: 0 }, // +1：前缀行占一行
             original: {
               line: originalPosition.line || lineNumber,
               column: originalPosition.column || 0
@@ -1587,7 +1582,7 @@ function expensiveTransformation(code) {
 
 ### 7.3 自定义缓存键
 
-默认情况下，Webpack 使用 `filePath + content` 作为缓存键。但有时你需要更细粒度的控制：
+默认情况下，Webpack 使用 `filePath + content` 作为缓存键。但有时需要更细粒度的控制：
 
 ```javascript
 // custom-cache-key-loader.js
@@ -1618,7 +1613,7 @@ module.exports = function(source) {
     .digest('hex');
 
   // 注意：Webpack 5 不再支持自定义 cacheKey 方法
-  // 但你可以通过 this.addDependency 和 this.addContextDependency
+  // 但可以通过 this.addDependency 和 this.addContextDependency
   // 来影响缓存失效逻辑
 
   // 添加额外的依赖项以触发缓存失效
@@ -3450,7 +3445,7 @@ export default new UserService(createAPIClient());
 
 ### 12.1 核心知识点回顾
 
-本章我们深入学习了 Loader 开发的七大进阶主题：
+本篇深入讲解了 Loader 开发的七大进阶主题：
 
 | 主题 | 核心要点 | 关键 API
 | ------|----------|----------
@@ -3555,7 +3550,7 @@ graph TD
 
 ---
 
-## 思考题
+## 关键问题
 
 1. **虚拟模块的实际应用**：请设计一个场景，说明虚拟模块比传统文件生成方式的优势在哪里？
 
@@ -3570,10 +3565,10 @@ graph TD
 
 3. **Source Map 传递链**：如果一个文件经过了 5 个 Loader，每个都修改了代码，如何保证最终的 Source Map 能正确指向原始代码的位置？
 
-4. **缓存失效策略**：假设你的 Loader 依赖于一个外部的配置文件，但这个配置文件每小时才变化一次，你会如何设计缓存策略以平衡性能和准确性？
+4. **缓存失效策略**：假设某个 Loader 依赖于一个每小时才变化一次的外部配置文件，应如何设计缓存策略以平衡性能和准确性？
 
-5. **生产级 Loader 设计**：如果要为一个团队开发一个通用的代码规范 Loader（类似 ESLint 但针对团队特定规则），你会如何设计它的架构？请列出关键模块和它们之间的交互关系。
+5. **生产级 Loader 设计**：如果要为一个团队开发一个通用的代码规范 Loader（类似 ESLint 但针对团队特定规则），应如何设计它的架构？请列出关键模块和它们之间的交互关系。
 
 ---
 
-> **下一章预告**：第 21 章《Plugin 开发进阶：深入 Webpack 插件系统的核心机制》将带你进入 Plugin 开发的世界，探索 Tapable 事件系统、Compilation 生命周期等高级主题。
+> **延伸阅读**：插件开发的基础内容（插件基本形态、Tapable 事件系统、Compilation 生命周期等）参见 [插件开发基础](20-插件开发基础.md)。

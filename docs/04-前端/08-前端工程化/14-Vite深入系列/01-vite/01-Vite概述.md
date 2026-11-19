@@ -10,14 +10,16 @@ tags: [Vite, CSS 工程化, 工程化]
 
 Vite 对各类 CSS 工程化方案提供了开箱即用的支持，本篇逐一介绍它们在 Vite 中的接入方式。
 
-## 现代化 CSS 工程化方案
+## 概念说明：原生 CSS 的问题与五类方案
 
-原生 CSS 开发的各种问题
+### 原生 CSS 开发的痛点
 
 - **开发体验**欠佳。比如原生 CSS 不支持选择器的嵌套
 - **样式污染**问题。如果出现同样的类名，很容易造成不同的样式互相覆盖和污染
 - **浏览器兼容**问题。为了兼容不同的浏览器，需要对一些属性(如 transition )加上不同的浏览器前缀，比如 `-webkit-`、`-moz-`、`-ms-`、`-o-`，意味着开发者要针对同一个样式属性写很多的冗余代码
 - **代码体积**问题。如果不用任何的 CSS 工程化方案，所有的 CSS 代码都将打包到产物中，即使有部分样式并没有在代码中使用，导致产物体积过大
+
+### 五类社区解决方案
 
 针对如上原生 CSS 的痛点，社区中诞生了不少解决方案，常见的有 5 类
 
@@ -27,9 +29,9 @@ Vite 对各类 CSS 工程化方案提供了开箱即用的支持，本篇逐一�
 - CSS in JS 方案，主流的包括 emotion 、 styled-components 等等，顾名思义，这类方案可以实现直接在 JS 中写样式代码，基本包含 CSS 预处理器 和 CSS Modules 的各项优点，非常灵活，解决了开发体验和全局样式污染的问题。
 - CSS 原子化框架，如 Tailwind CSS 、 Windi CSS ，通过类名来指定样式，大大简化了样式写法，提高了样式开发的效率，主要解决了原生 CSS **开发体验**的问题
 
-### CSS 预处理器-sass
+## CSS 预处理器-sass
 
-Vite 本身对 CSS 各种预处理器语言( Sass/Scss、Less 和 Stylus ) 做了内置支持。不经过任何的配置直接使用各种 CSS 预处理器。以 Sass/Scss 为例，来具体感受一下 Vite 的 零配置 给我们带来的便利。
+Vite 本身对 CSS 各种预处理器语言( Sass/Scss、Less 和 Stylus ) 做了内置支持。不经过任何的配置直接使用各种 CSS 预处理器。以 Sass/Scss 为例，来具体感受一下 Vite 的 零配置 便利。
 
 由于 Vite 底层会调用 CSS 预处理器的官方库进行编译，而 Vite 为了实现按需加载并没有内置这些工具库，而是让用户根据需要安装。首先安装 Sass 的官方库
 
@@ -71,7 +73,7 @@ export default App;
 
 执行 `pnpm run dev`  到浏览器上查看效果，页面出现红色的文字部分，就说明 scss 文件中的样式已经成功生效。
 
-#### 样式变量
+### 样式变量
 
 封装一个全局的主题色，新建 `src/styles/variables.scss`  文件，内容如下:
 
@@ -121,13 +123,13 @@ export default defineConfig({
 })
 ```
 
-同样的，可以对 less 和 stylus 进行一些能力的配置，如果有需要可以去下面的官方文档中查阅更多的配置项:
+同样的，可以对 less 和 stylus 进行一些能力的配置，更多的配置项可以查阅下面的官方文档:
 
 Sass https://sass-lang.com/documentation/syntax/
 
 Less https://lesscss.org/usage/#less-options
 
-### CSS Modules
+## CSS Modules
 
 CSS Modules 也是 Vite 一个开箱即用的能力，Vite 会对后缀带有 `.module` 的样式文件自动应用 CSS Modules。
 
@@ -165,13 +167,13 @@ export default {
 }
 ```
 
-再次访问页面发现刚才的类名已经变成了我们自定义的形式:
+再次访问页面发现刚才的类名已经变成了自定义的形式:
 
 ![image-20240320123409214](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403201234637.png)
 
-这是一个 CSS Modules 中很常见的配置，对开发时的调试非常有用。其它的一些配置项不太常用，大家可以去这个地址 https://github.com/madyankin/postcss-modules 进行查阅
+这是一个 CSS Modules 中很常见的配置，对开发时的调试非常有用。其它的一些配置项不太常用，可以在这个地址 https://github.com/madyankin/postcss-modules 进行查阅
 
-### PostCSS
+## PostCSS
 
 一般通过 postcss.config.js 来配置 postcss ，但在 Vite 配置文件中已经提供了 PostCSS 的配置入口，可以直接在 Vite 配置文件中进行操作。首先安装一个常用的 PostCSS 插件—— autoprefixer :
 
@@ -179,7 +181,7 @@ export default {
 pnpm i autoprefixer -D
 ```
 
-这个插件主要用来自动为不同的目标浏览器添加样式前缀，解决的是浏览器兼容性的问题。接下来让我们在 Vite 中接入这个插件:
+这个插件主要用来自动为不同的目标浏览器添加样式前缀，解决的是浏览器兼容性的问题。接下来在 Vite 中接入这个插件:
 
 ```ts
 // vite.config.ts 增加如下的配置
@@ -220,12 +222,12 @@ export default {
 由于有 CSS 代码的 AST (抽象语法树)解析能力，PostCSS 可以做的事情非常多，甚至能实现 CSS 预处理器语法和 CSS Modules，社区当中也有不少的 PostCSS 插件，除了刚刚提到的 autoprefixer 插件，常见的插件还包括:
 
 - postcss-pxtorem： 用来将 px 转换为 rem 单位，在适配移动端的场景下很常用
-- postcss-preset-env: 通过它，你可以编写最新的 CSS 语法，不用担心兼容性问题
+- postcss-preset-env: 通过它，开发者可以编写最新的 CSS 语法，不用担心兼容性问题
 - cssnano: 主要用来压缩 CSS 代码，跟常规的代码压缩工具不一样，它能做得更加智能，比如提取一些公共样式进行复用、缩短一些常见的属性值等等
 
 关于 PostCSS 插件推荐一个站点: www.postcss.parts/  可以去里面探索更多的内容
 
-### CSS In JS
+## CSS In JS
 
 社区中有两款主流的 CSS In JS 方案: styled-components 和 emotion 。对于 CSS In JS 方案，在构建侧需要考虑选择器命名问题 、 DCE (Dead Code Elimination，即无用代码删除)、 代码压缩 、 生成 SourceMap 、 服务端渲染(SSR) 等问题，
 
@@ -257,15 +259,15 @@ export default defineConfig({
 })
 ```
 
-### CSS 原子化框架
+## CSS 原子化框架
 
 CSS 原子化框架主要包括 Tailwind CSS 和 Windi CSS 。Windi CSS 作为前者的替换方案，实现了按需生成 CSS 类名的功能，开发环境下的 CSS 产物体积大大减少，速度上比 Tailwind CSS v2 快 20~100 倍！当然，Tailwind CSS 在 v3 版本也引入 JIT(即时编译) 的功能，解决了开发环境下 CSS 产物体积庞大的问题。
 
 > 注意：Windi CSS 项目已于 2023 年停止维护（仓库已归档），新项目建议使用 Tailwind CSS v3 及以上版本；下文对 Windi CSS 的介绍仅作历史了解。
 
-接下来将这两个方案分别接入到 Vite 中，在实际的项目中你只需要使用其中一种就可以了。Windi CSS 本身的 attributify 、 shortcuts 等独有的特性，因此首先从 windicss 开始说起
+接下来将这两个方案分别接入到 Vite 中，在实际的项目中只需要使用其中一种就可以了。Windi CSS 本身的 attributify 、 shortcuts 等独有的特性，因此首先从 windicss 开始说起
 
-#### Windi CSS
+### Windi CSS
 
 安装 windicss 及对应的 Vite 插件:
 
@@ -273,7 +275,7 @@ CSS 原子化框架主要包括 Tailwind CSS 和 Windi CSS 。Windi CSS 作为�
 pnpm i windicss vite-plugin-windicss -D
 ```
 
-随后我们在配置文件中来使用它:
+随后在配置文件中来使用它:
 
 ```ts
 // vite.config.ts
@@ -335,7 +337,7 @@ attributify 翻译过来就是属性化 ，就是说可以用 props 的方式去
 <button bg="blue-400 hover:blue-500 dark:blue-500 dark:hover:blue-600" text="sm white" font="mono light" p="y-2 x-4" border="2 rounded blue-200">Button</button>
 ```
 
-不过使用 attributify 的时候需要注意类型问题，你需要添加 `types/shim.d.ts` 来增加类型声明，以防类型报错:
+不过使用 attributify 的时候需要注意类型问题，需要添加 `types/shim.d.ts` 来增加类型声明，以防类型报错:
 
 ```javascript
 import { AttributifyAttributes } from 'windicss/types/jsx';
@@ -347,7 +349,7 @@ declare module 'react' {
 
 shortcuts 用来封装一系列的原子化能力，尤其是一些常见的类名集合，在 windi.config.ts 中配置（即上一段配置中的 `shortcuts` 字段）:
 
-比如封装了 flex-c 的类名，接下来我们可以在业务代码直接使用这个类名:
+比如封装了 flex-c 的类名，接下来可以在业务代码直接使用这个类名:
 
 ```html
 <div className="flex-c"></div>
@@ -355,7 +357,7 @@ shortcuts 用来封装一系列的原子化能力，尤其是一些常见的类�
 <div className="flex justify-center items-center"></div>
 ```
 
-#### Tailwind CSS
+### Tailwind CSS
 
 > 注：下面是 Tailwind CSS v3 的接入方式。Tailwind CSS v4（当前主流版本）改用官方 `@tailwindcss/vite` 插件，入口 CSS 写 `@import "tailwindcss";`，不再需要 tailwind.config.js 与 PostCSS 配置。
 
@@ -384,7 +386,7 @@ module.exports = {
 ```javascript
 // postcss.config.js
 
-// 从中你可以看到，Tailwind CSS 的编译能力是通过 PostCSS 插件实现的
+// 从中可以看到，Tailwind CSS 的编译能力是通过 PostCSS 插件实现的
 // 而 Vite 本身内置了 PostCSS，因此可以通过 PostCSS 配置接入 Tailwind CSS*
 // 注意: Vite 配置文件中如果有 PostCSS 配置的情况下会覆盖掉 post.config.js 的内容!
 
@@ -422,3 +424,10 @@ function App() {
 export default App;
 ```
 
+## 小结
+
+- Vite 对 Sass/Scss、Less、Stylus 提供零配置内置支持，仅要求按需安装对应预处理器官方库；全局样式变量可通过 `css.preprocessorOptions` 的 `additionalData` 自动注入。
+- CSS Modules 通过 `.module` 后缀文件自动启用，类名经 `css.modules.generateScopedName` 可自定义，解决样式污染问题。
+- PostCSS 可在 Vite 配置文件内的 `css.postcss` 中直接配置（会覆盖独立的 postcss.config.js），autoprefixer、postcss-pxtorem、postcss-preset-env、cssnano 等插件覆盖兼容性与压缩场景。
+- CSS In JS 方案（styled-components、emotion）通过 Babel 插件接入 `@vitejs/plugin-react`，emotion 另需配置 `jsxImportSource`。
+- 原子化框架中，Windi CSS（已停止维护）与 Tailwind CSS v3 各有接入流程；Tailwind v4 起改用官方 `@tailwindcss/vite` 插件。

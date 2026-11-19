@@ -8,15 +8,15 @@ tags: [Vite, HMR, 构建工具, 工程化]
 
 # HMR的API及原理
 
+## 概念说明
+
 在 HMR 出现之前，页面代码的更新是通过 live reload（也就是自动刷新页面）的方式来解决的。不过随着前端工程的日益庞大，live reload 的方式在诸多的场景下却显得十分鸡肋，简单来说就是 模块局部更新 + 状态保存 的需求在 live reload 的方案没有得到满足，从而导致开发体验欠佳。当然，针对部分场景也有一些临时的解决方案，比如状态存储到浏览器的本地缓存(localStorage 对象)中，或者直接 mock 一些数据。但这些方式未免过于粗糙，无法满足通用的开发场景，且实现上也不够优雅。
 
-一般使用 HMR 技术来解决这个问题，像 Webpack、Parcel 这些传统的打包工具底层都实现了一套 HMR API，Vite 所实现的 HMR API，相比于传统的打包工具，Vite 的 HMR API 基于 ESM 模块规范来实现，可以达到毫秒级别的更新速度，性能非常强悍。
-
-## HMR 简介
+一般使用 HMR 技术来解决这个问题，像 Webpack、Parcel 这些传统的打包工具底层都实现了一套 HMR API，Vite 所实现的 HMR API，相比于传统的打包工具，基于 ESM 模块规范来实现，可以达到毫秒级别的更新速度，性能非常强悍。
 
 HMR 的全称叫做 Hot Module Replacement ，即 模块热替换 或者 模块热更新。HMR 就是在页面模块更新的时候，直接把**页面中发生变化的模块替换为新的模块**，同时不会影响其它模块的正常运作。
 
-通过 HMR 的技术我们就可以实现 局部刷新 和 状态保存 ，从而解决之前提到的种种问题
+通过 HMR 的技术可以实现 局部刷新 和 状态保存 ，从而解决之前提到的种种问题。
 
 ## 深入 HMR API
 
@@ -24,7 +24,7 @@ Vite 的 HMR 系统基于原生的 ESM 模块规范来实现，在文件发生�
 
 Vite 的 HMR API 设计也并非空穴来风，它基于一套完整的 ESM HMR 规范来实现，这个规范由同时期的 no-bundle 构建工具Snowpack、WMR 与 Vite 一起制定，是一个比较通用的规范。
 
-我们可以直观地来看一看 HMR API 的类型定义:
+HMR API 的类型定义如下，可以直观地看一看:
 
 ```ts
 interface ImportMeta {
@@ -43,7 +43,7 @@ interface ImportMeta {
 }
 ```
 
- import.meta 对象为现代浏览器原生的一个内置对象，Vite 所做的事情就是在这个对象上的 hot 属性中定义了一套完整的属性和方法。因此，在 Vite 当中，你就可以通过 import.meta.hot 来访问关于 HMR 的这些属性和方法，比如 import.meta.hot.accept() 
+ import.meta 对象为现代浏览器原生的一个内置对象，Vite 所做的事情就是在这个对象上的 hot 属性中定义了一套完整的属性和方法。因此，在 Vite 当中，可以通过 import.meta.hot 来访问关于 HMR 的这些属性和方法，比如 import.meta.hot.accept() 
 
 ### 模块更新时逻辑 hot.accept
 
@@ -53,7 +53,7 @@ interface ImportMeta {
 - 接受**某个子模块**的更新
 - 接受**多个子模块**的更新
 
-这三种情况分别对应 accept 方法三种不同的使用方式，下面我们就一起来分析一下。
+这三种情况分别对应 accept 方法三种不同的使用方式，下面逐一分析。
 
 #### 接受自身更新
 
@@ -61,7 +61,7 @@ interface ImportMeta {
 
 ![image-20240322111359222](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221114352.png)
 
-以一个实际的例子来操练一下，展示一下整体的目录结构:
+以一个实际的例子来操练一下，整体的目录结构如下:
 
 ```javascript
 .
@@ -79,7 +79,7 @@ interface ImportMeta {
 └── tsconfig.json
 ```
 
-这里我放出一些关键文件的内容，如下面的 index.html ：
+以下列出关键文件的内容，首先是 index.html ：
 
 ```html
 <!DOCTYPE html>
@@ -155,7 +155,7 @@ export const render = () => {
 
 当 render.ts 模块发生变更时，Vite 发现并没有 HMR 相关的处理，然后直接刷新页面了。
 
-现在让我们在 render.ts 中加上如下的代码:
+现在在 render.ts 中加上如下的代码:
 
 ```javascript
 // 条件守卫
@@ -164,7 +164,7 @@ if (import.meta.hot) {
 }
 ```
 
-import.meta.hot 对象只有在开发阶段才会被注入到全局，生产环境是访问不到的，另外增加条件守卫之后，打包时识别到 if 条件不成立，会自动把这部分代码从打包产物中移除，来优化资源体积。因此，我们需要增加这个条件守卫语句。
+import.meta.hot 对象只有在开发阶段才会被注入到全局，生产环境是访问不到的，另外增加条件守卫之后，打包时识别到 if 条件不成立，会自动把这部分代码从打包产物中移除，来优化资源体积。因此，需要增加这个条件守卫语句。
 
 `import.meta.hot.accept((mod) => mod.render())`  这里传入了一个回调函数作为参数，入参即为 Vite 提供的更新后的模块内容，在浏览器中打印 mod 内容如下，正好是 render 模块最新的内容:
 
@@ -172,7 +172,7 @@ import.meta.hot 对象只有在开发阶段才会被注入到全局，生产环�
 
 在回调中调用了一下 mod.render 方法，也就是当模块变动后，每次都重新渲染一遍内容。但 count 并没有被重新置零，而是保留了原有的状态。
 
-没错，现在 render 模块更新后，只会重新渲染这个模块的内容，而对于 state 模块的内容并没有影响，并且控制台的 log 也发生了变化:
+render 模块更新后，只会重新渲染这个模块的内容，而对于 state 模块的内容并没有影响，并且控制台的 log 也发生了变化:
 
 ```javascript
 [vite] hmr update /src/render.ts
@@ -208,7 +208,7 @@ if (import.meta.hot) {
 }
 ```
 
-同样是调用 accept 方法，第一个参数传入一个依赖的路径，相当于告诉 Vite: 监听了 render 模块的更新，当它的内容更新的时候，请把最新的内容传给我。同样的，第二个参数中定义了模块变化后的回调函数，这里拿到了 render 模块最新的内容，然后执行其中的渲染逻辑，让页面展示最新的内容。
+同样是调用 accept 方法，第一个参数传入一个依赖的路径，相当于向 Vite 声明：当前模块监听了 render 模块的更新，当它的内容更新时，需要把最新的内容传递过来。同样的，第二个参数中定义了模块变化后的回调函数，这里拿到了 render 模块最新的内容，然后执行其中的渲染逻辑，让页面展示最新的内容。
 
 通过接受一个依赖模块的更新，同样又实现了 HMR 功能，改动 render 模块的内容，可以发现页面内容正常更新，并且状态依然保持着原样
 
@@ -230,7 +230,7 @@ if (import.meta.hot) {
 }
 ```
 
-在代码中通过 accept 方法接受了 render 和 state 两个模块的更新，接着手动改动一下某一个模块的代码，观察一下回调中 modules 的打印内容。例如当我改动 state 模块的内容时，回调中拿到的 modules 是这样的:
+在代码中通过 accept 方法接受了 render 和 state 两个模块的更新，接着手动改动一下某一个模块的代码，观察一下回调中 modules 的打印内容。例如改动 state 模块的内容时，回调中拿到的 modules 是这样的:
 
 ![image-20240322112945040](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221129703.png)
 
@@ -259,7 +259,7 @@ if (import.meta.hot) {
 }
 ```
 
-现在改动两个模块的内容，页面的相应模块会更新，并且对其它的模块没有影响。但实际上你会发现另外一个问题，当改动了 state 模块的内容之后，页面的内容会变得错乱:
+现在改动两个模块的内容，页面的相应模块会更新，并且对其它的模块没有影响。但实际上还存在另外一个问题，当改动了 state 模块的内容之后，页面的内容会变得错乱:
 
 ```javascript
 // state.ts
@@ -299,15 +299,15 @@ export function initState() {
 }
 ```
 
-当我改动一下 state 模块的内容页面确实会更新，而且也没有状态错乱的问题，说明在模块销毁前清除定时器的操作是生效的。
+改动一下 state 模块的内容，页面确实会更新，而且也没有状态错乱的问题，说明在模块销毁前清除定时器的操作是生效的。
 
 但是原来的状态丢失了， count 的内容从 64 突然变成 1 。 main 模块接受更新，执行 accept 方法中的回调，接着会执行 state 模块的 initState 方法。注意了，此时新建的 initState 方法的确会初始化定时器，但同时也会初始化 count 变量，也就是 count 从 0 开始计数了！
 
-这显然是不符合预期的，我们期望的是每次改动 state 模块，之前的状态都保存下来。需要使用到 hot.data 属性
+这显然是不符合预期的，期望的是每次改动 state 模块，之前的状态都保存下来。需要使用到 hot.data 属性
 
 ### 共享数据 hot.data 属性
 
-hot.data 属性用来在不同的模块实例间共享一些数据。使用上也非常简单，让我们来重构一下 state 模块:
+hot.data 属性用来在不同的模块实例间共享一些数据。使用上也非常简单，重构 state 模块如下:
 
 ```javascript
 let timer: number | undefined;
@@ -341,13 +341,13 @@ export function initState() {
 
 在 import.meta.hot.data 对象上挂载了一个 count 属性，在二次执行 initState的时候便会复用 import.meta.hot.data 上记录的 count 值，从而实现状态的保存。
 
-基本实现了这个示例应用的 HMR 的功能。在这个过程中，用到了核心的 accept 、 dispose 和 data 属性和方法。当然还有一些方法将会给大家进行介绍，但相较而言就比较简单了，而且用的也不多，大家只需要留下初步的印象，知道这些方法的用途是什么，需要用到的时候再来查阅即可。
+至此基本实现了这个示例应用的 HMR 功能。在这个过程中，用到了核心的 accept 、 dispose 和 data 属性和方法。当然还有一些方法将在下文介绍，但相较而言就比较简单了，而且用的也不多，留下初步印象即可，知道这些方法的用途是什么，需要用到的时候再来查阅。
 
 ### 其它方法
 
 #### hot.decline()
 
-这个方法调用之后，相当于表示此模块不可热更新，当模块更新时会强制进行页面刷新。感兴趣的同学可以继续拿上面的例子来尝试一下
+这个方法调用之后，相当于表示此模块不可热更新，当模块更新时会强制进行页面刷新。可以在上面的例子中尝试一下。
 
 #### hot.invalidate()
 
@@ -379,3 +379,11 @@ import.meta.hot.on('custom-update', (data) => {
   // 自定义更新逻辑
 })
 ```
+
+## 小结
+
+- HMR 实现模块局部更新与状态保存，弥补了 live reload 整页刷新的不足；Vite 的 HMR API 基于 ESM 规范与 Snowpack/WMR 共同制定的通用规范实现。
+- `import.meta.hot.accept` 决定 HMR 边界，支持接受自身更新、单个依赖更新与多个依赖更新（回调按声明的子模块数组一一对应）。
+- `hot.dispose` 用于模块销毁前清理副作用（如定时器、事件监听）；`hot.data` 用于跨模块实例共享数据，实现状态保存。
+- `hot.decline()` 声明模块不可热更，`hot.invalidate()` 沿依赖链向上冒泡寻找边界；`hot.on` 可监听 vite:beforeUpdate / beforeFullReload / beforePrune / error 内置事件，也可通过插件 handleHotUpdate 触发自定义事件。
+- `import.meta.hot` 仅在开发阶段注入，配合 `if (import.meta.hot)` 条件守卫可在打包时自动移除相关代码。

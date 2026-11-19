@@ -8,9 +8,11 @@ tags: [Vite, Babel, Polyfill, 构建工具, 工程化]
 
 # 语法降级与Polyfill
 
-谈到 Vite，可能很多人都觉得这是一个现代前端构建工具，应该在现代浏览器中使用，放到各种语法特性都缺失的低版本浏览器(如 `ie 11`)就不适用了。这种观念对不对呢？首先跟大家抛出结论:
+## 概念说明
 
-> 通过 Vite 构建我们完全可以兼容各种低版本浏览器，打包出既支持现代(`Modern`)浏览器又支持旧版(`Legacy`)浏览器的产物。
+谈到 Vite，可能很多人都觉得这是一个现代前端构建工具，应该在现代浏览器中使用，放到各种语法特性都缺失的低版本浏览器(如 `ie 11`)就不适用了。这种观念并不准确，首先抛出结论:
+
+> 通过 Vite 构建完全可以兼容各种低版本浏览器，打包出既支持现代(`Modern`)浏览器又支持旧版(`Legacy`)浏览器的产物。
 
 某些低版本浏览器并没有提供 `Promise` 语法环境以及对象和数组的各种 API，甚至不支持箭头函数语法，代码直接报错，从而导致线上白屏事故的发生，尤其是需要兼容到`IE 11`、`iOS 9`以及`Android 4.4`的场景中很容易会遇到。
 
@@ -35,7 +37,7 @@ tags: [Vite, Babel, Polyfill, 构建工具, 工程化]
 import "core-js/modules/es6.set.js"
 ```
 
-由于这些工具只是编译阶段用到，运行时并不需要，我们需要将其放入 `package.json` 中的 `devDependencies` 中
+由于这些工具只是编译阶段用到，运行时并不需要，需要将其放入 `package.json` 中的 `devDependencies` 中
 
 而**运行时基础库**是根据 `ESMAScript`官方语言规范提供各种`Polyfill`实现代码，主要包括`core-js`和`regenerator-runtime`两个基础库，不过在 babel 中也会有一些上层的封装，包括：
 
@@ -61,7 +63,7 @@ pnpm i @babel/cli @babel/core @babel/preset-env
 
 各个依赖的作用:
 
-*   `@babel/cli`: 为 babel 官方的脚手架工具，很适合我们练习用
+*   `@babel/cli`: 为 babel 官方的脚手架工具，适合练习使用
 *   `@babel/core`: babel 核心编译库
 *   `@babel/preset-env`: babel 的预设工具集，基本为 babel 必装的库
 
@@ -99,7 +101,7 @@ Promise.resolve().finally();
 }
 ```
 
-可以通过 `targets` 参数指定要兼容的浏览器版本，你既可以填如上配置所示的一个对象:
+可以通过 `targets` 参数指定要兼容的浏览器版本，既可以填如上配置所示的一个对象:
 
 ```json
 {
@@ -117,7 +119,7 @@ Promise.resolve().finally();
 }
 ```
 
-Browserslist 是一个设置目标浏览器的工具，不光是 Babel 用到，其他的编译工具如`postcss-preset-env`、`autoprefixer`中都有所应用。对于 `Browserslist` 的配置内容，你既可以放到 Babel 这种特定工具当中，也可以在 `package.json` 中通过 `browserslist` 声明:
+Browserslist 是一个设置目标浏览器的工具，不光是 Babel 用到，其他的编译工具如`postcss-preset-env`、`autoprefixer`中都有所应用。对于 `Browserslist` 的配置内容，既可以放到 Babel 这种特定工具当中，也可以在 `package.json` 中通过 `browserslist` 声明:
 
 ```json
 { 
@@ -131,7 +133,7 @@ Browserslist 是一个设置目标浏览器的工具，不光是 Babel 用到，
 ie >= 11
 ```
 
-在实际的项目中，一般可以将使用下面这些**最佳实践集合**来描述不同的浏览器类型，减轻配置负担:
+在实际的项目中，一般可以使用下面这些**最佳实践集合**来描述不同的浏览器类型，减轻配置负担:
 
 ```javascript
 // 现代浏览器
@@ -142,13 +144,13 @@ IE >= 11, > 0.5%, not dead
 iOS >= 9, Android >= 4.4, last 2 versions, > 0.2%, not dead
 ```
 
-对于这些配置对应的具体浏览器列表，大家可以去 [browserslist.dev](https://browserslist.dev) 站点查看:
+对于这些配置对应的具体浏览器列表，可以去 [browserslist.dev](https://browserslist.dev) 站点查看:
 
 ![image-20240322123438316](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221234422.png)
 
-另外一个重要的配置——`useBuiltIns`，它决定了添加 Polyfill 策略，默认是 `false`，即不添加任何的 Polyfill。你可以手动将`useBuiltIns`配置为`entry`或者`usage`，
+另外一个重要的配置——`useBuiltIns`，它决定了添加 Polyfill 策略，默认是 `false`，即不添加任何的 Polyfill。可以手动将`useBuiltIns`配置为`entry`或者`usage`，
 
-首先你可以将这个字段配置为  `entry`，需要注意的是，`entry` 配置规定你必须在入口文件手动添加一行这样的代码:
+首先可以将这个字段配置为  `entry`，需要注意的是，`entry` 配置规定必须在入口文件手动添加一行这样的代码:
 
 ```javascript
 // index.js 开头加上
@@ -161,13 +163,13 @@ import 'core-js';
 npx babel src --out-dir dist
 ```
 
-产物输出在`dist`目录中，你可以去观察一下产物的代码:
+产物输出在`dist`目录中，可以观察一下产物的代码:
 
 ![image-20240322123625663](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221236980.png)
 
-Babel 已经根据`目标浏览器`的配置为我们添加了大量的 Polyfill 代码，`index.js`文件简单的几行代码被编译成近 300 行。实际上，Babel 所做的事情就是将你的`import "core-js"` 代码替换成了产物中的这些具体模块的导入代码。
+Babel 已经根据`目标浏览器`的配置添加了大量的 Polyfill 代码，`index.js`文件简单的几行代码被编译成近 300 行。实际上，Babel 所做的事情就是将`import "core-js"` 代码替换成了产物中的这些具体模块的导入代码。
 
-但这个配置有一个问题，即无法做到按需导入，上面的产物代码其实有大部分的 Polyfill 的代码我们并没有用到。接下来试试`useBuiltIns: usage`这个按需导入的配置，改动配置后执行编译命令:
+但这个配置有一个问题，即无法做到按需导入，上面的产物代码其实有大部分的 Polyfill 的代码并没有被用到。接下来试试`useBuiltIns: usage`这个按需导入的配置，改动配置后执行编译命令:
 
 ```bash
 npx babel src --out-dir dist
@@ -175,7 +177,7 @@ npx babel src --out-dir dist
 
 > Polyfill 代码主要来自 `corejs` 和 `regenerator-runtime`，因此如果要运行起来，必须要装这两个库。
 
-可以发现 Polyfill 的代码精简了许多，真正地实现了按需 Polyfill 导入。因此，在实际的使用当中，还是推荐大家尽量使用`useBuiltIns: "usage"`，进行按需的 Polyfill 注入。
+可以发现 Polyfill 的代码精简了许多，真正地实现了按需 Polyfill 导入。因此，在实际的使用当中，推荐尽量使用`useBuiltIns: "usage"`，进行按需的 Polyfill 注入。
 
 上面利用 `@babel/preset-env` 进行了目标浏览器语法的降级和 `Polyfill` 注入，同时用到了 `core-js` 和 `regenerator-runtime` 两个核心的运行时库。但 `@babel/preset-env`  的方案也存在一定局限性:
 
@@ -188,7 +190,7 @@ npx babel src --out-dir dist
 
 > 需要提前说明的是，`transform-runtime` 方案可以作为 `@babel/preset-env` 中 `useBuiltIns` 配置的替代品，也就是说，一旦使用 `transform-runtime` 方案，应该把 `useBuiltIns` 属性设为 `false`。
 
-接下来我们来尝试一下这个方案，首先安装必要的依赖:
+接下来尝试一下这个方案，首先安装必要的依赖:
 
 ```bash
 pnpm i @babel/plugin-transform-runtime -D
@@ -243,11 +245,9 @@ npx babel src --out-dir dist
 
 另外，`transform-runtime`方案引用的基础库也发生了变化，不再是直接引入`core-js`和`regenerator-runtime`，而是引入`@babel/runtime-corejs3`。
 
-看看如何在 Vite 中利用这些方案来解决低版本浏览器的兼容性问题
-
 ## Vite 语法降级与 Polyfill 注入
 
-Vite 官方已经为我们封装好了一个开箱即用的方案: `@vitejs/plugin-legacy`，可以基于它来解决项目语法的浏览器兼容问题。这个插件内部同样使用 `@babel/preset-env` 以及 `core-js`等一系列基础库来进行语法降级和 Polyfill 注入，因此我觉得对于上文所介绍的底层工具链的掌握是必要的，否则无法理解插件内部所做的事情，真正遇到问题时往往会不知所措
+Vite 官方已经封装好了一个开箱即用的方案: `@vitejs/plugin-legacy`，可以基于它来解决项目语法的浏览器兼容问题。这个插件内部同样使用 `@babel/preset-env` 以及 `core-js`等一系列基础库来进行语法降级和 Polyfill 注入，因此对于上文所介绍的底层工具链的掌握是必要的，否则无法理解插件内部所做的事情，真正遇到问题时往往会不知所措
 
 ### 插件使用
 
@@ -277,7 +277,7 @@ export default defineConfig({
 
 ![image-20240322124305481](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221243976.png)
 
-相比一般的打包过程，多出了`index-legacy.js`、`vendor-legacy.js`以及`polyfills-legacy.js`三份产物文件。让我们继续观察一下`index.html`的产物内容:
+相比一般的打包过程，多出了`index-legacy.js`、`vendor-legacy.js`以及`polyfills-legacy.js`三份产物文件。继续观察一下`index.html`的产物内容:
 
 ```html
 <!DOCTYPE html>
@@ -310,7 +310,7 @@ export default defineConfig({
 
 ### 插件执行原理
 
-官方的 `legacy` 插件是一个相对复杂度比较高的插件，直接看源码可能会很难理解，这里我梳理了一张简化后的流程图，接下来我们就根据这张流程图来一一拆解这个插件在各个钩子阶段到底做了些什么
+官方的 `legacy` 插件是一个相对复杂度比较高的插件，直接看源码可能会很难理解，下图是简化后的流程图，接下来根据这张流程图来一一拆解这个插件在各个钩子阶段到底做了些什么
 
 ![image-20240322124655188](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221246064.png)
 
@@ -397,11 +397,11 @@ async function buildPolyfillChunk(
 }
 ```
 
-因此，你可以理解为这个函数的作用即通过 `vite build` 对`renderChunk`中收集到 polyfill 代码进行打包，生成一个单独的 chunk:
+这个函数的作用即通过 `vite build` 对`renderChunk`中收集到 polyfill 代码进行打包，生成一个单独的 chunk:
 
-> 需要注意的是，polyfill chunk 中除了包含一些 core-js 和 regenerator-runtime 的相关代码，也包含了 `SystemJS` 的实现代码，你可以将其理解为 ESM 的加载器，实现了在旧版浏览器下的模块加载能力。
+> 需要注意的是，polyfill chunk 中除了包含一些 core-js 和 regenerator-runtime 的相关代码，也包含了 `SystemJS` 的实现代码，可以将其理解为 ESM 的加载器，实现了在旧版浏览器下的模块加载能力。
 
-现在我们已经能够拿到 Legacy 模式的产物文件名及 Polyfill Chunk 的文件名，那么就可以通过`transformIndexHtml`钩子来将这些产物插入到 HTML 的结构中:
+现在已经能够拿到 Legacy 模式的产物文件名及 Polyfill Chunk 的文件名，那么就可以通过`transformIndexHtml`钩子来将这些产物插入到 HTML 的结构中:
 
 ```javascript
 {
@@ -412,7 +412,7 @@ async function buildPolyfillChunk(
 }
 ```
 
-OK，Vite 官方的 legacy 插件的主要原理就介绍到这里，为了方便大家理解，讲解的过程中忽略了一些与主流程关联不大的细节，最后给大家补充一下，感兴趣的同学可以继续深入学习:
+至此，Vite 官方的 legacy 插件的主要原理介绍完毕。为便于理解，上述讲解忽略了与主流程关联不大的细节，以下是可继续深入学习的补充点:
 
 *   当插件参数中开启了`modernPolyfills`选项时，Vite 也会自动对 Modern 模式的产物进行 Polyfill 收集，并单独打包成`polyfills-modern.js`的 chunk，原理和 Legacy 模式下处理 Polyfill 一样。
     
@@ -420,3 +420,10 @@ OK，Vite 官方的 legacy 插件的主要原理就介绍到这里，为了方�
     
 *   部分低版本 Edge 浏览器虽然支持 type="module"，但不支持动态 import，为此也需要插入一些[补丁代码](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvitejs%2Fvite%2Fpull%2F3885%20"https://github.com/vitejs/vite/pull/3885")，针对这种情况下降级使用 Legacy 模式的产物
     
+## 小结
+
+- 低版本浏览器兼容问题分两类：语法降级（Babel 编译时处理）与 Polyfill 缺失（core-js / regenerator-runtime 运行时库补齐）。
+- 编译时工具装 `devDependencies`，运行时基础库装 `dependencies`；`useBuiltIns: "usage"` 实现按需 Polyfill 注入。
+- `@babel/preset-env` 方案存在全局污染与工具函数重复两类局限；`transform-runtime` 配合 `@babel/runtime-corejs3`（core-js-pure 产物）可同时解决两者，使用时需将 `useBuiltIns` 设为 `false`。
+- `@vitejs/plugin-legacy` 基于 targets 透传给 @babel/preset-env，构建 Modern/Legacy 双产物插入同一 HTML：Modern 走 `type="module"`，Legacy 走 `nomodule` + SystemJS 加载器。
+- 插件原理链路：configResolved 追加 system 格式 output → renderChunk 转译并收集 Polyfill → generateBundle 用 Vite build API 单独打包 polyfill chunk → transformIndexHtml 插入 nomodule 脚本。

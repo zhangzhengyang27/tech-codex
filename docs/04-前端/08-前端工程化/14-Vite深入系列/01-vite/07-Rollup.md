@@ -8,7 +8,11 @@ tags: [Vite, Rollup, 构建工具, 插件开发, 工程化]
 
 # Rollup
 
-Rollup 是一款基于 ES Module 模块规范实现的 JavaScript 打包工具，在前端社区中赫赫有名，同时也在 Vite 的架构体系中发挥着重要作用。不仅是 Vite 生产环境下的打包工具，其插件机制也被 Vite 所兼容，可以说是 Vite 的构建基石
+## 概念说明
+
+Rollup 是一款基于 ES Module 模块规范实现的 JavaScript 打包工具，在前端社区中赫赫有名，同时也在 Vite 的架构体系中发挥着重要作用：不仅是 Vite 生产环境下的打包工具，其插件机制也被 Vite 所兼容，可以说是 Vite 的构建基石。
+
+Rollup 具有天然的 **Tree Shaking** 功能，可以分析出未使用到的模块并自动擦除。由于 ES 模块依赖关系是确定的、和运行时状态无关，Rollup 可以在编译阶段分析出依赖关系，对 AST 语法树中没有使用到的节点进行删除，从而实现 Tree Shaking。
 
 ## 快速上手
 
@@ -67,11 +71,11 @@ const add = (a, b) => a + b;
 console.log(add(1, 2));
 ```
 
-可以发现， util.js 中的 multi 方法并没有被打包到产物中，这是因为 Rollup 具有天然的 Tree Shaking 功能，可以分析出未使用到的模块并自动擦除。由于 ES 模块依赖关系是确定的，和运行时状态无关。因此 Rollup 可以在编译阶段分析出依赖关系，对 AST 语法树中没有使用到的节点进行删除，从而实现 Tree Shaking
+可以发现， util.js 中的 multi 方法并没有被打包到产物中，这正是 Tree Shaking 生效的结果。
 
-### 常用配置解读
+## 常用配置解读
 
-#### 多产物配置
+### 多产物配置
 
 将 output 属性配置成一个数组，数组中每个元素都是一个描述对象，决定了不同产物的输出行为
 
@@ -97,7 +101,7 @@ const buildOptions = {
 export default buildOptions;
 ```
 
-#### 多入口配置
+### 多入口配置
 
 Rollup 中也支持多入口配置，而且通常情况下两者会被结合起来使用。将 input 设置为一个数组或者一个对象，如下所示:
 
@@ -169,9 +173,9 @@ export default [buildIndexOptions, buildUtilOptions];
 
 如果是比较复杂的打包场景(如 Vite 源码本身的打包)，需要将项目的代码分成几个部分，用不同的 Rollup 配置分别打包，这种配置就很有用了
 
-#### 自定义 output 配置
+### 自定义 output 配置
 
-刚才提到了 input 的使用，主要用来声明入口，可以配置成字符串、数组或者对象，使用比较简单。而 output 与之相对，用来配置输出的相关信息，常用的配置项如下:
+input 主要用来声明入口，可以配置成字符串、数组或者对象，使用比较简单。而 output 与之相对，用来配置输出的相关信息，常用的配置项如下:
 
 ```javascript
 output: {
@@ -199,7 +203,7 @@ output: {
 }
 ```
 
-#### 依赖 external
+### 依赖 external
 
 对于某些第三方包，有时候不想让 Rollup 进行打包，也可以通过 external 进行外部化，在 SSR 构建或者使用 ESM CDN 的场景中，这个配置将非常有用
 
@@ -209,11 +213,11 @@ output: {
 }
 ```
 
-#### 接入插件能力
+### 接入插件能力
 
 在 Rollup 的日常使用中，难免会遇到一些 Rollup 本身不支持的场景，比如 兼容 CommonJS 打包、注入环境变量、配置路径别名、压缩产物代码 等等。这个时候就需要引入相应的 Rollup 插件了。
 
-虽然 Rollup 能够打包 输出 CommonJS 格式的产物，但对于输入给 Rollup 的代码并不支持 CommonJS，仅仅支持 ESM。你可能会说，那我们直接在项目中统一使用 ESM规范就可以了啊，这有什么问题呢？需要注意的是不光要考虑项目本身的代码，还要考虑第三方依赖。目前为止，还是有不少第三方依赖只有 CommonJS 格式产物而并未提供 ESM 产物，比如项目中用到 lodash 时。
+虽然 Rollup 能够打包 输出 CommonJS 格式的产物，但对于输入给 Rollup 的代码并不支持 CommonJS，仅仅支持 ESM。这里需要注意的是，不仅要考虑项目本身的代码，还要考虑第三方依赖。目前为止，还是有不少第三方依赖只有 CommonJS 格式产物而并未提供 ESM 产物，比如项目中用到 lodash 时。
 
 因此需要引入额外的插件去解决这个问题。首先需要安装两个核心的插件包:
 
@@ -258,7 +262,7 @@ export default {
 pnpm i lodash
 ```
 
-在 `src/index.js` 加入如下的代码，然后执行 npm run build ，你可以发现产物已经正常生成了
+在 `src/index.js` 加入如下的代码，然后执行 npm run build ，可以发现产物已经正常生成了
 
 ```javascript
 import { merge } from "lodash";
@@ -283,9 +287,9 @@ export default {
 }
 ```
 
-需要注意的是， output.plugins 中配置的插件是有一定限制的，只有使用 Output 阶段相关钩子(具体内容将在下一节展开)的插件才能够放到这个配置中，大家可以去这个站点 https://github.com/rollup/awesome#output 查看 Rollup 的 Output 插件列表。
+需要注意的是， output.plugins 中配置的插件是有一定限制的，只有使用 Output 阶段相关钩子(具体内容将在下一节展开)的插件才能够放到这个配置中，Rollup 的 Output 插件列表可以在这个站点 https://github.com/rollup/awesome#output 查看。
 
-另外，这里也给大家分享其它一些比较常用的 Rollup 插件库:
+其它一些比较常用的 Rollup 插件库如下:
 
 - @rollup/plugin-json： 支持 `.json` 的加载，并配合 rollup 的 Tree Shaking 机制去掉未使用的部分，进行按需打包
 - @rollup/plugin-babel：在 Rollup 中使用 Babel 进行 JS 代码的语法转译
@@ -294,13 +298,13 @@ export default {
 - @rollup/plugin-replace：在 Rollup 进行变量字符串的替换
 - rollup-plugin-visualizer: 对 Rollup 打包产物进行分析，自动生成产物体积可视化分析图
 
-### API 方式调用
+## API 方式调用
 
 有些场景下需要基于 Rollup 定制一些打包过程，配置文件就不够灵活了，这时候需要用到对应 API 来调用 Rollup，主要分为 rollup.rollup 和 rollup.watch 两个API
 
-#### rollup.rollup
+### rollup.rollup
 
-首先是 rollup.rollup 用来一次性地进行 Rollup 打包，你可以新建 build.js ，内容如下:
+rollup.rollup 用来一次性地进行 Rollup 打包，可以新建 build.js ，内容如下:
 
 ```javascript
 const rollup = require("rollup")
@@ -363,11 +367,11 @@ async function generateOutputs(bundle) {
 - 调用 bundle 对象的 generate 和 write 方法，传入 outputOptions ，分别完成产物的生成和磁盘写入
 - 调用 bundle 对象的 close 方法来结束打包
 
-接着你可以执行 `node build.js`  完成了以编程的方式来调用 Rollup打包的过程
+接着执行 `node build.js`  即完成了以编程的方式来调用 Rollup打包的过程
 
-#### rollup.watch
+### rollup.watch
 
-除了通过 rollup.rollup 完成一次性打包，也可以通过 rollup.watch 来完成 watch 模式下的打包，即每次源文件变动后自动进行重新打包。你可以新建 watch.js 文件，内容如下:
+除了通过 rollup.rollup 完成一次性打包，也可以通过 rollup.watch 来完成 watch 模式下的打包，即每次源文件变动后自动进行重新打包。可以新建 watch.js 文件，内容如下:
 
 ```javascript
 // watch.js
@@ -407,11 +411,11 @@ watcher.on("event", (e) => {
 });
 ```
 
-现在可以通过执行 `node watch.js`  开启 Rollup 的 watch 打包模式，当你改动一个文件后可以看到如下的日志，说明 Rollup 自动进行了重新打包，并触发相应的事件回调函数:
+现在可以通过执行 `node watch.js`  开启 Rollup 的 watch 打包模式，改动一个文件后可以看到如下的日志，说明 Rollup 自动进行了重新打包，并触发相应的事件回调函数:
 
 ![image-20240407154027051](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202404071540566.png)
 
-基于如上的两个 JavaScript API 可以很方便地在代码中调用 Rollup 的打包流程，相比于配置文件有了更多的操作空间，你可以在代码中通过这些 API 对 Rollup 打包过程进行定制，甚至是二次开发
+基于如上的两个 JavaScript API 可以很方便地在代码中调用 Rollup 的打包流程，相比于配置文件有了更多的操作空间，可以在代码中通过这些 API 对 Rollup 打包过程进行定制，甚至是二次开发
 
 ## Rollup 插件机制
 
@@ -419,7 +423,7 @@ watcher.on("event", (e) => {
 
 把这些场景的处理逻辑与核心的打包逻辑都写到一起，一来打包器本身的代码会变得十分臃肿，二来也会对原有的核心代码产生一定的侵入性，混入很多与核心流程无关的代码，不易于后期的维护。
 
-因此 ，Rollup 设计出了一套完整的**插件机制**，将自身的核心逻辑与插件逻辑分离，让你能按需引入插件功能，提高了 Rollup 自身的可扩展性。
+因此 ，Rollup 设计出了一套完整的**插件机制**，将自身的核心逻辑与插件逻辑分离，能够按需引入插件功能，提高了 Rollup 自身的可扩展性。
 
 Rollup 的打包过程中，会定义一套完整的构建生命周期，从开始打包到产物输出，中途会经历一些**标志性的阶段**，并且在不同阶段会自动执行对应的插件钩子函数(Hook)。对 Rollup 插件来讲，最重要的部分是钩子函数，一方面它定义了插件的执行逻辑，另一方面也声明了插件的作用阶段，这与 Rollup 本身的构建生命周期息息相关
 
@@ -529,7 +533,7 @@ build();
 
 ### 插件 Hook 的类型
 
-在具体讲述 Rollup 插件工作流之前，介绍一下不同插件 Hook 的类型。插件的各种 Hook 可以根据这两个构建阶段分为两类: Build Hook 与 Output Hook 。
+在具体讲述 Rollup 插件工作流之前，先介绍不同插件 Hook 的类型。插件的各种 Hook 可以根据这两个构建阶段分为两类: Build Hook 与 Output Hook 。
 
 - Build Hook 即在 Build 阶段执行的钩子函数，在这个阶段主要进行模块代码的转换、AST 解析以及模块依赖的解析，那么这个阶段的 Hook 对于代码的操作粒度一般为 模块 级别，也就是单文件级别。
 - Output Hook (官方称为 Output Generation Hook )，则主要进行代码的打包，对于代码而言，操作粒度一般为 chunk 级别(一个 chunk 通常指很多文件打包到一起的产物)。
@@ -538,7 +542,7 @@ build();
 
 **1. Async & Sync**
 
-首先是 Async 和 Sync 钩子函数，两者其实是相对的，分别代表 异步 和 同步 的钩子函数，两者最大的区别在于同步钩子里面不能有异步逻辑，而异步钩子可以有
+Async 和 Sync 钩子函数是相对的，分别代表 异步 和 同步 的钩子函数，两者最大的区别在于同步钩子里面不能有异步逻辑，而异步钩子可以有
 
 **2. Parallel 并行** 
 
@@ -554,7 +558,7 @@ build();
 
 如果有多个插件实现了这个 Hook，那么 Hook 将依次运行，直到返回一个非 null 或非 undefined 的值为止。比较典型的 Hook 是 resolveId ，一旦有插件的 resolveId 返回了一个路径，将停止执行后续插件的 resolveId 逻辑
 
-实际上不同的类型是可以叠加的， Async/Sync 可以搭配后面三种类型中的任意一种，比如一个 Hook 既可以是 Async 也可以是 First 类型，接着我们将来具体分析 Rollup 当中的插件工作流程，
+实际上不同的类型是可以叠加的， Async/Sync 可以搭配后面三种类型中的任意一种，比如一个 Hook 既可以是 Async 也可以是 First 类型。接下来将具体分析 Rollup 当中的插件工作流程，
 
 ### 拆解插件工作流
 
@@ -576,13 +580,13 @@ build();
 
 当然，在 Rollup 解析路径的时候，即执行 resolveId 或者 resolveDynamicImport 的时候，有些路径可能会被标记为 external (翻译为 排除 )，也就是说不参加 Rollup 打包过程，这个时候就不会进行 load 、 transform 等等后续的处理了。
 
-watchChange 和 closeWatcher 这两个 Hook，是对应了 rollup 的 watch 模式。当你使用 `rollup --watch`   指令或者在配置文件配有 `watch: true` 的属性时，代表开启了 Rollup 的 watch 打包模式，这个时候 Rollup 内部会初始化一个 watcher 对象，当文件内容发生变化时，watcher 对象会自动触发 watchChange 钩子执行并对项目进行重新构建
+watchChange 和 closeWatcher 这两个 Hook，是对应了 rollup 的 watch 模式。当使用 `rollup --watch`   指令或者在配置文件配有 `watch: true` 的属性时，代表开启了 Rollup 的 watch 打包模式，这个时候 Rollup 内部会初始化一个 watcher 对象，当文件内容发生变化时，watcher 对象会自动触发 watchChange 钩子执行并对项目进行重新构建
 
 在当前**打包过程结束**时，Rollup 会自动清除 watcher 对象调用 closeWatcher 钩子。
 
 #### Output 阶段工作流
 
-Output 阶段阶段的 Hook 相比于 Build 阶段稍微多一些，流程上也更加复杂。需要注意的是，其中会涉及的 Hook 函数比较多，可能会给你理解整个流程带来一些困扰，因此在 Hook 执行的阶段解释其大致的作用和意义，关于具体的使用可以去 Rollup 的官网自行查阅，毕竟这里的主线还是分析插件的执行流程，掺杂太多的使用细节反而不易于理解
+Output 阶段阶段的 Hook 相比于 Build 阶段稍微多一些，流程上也更加复杂。需要注意其中涉及的 Hook 函数比较多，各个 Hook 执行阶段所承担的作用在流程中逐条说明，具体的使用细节可以在 Rollup 的官网查阅
 
 <img src="https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403212313080.png" alt="image-20240321231335745" style="zoom:50%;" />
 
@@ -595,7 +599,7 @@ Output 阶段阶段的 Hook 相比于 Build 阶段稍微多一些，流程上也
    1. 对于 import.meta.url 语句调用 resolveFileUrl 来自定义 url 解析逻辑
    2. 对于其他 import.meta 属性，则调用 resolveImportMeta 来进行自定义的解析
 
-7. 接着 Rollup 会生成所有 chunk 的内容，针对每个 chunk 会依次调用插件的 renderChunk 方法进行自定义操作，也就是说，在这里时候你可以直接操作打包产物了
+7. 接着 Rollup 会生成所有 chunk 的内容，针对每个 chunk 会依次调用插件的 renderChunk 方法进行自定义操作，也就是说，在这里可以直接操作打包产物了
 
 8. 随后会调用 generateBundle 钩子，这个钩子的入参里面会包含所有的打包产物信息，包括 chunk (打包后的代码)、 asset (最终的静态资源文件)。可以在这里删除一些 chunk 或者 asset，最终这些内容将不会作为产物输出
 
@@ -678,7 +682,7 @@ export default function alias(options) {
 }
 ```
 
-从这里你可以看到 resolveId 钩子函数的一些常用使用方式，它的入参分别是当前模块路径、引用当前模块的模块路径、解析参数，返回值可以是 null、string 或者一个对象
+从上述代码可以看到 resolveId 钩子函数的一些常用使用方式，它的入参分别是当前模块路径、引用当前模块的模块路径、解析参数，返回值可以是 null、string 或者一个对象
 
 - 返回值为 null 时，会默认交给下一个插件的 resolveId 钩子处理
 - 返回值为 string 时，则停止后续插件的处理。这里为了让替换后的路径能被其他插件处理，特意调用了 this.resolve 来交给其它插件处理，否则将不会进入到其它插件的处理
@@ -799,7 +803,7 @@ export default function replace(options = {}) {
 
 可以看到这里 replace 插件为了替换结果更加准确，在 renderChunk 钩子中又进行了一次替换，因为后续的插件仍然可能在 transform 中进行模块内容转换，进而可能出现符合替换规则的字符串。
 
-这里我们把关注点放到 renderChunk 函数本身，可以看到有两个入参，分别为 chunk 代码内容 、chunk 元信息，返回值跟 transform 钩子类似，既可以返回包含 code 和 map 属性的对象，也可以通过返回 null 来跳过当前钩子的处理。
+这里把关注点放到 renderChunk 函数本身，可以看到有两个入参，分别为 chunk 代码内容 、chunk 元信息，返回值跟 transform 钩子类似，既可以返回包含 code 和 map 属性的对象，也可以通过返回 null 来跳过当前钩子的处理。
 
 ### 产物生成 generateBundle
 
@@ -831,6 +835,14 @@ export default function html(opts: RollupHtmlOptions = {}): Plugin {
 }
 ```
 
-入参分别为 output 配置 、所有打包产物的元信息对象，通过操作元信息对象你可以删除一些不需要的 chunk 或者静态资源，也可以通过 插件上下文对象的 emitFile 方法输出自定义文件。
+入参分别为 output 配置 、所有打包产物的元信息对象，通过操作元信息对象可以删除一些不需要的 chunk 或者静态资源，也可以通过 插件上下文对象的 emitFile 方法输出自定义文件。
 
 Vite 的插件机制也是基于 Rollup 来实现的，像上面介绍的这些常用钩子在 Vite 当中也随处可见，因此，掌握了这些常用钩子，也相当于给 Vite 插件的学习做下了很好的铺垫
+
+## 小结
+
+- Rollup 是基于 ESM 规范的打包工具，天然支持 Tree Shaking，是 Vite 生产构建的底层引擎。
+- 配置层面：input 支持字符串/数组/对象多入口，output 支持数组多产物，二者可组合；external 用于外部化依赖；插件通过 plugins（顶层）与 output.plugins（仅限 Output 阶段钩子插件）接入。
+- API 层面：rollup.rollup 生成 bundle 对象后经 generate/write 输出、close 收尾；rollup.watch 实现 watch 模式自动重打包。
+- 构建生命周期分为 Build 与 Output 两大阶段；插件 Hook 分为模块粒度的 Build Hook 与 chunk 粒度的 Output Hook，按执行方式又有 Async/Sync/Parallel/Sequential/First 五类。
+- 五个高频钩子：resolveId（路径解析，Async+First）、load（模块加载，Async+First）、transform（模块转换，Async+Sequential，输出瀑布流式传递）、renderChunk（chunk 级代码修改）、generateBundle（产物生成与增删）。

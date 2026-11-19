@@ -42,9 +42,9 @@ mindmap
 
 ## 核心概念
 
-首先，我们来理清经常看到的 ES / ECMAScript / TC39 等等概念到底是个啥。然后，一起看看 TypeScript 都提前实现了哪些 ECMAScript 语法，它们怎么用，到底有多好用。最后，在扩展阅读中，我们会聊到更多有趣的、正在进行中的 TC39 提案。要相信，未来的 JavaScript 一定会变得越来越好。
+本文将理清经常看到的 ES / ECMAScript / TC39 等概念，介绍 TypeScript 都提前实现了哪些 ECMAScript 语法、它们怎么用、好用在哪里。最后，在扩展阅读中，将聊到更多有趣的、正在进行中的 TC39 提案。可以相信，未来的 JavaScript 一定会变得越来越好。
 
-> 本节代码见：[ECMAScript](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Flinbudu599%2FTypeScript-Tiny-Book%2Ftree%2Fmain%2Fpackages%2F20-ecmascript)
+> 本文示例代码见：[ECMAScript](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Flinbudu599%2FTypeScript-Tiny-Book%2Ftree%2Fmain%2Fpackages%2F20-ecmascript)
 
 ### 术语对照表
 
@@ -61,13 +61,13 @@ mindmap
 
 首先是 ECMAScript 这个单词，虽然 JavaScript 和 Java 没有关系，但 ECMAScript 和 ECMA （正确发音近似于**诶可码**（Script））确实是有关系的。ECMA 的全称是 [European Computer Manufacturers Association](https://link.juejin.cn/?target=https%3A%2F%2Fwww.ecma-international.org%2F)，即**欧洲计算机制造商协会**。它并不是为了卖货而生的，这一国际组织的存在主要是维护各种计算机的相关标准，从硬件到软件到编程语言等等。
 
-最初创建 JavaScript 这门语言的公司是网景（Netscape），主推产品即为网景浏览器。由于在和微软 IE 的竞争中落得下风，为了避免从此 Web 脚本的主导权从此落入微软手中，在 1996 年，网景将 JavaScript 的标准制定权交给了 ECMA 协会，因此有了 ECMAScript —— 也就是 JavaScript 的语言规范。**而 ECMAScript 并不是一门语言，而是一门规范。** 我们说的 ES5 / ES6 / ESNext 等等概念，实际上指的都是 JavaScript 这门语言规范的新版本。
+最初创建 JavaScript 这门语言的公司是网景（Netscape），主推产品即为网景浏览器。由于在和微软 IE 的竞争中落得下风，为了避免从此 Web 脚本的主导权从此落入微软手中，在 1996 年，网景将 JavaScript 的标准制定权交给了 ECMA 协会，因此有了 ECMAScript —— 也就是 JavaScript 的语言规范。**而 ECMAScript 并不是一门语言，而是一门规范。** 通常所说的 ES5 / ES6 / ESNext 等等概念，实际上指的都是 JavaScript 这门语言规范的新版本。
 
 ECMA 维护着数百条规范，这些规范的领域差异非常大。因此 ECMA 采用技术小组（**Technical Committee，也称为技术委员会**）的方式来管理这个规范，ECMAScript 对应的技术小组即是 TC39。目前 TC39 委员会的绝大部分成员来自于浏览器引擎厂商、互联网巨头公司等等，并且定期召开会议来讨论各个提案的进展。
 
 ### TC39 提案流程
 
-那么，提案又是什么？首先，ECMAScript 中的新语法并不是委员会成员坐下来开个简单的会就决定引入到 JavaScript 中的。一个新语法必须先从草稿，也就是从提案开始。你可以把新语法想象成一条新法律，得要有人首先提出这条法律能解决目前的某一问题，然后法律专家、法院、国家都要通过，它才能最终被写到法律条文中。在 ECMAScript 中，一个提案被纳入规范要经历 5 个阶段：
+那么，提案又是什么？首先，ECMAScript 中的新语法并不是委员会成员坐下来开个简单的会就决定引入到 JavaScript 中的。一个新语法必须先从草稿，也就是从提案开始。可以把新语法想象成一条新法律，得要有人首先提出这条法律能解决目前的某一问题，然后法律专家、法院、国家都要通过，它才能最终被写到法律条文中。在 ECMAScript 中，一个提案被纳入规范要经历 5 个阶段：
 
 #### 提案阶段流程图
 
@@ -109,12 +109,12 @@ Strawman            Proposal          Draft             Candidate         Finish
 - **Stage 0（strawman）**：任何 TC39 的成员都可以提交。
 - **Stage 1（proposal）**：进入此阶段就意味着这一提案被认为是**正式**的了，需要对此提案的场景与API进行详尽描述。要想进入 Stage 1，需要一位 TC39 成员作为负责人（champion）对这个提案具体的**语法、语义和现有语法的冲突风险**都进行详细讨论分析。
 - **Stage 2（draft）**：要进入 Stage 2，需要完成**包含提案所有内容的标准文本的初稿**。理论上来说，这一阶段的提案，如果能最终被纳入规范，这之后的阶段中就不会被大改了，只接受增量修改。因为如果要大改，往往需要废弃掉整个提案，让 V2 版本从 Stage 0 开始重新来一遍（有点像删号重开）。
-- **Stage 3（candidate）**：这一阶段的提案只有在遇到了重大问题才会修改，需要撰写非常完善的规范文档。进入 Stage 3 的前提条件是在规范文档的基础上，ECMAScript 官方的编辑以及指定 TC39 委员会成员签署了同意意见。通常来说提案进入这一阶段后，我们就能通过 Babel 插件或者各种 Polyfill 等提前试用上。
-- **Stage 4（finished）**：这一阶段的提案将会被纳入到 ES 每年发布的规范之中，正式与大家见面。想要完成这最后一步，需要完成所有对应到提案内容的测试用例（用来给引擎产商们检查实现的兼容程度），以及官方编辑同意将其合并到 [tc39/ecma262](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Ftc39%2Fecma262) 仓库。
+- **Stage 3（candidate）**：这一阶段的提案只有在遇到了重大问题才会修改，需要撰写非常完善的规范文档。进入 Stage 3 的前提条件是在规范文档的基础上，ECMAScript 官方的编辑以及指定 TC39 委员会成员签署了同意意见。通常来说提案进入这一阶段后，就能通过 Babel 插件或者各种 Polyfill 等提前试用上。
+- **Stage 4（finished）**：这一阶段的提案将会被纳入到 ES 每年发布的规范之中，正式发布。想要完成这最后一步，需要完成所有对应到提案内容的测试用例（用来给引擎产商们检查实现的兼容程度），以及官方编辑同意将其合并到 [tc39/ecma262](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Ftc39%2Fecma262) 仓库。
 
 #### ECMAScript 版本历史
 
-目前 TC39 会议的频率大概是两月一次，并且由于疫情的原因也从线上、线下结合改成了完全线上的模式。上面我们提到的 ecma262，这里的 262 意为 ECMAScript 是 ECMA 维护的第 262 条标准。
+目前 TC39 会议的频率大概是两月一次，并且由于疫情的原因也从线上、线下结合改成了完全线上的模式。上文提到的 ecma262，这里的 262 意为 ECMAScript 是 ECMA 维护的第 262 条标准。
 
 | 版本 | 发布年份 | 重要特性 |
 |------|----------|----------|
@@ -131,15 +131,15 @@ Strawman            Proposal          Draft             Candidate         Finish
 | ES2024 | 2024 | Array/Object.groupBy、Promise.withResolvers、可调整大小的 ArrayBuffer |
 | ES2025 | 2025 | Set 方法（union/intersection 等）、迭代器辅助方法、导入属性、重复命名捕获组 |
 
-截至 2026 年 9 月，最新发布的年度版本是 [ES2025（第 16 版）](https://262.ecma-international.org/16.0/)。当然，各位同学最熟悉的肯定还是 2015 年发布的 ES2015，即 ES6 这一版本。网上很多说法是将 ES2015 后的版本统称为 ES6，我不太认同的原因也就在于此。
+截至 2026 年 9 月，最新发布的年度版本是 [ES2025（第 16 版）](https://262.ecma-international.org/16.0/)。当然，最广为人知的肯定还是 2015 年发布的 ES2015，即 ES6 这一版本。网上很多说法是将 ES2015 后的版本统称为 ES6，这种说法并不严谨，原因正在于此。
 
-如果你想了解更多历史故事，我推荐阅读雪碧老师的作品：[JavaScript 二十年](https://link.juejin.cn/?target=https%3A%2F%2Fcn.history.js.org%2Fpart-1.html)。
+想了解更多历史故事，可以阅读雪碧老师的作品：[JavaScript 二十年](https://link.juejin.cn/?target=https%3A%2F%2Fcn.history.js.org%2Fpart-1.html)。
 
 ### TypeScript 与 ECMAScript 的关系
 
-那么，ECMAScript 和 TypeScript 的关系又是啥？知道了 ECMAScript 的具体意义就比较好懂了。上面说到一个新语法从提出到最终成为 ECMAScript 的一部分，需要走完漫长的 Stage 0-4，如果这个语法真的究极无敌好用（比如我们下面要说的可选链、空值合并以及装饰器），实在是等不及想用怎么办？
+那么，ECMAScript 和 TypeScript 的关系又是啥？知道了 ECMAScript 的具体意义就比较好懂了。上面说到一个新语法从提出到最终成为 ECMAScript 的一部分，需要走完漫长的 Stage 0-4，如果这个语法真的究极无敌好用（比如下文要说的可选链、空值合并以及装饰器），实在是等不及想用怎么办？
 
-聪明的你一定会想到 Babel，它能够将 ECMAScript 未纳入标准的语法进行降级（或将标准语法按照运行时环境降级），这样我们就可以放心使用未来的新语法，Babel 会帮我们编译好的。而 TypeScript 也支持这么个功能，或者说这就是它的核心功能之一。正如我们在开篇说的那样，TypeScript 其实就是类型能力加上一些新语法，而这些新语法绝大部分都来自于 ECMAScript，并且是在这些语法提案还没正式进入标准时，TypeScript 就对其进行了支持。在编译时，类型标注会直接被抹除，而这些新语法也会按照我们在 `tsconfig` 中的 `target` 配置进行对应降级。
+此时 Babel 是一个常见选择，它能够将 ECMAScript 未纳入标准的语法进行降级（或将标准语法按照运行时环境降级），这样开发者就可以放心使用未来的新语法，由 Babel 负责编译。而 TypeScript 也支持这么个功能，或者说这就是它的核心功能之一。正如开篇所说，TypeScript 其实就是类型能力加上一些新语法，而这些新语法绝大部分都来自于 ECMAScript，并且是在这些语法提案还没正式进入标准时，TypeScript 就对其进行了支持。在编译时，类型标注会直接被抹除，而这些新语法也会按照 `tsconfig` 中的 `target` 配置进行对应降级。
 
 #### TypeScript 编译流程图
 
@@ -169,15 +169,15 @@ TypeScript 代码
 | 私有字段 | `#field` | TS 3.8 | ES2022 | 类私有属性 |
 | 新增方法 | `replaceAll`等 | TS 4.2+ | 各版本 | 扩展功能 |
 
-这篇文章中我们并不关注新增的方法以及 Class 相关语法，因为它们真的就是看一下文档的事。对于这些新增的方法，TypeScript 中可以通过在 `tsconfig` 的 `compilerOptions.lib` 配置中新增 `es2021`（对应的 es 版本）/`esnext` 来启用这些新的语法，而在 JavaScript 中想要使用则需要运行时支持或者使用 Polyfill（CoreJs，ES-Shims 等）。
+本文并不重点关注新增的方法以及 Class 相关语法，因为查阅文档即可掌握。对于这些新增的方法，TypeScript 中可以通过在 `tsconfig` 的 `compilerOptions.lib` 配置中新增 `es2021`（对应的 es 版本）/`esnext` 来启用这些新的语法，而在 JavaScript 中想要使用则需要运行时支持或者使用 Polyfill（CoreJs，ES-Shims 等）。
 
-对于可选链、空值合并以及逻辑赋值，前两者在 TS 3.7 版本引入，逻辑赋值则在 4.0 版本被引入，它们早在 ECMAScript 2020/2021 就被正式吸收，你现在甚至可以在浏览器控制台使用这几个语法。而装饰器就是比较特殊的一位了，我们会在下一篇《装饰器与反射元数据》中详细聊聊它的演进历史。
+对于可选链、空值合并以及逻辑赋值，前两者在 TS 3.7 版本引入，逻辑赋值则在 4.0 版本被引入，它们早在 ECMAScript 2020/2021 就被正式吸收，如今甚至可以直接在浏览器控制台使用这几个语法。而装饰器就是比较特殊的一位了，它的演进历史将在下一篇《装饰器与反射元数据》中详细讨论。
 
-接下来，我们就来讲一讲可选链、空值合并以及逻辑赋值这三个语法，感受一下这些语法糖到底有多甜。
+接下来介绍可选链、空值合并以及逻辑赋值这三个语法。
 
 ### 可选链 Optional Chaining
 
-在 JavaScript 中，如果访问一个嵌套多层的属性，为了避免出现 `Cannot read property of undefined` 这样的错误，我们通常会使用**逻辑与** `&&` 语法来确保在某一层出现空值时及时短路掉访问：
+在 JavaScript 中，如果访问一个嵌套多层的属性，为了避免出现 `Cannot read property of undefined` 这样的错误，通常会使用**逻辑与** `&&` 语法来确保在某一层出现空值时及时短路掉访问：
 
 #### 传统方式的问题
 
@@ -187,9 +187,9 @@ const inner = obj && obj.data && obj.data.innerProperty;
 
 这种写法虽然丑陋，但它确实能在一定程度上避免对空值的读取，但也只是一定程度上，为什么这么说？
 
-上面的代码看起来很安全，但在某一步访问出现空值时，它返回的是上一步的值，而在属性的读取过程中，我们通常希望的是如果某一环节短路了，那返回一个 undefined 给我就好。否则，如果下面还存在对 `inner` 进行真值假值判断（`if(inner)`）的话，反而容易引发 Bug。
+上面的代码看起来很安全，但在某一步访问出现空值时，它返回的是上一步的值，而在属性的读取过程中，通常的预期是：如果某一环节短路了，返回一个 undefined 即可。否则，如果下面还存在对 `inner` 进行真值假值判断（`if(inner)`）的话，反而容易引发 Bug。
 
-另外，逻辑与短路在属性嵌套过深时简直就是噩梦，使用可选链的 `?.` 语法，我们可以把它改写成这样：
+另外，逻辑与短路在属性嵌套过深时简直就是噩梦，使用可选链的 `?.` 语法，可以把它改写成这样：
 
 ```javascript
 const inner = obj?.data?.innerProperty;
@@ -217,7 +217,7 @@ data存在  data不存在            │
     └─────────┴────────────────┘
 ```
 
-除了更简洁的写法以外，可选链也更符合我们的预期：**它会在短路时返回一个 undefined**。可选链不仅能应用在属性访问，也可以用在计算属性访问以及方法调用上：
+除了更简洁的写法以外，可选链也更符合预期：**它会在短路时返回一个 undefined**。可选链不仅能应用在属性访问，也可以用在计算属性访问以及方法调用上：
 
 #### 使用场景
 
@@ -302,11 +302,11 @@ obj?.method?.(); // method 不会被调用
 const foo = someValue || fallbackValue;
 ```
 
-逻辑或会在 `||` 左边被判断为 false 时，执行右边的逻辑，在这里即是赋值行为。看起来一切好像都很美好，但别忘了，由于 JavaScript 中无处不在的隐式转换，如果 `||` 左边是 `""`/ `0` / `false`，都会被视为 false（false 虽然是 false，但它也是个值！），而我们希望的是**仅在左边为 undefined 或 null 时，才去应用默认值**。
+逻辑或会在 `||` 左边被判断为 false 时，执行右边的逻辑，在这里即是赋值行为。看起来一切好像都很美好，但需要注意，由于 JavaScript 中无处不在的隐式转换，如果 `||` 左边是 `""`/ `0` / `false`，都会被视为 false（false 虽然是 false，但它也是个值！），而通常期望的是**仅在左边为 undefined 或 null 时，才去应用默认值**。
 
 #### 空值合并的正确使用
 
-大部分情况下我们可以直接使用 `??` 代替 `||`：
+大部分情况下可以直接使用 `??` 代替 `||`：
 
 ```javascript
 const foo = someValue ?? fallbackValue;
@@ -559,7 +559,7 @@ obj.value ||= getDefaultValue();
 obj.value = obj.value || getDefaultValue(); // 总是会调用 getDefaultValue()
 ```
 
-同样，秉持着"一点一点精通 TypeScript"的思路，我仍然推荐你在学习完本节后，使用可选链、空值合并以及短路赋值来替换部分老项目中的代码，并且在未来遇到短路与默认值场景时首先考虑这三位新同学。
+同样，秉持着"一点一点精通 TypeScript"的思路，建议在学习完本文后，使用可选链、空值合并以及短路赋值来替换部分老项目中的代码，并且在未来遇到短路与默认值场景时优先考虑这三个语法。
 
 ## 配置说明
 
@@ -1032,9 +1032,9 @@ const firstItemName = response?.data?.items?.[0]?.name ?? 'Unknown';
 }
 ```
 
-## 总结与预告
+## 总结
 
-本文了解了 ECMAScript、TypeScript、TC39 等概念之间的联系与实际意义，也认识了可选链、空值合并以及短路赋值三个新语法。在接下来的项目开发中可以有意识地使用它们，兼得更简洁的语法以及更安全的逻辑。
+本文介绍了 ECMAScript、TypeScript、TC39 等概念之间的联系与实际意义，也认识了可选链、空值合并以及短路赋值三个新语法。在接下来的项目开发中可以有意识地使用它们，兼得更简洁的语法以及更安全的逻辑。
 
 ### 关键要点回顾
 
@@ -1045,13 +1045,13 @@ const firstItemName = response?.data?.items?.[0]?.name ?? 'Unknown';
 - **空值合并** `??` 只对 null/undefined 使用默认值
 - **逻辑赋值** `??=` 等实现条件赋值
 
-下一篇《装饰器与反射元数据》将用很长的篇幅聊聊 TypeScript 中的装饰器，从演进到了解、从原理到熟悉，最后来写一个你自己的依赖注入容器。
+下一篇《装饰器与反射元数据》将用很长的篇幅讨论 TypeScript 中的装饰器，从演进到了解、从原理到熟悉，最后来实现一个依赖注入容器。
 
 ## 扩展阅读
 
 ### 演进中的 TC39 提案
 
-除了我们上面讲到的可选链、空值合并，以及大家都至少听说过的装饰器以外，还有许多演进中的 TC39 提案，我们可以简单归类为语法糖、新的内置方法、新的 API等。在了解完本篇的核心内容以后，我们不妨来瞅几个有意思的提案，看看未来的 JavaScript 可能会是什么样的？
+除了上文讲到的可选链、空值合并，以及广为人知的装饰器以外，还有许多演进中的 TC39 提案，可以简单归类为语法糖、新的内置方法、新的 API 等。在了解完本篇的核心内容以后，不妨来看几个有意思的提案，看看未来的 JavaScript 可能会是什么样的。
 
 > 提案状态会持续更新，最新信息请查看 [TC39 Proposals](https://github.com/tc39/proposals)
 
@@ -1210,7 +1210,7 @@ const result = user?.name ?? 'Anonymous'
 
 ##### 响应式编程与 Observable
 
-如果你了解过 RxJs，那么肯定马上就 get 到了这个提案想要干啥。这一提案尝试引入原生的 Observable 支持：
+了解过 RxJs 的开发者能立刻理解这个提案的意图。这一提案尝试引入原生的 Observable 支持：
 
 ```javascript
 function listen(element, eventName) {
@@ -1298,7 +1298,7 @@ export type CoolBool = boolean;
 - 不包括运行时类型检查
 - 不支持涉及运行时的功能（enum、namespace 等）
 
-随着浏览器等运行时对 ECMAScript 语法的支持越来越好，语法降级功能不再是刚需，如果这一提案能够持续推进，将成为 JavaScript 生态的重要里程碑。同时，关注 TC39 的提案进展，也可以帮助你提前了解 JavaScript 语言的发展方向。
+随着浏览器等运行时对 ECMAScript 语法的支持越来越好，语法降级功能不再是刚需，如果这一提案能够持续推进，将成为 JavaScript 生态的重要里程碑。同时，关注 TC39 的提案进展，也有助于提前了解 JavaScript 语言的发展方向。
 
 ### 相关资源链接
 

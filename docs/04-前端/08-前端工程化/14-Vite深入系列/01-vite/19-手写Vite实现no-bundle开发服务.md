@@ -8,21 +8,21 @@ tags: [Vite, Esbuild, 源码解析, HMR, 工程化]
 
 # 手写 Vite：实现 no-bundle 开发服务
 
-系统学习了 Vite 的实现源码，从配置解析、依赖预构建、插件流水线和 HMR 这几个方面带你完整的梳理了 Vite 的底层原理。用实际的代码来写一个迷你版的 Vite，主要实现 Vite 最核心的 no-bundle 构建服务
+前文从配置解析、依赖预构建、插件流水线和 HMR 这几个方面完整梳理了 Vite 的底层原理。本文用实际的代码实现一个迷你版的 Vite，主要实现 Vite 最核心的 no-bundle 构建服务。
 
 ## 实战概览
 
-梳理一下需要完成的模块和功能，让大家有一个整体的认知:
+先梳理需要完成的模块和功能，建立整体认知:
 
-1.  首先会进行开发环境的搭建，安装必要的依赖，并搭建项目的构建脚本，同时完成 cli 工具的初始化代码
+1.  首先进行开发环境的搭建，安装必要的依赖，并搭建项目的构建脚本，同时完成 cli 工具的初始化代码
     
 2.  然后正式开始实现`依赖预构建`的功能，通过 Esbuild 实现依赖扫描和依赖构建的功能
     
 3.  接着开始搭建 Vite 的插件机制，也就是开发 `PluginContainer` 和 `PluginContext` 两个主要的对象
     
-4.  搭建完插件机制之后，将会开发一系列的插件来实现 no-bundle 服务的编译构建能力，包括入口 HTML 处理、 TS/TSX/JS/TSX 编译、CSS 编译和静态资源处理
+4.  搭建完插件机制之后，开发一系列的插件来实现 no-bundle 服务的编译构建能力，包括入口 HTML 处理、 TS/TSX/JS/TSX 编译、CSS 编译和静态资源处理
     
-5.  最后会实现一套系统化的模块热更新的能力，从搭建模块依赖图开始，逐步实现 HMR 服务端和客户端的开发。
+5.  最后实现一套系统化的模块热更新的能力，从搭建模块依赖图开始，逐步实现 HMR 服务端和客户端的开发。
     
 
 ![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/97c40a3172e54cc493db001f1879e025~tplv-k3u1fbpfcp-jj-mark:1512:0:0:0:q75.awebp)
@@ -39,9 +39,9 @@ pnpm i cac chokidar connect debug es-module-lexer esbuild fs-extra magic-string 
 pnpm i @types/connect @types/debug @types/fs-extra @types/resolve @types/ws tsup
 ```
 
-Vite 本身使用的是 Rollup 进行自身的打包，但之前介绍的 tsup 也能够实现库打包的功能，并且内置 esbuild 进行提速，性能上更加强悍，因此在这里我们使用 tsup 进行项目的构建。
+Vite 本身使用的是 Rollup 进行自身的打包，但之前介绍的 tsup 也能够实现库打包的功能，并且内置 esbuild 进行提速，性能上更加强悍，因此这里使用 tsup 进行项目的构建。
 
-为了接入 tsup 打包功能，你需要在 package.json 中加入这些命令:
+为了接入 tsup 打包功能，需要在 package.json 中加入这些命令:
 
 ```json
 "scripts": {
@@ -50,7 +50,7 @@ Vite 本身使用的是 Rollup 进行自身的打包，但之前介绍的 tsup �
 },
 ```
 
-同时，你需要在项目根目录新建 `tsconfig.json` 和 `tsup.config.ts` 这两份配置文件，内容分别如下:
+同时，需要在项目根目录新建 `tsconfig.json` 和 `tsup.config.ts` 这两份配置文件，内容分别如下:
 
 ```json
 // tsconfig.json
@@ -87,7 +87,7 @@ export default defineConfig({
 });
 ```
 
-接着新建 `src/node/cli.ts`文件，我们进行 cli 的初始化:
+接着新建 `src/node/cli.ts` 文件，进行 cli 的初始化:
 
 ```ts
 // src/node/cli.ts
@@ -109,7 +109,7 @@ cli.help();
 cli.parse();
 ```
 
-执行 `pnpm start` 来编译这个`mini-vite`项目，tsup 会生成产物目录 `dist`，然后你可以新建 `bin/mini-vite` 文件来引用产物:
+执行 `pnpm start` 来编译这个`mini-vite`项目，tsup 会生成产物目录 `dist`，然后新建 `bin/mini-vite` 文件来引用产物:
 
 ```js
 #!/usr/bin/env node
@@ -127,7 +127,7 @@ require("../dist/index.js");
 }
 ```
 
-如此一来就可以在业务项目中使用 `mini-vite` 这个命令了。准备了一个示例的 `playground` 项目，你可以拿来进行测试，将 `playground` 项目放在 `mini-vite` 目录中，然后执行 `pnpm i`，由于项目的 `dependencies` 中已经声明了`mini-vite`:
+如此一来就可以在业务项目中使用 `mini-vite` 这个命令了。可准备一个示例的 `playground` 项目用于测试，将 `playground` 项目放在 `mini-vite` 目录中，然后执行 `pnpm i`。由于项目的 `dependencies` 中已经声明了`mini-vite`:
 
 ```json
 {
@@ -222,7 +222,7 @@ export async function startDevServer() {
 }
 ```
 
-接着来开发依赖预构建的功能，从上面的代码注释你也可以看出，需要完成三部分的逻辑:
+接着来开发依赖预构建的功能。从上面的代码注释可以看出，需要完成三部分的逻辑:
 
 *   确定预构建入口
 *   从入口开始扫描出用到的依赖
@@ -262,7 +262,7 @@ console.log(
 );
 ```
 
-依赖扫描需要借助 Esbuild 插件来完成，最后会记录到 deps 这个集合中。接下来来着眼于 Esbuild 依赖扫描插件的开发，你需要在`optimzier` 目录中新建 `scanPlguin.ts` 文件，内容如下:
+依赖扫描需要借助 Esbuild 插件来完成，最后会记录到 deps 这个集合中。接下来着眼于 Esbuild 依赖扫描插件的开发，在 `optimizer` 目录中新建 `scanPlugin.ts` 文件，内容如下:
 
 ```ts
 // src/node/optimizer/scanPlugin.ts
@@ -357,7 +357,7 @@ await build({
 });
 ```
 
-在此，我们引入了一个新的常量 `PRE_BUNDLE_DIR`，定义如下:
+在此引入了一个新的常量 `PRE_BUNDLE_DIR`，定义如下:
 
 ```ts
 // src/node/constants.ts
@@ -368,7 +368,7 @@ import path from "path";
 export const PRE_BUNDLE_DIR = path.join("node_modules", ".m-vite");
 ```
 
-接着，我们继续开发预构建的 Esbuild 插件。首先，考虑到兼容 Windows 系统，我们先加入一段工具函数的代码:
+接着，继续开发预构建的 Esbuild 插件。首先，考虑到兼容 Windows 系统，先加入一段工具函数的代码:
 
 ```ts
 // src/node/utils.ts
@@ -496,7 +496,7 @@ const { useState } = React;
 import { useState } from 'react';
 ```
 
-那为什么上述会报错的语法在 Vite 是可以正常使用的呢？原因是 Vite 在做 import 语句分析的时候，自动将你的代码进行改写了:
+上述会报错的语法之所以能在 Vite 中正常使用，原因是 Vite 在做 import 语句分析的时候，自动将代码进行改写了:
 
 ```ts
 // 原来的写法
@@ -508,7 +508,7 @@ import react_default from '/node_modules/.vite/react.js';
 const { useState } = react_default;
 ```
 
-那么，还有没有别的方案来解决这个问题？没错，上述的插件代码中已经用另一个方案解决了这个问题，我们不妨把目光集中在下面这段代码中:
+上述的插件代码中已经用另一个方案解决了这个问题，聚焦到下面这段代码:
 
 ```js
 if (!imports.length && !exports.length) {
@@ -590,7 +590,7 @@ export interface Plugin {
 }
 ```
 
-对于其中的 ServerContext，你暂时不用过于关心，只需要在`server/index.ts`中简单声明一下类型即可:
+对于其中的 ServerContext，暂时不用过于关心，只需要在`server/index.ts`中简单声明一下类型即可:
 
 ```ts
 // src/node/server/index.ts
@@ -663,7 +663,7 @@ export const createPluginContainer = (plugins: Plugin[]): PluginContainer => {
 
 上面的代码比较容易理解，并且关于插件钩子的执行原理和插件上下文对象的作用，在前面的插件流水线章节中也有详细的分析，这里就不再赘述了。
 
-接着，我们来完善一下之前的服务器逻辑:
+接着，完善一下之前的服务器逻辑:
 
 ```diff
 // src/node/server/index.ts
@@ -779,11 +779,11 @@ app.listen(3000, async () => {
 });
 ```
 
-通过 `pnpm dev` 启动项目，然后访问 `http://localhost:3000`，从网络面板中你可以查看到 HTML 的内容已经成功返回:
+通过 `pnpm dev` 启动项目，然后访问 `http://localhost:3000`，从网络面板中可以查看到 HTML 的内容已经成功返回:
 
 ![image-20240325114727178](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403251147454.png)
 
-不过当前的页面并没有任何内容，因为 HTML 中引入的 TSX 文件并没有被正确编译。接下来，我们就来处理 TSX 文件的编译工作。
+不过当前的页面并没有任何内容，因为 HTML 中引入的 TSX 文件并没有被正确编译。接下来处理 TSX 文件的编译工作。
 
 ### JS/TS/JSX/TSX 编译能力
 
@@ -846,7 +846,7 @@ export function transformMiddleware(serverContext: ServerContext): NextHandleFun
 }
 ```
 
-同时，我们也需要补充如下的工具函数和常量定义:
+同时，还需要补充如下的工具函数和常量定义:
 
 ```ts
 // src/node/utils.ts
@@ -884,7 +884,7 @@ export const HASH_RE = /#.*$/s;
 *   Esbuild 语法编译插件
 *   import 分析插件
 
-接下来，我们就开始依次实现这些插件
+接下来依次实现这些插件。
 
 #### 1\. 路径解析插件
 
@@ -896,7 +896,7 @@ export const HASH_RE = /#.*$/s;
 
 会自动发送一个路径为 `/src/main.tsx` 的请求，但如果服务端不做任何处理，是无法定位到源文件的，随之会返回 404 状态码。
 
-因此需要开发一个路径解析插件，对请求的路径进行处理，使之能转换真实文件系统中的路径。新建文`src/node/plugins/resolve.ts`，内容如下:
+因此需要开发一个路径解析插件，对请求的路径进行处理，使之能转换真实文件系统中的路径。新建 `src/node/plugins/resolve.ts`，内容如下:
 
 ```ts
 import resolve from "resolve";
@@ -969,7 +969,7 @@ export function resolvePlugin(): Plugin {
 
 这样对于 `/src/main.tsx`，在插件中会转换为文件系统中的真实路径，从而让模块在 load 钩子中能够正常加载(加载逻辑在 Esbuild 语法编译插件实现)。
 
-接着我们来补充一下目前缺少的常量:
+接着补充一下目前缺少的常量:
 
 ```ts
 // src/node/constants.ts
@@ -1119,7 +1119,7 @@ export function resolvePlugins(): Plugin[] {
 app.use(transformMiddleware(serverContext));
 ```
 
-然后在 `playground` 项目下执行 `pnpm dev`，在浏览器里面访问 `http://localhost:3000`，可以在网络面板中发现 `main.tsx` 的内容以及被编译为下面这样:
+然后在 `playground` 项目下执行 `pnpm dev`，在浏览器里面访问 `http://localhost:3000`，可以在网络面板中发现 `main.tsx` 的内容已经被编译为下面这样:
 
 ![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c788e41eb93c4727958b501f2314ad7d~tplv-k3u1fbpfcp-jj-mark:1512:0:0:0:q75.awebp)
 
@@ -1127,7 +1127,7 @@ app.use(transformMiddleware(serverContext));
 
 ![image-20240325115558437](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403251156125.png)
 
-OK，目前为止我们就基本上完成 JS/TS/JSX/TSX 文件的编译
+至此，基本上完成了 JS/TS/JSX/TSX 文件的编译。
 
 ### CSS 编译插件
 
@@ -1136,7 +1136,7 @@ OK，目前为止我们就基本上完成 JS/TS/JSX/TSX 文件的编译
 import "./index.css";
 ```
 
-为了让 CSS 能够在 no-bundle 服务中正常加载，需要将其包装成浏览器可以识别的模块格式，也就是 JS 模块 ，其中模块加载和转换的逻辑我们可以通过插件来实现。当然，首先需要在 transform 中间件中允许对 CSS 的请求进行处理，代码如下:
+为了让 CSS 能够在 no-bundle 服务中正常加载，需要将其包装成浏览器可以识别的模块格式，也就是 JS 模块 ，其中模块加载和转换的逻辑可以通过插件来实现。当然，首先需要在 transform 中间件中允许对 CSS 的请求进行处理，代码如下:
 
 ```javascript
 // src/node/server/middlewares/transform.ts
@@ -1205,7 +1205,7 @@ export function cssPlugin(): Plugin {
 }
 ```
 
-插件的逻辑比较简单，主要是将封装一层 JS 样板代码，将 CSS 包装成一个 ES 模块，当浏览器执行这个模块的时候，会通过一个 style 标签将 CSS 代码作用到页面中，从而使样式代码生效
+插件的逻辑比较简单，主要是封装一层 JS 样板代码，将 CSS 包装成一个 ES 模块，当浏览器执行这个模块的时候，会通过一个 style 标签将 CSS 代码作用到页面中，从而使样式代码生效
 
 接着来注册这个 CSS 插件:
 
@@ -1385,15 +1385,15 @@ export async function startDevServer() {
 
 通过 pnpm dev 启动 playground 项目，在浏览器中访问，可以发现 svg 图片已经能够成功显示了。其实不光是 svg 文件，几乎所有格式的静态资源都可以按照如上的思路进行处理:
 
-通过加入 `?import` 后缀标识 import 请求，返回将静态资源封装成一个 JS 模块，即 `export default xxx` 的形式，导出资源的真实地址
+通过加入 `?import` 后缀标识 import 请求，将静态资源封装成一个 JS 模块，即 `export default xxx` 的形式，导出资源的真实地址
 
-对非 import 请求，响应静态资源的具体内容，通过 Content-Type 响应头告诉浏览器资源的类型(这部分工作 sirv 中间件已经帮我们做了)
+对非 import 请求，响应静态资源的具体内容，通过 Content-Type 响应头告诉浏览器资源的类型(这部分工作 sirv 中间件已经完成)
 
 ### 模块依赖图开发
 
 模块依赖图在 no-bundle 构建服务中是一个不可或缺的数据结构，一方面可以存储各个模块的信息，用于记录编译缓存，另一方面也可以记录各个模块间的依赖关系，用于实现 HMR。
 
-接下来我们来实现模块依赖图，即 ModuleGraph 类，新建 `src/node/ModuleGraph.ts` ，内容如下:
+接下来实现模块依赖图，即 ModuleGraph 类，新建 `src/node/ModuleGraph.ts` ，内容如下:
 
 ```ts
 import { PartialResolvedId, TransformResult } from "rollup";
@@ -1486,7 +1486,7 @@ export class ModuleGraph {
 }
 ```
 
-相信经过第 23 小节的学习，已经对模块依赖图的实现结构比较熟悉了，对于代码细节这里也不再赘述。接着我们看看如何将这个 ModuleGraph 接入到目前的架构中。
+前文已对模块依赖图的实现结构做过详细分析，代码细节这里不再赘述。接着看看如何将这个 ModuleGraph 接入到目前的架构中。
 
 首先在服务启动前，需要初始化 ModuleGraph 实例:
 
@@ -1558,7 +1558,7 @@ export function importAnalysis() {
 }
 ```
 
-现在，一个完整的模块依赖图就能随着 JS 请求的到来而不断建立起来了。另外，基于现在的模块依赖图，也可以记录模块编译后的产物，并进行缓存。让我们回到 transform 中间件中:
+现在，一个完整的模块依赖图就能随着 JS 请求的到来而不断建立起来了。另外，基于现在的模块依赖图，也可以记录模块编译后的产物，并进行缓存。回到 transform 中间件中:
 
 ```ts
 export async function transformRequest(url: string,serverContext: ServerContext) {
@@ -1751,7 +1751,7 @@ HMR 客户端指的是向浏览器中注入的一段 JS 脚本，这段脚本中
 - 在收到服务端的更新信息后，通过动态 import 拉取最新的模块内容，执行 accept 更新回调
 - 暴露 HMR 的一些工具函数，比如 import.meta.hot 对象的实现
 
-首先来开发客户端的脚本内容，你可以新建 `src/client/client.ts`  文件，然后在 tsup.config.ts 中增加如下的配置:
+首先来开发客户端的脚本内容，新建 `src/client/client.ts` 文件，然后在 tsup.config.ts 中增加如下的配置:
 
 ```javascript
 import { defineConfig } from "tsup";
@@ -1763,7 +1763,7 @@ export default defineConfig({
 });
 ```
 
-> 注: 改动 tsup 配置之后，为了使最新配置生效，你需要在 mini-vite 项目中执行 pnpm start 重新进行构建
+> 注: 改动 tsup 配置之后，为了使最新配置生效，需要在 mini-vite 项目中执行 pnpm start 重新进行构建
 
 客户端脚本的具体实现如下:
 
@@ -1797,7 +1797,7 @@ async function handleMessage(payload: any) {
 }
 ```
 
-关于客户端具体的 JS 模块更新逻辑和工具函数的实现，你暂且不用过于关心。先把这段比较简单的 HMR 客户端代码注入到浏览器中，首先在新建 `src/node/plugins/clientInject.ts` ，内容如下:
+关于客户端具体的 JS 模块更新逻辑和工具函数的实现，暂且不用过于关心。先把这段比较简单的 HMR 客户端代码注入到浏览器中。新建 `src/node/plugins/clientInject.ts`，内容如下:
 
 ```javascript
 import { CLIENT_PUBLIC_PATH, HMR_PORT } from "../constants";
@@ -1871,7 +1871,7 @@ export function resolvePlugins(): Plugin[] {
 
 需要注意的是， clientInject 插件最好放到最前面的位置，以免后续插件的 load 钩子干扰客户端脚本的加载。
 
-接下来你可以在 playground 项目下执行 `pnpm dev` ，然后查看页面，可以发现控制台出现了如下的 log 信息:
+接下来在 playground 项目下执行 `pnpm dev`，然后查看页面，可以发现控制台出现了如下的 log 信息:
 
 ```javascript
 [vite]connecting...
@@ -1988,7 +1988,7 @@ export function importAnalysisPlugin(): Plugin {
       }
 ```
 
-接着启动 playground，打开页面后你可以发现 `import.meta.hot` 的实现代码已经被成功插入:
+接着启动 playground，打开页面后可以发现 `import.meta.hot` 的实现代码已经被成功插入:
 
 ![image-20240325123824504](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403251238930.png)
 
@@ -2092,11 +2092,11 @@ import.meta.hot.accept(() => {
 });
 ```
 
-启动 playground，然后打开浏览器，现在回到编辑器中，修改文本内容，然后保存，你可以发现页面内容也跟着发生了变化，并且网络面板发出了拉取最新模块的请求，说明 HMR 已经成功生效:
+启动 playground，打开浏览器，回到编辑器中修改文本内容并保存，可以发现页面内容也跟着发生了变化，并且网络面板发出了拉取最新模块的请求，说明 HMR 已经成功生效:
 
 ![image-20240325124212386](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403251242753.png)
 
-同时，当你再次刷新页面，看到的仍然是最新的页面内容。这一点非常重要，之所以能达到这样的效果，是因为在文件改动后会调用 ModuleGraph 的 invalidateModule 方法，这个方法会清除热更模块以及所有上层引用方模块的编译缓存:
+同时，再次刷新页面，看到的仍然是最新的页面内容。这一点非常重要，之所以能达到这样的效果，是因为在文件改动后会调用 ModuleGraph 的 invalidateModule 方法，这个方法会清除热更模块以及所有上层引用方模块的编译缓存:
 
 ```javascript
 // 方法实现
@@ -2189,3 +2189,14 @@ import.meta.hot.prune(() => removeStyle(id));`.trim();
 ```
 
 最后重启 playground 项目，本地尝试修改 CSS 代码，可以看到热更新效果
+
+
+## 小结
+
+本文基于 Esbuild、PluginContainer 与 connect 中间件机制，实现了一个支持 no-bundle 开发服务的迷你版 Vite，核心内容归纳如下：
+
+- **工程骨架**：tsup 构建脚本 + cac CLI + connect 服务，构成 `mini-vite` 命令与开发服务器的基础。
+- **依赖预构建**：通过 Esbuild 的 `scanPlugin` 以 bare import 为依据扫描依赖（`write: false` 不落盘），再经 `preBundlePlugin` 构造代理模块（CommonJS 通过 `require` 获取具名导出并重导出，ESM 按 default/`export *` 重导出），产物输出到 `node_modules/.m-vite`。
+- **插件机制**：`createPluginContainer` 模拟 Rollup 的 resolveId/load/transform 调度，配合 `Plugin` 类型与 `ServerContext` 上下文驱动各插件执行。
+- **核心编译能力**：入口 HTML 中间件配合 `transformIndexHtml` 钩子返回页面；`transformRequest` 依次调用 resolveId、load、transform 完成编译；路径解析插件、Esbuild 转译插件、import 分析插件分工协作；CSS 被包装为注入 style 标签的 JS 模块；静态资源通过 `?import` 标记返回 `export default url` 形式的模块，非 import 请求由 sirv 中间件返回资源内容。
+- **模块依赖图与 HMR**：ModuleGraph 记录模块信息与依赖关系并缓存编译产物；HMR 服务端基于 chokidar 监听文件变动，通过 WebSocket 推送更新；客户端脚本拉取最新模块并执行 accept 回调；`invalidateModule` 会清除热更模块及其上游引用方的编译缓存，保证刷新页面也渲染最新内容；CSS 热更新由 updateStyle/removeStyle 工具函数实现。

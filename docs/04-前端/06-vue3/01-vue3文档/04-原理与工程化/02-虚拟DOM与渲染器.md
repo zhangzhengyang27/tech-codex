@@ -16,7 +16,7 @@ tags: [Vue3, 原理, 渲染器, 虚拟DOM]
 
 ### 什么是虚拟 DOM？
 
-虚拟 DOM (Virtual DOM) 是真实 DOM 的 JavaScript 对象表示。它是一种编程概念，使得我们可以声明式地描述 UI 结构。
+虚拟 DOM (Virtual DOM) 是真实 DOM 的 JavaScript 对象表示。它是一种编程概念，允许以声明式的方式描述 UI 结构。
 
 ```
 ┌────────────────────────────────────────────────────────────┐
@@ -996,7 +996,7 @@ export default {
 
 #### 根组件模板编译
 
-我们知道 `.vue` 类型的文件无法在 `Web` 端直接加载，我们通常会在构建阶段（如 `Vite` + `@vue/compiler-sfc`），通过编译器将 `template` 部分编译转换成 `render` 函数添加到组件对象的属性中。
+`.vue` 类型的文件无法在 `Web` 端直接加载，通常会在构建阶段（如 `Vite` + `@vue/compiler-sfc`），通过编译器将 `template` 部分编译转换成 `render` 函数添加到组件对象的属性中。
 
 上述的 `App.vue` 文件内的模板其实是会被编译工具在编译时转成一个渲染函数，大致如下：
 
@@ -1010,9 +1010,9 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 ```
 
-关于 `<template>` 中的模板字符串是如何被编译成 `render` 函数的，以及 `_hoisted_1` 是什么，我们将在后续章节中详细介绍。
+关于 `<template>` 中的模板字符串是如何被编译成 `render` 函数的，以及 `_hoisted_1` 是什么，将在后续章节中详细介绍。
 
-现在我们只需要知道 `<script>` 中的对象内容最终会和编译后的模板内容一起，生成一个 `App` 对象传入 `createApp` 函数中：
+现在只需要知道 `<script>` 中的对象内容最终会和编译后的模板内容一起，生成一个 `App` 对象传入 `createApp` 函数中：
 
 ```js
 {
@@ -1033,7 +1033,7 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 createApp(App).mount('#app')
 ```
 
-看起来简单的一行代码，背后却隐藏了 `Vue 3.5` 整个渲染器初始化、组件实例化、响应式系统激活的完整链路。接下来我们将逐层深入，揭开这个过程的每一个环节。
+看起来简单的一行代码，背后却隐藏了 `Vue 3.5` 整个渲染器初始化、组件实例化、响应式系统激活的完整链路。下面逐层深入，揭开这个过程的每一个环节。
 
 ##### 第一步：createApp 与渲染器的懒创建
 
@@ -1298,7 +1298,7 @@ mount(rootContainer, isHydrate, namespace) {
 }
 ```
 
-`mount` 方法清晰地展现了两个核心步骤：**创建 VNode** 和**渲染 VNode**。让我们逐一深入。
+`mount` 方法清晰地展现了两个核心步骤：**创建 VNode** 和**渲染 VNode**。下面逐一深入。
 
 ##### 第五步：createVNode —— 虚拟节点的创建
 
@@ -2252,7 +2252,7 @@ insert: (child, parent, anchor) => {
 
 #### 全链路流程总览
 
-至此，我们已经完整走完了从 `createApp` 到真实 `DOM` 的全部链路。下面用一张完整的流程图来回顾：
+至此，从 `createApp` 到真实 `DOM` 的全部链路已经完整走通。下面用一张完整的流程图来回顾：
 
 ```mermaid
 flowchart TD
@@ -2334,7 +2334,7 @@ flowchart LR
 
 #### 总结
 
-本节我们从入口文件 `createApp(App).mount('#app')` 出发，逐步深入 `Vue 3.5` 的渲染器源码，完整梳理了组件从对象到真实 `DOM` 的渲染链路。核心调用链为：
+本节从入口文件 `createApp(App).mount('#app')` 出发，逐步深入 `Vue 3.5` 的渲染器源码，完整梳理了组件从对象到真实 `DOM` 的渲染链路。核心调用链为：
 
 ```
 createApp → ensureRenderer → createRenderer → createAppAPI → mount →
@@ -2343,7 +2343,7 @@ createComponentInstance → setupComponent → setupRenderEffect →
 renderComponentRoot → patch → processElement → mountElement → 真实 DOM
 ```
 
-在这个过程中，我们看到了多种设计模式的运用：
+在这个过程中，可以看到多种设计模式的运用：
 
 - **懒初始化模式**：`ensureRenderer` 延迟创建渲染器
 - **适配器模式**：`rendererOptions` 抽象平台差异
@@ -2357,7 +2357,7 @@ renderComponentRoot → patch → processElement → mountElement → 真实 DOM
 
 #### 初始化组件实例
 
-我们再来回顾一下 `setupComponent` 在 Vue 3.5.x 源码中的实现：
+再来回顾一下 `setupComponent` 在 Vue 3.5.x 源码中的实现：
 
 ```js
 export function setupComponent(instance, isSSR = false, optimized = false) {
@@ -2402,7 +2402,7 @@ function isStatefulComponent(instance) {
 }
 ```
 
-前面我们已经说过了，`ShapeFlags` 在遇到组件类型的 `type = Object` 时，`vnode` 的 `shapeFlags = ShapeFlags.STATEFUL_COMPONENT`。所以这里会执行 `setupStatefulComponent` 函数。
+前面已经说过，`ShapeFlags` 在遇到组件类型的 `type = Object` 时，`vnode` 的 `shapeFlags = ShapeFlags.STATEFUL_COMPONENT`。所以这里会执行 `setupStatefulComponent` 函数。
 
 ```js
 function setupStatefulComponent(instance, isSSR) {
@@ -2535,7 +2535,7 @@ export default () => {
 }
 ```
 
-这个函数点击按钮时，`num` 的值并不会按照我们预期那样值会一直递增，因为它是一个函数组件，函数组件内部是没有状态保持的，所以 `num` 数据更新时，组件会重新渲染，`num` 的值永远不变一直是 `0`。
+这个函数在点击按钮时，`num` 的值并不会像预期那样一直递增，因为它是一个函数组件，函数组件内部没有状态保持，所以 `num` 数据更新时，组件会重新渲染，`num` 的值永远不变一直是 `0`。
 
 因此，为了能符合预期的结果，需要将其设置成有状态的组件。可以通过 `defineComponent` 函数包装：
 
@@ -2610,7 +2610,7 @@ function _proxy (data) {
 
 ##### get
 
-了解了代理的功能后，我们来具体看一下是如何实现代理功能的，也就是 `proxy` 的 `PublicInstanceProxyHandlers` 它的实现。先看一下 `get` 函数：
+了解了代理的功能后，具体来看代理功能是如何实现的，也就是 `proxy` 的 `PublicInstanceProxyHandlers` 的实现。先看 `get` 函数：
 
 ```js
 // 判断是否是保留前缀（$ 或 _）
@@ -2725,7 +2725,7 @@ export const PublicInstanceProxyHandlers = {
 }
 ```
 
-这里，可以回答我们的第一步 `创建渲染代理的属性访问缓存` 这个步骤的问题了。如果我们知道 `key` 存在于哪个对象上，那么就可以直接通过对象取值的操作获取属性上的值了。如果我们不知道用户访问的 `key` 存在于哪个属性上，那只能通过 `hasOwn` 的方法先判断存在于哪个属性上，再通过对象取值的操作获取属性值，这无疑是多操作了一步，而且这个判断是比较耗费性能的。如果遇到大量渲染取值的操作，那么这块就是个性能瓶颈，所以这里用了 `accessCache` 来标记缓存 `key` 存在于哪个属性上。这其实也**相当于用一部分空间换时间的优化**。
+这里，可以回答第一步 `创建渲染代理的属性访问缓存` 这个步骤的问题了。如果已知 `key` 存在于哪个对象上，那么就可以直接通过对象取值的操作获取属性上的值；如果不知道用户访问的 `key` 存在于哪个属性上，那只能通过 `hasOwn` 的方法先判断存在于哪个属性上，再通过对象取值的操作获取属性值，这无疑是多操作了一步，而且这个判断是比较耗费性能的。如果遇到大量渲染取值的操作，那么这块就是个性能瓶颈，所以这里用了 `accessCache` 来标记缓存 `key` 存在于哪个属性上。这其实也**相当于用一部分空间换时间的优化**。
 
 接下来，函数首先判断 `key[0] !== "$"` 的情况（`$` 开头的一般是 Vue 组件实例上的内置属性），在 Vue 3 源码中，会依次从 `setupState`、`data`、`props`、`ctx` 这几类数据中取状态值。
 
@@ -2757,7 +2757,7 @@ const publicPropertiesMap = /* @__PURE__ */ extend(
 )
 ```
 
-我们可以用以下表格来展示属性访问的优先级：
+可以用以下流程图来展示属性访问的优先级：
 
 ```mermaid
 flowchart TD
@@ -3062,7 +3062,7 @@ const setupResult = setup && setup(shallowReadonly(instance.props), setupContext
 
 只不过增加了对执行过程中 `handleError` 的捕获。
 
-在后续章节的阅读中，你会发现 Vue 3 很多函数的调用都是通过 `callWithErrorHandling` 来包裹的：
+在后续章节的阅读中会发现，Vue 3 很多函数的调用都是通过 `callWithErrorHandling` 来包裹的：
 
 ```js
 export function callWithErrorHandling(
@@ -3143,7 +3143,7 @@ function handleSetupResult(instance, setupResult, isSSR) {
 </script>
 ```
 
-当 `setupResult` 是一个对象的时候，我们为 `setupResult` 对象通过 `proxyRefs` 作了一层代理，方便用户直接访问 `ref` 类型的值。比如，在模板中访问 `setupResult` 中的数据，就可以省略 `.value` 的取值，而由代理来默认取 `.value` 的值。
+当 `setupResult` 是一个对象的时候，会为 `setupResult` 对象通过 `proxyRefs` 作一层代理，方便用户直接访问 `ref` 类型的值。比如，在模板中访问 `setupResult` 中的数据，就可以省略 `.value` 的取值，而由代理来默认取 `.value` 的值。
 
 `proxyRefs` 的实现如下：
 
@@ -3265,11 +3265,11 @@ function finishComponentSetup(instance, isSSR, skipOptions) {
 
 这里主要做的就是根据 `instance` 上有没有 `render` 函数来判断是否需要进行运行时渲染，运行时渲染指的是在浏览器运行的过程中，动态编译 `<template>` 标签内的内容，产出渲染函数。对于编译时渲染，则是有渲染函数的，因为模板中的内容会被 `webpack` 中 `vue-loader` 这样的插件进行编译。
 
-另外需要注意的，这里有个 `__VUE_OPTIONS_API__` 变量用来标记是否是兼容选项式 API 调用，如果我们只使用 Composition API 那么就可以通过 `webpack` 静态变量注入的方式关闭此特性。然后交由 Tree-Shaking 删除无用的代码，从而减少引用代码包的体积。
+另外需要注意的，这里有个 `__VUE_OPTIONS_API__` 变量用来标记是否是兼容选项式 API 调用。如果只使用 Composition API，就可以通过 `webpack` 静态变量注入的方式关闭此特性，然后交由 Tree-Shaking 删除无用的代码，从而减少引用代码包的体积。
 
 #### Vue 3.5 响应式 Props 解构
 
-Vue 3.5 正式稳定了响应式 Props 解构特性，这是一个重要的变化。在 Vue 3.4 及之前，当我们解构 `defineProps` 的返回值时，解构出的变量会失去响应性：
+Vue 3.5 正式稳定了响应式 Props 解构特性，这是一个重要的变化。在 Vue 3.4 及之前，解构 `defineProps` 的返回值时，解构出的变量会失去响应性：
 
 ```html
 <script setup>
@@ -3283,7 +3283,7 @@ const { foo, bar } = defineProps(['foo', 'bar'])
 
 ##### 编译转换原理
 
-当我们在 `<script setup>` 中解构 `defineProps` 时：
+在 `<script setup>` 中解构 `defineProps` 时：
 
 ```html
 <script setup>
@@ -3499,7 +3499,7 @@ const setupRenderEffect: SetupRenderEffectFn = (
 }
 ```
 
-这个变化看似只是 API 形式的调整，实则蕴含了 Vue 3.5 响应式系统的核心设计理念。让我们通过一个对比来理解：
+这个变化看似只是 API 形式的调整，实则蕴含了 Vue 3.5 响应式系统的核心设计理念。通过下面的对比来理解：
 
 | 维度 | 早期版本 `effect()` | Vue 3.5 `ReactiveEffect` |
 |------|---------------------|--------------------------|
@@ -3545,7 +3545,7 @@ function isDirty(sub: Subscriber): boolean {
 
 #### 组件更新的核心流程
 
-在前面的小节中，我们说完了关于 `mounted` 的流程。接下来着重看组件更新的逻辑，即 `componentUpdateFn` 的 `else` 分支：
+前面的小节已经说明了 `mounted` 的流程。接下来着重看组件更新的逻辑，即 `componentUpdateFn` 的 `else` 分支：
 
 ```ts
 // Vue 3.5 - packages/runtime-core/src/renderer.ts
@@ -3681,7 +3681,7 @@ sequenceDiagram
 2. **渲染阶段**：调用 `renderComponentRoot` 生成新的子树 vnode
 3. **比对阶段**：通过 `patch` 比对新旧子树，完成 DOM 更新
 
-接下来我们深入每个阶段的细节。
+接下来深入每个阶段的细节。
 
 #### next 的作用：区分两种更新来源
 
@@ -3957,7 +3957,7 @@ Vue 3.5 的 `patchElement` 相比早期版本有几个重要改进：
 2. **`#9135` 修复**：当旧节点有 `innerHTML` 或 `textContent` 而新节点没有时，需要先清空文本内容，再挂载新的子节点。这修复了一个边界情况下的渲染 bug
 3. **`patchFlag |= n1.patchFlag & PatchFlags.FULL_PROPS`**：考虑旧节点的 patchFlag，处理用户克隆编译器生成 vnode 的场景
 
-> 这里省略了对 `dynamicChildren` 存在时执行 `patchBlockChildren` 的优化 diff 过程，我们直接先看全量 diff 也就是 `patchChildren` 函数。关于 `patchBlockChildren` 我们将在**编译过程中的优化**小节中进行详细介绍。
+> 这里省略了对 `dynamicChildren` 存在时执行 `patchBlockChildren` 的优化 diff 过程，直接先看全量 diff 也就是 `patchChildren` 函数。关于 `patchBlockChildren` 将在**编译过程中的优化**小节中进行详细介绍。
 
 ##### patchChildren：子节点更新
 
@@ -4070,7 +4070,7 @@ flowchart TD
 
 ```
 
-其中新旧子节点都是数组的情况涉及到我们平常所说的 `diff` 算法，会放到后面专门解析。
+其中新旧子节点都是数组的情况涉及到平常所说的 `diff` 算法，会放到后面专门解析。
 
 #### processComponent：组件更新
 
@@ -4277,7 +4277,7 @@ flowchart TD
 
 编译后，`onUpdate:modelValue` 会作为 prop 传入子组件。但每次父组件重新渲染时，`handler` 可能是一个新的函数引用（除非用 `@vue/reactivity` 的缓存机制），导致 `prevProps[key] !== nextProps[key]`。然而，emit 监听器的变化不应该触发子组件更新——因为子组件只是"发射"事件，并不"消费"这些监听器。通过 `isEmitListener` 过滤，Vue 避免了大量因事件监听器引用变化导致的无效子组件更新。
 
-> **设计洞察**：`shouldUpdateComponent` 体现了 Vue 更新粒度控制的核心思想——组件级别的细粒度更新。它不是简单地"父组件更新就更新所有子组件"，而是在源码层面帮我们过滤掉了不必要的子组件更新。这种优化在大型组件树中效果尤为显著。
+> **设计洞察**：`shouldUpdateComponent` 体现了 Vue 更新粒度控制的核心思想——组件级别的细粒度更新。它不是简单地"父组件更新就更新所有子组件"，而是在源码层面过滤掉了不必要的子组件更新。这种优化在大型组件树中效果尤为显著。
 
 #### 完整流程演示
 
@@ -4522,7 +4522,7 @@ if (dynamicChildren) {
 
 ##### 0.6 Block Tree 与 diff 算法的关系
 
-理解 Block Tree 优化后，我们可以更清晰地定位 `patchKeyedChildren`（五步 diff 算法）的适用场景：
+理解 Block Tree 优化后，可以更清晰地定位 `patchKeyedChildren`（五步 diff 算法）的适用场景：
 
 ```mermaid
 flowchart TD
@@ -4538,7 +4538,7 @@ flowchart TD
     E --> J[五步 diff 算法<br/>O(子节点数)]
 ```
 
-Block Tree 优化使得很多场景根本不需要进入五步 diff，但当子节点是带 key 的列表且顺序可能变化时（如 `v-for` 渲染的列表），仍然需要 `patchKeyedChildren` 进行完整的 diff。接下来，我们就深入分析这个五步 diff 算法。
+Block Tree 优化使得很多场景根本不需要进入五步 diff，但当子节点是带 key 的列表且顺序可能变化时（如 `v-for` 渲染的列表），仍然需要 `patchKeyedChildren` 进行完整的 diff。接下来深入分析这个五步 diff 算法。
 
 #### 1. 从头比对
 
@@ -4873,7 +4873,7 @@ DOM 操作的性能优劣关系大致为：**属性更新 > 位置移动 > 增�
 
 这一步构建新子序列的 `key → index` 映射表 `keyToNewIndexMap`，用于后续快速查找旧节点在新子序列中的位置。
 
-对于我们的例子，新子序列 `[e, c, d, i]` 对应的索引为 `[2, 3, 4, 5]`，生成的映射为：
+对于本例，新子序列 `[e, c, d, i]` 对应的索引为 `[2, 3, 4, 5]`，生成的映射为：
 
 ```
 keyToNewIndexMap = {
@@ -5005,7 +5005,7 @@ flowchart LR
 
 对于没有 key 的节点，无法通过 `keyToNewIndexMap` 快速查找，只能遍历新子序列，寻找类型相同且尚未被匹配的节点。这也是为什么不推荐用 `index` 作为 key 的原因之一——当节点没有稳定的 key 时，diff 效率会降低。
 
-经过这一步，我们得到：
+经过这一步，得到：
 
 ```
 newIndexToOldIndexMap = [5, 3, 4, 0]
@@ -5033,7 +5033,7 @@ flowchart TD
 
 ##### 5.3 移动和新增节点
 
-通过前面的操作，我们完成了旧节点的更新和删除。接下来需要处理节点的移动和新节点的添加：
+通过前面的操作，旧节点的更新和删除已经完成。接下来需要处理节点的移动和新节点的添加：
 
 ```typescript
     // 5.3 move and mount
@@ -5098,7 +5098,7 @@ flowchart TD
 
 最长递增子序列标识了在新子序列中**相对顺序与旧子序列一致**的节点集合。这些节点不需要移动，只需要移动不在 LIS 中的节点。
 
-对于我们的例子：
+对于本例：
 
 ```
 newIndexToOldIndexMap = [5, 3, 4, 0]

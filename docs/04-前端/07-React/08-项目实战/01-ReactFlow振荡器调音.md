@@ -12,36 +12,32 @@ tags: [React, 项目实战]
 
 # ReactFlow振荡器调音-项目介绍
 
-## 总结
+## 项目概述
 
-这节我们学了 AudioContext 的 createOscillator api，它会创建一个振荡器，可以设置不同的波形、频率，产生不同的声音。
+本项目基于 React Flow 与 Web Audio API 实现可视化调音：
 
-比如钢琴琴键的声音，游戏中的一些音效，都是设置不同波形、频率产生的。
-
-而且还可以通过 GainNode 来调节音量。
-
-可以通过流程图来可视化的创建 Oscillator 节点，设置参数，最后输出声音。
-
-下节开始我们正式进入开发。
+- AudioContext 的 createOscillator api 会创建一个振荡器，可以设置不同的波形、频率，产生不同的声音。比如钢琴琴键的声音、游戏中的一些音效，都是设置不同波形、频率产生的。
+- 通过 GainNode 可以调节音量。
+- 通过流程图可以可视化地创建 Oscillator 节点、设置参数，最后输出声音。
 
 ## 画流程图
 
-这节我们来画下流程图。
+### 项目搭建
 
-创建个项目：
+创建项目：
 
 ```
 npx create-vite audio-flow
 ```
-进入项目，安装下 @xyflow/react（React Flow v12 的官方包名）
+
+进入项目，安装 @xyflow/react（React Flow v12 的官方包名）：
 
 ```
 npm install
 npm install --save @xyflow/react
 ```
-去掉 index.css
 
-然后改下 App.tsx
+去掉 index.css，然后修改 App.tsx：
 
 ```javascript
 import { addEdge, Background, BackgroundVariant, Connection, Controls, MiniMap, OnConnect, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react';
@@ -63,7 +59,7 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh'}}>
-      <ReactFlow 
+      <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -78,22 +74,18 @@ export default function App() {
   );
 }
 ```
-我们写了下基础代码，加了两个 node，一个 edge，然后加了 Controls、Background、MiniMap 组件。
 
-跑起来看一下：
+以上是基础代码：加了两个 node、一个 edge，然后加了 Controls、Background、MiniMap 组件。运行：
 
 ```
 npm run dev
 ```
-没啥问题，只是流程图不在正中央。
 
-加个 fitView 就好了（在 `<ReactFlow>` 上加 `fitView` 属性即可，见后文完整代码）。
+流程图可以正常显示，只是不在正中央，加个 fitView 就好了（在 `<ReactFlow>` 上加 `fitView` 属性即可，见后文完整代码）。
 
-接下来分别实现这三种自定义节点（原文此处有配图，未随迁移入库）
+### 接入 tailwind
 
-我们用 tailwind 来写样式。
-
-按照 [tailwind 文档](https://www.tailwindcss.cn/docs/guides/vite#react)里的步骤安装 tailwind：
+接下来分别实现三种自定义节点（原文此处有配图，未随迁移入库）。样式用 tailwind 来写，按照 [tailwind 文档](https://www.tailwindcss.cn/docs/guides/vite#react)里的步骤安装 tailwind：
 
 ```javascript
 npm install -D tailwindcss postcss autoprefixer
@@ -105,7 +97,7 @@ npx tailwindcss init -p
 
 > 注：以上是 Tailwind v3 的接入步骤（tailwind.config.js + PostCSS）。Tailwind v4 起推荐用官方 `@tailwindcss/vite` 插件接入，不再需要 postcss 配置和 init 步骤。
 
-修改下 content 配置，也就是从哪里提取 className：
+修改 content 配置，也就是从哪里提取 className：
 
 ```javascript
 /** @type {import('tailwindcss').Config} */
@@ -120,26 +112,26 @@ export default {
   plugins: [],
 }
 ```
+
 tailwind 会提取 className 之后按需生成最终的 css。
 
-改下 index.css 引入 tailwind 基础样式：
+修改 index.css 引入 tailwind 基础样式：
 
 ```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 ```
+
 在 main.tsx 里引入 index.css（`import './index.css'`）。
 
-如果你没安装 VSCode 的 Tailwind CSS IntelliSense 插件，需要安装一下（原文此处有配图，未随迁移入库）
+如果没安装 VSCode 的 Tailwind CSS IntelliSense 插件，需要安装一下（原文此处有配图，未随迁移入库），这样在写代码的时候就会提示 className 和对应的样式值（原文此处有配图，未随迁移入库）。不知道 className 叫啥的样式，还可以在 [tailwind 文档](https://www.tailwindcss.cn/docs/border-width)里搜（原文此处有配图，未随迁移入库）。
 
-这样在写代码的时候就会提示 className 和对应的样式值（原文此处有配图，未随迁移入库）
+### 自定义节点一：振荡器节点
 
-不知道 className 叫啥的样式，还可以在 [tailwind 文档](https://www.tailwindcss.cn/docs/border-width)里搜（原文此处有配图，未随迁移入库）
+接下来创建振荡器的自定义节点（原文此处有配图，未随迁移入库）。
 
-接下来创建振荡器的自定义节点（原文此处有配图，未随迁移入库）
-
-components/OscillatorNode.tsx
+components/OscillatorNode.tsx：
 
 ```javascript
 import { Handle, Position } from '@xyflow/react';
@@ -181,11 +173,10 @@ export function OscillatorNode({ id, data }: OscillatorNodeProps) {
     );
 };
 ```
-就是一个标题，一个 input，一个 select，用 tailwind 写下样式。
 
-可以通过 data 传入 frequency、type
+结构是一个标题、一个 input、一个 select，用 tailwind 写样式，通过 data 传入 frequency、type。
 
-用一下：
+使用方式：
 
 ```javascript
 import { addEdge, Background, BackgroundVariant, Connection, Controls, MiniMap, OnConnect, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react';
@@ -212,7 +203,7 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh'}}>
-      <ReactFlow 
+      <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -229,12 +220,12 @@ export default function App() {
   );
 }
 ```
-看下效果（原文此处有配图，未随迁移入库）
-可以看到，节点替换为了我们自定义的节点，并且根据传入的 data 做了表单回显。
 
-接下来写下第二种自定义节点（原文此处有配图，未随迁移入库）
+看下效果（原文此处有配图，未随迁移入库）：节点替换为了自定义的节点，并且根据传入的 data 做了表单回显。
 
-components/VolumeNode.tsx
+### 自定义节点二：音量节点
+
+components/VolumeNode.tsx：
 
 ```javascript
 import { Handle, Position } from '@xyflow/react';
@@ -270,9 +261,7 @@ export function VolumeNode({ id, data }: VolumeNodeProps) {
 }
 ```
 
-主要是上下两个 Handle、中间一个 input。
-
-用一下：
+主要是上下两个 Handle、中间一个 input。使用：
 
 ```javascript
 const initialNodes = [
@@ -286,13 +275,12 @@ const nodeTypes = {
   'volume': VolumeNode
 }
 ```
-看下效果（原文此处有配图，未随迁移入库）
 
-可以看到，音量节点也渲染出来了。
+看下效果（原文此处有配图，未随迁移入库）：音量节点也渲染出来了。
 
-然后来写最后一个节点：输出节点
+### 自定义节点三：输出节点
 
-components/OutputNode.tsx
+components/OutputNode.tsx：
 
 ```javascript
 import { Handle, Position } from '@xyflow/react';
@@ -325,9 +313,8 @@ export function OutputNode() {
     </div>
 }
 ```
-用一下（原文此处有配图，未随迁移入库）
 
-加一个节点类型，然后加一个节点、一条边。
+使用（原文此处有配图，未随迁移入库）：加一个节点类型，然后加一个节点、一条边。
 
 ```javascript
 const initialNodes = [
@@ -347,29 +334,21 @@ const nodeTypes = {
 }
 ```
 
-看下效果（原文此处有配图，未随迁移入库）
+看下效果（原文此处有配图，未随迁移入库）。这样，三种自定义节点就都画出来了。
 
-这样，三种自定义节点就都画出来了。
+案例代码见 [GitHub 仓库](https://github.com/QuarkGluonPlasma/react-course-code/tree/main/audio-flow)。
 
-案例代码上传了[小册仓库](https://github.com/QuarkGluonPlasma/react-course-code/tree/main/audio-flow)
+### 画流程图小结
 
-### 小结
-
-我们创建了 vite 项目，引入了 tailwind 来写样式。
-
-然后实现了流程图的绘制，主要是三种自定义节点的绘制（原文此处有配图，未随迁移入库）
-
-振荡器节点、音量节点、输出节点。
-
-流程图画完了，下节来开发音频部分的功能。
+创建了 vite 项目，引入 tailwind 来写样式，然后实现了流程图的绘制，主要是三种自定义节点的绘制（原文此处有配图，未随迁移入库）：振荡器节点、音量节点、输出节点。
 
 ## 音频功能开发
 
-这节来写音频部分，通过流程图设置参数，然后生成声音。
+本部分实现音频功能：通过流程图设置参数，然后生成声音。
 
-我们先用一下 AudioContext 的 api。
+### AudioContext 基础用法
 
-创建 audio.ts
+先试用 AudioContext 的 api，创建 audio.ts：
 
 ```javascript
 const context = new AudioContext();
@@ -387,25 +366,14 @@ const out = context.destination;
 osc.connect(volume);
 volume.connect(out);
 ```
-创建一个 Oscillator 节点，一个 Gain 节点，和 destination 节点连接起来（原文此处有配图，未随迁移入库）
 
-Oscillator 振荡器节点产生不同波形、频率的声音，Gain 节点调节音量，然后 destination 节点播放声音。
+创建一个 Oscillator 节点、一个 Gain 节点，和 destination 节点连接起来（原文此处有配图，未随迁移入库）：Oscillator 振荡器节点产生不同波形、频率的声音，Gain 节点调节音量，然后 destination 节点播放声音。
 
-在 main.ts 里引入下（原文此处有配图，未随迁移入库）
+在 main.ts 里引入（原文此处有配图，未随迁移入库），页面上就能听到声音了。
 
-这时候你在页面上就能听到声音了。
+有 connect 当然也有 disconnect（原文此处有配图，未随迁移入库）：断开节点的连接就没声音了。connect、disconnect 在流程图上就是 edge 的创建和删除，所以很容易把两者结合起来。
 
-有 connect 当然也有 disconnect（原文此处有配图，未随迁移入库）
-
-断开节点的连接就没声音了。
-
-connect、disconnect 在流程图上就是 edge 的创建和删除。
-
-所以很容易把两者结合起来。
-
-而且你可以用两个振荡器节点 connect 到一个 destination
-
-对应的代码就是这样：
+而且可以用两个振荡器节点 connect 到一个 destination，对应的代码：
 
 ```javascript
 const context = new AudioContext();
@@ -434,15 +402,12 @@ volume2.gain.value = 0.5;
 osc2.connect(volume2);
 volume2.connect(out);
 ```
-两个振荡器分别设置不同的波形、频率，产生不同的声音。
 
-你可以听一下，声音是不是两者的合并（原文此处有配图，未随迁移入库）
+两个振荡器分别设置不同的波形、频率，产生不同的声音。听一下，声音是两者的合并（原文此处有配图，未随迁移入库），对比之前的单振荡器声音（原文此处有配图，未随迁移入库）。对应到流程图就是两个振荡器节点连到一个输出节点（原文此处有配图，未随迁移入库）。
 
-对比听下之前的（原文此处有配图，未随迁移入库）
+### 同步流程图与 Audio 节点
 
-对应到流程图就是这样的（原文此处有配图，未随迁移入库）
-
-改下 Audio.tsx
+修改 audio.ts：
 
 ```javascript
 const context = new AudioContext();
@@ -527,41 +492,21 @@ export function createAudioNode(id: string, type: string, data: Record<string, a
   }
 }
 ```
-从上往下看（原文此处有配图，未随迁移入库）
 
-因为可能有多个振荡器节点、音量节点，所以用一个 Map 来存储，key 是流程图节点 id（原文此处有配图，未随迁移入库）
+设计要点如下（原文此处有配图，未随迁移入库）：
 
-首先，内置 3 个节点（原文此处有配图，未随迁移入库）
+- 因为可能有多个振荡器节点、音量节点，所以用一个 Map 来存储，key 是流程图节点 id（原文此处有配图，未随迁移入库）。
+- 内置 3 个节点（原文此处有配图，未随迁移入库），然后暴露一个 createAudioNode 方法来创建两种节点（destination 节点只有一个）（原文此处有配图，未随迁移入库），创建完加到 Map 里。
+- 提供两个 Audio 节点的连接和断开连接的方法（原文此处有配图，未随迁移入库）。用流程图节点 id 来作为 Map 的 key 的好处是：可以直接把流程图节点的操作对应到 Audio 节点。
+- 暴露一个删除 Audio 节点的方法（原文此处有配图，未随迁移入库）：首先 disconnect 所有的连接，然后 stop 这个 Audio 节点，之后从 map 中删除它。
+- 更新参数的方法（原文此处有配图，未随迁移入库）：两种流程图节点中的参数修改通过这个方法更新到 Audio 节点。
+- 最后暴露一个暂停、恢复声音播放的方法（原文此处有配图，未随迁移入库）。
 
-然后暴露了一个 createAudioNode 的方法来创建两种节点（destination 节点只有一个）（原文此处有配图，未随迁移入库）
+总结：用一个 Map 保存所有的 Audio 节点，key 为对应流程图节点的 id，然后暴露创建节点、节点连接、删除节点、更新节点参数、暂停、恢复播放的方法。之后就可以把节点的 onNodeChanges、onEdgeChanges、onConnect 事件对应到这些更新 audio 节点的方法了。
 
-创建完加到 Map 里。
+### 节点联动
 
-然后提供两个 Audio 节点的连接和断开连接的方法（原文此处有配图，未随迁移入库）
-
-这就是我们用流程图节点 id 来作为 Map 的 key 的好处，可以直接把流程图节点的操作对应到 Audio 节点。
-
-然后暴露一个删除 Audio 节点的方法（原文此处有配图，未随迁移入库）
-
-首先 disconnect 所有的连接，然后 stop 这个 Audio 节点，之后从 map 中删除它。
-
-然后是更新参数的方法（原文此处有配图，未随迁移入库）
-
-两种流程图节点中的参数修改，就通过这个方法更新到 Audio 节点
-
-最后暴露一个暂停、修复声音播放的方法（原文此处有配图，未随迁移入库）
-
-总结一下，就是用一个 Map 保存所有的 Audio 节点，key 为对应流程图节点的 id，然后暴露创建节点、节点连接、删除节点、更新节点参数，暂停、恢复播放的方法。
-
-之后就可以把节点的 onNodeChanges、onEdgeChanges、onConnect 事件对应到这些 更新 audio 节点的方法了。
-
-改下 App.tsx
-
-初始有 a、b、c 三个节点（原文此处有配图，未随迁移入库）
-
-没有边。
-
-流程图节点 connect 的时候，顺便也把对应的 Audio 节点 connect：
+修改 App.tsx，初始有 a、b、c 三个节点（原文此处有配图，未随迁移入库），没有边：
 
 ```javascript
 const initialNodes: Node[] =  [
@@ -571,40 +516,32 @@ const initialNodes: Node[] =  [
       data: { frequency: 220, type: 'square' },
       position: { x: 200, y: 0 }
   },
-  { 
-      id: 'b', 
-      type: 'volume', 
+  {
+      id: 'b',
+      type: 'volume',
       data: { gain: 0.5 },
-      position: { x: 150, y: 250 } 
+      position: { x: 150, y: 250 }
   },
-  { 
+  {
       id: 'c',
       type: 'out',
       data: {},
-      position: { x: 350, y: 400 } 
+      position: { x: 350, y: 400 }
   }
 ];
 
 const initialEdges:Edge[] = [];
 ```
+
+流程图节点 connect 的时候，顺便也把对应的 Audio 节点 connect：
+
 ```javascript
 connect(params.source, params.target);
 ```
-然后你再在界面上连下线（原文此处有配图，未随迁移入库）
 
-连完 3 个节点，你会发现还是没声音。
+在界面上连下线（原文此处有配图，未随迁移入库），连完 3 个节点还是没声音——因为默认是在 suspend 状态，需要 resume 一下（原文此处有配图，未随迁移入库）。在 OutputNode 点击喇叭的时候调用 toggleAudio 来切换状态（原文此处有配图，未随迁移入库），这样点击喇叭就有声音了（原文此处有配图，未随迁移入库），再点击一次就会暂停。
 
-因为默认是在 suspend 状态，需要 resume 一下（原文此处有配图，未随迁移入库）
-
-我们在 OutputNode 点击喇叭的时候调用下 toggleAudio 来切换状态（原文此处有配图，未随迁移入库）
-
-这样点击喇叭就有声音了（原文此处有配图，未随迁移入库）
-
-再点击一次就会暂停。
-
-然后再支持下参数的调整（原文此处有配图，未随迁移入库）
-
-在 onChange 的时候，修改 audio 节点的参数：
+然后支持参数的调整（原文此处有配图，未随迁移入库）：在 onChange 的时候，修改 audio 节点的参数：
 
 ```javascript
 import { Handle, Position } from '@xyflow/react';
@@ -650,17 +587,10 @@ export function VolumeNode({ id, data }: VolumeNodeProps) {
     );
 }
 ```
-试一下（原文此处有配图，未随迁移入库）
 
-拖动调整音量，你能听到声音大小的变化。
+拖动调整音量，可以听到声音大小的变化。注意这里加上了 nodrag（原文此处有配图，未随迁移入库）：不加的话拖动进度条就变成了拖动节点（原文此处有配图，未随迁移入库）。nodrag 是 react flow 提供的用于禁止拖动的 className（原文此处有配图，未随迁移入库）。
 
-注意，这里加上了 nodrag（原文此处有配图，未随迁移入库）
-
-不加的话拖动进度条就变成了拖动节点（原文此处有配图，未随迁移入库）
-
-这个是 react flow 提供的用于禁止拖动的 className（原文此处有配图，未随迁移入库）
-
-同样的方式处理下 OscillatorNode
+同样的方式处理 OscillatorNode：
 
 ```javascript
 import { Handle, Position, useReactFlow } from '@xyflow/react';
@@ -722,7 +652,7 @@ export function OscillatorNode({ id, data }: OscillatorNodeProps) {
 
 现在就能听到不同频率、波形的声音了。
 
-然后我们再支持下添加振荡器节点和音量节点：
+再支持添加振荡器节点和音量节点：
 
 ```javascript
 import { addEdge, Background, BackgroundVariant, Connection, Controls, Edge, EdgeTypes, MiniMap, Node, OnConnect, Panel, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react';
@@ -739,17 +669,17 @@ const initialNodes: Node[] =  [
       data: { frequency: 220, type: 'square' },
       position: { x: 200, y: 0 }
   },
-  { 
-      id: 'b', 
-      type: 'volume', 
+  {
+      id: 'b',
+      type: 'volume',
       data: { gain: 0.5 },
-      position: { x: 150, y: 250 } 
+      position: { x: 150, y: 250 }
   },
-  { 
+  {
       id: 'c',
       type: 'out',
       data: {},
-      position: { x: 350, y: 400 } 
+      position: { x: 350, y: 400 }
   }
 ];
 
@@ -792,7 +722,7 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh'}}>
-      <ReactFlow 
+      <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -813,13 +743,10 @@ export default function App() {
   );
 }
 ```
-试一下（原文此处有配图，未随迁移入库）
 
-这样，添加节点就完成了。
+试一下（原文此处有配图，未随迁移入库），添加节点就完成了。多个节点的时候，声音是它们的合成音。
 
-多个节点的时候，声音是它们的合成音。
-
-我们还没处理流程节点删除的时候，去掉 Audio Node，也做一下：
+最后处理流程节点删除时去掉 Audio Node：
 
 ```javascript
 onNodesDelete={(nodes) => {
@@ -834,31 +761,19 @@ onEdgesDelete={(edges) => {
   }
 }}
 ```
+
 节点删除对应 removeAudioNode，边删除对应 disconnect。
 
-至此，我们的 React Flow 振荡器调音就完成了。
+至此 React Flow 振荡器调音就完成了。不过 Handle 有点小不好操作，可以通过 CSS 加大一点（样式代码此处略）（原文此处有配图，未随迁移入库），操作起来就方便多了（原文此处有配图，未随迁移入库）。
 
-不过现在不好操作，Handle 有点小，我们加大一点（通过 CSS 增大 Handle 的宽高，样式代码此处略）（原文此处有配图，未随迁移入库）
-
-看下效果（原文此处有配图，未随迁移入库）
-
-这样，操作起来就方便多了。
-
-案例代码上传了[小册仓库](https://github.com/QuarkGluonPlasma/react-course-code/tree/main/audio-flow)
+案例代码见 [GitHub 仓库](https://github.com/QuarkGluonPlasma/react-course-code/tree/main/audio-flow)。
 
 ## 总结
 
-这节我们实现了流程图节点和 AudioContext 节点的同步。
+本项目实现了流程图节点和 AudioContext 节点的同步：
 
-Audio 是通过 createOscillator 创建振荡器节点，通过 createGain 创建音量节点，然后把它们 connect 起来 connect 到 context.destination 节点播放声音。
-
-这和 React Flow 流程图的节点创建、节点连接很容易对应上。
-
-我们分别把流程图节点的 connect 对应到 Audio Node 的 connect 上。
-
-流程图节点表单参数的修改对应到相同 id 的 Audio Node 的参数修改。
-
-流程图节点的创建、删除对应到 Audio Node 的添加删除上。
+- Audio 侧：通过 createOscillator 创建振荡器节点，通过 createGain 创建音量节点，把它们 connect 起来 connect 到 context.destination 节点播放声音。
+- 同步关系：流程图节点的 connect 对应到 Audio Node 的 connect；流程图节点表单参数的修改对应到相同 id 的 Audio Node 的参数修改；流程图节点的创建、删除对应到 Audio Node 的添加删除。
 
 这样，就可以可视化的调音了。
 

@@ -32,7 +32,7 @@ keywords:
 </script>
 ```
 
-然后我们在父组件使用这个 BlogPost 组件的时候，可以给它传递一些 Props 数据：
+然后在父组件使用这个 BlogPost 组件的时候，可以给它传递一些 Props 数据：
 
 ```html
 <blog-post title="Vue3 publish" author="yyx"></blog-post>
@@ -40,7 +40,7 @@ keywords:
 
 从最终结果来看，BlogPost 组件会渲染传递的 title 和 author 数据。
 
-我们平时写组件会经常和 Props 打交道，但 Vue.js 内部是如何初始化以及更新 Props 的？Vue.js 3.0 在 props 的 API 设计上与 Vue.js 2.x 保持一致，底层实现层面则有所不同。
+平时写组件会经常和 Props 打交道，但 Vue.js 内部是如何初始化以及更新 Props 的？Vue.js 3.0 在 props 的 API 设计上与 Vue.js 2.x 保持一致，底层实现层面则有所不同。
 
 ### Props 的初始化
 
@@ -96,7 +96,7 @@ function initProps(instance, rawProps, isStateful, isSSR = false) {
 
 这里，初始化 Props 主要做了以下几件事情：**设置 props 的值**，**验证 props 是否合法**，**把 props 变成响应式**，**以及添加到实例 instance.props 上**。
 
-注意，这里我们只分析有状态组件的 Props 初始化过程，所以就默认 isStateful 的值是 true。所谓有状态组件，就是你平时通过对象的方式定义的组件。
+注意，这里只分析有状态组件的 Props 初始化过程，所以默认 isStateful 的值是 true。所谓有状态组件，就是平时通过对象的方式定义的组件。
 
 设置 Props 的流程如下。
 
@@ -216,7 +216,7 @@ function normalizePropsOptions(comp) {
 }
 ```
 
-normalizePropsOptions 主要目的是标准化 props 的配置，这里需要注意，你要区分 props 的配置和 props 的数据。所谓 props 的配置，就是你在定义组件时编写的 props 配置，它用来描述一个组件的 props 是什么样的；而 props 的数据，是父组件在调用子组件的时候，给子组件传递的数据。
+normalizePropsOptions 主要目的是标准化 props 的配置，这里需要注意，要区分 props 的配置和 props 的数据。所谓 props 的配置，就是在定义组件时编写的 props 配置，它用来描述一个组件的 props 是什么样的；而 props 的数据，是父组件在调用子组件的时候，给子组件传递的数据。
 
 所以这个函数首先会处理 mixins 和 extends 这两个特殊的属性，因为它们的作用都是扩展组件的定义，所以需要对它们定义中的 props 递归执行 normalizePropsOptions。
 
@@ -265,7 +265,7 @@ export default {
 }
 ```
 
-接下来，就是判断一些 prop 是否需要转换，其中，含有布尔类型的 prop 和有默认值的 prop 需要转换，这些 prop 的 key 保存在 needCastKeys 中。注意，这里会给 prop 添加两个特殊的 key，对 prop[0] 和 prop[1] 赋值，它们的作用后续我们会说。
+接下来，就是判断一些 prop 是否需要转换，其中，含有布尔类型的 prop 和有默认值的 prop 需要转换，这些 prop 的 key 保存在 needCastKeys 中。注意，这里会给 prop 添加两个特殊的 key，对 prop[0] 和 prop[1] 赋值，它们的作用后续说明。
 
 最后，返回标准化结果 normalizedEntry，它包含标准化后的 props 定义 normalized，以及需要转换的 props key needCastKeys，并且用 comp.__props 缓存这个标准化结果，如果对同一个组件重复执行 normalizePropsOptions，直接返回这个标准化结果即可。
 
@@ -300,7 +300,7 @@ function setFullProps(instance, rawProps, props, attrs) {
 }
 ```
 
-该过程主要就是遍历 rawProps，拿到每一个 key。由于我们在标准化 props 配置过程中已经把 props 定义的 key 转成了驼峰形式，所以也需要把 rawProps 的 key 转成驼峰形式，然后对比看 prop 是否在配置中定义。
+该过程主要就是遍历 rawProps，拿到每一个 key。由于标准化 props 配置过程中已经把 props 定义的 key 转成了驼峰形式，所以也需要把 rawProps 的 key 转成驼峰形式，然后对比看 prop 是否在配置中定义。
 
 如果 rawProps 中的 prop 在配置中定义了，那么把它的值赋值到 props 对象中，如果不是，那么判断这个 key 是否为非事件派发相关，如果是那么则把它的值赋值到 attrs 对象中。另外，在遍历的过程中，遇到 key、ref 这种 key，则直接跳过。
 
@@ -353,9 +353,9 @@ function resolvePropValue(options, props, key, value) {
 }
 ```
 
-resolvePropValue 主要就是针对两种情况的转换，第一种是默认值的情况，即我们在 prop 配置中定义了默认值，并且父组件没有传递数据的情况，这里 prop 对应的值就取默认值。
+resolvePropValue 主要就是针对两种情况的转换，第一种是默认值的情况，即在 prop 配置中定义了默认值，并且父组件没有传递数据的情况，这里 prop 对应的值就取默认值。
 
-第二种是布尔类型的值，前面我们在 normalizePropsOptions 的时候已经给 prop 的定义添加了两个特殊的 key，所以 opt[0] 为 true 表示这是一个含有 Boolean 类型的 prop，然后判断是否有传对应的值，如果不是且没有默认值的话，就直接转成 false，举个例子：
+第二种是布尔类型的值，前面在 normalizePropsOptions 的时候已经给 prop 的定义添加了两个特殊的 key，所以 opt[0] 为 true 表示这是一个含有 Boolean 类型的 prop，然后判断是否有传对应的值，如果不是且没有默认值的话，就直接转成 false，举个例子：
 
 ```js
 export default {
@@ -446,7 +446,7 @@ function validateProp(name, value, prop, isAbsent) {
 
 顾名思义，validateProps 就是用来检测前面求得的 props 值是否合法，它就是对标准化后的 Props 配置对象进行遍历，拿到每一个配置 opt，然后执行 validateProp 验证。
 
-对于单个 Prop 的配置，我们除了配置它的类型 type，还可以配置 required 表明它的必要性，以及 validator 自定义校验器，举个例子：
+对于单个 Prop 的配置，除了配置它的类型 type，还可以配置 required 表明它的必要性，以及 validator 自定义校验器，举个例子：
 
 ```js
 export default {
@@ -494,11 +494,11 @@ function initProps(instance, rawProps, isStateful, isSSR = false) {
 }
 ```
 
-在前两个流程，我们通过 setFullProps 求值赋值给 props 变量，并对 props 做了检测，接下来，就是把 props 变成响应式，并且赋值到组件的实例上。
+在前两个流程中，setFullProps 求值并赋值给 props 变量，并对 props 做了检测，接下来，就是把 props 变成响应式，并且赋值到组件的实例上。
 
 ### Props 的更新
 
-所谓 Props 的更新主要是指 Props 数据的更新，它最直接的反应是会触发组件的重新渲染，我们可以通过一个简单的示例分析这个过程。例如我们有这样一个子组件 HelloWorld，它是这样定义的：
+所谓 Props 的更新主要是指 Props 数据的更新，它最直接的反应是会触发组件的重新渲染，可以通过一个简单的示例分析这个过程。例如有这样一个子组件 HelloWorld，它的定义如下：
 
 ```html
 <template>
@@ -517,7 +517,7 @@ function initProps(instance, rawProps, isStateful, isSSR = false) {
 
 这里，HelloWorld 组件接受一个 msg prop，然后在模板中渲染这个 msg。
 
-然后我们在 App 父组件中引入这个子组件，它的定义如下：
+然后在 App 父组件中引入这个子组件，它的定义如下：
 
 ```html
 <template>
@@ -544,7 +544,7 @@ function initProps(instance, rawProps, isStateful, isSSR = false) {
 
 给 HelloWorld 子组件传递的 prop 值是 App 组件中定义的 msg 变量，初始值为 Hello world，会在子组件模板中显示。点击按钮修改 msg 的值会触发父组件重新渲染，因为模板引用了 msg 变量。此时 HelloWorld 子组件显示的字符串变为 Hello Vue，子组件是如何被触发重新渲染的？
 
-在组件更新的章节我们说过，组件的重新渲染会触发 patch 过程，然后遍历子节点递归 patch，那么遇到组件节点，会执行 updateComponent 方法：
+在组件更新的章节中已经说明，组件的重新渲染会触发 patch 过程，然后遍历子节点递归 patch，那么遇到组件节点，会执行 updateComponent 方法：
 
 ```js
 const updateComponent = (n1, n2, parentComponent, optimized) => {
@@ -566,7 +566,7 @@ const updateComponent = (n1, n2, parentComponent, optimized) => {
 }
 ```
 
-在这个过程中，会执行 shouldUpdateComponent 方法判断是否需要更新子组件，内部会对比 props，由于我们的 prop 数据 msg 由 Hello world 变成了 Hello Vue，值不一样所以 shouldUpdateComponent 会返回 true，这样就把新的子组件 vnode 赋值给 instance.next，然后执行 instance.update 触发子组件的重新渲染。
+在这个过程中，会执行 shouldUpdateComponent 方法判断是否需要更新子组件，内部会对比 props，由于 prop 数据 msg 由 Hello world 变成了 Hello Vue，值不一样所以 shouldUpdateComponent 会返回 true，这样就把新的子组件 vnode 赋值给 instance.next，然后执行 instance.update 触发子组件的重新渲染。
 
 这就是触发子组件重新渲染的原因。但子组件重新渲染后，其 instance.props 的数据也需要更新，否则渲染的仍是之前的数据，下面看 instance.props 是如何更新的。
 
@@ -707,11 +707,11 @@ const Child = defineComponent({
 count.value++
 ```
 
-这里，我们定义了父组件 Parent 和子组件 Child，子组件 Child 中定义了 prop count，除了在渲染模板中引用了 count，我们在 setup 函数中通过了 watchEffect 注册了一个回调函数，内部依赖了 props.count，当修改 count.value 的时候，我们希望这个回调函数也能执行，所以这个 prop 的值需要是响应式的，由于 setup 函数的第一个参数是props 变量，其实就是组件实例 instance.props，所以也就是要求 instance.props 是响应式的。
+这里定义了父组件 Parent 和子组件 Child，子组件 Child 中定义了 prop count，除了在渲染模板中引用了 count，还在 setup 函数中通过 watchEffect 注册了一个回调函数，内部依赖了 props.count。当修改 count.value 的时候，希望这个回调函数也能执行，所以这个 prop 的值需要是响应式的，由于 setup 函数的第一个参数是props 变量，其实就是组件实例 instance.props，所以也就是要求 instance.props 是响应式的。
 
 再看为什么用 shallowReactive：shallow 的字面意思是浅的，从实现上来说，就是不会递归执行 reactive，只劫持最外一层对象。
 
-shallowReactive 和普通的 reactive 函数的主要区别是处理器函数不同，我们来回顾 getter 的处理器函数：
+shallowReactive 和普通的 reactive 函数的主要区别是处理器函数不同，回顾 getter 的处理器函数：
 
 ```js
 function createGetter(isReadonly = false, shallow = false) {

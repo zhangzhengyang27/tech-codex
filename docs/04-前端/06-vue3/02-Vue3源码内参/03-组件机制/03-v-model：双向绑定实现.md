@@ -14,7 +14,7 @@ keywords:
 # v-model：双向绑定实现
 很多人学习 Vue.js，会把 Vue.js 的响应式原理误解为双向绑定。其实响应式原理是一种单向行为，它是数据到 DOM 的映射。而真正的双向绑定，除了数据变化，会引起 DOM 的变化之外，还应该在操作 DOM 改变后，反过来影响数据的变化。
 
-那么 Vue.js 里有内置的双向绑定的实现吗？答案是有的，v-model 指令就是一种双向绑定的实现，我们在平时项目开发中，也经常会使用 v-model。
+那么 Vue.js 里有内置的双向绑定的实现吗？答案是有的，v-model 指令就是一种双向绑定的实现，在平时项目开发中会经常使用 v-model。
 
 v-model 也不是可以作用到任意标签，它只能在一些特定的表单标签如 input、select、textarea 和自定义组件中使用。
 
@@ -24,7 +24,7 @@ v-model 也不是可以作用到任意标签，它只能在一些特定的表单
 
 先看普通表单元素上的 v-model，基本示例：`<input v-model="searchText"/>`。
 
-我们先看这个模板编译后生成的 render 函数：
+先看这个模板编译后生成的 render 函数：
 
 ```js
 import { vModelText as _vModelText, createVNode as _createVNode, withDirectives as _withDirectives, openBlock as _openBlock, createBlock as _createBlock } from "vue"
@@ -103,11 +103,11 @@ function onCompositionEnd(e) {
 
 那么下面来拆解这个指令的实现。首先，这个指令实现了两个钩子函数，created 和 beforeUpdate。
 
-下面看 created 部分的实现，根据前文的分析，我们知道第一个参数 el 是节点的 DOM 对象，第二个参数是 binding 对象，第三个参数 vnode 是节点的 vnode 对象。
+下面看 created 部分的实现，根据前文的分析，第一个参数 el 是节点的 DOM 对象，第二个参数是 binding 对象，第三个参数 vnode 是节点的 vnode 对象。
 
 created 函数首先把 v-model 绑定的值 value 赋值给 el.value，这个就是数据到 DOM 的单向流动；接着通过 getModelAssigner 方法获取 props 中的 onUpdate:modelValue 属性对应的函数，赋值给 el._assign 属性；最后通过 addEventListener 来监听 input 标签的事件，它会根据是否配置 lazy 这个修饰符来决定监听 input 还是 change 事件。
 
-我们接着看这个事件监听函数，当用户手动输入一些数据触发事件的时候，会执行函数，并通过 el.value 获取 input 标签新的值，然后调用 el._assign 方法更新数据，这就是 DOM 到数据的流动。
+接着看这个事件监听函数，当用户手动输入一些数据触发事件的时候，会执行函数，并通过 el.value 获取 input 标签新的值，然后调用 el._assign 方法更新数据，这就是 DOM 到数据的流动。
 
 至此实现了数据双向绑定。接着看 input v-model 支持的几个修饰符各自含义。
 
@@ -131,7 +131,7 @@ created 函数首先把 v-model 绑定的值 value 赋值给 el.value，这个�
 
 下面再来看一下 beforeUpdate 钩子函数的实现，非常简单，主要就是在组件更新前判断如果数据的值和 DOM 的值不同，则把数据更新到 DOM 上。
 
-前面我们的分析的是文本类型的 input，如果我们对示例稍加修改：
+前面分析的是文本类型的 input，如果对示例稍加修改：
 
 ```html
 <input type="checkbox" v-model="searchText"/>
@@ -162,13 +162,13 @@ app.component('custom-input', {
 })
 ```
 
-我们先通过 app.component 全局注册了一个 custom-input 自定义组件，内部我们使用了原生的 input 并使用了 v-model 指令实现数据的绑定。
+示例通过 app.component 全局注册了一个 custom-input 自定义组件，内部使用了原生的 input 并使用了 v-model 指令实现数据的绑定。
 
-注意这里我们不能直接把 modelValue 作为 input 对应的 v-model 数据，因为不能直接对 props 的值修改，因此这里使用计算属性。
+注意这里不能直接把 modelValue 作为 input 对应的 v-model 数据，因为不能直接对 props 的值修改，因此这里使用计算属性。
 
 计算属性 value 对应的 getter 函数是直接取 modelValue 这个 prop 的值，而 setter 函数是派发一个自定义事件 update:modelValue。
 
-下面可以在应用的其他的地方使用这个自定义组件了：
+然后在应用的其他地方使用这个自定义组件：
 
 ```html
 <custom-input v-model="searchText"/>
@@ -189,7 +189,7 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 编译结果似乎和指令没有什么关系，并没有调用 withDirective 函数。
 
-我们对示例稍做修改：
+对示例稍做修改：
 
 ```html
 <custom-input :modelValue="searchText" @update:modelValue="$event=>{searchText = $event}"/>
@@ -208,9 +208,9 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 ```
 
-我们发现，它和前面示例的编译结果是一模一样的，因为 v-model 作用于组件上本质就是一个语法糖，就是往组件传入了一个名为 modelValue 的 prop，它的值是往组件传入的数据 data，另外它还在组件上监听了一个名为 update:modelValue 的自定义事件，事件的回调函数接受一个参数，执行的时候会把参数 $event 赋值给数据 data。
+它和前面示例的编译结果是一模一样的，因为 v-model 作用于组件上本质就是一个语法糖，就是往组件传入了一个名为 modelValue 的 prop，它的值是往组件传入的数据 data，另外它还在组件上监听了一个名为 update:modelValue 的自定义事件，事件的回调函数接受一个参数，执行的时候会把参数 $event 赋值给数据 data。
 
-正因为这个原理，所以我们想要实现自定义组件的 v-model，首先需要定义一个名为 modelValue 的 prop，然后在数据改变的时候，派发一个名为 update:modelValue 的事件。
+正因为这个原理，想要实现自定义组件的 v-model，首先需要定义一个名为 modelValue 的 prop，然后在数据改变的时候，派发一个名为 update:modelValue 的事件。
 
 Vue.js 3.0 关于组件 v-model 的实现和 Vue.js 2.x 实现是很类似的，在 Vue.js 2.x 中，想要实现自定义组件的 v-model，首先需要定义一个名为 value 的 prop，然后在数据改变的时候，派发一个名为 input 的事件。
 
@@ -218,9 +218,9 @@ Vue.js 3.0 关于组件 v-model 的实现和 Vue.js 2.x 实现是很类似的，
 
 v-model 在自定义组件的设计中非常常用，Element Plus 几乎所有的表单组件都是通过 v-model 的方式完成数据交换。
 
-一旦我们使用了 v-model 的方式，我们必须在组件中申明一个 modelValue 的 prop，如果不想用这个 prop，想换个名字，当然也是可以的。
+一旦使用了 v-model 的方式，就必须在组件中申明一个 modelValue 的 prop；如果不想用这个 prop、想换个名字，当然也是可以的。
 
-Vue.js 3.0 给组件的 v-model 提供了参数的方式，允许我们指定 prop 的名称：`<custom-input v-model:text="searchText"/>`。
+Vue.js 3.0 给组件的 v-model 提供了参数的方式，允许指定 prop 的名称：`<custom-input v-model:text="searchText"/>`。
 
 再看编译后的 render 函数：
 
@@ -237,7 +237,7 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 往组件传递的 prop 变成了 text，监听的自定义事件也变成了 @update:text。
 
-显然，如果 v-model 支持了参数，下面可以在一个组件上使用多个 v-model 了：
+显然，v-model 支持参数后，就可以在一个组件上使用多个 v-model 了：
 
 ```html
 <ChildComponent v-model:title="pageTitle" v-model:content="pageContent" />
@@ -245,11 +245,11 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 至此，掌握了组件 v-model 的实现原理，它的本质就是语法糖：**通过 prop 向组件传递数据**，**并监听自定义事件接受组件反传的数据并更新**。
 
-prop 的实现原理我们之前分析过，但自定义事件是如何派发的呢？因为从模板的编译结果看，除了 modelValue 这个 prop，还多了一个 onUpdate:modelValue 的 prop，它和自定义事件有什么关系？下面来分析这部分的实现。
+prop 的实现原理之前已分析过，但自定义事件是如何派发的呢？因为从模板的编译结果看，除了 modelValue 这个 prop，还多了一个 onUpdate:modelValue 的 prop，它和自定义事件有什么关系？下面来分析这部分的实现。
 
 ### 自定义事件派发
 
-从前面的示例我们知道，子组件会执行`this.$emit('update:modelValue',value)`方法派发自定义事件，$emit 内部执行了 emit 方法，其实现：
+从前面的示例可知，子组件会执行`this.$emit('update:modelValue',value)`方法派发自定义事件，$emit 内部执行了 emit 方法，其实现：
 
 ```js
 function emit(instance, event, ...args) {
@@ -269,7 +269,7 @@ function emit(instance, event, ...args) {
 
 emit 方法支持 3 个参数，第一个参数 instance 是组件的实例，也就是执行 $emit 方法的组件实例，第二个参数 event 是自定义事件名称，第三个参数 args 是事件传递的参数。
 
-emit 方法首先获取事件名称，把传递的 event 首字母大写，然后前面加上 on 字符串，比如我们前面派发的 update:modelValue 事件名称，处理后就变成了 onUpdate:modelValue。
+emit 方法首先获取事件名称，把传递的 event 首字母大写，然后前面加上 on 字符串，比如前面派发的 update:modelValue 事件名称，处理后就变成了 onUpdate:modelValue。
 
 接下来，通过这个事件名称，从 props 中根据事件名找到对应的 prop 值，作为事件的回调函数。
 

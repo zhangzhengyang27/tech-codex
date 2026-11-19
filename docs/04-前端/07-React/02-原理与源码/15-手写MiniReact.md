@@ -1,6 +1,6 @@
 ---
 title: "手写MiniReact-思路分析"
-description: "从思路分析到动手实现：拆解 React 渲染流程（JSX → React Element → fiber → reconcile → render/commit），手写一个支持 useState、useEffect 与时间分片调度的 Mini React，并调试 React 源码对比两者的异同。"
+description: "拆解 React 渲染流程（JSX → React Element → fiber → reconcile → render/commit），实现一个支持 useState、useEffect 与时间分片调度的 Mini React，并调试 React 源码对比两者的异同。"
 keywords: [手写MiniReact-思路分析]
 category: React
 tags: [React, 原理与源码]
@@ -10,31 +10,24 @@ tags: [React, 原理与源码]
 
 ## 思路分析：React 渲染流程
 
-这节我们简单分析了下 React 的渲染流程。
+React 渲染流程可以概括如下：
 
-JSX 通过 babel、tsc 等编译器编译成 render function，然后执行后产生 React Element 的树。
+- JSX 通过 babel、tsc 等编译器编译成 render function，执行后产生 React Element 的树。
+- React Element 的树会转成 fiber 链表，这个过程叫做 reconcile，由 React 的 Scheduler 调度。
+- reconcile 每次只处理一个 fiber 节点，通过时间分片把 reconcile 的过程分到多个任务跑，这样 fiber 树再大也不会阻塞渲染。
+- reconcile + schedule 这个过程叫做 render 阶段，之后会进入 commit 阶段。
+- commit 阶段会遍历构建好的 fiber 链表，执行 dom 操作，还有函数组件的 effect 等。
+- commit 阶段按照更新 dom 前后，分了 before mutation、mutation、layout 三个小阶段。
 
-React Element 的树会转成 fiber 链表，这个过程叫做 reconcile，由 React 的 Scheduler 调度。
-
-reconcile 每次只处理一个 fiber 节点，通过时间分片把 reconcile 的过程分到多个任务跑，这样  fiber 树再大也不会阻塞渲染。
-
-reconcile + schedule 这个过程叫做 render 阶段，而之后会进入 commit 阶段。
-
-commit 阶段会遍历构建好的 fiber 链表，执行 dom 操作，还有函数组件的 effect 等。
-
-它按照更新 dom 前后，分了 before mutation、mutation、layout 三个小阶段。
-
-这就是 React 的 fiber 架构的好处和渲染流程，下节我们按照这个流程来写下 Mini React。
+这就是 React 的 fiber 架构的好处和渲染流程。下面按照这个流程实现 Mini React。
 
 ## 实现：手写 Mini React
 
-上节我们梳理了 React 渲染流程，这节来具体实现下。
+### 第一步：从 JSX 到 React Element
 
-首先先完成从 JSX 到 React Element 的转换：
+从 JSX 到 render function 这一步是 babel 或者 tsc 做的，实现 render function 并返回对应的 React Element 即可。
 
-从 JSX 到 render function 这步是 babel 或者 tsc 帮我们做的。
-
-新建个项目：
+新建项目：
 
 ```
 mkdir mini-react
@@ -53,7 +46,8 @@ npm install --save-dev typescript
 ```
 npx tsc --init
 ```
-改一下生成的 tsconfig.json
+
+修改生成的 tsconfig.json：
 
 ```json
 {
@@ -68,7 +62,7 @@ npx tsc --init
 }
 ```
 
-添加 src/index.jsx
+添加 src/index.jsx：
 
 ```javascript
 const content = <div>
@@ -76,30 +70,27 @@ const content = <div>
     <a href="xxx">link</a>
 </div>
 ```
+
 执行编译：
 
 ```
 npx tsc
 ```
 
-可以看到，生成的代码是这样的：
+编译产物中，React.createElement 第一个参数是类型，第二个参数是 props，第三个参数是 children。
 
-React.createElement 第一个参数是类型，第二个参数是 props，第三个参数是 children。
-
-具体的 render function 的名字也可以指定：
+render function 的名字也可以指定：
 
 ```json
 "jsx": "react",
 "jsxFactory": "MiniReact.createElement"
 ```
 
-再次执行编译，生成的就是这样的：
+再次执行编译，生成的就是以 MiniReact.createElement 调用形式存在的代码。
 
-这就是从 jsx 到 render function 这一步，由 babel、tsc 等编译器来做：
+这就是从 jsx 到 render function 这一步，由 babel、tsc 等编译器来做。实现这些 render function，返回对应的 React Element 即可。
 
-我们只要实现这些 render function，然后返回对应的 React Element 即可。
-
-创建 src/mini-react.js
+创建 src/mini-react.js：
 
 ```javascript
 function createElement(type, props, ...children) {
@@ -132,19 +123,11 @@ const MiniReact = {
 window.MiniReact = MiniReact;
 ```
 
-MiniReact.createElement 就是我们实现的 render function。
+MiniReact.createElement 就是实现的 render function。
 
-为什么文本节点要单独处理呢？
+文本节点要单独处理的原因：div 的 type 是 div，可以有 props 和 children；而文本节点没有 type、children、props。给它加一个固定的 type TEXT_ELEMENT，并设置 nodeValue 的 props，这样结构统一，方便后面处理。
 
-因为 div 的话，它的 type 是 div，可以有 props 和 children。
-
-而文本节点是没有 type、children、props 的。
-
-我们需要给它加个固定的 type TEXT_ELEMENT，并且设置 nodeValue 的 props。
-
-这样结构统一，方便后面处理。
-
-改下 index.jsx
+修改 index.jsx：
 
 ```javascript
 const content = <div>
@@ -154,14 +137,13 @@ const content = <div>
 console.log(JSON.stringify(content, null, 2));
 ```
 
-编译一下：
+编译：
 
 ```
 npx tsc -w
 ```
-在 dist 下生成了目标代码：
 
-加一个 index.html 引入下 dist 的代码：
+在 dist 下生成了目标代码。加一个 index.html 引入 dist 的代码：
 
 ```html
 <!DOCTYPE html>
@@ -178,21 +160,18 @@ npx tsc -w
 </body>
 </html>
 ```
-然后跑个静态服务：
+
+跑一个静态服务：
 
 ```
 npx http-server .
 ```
 
-浏览器访问下：
+浏览器访问后可以看到 React Element 的树，也就是常说的 vdom。
 
-这个就是 React Element 的树，也就是我们常说的 vdom。
+### 第二步：React Element 转 fiber（reconcile）
 
-接下来要把它转成 fiber 结构。
-
-这个过程叫做 reconcile。
-
-它并不是一次性完成的，而是通过调度器调度，根据时间分片放到多个任务里完成，这里我们用 requestIdleCallback 来调度。
+接下来把 React Element 树转成 fiber 结构，这个过程叫做 reconcile。它并不是一次性完成的，而是通过调度器调度，根据时间分片放到多个任务里完成，这里用 requestIdleCallback 来调度。
 
 ```javascript
 let nextUnitOfWork = null
@@ -237,27 +216,18 @@ function performUnitOfWork(fiber) {
     }
 }
 ```
-我们用 requestIdleCallback 来代替 React 的时间分片，把 React Element 树转 fiber 的 reconcile 过程放到不同的任务里跑。
 
-用 nextUnitOfWork 指向下一个要处理的 fiber 节点。
+这里用 requestIdleCallback 代替 React 的时间分片，把 React Element 树转 fiber 的 reconcile 过程放到不同的任务里跑。
 
-每次跑的时候判断下 timeRemaining 是否接近 0，是的话就中断循环，等下次 requestIdleCallback 的回调再继续处理 nextUnitOfWork 指向的 fiber 节点。
+- 用 nextUnitOfWork 指向下一个要处理的 fiber 节点。
+- 每次执行时判断 timeRemaining 是否接近 0，是的话就中断循环，等下次 requestIdleCallback 的回调再继续处理 nextUnitOfWork 指向的 fiber 节点。deadline.timeRemaining 是 requestIdleCallback 提供的，详见 [MDN 的文档](https://developer.mozilla.org/zh-CN/docs/Web/API/Background_Tasks_API#%E7%A4%BA%E4%BE%8B)。
+- render 方法里设置初始 nextUnitOfWork。
 
-这里的 deadline.timeRemaining 是 requestIdleCallback 提供的，详细了解可以看下 [MDN 的文档](https://developer.mozilla.org/zh-CN/docs/Web/API/Background_Tasks_API#%E7%A4%BA%E4%BE%8B)。
+这里有两个 root：一个是当前正在处理的 fiber 链表的根 wipRoot，一个是之前的历史 fiber 链表的根 currentRoot。为什么需要两个 root？因为初始渲染会生成一个 fiber 链表，后面 setState 更新会再生成一个新的 fiber 链表，两个 fiber 链表要做对比来决定对 dom 节点的增删改，所以都要保存。
 
-render 方法里设置初始 nextUnitOfWork。
+performUnitOfWork 处理每个 fiber 节点之后，会按照 child、sibling、return 的顺序返回下一个要处理的 fiber 节点，通过这种顺序把 fiber 树变为链表。
 
-这里有两个 root，一个是当前正在处理的 fiber 链表的根 wipRoot，一个是之前的历史 fiber 链表的根 currentRoot。
-
-为什么有两个 root 呢？
-
-因为初始渲染会生成一个 fiber 链表，然后后面 setState 更新会再生成一个新的 fiber 链表，两个 fiber 链表要做一些对比里决定对 dom 节点的增删改，所以都要保存。
-
-而 performUnitOfWork 处理每个 fiber 节点之后，会按照 child、sibling、return 的顺序返回下一个要处理的 fiber 节点：
-
-就是通过这种顺序来把 fiber 树变为链表的：
-
-处理每个 fiber 节点的时候，要根据类型做不同的处理：
+处理每个 fiber 节点时，要根据类型做不同的处理：
 
 ```javascript
 function performUnitOfWork(fiber) {
@@ -297,20 +267,16 @@ function updateHostComponent(fiber) {
         fiber.dom = createDom(fiber)
     }
     reconcileChildren(fiber, fiber.props.children)
+
 }
-
 ```
-判断下是函数组件（FunctionComponent），还是原生标签（HostComponent），分别做处理。
 
-函数组件就是传入 props 调用它，并且函数组件的返回值就是要继续 reconcile 的节点。
+函数组件（FunctionComponent）和原生标签（HostComponent）分别处理：
 
-这里用 wipFiber 指向当前处理的 fiber（之前的 nextUnitOfWork 是指向下一个要处理的 fiber 节点）
+- 函数组件：传入 props 调用它，函数组件的返回值就是要继续 reconcile 的节点。这里用 wipFiber 指向当前处理的 fiber（nextUnitOfWork 指向的是下一个要处理的 fiber 节点），并用 stateHooks 数组存储 useState 的 hook 值、effectHooks 数组存储 useEffect 的 hook 值。
+- 原生标签：创建它对应的 dom 节点。
 
-然后用一个 stateHooks 数组来存储 useState 的 hook 的值，用 effectHooks 数组存储 useEffect 的 hook 的值。
-
-对于原生标签（HostComponent），就是创建它对应的 dom 节点。
-
-具体创建 dom 的过程如下：
+创建 dom 的过程如下：
 
 ```javascript
 function createDom(fiber) {
@@ -367,15 +333,13 @@ function updateDom(dom, prevProps, nextProps) {
     })
 }
 ```
-首先，根据是文本节点还是元素节点用 document.createElement 或 document.createTextNode 来创建。
 
-然后更新 props。
+- 首先根据是文本节点还是元素节点，用 document.createTextNode 或 document.createElement 来创建。
+- 然后更新 props：先删除旧的事件监听器、旧的属性，再添加新的属性、新的事件监听器。
 
-首先删除旧的事件监听器，旧的属性，然后添加新的属性、新的事件监听器。
+### 第三步：diff 与 fiber 链表构建
 
-这样函数组件和原生标签的 reconcile 就处理完了。
-
-继续处理它们的子节点：
+继续处理子节点：
 
 ```javascript
 function reconcileChildren(wipFiber, elements) {
@@ -429,27 +393,16 @@ function reconcileChildren(wipFiber, elements) {
     }
 }
 ```
-之前在 wipRoot 我们就指定了 alternate，也就是之前的 fiber 树，这样当 reconcile 创建新的 fiber 树的时候，就可以和之前的做 diff，判断是新增、修改、删除，打上对应的标记。
 
-首先，拿到 alternate 的 child，依次取 sibling，逐一和新的 fiber 节点对比。
+在 wipRoot 上指定了 alternate（之前的 fiber 树），reconcile 创建新的 fiber 树时就可以和之前的做 diff，判断是新增、修改还是删除，打上对应的标记。
 
-然后根据对比结果来创建新的 fiber 节点，也是先 child 后 sibling 的方式：
+- 首先拿到 alternate 的 child，依次取 sibling，逐一和新的 fiber 节点对比。
+- 然后根据对比结果创建新的 fiber 节点，也是先 child 后 sibling 的方式。这样遍历之前的 fiber 链表和生成新的 fiber 链表，新旧节点就能通过 alternate 一一对应起来。
+- diff 两个 fiber 链表的做法：判断节点 type 是否一样。一样就是修改，不一样就是删除或者新增，打上对应的标记。
 
-这样遍历之前的 fiber 链表和生成新的 fiber 链表，新旧节点就能通过 alternate 一一对应起来。
+fiber 节点的字段含义：type、props 是类型和参数；dom 是对应的 dom 节点；alternate 是对应的旧 fiber 节点；effectTag 是增删改的标记。
 
-然后 diff 两个 fiber 链表，就是判断节点 type 是不是一样。
-
-如果一样，就是修改，不一样，那就是删除或者新增，打上对应的标记。
-
-fiber 节点的 type、props 就是类型和参数。
-
-dom 是对应的 dom 节点，
-
-alternate 是对应的旧的 fiber 节点。
-
-effectTag 是增删改的标记。
-
-这里的 deletions 数组，也就是要删除的节点，在 render 的时候初始化：
+deletions 数组保存要删除的节点，在 render 的时候初始化：
 
 ```javascript
 let nextUnitOfWork = null
@@ -471,17 +424,12 @@ function render(element, container) {
     nextUnitOfWork = wipRoot
 }
 ```
-这样，从 wipRoot 开始，逐渐 reconcile 构建新的 fiber 节点，根据 FunctionComponent 还是原生标签（HostComponent）来分别执行函数和创建 dom，并且还对新旧的 fiber 节点做了 diff，打上增删改标记。
 
-reconcile 结束，新的 fiber 链表就创建好了。
+这样，从 wipRoot 开始逐渐 reconcile 构建新的 fiber 节点：根据 FunctionComponent 还是原生标签（HostComponent）分别执行函数和创建 dom，并对新旧 fiber 节点做 diff 打上增删改标记。reconcile 结束后，新的 fiber 链表就创建好了。
 
-其中，函数组件可能会调用 useState 或者 useEffect 的 api，我们也要实现一下：
+### 第四步：实现 useState 和 useEffect
 
-首先，useState 的 state 和 useEffect 的 effect 存在哪里呢？
-
-肯定是在 fiber 上。
-
-比如用两个数组 stateHooks 和 effectHooks 分别来存储：
+函数组件可能会调用 useState 或者 useEffect，这两个 api 也要实现。state 和 effect 存在哪里？答案是在 fiber 上，用两个数组 stateHooks 和 effectHooks 分别存储。
 
 先实现 useState：
 
@@ -520,21 +468,13 @@ function useState(initialState) {
     return [stateHook.state, setState];
 }
 ```
-我们在 fiber 节点上用 stateHooks 数组来存储 state，还有多次调用 setState 的回调函数。
 
-比如连续调用三次 setState，那 state 就是 0，然后 queue 里存了三个修改 state 的函数。
+在 fiber 节点上用 stateHooks 数组来存储 state，以及多次调用 setState 的回调函数。
 
-每次调用 useState 时会在 stateHooks 添加一个元素来保存 state。
-
-state 的初始值是前面一次渲染的 state 值，也就是取 alternate 的同一位置的 state。
-
-这样对初始 state 执行多个 action（也就是 setState） 之后，就拿到了最终的 state 值。
-
-修改完 state 之后清空 queue。
-
-比如这里初始 state 是 0，调用三次 action 之后，state 变为 3。
-
-然后 setState 就是在 action 数组里添加新的 action，并且让 nextUnitOfWork 指向新的 wipRoot，从而开始新的一轮渲染。
+- 比如连续调用三次 setState，state 是 0，queue 里就存了三个修改 state 的函数。
+- 每次调用 useState 时会在 stateHooks 添加一个元素来保存 state。state 的初始值是上一次渲染的 state 值，也就是取 alternate 同一位置的 state。
+- 对初始 state 执行多个 action（也就是 setState）之后，就拿到了最终的 state 值，修改完 state 之后清空 queue。比如初始 state 是 0，调用三次 action 之后，state 变为 3。
+- setState 就是在 action 数组里添加新的 action，并且让 nextUnitOfWork 指向新的 wipRoot，从而开始新的一轮渲染。
 
 然后是 useEffect：
 
@@ -548,24 +488,22 @@ function useEffect(callback, deps) {
   wipFiber.effectHooks.push(effectHook);
 }
 ```
-它就是在 fiber.effectHooks 上添加一个元素。
 
-这样，等 reconcile 结束，fiber 链表就构建好了，在 fiber 上打上了增删改的标记，并且也保存了要执行的 effect。
+它就是在 fiber.effectHooks 上添加一个元素。这样，等 reconcile 结束，fiber 链表就构建好了，在 fiber 上打上了增删改的标记，并且也保存了要执行的 effect。
 
-接下来只要遍历这个构建好的 fiber 链表，执行增删改和 effect 函数就好了。
+### 第五步：commit 阶段
 
-这个阶段是 commit。
+接下来只要遍历构建好的 fiber 链表，执行增删改和 effect 函数即可，这个阶段是 commit。
 
-前面讲过，requestIdleCallback 在不断进行，每次处理一部分 fiber 的 reconcile。
-
-我们只要在 reconcile 结束，也就是没有 nextUnitOfWork 的时候执行 commit 就行了：
+requestIdleCallback 在不断执行，每次处理一部分 fiber 的 reconcile。只要在 reconcile 结束（没有 nextUnitOfWork）的时候执行 commit 就行了：
 
 ```javascript
 if (!nextUnitOfWork && wipRoot) {
     commitRoot()
 }
 ```
-在 commitRoot 里，我们先把需要删除的节点都删掉，然后遍历 fiber 链表，处理其它节点：
+
+在 commitRoot 里，先把需要删除的节点都删掉，然后遍历 fiber 链表处理其它节点：
 
 ```javascript
 function commitRoot() {
@@ -576,9 +514,10 @@ function commitRoot() {
     deletions = []
 }
 ```
-这里要把当前 wipRoot 设置为 currentRoot，然后把它置空，这就代表这次 reconcile 结束了。
 
-处理完之后还要把 deletions 数组里保存的要删除的节点置空，这时候已经删除了。
+这里要把当前 wipRoot 设置为 currentRoot，然后把它置空，代表这次 reconcile 结束；处理完之后把 deletions 数组里保存的要删除的节点置空。
+
+commitWork 按照 child、sibling 的顺序递归遍历 fiber 链表：
 
 ```javascript
 function commitWork(fiber) {
@@ -590,8 +529,6 @@ function commitWork(fiber) {
     commitWork(fiber.sibling)
 }
 ```
-
-commitWork 按照 child、sibling 的顺序来递归遍历 fiber 链表。
 
 ```javascript
 function commitWork(fiber) {
@@ -617,9 +554,9 @@ function commitWork(fiber) {
     commitWork(fiber.sibling)
 }
 ```
-首先，不断向上找，找到可以挂载的 dom 节点。
 
-然后按照增增删改的 effectTag 来分别做处理。
+- 首先，不断向上找到可以挂载的 dom 节点。
+- 然后按照增删改的 effectTag 分别处理。
 
 ```javascript
 function commitDeletion(fiber, domParent) {
@@ -630,15 +567,10 @@ function commitDeletion(fiber, domParent) {
     }
 }
 ```
-删除的时候，如果当前 fiber 节点没有对应的 dom，就不断 child 向下找。
 
-这样遍历完一遍之后，dom 的增删改就完成了。
+删除时，如果当前 fiber 节点没有对应的 dom，就不断 child 向下找。遍历完一遍之后，dom 的增删改就完成了。
 
-此外，我们还需要处理 effect。
-
-它同样要遍历 fiber 链表：
-
-先遍历一遍执行所有的 cleanup 函数，然后再次遍历执行 effect 函数。
+此外还需要处理 effect。它同样要遍历 fiber 链表：先遍历一遍执行所有的 cleanup 函数，然后再次遍历执行 effect 函数。
 
 ```javascript
 function commitEffectHooks() {
@@ -701,11 +633,11 @@ function isDepsEqual(deps, newDeps) {
 }
 
 ```
+
 这里遍历 fiber 链表也是递归处理每个节点，每个节点递归处理 child、sibling。
 
-当没有传入 deps 数组，或者 deps 数组和上次不一致时，就执行 cleanup 函数。
+- 当没有传入 deps 数组，或者 deps 数组和上次不一致时，先执行 cleanup 函数。比如：
 
-比如这样：
 ```javascript
 useEffect(() => {
     const timer = setTimeout(() => {
@@ -714,17 +646,13 @@ useEffect(() => {
     return () => clearTimeout(timer);
 })
 ```
-当没有传入 deps 或者 deps 数组变化的时候，会执行上次的 cleanup 函数（也就是 clearTimeout）。
 
-之后才会重新执行 effect。
+  没有传入 deps 或者 deps 数组变化的时候，会先执行上次的 cleanup 函数（也就是 clearTimeout），之后才重新执行 effect。
+- 当没有 alternate 的时候（首次渲染），直接执行所有的 effect；否则，没传入 deps 或者 deps 数组变化时才执行 effect 函数。
 
-当没有 alternate 的时候，就是首次渲染，直接执行所有的 effect。
+这样，commit 阶段遍历 fiber 链表完成了 dom 的增删改并执行了 effect 函数。至此，渲染流程的两大阶段 render 和 commit 都完成了。
 
-否则，如果没传入 deps 或者 deps 数组变化的时候再执行 effect 函数。
-
-这样，commit 阶段，我们遍历 fiber 链表做的 dom 的增删改，执行了 effect 函数。
-
-至此，react 的渲染流程的两大阶段 render 和 commit 就完成了。
+### 整体测试
 
 导出 render、useState、useEffect 的 api，挂到 MiniReact 上：
 
@@ -738,11 +666,9 @@ const MiniReact = {
 window.MiniReact = MiniReact;
 ```
 
-然后把上面的实现包在一个立即执行函数里，只把 MiniReact 挂到 window 上，避免污染全局变量。
+然后把实现包在一个立即执行函数里，只把 MiniReact 挂到 window 上，避免污染全局变量。
 
-我们整体测试下：
-
-改下 index.jsx
+整体测试如下。修改 index.jsx：
 
 ```javascript
 const { render, useState, useEffect } = window.MiniReact;
@@ -762,11 +688,8 @@ function App() {
 
 render(<App/>, document.getElementById('root'));
 ```
-测试下：
 
-没啥问题。
-
-再测试下 useEffect：
+运行正常。再测试 useEffect：
 
 ```javascript
 const { render, useState, useEffect } = window.MiniReact;
@@ -789,9 +712,7 @@ function App() {
 render(<App/>, document.getElementById('root'));
 ```
 
-也没啥问题。
-
-然后我们抽离一个组件，传入初始值和定时器的时间间隔：
+同样正常。然后抽离一个组件，传入初始值和定时器的时间间隔：
 
 ```javascript
 const { render, useState, useEffect } = window.MiniReact;
@@ -822,45 +743,24 @@ function App() {
 
 render(<App/>, document.getElementById('root'));
 ```
-Counter 组件有 interval 和 initialNum 两个参数。
 
-也没问题。
+Counter 组件有 interval 和 initialNum 两个参数，运行同样没有问题。
 
-这样，我们的 mini react 就完成了。
-
-案例代码上传了[小册仓库](https://github.com/QuarkGluonPlasma/react-course-code/tree/main/mini-react)。
+Mini React 到此完成。案例代码见 [GitHub 仓库](https://github.com/QuarkGluonPlasma/react-course-code/tree/main/mini-react)。
 
 ### 实现小结
 
-我们 React 的渲染流程来实现了下 mini react。
-
-JSX 转 render function 这步是 babel 或 tsc 等编译器做的。
-
-我们实现 React.createElement 函数，那执行后返回的就是 React Element 树，也就是 vdom。
-
-通过 requestIdleCallback 在空闲时执行 React Element 转 fiber 的 reconcile 流程。
-
-按照函数组件 FunctionComponent 或者原生标签 HostComponent 分别执行函数或者创建 dom。
-
-reconcile 到子节点的时候要和 alternate 对比，判断是新增、修改还是删除，打上标记。
-
-这个过程中如果调用了 useState 或者 useEffect 会在对应 fiber 节点的 hooks 数组上添加一些元素。
-
-之后进入 commit 阶段，从根节点开始遍历 fiber 链表，根据标记来执行 dom 的增删改，以及执行 effect 函数。
-
-然后 useState 的 setState 会设置新的 nextUnitOfWork，从而触发新的一轮渲染流程。
-
-这样，和 React 的真实渲染流程类似的 mini react 就完成了。
+- JSX 转 render function 这一步由 babel 或 tsc 等编译器完成。
+- 实现 React.createElement 函数，执行后返回 React Element 树（vdom）。
+- 通过 requestIdleCallback 在空闲时执行 React Element 转 fiber 的 reconcile 流程，按函数组件 FunctionComponent 或原生标签 HostComponent 分别执行函数或创建 dom。
+- reconcile 子节点时和 alternate 对比，判断新增、修改、删除并打上标记；过程中调用的 useState、useEffect 会写入对应 fiber 节点的 hooks 数组。
+- commit 阶段从根节点遍历 fiber 链表，根据标记执行 dom 增删改并执行 effect 函数；useState 的 setState 设置新的 nextUnitOfWork，触发新一轮渲染。
 
 ## 调试：对比 React 源码
 
-上节我们写了 mini react。
+Mini React 和真实的 React 渲染流程是否一致？可以调试 react 源码对比差别。
 
-它和真实的 react 渲染流程是否一样呢？
-
-这节我们就调试下 react 源码，对比下两者的差别。
-
-用 cra 创建个 react 项目：
+用 cra 创建一个 react 项目：
 
 ```
 npx create-react-app --template=typescript react-source-debug
@@ -873,11 +773,8 @@ npx create-react-app --template=typescript react-source-debug
 ```
 npm run start
 ```
-浏览器访问下：
 
-没啥问题。
-
-点击 create a launch.json file 创建个调试配置：
+浏览器访问确认无误后，点击 create a launch.json file 创建调试配置：
 
 ```json
 {
@@ -888,139 +785,59 @@ npm run start
     "webRoot": "${workspaceFolder}"
 }
 ```
-在 App.tsx 打个断点：
 
-点击调试启动：
+### 对比 render function
 
-代码会在这里断住。
+在 App.tsx 打断点并点击调试启动，代码会断住。
 
-前面讲过，jsx 会编译成 render function，然后执行后产生 React Element：
+jsx 会编译成 render function，执行后产生 React Element。关掉 sourcemap 重新调试，可以看到 jsxDEV 就是 render function，它是从 react 包引入的，与在 babel playground 里看到的结果一致。点击跳断点执行并进入函数内部，在返回值处打断点，可以看到 render function 返回的是一个 React Element，有 type、props 等属性。Mini React 中实现的 render function 与之对应。
 
-关掉 sourcemap 重新调试：
+### 对比 schedule 和 reconcile
 
-可以看到这个 jsxDEV 就是 render function：
+打开 sourcemap 重新调试，在调用栈可以看到 workLoop。这个是 scheduler 包里的，该包是 react 实现的类似 requestIdleCallback 的功能。
 
-它是从 react 包引入的：
+- 每次取一个任务的回调来跑，回调里判断是否要用时间分片。
+- 时间分片就是把 reconcile 过程分散到多个宏任务中跑。在 scheduler 里搜索可以看到，时间分片是 5ms，也就是说超过 5ms 就会放到下个任务里跑。
+- 这也是 performance 里看到的 event loop 的形态：react 并发渲染时，通过时间片是否到了来判断是否继续 reconcile。
 
-和我们在 babel playground 里看到的结果一样：
+Mini React 实现时没有自己实现 scheduler 的时间分片，而是直接用浏览器的 requestIdleCallback api，效果一样。
 
-然后点击跳断点执行和进入函数内部：
+接下来看 reconcile 的过程。react 源码里处理每个 fiber 节点时会先调用 beginWork，等 fiber 节点全部处理完（没有 next 的 fiber 节点）再调用 completeWork。
 
-在返回值这里打个断点：
+- beginWork 根据 fiber 节点的类型走不同分支（Mini React 只处理了 FunctionComponent 和 HostComponent 类型）。FunctionComponent 的处理同样是调用函数组件，拿到 children 后继续 reconcileChildren；reconcileChildren 对比新旧 fiber 做 diff，打上增删改标记，分别打上 Placement、ChildDeletion 等标记。这部分和 Mini React 实现的 reconcile 逻辑基本一致。
+- completeWork 处理到 HostComponent 时会创建对应的 dom，保存在 fiber.stateNode 属性上——注意 HostComponent 的 beginWork 里并没有创建 dom，这部分逻辑在 completeWork 里（Mini React 是在 updateHostComponent 里创建的）。
 
-可以看到，render function 返回的是一个 React Element，有 type、props 等属性。
+为什么要分为 beginWork 和 completeWork 两个阶段？以创建 dom 为例：需要先把所有子节点的 dom 都创建好，然后 appendChild 才行，所以需要 beginWork 处理完所有 fiber 之后，再递归从下往上处理。
 
-我们的 mini react 里也实现了 render function：
+### 对比 commit 阶段
 
-接下来再看 schedule 和 reconcile 部分：
+react 源码的 commit 阶段分为 before mutation、mutation、layout 三个小阶段：
 
-打开 sourcemap，重新跑调试：
+- mutation 阶段负责更新 dom，把 reconcile 阶段创建好的 dom 更新到 dom 树。
+- 刚进入 commitRoot 的时候，就会调度所有的 useEffect 的回调异步执行。
 
-在调用栈可以看到 workLoop：
+### 对比 hooks 实现
 
-这个是 scheduler 包里的，这个包是 react 实现的类似 requestIdleCallback 的功能。
+fiber 上有一个 memoizedState 的链表，每个节点保存一个 hook 的信息。调用 useState、useRef、useEffect 等 hook 的时候，会往对应的链表节点上存取内容。
 
-可以看到，每次取一个任务的回调来跑：
+hook 链表的创建分为 mount、update 两个阶段：第一次创建链表节点，第二次更新链表节点。
 
-然后回调里会判断是否要用时间分片：
-
-时间分片前面讲过，就是把 reconcile 过程分散到多个宏任务中跑：
-
-在 scheduler 里搜一下，可以看到，这个时间分片是 5ms：
-
-也就是说，如果超过 5ms，就会放到下个任务里跑。
-
-这就是为啥 performance 看到的 event loop 是这样的：
-
-react 并发渲染的时候，就通过时间片是否到了来判断是否继续 reconcile：
-
-当然，我们实现的时候没有自己实现 schduler 的时间分片，而是直接用的浏览器的 requestIdleCallback 的 api，效果一样：
-
-接下来看下 reconcile 的过程：
-
-在 react 源码里，处理每个 fiber 节点的时候，会先调用 beginWork 处理，等 fiber 节点全部处理完，也就是没有 next 的 fiber 节点时，再调用 completeWork 处理。
-
-那 beginWork 和 completeWork 里都做了啥呢？
-
-可以看到，根据 fiber 节点的类型来走了不同的分支，我们只处理了 FunctionComponent 和 HostComponent 类型。
-
-看下 FunctionComponent 的处理：
-
-也是调用函数组件，拿到 children 之后继续 reconcileChildren。
-
-reconcileChildren 里要对比新旧 fiber，做下 diff，打上增删改的标记：
-
-diff 之后，会分别打上 Placement、ChildDeletion 等标记：
-
-这部分和我们 mini react 实现的 reconcile 逻辑差不多。
-
-那 completeWork 是干啥的呢？
-
-看下 HostComponent 的 reconcile 逻辑，你会发现它并没有创建 dom：
-
-而我们的 mini react 里是创建了 dom 的。
-
-其实不是没有创建，而是这部分逻辑在 completeWork 里。
-
-completeWork 里处理到 HostComponent 就会创建对应的 dom，保存在 fiber.stateNode 属性上：
-
-为什么要分为 beginWork 和 completeWork 两个阶段呢？
-
-其实也很容易搞懂，比如创建 dom 这件事，需要先把所有子节点的 dom 都创建好，然后 appendChild 才行。
-
-所以就需要 beginWork 处理完所有 fiber 之后，再递归从下往上处理。
-
-然后是 commit 阶段，在 react 源码里可以看到，这个阶段分为了 before mutation、mutation、layout 这三个小阶段：
-
-mutation 阶段就是更新 dom 的：
-
-可以看到，mutation 阶段会把 reconcile 阶段创建好的 dom 更新到 dom 树。
-
-那啥时候执行的 effect呢？
-
-刚进入 commitRoot 的时候，就会调度所有的 useEffect 的回调异步执行。
-
-还有，useState、useEffect 等 hook 在 react 源码里是怎么实现的呢？
-
-添加几个 hook：
-
-在 return 那里打个断点，可以看到现在的 fiber 是这样的：
-
-在 fiber 上有个 memoizedState 的链表，每个节点保存一个 hook 的信息。
-
-调用 useState、useRef、useEffect 等 hook 的时候，会往对应的链表节点上存取内容。
-
-hook 链表的创建分为 mount、update 两个阶段，第一次创建链表节点，第二次更新链表节点。
-
-比如 useRef 就是在对应 hook 节点的 memoizedState 属性保存一个有 current 属性的对象，第二次调用返回这个对象：
-
-比如 useCallback 就是在对应 hook 节点的 memoizedState 属性保存一个数组，再次调用判断下 deps 是否一样，一样的话就返回之前的数组的第一个元素，否则更新：
-
-useMemo 和 useCallback 实现差不多，只不过 useMemo 保存的是函数执行后的返回值：
-
-这样，和 mini react 对应的 react 源码里的实现就理清了。
+- useRef：在对应 hook 节点的 memoizedState 属性保存一个有 current 属性的对象，第二次调用返回这个对象。
+- useCallback：在对应 hook 节点的 memoizedState 属性保存一个数组，再次调用判断 deps 是否一样，一样就返回之前数组的第一个元素，否则更新。
+- useMemo：实现与 useCallback 差不多，只不过保存的是函数执行后的返回值。
 
 ### 源码对比小结
 
-我们调试了下 react 源码，和前面写的 mini react 对比了下。
+与 Mini React 对应的 react 源码实现理清之后，对比结果如下：
 
-实现 render function 返回 React Element。
+- 相同点：实现 render function 返回 React Element；React Element 树经过 reconcile 变成 fiber 树，reconcile 时根据不同类型做不同处理；commit 阶段执行 dom 增删改和 effect。
+- 不同点：
+  - react 源码的 render 阶段 reconcile 分成 beginWork、completeWork 两个小阶段，dom 的创建和组装在 completeWork 里做。
+  - commit 阶段分成 before mutation、mutation、layout 三个小阶段。
+  - react 的调度用自己实现的 scheduler 完成，实现了时间分片；Mini React 用 requestIdleCallback 做调度。
+  - react 的 hook 值存放在 fiber.memoizedState 链表上，每个 hook 对应一个节点；Mini React 用 fiber 上的其他属性存储。保存 dom 的节点在 react 里用 fiber.stateNode 属性。
 
-React Element 树经过 reconcile 变成 fiber 树，reconcile 的时候根据不同类型做不同处理，然后 commit 阶段执行 dom 增删改和 effect 等。
-
-这些都差不多。
-
-只不过 react 源码里 render 阶段 reconcile 分成了 beginWork、completeWork 两个小阶段，dom 的创建和组装是在 completeWork 里做的。
-
-commit 阶段分成了 before mutation、mutation、layout 这三个小阶段。
-
-react 的调度也是用自己实现的 scheduler 做的，实现了时间分片，而我们用的 requestIdleCallback 做的调度。
-
-react 的 hook 的值是存放在 fiber.memoizedState 链表上的，每个 hook 对应一个节点，在其中存取值，而我们是用的别的属性。
-
-包括保存 dom 的节点，在 react 里是用 fiber.stateNode 属性保存。
-
-但总体来说，流程上是差不多的，通过学习 mini react，能够很好的帮你理解 react 的实现原理。
+总体来说流程一致，通过 Mini React 可以很好地理解 react 的实现原理。
 
 ## 继续阅读
 

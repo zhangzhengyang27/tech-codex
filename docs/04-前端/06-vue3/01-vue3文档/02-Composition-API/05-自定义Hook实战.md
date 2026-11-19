@@ -12,7 +12,7 @@ tags: [Vue, Vue3, 组合式函数, 实战]
 
 ## 普通实现下拉框
 
-就拿字典选择下拉框来说，如果不做封装，我们是这样写的 （这里拿  ant-design-vue组件库来做示例）
+以字典选择下拉框为例，不做任何封装时的写法如下（示例基于 ant-design-vue 组件库）：
 
 ```vue
 <template>
@@ -60,7 +60,7 @@ tags: [Vue, Vue3, 组合式函数, 实战]
 <style lang="less" scoped></style>
 ```
 
-看起来根本不需要什么封装,但是这只是一个 最简单 的逻辑，不考虑接口请求超时和错误的情况，甚至都没考虑下拉框的 `loading` 表现。 如果我们把所有的 意外情况 都考虑到的话，代码就会变得很臃肿了
+看起来似乎不需要封装，但上面只是一个最简单的逻辑，没有考虑接口请求超时和错误的情况，甚至没有考虑下拉框的 `loading` 表现。如果把所有意外情况都考虑到，组件内的代码就会变得很臃肿：
 
 ```vue
 <template>
@@ -131,14 +131,14 @@ onMounted(() => {
 </script>
 ```
 
-这一次，代码直接来到了`22`行，虽说用户体验确实好了不少，但是这也忒费事了，而且这还只是一个下拉框，页面里有好几个下拉框也是很常见的，如此这般，可能什么逻辑都没写，页面代码就要上百行了。
+这一次代码来到了 22 行，用户体验确实好了不少，但成本明显增加；而且这还只是一个下拉框，页面里同时存在多个下拉框是很常见的场景，逐个这样处理，可能什么业务逻辑都没写，页面代码就要上百行了。
 
-这个时候，就需要我们来封装一下了，我们有两种选择：
+此时有两种封装方案：
 
-1.  把字典下拉框封装成一个 组件；
+1.  把字典下拉框封装成一个组件；
 2.  把请求、加载中、错误这些处理逻辑封装到 `hook` 里；
 
-第一种大家都知道，就不多说了，直接说第二种
+组件方案适用于外观和交互完全一致的场合；当不同下拉框的模板结构差异较大、只有数据请求逻辑相同时，hook 方案更合适。下面重点分析第二种方案。
 
 ### 封装下拉框 hook
 
@@ -246,13 +246,13 @@ export function useFetchSelect(props: FetchSelectProps) {
 </script>
 ```
 
-这样一来，代码行数直接又从`20`行降到`3`行，甚至比刚开始最简单的那个还要少两行，但是功能却一点不少，用户体验也是比较完善的
+这样一来，组件中的代码行数直接从 20 行降到 3 行，甚至比最初最简单的版本还要少，但功能一点不少，loading 与错误状态的体验也更完善。
 
 ## Loading 状态 hook
 
-点击按钮，调用接口是另一个我们经常遇到的场景，为了更好的用户体验，提示用户操作已经响应，同时防止用户多次点击，我们要在调用接口的同时将按钮置为 `loading` 状态，虽说只有一个 loading 状态，但是写多了也觉着麻烦
+点击按钮调用接口是另一个高频场景。为了更好的用户体验——提示操作已响应、防止重复点击——需要在调用接口的同时把按钮置为 `loading` 状态。逻辑虽简单，但在每个按钮处重复书写仍然繁琐。
 
-为此我们可以封装一个非常简单的 hook：hook.ts
+对此可以封装一个通用的 hook：hook.ts
 
 ```ts
 import { Ref, ref } from 'vue';
@@ -288,7 +288,7 @@ export function useAutoRequest<TData, TParams extends any[] = any[]>(fun: TApiFu
 
 ```
 
-这次把模拟接口的方法单独抽出一个文件 `api/index.ts`
+把模拟接口的方法单独抽出一个文件 `api/index.ts`：
 
 ```ts
 export function submitApi(text: string) {
@@ -333,9 +333,9 @@ export function submitApi(text: string) {
 </script>
 ```
 
-这样封装一下，我们使用时就不再需要手动切换 `loading` 的状态了
+这样封装后，调用方不再需要手动切换 `loading` 状态。
 
-这个 hook 还有另一种玩法：hook2.ts
+这个 hook 还有另一种封装思路：hook2.ts
 
 ```ts
 import type { Ref } from "vue";
@@ -393,14 +393,13 @@ function onCancel() {
 </script>
 ```
 
-这里也是用到了`promise`链式调用的特性，在接口调用之后马上将`loading`置为true，在接口调用完成后置为 false。而`useAutoRequest`则是在接口调用之前就将 `loading`  置为 true
+两种方案的差异在于 `loading` 的置位时机：`useAutoLoading` 利用 `promise` 链式调用的特性，在拿到请求 Promise 之后立刻将 `loading` 置为 true，在请求完成后置回 false；而 `useAutoRequest` 是在内部调用接口之前就将 `loading` 置为 true。
 
-`useAutoRequest`调用时代码更简洁，`useAutoLoading`的使用则更灵活，可以同时服务给多个接口使用，比较适合 提交 、取消 这种互斥的场景
+`useAutoRequest` 调用时代码更简洁；`useAutoLoading` 则更灵活，可以同时服务多个接口，比较适合"提交/取消"这类互斥场景。
 
-解放组件
-----
+## 用 Hook 适配骨架屏组件
 
-如果你翻看过我的这篇博客[一个省心省力的骨架屏实现方案](https://juejin.cn/post/6945748911147450405)，那么肯定知道在骨架屏组件中，我是用了传入的`res`对象的`code`属性来判断当前显示的视图状态。长话短说就是， `res`是接口返回给前端的数据，如
+在[一个省心省力的骨架屏实现方案](https://juejin.cn/post/6945748911147450405)一文所实现的骨架屏组件中，视图状态由传入的 `res` 对象的 `code` 属性判断。`res` 是接口返回给前端的数据，形如：
 
 ```json
 {
@@ -413,11 +412,11 @@ function onCancel() {
 }
 ```
 
-我们假定当`code`为`0`时代表成功，`不为0`表示失败，为`-100`时表示正在加载，当然接口并不会也不需要返回`-100`，`-100`是我们本地捏造出来的，只是为了让骨架屏组件显示对应的加载状态。 在页面中使用时，我们需要先声明一个`code`为`-100`的`res`对象绑定给骨架屏组件，然后在`onMounted`中调用查询接口，调用成功后更新`res`对象。
+约定如下：`code` 为 `0` 时代表成功，不为 `0` 表示失败，为 `-100` 时表示正在加载。接口本身并不会也不需要返回 `-100`，它是本地约定出来的状态值，仅用于让骨架屏组件显示对应的加载状态。在页面中使用时，需要先声明一个 `code` 为 `-100` 的 `res` 对象绑定给骨架屏组件，然后在 `onMounted` 中调用查询接口，调用成功后更新 `res` 对象。
 
-如果像上面这样使用`res`对象来给骨架屏组件设置状态的话，就感觉非常的麻烦，有时候我们只是要设置一个初始时的加载状态，但是要搞好几行没用的代码，但是如果我们把`res`拆解成一个个参数单独传递的话，父组件需要维护的变量就会非常多了，这时我们就可以封装hook来解决这个问题，把拆解出来的参数都扔到hook里面保存。
+这种用法相当繁琐：有时只需要设置一个初始加载状态，却要写好几行模板代码；而如果将 `res` 拆解成一个个参数单独传递，父组件需要维护的变量又会非常多。封装一个 hook 可以同时解决这两个问题，把拆解出来的状态统一收拢在 hook 内部管理。
 
-上代码（这部分代码比较长，想要详细了解的话可以去看原文章）
+骨架屏组件与配套 hook 的完整代码如下（代码较长，实现细节可参考原文）：
 
 #### 骨架屏组件
 
@@ -806,12 +805,11 @@ const view = useAutoSkeletonView({
 
 ```
 
-这里的`SkeletonView`不光用`v-bind`绑定了`hook`抛出的属性，还用`v-on`绑定的事件，目的就是监听请求报错时出现的“重试”按钮的点击事件。
+这里的 `SkeletonView` 不光用 `v-bind` 绑定了 hook 抛出的属性，还用 `v-on` 绑定了 hook 抛出的事件，目的是监听请求报错时出现的"重试"按钮的点击事件。
 
-使用优化
-----
+## 使用优化：v-ehb 指令式绑定
 
-经常写`react`的朋友可能早就看出来了，这不是跟react中的一部分hook用法如出一辙吗？没错，很多人写react就这么写，而且react中绑定hook跟组件更简单，只需要...就可以了，比如：
+写过 `react` 的开发者可能已经发现，这套用法与 React 中部分 hook 的用法如出一辙，而且 React 中把 hook 结果绑定到组件上更简单，只需展开运算符即可：
 
 ```tsx
 function Demo(){
@@ -824,15 +822,15 @@ function Demo(){
 
 ```
 
-比起`vue`的`v-bind`和`v-on`算是简便了不少。那么，有没有一种办法也能做到差不多的效果呢？就比如能做到`v-xxx="select"`。
+比起 `vue` 的 `v-bind` 和 `v-on` 确实简便不少。那么 Vue 中能否做到类似 `v-xxx="select"` 的效果？
 
-博主首先想到的就是 vue 的自定义指令，文档见[官方文档](https://cn.vuejs.org/guide/reusability/custom-directives.html)，但是折腾了半天发现行不通，因为自定义指令主要还是针对 dom 来的。vue 官网原话：
+首先可以考虑 Vue 的自定义指令，文档见[官方文档](https://cn.vuejs.org/guide/reusability/custom-directives.html)，但这条路走不通，因为自定义指令主要针对 DOM。Vue 官网原话：
 
 > 总的来说，**不**推荐在组件上使用自定义指令。
 
-那么就只能考虑打包插件了，只要我们在`vue`解析`template`之前把`v-xxx="select"`翻译成`v-bind="select.bindProps" v-on="select.bindEvents"`就好了，听起来并不难，只要我们开发的时候规定绑定组件的 hook 返回格式必须有`bindProps`和`bindEvents`就好了。
+剩下的可行方案是打包插件：在 `vue` 解析 `template` 之前，把 `v-xxx="select"` 翻译成 `v-bind="select.bindProps" v-on="select.bindEvents"`。实现并不复杂，只需要在开发时约定绑定组件的 hook 返回格式必须包含 `bindProps` 和 `bindEvents` 两个字段。
 
-思路有了，直接开干，现在`vue`官网的默认创建方式也改成 vite，我们就直接写 vite 的插件（不想看可以跳到最后用现成的）：
+思路明确后即可实现。现在 `vue` 官网的默认创建方式已改为 vite，因此直接编写 vite 插件（也可以直接跳到文末使用现成的 npm 包）：
 
 ```ts
 
@@ -923,7 +921,7 @@ export default defineConfig({
 
 ```
 
-修改一下vue中的用法
+修改一下 Vue 中的用法
 
 ```vue
 <script setup name="SkeletonView" lang="ts">
@@ -964,15 +962,15 @@ const view = useAutoSkeletonView({
 
 ```
 
-OK! 完成了！
+到这里，`v-ehb` 指令式绑定即已完成。
 
-### 使用npm安装
+### 使用 npm 安装
 
-不过我也提前打包编译好了发布在了npm上，需要的话可以直接使用这个
+该插件已打包编译发布到 npm，可直接安装使用：
 
 `npm i vite-plugin-vue-hook-enhance -D`
 
-改一下引入方式就可以了
+安装后修改引入方式即可：
 
 ```ts
 import { viteHookBind } from "vite-plugin-vue-hook-enhance";

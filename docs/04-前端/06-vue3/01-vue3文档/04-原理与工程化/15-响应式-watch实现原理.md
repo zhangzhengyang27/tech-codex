@@ -8,9 +8,9 @@ tags: [Vue3, 原理, 响应式原理]
 
 # 响应式-watch实现原理
 
-## 前言
+## 概述
 
-在组合式 API 中，我们可以使用 [watch 函数](https://cn.vuejs.org/api/reactivity-core.html#watch)在每次响应式状态发生变化时触发回调函数，`watch` 的第一个参数可以是不同形式的数据类型：它可以是一个 `ref`（包括计算属性）、一个响应式对象、一个 `getter 函数`、或多个数据源组成的数组。
+在组合式 API 中，可以使用 [watch 函数](https://cn.vuejs.org/api/reactivity-core.html#watch)在每次响应式状态发生变化时触发回调函数，`watch` 的第一个参数可以是不同形式的数据类型：它可以是一个 `ref`（包括计算属性）、一个响应式对象、一个 `getter 函数`、或多个数据源组成的数组。
 
 ```js
 const x = ref(0)
@@ -44,11 +44,11 @@ watch([x, () => y.value], ([newX, newY]) => {
 })
 ```
 
-了解了一些基础的 `watch` 使用示例后，我们开始分析 watch 函数的实现原理。
+了解基础的 `watch` 使用示例后，下面分析 watch 函数的实现原理。
 
 ## 标准化 source
 
-先来看一下 `watch` 函数实现的代码：
+`watch` 函数实现的代码如下：
 
 ```ts
 function watch(
@@ -69,7 +69,7 @@ function doWatch(
 }
 ```
 
-`watch` 函数内部是通过 `doWatch` 来执行的，在分析 `doWatch` 函数实现前，我们先看看前面的示例中，`watch` 监听的 `source` 可以是多种类型，一个函数可以支持多种类型的参数入参，那么实现该函数最好的设计模式就是 `adapter` 代理模式。就是将底层模型设计成一致的，抹平调用差异，这也是 `doWatch` 函数实现的第一步：标准化 `source` 参数。
+`watch` 函数内部是通过 `doWatch` 来执行的，在分析 `doWatch` 函数实现前，先回顾前面的示例：`watch` 监听的 `source` 可以是多种类型，一个函数可以支持多种类型的参数入参，那么实现该函数最好的设计模式就是 `adapter` 代理模式。就是将底层模型设计成一致的，抹平调用差异，这也是 `doWatch` 函数实现的第一步：标准化 `source` 参数。
 
 下面分析其中的实现：
 
@@ -149,7 +149,7 @@ function doWatch(
 }
 ```
 
-由于 `doWatch` 函数代码量比较多，我们先一部分一部分地来解读，这里我们只关注于标准化 `source` 的逻辑。可以看到 `doWatch` 函数会对入参的 `source` 做不同类型的判断逻辑，然后生成一个统一的 `getter` 函数：
+由于 `doWatch` 函数代码量比较多，此处分段解读，首先只关注标准化 `source` 的逻辑。可以看到 `doWatch` 函数会对入参的 `source` 做不同类型的判断逻辑，然后生成一个统一的 `getter` 函数：
 
 | source 类型 | getter 构造 | 附加行为 |
 |---|---|---|
@@ -162,9 +162,9 @@ function doWatch(
 
 `getter` 函数就是简单地对不同数据类型设置一个访问 `source` 的操作，比如对于 `ref` 就是一个创建了一个访问 `source.value` 的函数。
 
-那么为什么需要**访问**？由之前的响应式原理我们知道，只有在触发 `proxy getter` 的时候，才会进行依赖收集，所以，这里标准化的 `source` 函数中，不管是什么类型的 `source` 都会设计一个访问器函数。
+那么为什么需要**访问**？由响应式原理可知，只有在触发 `proxy getter` 的时候，才会进行依赖收集，所以，这里标准化的 `source` 函数中，不管是什么类型的 `source` 都会设计一个访问器函数。
 
-另外，需要注意的是当 `source` 是个响应式对象时，源码中会同时设置 `deep = true`。这是因为对于响应式对象，需要进行深度监听，因为响应式对象中的属性变化时，都需要进行反馈。深度监听是如何实现的？在回答这个问题之前，我们前面说了监听一个对象的属性就是需要先访问对象的属性，触发 `proxy getter`，把副作用 `cb` 收集起来。源码中则是通过 `traverse` 函数来实现对响应式对象属性的遍历访问：
+另外，需要注意的是当 `source` 是个响应式对象时，源码中会同时设置 `deep = true`。这是因为对于响应式对象，需要进行深度监听，因为响应式对象中的属性变化时，都需要进行反馈。深度监听是如何实现的？如前所述，监听一个对象的属性需要先访问对象的属性，触发 `proxy getter`，把副作用 `cb` 收集起来。源码中则是通过 `traverse` 函数来实现对响应式对象属性的遍历访问：
 
 ```ts
 export function traverse(value: unknown, seen?: Set<unknown>) {
@@ -197,9 +197,9 @@ export function traverse(value: unknown, seen?: Set<unknown>) {
 
 ## 构造副作用 effect
 
-前面说到，我们通过一系列操作，标准化了用户传入的 `source` 成了一个 `getter` 函数，此时的 `getter` 函数一方面还没有真正执行，也就没有触发对属性的访问操作。
+经过上述一系列操作，用户传入的 `source` 被标准化为一个 `getter` 函数，此时的 `getter` 函数还没有真正执行，也就没有触发对属性的访问操作。
 
-`watch` 的本质是对数据源进行依赖收集，当依赖变化时，回调执行 `cb` 函数并传入新旧值。所以我们需要构造一个副作用函数，完成对数据源的变化追踪：
+`watch` 的本质是对数据源进行依赖收集，当依赖变化时，回调执行 `cb` 函数并传入新旧值。所以需要构造一个副作用函数，完成对数据源的变化追踪：
 
 ```ts
 function doWatch(
@@ -212,7 +212,7 @@ function doWatch(
 }
 ```
 
-这里的 `getter` 就是前面构造的属性访问函数，我们在介绍响应式原理的章节中，介绍过 `ReactiveEffect` 类，这里再来回顾一下它的构造与执行（Vue 3.5 稳定版实现，基于 `flags` 位标志与 `Link` 双向链表）：
+这里的 `getter` 就是前面构造的属性访问函数，响应式原理章节中已介绍过 `ReactiveEffect` 类，这里回顾一下它的构造与执行（Vue 3.5 稳定版实现，基于 `flags` 位标志与 `Link` 双向链表）：
 
 ```ts
 class ReactiveEffect<T = any> implements Subscriber {
@@ -232,7 +232,7 @@ class ReactiveEffect<T = any> implements Subscriber {
 }
 ```
 
-这里细节部分可以详细阅读响应式原理的部分，我们只需要知道这里的 `ReactiveEffect` 的 `run` 函数内部执行了 `this.fn()` 也就是上面传入的 `getter` 函数，所以，本质上是在此时完成了对 `watch source` 的访问。
+细节部分可参阅响应式原理章节，这里只需要知道 `ReactiveEffect` 的 `run` 函数内部执行了 `this.fn()` 也就是上面传入的 `getter` 函数，所以，本质上是在此时完成了对 `watch source` 的访问。
 
 Vue 3.5 对 `ReactiveEffect` 的依赖管理进行了重要重构：依赖不再存储于 `Dep[]` 数组中全量重建，而是通过 `Link` 双向链表 + 版本计数实现增量清理（`prepareDeps` / `cleanupDeps`，见响应式原理章节），effect 重跑时只处理实际变化的依赖。这对于 `watch` 的性能也有直接的提升。
 
@@ -301,7 +301,7 @@ function doWatch(
 }
 ```
 
-> `scheduler` 我们在批量调度更新章节有简单介绍过，本质这里是根据不同的 `watch options` 中的 `flush` 参数来设置不同的调度节点，这里默认是渲染更新前执行，也就是在异步更新队列 `queue` 执行前执行。
+> `scheduler` 在批量调度更新章节已有简单介绍，本质这里是根据不同的 `watch options` 中的 `flush` 参数来设置不同的调度节点，这里默认是渲染更新前执行，也就是在异步更新队列 `queue` 执行前执行。
 
 `scheduler` 核心就是将 `job` 放入异步执行队列中，但有个特殊，也就是 `flush = 'sync'` 时，是放入同步执行的。那么 `job` 究竟是什么？
 
@@ -311,7 +311,7 @@ function doWatch(
 
 ## cleanup 清理机制与 onWatcherCleanup
 
-在 `watch` 的回调函数中，有时候我们需要执行一些清理操作，比如取消上一个异步请求、清除定时器等。在 Vue 3.5 之前，我们只能通过 `watch` 回调的第三个参数 `onCleanup` 来注册清理函数：
+在 `watch` 的回调函数中，有时需要执行一些清理操作，比如取消上一个异步请求、清除定时器等。在 Vue 3.5 之前，只能通过 `watch` 回调的第三个参数 `onCleanup` 来注册清理函数：
 
 ```ts
 watch(idRef, (newId, oldId, onCleanup) => {
@@ -340,7 +340,7 @@ watch(idRef, async (newId) => {
 })
 ```
 
-来看看 `onWatcherCleanup` 的源码实现：
+`onWatcherCleanup` 的源码实现如下：
 
 ```ts
 // Vue 3.5 - packages/runtime-core/src/apiWatch.ts
@@ -405,7 +405,7 @@ function doWatch(
 
 ## effect run 函数执行
 
-前面我们说到了，`ReactiveEffect` 内部的 `run` 函数，执行了依赖访问的 `getter` 函数，所以 `run` 函数是如何被执行？
+前面说到，`ReactiveEffect` 内部的 `run` 函数执行了依赖访问的 `getter` 函数。那么 `run` 函数是如何被执行的？
 
 ```ts
 function doWatch(
@@ -435,7 +435,7 @@ function doWatch(
 
 ## 返回销毁函数
 
-最后，会返回侦听器销毁函数，也就是 `watch API` 执行后返回的函数。我们可以通过调用它来停止 `watcher` 对数据的侦听。
+最后，会返回侦听器销毁函数，也就是 `watch API` 执行后返回的函数。通过调用它可以停止 `watcher` 对数据的侦听。
 
 ```ts
 function doWatch(

@@ -8,13 +8,15 @@ keywords: [v-model, 双向绑定, Object.defineProperty, Vue2]
 
 # v-model 双向绑定实现（Vue2 视角）
 
-## 前言
+## 概念说明
 
-​	当被问到 Vue 数据双向绑定原理的时候，大家可能都会脱口而出：Vue 内部通过    `Object.defineProperty`方法属性拦截的方式，把 `data` 对象里每个数据的读写转化成 `getter`/`setter`，当数据变化时通知视图更新。虽然一句话把大概原理概括了，但是其内部的实现方式还是值得深究的，本文就以通俗易懂的方式剖析 `Vue` 内部双向绑定原理的实现过程。然后再根据 `Vue` 源码的数据双向绑定实现，来进一步巩固加深对数据双向绑定的理解认识。以下为我们实现的数据双向绑定的效果图：
+Vue 数据双向绑定的核心机制可以概括为一句话：Vue 内部通过 `Object.defineProperty` 方法属性拦截的方式，把 `data` 对象里每个数据的读写转化成 `getter`/`setter`，当数据变化时通知视图更新。这一概括覆盖了基本原理，但内部实现链条（监听器、订阅器、订阅者、解析器如何协作）值得逐一拆解。下文先以简化实现剖析双向绑定的完整过程，再对照 Vue2 源码分析各模块的真实实现。
+
+简化实现的整体效果如下图所示：
 
 ![1.gif](https://github.com/fengshi123/blog/blob/master/assets/mvvm/1.gif?raw=true) 
 
-## 一、什么是 MVVM 数据双向绑定
+## MVVM 双向绑定的定义
 
 `MVVM` 数据双向绑定主要是指：数据变化更新视图，视图变化更新数据，如下图所示：
 
@@ -22,36 +24,37 @@ keywords: [v-model, 双向绑定, Object.defineProperty, Vue2]
 
 即：
 
-- 输入框内容变化时，`Data` 中的数据同步变化。即 `View` => `Data` 的变化。
-- `Data` 中的数据变化时，文本节点的内容同步变化。即 `Data` => `View` 的变化。
+- 输入框内容变化时，`Data` 中的数据同步变化，即 `View` => `Data` 的变化。
+- `Data` 中的数据变化时，文本节点的内容同步变化，即 `Data` => `View` 的变化。
 
-其中，`View` 变化更新 `Data` ，可以通过事件监听的方式来实现，所以我们本文主要讨论如何根据 `Data` 变化更新 `View`。
+其中，`View` 变化更新 `Data` 可以通过事件监听的方式实现；`Data` 变化更新 `View` 则依赖框架内部的响应式机制，是下文讨论的重点。
 
-我们会通过实现以下 4 个步骤，来实现数据的双向绑定：
+## 实现机制总览
 
-1、实现一个监听器 `Observer` ，用来劫持并监听所有属性，如果属性发生变化，就通知订阅者；
+数据双向绑定由以下 4 个模块协作完成：
 
-2、实现一个订阅器 `Dep`，用来收集订阅者，对监听器 `Observer` 和订阅者 `Watcher` 进行统一管理；
+1. **监听器 `Observer`**：劫持并监听所有属性，属性发生变化时通知订阅者；
+2. **订阅器 `Dep`**：收集订阅者，对监听器 `Observer` 和订阅者 `Watcher` 进行统一管理；
+3. **订阅者 `Watcher`**：收到属性变化通知后执行相应的方法，从而更新视图；
+4. **解析器 `Compile`**：解析每个节点的相关指令，对模板数据和订阅器进行初始化。
 
-3、实现一个订阅者 `Watcher`，可以收到属性的变化通知并执行相应的方法，从而更新视图；
-
-4、实现一个解析器 `Compile`，可以解析每个节点的相关指令，对模板数据和订阅器进行初始化。
-
-以上四个步骤的流程图表示如下：
+以上四个模块的协作流程如下图所示：
 
 ![3.png](https://github.com/fengshi123/blog/blob/master/assets/mvvm/3.png?raw=true) 
 
-该实例的源码已经放到 github 上面：<https://github.com/fengshi123/mvvm_example> 。
+该实例的源码地址：<https://github.com/fengshi123/mvvm_example> 。
 
-## 二、监听器 Observer 实现
+## 监听器 Observer 实现
 
-监听器 `Observer` 的实现，主要是指让数据对象变得“可观测”，即每次数据读或写时，我们能感知到数据被读取了或数据被改写了。要使数据变得“可观测”，`Vue 2.0` 源码中用到 `Object.defineProperty()`  来劫持各个数据属性的 `setter / getter`，`Object.defineProperty` 方法，在 MDN 上是这么定义的：
+### 原理：让数据变得"可观测"
+
+监听器 `Observer` 的实现目标是让数据对象变得"可观测"，即每次数据被读取或写时，都能感知到数据被读取了或被改写了。Vue 2.0 源码中使用 `Object.defineProperty()` 劫持各个数据属性的 `setter / getter`。MDN 上对该方法的定义如下：
 
 >  Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。 
 
-### 2.1、Object.defineProperty() 语法
+### Object.defineProperty() 语法
 
-`Object.defineProperty` 语法，在 MDN 上是这么定义的：
+MDN 上对语法的定义如下：
 
 > Object.defineProperty(obj, prop, descriptor)
 
@@ -71,11 +74,11 @@ keywords: [v-model, 双向绑定, Object.defineProperty, Vue2]
 
 **（2）返回值**
 
-​      被传递给函数的对象。 
+被传递给函数的对象。
 
 **（3）属性描述符**
 
-`Object.defineProperty()` 为对象定义属性，分数据描述符和 存取描述符 ，两种形式不能混用。
+`Object.defineProperty()` 为对象定义属性，分数据描述符和存取描述符，两种形式不能混用。
 
 **数据描述符和存取描述符均具有以下可选键值：**
 
@@ -107,11 +110,9 @@ keywords: [v-model, 双向绑定, Object.defineProperty, Vue2]
 
 一个给属性提供 `setter` 的方法，如果没有 `setter` 则为 `undefined`。当属性值修改时，触发执行该方法。该方法将接受唯一参数，即该属性新的参数值。默认为 `undefined`。
 
-### 2.2、监听器 Observer 实现
+### 示例：字面量定义对象的局限
 
-**（1）字面量定义对象**
-
-首先，我们先看一下假设我们通过以下字面量的方式定义一个对象：
+通过字面量方式定义对象时：
 
 ```javascript
 let person = {
@@ -120,11 +121,9 @@ let person = {
 }
 ```
 
-我们可以通过 `person.name` 和 `person.age` 直接读写这个 `person` 对应的属性值，但是，当这个 `person` 的属性被读取或修改时，我们并不知情。那么，应该如何定义一个对象，它的属性被读写时，我们能感知到呢？
+`person.name` 和 `person.age` 可以直接读写对应的属性值，但当这些属性被读取或修改时，外部无法感知。要让对象在属性被读写时发出信号，需要借助 `Object.defineProperty()`。
 
-**（2）Object.defineProperty() 定义对象**
-
-假设我们通过 `Object.defineProperty()` 来定义一个对象：
+### 示例：Object.defineProperty() 定义对象
 
 ```javascript
 let val = 'tom'
@@ -141,13 +140,13 @@ Object.defineProperty(person,'name',{
 })
 ```
 
-我们通过 `object.defineProperty()` 方法给  `person` 的 `name` 属性定义了 `get()` 和`set()`进行拦截，每当该属性进行读或写操作的时候就会触发`get()`和`set()` ，这样，当对象的属性被读写时，我们就能感知到了。测试结果图如下所示：
+通过 `object.defineProperty()` 方法给 `person` 的 `name` 属性定义了 `get()` 和 `set()` 进行拦截，每当该属性进行读或写操作时就会触发 `get()` 和 `set()`，对象的属性被读写时即可被感知。测试结果如下图所示：
 
 ![3_2.png](https://github.com/fengshi123/blog/blob/master/assets/mvvm/3_2.png?raw=true) 
 
-**（3）改进方法**
+### 封装：批量劫持所有属性
 
-通过第（2）步的方法，`person` 数据对象已经是“可观测”的了，能满足我们的需求了。但是如果数据对象的属性比较多的情况下，我们一个一个为属性去设置，代码会非常冗余，所以我们进行以下封装，从而让数据对象的所有属性都变得可观测：
+当数据对象的属性较多时，逐个设置拦截代码会非常冗余。对上述逻辑进行封装，让数据对象的所有属性都变得可观测：
 
 ```javascript
 /**
@@ -180,7 +179,7 @@ function defineReactive(obj, key, val) {
 }
 ```
 
-通过以上方法封装，我们可以直接定义 `person`：
+封装后可以直接定义 `person`：
 
 ```javascript
 let person = observable({
@@ -189,36 +188,30 @@ let person = observable({
 });
 ```
 
-这样定义的 `person` 的两个属性都是“可观测”的。
+这样定义的 `person` 的两个属性都是"可观测"的。
 
-## 三、订阅器 Dep 实现
+## 订阅器 Dep 实现
 
-### 3.1、发布 —订阅设计模式
+### 前置知识：发布-订阅设计模式
 
-​	发布-订阅模式又叫观察者模式，它定义对象间的一种一对多的依赖关系，当一个对象的状态改变时，所有依赖于它的对象都将得到通知。
+发布-订阅模式又叫观察者模式，它定义对象间的一种一对多的依赖关系，当一个对象的状态改变时，所有依赖于它的对象都将得到通知。
 
-**（1）发布—订阅模式的优点：**
+**（1）发布-订阅模式的优点：**
 
-- 发布-订阅模式广泛应用于异步编程中，这是一种替代传递回调函数的方案，比如，我们可以订阅 ajax 请求的 error 、succ 等事件。在异步编程中使用发布-订阅模式， 我们就无需过多关注对象在异步运行期间的内部状态，而只需要订阅感兴趣的事件发生点。
+- 发布-订阅模式广泛应用于异步编程中，这是一种替代传递回调函数的方案，比如可以订阅 ajax 请求的 error、succ 等事件。在异步编程中使用发布-订阅模式，无需过多关注对象在异步运行期间的内部状态，而只需要订阅感兴趣的事件发生点。
 - 发布-订阅模式可以取代对象之间硬编码的通知机制，一个对象不用再显式地调用另外一个对象的某个接口。发布-订阅模式让两个对象松耦合地联系在一起，虽然不太清楚彼此的细节，但这不影响它们之间相互通信。当有新的订阅者出现时，发布者的代码不需要任何修改；同样发布者需要改变时，也不会影响到之前的订阅者。只要之前约定的事件名没有变化，就可以自由地改变它们。
 
-**（2）发布—订阅模式的生活实例**
+**（2）生活类比**
 
-​	我们以售楼处的例子来举例说明发布-订阅模式：
+发布-订阅模式的现实类比是售楼处：购房者把电话号码登记在售楼处（订阅），售楼处把号码记入花名册（维护订阅者列表），新楼盘推出时翻开花名册、遍历号码依次发送短信（发布事件、遍历通知）。购房者无需每天主动打电话询问，售楼处的通知机制也与具体购房者解耦。
 
-​	小明最近看上了一套房子，到了售楼处之后才被告知，该楼盘的房子早已售罄。好在售楼 MM 告诉小明，不久后还有一些尾盘推出，开发商正在办理相关手续，手续办好后便可以购买。
+### 订阅器 Dep 实现
 
-​	但到底是什么时候，目前还没有人能够知道。 于是小明记下了售楼处的电话，以后每天都会打电话过去询问是不是已经到了购买时间。除了小明，还有小红、小强、小龙也会每天向售楼处咨询这个问题。一个星期过后，售楼 MM 决定辞职，因为厌倦了每天回答 1000个相同内容的电话。
+数据变得"可观测"之后，下一步是在数据被读写时通知依赖该数据的视图更新。为此需要先将所有依赖收集起来，数据一旦发生变化就统一通知更新——这正是发布-订阅模式的应用：数据变化为"发布者"，依赖对象为"订阅者"。
 
-​	当然现实中没有这么笨的销售公司，实际上故事是这样的：小明离开之前，把电话号码留在了售楼处。售楼 MM 答应他，新楼盘一推出就马上发信息通知小明。小红、小强和小龙也是一样，他们的电话号码都被记在售楼处的花名册上，新楼盘推出的时候，售楼 MM会翻开花名册，遍历上面的电话号码，依次发送一条短信来通知他们。这就是发布-订阅模式在现实中的例子。
+订阅器 `Dep` 就是依赖收集容器（消息订阅器），负责收集订阅者，并在数据变化时执行对应订阅者的更新函数。
 
-### 3.2、订阅器 Dep 实现
-
-​	完成了数据的'可观测'，即我们知道了数据在什么时候被读或写了，那么，我们就可以在数据被读或写的时候通知那些依赖该数据的视图更新了，为了方便，我们需要先将所有依赖收集起来，一旦数据发生变化，就统一通知更新。其实，这就是前一节所说的“发布订阅者”模式，数据变化为“发布者”，依赖对象为“订阅者”。 
-
-​	现在，我们需要创建一个依赖收集容器，也就是消息订阅器 `Dep`，用来容纳所有的“订阅者”。订阅器 `Dep` 主要负责收集订阅者，然后当数据变化的时候后执行对应订阅者的更新函数。
-
-创建消息订阅器 `Dep`:
+创建消息订阅器 `Dep`：
 
 ```javascript
 function Dep () {
@@ -237,7 +230,7 @@ Dep.prototype = {
 Dep.target = null;
 ```
 
-有了订阅器，我们再将 `defineReactive` 函数进行改造一下，向其植入订阅器：
+有了订阅器，再将 `defineReactive` 函数进行改造，向其植入订阅器：
 
 ```javascript
 defineReactive: function(data, key, val) {
@@ -262,11 +255,13 @@ defineReactive: function(data, key, val) {
 }
 ```
 
-从代码上看，我们设计了一个订阅器 `Dep` 类，该类里面定义了一些属性和方法，这里需要特别注意的是它有一个静态属性 `Dep.target`，这是一个全局唯一的`Watcher`，因为在同一时间只能有一个全局的 `Watcher` 被计算，另外它的自身属性 `subs` 也是 `Watcher` 的数组。 
+从代码上看，订阅器 `Dep` 类内部定义了一些属性和方法。需要特别注意的是它有一个静态属性 `Dep.target`，这是一个全局唯一的 `Watcher`，因为在同一时间只能有一个全局的 `Watcher` 被计算；另外它的自身属性 `subs` 也是 `Watcher` 的数组。
 
-## 四、订阅者 Watcher 实现
+## 订阅者 Watcher 实现
 
-订阅者 `Watcher` 在初始化的时候需要将自己添加进订阅器 `Dep` 中，那该如何添加呢？我们已经知道监听器`Observer` 是在 get 函数执行了添加订阅者 Watcher 的操作的，所以我们只要在订阅者 `Watcher` 初始化的时候触发对应的 `get` 函数去执行添加订阅者操作即可，那要如何触发 `get` 的函数，再简单不过了，只要获取对应的属性值就可以触发了，核心原因就是因为我们使用了 `Object.defineProperty( )` 进行数据监听。这里还有一个细节点需要处理，我们只要在订阅者 `Watcher` 初始化的时候才需要添加订阅者，所以需要做一个判断操作，因此可以在订阅器上做一下手脚：在 `Dep.target` 上缓存下订阅者，添加成功后再将其去掉就可以了。订阅者 `Watcher` 的实现如下： 
+订阅者 `Watcher` 在初始化时需要将自己添加进订阅器 `Dep` 中。监听器 `Observer` 是在 `get` 函数执行添加订阅者的操作的，因此只要在订阅者 `Watcher` 初始化时触发对应的 `get` 函数即可——获取对应的属性值就能触发 `get`，核心原因是数据监听基于 `Object.defineProperty()` 实现。
+
+另一个细节是：只有订阅者 `Watcher` 初始化时才需要添加订阅者，其他时刻读取属性不应触发添加操作。判断机制是在 `Dep.target` 上缓存订阅者，添加成功后再将其置空。订阅者 `Watcher` 的实现如下：
 
 ```javascript
 function Watcher(vm, exp, cb) {
@@ -297,50 +292,50 @@ Watcher.prototype = {
 };
 ```
 
-订阅者 `Watcher` 分析如下：
-
-订阅者 `Watcher` 是一个类，在它的构造函数中，定义了一些属性：
+订阅者 `Watcher` 是一个类，其构造函数中定义的核心属性如下：
 
 - vm：一个 Vue 的实例对象；
-- exp：是 `node` 节点的 `v-model` 等指令的属性值或者插值符号中的属性。如 `v-model="name"`，`exp` 就是`name`;
-- cb：是 `Watcher` 绑定的更新函数;
+- exp：是 `node` 节点的 `v-model` 等指令的属性值或者插值符号中的属性。如 `v-model="name"`，`exp` 就是 `name`；
+- cb：是 `Watcher` 绑定的更新函数。
 
-当我们去实例化一个渲染 `watcher` 的时候，首先进入 `watcher` 的构造函数逻辑，就会执行它的 `this.get()` 方法，进入 `get` 函数，首先会执行：
+实例化一个渲染 `watcher` 的执行过程分析：
+
+1. 进入构造函数逻辑后执行 `this.get()` 方法，首先执行：
 
 ```javascript
 Dep.target = this;  // 将自己赋值为全局的订阅者
 ```
 
-实际上就是把 `Dep.target` 赋值为当前的渲染 `watcher` ,接着又执行了：
+实际上就是把 `Dep.target` 赋值为当前的渲染 `watcher`。接着执行：
 
 ```
 let value = this.vm.data[this.exp]  // 强制执行监听器里的get函数
 ```
 
-在这个过程中会对 `vm` 上的数据访问，其实就是为了触发数据对象的 `getter`。
+这个过程中会对 `vm` 上的数据进行访问，目的是触发数据对象的 `getter`。
 
-每个对象值的 `getter` 都持有一个 `dep`，在触发 `getter` 的时候会调用 `dep.depend()` 方法，也就会执行`this.addSub(Dep.target)`，即把当前的 `watcher` 订阅到这个数据持有的 `dep` 的 `watchers` 中，这个目的是为后续数据变化时候能通知到哪些 `watchers` 做准备。
+2. 每个对象值的 `getter` 都持有一个 `dep`，在触发 `getter` 时会调用 `dep.depend()` 方法，执行 `this.addSub(Dep.target)`，即把当前的 `watcher` 订阅到这个数据持有的 `dep` 的 `watchers` 中，为后续数据变化时通知对应 `watchers` 做准备。至此完成一次依赖收集。
 
-这样实际上已经完成了一个依赖收集的过程。那么到这里就结束了吗？其实并没有，完成依赖收集后，还需要把 `Dep.target` 恢复成上一个状态，即：
+3. 依赖收集完成后，还需要把 `Dep.target` 恢复成上一个状态：
 
 ```javascript
 Dep.target = null;  // 释放自己
 ```
 
-而 `update()` 函数是用来当数据发生变化时调用 `Watcher` 自身的更新函数进行更新的操作。先通过 `let value = this.vm.data[this.exp];` 获取到最新的数据,然后将其与之前 `get()` 获得的旧数据进行比较，如果不一样，则调用更新函数 `cb` 进行更新。
+`update()` 函数用于在数据发生变化时调用 `Watcher` 自身的更新函数进行更新：先通过 `let value = this.vm.data[this.exp];` 获取最新数据，然后与之前 `get()` 获得的旧数据进行比较，如果不一样，则调用更新函数 `cb` 进行更新。
 
 至此，简单的订阅者 `Watcher` 设计完毕。
 
-## 五、解析器 Compile 实现
+## 解析器 Compile 实现
 
-### 5.1、解析器 Compile 关键逻辑代码分析
+### 关键逻辑
 
-​	通过监听器 `       Observer` 订阅器 `Dep` 和订阅者 `Watcher` 的实现，其实就已经实现了一个双向数据绑定的例子，但是整个过程都没有去解析 `dom` 节点，而是直接固定某个节点进行替换数据的，所以接下来需要实现一个解析器 `Compile` 来做解析和绑定工作。解析器 `Compile` 实现步骤： 
+通过监听器 `Observer`、订阅器 `Dep` 和订阅者 `Watcher` 的实现，双向数据绑定的核心链路已经打通。但整个过程还没有解析 `dom` 节点，而是直接固定某个节点进行数据替换。解析器 `Compile` 负责解析和绑定工作，实现步骤如下：
 
 - 解析模板指令，并替换模板数据，初始化视图；
-- 将模板指令对应的节点绑定对应的更新函数，初始化相应的订阅器；
+- 将模板指令对应的节点绑定对应的更新函数，初始化相应的订阅器。
 
-我们下面对 '{{变量}}' 这种形式的指令处理的关键代码进行分析，感受解析器 `Compile` 的处理逻辑，关键代码如下：
+下面对 `'{{变量}}'` 这种形式的指令处理的关键代码进行分析，感受解析器 `Compile` 的处理逻辑，关键代码如下：
 
 ```javascript
 compileText: function(node, exp) {
@@ -354,9 +349,9 @@ compileText: function(node, exp) {
 }
 ```
 
-### 5.2、简单实现一个 Vue 实例
+### 验证：模拟 Vue 实例
 
-完成监听器 `Observer` 、订阅器 `Dep` 、订阅者 `Watcher` 和解析器 `Compile` 的实现，我们就可以模拟初始化一个`Vue` 实例，来检验以上的理论的可行性了。我们通过以下代码初始化一个 `Vue` 实例，该实例的源码已经放到 github 上面：<https://github.com/fengshi123/mvvm_example> ，有兴趣的可以 git clone：
+完成监听器 `Observer`、订阅器 `Dep`、订阅者 `Watcher` 和解析器 `Compile` 的实现后，就可以模拟初始化一个 `Vue` 实例来检验以上理论的可行性。以下代码初始化一个 `Vue` 实例，实例源码地址：<https://github.com/fengshi123/mvvm_example> ：
 
 ```javascript
 <body>
@@ -383,21 +378,21 @@ compileText: function(node, exp) {
 </script>
 ```
 
-运行以上实例，效果图如下所示，跟实际的 Vue 数据绑定效果是不是一样！
+运行以上实例，效果如下图所示，与实际的 Vue 数据绑定效果一致：
 
 ![1.gif](https://github.com/fengshi123/blog/blob/master/assets/mvvm/1.gif?raw=true)  
 
-## 六、Vue 源码 — 数据双向绑定
+## Vue 源码中的数据双向绑定实现
 
-以上第二章节到第五章节，从监听器 `Observer` 、订阅器 `Dep` 、订阅者 `Watcher` 和解析器 `Compile` 的实现，完成了一个简单的 `Vue` 数据绑定实例的实现。本章节，我们从 `Vue` 源码层面分析监听器 `Observer` 、订阅器 `Dep` 、订阅者 `Watcher` 的实现，帮助大家了解 `Vue` 源码如何实现数据双向绑定。
+以上从监听器 `Observer`、订阅器 `Dep`、订阅者 `Watcher` 和解析器 `Compile` 的实现出发，完成了一个简单的 `Vue` 数据绑定实例。以下从 `Vue` 源码层面分析这三个模块的真实实现。
 
-### 6.1、监听器 Observer 实现
+### 监听器 Observer
 
-我们在本小节主要介绍监听器 Observer 实现，核心就是利用 `Object.defineProperty` 给数据添加了 `getter` 和 setter，目的就是为了在我们访问数据以及写数据的时候能自动执行一些逻辑 。
+Vue2 源码中监听器 Observer 的核心是利用 `Object.defineProperty` 给数据添加 `getter` 和 `setter`，目的是在访问数据和写数据时能自动执行一些逻辑。
 
 **（1）initState**
 
-在 `Vue` 的初始化阶段，`_init` 方法执行的时候，会执行 `initState(vm)` 方法，它的定义在 `src/core/instance/state.js` 中。 
+在 `Vue` 的初始化阶段，`_init` 方法执行时会执行 `initState(vm)` 方法，它的定义在 `src/core/instance/state.js` 中。
 
 ```javascript
 export function initState (vm: Component) {
@@ -417,7 +412,7 @@ export function initState (vm: Component) {
 }
 ```
 
-`initState` 方法主要是对 `props`、`methods`、`data`、`computed` 和 `wathcer` 等属性做了初始化操作。这里我们重点分析 `data`，对于其它属性的初始化我们在以后的文章中再做介绍。
+`initState` 方法主要对 `props`、`methods`、`data`、`computed` 和 `watcher` 等属性做初始化操作，其中重点是 `data` 的初始化。
 
 **（2）initData**
 
@@ -465,11 +460,11 @@ function initData (vm: Component) {
 }
 ```
 
-`data` 的初始化主要过程也是做两件事，一个是对定义 `data` 函数返回对象的遍历，通过 `proxy` 把每一个值 `vm._data.xxx` 都代理到 `vm.xxx` 上；另一个是调用 `observe` 方法观测整个 `data` 的变化，把 `data` 也变成响应式，我们接下去主要介绍 observe 。 
+`data` 的初始化主要做两件事：一是遍历 `data` 函数返回的对象，通过 `proxy` 把每一个 `vm._data.xxx` 都代理到 `vm.xxx` 上；二是调用 `observe` 方法观测整个 `data` 的变化，把 `data` 变成响应式。
 
 **（3）observe**
 
-`observe` 的功能就是用来监测数据的变化，它的定义在 `src/core/observer/index.js` 中： 
+`observe` 的功能是监测数据的变化，它的定义在 `src/core/observer/index.js` 中：
 
 ```javascript
 export function observe (value: any, asRootData: ?boolean): Observer | void {
@@ -495,11 +490,11 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
 }
 ```
 
-`observe` 方法的作用就是给非 VNode 的对象类型数据添加一个 `Observer`，如果已经添加过则直接返回，否则在满足一定条件下去实例化一个 `Observer` 对象实例。接下来看 `Observer` 的作用。 
+`observe` 方法的作用是给非 VNode 的对象类型数据添加一个 `Observer`：如果已经添加过则直接返回，否则在满足一定条件时实例化一个 `Observer` 对象。
 
 **（4）Observer**
 
-`Observer` 是一个类，它的作用是给对象的属性添加 getter 和 setter，用于依赖收集和派发更新： 
+`Observer` 是一个类，作用是给对象的属性添加 getter 和 setter，用于依赖收集和派发更新：
 
 ```javascript
 export class Observer {
@@ -547,11 +542,11 @@ export class Observer {
 }
 ```
 
-`Observer` 的构造函数逻辑很简单，首先实例化 `Dep` 对象， `Dep` 对象，我们第2小节会介绍。接下来会对 `value` 做判断，对于数组会调用 `observeArray` 方法，否则对纯对象调用 `walk` 方法。可以看到 `observeArray` 是遍历数组再次调用 `observe` 方法，而 `walk` 方法是遍历对象的 key 调用 `defineReactive` 方法，看这个方法是做什么的。 
+`Observer` 的构造函数逻辑：首先实例化 `Dep` 对象；接着对 `value` 做类型判断——数组调用 `observeArray` 方法，纯对象调用 `walk` 方法。`observeArray` 遍历数组再次调用 `observe` 方法；`walk` 方法遍历对象的 key 调用 `defineReactive` 方法。
 
 **（5）defineReactive**
 
-`defineReactive` 的功能就是定义一个响应式对象，给对象动态添加 `getter` 和 `setter`，它的定义在 `src/core/observer/index.js` 中： 
+`defineReactive` 的功能是定义一个响应式对象，给对象动态添加 `getter` 和 `setter`，它的定义在 `src/core/observer/index.js` 中：
 
 ```javascript
 export function defineReactive (
@@ -616,11 +611,11 @@ export function defineReactive (
 }
 ```
 
-`defineReactive` 函数最开始初始化 `Dep` 对象的实例，接着拿到 `obj` 的属性描述符，然后对子对象递归调用 `observe` 方法，这样就保证了无论 `obj` 的结构多复杂，它的所有子属性也能变成响应式的对象，这样我们访问或修改 `obj` 中一个嵌套较深的属性，也能触发 getter 和 setter。 
+`defineReactive` 函数最开始初始化 `Dep` 对象的实例，接着拿到 `obj` 的属性描述符，然后对子对象递归调用 `observe` 方法。这保证了无论 `obj` 的结构多复杂，它的所有子属性也能变成响应式对象，访问或修改 `obj` 中嵌套较深的属性同样能触发 getter 和 setter。
 
-### 6.2、订阅器 Dep 实现
+### 订阅器 Dep
 
-订阅器`Dep` 是整个 `getter` 依赖收集的核心，它的定义在 `src/core/observer/dep.js` 中： 
+订阅器 `Dep` 是整个 `getter` 依赖收集的核心，它的定义在 `src/core/observer/dep.js` 中：
 
 ```javascript
 export default class Dep {
@@ -668,11 +663,11 @@ export default class Dep {
 Dep.target = null
 ```
 
-`Dep` 是一个 `Class`，它定义了一些属性和方法，这里需要特别注意的是它有一个静态属性 `target`，这是一个全局唯一 `Watcher`，这是一个非常巧妙的设计，因为在同一时间只能有一个全局的 `Watcher` 被计算，另外它的自身属性 `subs` 也是 `Watcher` 的数组。`Dep` 实际上就是对 `Watcher` 的一种管理，`Dep` 脱离 `Watcher` 单独存在是没有意义的。
+`Dep` 是一个 `Class`，它定义了一些属性和方法。需要特别注意的是它有一个静态属性 `target`，这是一个全局唯一的 `Watcher`——这是一个非常巧妙的设计，因为在同一时间只能有一个全局的 `Watcher` 被计算；另外它的自身属性 `subs` 也是 `Watcher` 的数组。`Dep` 实际上是对 `Watcher` 的一种管理，`Dep` 脱离 `Watcher` 单独存在没有意义。
 
-### 6.3、订阅者 Watcher 实现
+### 订阅者 Watcher
 
-订阅者`Watcher` 的一些相关实现，它的定义在 `src/core/observer/watcher.js` 中 
+订阅者 `Watcher` 的相关实现定义在 `src/core/observer/watcher.js` 中：
 
 ```javascript
 export default class Watcher {
@@ -750,27 +745,27 @@ export default class Watcher {
 }
 ```
 
-`Watcher` 是一个 `Class`，在它的构造函数中，定义了一些和 `Dep` 相关的属性 ，其中，`this.deps` 和 `this.newDeps` 表示 `Watcher` 实例持有的 `Dep` 实例的数组；而 `this.depIds` 和 `this.newDepIds` 分别代表 `this.deps` 和 `this.newDeps` 的 `id` Set 。
+`Watcher` 是一个 `Class`，构造函数中定义了一些和 `Dep` 相关的属性。其中 `this.deps` 和 `this.newDeps` 表示 `Watcher` 实例持有的 `Dep` 实例的数组；`this.depIds` 和 `this.newDepIds` 分别代表 `this.deps` 和 `this.newDeps` 的 `id` Set。
 
 **（1）过程分析**
 
-当我们去实例化一个渲染 `watcher` 的时候，首先进入 `watcher` 的构造函数逻辑，然后会执行它的 `this.get()` 方法，进入 `get` 函数，首先会执行： 
+实例化一个渲染 `watcher` 时，进入构造函数逻辑后执行 `this.get()` 方法。`get` 函数首先执行：
 
 ```javascript
 pushTarget(this)
 ```
 
-实际上就是把 `Dep.target` 赋值为当前的渲染 `watcher` 并压栈（为了恢复用）。接着又执行了：
+实际上是把 `Dep.target` 赋值为当前的渲染 `watcher` 并压栈（为了恢复用）。接着执行：
 
 ```javascript
 value = this.getter.call(vm, vm)
 ```
 
-这个时候就触发了数据对象的 `getter` 。
+这个时候就触发了数据对象的 `getter`。
 
-因为每个对象值的 `getter` 都持有一个 `dep`，在触发 `getter` 的时候会调用 `dep.depend()` 方法，也就会执行 `Dep.target.addDep(this)`。
+每个对象值的 `getter` 都持有一个 `dep`，触发 `getter` 时会调用 `dep.depend()` 方法，也就是执行 `Dep.target.addDep(this)`。
 
-刚才我们提到这个时候 `Dep.target` 已经被赋值为渲染 `watcher`，那么就执行到 `addDep` 方法：
+此时 `Dep.target` 已经被赋值为渲染 `watcher`，因此会执行到 `addDep` 方法：
 
 ```
 addDep (dep: Dep) {
@@ -785,9 +780,9 @@ addDep (dep: Dep) {
 }
 ```
 
-这时候会做一些逻辑判断（保证同一数据不会被添加多次）后执行 `dep.addSub(this)`，那么就会执行 `this.subs.push(sub)`，也就是说把当前的 `watcher` 订阅到这个数据持有的 `dep` 的 `subs` 中，这个目的是为后续数据变化时候能通知到哪些 `subs` 做准备。所以在 `vm._render()` 过程中，会触发所有数据的 `getter`，这样实际上已经完成了一个依赖收集的过程。
+`addDep` 内部做逻辑判断（保证同一数据不会被添加多次）后执行 `dep.addSub(this)`，即 `this.subs.push(sub)`——把当前的 `watcher` 订阅到这个数据持有的 `dep` 的 `subs` 中，为后续数据变化时通知对应 `subs` 做准备。在 `vm._render()` 过程中会触发所有数据的 `getter`，由此完成一次依赖收集。
 
-当我们在组件中对响应的数据做了修改，就会触发 `setter` 的逻辑，最后调用 `watcher` 中的 `update` 方法： 
+在组件中对响应式数据做修改时，会触发 `setter` 的逻辑，最后调用 `watcher` 中的 `update` 方法：
 
 ```javascript
   update () {
@@ -802,26 +797,30 @@ addDep (dep: Dep) {
   }
 ```
 
-这里会对于 `Watcher` 的不同状态，会执行不同的更新逻辑。
+`update` 针对 `Watcher` 的不同状态（`lazy`、`sync`、默认异步队列）执行不同的更新逻辑。
 
-###  6.4、Vue 数据双向绑定原理图
+### 原理图
 
-以上主要分析了 Vue 数据双向绑定的关键代码，其原理图可以表示如下：
+以上关键代码的整体原理图如下：
 
 ![4.png](https://github.com/fengshi123/blog/blob/master/assets/mvvm/4.png?raw=true)  
 
-## 七、总结
+## 实践要点
 
-本文通过监听器 `Observer` 、订阅器 `Dep` 、订阅者 `Watcher` 和解析器 `Compile` 的实现，模拟初始化一个 `Vue` 实例，帮助大家了解数据双向绑定的基本原理。接着，从 `Vue` 源码层面介绍了 `Vue` 数据双向绑定的实现过程，了解 `Vue` 源码的实现逻辑，从而巩固加深对数据双向绑定的理解认识。希望本文对您有帮助。
+- **依赖收集的时机**：依赖收集发生在 `getter` 触发时（渲染过程中访问数据），而不是数据定义时；`Watcher` 通过先把 `Dep.target` 指向自身再读取属性的方式完成订阅。
+- **`Dep.target` 全局唯一**：同一时间只能有一个 `Watcher` 被计算，这是依赖收集正确性的前提；Vue2 源码中还通过 `pushTarget`/`popTarget` 栈结构支持嵌套场景。
+- **更新去重**：`Watcher` 内部用 `newDepIds`/`depIds` 两个 Set 判断同一 `Dep` 不会被重复添加，避免重复订阅。
+- **嵌套对象递归观测**：`defineReactive` 对子对象递归调用 `observe`，深层属性同样具备响应性。
+- **数组的特殊处理**：数组不走 `defineReactive`，而是通过 `protoAugment`/`copyAugment` 以原型增强方式（`arrayMethods`）拦截变异方法，并对元素调用 `observeArray` 逐项观测。
+- **数据代理**：`initData` 通过 `proxy` 把 `vm._data.xxx` 代理到 `vm.xxx`，这是组件中可以直接 `this.xxx` 访问数据的原因。
+- **视图更新入口**：解析器 `Compile` 在解析指令（如 `{{变量}}`、`v-model`）时创建 `Watcher`，把 DOM 更新函数与数据订阅关联起来。
+
+## 小结
+
+数据双向绑定的基本原理可以拆解为四个模块的协作：监听器 `Observer` 基于 `Object.defineProperty` 实现数据可观测；订阅器 `Dep` 通过 `subs` 数组与静态属性 `Dep.target` 管理订阅关系；订阅者 `Watcher` 在初始化时完成依赖收集并在数据变化时执行更新；解析器 `Compile` 负责解析模板指令并把 DOM 更新函数注册为订阅者。对照 Vue2 源码可以看到同样的结构：`initState` → `initData` → `observe` → `Observer` → `defineReactive` 构成响应式入口，`Dep` 与 `Watcher` 完成依赖收集与派发更新。
 
 ## 参考文献
 
 1、Vue 的双向绑定原理及实现：<https://www.cnblogs.com/canfoo/p/6891868.html> 
 
 2、Vue 技术揭秘：<https://ustbhuangyi.github.io/vue-analysis/> 
-
- 
-
- 
-
- 

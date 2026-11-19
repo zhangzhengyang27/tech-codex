@@ -1,6 +1,6 @@
 ---
 title: Transition源码分析
-description: "Vue 内置了 Transition 组件，可以帮助我们快速简单地实现基于状态变换的动画效果。该组件支持 CSS 过渡动画、CSS 动画、JavaScript 钩子 几种模式，接下来我们将逐步介绍这几种模式的实现原理。"
+description: "Vue 内置的 Transition 组件用于实现基于状态变换的动画效果，支持 CSS 过渡动画、CSS 动画、JavaScript 钩子几种模式，本文分析这几种模式的实现原理。"
 keywords: []
 category: Vue
 tags: [Vue3, 进阶特性, 过渡动画]
@@ -10,11 +10,11 @@ tags: [Vue3, 进阶特性, 过渡动画]
 
 ## 前言
 
-`Vue` 内置了 `Transition` 组件，可以帮助我们快速简单地实现基于状态变换的动画效果。该组件支持 `CSS 过渡动画`、`CSS 动画`、`JavaScript 钩子` 几种模式，接下来我们将逐步介绍这几种模式的实现原理。
+`Vue` 内置的 `Transition` 组件用于快速实现基于状态变换的动画效果。该组件支持 `CSS 过渡动画`、`CSS 动画`、`JavaScript 钩子` 几种模式，本文逐一分析这几种模式的实现原理。
 
 ## 基于 CSS 的过渡效果
 
-首先来看官网上一个简单的关于 `CSS Transition` 过渡动画的示例：
+先看官方文档中一个简单的 `CSS Transition` 过渡动画示例：
 
 ```html
 <template>
@@ -37,7 +37,7 @@ tags: [Vue3, 进阶特性, 过渡动画]
 </style>
 ```
 
-然后再看官网上对于这些类名的实现定义：
+官方文档对这 6 个类名的定义如下：
 
 1. `v-enter-from`：进入动画的起始状态。在元素插入之前添加，在元素插入完成后的下一帧移除。
 2. `v-enter-active`：进入动画的生效状态。应用于整个进入动画阶段。在元素被插入之前添加，在过渡或动画完成之后移除。这个 `class` 可以被用来定义进入动画的持续时间、延迟与速度曲线类型。
@@ -46,7 +46,7 @@ tags: [Vue3, 进阶特性, 过渡动画]
 5. `v-leave-active`：离开动画的生效状态。应用于整个离开动画阶段。在离开过渡效果被触发时立即添加，在过渡或动画完成之后移除。这个 class 可以被用来定义离开动画的持续时间、延迟与速度曲线类型。
 6. `v-leave-to`：离开动画的结束状态。在一个离开动画被触发后的下一帧被添加（也就是 `v-leave-from` 被移除的同时），在过渡或动画完成之后移除。
 
-抛开源码不谈，如果在一个普通的 `Vue` 组件中，我们如何实现一个上述功能的过渡状态的 `CSS` 动画效果？按照官网的描述，整个流程可以用下面的状态流转图来表示：
+抛开源码不谈，在一个普通的 `Vue` 组件中如何实现上述过渡状态的 `CSS` 动画效果？按照官网的描述，整个流程可以用下面的状态流转图来表示：
 
 ```mermaid
 stateDiagram-v2
@@ -61,12 +61,12 @@ stateDiagram-v2
   LeaveTo --> [*] : 过渡/动画完成, 移除 v-leave-to + v-leave-active
 ```
 
-可以看到，我们参考官网的描述，也可以简单地实现一个基于 `CSS` 的过渡动画，但这里存在了几个问题：
+可见，参照官网的描述也可以手动实现一个基于 `CSS` 的过渡动画，但这种做法存在两个问题：
 
 1. 硬编码了 `transition` 动画，没有实现 `animation` 动画。
 2. 不够抽象，难以复用到后续组件。
 
-接下来分析 `Vue` 源码是如何实现的，首先找到关于 `Transition` 组件的定义：
+下面分析 `Vue` 源码是如何实现的。首先找到 `Transition` 组件的定义：
 
 ```js
 export const Transition: FunctionalComponent<TransitionProps> =
@@ -75,11 +75,11 @@ export const Transition: FunctionalComponent<TransitionProps> =
   )
 ```
 
-代码很简单，`Transition` 组件是一个函数式组件，本身就是一个渲染函数。还记得我们之前说过吗，`Vue` 组件分为了有状态组件和函数组件，有状态组件内部会存储组件的状态，而函数组件不会。
+代码很简单，`Transition` 组件是一个函数式组件，本身就是一个渲染函数。`Vue` 组件分为有状态组件和函数组件两类：有状态组件内部会存储组件的状态，而函数组件不会。
 
-我们知道 `Vue` 对 `Transition` 内置组件的功能定义就是一个**容器**，一个搬运工，需要渲染 `DOM`，那就不需要 `template`，本身不需要维护任何状态。所以这里直接通过一个函数式组件定义了 `Transition` 组件。
+`Vue` 对 `Transition` 内置组件的功能定义就是一个**容器**、一个搬运工：负责渲染子元素的 `DOM`，不需要 `template`，本身也不需要维护任何状态。所以这里直接通过函数式组件定义了 `Transition` 组件。
 
-接着，我们看到该组件核心功能就是渲染 `BaseTransition` 组件，并为其传入**处理好的 `props`** 和内部挂载的 `slot`。先来看看 `BaseTransition` 组件，这里我们只关心与 `CSS` 动画相关的逻辑。
+该组件的核心功能是渲染 `BaseTransition` 组件，并为其传入**处理好的 `props`** 和内部挂载的 `slot`。先来看 `BaseTransition` 组件，此处只关注与 `CSS` 动画相关的逻辑。
 
 ```js
 const BaseTransitionImpl: ComponentOptions = {
@@ -219,11 +219,11 @@ const BaseTransitionImpl: ComponentOptions = {
 
 **Step 3:** 处理完成后直接返回子节点作为渲染内容。
 
-那么，这些 `hooks` 到底做了些什么？以及这些 `hooks` 是在什么时候被执行的？逐一分析。
+那么，这些 `hooks` 到底做了些什么？又在什么时候被执行？下面逐一分析。
 
 ### 1. hooks 到底做了些什么？
 
-要回答这些 `hooks` 到底做了什么，首先需要了解这些 `hooks` 是从哪里来的。再回到上述源码，我们知道 `hooks` 是通过：
+要回答这些问题，首先需要了解 `hooks` 的来源。回到上述源码，`hooks` 是通过下面的函数调用产生的：
 
 ```js
 const leavingHooks = resolveTransitionHooks(
@@ -234,9 +234,9 @@ const leavingHooks = resolveTransitionHooks(
 )
 ```
 
-这样的函数调用产生的，现在我们先不讨论这个函数的具体实现，先看看该函数的入参，有一个 `rawProps` 的参数，这个就是上文所说的 `Transition` 组件 `render` 函数中传入的 `props` 参数。
+此处暂不讨论该函数的具体实现，先看它的入参：`rawProps` 即上文所说的 `Transition` 组件 `render` 函数中传入的 `props` 参数。
 
-接下来就需要分析 `props` 中有些什么东西：
+接下来分析 `props` 中包含的内容：
 
 ```js
 export function resolveTransitionProps(
@@ -304,7 +304,7 @@ export function resolveTransitionProps(
 }
 ```
 
-根据我们前面了解到的，`Vue` 会在特定阶段为节点增加或删除特定 `class`。而这个 `props` 正是为了所谓的**特定阶段**量身打造的**钩子**函数。举个例子，我们需要实现进入节点的 `v-enter-from`、`v-enter-active`、`v-enter-to` 类名的添加，我们只需要在 `onEnter` 进入钩子内实现逻辑：
+前文已经分析过，`Vue` 会在特定阶段为节点增加或删除特定 `class`，而这个 `props` 正是为所谓的**特定阶段**量身打造的**钩子**函数集合。以进入节点的 `v-enter-from`、`v-enter-active`、`v-enter-to` 类名的添加为例，对应逻辑实现在 `onEnter` 进入钩子内：
 
 ```js
 const makeEnterHook = (isAppear: boolean) => {
@@ -332,7 +332,7 @@ const makeEnterHook = (isAppear: boolean) => {
 
 ### 2. hooks 何时执行？
 
-前面我们提到 `hooks` 将会在特定时间执行，用来对 `class` 进行增加或删除。比如 `enter-from` 至 `enter-to` 阶段的过渡或者动画效果的 `class` 被添加到 `DOM` 元素上。考虑到 `Vue` 在 `patch` 阶段已经有生成对应的 `DOM`（只不过还没有被真实地挂载到页面上而已），所以我们只需要在 `patch` 阶段做对应的 `class` 增删即可。
+前文提到 `hooks` 会在特定时间执行，用来对 `class` 进行增加或删除，例如 `enter-from` 至 `enter-to` 阶段的过渡或动画类名会被添加到 `DOM` 元素上。由于 `Vue` 在 `patch` 阶段已经生成了对应的 `DOM`（只是尚未真实挂载到页面上），因此只需在 `patch` 阶段完成对应的 `class` 增删即可。
 
 比如进入阶段的钩子函数，将会在 `mountElement` 中被调用：
 
@@ -388,7 +388,7 @@ const remove = vnode => {
 };
 ```
 
-为了更加清晰地看懂这个流程，我们可以用下面的时序图来表示：
+整个流程可以用下面的时序图表示：
 
 ```mermaid
 sequenceDiagram
@@ -419,7 +419,7 @@ sequenceDiagram
 
 ## JavaScript 钩子
 
-`<Transition>` 组件在动画过渡的各个阶段定义了很多钩子函数，我们可以通过在钩子函数内部自定义实现各种动画效果。
+`<Transition>` 组件在动画过渡的各个阶段定义了很多钩子函数，通过在钩子函数内部编写自定义逻辑，可以实现各类动画效果。
 
 ```html
 <Transition
@@ -436,7 +436,7 @@ sequenceDiagram
 </Transition>
 ```
 
-前面其实已经稍微提及到了部分钩子函数，比如 `onEnter`，这些钩子函数在源码中会被合并到 `Transition` 下子节点的 `transition` 属性上。这块的实现主要是通过 `setTransitionHooks` 函数来实现的：
+前文已经提及了部分钩子函数（如 `onEnter`）。这些钩子函数在源码中会被合并到 `Transition` 下子节点的 `transition` 属性上，主要通过 `setTransitionHooks` 函数实现：
 
 ```js
 // 为 vnode 添加 transition 属性
@@ -453,7 +453,7 @@ export function setTransitionHooks(vnode: VNode, hooks: TransitionHooks): void {
 }
 ```
 
-其中 `hooks` 包含了哪些内容？`hooks` 是通过 `resolveTransitionHooks` 函数调用生成的：
+`hooks` 通过 `resolveTransitionHooks` 函数调用生成，其中包含的内容如下：
 
 ```js
 export function resolveTransitionHooks(
@@ -624,16 +624,16 @@ export function resolveTransitionHooks(
 }
 ```
 
-一个最基础的 `hooks` 主要包含 `beforeEnter`、`enter`、`leave` 这几个阶段，将会在 `patch` 的环节中被执行，执行的逻辑就是 `Vue` 官网上描述的逻辑。
+一个最基础的 `hooks` 主要包含 `beforeEnter`、`enter`、`leave` 这几个阶段，将在 `patch` 的环节中被执行，执行的逻辑与 `Vue` 官网的描述一致。
 
-值得注意的是，`Vue 3.5` 中 `resolveTransitionHooks` 相较于早期版本有以下改进：
+`Vue 3.5` 中 `resolveTransitionHooks` 相较于早期版本有以下改进：
 
 1. **Symbol 键名替代字符串属性**：使用 `leaveCbKey = Symbol('_leaveCb')` 和 `enterCbKey = Symbol('_enterCb')` 替代了之前的 `el._leaveCb` 和 `el._enterCb` 字符串属性，避免了与用户代码的属性名冲突。
 2. **enter 钩子中增加 cancelled 回调**：`done` 函数现在支持 `cancelled` 参数，当进入动画被取消时会调用 `onEnterCancelled` 钩子。
 3. **leave 钩子中增加取消进入动画的逻辑**：在离开动画开始时，如果检测到有正在进行的进入动画（`el[enterCbKey]`），会先取消它。
 4. **clone 钩子支持 postClone 回调**：允许在克隆钩子后执行额外的逻辑，确保 `enterHooks` 在 `clone` 后保持最新。
 
-另外，值得注意的是，除了这几个关键阶段之外，`Transition` 还支持一个 `mode` 来指定动画的过渡时机，举个例子，如果 `mode === 'out-in'`，先执行离开动画，然后在其完成**之后**再执行元素的进入动画。那么这个时候就需要**延迟渲染进入动画**，则会为 `leavingHooks` 额外添加一个新的钩子：`afterLeave`，该钩子将会在离开后执行，表示着离开后再更新 `DOM`。
+除了这几个关键阶段之外，`Transition` 还支持通过 `mode` 指定动画的过渡时机。例如 `mode === 'out-in'` 表示先执行离开动画，在其完成**之后**再执行元素的进入动画。此时需要**延迟渲染进入动画**，因此会为 `leavingHooks` 额外添加一个 `afterLeave` 钩子，该钩子在离开动画结束后执行，表示离开后再更新 `DOM`。
 
 ```js
 const BaseTransitionImpl = {
@@ -659,7 +659,7 @@ const BaseTransitionImpl = {
 
 ## 过渡结束的检测机制
 
-前面多次提到 `whenTransitionEnds` 函数，它是 `Transition` 组件检测过渡或动画何时结束的关键机制。下面分析它的实现：
+前文多次提到 `whenTransitionEnds` 函数，它是 `Transition` 组件检测过渡或动画何时结束的关键机制。实现如下：
 
 ```js
 function whenTransitionEnds(
@@ -719,7 +719,7 @@ function whenTransitionEnds(
 
 ## 总结
 
-本小节我们核心介绍了 `Transition` 内置组件的实现原理：
+`Transition` 内置组件的实现原理可归纳为以下几点：
 
 1. `Transition` 组件本身是一个无状态组件（函数式组件），内部本身不渲染任何额外的 `DOM` 元素，`Transition` 渲染的是组件嵌套的第一个子元素节点。
 2. 如果子元素是应用了 `CSS` 过渡或动画，`Transition` 组件会在子元素节点渲染的适当时机，动态为子元素节点增加或删除对应的 `class`。

@@ -8,9 +8,9 @@ tags: [Vue3, 原理, 渲染器, 虚拟DOM]
 
 # 渲染器-组件更新与diff算法
 
-## 前言
+## 概述
 
-上一小节，我们介绍了数据访问代理的过程以及组件实例初始化的过程，接下来，我们将介绍组件的更新逻辑。这部分逻辑主要包含在 `setupRenderEffect` 这个函数中。在 Vue 3.5 中，响应式系统经历了重大重构——从 3.4 的 ReactiveEffect 精确触发改进，到 3.5 的 Lazy Effect 机制，组件更新的底层驱动方式已经发生了根本性变化。理解这些变化，是深入掌握 Vue 3.5 组件更新机制的关键。
+组件的更新逻辑主要包含在 `setupRenderEffect` 函数中。在 Vue 3.5 中，响应式系统经历了重大重构——从 3.4 的 ReactiveEffect 精确触发改进，到 3.5 的 Lazy Effect 机制，组件更新的底层驱动方式已经发生了根本性变化。理解这些变化，是深入掌握 Vue 3.5 组件更新机制的关键。
 
 ## 组件更新的响应式驱动：从 effect() 到 ReactiveEffect
 
@@ -61,7 +61,7 @@ const setupRenderEffect: SetupRenderEffectFn = (
 }
 ```
 
-这个变化看似只是 API 形式的调整，实则蕴含了 Vue 3.5 响应式系统的核心设计理念。让我们通过一个对比来理解：
+这一变化看似只是 API 形式的调整，实则蕴含了 Vue 3.5 响应式系统的核心设计理念。两种方式的对比：
 
 | 维度 | 早期版本 `effect()` | Vue 3.5 `ReactiveEffect` |
 |------|---------------------|--------------------------|
@@ -107,7 +107,7 @@ function isDirty(sub: Subscriber): boolean {
 
 ## 组件更新的核心流程
 
-在前面的小节中，我们说完了关于 `mounted` 的流程。接下来着重看组件更新的逻辑，即 `componentUpdateFn` 的 `else` 分支：
+组件首次挂载（`isMounted` 为 `false`）走挂载流程；挂载完成后，后续更新进入 `componentUpdateFn` 的 `else` 分支：
 
 ```ts
 // Vue 3.5 - packages/runtime-core/src/renderer.ts
@@ -243,7 +243,7 @@ sequenceDiagram
 2. **渲染阶段**：调用 `renderComponentRoot` 生成新的子树 vnode
 3. **比对阶段**：通过 `patch` 比对新旧子树，完成 DOM 更新
 
-接下来我们深入每个阶段的细节。
+以下分别展开各阶段的实现细节。
 
 ## next 的作用：区分两种更新来源
 
@@ -519,7 +519,7 @@ Vue 3.5 的 `patchElement` 相比早期版本有几个重要改进：
 2. **`#9135` 修复**：当旧节点有 `innerHTML` 或 `textContent` 而新节点没有时，需要先清空文本内容，再挂载新的子节点。这修复了一个边界情况下的渲染 bug
 3. **`patchFlag |= n1.patchFlag & PatchFlags.FULL_PROPS`**：考虑旧节点的 patchFlag，处理用户克隆编译器生成 vnode 的场景
 
-> 这里省略了对 `dynamicChildren` 存在时执行 `patchBlockChildren` 的优化 diff 过程，我们直接先看全量 diff 也就是 `patchChildren` 函数。关于 `patchBlockChildren` 我们将在**编译过程中的优化**小节中进行详细介绍。
+> `dynamicChildren` 存在时执行的 `patchBlockChildren` 靶向更新过程暂不展开，先分析全量 diff 即 `patchChildren` 函数；`patchBlockChildren` 的细节见编译优化相关章节。
 
 ### patchChildren：子节点更新
 
@@ -632,11 +632,11 @@ flowchart TD
 
 ```
 
-其中新旧子节点都是数组的情况涉及到我们平常所说的 `diff` 算法，会放到后面专门解析。
+其中新旧子节点都是数组的情况涉及通常所说的 `diff` 算法，在后文专门解析。
 
 ## processComponent：组件更新
 
-看完处理 DOM 元素的情况，接下来看处理 Vue 组件：
+处理完 DOM 元素后，接下来是 Vue 组件的更新处理：
 
 ```ts
 // Vue 3.5 - packages/runtime-core/src/renderer.ts
@@ -839,7 +839,7 @@ flowchart TD
 
 编译后，`onUpdate:modelValue` 会作为 prop 传入子组件。但每次父组件重新渲染时，`handler` 可能是一个新的函数引用（除非编译器通过 cacheHandlers 缓存了事件处理函数），导致 `prevProps[key] !== nextProps[key]`。然而，emit 监听器的变化不应该触发子组件更新——因为子组件只是"发射"事件，并不"消费"这些监听器。通过 `isEmitListener` 过滤，Vue 避免了大量因事件监听器引用变化导致的无效子组件更新。
 
-> **设计洞察**：`shouldUpdateComponent` 体现了 Vue 更新粒度控制的核心思想——组件级别的细粒度更新。它不是简单地"父组件更新就更新所有子组件"，而是在源码层面帮我们过滤掉了不必要的子组件更新。这种优化在大型组件树中效果尤为显著。
+> **设计洞察**：`shouldUpdateComponent` 体现了 Vue 更新粒度控制的核心思想——组件级别的细粒度更新。它不是简单地"父组件更新就更新所有子组件"，而是在源码层面过滤掉了不必要的子组件更新。这种优化在大型组件树中效果尤为显著。
 
 ## 完整流程演示
 
@@ -935,7 +935,7 @@ sequenceDiagram
 
 ## 总结
 
-本节着重介绍了组件的更新逻辑，核心要点如下：
+组件更新逻辑的核心要点如下：
 
 1. **ReactiveEffect 驱动更新**：Vue 3.5 使用 `ReactiveEffect` 类替代了早期的 `effect()` 工厂函数，通过 `runIfDirty` 实现了 Lazy Effect 机制，避免无效更新
 2. **next 机制**：区分"自身状态变化"和"父组件 props 变化"两种更新来源，统一在 `componentUpdateFn` 中处理
@@ -943,7 +943,7 @@ sequenceDiagram
 4. **patchChildren**：根据新旧子节点的类型组合（文本/数组/空）走不同的更新策略
 5. **shouldUpdateComponent**：通过编译器优化标记和 props 比对，过滤掉不必要的子组件更新
 
-我们再补齐一下第二节中的流程图，加入 Vue 3.5 的更新机制：
+将前述流程图补全并加入 Vue 3.5 的更新机制后，完整链路如下：
 
 ```mermaid
 flowchart TD
@@ -988,15 +988,15 @@ flowchart TD
 
 ```
 
-本节介绍了关于普通元素的简单更新过程，那关于复杂的更新过程的逻辑，也就是新老子节点都是数组的普通元素，应该如何进行更新？这就涉及到了 `diff` 算法，我们下节接着介绍。
+以上内容覆盖了普通元素的简单更新过程；新旧子节点均为数组的复杂更新由 `diff` 算法处理，细节在后续章节展开。
 
 ---
 
-## 前言
+## diff 算法概述
 
-上一节，我们介绍了新旧子节点不同为数组的情况下的更新过程。本节将深入介绍当新旧子节点均为数组时的 diff 算法——这是 Vue 3 渲染器中最核心、最精妙的算法部分。
+当新旧子节点均为数组时，渲染器进入 diff 算法处理——这是 Vue 3 渲染器中最核心、最精妙的部分。
 
-在深入五步 diff 流程之前，我们需要先理解 Vue 3.5 中一个关键的优化机制：**Block Tree + PatchFlags**。这个机制在很多场景下可以完全跳过全量 diff，直接进入靶向更新路径，大幅提升渲染性能。
+在深入五步 diff 流程之前，先理解 Vue 3.5 中一个关键的优化机制：**Block Tree + PatchFlags**。该机制在很多场景下可以完全跳过全量 diff，直接进入靶向更新路径，大幅提升渲染性能。
 
 ## 0. Block Tree 与靶向更新：diff 的前置优化
 
@@ -1146,7 +1146,7 @@ if (dynamicChildren) {
 
 ### 0.6 Block Tree 与 diff 算法的关系
 
-理解 Block Tree 优化后，我们可以更清晰地定位 `patchKeyedChildren`（五步 diff 算法）的适用场景：
+理解 Block Tree 优化后，`patchKeyedChildren`（五步 diff 算法）的适用场景可以更清晰地定位：
 
 ```mermaid
 flowchart TD
@@ -1162,7 +1162,7 @@ flowchart TD
     E --> J[五步 diff 算法<br/>O(子节点数)]
 ```
 
-Block Tree 优化使得很多场景根本不需要进入五步 diff，但当子节点是带 key 的列表且顺序可能变化时（如 `v-for` 渲染的列表），仍然需要 `patchKeyedChildren` 进行完整的 diff。接下来，我们就深入分析这个五步 diff 算法。
+Block Tree 优化使得很多场景根本不需要进入五步 diff，但当子节点是带 key 的列表且顺序可能变化时（如 `v-for` 渲染的列表），仍然需要 `patchKeyedChildren` 进行完整的 diff。下面深入分析五步 diff 算法的实现。
 
 ## 1. 从头比对
 
@@ -1417,7 +1417,7 @@ flowchart TD
 
 ## 5. 未知子序列
 
-经过步骤 1、2 后，如果既不满足 `i > e1`（新增），也不满足 `i > e2`（删除），说明中间存在一个"未知子序列"，需要更复杂的处理。来看一个典型例子：
+经过步骤 1、2 后，如果既不满足 `i > e1`（新增），也不满足 `i > e2`（删除），说明中间存在一个"未知子序列"，需要更复杂的处理。典型例子如下：
 
 旧子节点：`[a, b, c, d, e, f, g, h]`
 
@@ -1497,7 +1497,7 @@ DOM 操作的性能优劣关系大致为：**属性更新 > 位置移动 > 增�
 
 这一步构建新子序列的 `key → index` 映射表 `keyToNewIndexMap`，用于后续快速查找旧节点在新子序列中的位置。
 
-对于我们的例子，新子序列 `[e, c, d, i]` 对应的索引为 `[2, 3, 4, 5]`，生成的映射为：
+对于上述示例，新子序列 `[e, c, d, i]` 对应的索引为 `[2, 3, 4, 5]`，生成的映射为：
 
 ```
 keyToNewIndexMap = {
@@ -1629,7 +1629,7 @@ flowchart LR
 
 对于没有 key 的节点，无法通过 `keyToNewIndexMap` 快速查找，只能遍历新子序列，寻找类型相同且尚未被匹配的节点。这也是为什么不推荐用 `index` 作为 key 的原因之一——当节点没有稳定的 key 时，diff 效率会降低。
 
-经过这一步，我们得到：
+经过这一步，得到：
 
 ```
 newIndexToOldIndexMap = [5, 3, 4, 0]
@@ -1657,7 +1657,7 @@ flowchart TD
 
 ### 5.3 移动和新增节点
 
-通过前面的操作，我们完成了旧节点的更新和删除。接下来需要处理节点的移动和新节点的添加：
+通过前面的操作，旧节点的更新和删除已完成。接下来处理节点的移动和新节点的添加：
 
 ```typescript
     // 5.3 move and mount
@@ -1722,7 +1722,7 @@ flowchart TD
 
 最长递增子序列标识了在新子序列中**相对顺序与旧子序列一致**的节点集合。这些节点不需要移动，只需要移动不在 LIS 中的节点。
 
-对于我们的例子：
+对于上述示例：
 
 ```
 newIndexToOldIndexMap = [5, 3, 4, 0]
@@ -1935,7 +1935,7 @@ flowchart TD
 | 5.3 移动和新增 | O(n log n) | LIS 计算主导 |
 | **总计** | **O(n log n)** | n 为子节点数 |
 
-## 8. 思考题
+## 8. 常见问题
 
 1. **为什么 Vue 3 不再沿用 Vue 2 的双端 diff 算法？** Vue 2 的双端 diff 使用四个指针（旧头、旧尾、新头、新尾）同时比对，虽然在某些场景下效率更高，但实现复杂度高，且与 Block Tree 优化体系不兼容。Vue 3 的五步 diff 算法在大多数实际场景中（头部/尾部相同）可以快速完成，且配合 Block Tree 的靶向更新，整体性能更优。
 

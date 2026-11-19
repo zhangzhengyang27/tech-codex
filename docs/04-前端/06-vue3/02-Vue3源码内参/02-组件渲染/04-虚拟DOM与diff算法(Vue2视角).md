@@ -8,13 +8,13 @@ keywords: [虚拟DOM, diff, snabbdom, patch, Vue2]
 
 # 虚拟 DOM 与 diff 算法（Vue2 视角）
 
-## 前言
+## 概述
 
 虚拟 `DOM` 是 `Vue` 的核心机制之一。本文从 `Virtual DOM` 的技术原理出发，结合 `Vue` 框架的具体实现，剖析虚拟 `DOM` 的来由、`VNode` 的数据结构以及 `diff` 算法的执行过程。
 
 ## 一、真实`DOM`和其解析流程
 
-本节介绍真实 `DOM` 的解析过程，通过说明其解析流程以及存在的问题，引出为什么需要虚拟 `DOM`。一图胜千言，如下图为 `webkit` 渲染引擎工作流程图
+以下介绍真实 `DOM` 的解析过程，通过说明其解析流程以及存在的问题，引出为什么需要虚拟 `DOM`。一图胜千言，如下图为 `webkit` 渲染引擎工作流程图
 
 ![1.png](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/1.png?raw=true)
 
@@ -38,7 +38,7 @@ keywords: [虚拟DOM, diff, snabbdom, patch, Vue2]
 
 **3、`CSS` 的解析注意点？** `CSS` 的解析是从右往左逆向解析的，嵌套标签越多，解析越慢。
 
-**4、`JS` 操作真实 `DOM` 的代价？** 用我们传统的开发模式，原生 `JS` 或 `JQ` 操作 `DOM` 时，浏览器会从构建 DOM 树开始从头到尾执行一遍流程。在一次操作中，我需要更新 10 个 `DOM` 节点，浏览器收到第一个 `DOM` 请求后并不知道还有 9 次更新操作，因此会马上执行流程，最终执行10 次。例如，第一次计算完，紧接着下一个 `DOM` 更新请求，这个节点的坐标值就变了，前一次计算为无用功。计算 `DOM` 节点坐标值等都是白白浪费的性能。即使计算机硬件一直在迭代更新，操作 `DOM` 的代价仍旧是昂贵的，频繁操作还是会出现页面卡顿，影响用户体验
+**4、`JS` 操作真实 `DOM` 的代价？** 在传统的开发模式下，原生 `JS` 或 `JQ` 操作 `DOM` 时，浏览器会从构建 DOM 树开始从头到尾执行一遍流程。例如在一次操作中需要更新 10 个 `DOM` 节点，浏览器收到第一个 `DOM` 请求后并不知道还有 9 次更新操作，因此会马上执行流程，最终执行10 次。例如，第一次计算完，紧接着下一个 `DOM` 更新请求，这个节点的坐标值就变了，前一次计算为无用功。计算 `DOM` 节点坐标值等都是白白浪费的性能。即使计算机硬件一直在迭代更新，操作 `DOM` 的代价仍旧是昂贵的，频繁操作还是会出现页面卡顿，影响用户体验
 
 ##  二、`Virtual-DOM` 基础
 
@@ -66,7 +66,7 @@ keywords: [虚拟DOM, diff, snabbdom, patch, Vue2]
 </div> 
 ```
 
-我们用 `JavaScript` 对象来表示 `DOM` 节点，使用对象的属性记录节点的类型、属性、子节点等。
+用 `JavaScript` 对象来表示 `DOM` 节点，使用对象的属性记录节点的类型、属性、子节点等。
 
 `element.js` 中表示节点对象代码如下：
 
@@ -120,13 +120,13 @@ var ul = el('div',{id:'virtual-dom'},[
 ]) 
 ```
 
-现在 `ul` 就是我们用  `JavaScript` 对象表示的 `DOM` 结构，我们输出查看 `ul` 对应的数据结构如下：
+现在 `ul` 就是用 `JavaScript` 对象表示的 `DOM` 结构，其对应的数据结构输出如下：
 
 ![12.png](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/1_2.png?raw=true) 
 
 **（2）渲染用 `JS` 表示的 `DOM` 对象**
 
-但是页面上并没有这个结构，下一步我们介绍如何将 `ul` 渲染成页面上真实的 `DOM` 结构，相关渲染函数如下：
+但是页面上并没有这个结构，下一步介绍如何将 `ul` 渲染成页面上真实的 `DOM` 结构，相关渲染函数如下：
 
 ```javascript
 /**
@@ -152,9 +152,9 @@ Element.prototype.render = function () {
 } 
 ```
 
-我们通过查看以上 `render` 方法，会根据  `tagName` 构建一个真正的 `DOM` 节点，然后设置这个节点的属性，最后递归地把自己的子节点也构建起来。
+查看以上 `render` 方法，它会根据  `tagName` 构建一个真正的 `DOM` 节点，然后设置这个节点的属性，最后递归地把自己的子节点也构建起来。
 
-我们将构建好的 `DOM` 结构添加到页面 `body` 上面，如下：
+将构建好的 `DOM` 结构添加到页面 `body` 上面，如下：
 
 ```javascript
 ulRoot = ul.render();
@@ -167,7 +167,7 @@ document.body.appendChild(ulRoot);
 
 #### 2.2.2、比较两棵虚拟 `DOM` 树的差异 — `diff` 算法
 
-`diff` 算法用来比较两棵 `Virtual DOM` 树的差异，如果需要两棵树的完全比较，那么 `diff` 算法的时间复杂度为`O(n^3)`。但是在前端当中，你很少会跨越层级地移动 `DOM` 元素，所以 `Virtual DOM` 只会对同一个层级的元素进行对比，如下图所示， `div` 只会和同一层级的 `div` 对比，第二层级的只会跟第二层级对比，这样算法复杂度就可以达到 `O(n)`。
+`diff` 算法用来比较两棵 `Virtual DOM` 树的差异，如果需要两棵树的完全比较，那么 `diff` 算法的时间复杂度为`O(n^3)`。但是在前端当中，很少会跨越层级地移动 `DOM` 元素，所以 `Virtual DOM` 只会对同一个层级的元素进行对比，如下图所示， `div` 只会和同一层级的 `div` 对比，第二层级的只会跟第二层级对比，这样算法复杂度就可以达到 `O(n)`。
 
 ![3.png](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/3.png?raw=true)  
 
@@ -245,7 +245,7 @@ var TEXT = 3 // 文本内容改变
 
 **（3）列表对比算法**
 
-​	子节点的对比算法，例如      `p, ul, div` 的顺序换成了 `div, p, ul`。这个该怎么对比？如果按照同层级进行顺序对比的话，它们都会被替换掉。如 `p` 和 `div` 的 `tagName` 不同，`p ` 会被 `div ` 所替代。最终，三个节点都会被替换，这样 `DOM` 开销就非常大。而实际上是不需要替换节点，而只需要经过节点移动就可以达到，我们只需知道怎么进行移动。 
+​	子节点的对比算法，例如      `p, ul, div` 的顺序换成了 `div, p, ul`。这个该怎么对比？如果按照同层级进行顺序对比的话，它们都会被替换掉。如 `p` 和 `div` 的 `tagName` 不同，`p ` 会被 `div ` 所替代。最终，三个节点都会被替换，这样 `DOM` 开销就非常大。而实际上是不需要替换节点，而只需要经过节点移动就可以达到，只需确定移动的方式。 
 
 ​	将这个问题抽象出来其实就是字符串的最小编辑距离问题（`Edition Distance`），最常见的解决方法是 `Levenshtein Distance` , `Levenshtein Distance ` 是一个度量两个字符序列之间差异的字符串度量标准，两个单词之间的 `Levenshtein Distance` 是将一个单词转换为另一个单词所需的单字符编辑（插入、删除或替换）的最小数量。`Levenshtein Distance` 是1965年由苏联数学家 Vladimir Levenshtein 发明的。`Levenshtein Distance` 也被称为编辑距离（`Edit Distance`），通过**动态规划**求解，时间复杂度为 `O(M*N)`。
 
@@ -285,7 +285,7 @@ var patches = diff(ul1,ul2);
 console.log('patches:',patches);
 ```
 
-我们查看输出的两个虚拟 `DOM` 对象之间的差异对象如下图所示，我们能通过差异对象得到，两个虚拟 `DOM` 对象之间进行了哪些变化，从而根据这个差异对象（`patches`）更改原先的真实 `DOM` 结构，从而将页面的 `DOM` 结构进行更改。
+输出的两个虚拟 `DOM` 对象之间的差异对象如下图所示。通过差异对象可以得到两个虚拟 `DOM` 对象之间进行了哪些变化，从而根据这个差异对象（`patches`）更改原先的真实 `DOM` 结构，从而将页面的 `DOM` 结构进行更改。
 
 ![7](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/7.png?raw=true)  
 
@@ -293,7 +293,7 @@ console.log('patches:',patches);
 
 **（1）深度优先遍历 `DOM` 树**
 
-​	因为步骤一所构建的         ` JavaScript` 对象树和 `render` 出来真正的 `DOM` 树的信息、结构是一样的。所以我们可以对那棵 `DOM` 树也进行深度优先的遍历，遍历的时候从步骤二生成的 `patches` 对象中找出当前遍历的节点差异，如下相关代码所示：
+​	因为步骤一所构建的         ` JavaScript` 对象树和 `render` 出来真正的 `DOM` 树的信息、结构是一样的。所以可以对那棵 `DOM` 树也进行深度优先的遍历，遍历的时候从步骤二生成的 `patches` 对象中找出当前遍历的节点差异，如下相关代码所示：
 
 ```javascript
 function patch (node, patches) {
@@ -323,7 +323,7 @@ function dfsWalk (node, walker, patches) {
 
 **（2）对原有 `DOM` 树进行 `DOM` 操作**
 
-我们根据不同类型的差异对当前节点进行不同的 `DOM` 操作 ，例如如果进行了节点替换，就进行节点替换 `DOM` 操作；如果节点文本发生了改变，则进行文本替换的 `DOM` 操作；以及子节点重排、属性改变等 `DOM` 操作，相关代码如 `applyPatches` 所示 ：
+根据不同类型的差异对当前节点进行不同的 `DOM` 操作 ，例如如果进行了节点替换，就进行节点替换 `DOM` 操作；如果节点文本发生了改变，则进行文本替换的 `DOM` 操作；以及子节点重排、属性改变等 `DOM` 操作，相关代码如 `applyPatches` 所示 ：
 
 ```javascript
 function applyPatches (node, currentPatches) {
@@ -353,7 +353,7 @@ function applyPatches (node, currentPatches) {
 
 **（3）DOM结构改变**
 
-通过将第 2.2.2 得到的两个 `DOM` 对象之间的差异，应用到第一个（原先）`DOM` 结构中，我们可以看到 `DOM` 结构进行了预期的变化，如下图所示：
+通过将第 2.2.2 得到的两个 `DOM` 对象之间的差异，应用到第一个（原先）`DOM` 结构中，可以看到 `DOM` 结构进行了预期的变化，如下图所示：
 
 ![8.png](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/8.png?raw=true)     
 
@@ -409,7 +409,7 @@ function applyPatches (node, currentPatches) {
 
 ## 三、`Vue` 源码 `Virtual-DOM` 简析
 
-我们从第二章节（`Virtual-DOM` 基础）中已经掌握 `Virtual DOM` 渲染成真实的 `DOM` 实际上要经历 `VNode` 的定义、`diff`、`patch` 等过程，所以本章节 `Vue` 源码的解析也按这几个过程来简析。
+从第二章节（`Virtual-DOM` 基础）已经掌握 `Virtual DOM` 渲染成真实的 `DOM` 实际上要经历 `VNode` 的定义、`diff`、`patch` 等过程，所以本章节 `Vue` 源码的解析也按这几个过程来简析。
 
 ###  3.1、`VNode` 模拟 `DOM` 树
 
@@ -484,7 +484,7 @@ export default class VNode {
 }
 ```
 
-这里千万不要因为 `VNode` 的这么属性而被吓到，或者咬紧牙去摸清楚每个属性的意义，其实，我们主要了解其几个核心的关键属性就差不多了，例如：
+无需逐一摸清 `VNode` 每个属性的意义，主要了解其几个核心的关键属性即可，例如：
 
 - `tag` 属性即这个`vnode`的标签属性
 - `data` 属性包含了最后渲染成真实`dom`节点后，节点上的`class`，`attribute`，`style`以及绑定的事件
@@ -497,7 +497,7 @@ export default class VNode {
 
 **（1）初始化  `vue` **
 
-我们在实例化一个 `vue` 实例，也即 `new Vue( )` 时，实际上是执行 `src/core/instance/index.js`  中定义的 `Function` 函数。
+实例化一个 `vue` 实例，也即 `new Vue( )` 时，实际上是执行 `src/core/instance/index.js`  中定义的 `Function` 函数。
 
 ```javascript
 function Vue (options) {
@@ -510,7 +510,7 @@ function Vue (options) {
 }
 ```
 
-通过查看 `Vue` 的 `function`，我们知道 `Vue` 只能通过 `new` 关键字初始化，然后调用 `this._init` 方法，该方法在 `src/core/instance/init.js` 中定义。 
+通过查看 `Vue` 的 `function`，可知 `Vue` 只能通过 `new` 关键字初始化，然后调用 `this._init` 方法，该方法在 `src/core/instance/init.js` 中定义。 
 
 ```javascript
   Vue.prototype._init = function (options?: Object) {
@@ -527,7 +527,7 @@ function Vue (options) {
 
 **（2）`Vue` 实例挂载**
 
-`Vue` 中是通过 `$mount` 实例方法去挂载 `dom` 的，下面我们通过分析 `compiler` 版本的 `mount` 实现，相关源码在 `src/platforms/web/entry-runtime-with-compiler.js` 文件中定义：
+`Vue` 中是通过 `$mount` 实例方法去挂载 `dom` 的，下面通过分析 `compiler` 版本的 `mount` 实现，相关源码在 `src/platforms/web/entry-runtime-with-compiler.js` 文件中定义：
 
 ```javascript
 const mount = Vue.prototype.$mount
@@ -543,7 +543,7 @@ Vue.prototype.$mount = function (
 }
 ```
 
-我们发现最终还是调用用原先原型上的 `$mount` 方法挂载 ，原先原型上的 `$mount` 方法在 `src/platforms/web/runtime/index.js` 中定义 。
+最终还是调用原先原型上的 `$mount` 方法挂载 ，原先原型上的 `$mount` 方法在 `src/platforms/web/runtime/index.js` 中定义 。
 
 ```JavaScript
 Vue.prototype.$mount = function (
@@ -555,7 +555,7 @@ Vue.prototype.$mount = function (
 }
 ```
 
-我们发现`$mount` 方法实际上会去调用 `mountComponent` 方法，这个方法定义在 `src/core/instance/lifecycle.js` 文件中 
+`$mount` 方法实际上会去调用 `mountComponent` 方法，这个方法定义在 `src/core/instance/lifecycle.js` 文件中 
 
 ```javascript
 export function mountComponent (
@@ -679,7 +679,7 @@ export function _createElement (
 
 #### **3.1.3、实例查看**
 
-为了更直观查看我们平时写的 `Vue` 代码如何用 `VNode` 类来表示，我们通过一个实例的转换进行更深刻了解。
+为了更直观查看平时写的 `Vue` 代码如何用 `VNode` 类来表示，通过一个实例的转换进行更深刻了解。
 
 例如，实例化一个 `Vue` 实例：
 
@@ -700,7 +700,7 @@ export function _createElement (
   })
 ```
 
-我们打印出其对应的 `VNode` 表示：
+其对应的 `VNode` 表示打印如下：
 
 ![10.png](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/10.png?raw=true)  
 
@@ -781,7 +781,7 @@ export function mountComponent (
 
 在这个方法当中最为关键的就是 `vm.__patch__` 方法，这也是整个 `virtual-dom` 当中最为核心的方法，主要完成了`prevVnode` 和 `vnode` 的 `diff` 过程并根据需要操作的 `vdom` 节点打 `patch`，最后生成新的真实 `dom` 节点并完成视图的更新工作。 
 
-接下来，让我们看下 `vm.__patch__ `的逻辑过程， `vm.__patch__` 方法定义在 `src/core/vdom/patch.js` 中。
+接下来看 `vm.__patch__ `的逻辑过程， `vm.__patch__` 方法定义在 `src/core/vdom/patch.js` 中。
 
 ```javascript
 function patch (oldVnode, vnode, hydrating, removeOnly) {
@@ -802,7 +802,7 @@ function patch (oldVnode, vnode, hydrating, removeOnly) {
 }
 ```
 
-在 `patch` 方法中，我们看到会分为两种情况，一种是当 `oldVnode` 不存在时，会创建新的节点；另一种则是已经存在 `oldVnode` ，那么会对 `oldVnode` 和 `vnode` 进行 `diff` 及 `patch` 的过程。其中 `patch` 过程中会调用 `sameVnode` 方法来对对传入的2个 `vnode` 进行基本属性的比较，只有当基本属性相同的情况下才认为这个2个`vnode` 只是局部发生了更新，然后才会对这2个 `vnode` 进行 `diff`，如果2个 `vnode` 的基本属性存在不一致的情况，那么就会直接跳过 `diff` 的过程，进而依据 `vnode` 新建一个真实的 `dom`，同时删除老的 `dom `节点。
+在 `patch` 方法中，会分为两种情况，一种是当 `oldVnode` 不存在时，会创建新的节点；另一种则是已经存在 `oldVnode` ，那么会对 `oldVnode` 和 `vnode` 进行 `diff` 及 `patch` 的过程。其中 `patch` 过程中会调用 `sameVnode` 方法来对对传入的2个 `vnode` 进行基本属性的比较，只有当基本属性相同的情况下才认为这个2个`vnode` 只是局部发生了更新，然后才会对这2个 `vnode` 进行 `diff`，如果2个 `vnode` 的基本属性存在不一致的情况，那么就会直接跳过 `diff` 的过程，进而依据 `vnode` 新建一个真实的 `dom`，同时删除老的 `dom `节点。
 
 ```javascript
 function sameVnode (a, b) {
@@ -867,7 +867,7 @@ function sameVnode (a, b) {
 
 **（1）`Vue.js` 源码**
 
-​	这里着重分析下`    updateChildren`方法，它也是整个 `diff` 过程中最重要的环节，以下为 `Vue.js` 的源码过程，为了更形象理解 `diff` 过程，我们给出相关的示意图来讲解。 
+​	这里着重分析下`    updateChildren`方法，它也是整个 `diff` 过程中最重要的环节，以下为 `Vue.js` 的源码过程，为了更形象理解 `diff` 过程，给出相关的示意图来讲解。 
 
 ```javascript
   function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
@@ -940,7 +940,7 @@ function sameVnode (a, b) {
 
 **（2）无 `key` 的 `diff` 过程**
 
-我们通过以下示意图对以上代码过程进行讲解：
+通过以下示意图对以上代码过程进行讲解：
 
 （2.1）首先从第一个节点开始比较，不管是 `oldCh` 还是 `newCh` 的起始或者终止节点都不存在 `sameVnode` ，同时节点属性中是不带 `key `标记的，因此第一轮的 `diff` 完后，`newCh `的 `startVnode` 被添加到 `oldStartVnode`的前面，同时 `newStartIndex `前移一位；   
 
@@ -999,7 +999,7 @@ function sameVnode (a, b) {
 
 ### 3.3、`patch` 过程
 
-通过3.2章节介绍的 `diff` 过程中，我们会看到 `nodeOps` 相关的方法对真实 `DOM` 结构进行操作，`nodeOps` 定义在 `src/platforms/web/runtime/node-ops.js` 中，其为基本 `DOM` 操作，这里就不在详细介绍。
+通过3.2章节介绍的 `diff` 过程中，可以看到 `nodeOps` 相关的方法对真实 `DOM` 结构进行操作，`nodeOps` 定义在 `src/platforms/web/runtime/node-ops.js` 中，其为基本 `DOM` 操作，这里就不在详细介绍。
 
 ```javascript
 export function createElementNS (namespace: string, tagName: string): Element {
@@ -1025,13 +1025,13 @@ export function removeChild (node: Node, child: Node) {
 
 ### 3.4、总结
 
-通过前三小节简析，我们从主线上把模板和数据如何渲染成最终的 `DOM` 的过程分析完毕了，我们可以通过下图更直观地看到从初始化 `Vue` 到最终渲染的整个过程。 
+通过前三小节简析，模板和数据如何渲染成最终的 `DOM` 的主线过程分析完毕，可以通过下图更直观地看到从初始化 `Vue` 到最终渲染的整个过程。 
 
 ![22.png](https://github.com/fengshi123/blog/blob/master/assets/virtual_dom/22.png?raw=true)  
 
 ## 四、总结
 
-本文从通过介绍真实 `DOM` 结构其解析过程以及存在的问题，从而引出为什么需要虚拟 `DOM`；然后分析虚拟`DOM` 的好处，以及其一些理论基础和基础算法的实现；最后根据我们已经掌握的基础知识，再一步步去查看`Vue.js` 的源码如何实现的。从存在问题 —> 理论基础 —> 具体实践，一步步深入，帮助大家更好的了解什么是`Virtual DOM`、为什么需要 `Virtual DOM`、以及 `Virtual DOM`的具体实现，希望本文对您有帮助。
+本文从通过介绍真实 `DOM` 结构其解析过程以及存在的问题，从而引出为什么需要虚拟 `DOM`；然后分析虚拟`DOM` 的好处，以及其一些理论基础和基础算法的实现；最后结合前文掌握的基础知识，再一步步分析`Vue.js` 的源码实现。从存在问题 —> 理论基础 —> 具体实践，一步步深入，帮助读者更好地了解什么是`Virtual DOM`、为什么需要 `Virtual DOM`、以及 `Virtual DOM`的具体实现。
 
 ## 参考文献
 

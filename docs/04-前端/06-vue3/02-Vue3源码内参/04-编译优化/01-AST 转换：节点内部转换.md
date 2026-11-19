@@ -12,9 +12,12 @@ keywords:
   - AST
 ---
 # AST 转换：节点内部转换
-这个对象是对模板的完整描述，但是它还不能直接拿来生成代码，因为它的语义化还不够，没有包含和编译优化的相关属性，所以还需要进一步转换。
 
-AST 转换过程复杂、分支很多，为便于理解核心流程，下面用一个示例分析其相关代码逻辑，建议学完后对示例做修改以覆盖更多场景。
+## 概念说明
+
+parse 阶段生成的 AST 对象是对模板的完整描述，但它还不能直接拿来生成代码：语义化还不够，且没有包含编译优化相关的属性，所以需要进一步转换。
+
+AST 转换过程复杂、分支很多。为便于理解核心流程，下面用一个示例分析相关代码逻辑。示例模板：
 
 ```html
 <div class="app">
@@ -27,11 +30,11 @@ AST 转换过程复杂、分支很多，为便于理解核心流程，下面用�
 </div>
 ```
 
-示例中，我们有普通的 DOM 节点，有组件节点，有 v-bind 指令，有 v-if 指令，有文本节点，也有表达式节点。
+示例中包含普通的 DOM 节点、组件节点、v-bind 指令、v-if 指令、文本节点和表达式节点。这个模板通过 parse 生成一个 AST 对象，下文分析这个 AST 对象的转换过程。
 
-对于这个模板，我们通过 parse 生成一个 AST 对象，下面来分析这个 AST 对象的转换都做了哪些事情。
+## transform 的核心流程
 
-我们会先通过 getBaseTransformPreset 方法获取节点和指令转换的方法，然后调用 transform 方法做 AST 转换，并且把这些节点和指令的转换方法作为配置的属性参数传入。
+先通过 getBaseTransformPreset 方法获取节点和指令转换的方法，然后调用 transform 方法做 AST 转换，并把这些节点和指令的转换方法作为配置的属性参数传入：
 
 ```js
 // 获取节点和指令转换的方法
@@ -48,7 +51,7 @@ transform(ast, extend({}, options, {
 }))
 ```
 
-下面看一下 getBaseTransformPreset 返回哪些节点和指令的转换方法：
+getBaseTransformPreset 返回的节点和指令转换方法如下：
 
 ```js
 function getBaseTransformPreset(prefixIdentifiers) {
@@ -72,11 +75,11 @@ function getBaseTransformPreset(prefixIdentifiers) {
 }
 ```
 
-这里并不需要你进一步去看每个转换函数的实现，只要大致了解有哪些转换函数即可，这些转换函数会在后续执行 transform 的时候调用。
+这里无需进一步查看每个转换函数的实现，只要大致了解有哪些转换函数即可，这些转换函数会在执行 transform 时调用。
 
 > 注意：这里只分析 Node.js 环境下的编译过程，Web 环境的编译结果可能略有差别，后续章节再说明。
 
-我们主要来看 transform 函数的实现：
+transform 函数的实现如下：
 
 ```js
 function transform(root, options) {
@@ -98,11 +101,11 @@ function transform(root, options) {
 }
 ```
 
-transform 的核心流程主要有四步：创建 transform 上下文、遍历 AST 节点、静态提升以及创建根代码生成节点。下面好好分析一下每一步主要做了什么。
+transform 的核心流程主要有四步：**创建 transform 上下文**、**遍历 AST 节点**、**静态提升**以及**创建根代码生成节点**。
 
-### 创建 transform 上下文
+## 创建 transform 上下文
 
-先看创建 transform 上下文的过程，其实和 parse 过程一样，在 transform 阶段会创建一个上下文对象，它的实现过程是这样的：
+与 parse 过程一样，transform 阶段会创建一个上下文对象：
 
 ```js
 function createTransformContext(root, { prefixIdentifiers = false, hoistStatic = false, cacheHandlers = false, nodeTransforms = [], directiveTransforms = {}, transformHoist = null, isBuiltInComponent = NOOP, expressionPlugins = [], scopeId = null, ssr = false, onError = defaultOnError }) {
@@ -190,13 +193,11 @@ function createTransformContext(root, { prefixIdentifiers = false, hoistStatic =
 }
 ```
 
-context 维护了 transform 过程的配置（节点和指令的转换函数等），也维护了状态数据（当前处理的 AST 节点、在子节点中的索引、父节点等），还包含转换中调用的辅助函数和修改 context 的方法。
+context 维护了 transform 过程的配置（节点和指令的转换函数等）、状态数据（当前处理的 AST 节点、在子节点中的索引、父节点等），还包含转换中调用的辅助函数和修改 context 的方法。
 
 无需逐个了解每个属性和方法，大致建立印象即可，分析具体场景时再回看实现。
 
-创建完上下文对象后，接下来就需要遍历 AST 节点。
-
-### 遍历 AST 节点
+## 遍历 AST 节点
 
 遍历 AST 节点的过程很关键，因为核心的转换过程就是在遍历中实现的：
 
@@ -261,13 +262,13 @@ function traverseNode(node, context) {
 }
 ```
 
-这里，traverseNode 函数的基本思路就是递归遍历 AST 节点，针对每个节点执行一系列的转换函数，有些转换函数还会设计一个退出函数，当你执行转换函数后，它会返回一个新函数，然后在你处理完子节点后再执行这些退出函数，这是因为有些逻辑的处理需要依赖子节点的处理结果才能继续执行。
+traverseNode 函数的基本思路：递归遍历 AST 节点，针对每个节点执行一系列转换函数。有些转换函数会设计一个退出函数——执行转换函数后返回一个新函数，在处理完子节点后再执行这些退出函数，原因是有些逻辑的处理需要依赖子节点的处理结果才能继续执行。
 
-下面我会介绍四种类型的转换函数，并结合前面的示例来分析。
+下面介绍四种类型的转换函数，并结合前面的示例分析。
 
-#### Element 节点转换函数
+### Element 节点转换函数
 
-先看一下 Element 节点转换函数的实现：
+Element 节点转换函数的实现如下：
 
 ```js
 const transformElement = (node, context) => {
@@ -390,35 +391,31 @@ const transformElement = (node, context) => {
 }
 ```
 
-只有当 AST 节点是组件或者普通元素节点时，才会返回一个退出函数，而且它会在该节点的子节点逻辑处理完毕后执行。
+只有当 AST 节点是组件或者普通元素节点时，才会返回一个退出函数，且退出函数在该节点的子节点逻辑处理完毕后执行。
 
-分析退出函数前，先明确 Element 转换的目标：创建一个实现 VNodeCall 接口的代码生成节点，供后续代码生成阶段使用。
+分析退出函数前，先明确 Element 转换的目标：创建一个实现 VNodeCall 接口的代码生成节点，供后续代码生成阶段使用。理解了这个目标，transformElement 函数的实现逻辑可拆解为五步：
 
-知道了这个目标，我们再去理解 transformElement 函数的实现就不难了。
+**第一步：判断这个节点是不是一个 Block 节点。**
 
-首先，**判断这个节点是不是一个 Block 节点**。
+为了运行时的更新优化，Vue.js 3.0 设计了 Block tree 概念。Block tree 是一个将模板基于动态节点指令切割的嵌套区块，每个区块只需要以一个 Array 来追踪自身包含的动态节点。借助 Block tree，Vue.js 将 vnode 更新性能由与模板整体大小相关提升为与动态内容的数量相关，极大优化了 diff 的效率；模板的动静比越大，这个优化越明显。
 
-为了运行时的更新优化，Vue.js 3.0 设计了一个 Block tree 的概念。Block tree 是一个将模版基于动态节点指令切割的嵌套区块，每个区块只需要以一个 Array 来追踪自身包含的动态节点。借助 Block tree，Vue.js 将 vnode 更新性能由与模版整体大小相关提升为与动态内容的数量相关，极大优化了 diff 的效率，模板的动静比越大，这个优化就会越明显。
+因此在编译阶段，需要找出哪些节点可以构成一个 Block：动态组件、svg、foreignObject 标签以及动态绑定 prop 的节点都被视作一个 Block。
 
-因此在编译阶段，我们需要找出哪些节点可以构成一个 Block，其中动态组件、svg、foreignObject 标签以及动态绑定的 prop 的节点都被视作一个 Block。
+**第二步：处理节点的 props。**
 
-其次，**是处理节点的 props**。
+这个过程主要是从 AST 节点的 props 对象中进一步解析出指令 vnodeDirectives、动态属性 dynamicPropNames，以及更新标识 patchFlag。patchFlag 主要用于标识节点更新的类型，在组件更新的优化中会用到，后续章节详细说明。
 
-这个过程主要是从 AST 节点的 props 对象中进一步解析出指令 vnodeDirectives、动态属性 dynamicPropNames，以及更新标识 patchFlag。patchFlag 主要用于标识节点更新的类型，在组件更新的优化中会用到，我们在后续章节会详细讲。
+**第三步：处理节点的 children。**
 
-接着，**是处理节点的 children**。
+对于一个组件节点而言，如果它有子节点，则说明是组件的插槽，另外还有对一些内置组件（如 KeepAlive、Teleport）的处理逻辑。
 
-对于一个组件节点而言，如果它有子节点，则说明是组件的插槽，另外还会有对一些内置组件比如 KeepAlive、Teleport 的处理逻辑。
+对于一个普通元素节点，通常直接拿节点的 children 属性赋给 vnodeChildren 即可。但有一种特殊情况：**如果节点只有一个子节点**、**且是普通文本节点**、**插值或表达式**，**则直接把该子节点赋值给 vnodeChildren**。
 
-对于一个普通元素节点，我们通常直接拿节点的 children 属性给 vnodeChildren 即可，但有一种特殊情况，**如果节点只有一个子节点**，**并且是一个普通文本节点**、**插值或者表达式**，**那么直接把节点赋值给 vnodeChildren**。
+**第四步：对前面解析 props 求得的 patchFlag 和 dynamicPropNames 做进一步处理。**
 
-然后，**会对前面解析 props 求得的 patchFlag 和 dynamicPropNames 做进一步处理**。
+在这个过程中，根据 patchFlag 的值从 PatchFlagNames 中获取 flag 对应的名字并生成注释——patchFlag 本身是一个个数字，通过名字注释的方式，可以从最终生成的代码中直接看出 patchFlag 代表的含义。另外，数组 dynamicPropNames 会转化生成 vnodeDynamicProps 字符串，便于后续对节点生成代码逻辑的处理。
 
-在这个过程中，我们会根据 patchFlag 的值从 PatchFlagNames 中获取 flag 对应的名字，从而生成注释，因为 patchFlag 本身就是一个个数字，通过名字注释的方式，可以一眼从最终生成的代码中了解到 patchFlag 代表的含义。
-
-另外，我们还会把数组 dynamicPropNames 转化生成 vnodeDynamicProps 字符串，便于后续对节点生成代码逻辑的处理。
-
-最后，**通过 createVNodeCall 创建了实现 VNodeCall 接口的代码生成节点**，看它的实现：
+**第五步：通过 createVNodeCall 创建实现 VNodeCall 接口的代码生成节点。**
 
 ```js
 function createVNodeCall(context, tag, props, children, patchFlag, dynamicProps, directives, isBlock = false, disableTracking = false, loc = locStub) {
@@ -449,9 +446,9 @@ function createVNodeCall(context, tag, props, children, patchFlag, dynamicProps,
 }
 ```
 
-createVNodeCall 的实现很简单，它最后返回了一个对象，包含了传入的参数数据。这里要注意 context.helper 函数的调用，它会把一些 Symbol 对象添加到 context.helpers 数组中，目的是为了后续代码生成阶段，生成一些辅助代码。
+createVNodeCall 的实现很简单：返回一个包含传入参数数据的对象。注意 context.helper 函数的调用——它会把一些 Symbol 对象添加到 context.helpers 数组中，目的是在后续代码生成阶段生成一些辅助代码。
 
-对于我们示例中的根节点：
+对于示例中的根节点：
 
 ```html
 <div class="app">
@@ -479,11 +476,11 @@ createVNodeCall 的实现很简单，它最后返回了一个对象，包含了�
 }
 ```
 
-这个 codegenNode 相比之前的 AST 节点对象，多了很多和编译优化相关的属性，它们会在代码生成阶段会起到非常重要作用，在后续的章节你就可以深入了解到。
+这个 codegenNode 相比之前的 AST 节点对象，多了很多与编译优化相关的属性，它们会在代码生成阶段起到非常重要的作用，后续章节深入介绍。
 
-#### 表达式节点转换函数
+### 表达式节点转换函数
 
-下面看一下表达式节点转换函数的实现：
+表达式节点转换函数的实现如下：
 
 ```js
 const transformExpression = (node, context) => {
@@ -513,11 +510,11 @@ const transformExpression = (node, context) => {
 }
 ```
 
-由于表达式本身不会再有子节点，所以它也不需要退出函数，直接在进入函数时做转换处理即可。
+由于表达式本身不会再有子节点，所以它不需要退出函数，直接在进入函数时做转换处理即可。
 
 注意：**只有 Node.js 环境下编译或 Web 端非生产环境编译才会执行 transformExpression**，原因见后文。
 
-transformExpression 主要做的事情就是转换插值和元素指令中的动态表达式，把简单的表达式对象转换成复合表达式对象，内部主要是通过 processExpression 函数完成。举个例子，比如这个模板：`{{ msg + test }}`，它执行 parse 后生成的表达式节点 node.content 值为一个简单的表达式对象：
+transformExpression 主要转换插值和元素指令中的动态表达式，把简单的表达式对象转换成复合表达式对象，内部通过 processExpression 函数完成。例如模板 `{{ msg + test }}`，执行 parse 后生成的表达式节点 node.content 值为一个简单的表达式对象：
 
 ```json
 {
@@ -552,38 +549,21 @@ transformExpression 主要做的事情就是转换插值和元素指令中的动
 }
 ```
 
-这里，我们重点关注对象中的 children 属性，它是一个长度为 3 的数组，其实就是把表达式`msg + test`拆成了三部分，其中变量 msg 和 test 对应都加上了前缀 _ctx。
+重点关注对象中的 children 属性：它是一个长度为 3 的数组，把表达式 `msg + test` 拆成了三部分，其中变量 msg 和 test 都加上了前缀 _ctx。
 
-那么为什么需要加这个前缀呢？
+为什么需要加这个前缀？模板中引用的 msg 和 test 最终都在组件实例中访问。但为了书写模板方便，Vue.js 允许模板中不手动加组件实例前缀（例如 `{{ this.msg + this.test }}` 写起来不够方便；如果用 JSX 写，通常要手动写 this）。
 
-我们要想到模板中引用的的 msg 和 test 对象最终都是在组件实例中访问的，但为了书写模板方便，Vue.js 并没有让我们在模板中手动加组件实例的前缀，例如：`{{ this.msg + this.test }}`，这样写起来就会不够方便，但如果用 JSX 写的话，通常要手动写 this。
+一个相关疑问：为什么 Vue.js 2.x 编译结果没有 _ctx 前缀？这是因为 Vue.js 2.x 的编译结果使用了"黑魔法" with。上述模板在 Vue.js 2.x 最终编译的结果是 `with(this){return _s(msg + test)}`——它利用 with 的特性动态到 this 中查找 msg 和 test 属性，所以不需要手动加前缀。
 
-一个疑问：为什么 Vue.js 2.x 编译结果没有 _ctx 前缀？这是因为 Vue.js 2.x 的编译结果使用了“黑魔法” with，比如上述模板，在 Vue.js 2.x 最终编译的结果：`with(this){return _s(msg + test)}`。
+Vue.js 3.0 在 Node.js 端的编译结果舍弃了 with：它会在 processExpression 过程中对表达式动态分析，给该加前缀的地方加上前缀。
 
-它利用 with 的特性动态去 this 中查找 msg 和 test 属性，所以不需要手动加前缀。
+processExpression 的详细实现此处不展开，但需要知道这个过程有一定成本：它内部依赖 @babel/parser 库去解析表达式生成 AST 节点，依赖 estree-walker 库去遍历这个 AST 节点，然后对节点分析判断是否需要加前缀，接着对 AST 节点修改，最终转换生成新的表达式对象。
 
-但是，Vue.js 3.0 在 Node.js 端的编译结果舍弃了 with，它会在 processExpression 过程中对表达式动态分析，给该加前缀的地方加上前缀。
+@babel/parser 这个库通常在 Node.js 端使用，且库本身体积非常大——如果打包进 Vue.js 会让包体积膨胀 4 倍，所以生产环境的 Web 端不会引入这个库，Web 端生产环境下的运行时编译最终仍然用 with 的方式。用 with 就完全不需要对表达式做转换，这就回答了前面的问题：只有 Node.js 环境下编译或 Web 端非生产环境编译才执行 transformExpression。
 
-processExpression 的详细实现我们不会分析，但你需要知道，这个过程肯定有一定的成本，因为它内部依赖了 @babel/parser 库去解析表达式生成 AST 节点，并依赖了 estree-walker 库去遍历这个 AST 节点，然后对节点分析去判断是否需要加前缀，接着对 AST 节点修改，最终转换生成新的表达式对象。
+### Text 节点转换函数
 
-@babel/parser 这个库通常是在 Node.js 端用的，而且这库本身体积非常大，如果打包进 Vue.js 的话会让包体积膨胀 4 倍，所以我们并不会在生产环境的 Web 端引入这个库，Web 端生产环境下的运行时编译最终仍然会用 with 的方式。
-
-因为用 with 的话就完全不需要对表达式做转换了，这就回答了前面的问题：只有 Node.js 环境下编译或 Web 端非生产环境编译才执行 transformExpression。
-
-> **本文的相关代码在源代码中的位置如下：**
-> packages/compiler-core/src/compile.ts
-> packages/compiler-core/src/transform.ts
-> packages/compiler-core/src/ast.ts
-> packages/compiler-core/src/transforms/transformElement.ts
-> packages/compiler-core/src/transforms/transformExpression.ts
-
-前文已知 transform 核心流程有四步：创建 transform 上下文、遍历 AST 节点、静态提升、创建根代码生成节点。下面分析遍历 AST 节点中 Text 节点的转换函数。
-
-### 遍历 AST 节点
-
-#### Text 节点转换函数
-
-下面看一下 Text 节点转换函数的实现：
+Text 节点转换函数的实现如下：
 
 ```js
 const transformText = (node, context) => {
@@ -657,15 +637,11 @@ const transformText = (node, context) => {
 }
 ```
 
-transformText 函数只处理根节点、元素节点、 v-for 以及 v-if 分支相关的节点，它也会返回一个退出函数，因为 transformText 要保证所有表达式节点都已经被处理才执行转换逻辑。
+transformText 函数只处理根节点、元素节点、v-for 以及 v-if 分支相关的节点。它也返回一个退出函数，因为 transformText 要保证所有表达式节点都已经被处理才执行转换逻辑。
 
-transformText 主要的目的就是合并一些相邻的文本节点，然后为内部每一个文本节点创建一个代码生成节点。
+transformText 的主要目的是合并相邻的文本节点，然后为内部每一个文本节点创建一个代码生成节点。静态文本节点和动态插值节点都被看作文本节点：函数首先遍历节点的子节点，把子节点中相邻的文本节点合并成一个。
 
-在内部，静态文本节点和动态插值节点都被看作是一个文本节点，所以函数首先遍历节点的子节点，然后把子节点中的相邻文本节点合并成一个。
-
-比如示例中的文本节点：`<p>hello {{ msg + test }}</p>`。
-
-在转换之前，p 节点对应的 children 数组有两个元素，第一个是纯文本节点，第二个是一个插值节点，这个数组也是前面提到的表达式节点转换后的结果：
+以示例中的文本节点 `<p>hello {{ msg + test }}</p>` 为例。转换之前，p 节点对应的 children 数组有两个元素：第一个是纯文本节点，第二个是插值节点（该数组也是前面表达式节点转换后的结果）：
 
 ```js
 [
@@ -737,9 +713,9 @@ transformText 主要的目的就是合并一些相邻的文本节点，然后为
 ]
 ```
 
-合并完子文本节点后，接着判断如果是一个只带有单个文本子元素的纯元素节点，则什么都不需要转换，因为这种情况在运行时可以直接设置元素的 textContent 来更新文本。
+合并完子文本节点后，接着判断：如果是一个只带有单个文本子元素的纯元素节点，则什么都不需要转换，因为这种情况在运行时可以直接设置元素的 textContent 来更新文本。
 
-最后就是去处理节点包含文本子节点且多个子节点的情况，举个例子：
+最后处理节点包含多个文本子节点的情况，例如：
 
 ```html
 <p>
@@ -749,9 +725,7 @@ transformText 主要的目的就是合并一些相邻的文本节点，然后为
 </p>
 ```
 
-上述 p 标签的子节点经过前面的文本合并流程后，还有 3 个子节点。针对这种情况，我们可以遍历子节点，找到所有的文本节点或者是复合表达式节点，然后为这些子节点通过 createCallExpression 创建一个调用函数表达式的代码生成节点。
-
-看 createCallExpression 的实现：
+上述 p 标签的子节点经过前面的文本合并流程后还有 3 个子节点。针对这种情况，可以遍历子节点，找到所有的文本节点或复合表达式节点，然后通过 createCallExpression 为这些子节点创建一个调用函数表达式的代码生成节点。createCallExpression 的实现如下：
 
 ```js
 function createCallExpression(callee, args = [], loc = locStub) {
@@ -764,13 +738,11 @@ function createCallExpression(callee, args = [], loc = locStub) {
 }
 ```
 
-createCallExpression 的实现很简单，就是返回一个类型为 JS_CALL_EXPRESSION 的对象，它包含了执行的函数名和参数。
+createCallExpression 的实现很简单：返回一个类型为 JS_CALL_EXPRESSION 的对象，包含执行的函数名和参数。这里创建的函数表达式节点，对应的函数名是 createTextVNode；参数 callArgs 是子节点本身 child，如果是动态插值节点，参数还会多一个 TEXT 的 patchFlag。
 
-这里，针对我们创建的函数表达式所生成的节点，它对应的函数名是 createTextVNode，参数 callArgs 是子节点本身 child，如果是动态插值节点，那么参数还会多一个 TEXT 的 patchFlag。
+### v-if 节点转换函数
 
-#### v-if 节点转换函数
-
-下面看一下 v-if 节点转换函数的实现：
+v-if 节点转换函数的实现如下：
 
 ```js
 const transformIf = createStructuralDirectiveTransform(/^(if|else|else-if)$/, (node, dir, context) => {
@@ -782,7 +754,7 @@ const transformIf = createStructuralDirectiveTransform(/^(if|else|else-if)$/, (n
 })
 ```
 
-在分析函数的实现前，下面看一下 v-if 节点转换的目的，通过示例说明：
+分析函数实现前，先通过示例明确 v-if 节点转换的目的：
 
 ```html
 <hello v-if="flag"></hello>
@@ -839,11 +811,9 @@ const transformIf = createStructuralDirectiveTransform(/^(if|else|else-if)$/, (n
 ]
 ```
 
-v-if 指令用于条件性地渲染一块内容，显然上述 AST 节点对于最终去生成条件的代码而言，是不够语义化的，于是我们需要对它们做一层转换，使其成为语义化强的代码生成节点。
+v-if 指令用于条件性地渲染一块内容。显然，上述 AST 节点对于最终生成条件代码而言不够语义化，需要对它们做一层转换，使其成为语义化强的代码生成节点。
 
-现在我们回过头看 transformIf 的实现，它是通过 createStructuralDirectiveTransform 函数创建的一个结构化指令的转换函数，在 Vue.js 中，v-if、v-else-if、v-else 和 v-for 这些都属于结构化指令，因为它们能影响代码的组织结构。
-
-看 createStructuralDirectiveTransform 的实现：
+transformIf 是通过 createStructuralDirectiveTransform 函数创建的结构化指令转换函数。在 Vue.js 中，v-if、v-else-if、v-else 和 v-for 都属于结构化指令，因为它们能影响代码的组织结构。createStructuralDirectiveTransform 的实现如下：
 
 ```js
 function createStructuralDirectiveTransform(name, fn) {
@@ -876,13 +846,11 @@ function createStructuralDirectiveTransform(name, fn) {
 }
 ```
 
-createStructuralDirectiveTransform 接受 2 个参数，第一个 name 是指令的名称，第二个 fn 是构造转换退出函数的方法。
+createStructuralDirectiveTransform 接受 2 个参数：第一个 name 是指令的名称，第二个 fn 是构造转换退出函数的方法。它最后返回一个函数——在此场景下就是 transformIf 转换函数。
 
-createStructuralDirectiveTransform 最后会返回一个函数，在我们的场景下，这个函数就是 transformIf 转换函数。
+这个函数只处理元素节点（只有元素节点才会有 v-if 指令），接着解析节点的 props 属性：如果发现 props 包含 if 属性（即节点拥有 v-if 指令），先从 props 删除这个结构化指令防止无限递归，然后执行 fn 获取对应的退出函数并返回。
 
-我们进一步看这个函数的实现，它只处理元素节点，这个很好理解，因为只有元素节点才会有 v-if 指令，接着会解析这个节点的 props 属性，如果发现 props 包含 if 属性，也就是节点拥有 v-if 指令，那么先从 props 删除这个结构化指令防止无限递归，然后执行 fn 获取对应的退出函数，最后将这个退出函数返回。
-
-接着看 fn 的实现，在我们这个场景下 fn 对应的是前面传入的匿名函数：
+fn 的实现在此场景下对应前面传入的匿名函数：
 
 ```js
 (node, dir, context) => {
@@ -894,9 +862,7 @@ createStructuralDirectiveTransform 最后会返回一个函数，在我们的场
 }
 ```
 
-可以看出，这个匿名函数内部执行了 processIf 函数，它会先对 v-if 和它的相邻节点做转换，然后返回一个退出函数，在它们的子节点都转换完毕后执行。
-
-看 processIf 函数的实现：
+匿名函数内部执行了 processIf 函数：先对 v-if 和它的相邻节点做转换，然后返回一个退出函数，在子节点都转换完毕后执行。processIf 函数的实现如下：
 
 ```js
 function processIf(node, dir, context, processCodegen) {
@@ -920,9 +886,9 @@ function processIf(node, dir, context, processCodegen) {
 }
 ```
 
-processIf 主要就是用来处理 v-if 节点以及 v-if 的相邻节点，比如 v-else-if 和 v-else，并且它们会走不同的处理逻辑。
+processIf 主要处理 v-if 节点以及 v-if 的相邻节点（v-else-if 和 v-else），二者走不同的处理逻辑。
 
-下面看 v-if 的处理逻辑。首先，它会执行 createIfBranch 去创建一个分支节点：
+v-if 的处理逻辑：首先执行 createIfBranch 创建一个分支节点：
 
 ```js
 function createIfBranch(node, dir) {
@@ -935,13 +901,9 @@ function createIfBranch(node, dir) {
 }
 ```
 
-这个分支节点很好理解，因为 v-if 节点内部的子节点可以属于一个分支，v-else-if 和 v-else 节点内部的子节点也都可以属于一个分支，而最终页面渲染执行哪个分支，这取决于哪个分支节点的 condition 为 true。
+分支节点的含义：v-if 节点内部的子节点属于一个分支，v-else-if 和 v-else 节点内部的子节点也各自属于一个分支，最终页面渲染执行哪个分支取决于哪个分支节点的 condition 为 true。所以分支节点返回的对象包含 condition 条件以及子节点 children。注意，**如果节点 node 不是 template**，**children 指向的就是由这个单个 node 构造的数组**。
 
-所以分支节点返回的对象，就包含了 condition 条件，以及它的子节点 children。注意，**如果节点 node 不是 template**，**那么 children 指向的就是这个单个 node 构造的数组**。
-
-接下来它会创建 IF 节点替换当前节点，IF 节点拥有 branches 属性，包含我们前面创建的分支节点，显然，相对于原节点，IF 节点的语义化更强，更利于后续生成条件表达式代码。
-
-最后它会执行 processCodegen 创建退出函数。我们先不着急去分析退出函数的创建过程，先把 v-if 相邻节点的处理逻辑分析完：
+接下来创建 IF 节点替换当前节点。IF 节点拥有 branches 属性，包含前面创建的分支节点。相对于原节点，IF 节点的语义化更强，更利于后续生成条件表达式代码。最后执行 processCodegen 创建退出函数（退出函数的逻辑在后文分析），先看 v-if 相邻节点的处理逻辑：
 
 ```js
 function processIf(node, dir, context, processCodegen) {
@@ -977,13 +939,11 @@ function processIf(node, dir, context, processCodegen) {
 }
 ```
 
-这段处理逻辑就是从当前节点往前面的兄弟节点遍历，找到 v-if 节点后，把当前节点删除，然后根据当前节点创建一个分支节点，把这个分支节点添加到前面创建的 IF 节点的 branches 中。此外，由于这个节点已经删除，那么需要在这里把这个节点的子节点通过 traverseNode 遍历一遍。
+这段处理逻辑：从当前节点往前面的兄弟节点遍历，找到 v-if 节点后，删除当前节点，根据当前节点创建一个分支节点，并把这个分支节点添加到前面创建的 IF 节点的 branches 中。此外，由于这个节点已经删除，需要在这里通过 traverseNode 把这个节点的子节点遍历一遍。
 
-这么处理下来，就相当于完善了 IF 节点的信息了，IF 节点的 branches 就包含了所有分支节点了。
+这么处理下来就相当于完善了 IF 节点的信息：IF 节点的 branches 包含了所有分支节点。至此，v-if、v-else-if、v-else 节点的进入转换逻辑分析完毕——最终创建了一个包含所有分支节点的 IF 节点。
 
-那么至此，进入 v-if、v-else-if、v-else 这些节点的转换逻辑我们分析完毕了，即最终创建了一个 IF 节点，它包含了所有的分支节点。
-
-下面再来分析这个退出函数的逻辑：
+下面分析退出函数的逻辑：
 
 ```js
 (node, dir, context) => {
@@ -1011,7 +971,7 @@ function processIf(node, dir, context, processCodegen) {
 }
 ```
 
-当 v-if 节点执行退出函数时，会通过 createCodegenNodeForBranch 创建 IF 分支节点的 codegenNode，看它的实现：
+当 v-if 节点执行退出函数时，会通过 createCodegenNodeForBranch 创建 IF 分支节点的 codegenNode：
 
 ```js
 function createCodegenNodeForBranch(branch, index, context) {
@@ -1028,7 +988,7 @@ function createCodegenNodeForBranch(branch, index, context) {
 }
 ```
 
-当分支节点存在 condition 的时候，比如 v-if、和 v-else-if，它通过 createConditionalExpression 返回一个条件表达式节点：
+当分支节点存在 condition 时（比如 v-if 和 v-else-if），通过 createConditionalExpression 返回一个条件表达式节点：
 
 ```js
 function createConditionalExpression(test, consequent, alternate, newline = true) {
@@ -1045,7 +1005,7 @@ function createConditionalExpression(test, consequent, alternate, newline = true
 
 其中 consequent 在这里是 IF 主 branch 的子节点对应的代码生成节点，alternate 是后补 branch 子节点对应的代码生成节点。
 
-接着，看 createChildrenCodegenNode 的实现：
+接着看 createChildrenCodegenNode 的实现：
 
 ```js
 function createChildrenCodegenNode(branch, index, context) {
@@ -1085,11 +1045,11 @@ function createChildrenCodegenNode(branch, index, context) {
 }
 ```
 
-createChildrenCodegenNode 主要就是判断每个分支子节点是不是一个 vnodeCall，如果这个子节点不是组件节点的话，则把它转变成一个 BlockCall，也就是让 v-if 的每一个分支都可以创建一个 Block。
+createChildrenCodegenNode 主要判断每个分支子节点是不是一个 vnodeCall：如果这个子节点不是组件节点，则把它转变成一个 BlockCall，也就是让 v-if 的每一个分支都创建一个 Block。
 
-这个行为是很好理解的，因为 v-if 是条件渲染的，我们知道在某些条件下某些分支是不会渲染的，那么它内部的动态节点就不能添加到外部的 Block 中的，所以它就需要单独创建一个 Block 来维护分支内部的动态节点，这样也就构成了 Block tree。
+这个行为的原因：v-if 是条件渲染，某些条件下某些分支不会渲染，那么它内部的动态节点就不能添加到外部的 Block 中，所以需要单独创建一个 Block 来维护分支内部的动态节点，这样也就构成了 Block tree。
 
-为直观感受 v-if 节点转换结果，看前面示例转换后生成的 IF 节点对象：
+为直观感受 v-if 节点的转换结果，看前面示例转换后生成的 IF 节点对象：
 
 ```json
 {
@@ -1140,11 +1100,11 @@ createChildrenCodegenNode 主要就是判断每个分支子节点是不是一个
 }
 ```
 
-相比原节点，转换后的 IF 节点无论是在语义化还是在信息上，都更加丰富，我们可以依据它在代码生成阶段生成所需的代码。
+相比原节点，转换后的 IF 节点无论在语义化还是信息上都更加丰富，可以依据它在代码生成阶段生成所需的代码。
 
-### 静态提升
+## 静态提升
 
-节点转换完毕后，接下来会判断编译配置中是否配置了 hoistStatic，如果是就会执行 hoistStatic 做静态提升：
+节点转换完毕后，判断编译配置中是否配置了 hoistStatic，是则执行 hoistStatic 做静态提升：
 
 ```js
 if (options.hoistStatic) {
@@ -1152,7 +1112,7 @@ if (options.hoistStatic) {
 }
 ```
 
-静态提升是 Vue.js 3.0 在编译阶段引入的优化策略，先用简单例子说明：
+静态提升是 Vue.js 3.0 在编译阶段引入的优化策略。先用简单例子说明：
 
 ```html
 <p>hello {{ msg + test }}</p>
@@ -1160,7 +1120,7 @@ if (options.hoistStatic) {
 <p>static</p>
 ```
 
-我们为它配置了 hoistStatic，经过编译后，它的代码就变成了这样：
+为它配置 hoistStatic，经过编译后代码变成：
 
 ```js
 import { toDisplayString as _toDisplayString, createVNode as _createVNode, Fragment as _Fragment, openBlock as _openBlock, createBlock as _createBlock } from "vue"
@@ -1175,12 +1135,9 @@ export function render(_ctx, _cache) {
 }
 ```
 
-这里，我们先忽略 openBlock、Fragment，我会在代码生成章节详细说明，重点看一下 _hoisted_1 和 _hoisted_2 这两个变量，它们分别对应模板中两个静态 p 标签生成的 vnode，可以发现它的创建是在 render 函数外部执行的。
-这样做的好处是，不用每次在 render 阶段都执行一次 createVNode 创建 vnode 对象，直接用之前在内存中创建好的 vnode 即可。
+这里忽略 openBlock、Fragment（在代码生成部分详细说明），重点看 _hoisted_1 和 _hoisted_2 两个变量：它们分别对应模板中两个静态 p 标签生成的 vnode，创建是在 render 函数外部执行的。这样做的好处是不用每次在 render 阶段都执行一次 createVNode 创建 vnode 对象，直接用之前在内存中创建好的 vnode 即可。
 
-那么为什么叫静态提升呢？
-
-因为这些静态节点不依赖动态数据，一旦创建了就不会改变，所以只有静态节点才能被提升到外部创建。
+为什么叫静态提升？因为这些静态节点不依赖动态数据，一旦创建就不会改变，所以只有静态节点才能被提升到外部创建。
 
 了解背景后，看静态提升的实现：
 
@@ -1264,13 +1221,13 @@ function walk(node, context, resultCache, doNotHoistNode = false) {
 }
 ```
 
-hoistStatic 主要就是从根节点开始，通过递归的方式去遍历节点，只有普通元素和文本节点才能被静态提升，所以针对这些节点，这里通过 getStaticType 去获取静态类型，如果节点是一个元素类型，getStaticType 内部还会递归判断它的子节点的静态类型。
+hoistStatic 从根节点开始递归遍历节点。只有普通元素和文本节点才能被静态提升：针对这些节点，通过 getStaticType 获取静态类型；如果节点是元素类型，getStaticType 内部还会递归判断它的子节点的静态类型。
 
-虽然有的节点包含一些动态子节点，但它本身的静态属性还是可以被静态提升的。
+虽然有的节点包含动态子节点，但它本身的静态属性还是可以被静态提升。
 
-注意，**如果 getStaticType 返回的 staticType 的值是 2**，**则表明它是一个运行时常量**，**由于它的值在运行时才能被确定**，**所以是不能静态提升的**。
+注意，**如果 getStaticType 返回的 staticType 的值是 2**，**则表明它是一个运行时常量**——由于它的值在运行时才能确定，**不能静态提升**。
 
-如果节点满足可以被静态提升的条件，节点对应的 codegenNode 会通过执行 context.hoist 修改为一个简单表达式节点：
+如果节点满足静态提升条件，节点对应的 codegenNode 会通过执行 context.hoist 修改为一个简单表达式节点：
 
 ```js
 function hoist(exp) {
@@ -1282,11 +1239,11 @@ function hoist(exp) {
 child.codegenNode = context.hoist(child.codegenNode)
 ```
 
-改动后的 codegenNode 会在生成代码阶段帮助我们生成静态提升的相关代码。
+改动后的 codegenNode 会在生成代码阶段生成静态提升的相关代码。
 
-### createRootCodegen
+## createRootCodegen
 
-完成静态提升后，我们来到了 AST 转换的最后一步，即**创建根节点的代码生成节点**。下面看一下 createRootCodegen 的实现：
+静态提升完成后，AST 转换的最后一步是**创建根节点的代码生成节点**。createRootCodegen 的实现如下：
 
 ```js
 function createRootCodegen(root, context) {
@@ -1315,13 +1272,11 @@ function createRootCodegen(root, context) {
 }
 ```
 
-createRootCodegen 做的事情很简单，就是为 root 这个虚拟的 AST 根节点创建一个代码生成节点，如果 root 的子节点 children 是单个元素节点，则将其转换成一个 Block，把这个 child 的 codegenNode 赋值给 root 的 codegenNode。
+createRootCodegen 做的事情很简单：为 root 这个虚拟的 AST 根节点创建一个代码生成节点。如果 root 的子节点 children 是单个元素节点，则将其转换成一个 Block，把这个 child 的 codegenNode 赋值给 root 的 codegenNode；如果 children 是多个节点，则返回一个 fragment 的代码生成节点并赋值给 root 的 codegenNode。
 
-如果 root 的子节点 children 是多个节点，则返回一个 fragment 的代码生成节点，并赋值给 root 的 codegenNode。
+创建 codegenNode 就是为了后续生成代码时使用。
 
-这里，创建 codegenNode 就是为了后续生成代码时使用。
-
-createRootCodegen 完成之后，接着把 transform 上下文在转换 AST 节点过程中创建的一些变量赋值给 root 节点对应的属性，在这里可以看一下这些属性：
+createRootCodegen 完成之后，接着把 transform 上下文在转换 AST 节点过程中创建的一些变量赋值给 root 节点对应的属性：
 
 ```yaml
 root.helpers = [...context.helpers]
@@ -1335,13 +1290,30 @@ root.cached = context.cached
 
 这样后续在代码生成节点时，就可以通过 root 这个根节点访问到这些变量了。
 
-### 总结
+## 实践要点
 
-如果说 parse 阶段是一个词法分析过程，构造基础的 AST 节点对象，那么 transform 节点就是语法分析阶段，把 AST 节点做一层转换，构造出语义化更强，信息更加丰富的 codegenCode，它在后续的代码生成阶段起着非常重要的作用。
+- **进入函数与退出函数的分工**：进入阶段处理不依赖子节点的转换（如 transformExpression），退出阶段处理依赖子节点结果的转换（如 transformElement、transformText、v-if 的 codegenNode 生成）。
+- **Block 的判定时机在编译期**：动态组件、svg、foreignObject、动态绑定 key 的节点、v-if 的每个分支、单个根元素都会被标记为 Block。
+- **patchFlag 是数字标识**：开发环境会附带 PatchFlagNames 的名字注释，便于阅读生成代码。
+- **_ctx 前缀只在部分环境添加**：Node.js 编译与 Web 端非生产环境编译执行 transformExpression 加前缀；Web 生产环境运行时编译沿用 with 机制，避免引入体积巨大的 @babel/parser。
+- **静态提升只针对静态内容**：普通元素与文本节点可提升；运行时常量（staticType 为 2）不可提升；含动态子节点的元素其静态 props 仍可提升。
+- **root 根节点是变量汇总入口**：helpers/components/directives/imports/hoists/temps/cached 在 transform 结束时统一挂到 root 上，供代码生成阶段访问。
 
-> 本文的相关代码在源代码中的位置如下：
-> packages/compiler-core/src/ast.ts
-> packages/compiler-core/src/transform.ts
-> packages/compiler-core/src/transforms/transformText.ts
-> packages/compiler-core/src/transforms/vIf.ts
-> packages/compiler-core/src/transforms/hoistStatic.ts
+## 小结
+
+如果说 parse 阶段是一个词法分析过程、构造基础的 AST 节点对象，那么 transform 阶段就是语法分析阶段：把 AST 节点做一层转换，构造出语义化更强、信息更丰富的 codegenNode。核心流程四步——createTransformContext 创建上下文，traverseNode 递归遍历并按节点类型执行转换函数（Element、表达式、Text、v-if 四类典型转换），hoistStatic 静态提升静态节点，createRootCodegen 为根节点创建代码生成节点并汇总转换产物。这些 codegenNode 在后续代码生成阶段起关键作用。
+
+## 源码位置
+
+本文分析的相关代码在源代码中的位置如下：
+
+- packages/compiler-core/src/compile.ts
+- packages/compiler-core/src/transform.ts
+- packages/compiler-core/src/ast.ts
+- packages/compiler-core/src/transforms/transformElement.ts
+- packages/compiler-core/src/transforms/transformExpression.ts
+- packages/compiler-core/src/ast.ts
+- packages/compiler-core/src/transform.ts
+- packages/compiler-core/src/transforms/transformText.ts
+- packages/compiler-core/src/transforms/vIf.ts
+- packages/compiler-core/src/transforms/hoistStatic.ts

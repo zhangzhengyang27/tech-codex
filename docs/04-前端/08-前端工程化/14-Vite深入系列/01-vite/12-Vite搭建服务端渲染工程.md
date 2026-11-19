@@ -8,13 +8,13 @@ tags: [Vite, SSR, 构建工具, 工程化]
 
 # Vite 搭建服务端渲染工程
 
-聊聊SSR，说说它的基本原理，以及如何借助 Vite 的各项构建能力实现 SSR，让你体会到 SSR 的各个生命周期是如何串联起来的
+SSR（服务端渲染）是解决 CSR 首屏性能与 SEO 问题的主要方案。本文介绍 SSR 的基本原理，以及如何借助 Vite 的各项构建能力实现 SSR，完整展示 SSR 各个生命周期是如何串联起来的。
 
-> 本节最终的目的并不是让大家学习某个现有的 SSR 解决方案(如 Nuxt)，或者简单了解一下实现原理，而是教大家如何从底层开始手动搭建一个可以深度定制的 SSR 项目，并且解决各种 SSR 中的工程化问题
+> 阅读目标不在于学习某个现有的 SSR 解决方案(如 Nuxt)，也不是简单了解实现原理，而是从底层开始手动搭建一个可以深度定制的 SSR 项目，并解决各类 SSR 中的工程化问题。
 
 ## SSR 基本概念
 
-首先来分析一下 CSR 的问题，它的 HTML 产物一般是如下的结构:
+先分析 CSR 的问题，它的 HTML 产物一般是如下的结构:
 
 ```html
 <!DOCTYPE html>
@@ -37,7 +37,7 @@ tags: [Vite, SSR, 构建工具, 工程化]
 
 ![image-20240322125736946](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221257322.png)
 
-当浏览器拿到如上的 HTML 内容之后，其实并不能渲染完整的页面内容，因为此时的 body 中基本只有一个空的 div 节点，并没有填入真正的页面内容。而接下来浏览器开始下载并执行 JS 代码，经历了框架初始化、数据请求、DOM 插入等操作之后才能渲染出完整的页面。也就是说，在 CSR 中完整的页面内容本质上通过 JS 代码执行之后才能够渲染。这主要会导致两个方面的问题:
+当浏览器拿到如上的 HTML 内容之后，并不能渲染完整的页面内容，因为此时的 body 中基本只有一个空的 div 节点，并没有填入真正的页面内容。接下来浏览器开始下载并执行 JS 代码，经历框架初始化、数据请求、DOM 插入等操作之后才能渲染出完整的页面。也就是说，在 CSR 中完整的页面内容本质上通过 JS 代码执行之后才能够渲染。这主要会导致两个方面的问题:
 
 *   **首屏加载速度比较慢**
 *   **对 SEO(搜索引擎优化) 不友好**
@@ -48,13 +48,11 @@ tags: [Vite, SSR, 构建工具, 工程化]
 
 ## SSR 生命周期分析
 
-前面提到了 SSR 会在服务端(这里主要指 Node.js 端)提前渲染出完整的 HTML 内容，那这是如何做到的呢？
-
-首先需要保证前端的代码经过编译后放到服务端中能够正常执行，其次在服务端渲染前端组件，生成并组装应用的 HTML。这就涉及到 SSR 应用的两大生命周期: 构建时 和 运行时
+SSR 会在服务端(这里主要指 Node.js 端)提前渲染出完整的 HTML 内容，其实现依赖两个前提：一是保证前端的代码经过编译后放到服务端中能够正常执行，二是在服务端渲染前端组件，生成并组装应用的 HTML。这就涉及到 SSR 应用的两大生命周期: 构建时 和 运行时
 
 ### 构建时
 
-先来看看`构建时`需要做哪些事情:
+构建时需要完成以下几件事情:
 
 **解决模块加载问题**。在原有的构建过程之外，需要加入`SSR 构建`的过程 ，具体来说，需要另外生成一份 `CommonJS` 格式的产物，使之能在 Node.js 正常加载。当然，随着 Node.js 本身对 ESM 的支持越来越成熟，也可以复用前端 ESM 格式的代码，Vite 在开发阶段进行 SSR 构建也是这样的思路
 
@@ -79,10 +77,10 @@ console.log(styles)
 
 ![image-20240322133253171](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403221332689.png)
 
-*   1.  **加载 SSR 入口模块**。在这个阶段，我们需要确定 SSR 构建产物的入口，即组件的入口在哪里，并加载对应的模块。
+*   1.  **加载 SSR 入口模块**。在这个阶段，需要确定 SSR 构建产物的入口，即组件的入口在哪里，并加载对应的模块。
 *   2.  **进行数据预取**。这时候 Node 侧会通过查询数据库或者网络请求来获取应用所需的数据
 *   3.  **渲染组件**。这个阶段为 SSR 的核心，主要将第 `1` 步中加载的组件渲染成 HTML 字符串或者 Stream 流
-*   4.  **HTML 拼接**。在组件渲染完成之后，我们需要拼接完整的 HTML 字符串，并将其作为响应返回给浏览器
+*   4.  **HTML 拼接**。在组件渲染完成之后，拼接完整的 HTML 字符串，并将其作为响应返回给浏览器
 
 SSR 其实是`构建`和`运行时`互相配合才能实现的，也就是说，仅靠构建工具是不够的，写一个 Vite 插件严格意义上无法实现 SSR 的能力，需要对 Vite 的构建流程做一些整体的调整，并且加入一些服务端运行时的逻辑才能实现
 
@@ -90,9 +88,7 @@ SSR 其实是`构建`和`运行时`互相配合才能实现的，也就是说，
 
 ### SSR 构建 API
 
-Vite 作为一个构建工具是如何让前端的代码也能顺利在 Node.js 中成功跑起来的
-
-可以分为两种情况，在开发环境下，Vite 依然秉承 ESM 模块按需加载即 `no-bundle`的理念，对外提供了`ssrLoadModule` API，你可以无需打包项目，将入口文件的路径传入`ssrLoadModule` 即可:
+Vite 让前端代码顺利在 Node.js 中跑起来的方式分为两种情况。在开发环境下，Vite 依然秉承 ESM 模块按需加载即 `no-bundle`的理念，对外提供了`ssrLoadModule` API，无需打包项目，将入口文件的路径传入`ssrLoadModule` 即可:
 
 ```javascript
 // 加载服务端入口模块
@@ -198,7 +194,7 @@ createServer();
 *   `nodemon`: 一个监听文件变化自动重启 Node 服务的工具
 *   `esno`: 类似 `ts-node` 的工具，用来执行 ts 文件，底层基于 Esbuild 实现
 
-同时你也需要安装这两个依赖:
+同时需要安装这两个依赖:
 
 ```bash
 pnpm i esno nodemon -D
@@ -282,7 +278,7 @@ async function createSsrMiddleware(app: Express): Promise<RequestHandler> {
 }
 ```
 
-接下来实现服务端的数据预取操作，你可以在 `entry-server.tsx` 中添加一个简单的获取数据的函数:
+接下来实现服务端的数据预取操作。在 `entry-server.tsx` 中添加一个简单的获取数据的函数:
 
 ```ts
 export async function fetchData() {
@@ -329,7 +325,7 @@ async function createSsrMiddleware(app: Express): Promise<RequestHandler> {
 
 由于在第一步之后拿到了入口组件，现在可以调用前端框架的 `renderToString` API 将组件渲染为字符串，组件的具体内容便就此生成了
 
-目前已经拿到了组件的 HTML 以及预取的数据，接下来我们在根目录下的 HTML 中提供相应的插槽，方便内容的替换:
+目前已经拿到了组件的 HTML 以及预取的数据，接下来在根目录的 HTML 中提供相应的插槽，方便内容的替换:
 
 ```html
 // index.html
@@ -383,9 +379,9 @@ async function createSsrMiddleware(app: Express): Promise<RequestHandler> {
 }
 ```
 
-在拼接 HTML 的逻辑中，除了添加页面的具体内容，同时也注入了一个挂载全局数据的 `script` 标签，这是用来干什么的呢？
+在拼接 HTML 的逻辑中，除了添加页面的具体内容，同时也注入了一个挂载全局数据的 `script` 标签，其用途如下：
 
-在 SSR 的基本概念中提到过，为了激活页面的交互功能，需要执行 CSR 的 JavaScript 代码来进行 hydrate 操作，而客户端 hydrate 的时候需要和服务端`同步预取后的数据`，保证页面渲染的结果和服务端渲染一致，因此，我们刚刚注入的数据 script 标签便派上用场了。由于全局的 window 上挂载服务端预取的数据，可以在 `entry-client.tsx` 也就是客户端渲染入口中拿到这份数据，并进行 hydrate:
+在 SSR 的基本概念中提到过，为了激活页面的交互功能，需要执行 CSR 的 JavaScript 代码来进行 hydrate 操作，而客户端 hydrate 的时候需要和服务端`同步预取后的数据`，保证页面渲染的结果和服务端渲染一致，因此，上述注入的数据 script 标签便派上用场了。由于服务端预取的数据挂载在全局的 window 上，`entry-client.tsx` 也就是客户端渲染入口中可以直接拿到这份数据，并进行 hydrate:
 
 ```tsx
 import React from 'react'
@@ -404,21 +400,21 @@ ReactDOM.hydrate(
 )
 ```
 
-现在基本开发完了 SSR 核心的逻辑，执行 `npm run dev` 启动项目。打开浏览器后查看页面源码，发现 SSR 生成的 HTML 已经顺利返回了:
+至此 SSR 核心的逻辑基本开发完成，执行 `npm run dev` 启动项目。打开浏览器查看页面源码，可以发现 SSR 生成的 HTML 已经顺利返回了:
 
 ![image-20240324131543974](https://zhangzhengyang.oss-cn-beijing.aliyuncs.com/images/202403241315278.png)
 
 ### 生产环境的 CSR 资源处理
 
-如果现在执行 `npm run build` 及 `npm run preview` 进行生产环境的预览，会发现 SSR 可以正常返回内容，但所有的静态资源及 CSR 的代码都失效了。
+如果执行 `npm run build` 及 `npm run preview` 进行生产环境的预览，会发现 SSR 可以正常返回内容，但所有的静态资源及 CSR 的代码都失效了。
 
-但是开发阶段并没有这个问题，因为开发阶段的静态资源 Vite Dev Server 的中间件已经处理了，而生产环境所有的资源都已经打包完成，需要启用单独的静态资源服务来承载这些资源。这里你可以 `serve-static` 中间件来完成这个服务，首先安装对应第三方包:
+开发阶段并没有这个问题，因为开发阶段的静态资源已由 Vite Dev Server 的中间件处理，而生产环境所有的资源都已经打包完成，需要启用单独的静态资源服务来承载这些资源。这里可以通过 `serve-static` 中间件来完成这个服务，首先安装对应第三方包:
 
 ```bash
 pnpm i serve-static -S
 ```
 
-接着我们到 server 端注册:
+接着在 server 端注册:
 
 ```javascript
 // 过滤出页面请求
@@ -459,9 +455,9 @@ async function createServer() {
 }
 ```
 
-解决了生产环境下静态资源失效的问题。不过，一般情况下会将静态资源部上传到 CDN 上，并且将 Vite 的 `base` 配置为域名前缀，这样可以通过 CDN 直接访问到静态资源，而不需要加上服务端的处理。不过作为本地的生产环境预览而言，`serve-static` 还是一个不错的静态资源处理手段
+生产环境下静态资源失效的问题至此得以解决。不过，一般情况下会将静态资源上传到 CDN 上，并且将 Vite 的 `base` 配置为域名前缀，这样可以通过 CDN 直接访问到静态资源，而不需要加上服务端的处理。不过作为本地的生产环境预览而言，`serve-static` 还是一个不错的静态资源处理手段
 
-## 工程化问题
+## 工程化实践要点
 
 以上基本实现了 SSR 核心的`构建`和`运行时`功能，可以初步运行一个基于 Vite 的 SSR 项目，但在实际的场景中仍然是有不少的工程化问题需要注意
 
@@ -469,14 +465,14 @@ async function createServer() {
 
 在 SPA 场景下，对于不同的前端框架，一般会有不同的路由管理方案，如 Vue 中的 `vue-router`、React 的`react-router`。不过归根结底，路由方案在 SSR 过程中所完成的功能都是差不多的:
 
-1.  告诉框架现在渲染哪个路由。在 Vue 中我们可以通过 `router.push` 确定即将渲染的路由，React 中则通过 `StaticRouter` 配合`location` 参数来完成。
+1.  告诉框架现在渲染哪个路由。在 Vue 中可以通过 `router.push` 确定即将渲染的路由，React 中则通过 `StaticRouter` 配合`location` 参数来完成。
     
 2.  设置 `base` 前缀。规定路径的前缀，如`vue-router` 中 [base 参数](https://router.vuejs.org/zh/guide/migration/#%E7%A7%BB%E5%8A%A8%E4%BA%86-base-%E9%85%8D%E7%BD%AE)、`react-router` 中 `StaticRouter` 组件的 [basename](https://v5.reactrouter.com/web/api/StaticRouter)
     
 
 ### 2\. 全局状态管理
 
-对于全局的状态管理而言，对于不同的框架也有不同的生态和方案，比如 Vue 中的 Vuex、Pinia，React 中的 Redux、Recoil。各个状态管理工具的用法并不是本文的重点，接入 SSR 的思路也比较简单，在`预取数据`阶段初始化服务端的 `store` ，将异步获取的数据存入 `store` 中，然后在 `拼接 HTML`阶段将数据从 store 中取出放到数据 script 标签中，最后在客户端 hydrate 的时候通过 window 即可访问到预取数据。
+对于全局的状态管理而言，对于不同的框架也有不同的生态和方案，比如 Vue 中的 Vuex、Pinia，React 中的 Redux、Recoil。各个状态管理工具的具体用法不在本文讨论范围内，接入 SSR 的思路也比较简单，在`预取数据`阶段初始化服务端的 `store` ，将异步获取的数据存入 `store` 中，然后在 `拼接 HTML`阶段将数据从 store 中取出放到数据 script 标签中，最后在客户端 hydrate 的时候通过 window 即可访问到预取数据。
 
 > 需要注意的是，服务端会处理许多不同的请求，对于每个请求都需要**分别**初始化 store，即一个请求一个 store，不然会造成全局状态污染的问题。
 
@@ -583,7 +579,7 @@ global.document = document;
 
 ### 5\. 自定义 Head
 
-在 SSR 的过程中，虽然可以在决定组件的内容，即 `<div id="root"></div>` 这个容器 div 中的内容，但对于 HTML 中 `head` 的内容我们无法根据**组件的内部状态**来决定，比如对于一个直播间的页面，需要在服务端渲染出 title 标签，title 的内容是不同主播的直播间名称，不能在代码中写死，这种情况怎么办？
+在 SSR 的过程中，虽然可以决定组件的内容，即 `<div id="root"></div>` 这个容器 div 中的内容，但对于 HTML 中 `head` 的内容，无法根据**组件的内部状态**来决定。比如对于一个直播间的页面，需要在服务端渲染出 title 标签，title 的内容是不同主播的直播间名称，不能在代码中写死。
 
 React 生态中的 [react-helmet](https://github.com/nfl/react-helmet) 以及 Vue 生态中的 [vue-meta](https://github.com/nuxt/vue-meta) 库就是为了解决这样的问题，可以直接在组件中写一些 Head 标签，然后在服务端能够拿到组件内部的状态。（注：react-helmet 已停止维护，新项目可用 react-helmet-async；Vue 3 可使用 unhead/@unhead/vue。）这里以一个 `react-helmet` 例子来说明:
 
@@ -612,7 +608,7 @@ console.log("title 内容: ", helmet.title.toString());
 console.log("link 内容: ", helmet.link.toString())
 ```
 
-启动服务后访问页面，可以发现终端能打印出信息
+启动服务后访问页面，终端能够打印出如下信息
 
 如此一来就能根据组件的状态确定 Head 内容，然后在`拼接 HTML`阶段将这些内容插入到模板中。
 
@@ -680,11 +676,11 @@ memoryFsRead('file1');
 
 *   `服务器内存`。如果是放到内存中，需要考虑缓存淘汰机制，防止内存过大导致服务宕机，一个典型的缓存淘汰方案是 [lru-cache](https://github.com/isaacs/node-lru-cache) (基于 LRU 算法)
 *   [Redis 数据库](https://github.com/redis/node-redis)，相当于以传统后端服务器的设计思路来处理缓存
-*   CDN 服务。可以将页面内容缓存到 CDN 服务上，在下一次相同的请求进来时，使用 CDN 上的缓存内容，而不用消费源服务器的资源。对于 CDN 上的 SSR 缓存，大家可以通过阅读[这篇文章](https://juejin.cn/post/6887884087915184141#heading-8%20"https://juejin.cn/post/6887884087915184141#heading-8")深入了解
+*   CDN 服务。可以将页面内容缓存到 CDN 服务上，在下一次相同的请求进来时，使用 CDN 上的缓存内容，而不用消费源服务器的资源。对于 CDN 上的 SSR 缓存，可以通过阅读[这篇文章](https://juejin.cn/post/6887884087915184141#heading-8%20"https://juejin.cn/post/6887884087915184141#heading-8")深入了解
 
 > 需要补充的是，Vue 中另外实现了[组件级别的缓存](https://ssr.vuejs.org/zh/guide/caching.html#%E7%BB%84%E4%BB%B6%E7%BA%A7%E5%88%AB%E7%BC%93%E5%AD%98-component-level-caching)，这部分缓存一般放在内存中，可以实现更细粒度的 SSR 缓存。
 
-### 8\.性能监控
+### 8\. 性能监控
 
 在实际的 SSR 项目中，时常会遇到一些 SSR 线上性能问题，如果没有一个完整的性能监控机制，那么将很难发现和排查问题。对于 SSR 性能数据，有一些比较通用的指标:
 
@@ -718,7 +714,7 @@ performance.mark('render-end');
 performance.measure('renderToString', 'render-start', 'render-end');
 ```
 
-接着我们启动服务后访问，可以看到如下的打点日志信息
+启动服务后访问，即可看到如下的打点日志信息
 
 同样的，可以将其它阶段的指标通过上述的方式收集起来，作为性能日志；另一方面，在生产环境下，一般需要结合具体的性能监控平台，对上述的各项指标进行打点上报，完成线上的 SSR 性能监控服务。
 
@@ -759,7 +755,7 @@ async function ssg() {
 ssg();
 ```
 
-接着你可以在`package.json`中加入这样一段 npm scripts:
+接着在`package.json`中加入这样一段 npm scripts:
 
 ```json
 {
@@ -769,8 +765,15 @@ ssg();
 }
 ```
 
-这样便初步实现了 SSG 的逻辑。当然，除了 SSG，业界还流传着一些其它的渲染模式，诸如`SPR`、`ISR`，听起来比较高大上，但实际上只是 SSR 和 SSG 所衍生出来的新功能罢了，这里简单给大家解释一下:
+这样便初步实现了 SSG 的逻辑。当然，除了 SSG，业界还流传着一些其它的渲染模式，诸如`SPR`、`ISR`，这些模式实质上是 SSR 和 SSG 所衍生出来的方案，含义如下:
 
 *   `SPR` 并非官方标准术语，社区中常见的一种解释是 `Serverless Pre Render`，即把 SSR 的服务部署到 Serverless(FaaS) 环境中，实现服务器实例的自动扩缩容，降低服务器运维的成本。与之对应的标准方案是 Next.js 的 `ISR`（增量静态再生）以及 HTTP 的 `stale-while-revalidate` 缓存策略，使用时建议以这些成熟术语为准。
     
 *   `ISR` 即 `Incremental Site Rendering`，即增量站点渲染，将一部分的 SSG 逻辑从构建时搬到了 `SSR` 运行时，解决的是大量页面 SSG 构建耗时长的问题
+
+## 小结
+
+- SSR 用于解决 CSR 首屏加载慢与 SEO 不友好的问题：服务端生成完整 HTML 直出，浏览器端通过 hydrate 完成事件绑定与交互激活，构成同构应用。
+- SSR 应用分为构建时与运行时两大生命周期。构建时解决模块加载（生成可在 Node.js 执行的产物）、移除样式引入与依赖外部化；运行时按「加载入口模块 → 数据预取 → 渲染组件 → HTML 拼接」四个固定阶段执行。
+- Vite 在开发环境通过 `ssrLoadModule` 以 no-bundle 方式加载服务端入口，生产环境通过 `vite build --ssr` 输出构建产物；SSR 逻辑封装为 Node 中间件接入后端服务。
+- 工程化实践要点包括：路由管理、请求级隔离的全局状态、CSR 降级（数据预取失败/服务端异常/调试跳过）、浏览器 API 兼容（`import.meta.env.SSR` 与 jsdom polyfill）、自定义 Head（react-helmet/vue-meta）、流式渲染及其与 Head 注入的互斥限制、多级 SSR 缓存（文件读取/预取数据/HTML 渲染，内存/Redis/CDN）与基于 `perf_hooks` 的性能监控；静态内容场景可选用 SSG/ISR/SPR 等衍生渲染模式。

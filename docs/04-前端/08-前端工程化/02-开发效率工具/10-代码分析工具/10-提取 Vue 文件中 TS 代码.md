@@ -101,29 +101,29 @@ export default class Index extends Vue {
 Vue 文件是由三种类型代码组合而成的，那能不能把 `<script lang="ts"></script>` 标签内的 TS 代码片段提取出来单独进行分析呢？答案是：**可以**。
 
 
-本篇主要学习如何提取、解析 Vue 文件中的 TS 代码，属于分析范式中对 `step3` 和 `step4` 步骤的完善，需要大家弄清楚分析 Vue 中 TS 片段与直接分析 TS 代码文件两者的差异，在文档最后我们还会讲解文件解析异常，语法不规范等因素是如何影响分析数据准确性的。
+本文介绍如何提取、解析 Vue 文件中的 TS 代码，属于分析范式中对 `step3` 和 `step4` 步骤的完善。需要重点理解分析 Vue 中 TS 片段与直接分析 TS 代码文件两者的差异，文末还会讲解文件解析异常、语法不规范等因素如何影响分析数据的准确性。
 
 
 ## @vue/compiler-dom 编译器
 
-我们先把上面的 Vue 示例代码放入 [AST explorer](https://astexplorer.net/?spm=taofed.bloginfo.blog.3.3ba15ac8enL4hJ#/gist/d7f47e247dee746928a640fa5880715b/ed1350d7cf78a672df4da4a5d37ea06f32b235aa)，parser 选择 `@vue/compiler-dom`，观察一下右侧的 AST 结构：代码被拆解成 template、script 和 style 这三部分，并且通过 AST 节点属性可以获取到 script 标签内 TS 代码完整的字符串信息。
+将上面的 Vue 示例代码放入 [AST explorer](https://astexplorer.net/?spm=taofed.bloginfo.blog.3.3ba15ac8enL4hJ#/gist/d7f47e247dee746928a640fa5880715b/ed1350d7cf78a672df4da4a5d37ea06f32b235aa)，parser 选择 `@vue/compiler-dom`，观察右侧的 AST 结构：代码被拆解成 template、script 和 style 这三部分，并且通过 AST 节点属性可以获取到 script 标签内 TS 代码完整的字符串信息。
 
 
-言外之意，我们可以通过 `@vue/compiler-dom` 这个 parser 来解析 Vue，获取其中的 TS 代码片段。
+这意味着可以通过 `@vue/compiler-dom` 这个 parser 来解析 Vue，获取其中的 TS 代码片段。
 
 
 ## Parse Vue 逻辑实现
 
-既然可以获取到 Vue 中的 TS 代码片段，那么自然可以分析这部分代码，我们可以实现一个名叫 `parseVue` 的方法来解析 Vue 中的 TS，与 `parseTs` 一样，返回 `AST`、`checker`。
+既然可以获取到 Vue 中的 TS 代码片段，那么自然可以分析这部分代码。可以实现一个名叫 `parseVue` 的方法来解析 Vue 中的 TS，与 `parseTs` 一样，返回 `AST`、`checker`。
 
 
-具体包含 3 个步骤，提取 TS 片段、写入临时 TS 文件和解析临时 TS 文件，我们分别来说：
+具体包含 3 个步骤：提取 TS 片段、写入临时 TS 文件和解析临时 TS 文件，下面分别说明：
 
 
 ### 1.提取 TS 片段
 
 
-要提取 TS 代码片段，肯定要先找到 Vue 文件并获取其文件内容，`scanFileVue` 与 `scanFileTs` 类似，用于扫描 Vue 文件，`getCode` 函数用于读取代码文件的字符串内容，这两个函数我们放在 `file` 模块中实现，因为它们属于文件操作方面的辅助方法。
+要提取 TS 代码片段，肯定要先找到 Vue 文件并获取其文件内容。`scanFileVue` 与 `scanFileTs` 类似，用于扫描 Vue 文件，`getCode` 函数用于读取代码文件的字符串内容。这两个函数放在 `file` 模块中实现，因为它们属于文件操作方面的辅助方法。
 
 
 file 模块中相关方法的实现如下：
@@ -151,7 +151,8 @@ exports.getCode = function(fileName) {
 
 在 `parse` 模块中实现 `parseVue` 函数， 它会引入 file 模块的 `getCode` 方法，获取 Vue 代码文件的字符串内容，然后调用 `@vue/compiler-dom` 解析器的 parse 方法，将 Vue 代码解析为包含三部分代码片段的 AST，通过遍历它的 children 数组，找到其中的 script 片段，获取 content 属性，content 属性值就是 script 片段的代码字符串。
 
-另外我们需要获取 TS 代码片段在 Vue 代码文件中的代码行数据作来作为基准行，这是因为我们分析的是提取后的 TS 片段，在统计代码行信息时需要通过基准行来映射它在 Vue 文件中原本的代码行。
+
+另外，需要获取 TS 代码片段在 Vue 代码文件中的代码行数据来作为基准行。这是因为分析对象是提取后的 TS 片段，统计代码行信息时需要通过基准行来映射它在 Vue 文件中原本的代码行。
 
 
 parse 模块中 parseVue 函数的实现如下：
@@ -185,7 +186,7 @@ exports.parseVue = function(fileName) {
 
 ### 2.写入临时 TS 文件
 
-因为 TypeScript parser 在创建 Program 时需要传入 TS 文件的路径作为参数 ，所以我们需要把第一步提取出来的 TS 代码字符串流写入一些临时 TS 文件中，在完成代码分析后，将这些临时文件删除即可。
+因为 TypeScript parser 在创建 Program 时需要传入 TS 文件的路径作为参数 ，所以需要把第一步提取出来的 TS 代码字符串流写入一些临时 TS 文件中，在完成代码分析后，将这些临时文件删除即可。
 
 
 file 模块中相关方法的实现如下：
@@ -212,7 +213,7 @@ exports.VUETEMPTSDIR = 'vue_temp_ts_dir';
 ```
 
 
-然后，我们完善一下 parseVue 函数：
+然后，完善 parseVue 函数：
 
 ```typescript
 const md5 = require('js-md5');                                                        // md5加密
@@ -255,7 +256,7 @@ exports.parseVue = function(fileName) {
 
 ### 3.解析临时 TS 文件
 
-最后这一步与 parseTs 基本一致，只不过需要多传递一个 baseLine 的基准行信息，原因我们在上面已经解释过了。
+最后这一步与 parseTs 基本一致，只不过需要多传递一个 baseLine 的基准行信息，原因如上文所述。
 
 最终，`parseVue` 函数完整的代码实现如下：
 
@@ -309,12 +310,12 @@ exports.parseTs = function(fileName) {
 ```
 
 
-有了 parseVue 函数，我们就可以像解析 TS 文件那样解析 Vue 中的 TS 代码，进而对其进行调用分析了。
+有了 parseVue 函数，就可以像解析 TS 文件那样解析 Vue 中的 TS 代码，进而对其进行调用分析了。
 
 
 ## 代码文件解析异常
 
-影响代码分析准确性的因素会有很多，其中最直接的莫过于解析异常了，试想一下如果一个文件在 parse 阶段就出错了，AST 都没法正常获取，那么就没法进行分析了。举个例子：
+影响代码分析准确性的因素会有很多，其中最直接的莫过于解析异常了。如果一个文件在 parse 阶段就出错了，AST 都没法正常获取，那么就没法进行分析了。举个例子：
 
 ```typescript
 <template>
@@ -374,10 +375,10 @@ export default class Index extends Vue {
 </style>
 ```
 
-上面的 Vue 文件在 parse 时会报错：`SyntaxError: Element is missing end tag. at createCompilerError`，原因是 `template` 中存在 `div` 未闭合。大家可能会觉得这种异常文件应该很少，但实际情况是项目在迭代过程中，一些废弃的文件可能会一直残留在项目中，因为它们不参与构建，所以有问题也不会被发现。另外，还有一些同学对于小的变更会直接修改代码文件，不进行本地调试，这也可能导致有问题的代码文件被提交到仓库中。
+上面的 Vue 文件在 parse 时会报错：`SyntaxError: Element is missing end tag. at createCompilerError`，原因是 `template` 中存在 `div` 未闭合。这种异常文件看上去应该很少，但实际情况是项目在迭代过程中，一些废弃的文件可能会一直残留在项目中，因为它们不参与构建，所以有问题也不会被发现。另外，一些开发者对小的变更会直接修改代码文件、不进行本地调试，这也可能导致有问题的代码文件被提交到仓库中。
 
 
-我们无法保证需要分析的 Vue、TS 文件一定是规范的，所以在分析过程中可以统计解析失败的文件及错误信息，将这些信息输出到代码分析报告中，推动开发者去修复文件，提升分析准确性。
+无法保证需要分析的 Vue、TS 文件一定是规范的，所以在分析过程中可以统计解析失败的文件及错误信息，将这些信息输出到代码分析报告中，推动开发者去修复文件，提升分析准确性。
 
 `_scanCode` 函数在解析代码文件的外层逻辑会添加 try catch 来捕获可能出现的解析错误，在捕获到错误后将错误信息添加到 codeAnalysis 实例的 `parseErrorInfos` 属性中。相关代码如下，完整代码参考 [lib/analysis.js](https://github.com/liangxin199045/code-analysis-ts/blob/main/lib/analysis.js)：
 
@@ -427,7 +428,7 @@ export default class Index extends Vue {
 
 ## 规范代码语法
 
-除了代码文件解析异常，我们还需要注意语法错误对于分析准确性的影响。举个例子：
+除了代码文件解析异常，还需要注意语法错误对于分析准确性的影响。举个例子：
 
 ```typescript
 // 错误语法，或无意义代码
@@ -443,7 +444,7 @@ if(d){
 
 ## 配置解析 Vue
 
-配置文件中的 `isScanVue` 配置项用来控制是否开启 Vue 文件的扫描分析流程，对于有 Vue 文件的项目开启即可，下面是入口函数 analysis 关于分析 Vue 文件的逻辑演示，完整代码参考 [lib/analysis.js](https://github.com/liangxin199045/code-analysis-ts/blob/main/lib/analysis.js)：
+配置文件中的 `isScanVue` 配置项用来控制是否开启 Vue 文件的扫描分析流程，对于有 Vue 文件的项目开启即可。下面是入口函数 analysis 关于分析 Vue 文件的逻辑演示，完整代码参考 [lib/analysis.js](https://github.com/liangxin199045/code-analysis-ts/blob/main/lib/analysis.js)：
 
 ```typescript
 const { CODEFILETYPE } = require(path.join(__dirname, './constant'));   // 常量模块
@@ -475,7 +476,7 @@ class CodeAnalysis {
 
 ## 小结
 
-这一小节我们学习了如何提取解析 Vue 文件中的 TS 代码片段，需要大家掌握以下知识点：
+本文介绍了如何提取、解析 Vue 文件中的 TS 代码片段，核心知识点如下：
 
 
 1.  通过 `@vue/compiler-dom` 这个 parser 可以将 Vue 解析为包含三种代码类型的 AST，通过节点属性可以获取其中的 TS 代码片段字符串信息。
@@ -483,4 +484,4 @@ class CodeAnalysis {
 1.  代码文件解析异常，待分析代码文件中存在语法问题等因素都会影响代码分析的准确性。
 
 
-学习完本篇，对于 Vue 文件中的 TS，我们也可以分析其最真实的 API 调用情况了。
+掌握上述内容后，对于 Vue 文件中的 TS 代码，即可分析其最真实的 API 调用情况。

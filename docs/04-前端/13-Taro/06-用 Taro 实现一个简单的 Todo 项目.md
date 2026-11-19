@@ -12,24 +12,26 @@ Taro 4.x 已发布,本文基于 Taro 1.x/2.x,API 与编译机制已有重大变�
 
 # 用 Taro 实现一个简单的 Todo 项目
 
-按前面章节的介绍操作，想必已经安装好了 Taro 了，现在我们来实现一个简单的 Todo 项目进行实战。
+## 概念说明
 
-## 创建项目
-
-Todo 项目包含两个简单的功能：
+按安装章节完成 Taro 安装后，可以通过实现一个简单的 Todo 项目完成首次实战。项目包含两个功能：
 
 - 输入事项：点击「添加」按钮增加一个事项；
 - 删除事项：点击事项列表里事项后面的「删除」按钮将删除该事项。
 
-首先进入你想存放本项目的目录里，使用 Taro 创建一个 Todolist 项目，即输入命令`taro init todoList`（Todolist 为项目名称，你也可指定其他名称）。
+实现过程覆盖 Taro 项目创建、目录结构、组件引入（`View`/`Text`/`Input`）、事件绑定（`onInput`/`onClick`）、`state` 状态更新与 `rpx` 样式。
 
-创建项目成功后，我们先来看看当前的项目结构。
+## 创建项目
 
- `src` 文件夹存放我们开发时的文件，包括一个根目录的全局配置文件 `app.js`，全局样式 `app.scss`，入口 HTML 文件 `index.html`。`index.html` 里内置了 `rem` 转换代码（这个不需要关注）。而 `src` 目录 `pages` 下则对应的是项目的每一个页面，这里默认只有一个 `index` 页面，每一个页面下又包含 JS 文件和样式文件两个文件，这里即 `index.js` 和 `index.scss`。
+首先进入存放本项目的目录，使用 Taro 创建一个 Todolist 项目，即输入命令 `taro init todoList`（todoList 为项目名称，也可指定其他名称）。
+
+创建项目成功后，先看当前的项目结构。
+
+ `src` 文件夹存放开发时的文件，包括一个根目录的全局配置文件 `app.js`，全局样式 `app.scss`，入口 HTML 文件 `index.html`。`index.html` 里内置了 `rem` 转换代码（这个不需要关注）。而 `src` 目录 `pages` 下则对应的是项目的每一个页面，这里默认只有一个 `index` 页面，每一个页面下又包含 JS 文件和样式文件两个文件，这里即 `index.js` 和 `index.scss`。
  
- 如果需要创建组件，我们可以在 `src` 创建 `component` 目录来统一存放组件。
+ 如需创建组件，可以在 `src` 创建 `component` 目录来统一存放组件。
 
-了解了目录以后，接下来找到在 `src` 目录的 `pages` 下的 `index.js` （我们前面了解到这个就是默认的页面）。
+了解目录以后，找到 `src` 目录 `pages` 下的 `index.js`（即默认页面）。
 
 ``` JavaScript
 import Taro, { Component } from '@tarojs/taro'
@@ -62,9 +64,9 @@ export default class Index extends Component {
 }
 
 ```
-文件开始第 1 行默认引入 Taro 的 `Component` 组件，它主要用来做组件化，我们这里暂时不用了解它；接着第 2 行是引入要用到的 `View` 和 `Text`, 我们下文要用到的 `Input` 组件也会是在这里引入。接下来第 3 行是引入样式对应的样式文件。
+文件开始第 1 行默认引入 Taro 的 `Component` 组件，它主要用来做组件化，此处暂时不用了解它；接着第 2 行是引入要用到的 `View` 和 `Text`，下文用到的 `Input` 组件也将在这里引入；接下来第 3 行是引入样式对应的样式文件。
 
-在我们正式开始写代码前先看看默认页面的效果吧。可以选择小程序的方式在微信开发者工具里查看（第 3 章《微信小程序开发入门与技术选型》里有相关的介绍）或 H5 的方式在浏览器里查看。在命令行进行项目构建：
+正式开始写代码前，先看看默认页面的效果。可以选择小程序的方式在微信开发者工具里查看（《微信小程序开发入门与技术选型》里有相关介绍）或 H5 的方式在浏览器里查看。在命令行进行项目构建：
 
 ``` bash
 # 小程序构建
@@ -73,7 +75,9 @@ $ taro build --type weapp --watch
 $ taro build --type h5 --watch
 ```
 
-接下来我们就正式开始编写 Todolist 了，我们把事项列表存在 `state` 里且给它默认几个事项，最后把它渲染出来。
+## 渲染事项列表
+
+接下来正式开始编写 Todolist：把事项列表存在 `state` 里并给几个默认事项，最后把它渲染出来。
 
 ``` JavaScript
 // ...
@@ -116,7 +120,9 @@ export default class Index extends Component {
 }
 ``` 
 
-要想实现添加事项的功能，我们需要引入 `Input` 组件来输入事项，当我们输入的时候触发 `onInput` 事件，把输入的值保存在 `this.inputVal`；同时使用 `Text` 组件把「添加」按钮展示出来，点击的时候触发 `onClick` 事件，当点击发生时，我们可以查看 `this.inputVal` 是否为空，如果不为空则可以添加到事项列表里，即在 `list` 列表里添加事项且更新 `state` 。具体的代码如下：
+## 实现添加事项
+
+实现添加事项的功能需要引入 `Input` 组件来输入事项：输入时触发 `onInput` 事件，把输入的值保存在 `this.inputVal`；同时使用 `Text` 组件把「添加」按钮展示出来，点击时触发 `onClick` 事件。点击发生时检查 `this.inputVal` 是否为空，不为空则添加到事项列表里，即在 `list` 列表里添加事项且更新 `state`。具体的代码如下：
 
 ``` JavaScript
 // 这里多引入了 Input 组件
@@ -169,7 +175,9 @@ export default class Index extends Component {
 
 ```
 
-上面我们完成了添加事项的功能，下面我们开发删除功能。删除功能就是点击事项后的「删除」按钮删除对应的事项，即从事项列表中移除该事项。首先是在展示事项的列表后添加「删除」按钮并且把该事项的索引传入点击事件里，发生点击的时候就可以根据索引删除对应的事项。
+## 实现删除事项
+
+添加事项功能完成后，接下来开发删除功能：点击事项后的「删除」按钮删除对应的事项，即从事项列表中移除该事项。首先在展示事项的列表后添加「删除」按钮，并把该事项的索引传入点击事件里；发生点击时即可根据索引删除对应的事项。
 
 ``` JavaScript
 export default class Index extends Component {
@@ -212,7 +220,9 @@ export default class Index extends Component {
 
 ```
 
-到这里我们实现了一个简单的可添加可删除的 Todolist，因为我们之前使用的是 Taro 的 `taro build --type weapp --watch` 或 `taro build --type h5 --watch` 命令，所以在编写代码的同时可以不停地查看我们编写的效果。我们再补充一些样式，样式写在 `index` 页面下的样式文件里，这里即 `index.scss`。
+## 补充样式
+
+至此实现了一个简单的可添加可删除的 Todolist。由于使用的是 `taro build --type weapp --watch` 或 `taro build --type h5 --watch` 命令，编写代码的同时可以不停地查看编写效果。再补充一些样式，样式写在 `index` 页面下的样式文件里，即 `index.scss`。
 
 ``` CSS
 .input {
@@ -261,7 +271,9 @@ export default class Index extends Component {
 }
 ```
 
-为了方便大家实践，且篇幅不算长，这里把 `index.js` 全部代码展示一下：
+## 完整代码
+
+为便于实践，这里把 `index.js` 全部代码展示一下：
 
 ``` JavaScript
 
@@ -339,8 +351,13 @@ export default class Index extends Component {
 }
 ```
 
+## 实践要点
+
+- 不参与渲染的变量（如输入框的暂存值 `this.inputVal`）可以不放入 `state`，避免多余渲染，提高性能。
+- 类组件中事件处理器通过 `this.addItem.bind(this)` 传递，需要传参时用 `bind(this, index)` 形式（如删除事项）。
+- 样式使用小程序的 `rpx` 尺寸单位，适配多端机型。
+- 构建命令加 `--watch` 可在编码过程中实时查看小程序或 H5 端的效果。
+
 ## 小结
-本文主要介绍了如何使用 Taro 创建一个应用目录，并快速进行开发，以及目录中的一些配置内容。如果从未使用 React，可以参考前面的《React 核心语法初识》章节。
 
-下一章将为大家讲解如何在应用中添加以及使用 Redux 来管理我们的数据。
-
+本文介绍了使用 Taro 创建应用目录并快速开发的过程：`taro init` 生成项目骨架，`src` 目录承载全局配置（`app.js`/`app.scss`/`index.html`）与页面（`pages/index` 下的 JS 与 SCSS 文件）；页面组件基于 `Component` 类，通过 `state` 保存事项列表并用 `map` 渲染，通过 `Input` 的 `onInput` 与 `Text` 的 `onClick` 分别完成输入暂存与添加/删除逻辑，最后以 `rpx` 补充样式。从未使用过 React 的读者可以参考《React 核心语法初识》。如何用 Redux 管理应用数据将在后续章节讲解。

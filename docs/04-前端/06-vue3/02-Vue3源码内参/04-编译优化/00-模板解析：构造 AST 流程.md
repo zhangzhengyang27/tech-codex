@@ -12,9 +12,12 @@ keywords:
   - AST
 ---
 # 模板解析：构造 AST 流程
-Vue.js 3.0 的编译场景分**服务端 SSR 编译**和 **web 编译**，本文我们只分析 web 的编译。
 
-看 web 编译的入口 compile 函数实现原理：
+## 概念说明
+
+Vue.js 3.0 的编译场景分**服务端 SSR 编译**和 **web 编译**两类，本文只分析 web 编译。
+
+web 编译的入口 compile 函数实现如下：
 
 ```js
 function compile(template, options = {}) {
@@ -26,11 +29,9 @@ function compile(template, options = {}) {
 }
 ```
 
-compile 函数支持两个参数，第一个参数 template 是待编译的模板字符串，第二个参数 options 是编译的一些配置信息。
+compile 函数支持两个参数：第一个参数 template 是待编译的模板字符串，第二个参数 options 是编译的配置信息。
 
-compile 内部通过 baseCompile 完成编译工作，baseCompile 在 options 基础上扩展了部分配置，这些配置在后续具体场景再分析。
-
-下面看一下 baseCompile 的实现：
+compile 内部通过 baseCompile 完成编译工作，baseCompile 在 options 基础上扩展了部分配置。baseCompile 的实现如下：
 
 ```js
 function baseCompile(template,  options = {}) {
@@ -55,11 +56,9 @@ function baseCompile(template,  options = {}) {
 }
 ```
 
-baseCompile 主要做三件事：**解析 template 生成 AST**、**AST 转换**和**生成代码**。
+baseCompile 主要做三件事：**解析 template 生成 AST**、**AST 转换**和**生成代码**。本文的目标是**解析 template 生成 AST 背后的实现原理**。
 
-本文的目标是**解析 template 生成 AST 背后的实现原理**。
-
-### 生成 AST 抽象语法树
+## 生成 AST 抽象语法树
 
 先通过下面这张流程图，建立对整个 AST 解析过程的整体认知：
 
@@ -91,7 +90,7 @@ flowchart TD
 
 > 解析过程是"循环推进源码 → 按节点类型分发处理 → 递归构建子节点"的流程，最终生成描述模板结构的 AST 抽象语法树。
 
-关于 [AST 的定义](https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952?fr=aladdin) 可参考百科，对应到 template，同样可用 AST 描述，例如如下 template：
+关于 [AST 的定义](https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/6129952?fr=aladdin) 可参考百科，对应到 template，同样可用 AST 描述。例如如下 template：
 
 ```html
 <div class="app">
@@ -329,26 +328,22 @@ flowchart TD
 }
 ```
 
-AST 是树状结构，对于树中的每个节点，会有 type 字段描述节点的类型，tag 字段描述节点的标签，props 描述节点的属性，loc 描述节点对应代码相关信息，children 指向它的子节点对象数组。
+AST 是树状结构，对于树中的每个节点：type 字段描述节点的类型，tag 字段描述节点的标签，props 描述节点的属性，loc 描述节点对应代码相关信息，children 指向它的子节点对象数组。
 
 AST 节点还包含其它属性，关键是理解 **AST 中的节点可以完整地描述它在模板中映射的节点信息**。
 
-注意，**AST 对象根节点其实是一个虚拟节点**，**它并不会映射到一个具体节点**，另外它还包含了其他的一些属性，这些属性在后续的 AST 转换的过程中会赋值，并在生成代码阶段用到。
+注意，**AST 对象根节点其实是一个虚拟节点**，**它并不会映射到一个具体节点**；另外它还包含了其他的一些属性，这些属性在后续的 AST 转换过程中会赋值，并在生成代码阶段用到。
 
-那么，为什么要设计一个虚拟节点呢？
-
-因为 Vue.js 3.0 和 Vue.js 2.x 有一个很大的不同——Vue.js 3.0 支持了 Fragment 的语法，即组件可以有多个根节点，比如：
+设计虚拟节点的原因：Vue.js 3.0 与 Vue.js 2.x 有一个很大的不同——Vue.js 3.0 支持了 Fragment 的语法，即组件可以有多个根节点，比如：
 
 ```html
 <img src="./logo.jpg">
 <hello :msg="msg"></hello>
 ```
 
-这种写法在 Vue.js 2.x 中会报错，提示模板只能有一个根节点，而 Vue.js 3.0 允许了这种写法。但是对于一棵树而言，必须有一个根节点，所以虚拟节点在这种场景下就非常有用了，它可以作为 AST 的根节点，然后其 children 包含了 img 和 hello 的节点。
+这种写法在 Vue.js 2.x 中会报错，提示模板只能有一个根节点，而 Vue.js 3.0 允许这种写法。树形结构必须有一个根节点，虚拟节点在这种场景下非常有用：它作为 AST 的根节点，其 children 包含 img 和 hello 的节点。
 
-了解 AST 后，下面看如何根据模板字符串构建这个 AST 对象。
-
-先来看一下 baseParse 的实现：
+了解 AST 后，下面看如何根据模板字符串构建这个 AST 对象。baseParse 的实现如下：
 
 ```js
 function baseParse(content, options = {}) {
@@ -360,11 +355,11 @@ function baseParse(content, options = {}) {
 }
 ```
 
-baseParse 主要就做三件事情：**创建解析上下文**，**解析子节点**，**创建 AST 根节点**。
+baseParse 主要做三件事情：**创建解析上下文**、**解析子节点**、**创建 AST 根节点**。
 
-#### 创建解析上下文
+## 创建解析上下文
 
-首先，我们来分析创建解析上下文的过程，先来看 createParserContext 的实现：
+createParserContext 的实现如下：
 
 ```js
 // 默认解析配置
@@ -392,15 +387,13 @@ function createParserContext(content, options) {
 }
 ```
 
-解析上下文实际上就是一个 JavaScript 对象，它维护着解析过程中的上下文，其中 options 表示解析相关配置，column 表示当前代码的列号，line 表示当前代码的行号，originalSource 表示最初的原始代码，source 表示当前代码，offset 表示当前代码相对于原始代码的偏移量，inPre 表示当前代码是否在 pre 标签内，inVPre 表示当前代码是否在 v-pre 指令的环境下。
+解析上下文实际上就是一个 JavaScript 对象，它维护着解析过程中的状态：options 表示解析相关配置，column 表示当前代码的列号，line 表示当前代码的行号，originalSource 表示最初的原始代码，source 表示当前代码，offset 表示当前代码相对于原始代码的偏移量，inPre 表示当前代码是否在 pre 标签内，inVPre 表示当前代码是否在 v-pre 指令的环境下。
 
-在后续解析的过程中，会始终维护和更新这个解析上下文，它能够表示当前解析的状态。
+在后续解析的过程中，这个解析上下文会被持续维护和更新，它能够表示当前解析的状态。
 
-创建完解析上下文，接下来就开始解析子节点了。
+## 解析子节点
 
-#### 解析子节点
-
-下面看一下 parseChildren 函数的实现：
+parseChildren 函数的实现（简化版）如下：
 
 ```js
 function parseChildren(context, mode, ancestors) {
@@ -417,9 +410,9 @@ function parseChildren(context, mode, ancestors) {
 }
 ```
 
-parseChildren 的目的就是解析并创建 AST 节点数组。它有两个主要流程，第一个是自顶向下分析代码，生成 AST 节点数组 nodes；第二个是空白字符管理，用于提高编译的效率。
+parseChildren 的目的就是解析并创建 AST 节点数组，包含两个主要流程：一是自顶向下分析代码，生成 AST 节点数组 nodes；二是空白字符管理，用于提高编译的效率。
 
-先看**生成 AST 节点数组**的流程：
+### 生成 AST 节点数组
 
 ```js
 function parseChildren(context, mode, ancestors) {
@@ -521,15 +514,13 @@ function parseChildren(context, mode, ancestors) {
 }
 ```
 
-这些代码看起来很复杂，但它的思路就是自顶向下地去遍历代码，然后根据不同的情况尝试去解析代码，然后把生成的 node 添加到 AST nodes 数组中。在解析的过程中，解析上下文 context 的状态也是在不断发生变化的，我们可以通过 context.source 拿到当前解析剩余的代码 s，然后根据 s 不同的情况走不同的分支处理逻辑。在解析的过程中，可能会遇到各种错误，都会通过 emitError 方法报错。
+这段代码的思路是自顶向下地遍历代码，根据不同情况尝试解析代码，然后把生成的 node 添加到 AST nodes 数组中。解析过程中，解析上下文 context 的状态在不断变化：通过 context.source 拿到当前解析剩余的代码 s，根据 s 的不同情况走不同的分支处理逻辑。解析过程中遇到的各种错误都会通过 emitError 方法报错。
 
-我们没有必要去了解所有代码的分支细节，只需要知道大致的解析思路即可，因此我们这里只分析四种情况：注释节点的解析、插值的解析、普通文本的解析，以及元素节点的解析。
+不必掌握所有分支细节，只需理解大致思路。以下分析四种情况：注释节点的解析、插值的解析、普通文本的解析，以及元素节点的解析。
 
-- 注释节点的解析
+#### 注释节点的解析
 
-先看注释节点的解析过程，它会解析模板中的注释节点，比如 `<!-- 这是一段注释 -->`，即当前代码 s 是以 `<!--` 开头的字符串，则走到注释节点的解析处理逻辑。
-
-看 parseComment 的实现：
+当前代码 s 是以 `<!--` 开头的字符串时，走到注释节点的解析处理逻辑。parseComment 的实现如下：
 
 ```js
 function parseComment(context) {
@@ -576,10 +567,9 @@ function parseComment(context) {
 }
 ```
 
-parseComment 实现简单：先利用注释结束符正则匹配代码找出结束符，未匹配或不合法则报错。
-如果找到合法的注释结束符，则获取它中间的注释内容 content，然后截取注释开头到结尾之间的代码，并判断是否有嵌套注释，如果有嵌套注释也会报错。
+parseComment 实现简单：先利用注释结束符正则匹配代码找出结束符，未匹配或不合法则报错。如果找到合法的注释结束符，则获取中间的注释内容 content，然后截取注释开头到结尾之间的代码并判断是否有嵌套注释，存在嵌套注释也会报错。
 
-调用 advanceBy 前进代码到注释结束符后，该函数在整个解析过程常被调用，用于前进代码并更新 context 解析上下文，看它的实现：
+调用 advanceBy 前进代码到注释结束符后。advanceBy 在整个解析过程中经常被调用，用于前进代码并更新 context 解析上下文：
 
 ```js
 function advanceBy(context, numberOfCharacters) {
@@ -608,19 +598,19 @@ function advancePositionWithMutation(pos, source, numberOfCharacters = source.le
 }
 ```
 
-advanceBy 的实现很简单，主要就是更新解析上下文 context 中的 source 来前进代码，同时更新 offset、line、column 等和代码位置相关的属性。
+advanceBy 的实现很简单：更新解析上下文 context 中的 source 来前进代码，同时更新 offset、line、column 等与代码位置相关的属性。
 
 为了更直观地说明 advanceBy 的作用，前面的示例可以通过下图表示：
 
 ![22.png](/vue3-src-images/i/image/M00/43/D2/Ciqc1F88z3mACHOrAAFRdAq-Jxw187.png)
 
-经过 advanceBy 前进代码到注释结束符后，表示注释部分代码处理完毕，可以继续解析后续代码了。
+经过 advanceBy 前进代码到注释结束符后，注释部分代码处理完毕，可以继续解析后续代码。
 
-parseComment 最终返回的值就是一个描述注释节点的对象，其中 type 表示它是一个注释节点，content 表示注释的内容，loc 表示注释的代码开头和结束的位置信息。
+parseComment 最终返回一个描述注释节点的对象：type 表示它是注释节点，content 表示注释的内容，loc 表示注释的代码开头和结束的位置信息。
 
-- 插值的解析
+#### 插值的解析
 
-下面看插值的解析过程，它会解析模板中的插值，比如 `{{ msg }}`，即当前代码 s 是以 {{ 开头的字符串，且不在 v-pre 指令的环境下（v-pre 会跳过插值的解析），则会走到插值的解析处理逻辑 parseInterpolation 函数，看它的实现：
+当前代码 s 以 `{{` 开头且不在 v-pre 指令环境下时（v-pre 会跳过插值的解析），走到插值的解析处理逻辑 parseInterpolation 函数：
 
 ```js
 function parseInterpolation(context, mode) {
@@ -671,19 +661,15 @@ function parseInterpolation(context, mode) {
 }
 ```
 
-parseInterpolation 的实现也很简单，首先它会尝试找插值的结束分隔符，如果找不到则报错。
+parseInterpolation 的实现流程：首先尝试找插值的结束分隔符，找不到则报错；找到则先前进代码到插值开始分隔符后，再通过 parseTextData 获取插值中间的内容并前进代码到插值内容后。parseTextData 内部除了普通字符串，还会处理一些 HTML 实体符号（比如 `&nbsp`）。由于插值内容可能前后带有空白字符，最终返回的 content 需要执行 trim 函数。
 
-如果找到，先前进代码到插值开始分隔符后，然后通过 parseTextData 获取插值中间的内容并前进代码到插值内容后，除了普通字符串，parseTextData 内部会处理一些 HTML 实体符号比如 `&nbsp`。由于插值的内容可能是前后有空白字符的，所以最终返回的 content 需要执行一下 trim 函数。
+为了准确反馈插值内容的代码位置信息，解析过程中使用 innerStart 和 innerEnd 记录插值内容（不包含空白字符）的代码开头和结束位置。接着前进代码到插值结束分隔符后，插值部分代码处理完毕，可以继续解析后续代码。
 
-为了准确地反馈插值内容的代码位置信息，我们使用了 innerStart 和 innerEnd 去记录插值内容（不包含空白字符）的代码开头和结束位置。
+parseInterpolation 最终返回一个描述插值节点的对象：type 表示它是插值节点，loc 表示插值的代码开头和结束位置信息；content 又是一个描述表达式节点的对象，其中 type 表示它是表达式节点，loc 表示内容的代码开头和结束位置信息，content 表示插值的内容。
 
-接着就是前进代码到插值结束分隔符后，表示插值部分代码处理完毕，可以继续解析后续代码了。
+#### 普通文本的解析
 
-parseInterpolation 最终返回的值就是一个描述插值节点的对象，其中 type 表示它是一个插值节点，loc 表示插值的代码开头和结束的位置信息，而 content 又是一个描述表达式节点的对象，其中 type 表示它是一个表达式节点，loc 表示内容的代码开头和结束的位置信息，content 表示插值的内容。
-
-- 普通文本的解析
-
-下面看普通文本的解析过程，它会解析模板中的普通文本，比如  `This is an app`，即当前代码 s 既不是以 {{ 插值分隔符开头的字符串，也不是以 < 开头的字符串，则走到普通文本的解析处理逻辑，看 parseText 的实现：
+当前代码 s 既不以 `{{` 插值分隔符开头、也不以 `<` 开头时，走到普通文本的解析处理逻辑。parseText 的实现如下：
 
 ```js
 function parseText(context, mode) {
@@ -712,15 +698,13 @@ function parseText(context, mode) {
 }
 ```
 
-parseText 实现简单：对于一段文本来说，都是在遇到 < 或者插值分隔符 {{ 结束，所以会遍历这些结束符，匹配并找到文本结束的位置，然后执行 parseTextData 获取文本的内容，并前进代码到文本的内容后。
+parseText 实现简单：一段文本总是遇到 `<` 或插值分隔符 `{{` 结束，所以遍历这些结束符、匹配并找到文本结束的位置，然后执行 parseTextData 获取文本的内容，并前进代码到文本的内容后。
 
-parseText 最终返回的值就是一个描述文本节点的对象，其中 type 表示它是一个文本节点，content 表示文本的内容，loc 表示文本的代码开头和结束的位置信息。
+parseText 最终返回一个描述文本节点的对象：type 表示它是文本节点，content 表示文本的内容，loc 表示文本的代码开头和结束位置信息。
 
-前面讲到了解析子节点的三种情况：注释节点、插值和普通文本，下面看最后一种情况——元素节点的解析。
+## 元素节点的解析
 
-### 元素节点的解析
-
-最后看元素节点的解析过程，它会解析模板中的标签节点，举个例子：
+元素节点解析会解析模板中的标签节点，例如：
 
 ```html
 <div class="app">
@@ -728,7 +712,7 @@ parseText 最终返回的值就是一个描述文本节点的对象，其中 typ
 </div>
 ```
 
-相对于前面三种类型的解析过程，元素节点的解析过程应该是最复杂的了，即当前代码 s 是以 < 开头，并且后面跟着字母，说明它是一个标签的开头，则走到元素节点的解析处理逻辑，看 parseElement 的实现：
+相对于前面三种类型的解析过程，元素节点的解析最为复杂。当前代码 s 以 `<` 开头且后面跟着字母时，说明它是一个标签的开头，走到元素节点的解析处理逻辑。parseElement 的实现如下：
 
 ```js
 function parseElement(context, ancestors) {
@@ -784,9 +768,11 @@ function parseElement(context, ancestors) {
 }
 ```
 
-这个过程中 parseElement 主要做了三件事情：解析开始标签，解析子节点，解析闭合标签。
+parseElement 主要做三件事情：解析开始标签、解析子节点、解析闭合标签。
 
-先看解析开始标签的过程。主要通过 parseTag 方法来解析并创建一个标签节点，来看它的实现原理：
+### 解析开始标签：parseTag
+
+通过 parseTag 方法解析并创建一个标签节点：
 
 ```js
 function parseTag(context, type, parent) {
@@ -875,27 +861,27 @@ function parseTag(context, type, parent) {
 }
 ```
 
-parseTag 首先匹配标签文本结束的位置，并前进代码到标签文本后面的空白字符后，然后解析标签中的属性，比如 class、style 和指令等，parseAttributes 函数的实现可以自己去看，它最终会解析生成一个 props 的数组，并前进代码到属性后。
+parseTag 的执行流程：首先匹配标签文本结束的位置，并前进代码到标签文本后面的空白字符后；然后解析标签中的属性（class、style 和指令等），parseAttributes 函数的实现此处不展开，它最终解析生成一个 props 数组并前进代码到属性后；接着检查是不是一个 pre 标签，是则设置 context.inPre 为 true；再检查属性中有没有 v-pre 指令，有则设置 context.inVPre 为 true、重置上下文 context 并重新解析属性；接下来判断是否为自闭和标签并前进代码到闭合标签后；最后判断标签类型：元素、组件、插槽还是模板。
 
-接着去检查是不是一个 pre 标签，如果是则设置 context.inPre 为 true；再去检查属性中有没有 v-pre 指令，如果有则设置 context.inVPre 为 true，并重置上下文 context 和重新解析属性；接下来再去判断是不是一个自闭和标签，并前进代码到闭合标签后；最后判断标签类型，是组件、插槽还是模板。
+parseTag 最终返回一个描述标签节点的对象：type 表示它是标签节点，tag 表示标签名，tagType 表示标签的类型，isSelfClosing 表示是否是闭合标签，loc 表示代码开头和结束位置信息，children 是标签的子节点数组（先初始化为空）。
 
-parseTag 最终返回的值就是一个描述标签节点的对象，其中 type 表示它是一个标签节点，tag 表示标签名，tagType 表示标签的类型，content 表示文本的内容，isSelfClosing 表示是否是一个闭合标签，loc 表示文本的代码开头和结束的位置信息，children 是标签的子节点数组，会先初始化为空。
+### 解析子节点与闭合标签
 
-解析完开始标签后，再回到 parseElement，接下来第二步就是解析子节点，它把解析好的 element 节点添加到 ancestors 数组中，然后执行 parseChildren 去解析子节点，并传入 ancestors。
+解析完开始标签后回到 parseElement，第二步解析子节点：把解析好的 element 节点添加到 ancestors 数组中，执行 parseChildren 解析子节点并传入 ancestors。
 
-如果有嵌套的标签，那么就会递归执行 parseElement，在 parseElement 的一开始，我们能获取 ancestors 数组的最后一个值拿到父元素的标签节点，这个就是我们在执行 parseChildren 前添加到数组尾部的。
+如果有嵌套的标签，会递归执行 parseElement。parseElement 一开始通过 ancestors 数组的最后一个值拿到父元素的标签节点——它正是在执行 parseChildren 前添加到数组尾部的。
 
-解析完子节点后，我们再把 element 从 ancestors 中弹出，然后把 children 数组添加到 element.children 中，同时也把代码前进到子节点的末尾。
+解析完子节点后，把 element 从 ancestors 中弹出，把 children 数组添加到 element.children 中，同时把代码前进到子节点的末尾。
 
-最后，就是解析结束标签，并前进代码到结束标签后，然后更新标签节点的代码位置。parseElement 最终返回的值就是这样一个标签节点 element。
+最后解析结束标签并前进代码到结束标签后，然后更新标签节点的代码位置。parseElement 最终返回这个标签节点 element。
 
-HTML 嵌套结构的解析过程本质是递归解析元素节点，为了维护父子关系，当需要解析子节点时，我们把当前节点入栈，子节点解析完毕后，我们把当前节点出栈，因此 ancestors 的设计就是一个栈的数据结构，整个过程是一个不断入栈和出栈的过程。
+HTML 嵌套结构的解析过程本质是递归解析元素节点。为了维护父子关系：需要解析子节点时当前节点入栈，子节点解析完毕后当前节点出栈——ancestors 的设计就是一个栈的数据结构，整个过程是一个不断入栈和出栈的过程。
 
-通过不断地递归解析，可以完整地解析整个模板，并且标签类型的 AST 节点会保持对子节点数组的引用，这样就构成了一个树形的数据结构，所以整个解析过程构造出的 AST 节点数组就能很好地映射整个模板的 DOM 结构。
+通过不断地递归解析，可以完整地解析整个模板；标签类型的 AST 节点会保持对子节点数组的引用，由此构成树形的数据结构。整个解析过程构造出的 AST 节点数组就能很好地映射整个模板的 DOM 结构。
 
-### 空白字符管理
+## 空白字符管理
 
-在前面的解析过程中，有些时候我们会遇到空白字符的情况，比如前面的例子：
+解析过程中会遇到空白字符。例如：
 
 ```html
 <div class="app">
@@ -903,9 +889,9 @@ HTML 嵌套结构的解析过程本质是递归解析元素节点，为了维护
 </div>
 ```
 
-div 标签到下一行会有一个换行符，hello 标签前面也有空白字符，这些空白字符在解析的过程中会被当作文本节点解析处理。但这些空白节点显然是没有什么意义的，所以我们需要移除这些节点，减少后续对这些没用意义的节点的处理，以提高编译效率。
+div 标签到下一行有一个换行符，hello 标签前面也有空白字符，这些空白字符在解析过程中会被当作文本节点解析处理。但空白节点显然没有意义，所以需要移除这些节点，减少后续对无意义节点的处理，以提高编译效率。
 
-下面看一下空白字符管理相关逻辑代码：
+空白字符管理相关逻辑代码如下：
 
 ```js
 function parseChildren(context, mode, ancestors) {
@@ -970,15 +956,15 @@ function parseChildren(context, mode, ancestors) {
 }
 ```
 
-这段代码逻辑很简单，主要就是遍历 nodes，拿到每一个 AST 节点，判断是否为一个文本节点，如果是则判断它是不是空白字符；如果是则进一步判断空白字符是开头或还是结尾节点，或者空白字符与注释节点相连，或者空白字符在两个元素之间并包含换行符，如果满足上述这些情况，这些空白字符节点都应该被移除。
+这段代码的逻辑：遍历 nodes 拿到每一个 AST 节点，判断是否为文本节点；是则进一步判断是否为纯空白字符；是则按三种规则判断是否移除——空白字符是开头或结尾节点、空白字符与注释节点相连、空白字符在两个元素之间且包含换行符。满足这些情况的空白字符节点都会被移除。
 
-此外，不满足这三种情况的空白字符都会被压缩成一个空格，非空文本中间的空白字符也会被压缩成一个空格，在生产环境下注释节点也会被移除。
+此外：不满足这三种情况的空白字符会被压缩成一个空格；非空文本中间的空白字符也会被压缩成一个空格；生产环境下注释节点会被移除。
 
-在 parseChildren 函数的最后，会过滤掉这些被标记清除的节点并返回过滤后的 AST 节点数组。
+parseChildren 函数的最后会过滤掉被标记清除的节点并返回过滤后的 AST 节点数组。
 
-### 创建 AST 根节点
+## 创建 AST 根节点
 
-子节点解析完毕，baseParse 过程就剩最后一步创建 AST 根节点了，看 createRoot 的实现：
+子节点解析完毕后，baseParse 的最后一步是创建 AST 根节点。createRoot 的实现如下：
 
 ```js
 function createRoot(children, loc = locStub) {
@@ -998,10 +984,25 @@ function createRoot(children, loc = locStub) {
 }
 ```
 
-createRoot 的实现非常简单，它就是返回一个 JavaScript 对象，作为 AST 根节点。其中 type 表示它是一个根节点类型，children 是我们前面解析的子节点数组。除此之外，这个根节点还添加了其它的属性，当前我们并不需要搞清楚每一个属性代表的含义，这些属性我们在分析后续的处理流程中会介绍。
+createRoot 的实现非常简单：返回一个 JavaScript 对象作为 AST 根节点。type 表示根节点类型，children 是前面解析的子节点数组。根节点还添加了其它属性，这些属性在后续的处理流程（AST 转换与生成代码）中会赋值和使用。
 
-### 总结
+## 实践要点
 
-> **本文的相关代码在源代码中的位置如下：**
-> packages/compiler-core/src/parse.ts
-> packages/compiler-core/src/ast.ts
+- **编译三阶段**：模板编译分为"解析生成 AST → AST 转换 → 生成代码"三步，本文聚焦第一步。
+- **解析上下文是状态机**：context 中的 source/offset/line/column/inPre/inVPre 描述解析状态，advanceBy 每次前进代码都同步更新这些字段。
+- **四类节点的分发依据是剩余源码前缀**：`{{` 走插值解析、`<` + 字母走元素解析、`<!--` 走注释解析，其余走文本解析。
+- **ancestors 是栈结构**：元素解析递归时入栈/出栈维护父子关系，嵌套层级越深递归越深。
+- **根节点是虚拟节点**：type 为 0 的 ROOT 节点不映射具体模板节点，用于承载 Fragment（多根节点）语法。
+- **空白字符处理有明确规则**：三类情况整体移除，其余压缩为单个空格；pre 标签内按 HTML 规范只删除前导换行符。
+- **错误都通过 emitError 上报**：包括 EOF、非法注释、嵌套注释、缺失结束标签等十余种错误码。
+
+## 小结
+
+模板解析（parse）阶段把模板字符串转换为 AST。整体流程：baseParse 先创建解析上下文，再通过 parseChildren 自顶向下循环解析——根据剩余源码的前缀分发到 parseComment（注释）、parseInterpolation（插值）、parseText（文本）、parseElement（元素）四类解析函数，每类解析函数返回描述对应节点的对象并通过 advanceBy 推进源码；元素节点递归解析子节点，借 ancestors 栈维护嵌套关系；解析完成后做空白字符管理以精简节点，最后由 createRoot 包一层虚拟根节点（支持 Fragment），输出完整 AST。
+
+## 源码位置
+
+本文分析的相关代码在源代码中的位置如下：
+
+- packages/compiler-core/src/parse.ts
+- packages/compiler-core/src/ast.ts

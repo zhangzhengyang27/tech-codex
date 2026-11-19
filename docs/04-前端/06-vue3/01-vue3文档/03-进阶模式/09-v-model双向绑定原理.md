@@ -10,20 +10,20 @@ tags: [Vue3, 进阶特性, v-model]
 
 ## 前言
 
-部分读者在理解 `Vue` 的响应式原理的时候，可能会认为 `Vue` 的响应式是双向绑定的，但实际上这是不准确的，所谓数据的双向绑定可以体现为以下两部分：
+一个常见的误解是把 `Vue` 的响应式原理等同于"双向绑定"，实际上这是不准确的。数据的双向绑定可以拆分为以下两部分：
 
 1. 数据流向 `DOM` 的绑定：数据的更新最终映射到对应的视图更新。
 2. `DOM` 流向数据的绑定：操作 `DOM` 的变化引起数据的更新。
 
-我们在前面的章节花了不少篇幅介绍了响应式原理，其实这块就是着重在介绍数据流向 `DOM` 的过程。
+响应式原理重点解决的是数据流向 `DOM` 的过程。
 
-在 `Vuejs` 中，我们则会经常通过 `v-model` 指令来实现数据的 "双向绑定"。 `v-model` 指令既可以作用在普通表单元素，也可以作用在一些组件上。接下来我们将分别介绍这两种情况的实现原理，并重点介绍 `Vue 3.4` 正式稳定的 `defineModel` 宏是如何简化组件双向绑定开发的。
+在 `Vue.js` 中，`v-model` 指令是实现数据"双向绑定"的主要手段。`v-model` 指令既可以作用在普通表单元素上，也可以作用在组件上。本文分别介绍这两种情况的实现原理，并重点介绍 `Vue 3.4` 正式稳定的 `defineModel` 宏如何简化组件双向绑定开发。
 
 ## 表单元素
 
 在使用 `Vuejs` 编写表单类的 `UI` 控件时，经常会使用 `v-model` 指令来为 `<input>`、`<select>`、`<textarea>` 进行数据的双向绑定。
 
-我们使用 `Vue` 提供的官方[模板转换工具](https://vue-next-template-explorer.netlify.app/)来尝试一下在 `<input>`、`<select>`、`<textarea>` 输入类型的表单中使用 `v-model` 指令会被编译成什么样子：
+使用 `Vue` 提供的官方[模板转换工具](https://vue-next-template-explorer.netlify.app/)可以验证：在 `<input>`、`<select>`、`<textarea>` 输入类型的表单中使用 `v-model` 指令，会被编译成如下结果：
 
 **模板：**
 
@@ -63,7 +63,7 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 ```
 
-可以看到通过 `v-model` 绑定的元素，在转成渲染函数的时候，最外层都被套上了一个 `withDirectives` 函数，这个函数传入了两个变量：一个通过 `createElementVNode` 创建的 `vnode` 节点，另一个是一个数组类型的参数 `directives`。我们先来简单看一下 `withDirectives` 这个函数的实现：
+可以看到通过 `v-model` 绑定的元素，在转成渲染函数的时候，最外层都被套上了一个 `withDirectives` 函数。该函数传入两个变量：一个通过 `createElementVNode` 创建的 `vnode` 节点，另一个是数组类型的参数 `directives`。`withDirectives` 函数的实现如下：
 
 ```typescript
 export function withDirectives<T extends VNode>(
@@ -108,7 +108,7 @@ export function withDirectives<T extends VNode>(
 }
 ```
 
-可以看到 `withDirectives` 函数主要就是为 `vnode` 节点上添加 `dirs` 属性，对于我们示例中的 `<input>` 节点而言，生成的 `dir` 内容大致为（ `select` 节点类似，这里就不再介绍了，有兴趣的可以在源码详细了解）：
+`withDirectives` 函数的主要作用是为 `vnode` 节点添加 `dirs` 属性。对于示例中的 `<input>` 节点而言，生成的 `dir` 内容大致如下（`select` 节点类似，可参阅源码了解细节）：
 
 ```yaml
 {
@@ -182,13 +182,13 @@ export const vModelText: Directive<HTMLInputElement> = {
 
 可以看到 `vModelText` 内置了 `created`、`mounted`、`beforeUpdate` 钩子函数。
 
-在 `created` 的时候，会从 `props` 上获取 `onUpdate:modelValue` 函数，这个函数也就是我们在遇到 `v-model` 指令后，`Vue` 的编译器自动转换生成的。然后再监听对应 `DOM` 上的 `change` 或者 `input` 事件，事件触发时再回调执行 `onUpdate:modelValue` 函数。
+在 `created` 的时候，会从 `props` 上获取 `onUpdate:modelValue` 函数，这个函数是模板中遇到 `v-model` 指令后由 `Vue` 的编译器自动转换生成的。然后再监听对应 `DOM` 上的 `change` 或者 `input` 事件，事件触发时回调执行 `onUpdate:modelValue` 函数。
 
 在 `mounted` 的时候，会将当前的值 `value` 赋值给 `el.value`。
 
 ### 指令生命周期的触发
 
-前面我们提到了 `v-model` 注册的指令节点，会生成一个带有 `dirs` 的属性，属性中会包含类似于 `vModelText` 这样的对象，这个对象内部包含了一些生命周期函数，那这些生命周期函数又是在何时执行？再回到我们之前的 `mountElement` 函数内，这次我们着重看一下与指令相关的代码实现：
+`v-model` 注册的指令节点会生成一个带有 `dirs` 的属性，其中包含类似于 `vModelText` 这样的对象，对象内部包含若干生命周期函数。这些生命周期函数在何时执行？回到 `mountElement` 函数内，重点观察与指令相关的代码实现：
 
 ```typescript
 const mountElement = (
@@ -237,7 +237,7 @@ const mountElement = (
 
 ## 组件
 
-我们首先来看一下，`v-model` 在组件中一些常规的使用方式：
+`v-model` 在组件中的常规使用方式如下：
 
 ```html
 <Component v-model="value1" />
@@ -301,7 +301,7 @@ defineEmits(['update:title'])
 </template>
 ```
 
-接下来我们再看看这个 `$emit` 是如何触发 `onUpdate:title` 函数的执行的。先来看看 `emit` 函数的实现：
+接下来分析 `$emit` 如何触发 `onUpdate:title` 函数的执行。`emit` 函数的实现如下：
 
 ```typescript
 export function emit(
@@ -333,15 +333,15 @@ export function emit(
 }
 ```
 
-其中第一个参数是当前组件实例，`emit` 自动为我们绑定了当前组件，`event` 为事件名称，`rawArgs` 就是传入的一些参数。整个函数逻辑还是很清晰的，就是将传入的 `event` 名称转成 `onUpdate:xxx` 的写法，然后在 `props` 上找对应的函数，也就是我们传入的那个事件函数。找到了后就通过 `callWithAsyncErrorHandling` 方法进行调用，完成事件的执行。
+其中第一个参数是当前组件实例，`emit` 自动绑定了当前组件；`event` 为事件名称，`rawArgs` 是传入的参数。整个函数逻辑很清晰：将传入的 `event` 名称转成 `onUpdate:xxx` 的写法，然后在 `props` 上查找对应的函数（即传入的那个事件函数），找到后通过 `callWithAsyncErrorHandling` 方法调用，完成事件的执行。
 
 ## defineModel 宏
 
-在前面的示例中，我们可以看到在组件中使用 `v-model` 时，需要手动声明 `defineProps` 和 `defineEmits` 来分别接收值和触发更新事件，这种模板代码比较冗余。`Vue 3.4` 中，`defineModel` 宏正式成为稳定 `API`，极大地简化了这一过程。
+从前面的示例可以看到，组件中使用 `v-model` 时，需要手动声明 `defineProps` 和 `defineEmits` 来分别接收值和触发更新事件，这类模板代码比较冗余。`Vue 3.4` 中，`defineModel` 宏正式成为稳定 `API`，极大地简化了这一过程。
 
 ### 基本用法
 
-`defineModel` 返回一个可读写的 `ref`，它的值是父组件通过 `v-model` 传入的值。当我们在子组件中修改这个 `ref` 的值时，会自动触发父组件中对应 `v-model` 的更新：
+`defineModel` 返回一个可读写的 `ref`，它的值是父组件通过 `v-model` 传入的值。在子组件中修改这个 `ref` 的值时，会自动触发父组件中对应 `v-model` 的更新：
 
 ```html
 <!-- ChildComponent.vue -->
@@ -464,7 +464,7 @@ const title = computed({
 </script>
 ```
 
-可以看到，`defineModel` 并没有改变 `v-model` 的底层实现机制，它仍然是基于 `props` 接收值、`emit` 派发更新事件的双向绑定模式。`defineModel` 只是在编译阶段帮我们生成了这些模板代码，减轻了开发者的负担。
+可以看到，`defineModel` 并没有改变 `v-model` 的底层实现机制，它仍然是基于 `props` 接收值、`emit` 派发更新事件的双向绑定模式。`defineModel` 只是在编译阶段生成这些模板代码，减轻开发者的负担。
 
 下面用一张流程图来总结 `defineModel` 的编译转换过程：
 
@@ -514,7 +514,7 @@ const value = defineModel('value', {
 | `.trim` | `<input>`, `<textarea>` | 自动去除输入值的首尾空白字符 |
 | `.custom` | 组件 | 自定义修饰符，由组件内部处理 |
 
-回顾前面 `vModelText` 的源码，我们可以看到这些内置修饰符的实现细节：
+回顾前面 `vModelText` 的源码，可以看到这些内置修饰符的实现细节：
 
 ```typescript
 // vModelText created 钩子中
@@ -563,7 +563,7 @@ const [modelValue, modifiers] = defineModel({
 
 ## 全景流程
 
-最后，我们用一张流程图来总结 `v-model` 双向绑定的完整实现机制：
+最后，用一张流程图总结 `v-model` 双向绑定的完整实现机制：
 
 ```mermaid
 flowchart TB

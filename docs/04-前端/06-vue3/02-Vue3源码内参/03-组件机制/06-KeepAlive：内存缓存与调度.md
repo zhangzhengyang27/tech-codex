@@ -12,7 +12,10 @@ keywords:
   - 组件调度
 ---
 # KeepAlive：内存缓存与调度
-通过前面的学习，我们了解到多个平行组件条件渲染，当满足条件的时候会触发某个组件的挂载，而已渲染的组件当条件不满足的时候会触发组件的卸载，举个例子：
+
+## 概念说明
+
+多个平行组件条件渲染时，满足条件的组件会触发挂载，已渲染的组件在条件不满足时会触发卸载。示例如下：
 
 ```html
 <comp-a v-if="flag"></comp-a>
@@ -20,11 +23,9 @@ keywords:
 <button @click="flag=!flag">toggle</button>
 ```
 
-这里，当 flag 为 true 的时候，就会触发组件 A 的渲染，然后我们点击按钮把 flag 修改为 false，又会触发组件 A 的卸载，及组件 B 的渲染。
+flag 为 true 时触发组件 A 的渲染；点击按钮把 flag 修改为 false 后，又会触发组件 A 的卸载以及组件 B 的渲染。
 
-根据我们前面的学习，我们也知道组件的挂载和卸载都是一个递归过程，会有一定的性能损耗，对于这种可能会频繁切换的组件，我们有没有办法减少这其中的性能损耗呢？
-
-答案是有的，Vue.js 提供了内置组件 KeepAlive，我们可以这么使用它：
+组件的挂载和卸载都是一个递归过程，存在一定的性能损耗。对于可能频繁切换的组件，Vue.js 提供了内置组件 KeepAlive 来减少这部分损耗：
 
 ```html
 <keep-alive>
@@ -34,7 +35,7 @@ keywords:
 </keep-alive>
 ```
 
-我们可以用模板导出工具看一下它编译后的 render 函数：
+通过模板导出工具可以查看它编译后的 render 函数：
 
 ```js
 import { resolveComponent as _resolveComponent, createVNode as _createVNode, createCommentVNode as _createCommentVNode, KeepAlive as _KeepAlive, openBlock as _openBlock, createBlock as _createBlock } from "vue"
@@ -52,9 +53,11 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 ```
 
-我们使用了 KeepAlive 组件对这两个组件做了一层封装，KeepAlive 是一个抽象组件，它并不会渲染成一个真实的 DOM，只会渲染内部包裹的子节点，并且让内部的子组件在切换的时候，不会走一整套递归卸载和挂载 DOM 的流程，从而优化了性能。
+KeepAlive 组件对内部子组件做了一层封装：它是一个抽象组件，本身不会渲染成真实的 DOM，只渲染内部包裹的子节点，并让内部子组件在切换时跳过整套递归卸载和挂载 DOM 的流程，从而优化性能。
 
-那么它具体是怎么做的呢？再看 KeepAlive 组件的定义：
+## KeepAlive 的定义与整体结构
+
+KeepAlive 组件的定义如下：
 
 ```js
 const KeepAliveImpl = {
@@ -206,9 +209,9 @@ const KeepAliveImpl = {
 
 KeepAlive 的实现可拆成四个部分：**组件的渲染**、**缓存的设计**、**Props 设计**和**组件的卸载**。下面依次分析其实现，并结合前面的示例讲解。
 
-### 组件的渲染
+## 组件的渲染
 
-先看组件的渲染部分。KeepAlive 组件使用 Composition API 实现，前面已学过：当 setup 函数返回的是一个函数，该函数就是组件的渲染函数，看它的实现：
+KeepAlive 组件使用 Composition API 实现：当 setup 函数返回的是一个函数，该函数就是组件的渲染函数。渲染函数的实现如下：
 
 ```js
 return () => {
@@ -266,21 +269,23 @@ return () => {
 }
 ```
 
-函数先从 slots.default() 拿到子节点 children，它就是 KeepAlive 组件包裹的子组件，由于 KeepAlive 只能渲染单个子节点，所以当 children 长度大于 1 的时候会报警告。
+渲染函数的处理流程：
 
-我们先不考虑缓存部分，KeepAlive 渲染的 vnode 就是子节点 children 的第一个元素，它是函数的返回值。
+1. 先从 `slots.default()` 拿到子节点 children，即 KeepAlive 组件包裹的子组件。KeepAlive 只能渲染单个子节点，children 长度大于 1 时会报警告。
+2. 不考虑缓存部分时，KeepAlive 渲染的 vnode 就是子节点 children 的第一个元素，也是函数的返回值。
+3. 因此 KeepAlive 是抽象组件：本身不渲染成实体节点，而是渲染它的第一个子节点。
 
-因此我们说 KeepAlive 是抽象组件，它本身不渲染成实体节点，而是渲染它的第一个子节点。
+没有缓存的抽象封装没有实际意义，KeepAlive 的核心价值在缓存设计。
 
-当然，没有缓存的 KeepAlive 组件是没有灵魂的，这种抽象的封装也是没有任何意义的，所以下面重点来看它的缓存是如何设计的。
+## 缓存的设计
 
-### 缓存的设计
+### 缓存什么
 
-下面思考一件事情，我们需要缓存什么？
+组件的递归 patch 过程主要为渲染 DOM，这一递归过程存在性能耗时。既然目标是渲染 DOM，那么可以把 DOM 缓存起来：下一次渲染直接从缓存获取 DOM 并渲染，无需每次重新递归渲染。KeepAlive 正是这样实现的。
 
-组件的递归 patch 过程，主要就是为了渲染 DOM，显然这个递归过程是有一定的性能耗时的，既然目标是为了渲染 DOM，那么我们是不是可以把 DOM 缓存了，这样下一次渲染可以直接从缓存里获取 DOM 并渲染，就不需要每次都重新递归渲染了。
+### 缓存时机
 
-实际上 KeepAlive 组件就是这么做的，它注入了两个钩子函数，onBeforeMount 和 onBeforeUpdate，在这两个钩子函数内部都执行了 cacheSubtree 函数来做缓存：
+KeepAlive 注入了两个钩子函数 onBeforeMount 和 onBeforeUpdate，二者内部都执行 cacheSubtree 函数做缓存：
 
 ```js
 const cacheSubtree = () => {
@@ -290,9 +295,9 @@ const cacheSubtree = () => {
 }
 ```
 
-由于 pendingCacheKey 在 KeepAlive 的 render 函数中才会被赋值，所以 KeepAlive 首次进入 onBeforeMount 钩子函数时不会缓存。
+由于 pendingCacheKey 只在 KeepAlive 的 render 函数中被赋值，KeepAlive 首次进入 onBeforeMount 钩子函数时不会缓存。
 
-然后 KeepAlive 执行 render 的时候，pendingCacheKey 会被赋值为 vnode.key，我们回过头看一下示例渲染后的模板：
+KeepAlive 执行 render 时，pendingCacheKey 会被赋值为 vnode.key。回看示例渲染后的模板：
 
 ```js
 import { resolveComponent as _resolveComponent, createVNode as _createVNode, createCommentVNode as _createCommentVNode, KeepAlive as _KeepAlive, openBlock as _openBlock, createBlock as _createBlock } from "vue"
@@ -310,17 +315,15 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 ```
 
-我们注意到 KeepAlive 的子节点创建的时候都添加了一个 key 的 prop，它就是专门为 KeepAlive 的缓存设计的，这样每一个子节点都能有一个唯一的 key。
+KeepAlive 的子节点创建时都添加了一个 key 的 prop——它专门为 KeepAlive 的缓存设计，保证每一个子节点都有唯一的 key。
 
-页面首先渲染 A 组件，接着当我们点击按钮的时候，修改了 flag 的值，会触发当前组件的重新渲染，进而也触发了 KeepAlive 组件的重新渲染，在组件重新渲染前，会执行 onBeforeUpdate 对应的钩子函数，也就再次执行到 cacheSubtree 函数中。
+结合示例梳理缓存过程：页面首先渲染 A 组件；点击按钮修改 flag 值后触发当前组件重新渲染，进而触发 KeepAlive 组件重新渲染。组件重新渲染前会执行 onBeforeUpdate 对应的钩子函数，再次执行 cacheSubtree。此时 pendingCacheKey 对应的是 A 组件 vnode 的 key，instance.subTree 对应的也是 A 组件的渲染子树，所以 KeepAlive 每次在更新前会缓存前一个组件的渲染子树。
 
-这个时候 pendingCacheKey 对应的是 A 组件 vnode 的 key，instance.subTree 对应的也是 A 组件的渲染子树，所以 KeepAlive 每次在更新前，会缓存前一个组件的渲染子树。
+> 经源码分析，onBeforeMount 的钩子函数注入似乎并非必需：删除后再运行 Vue.js 3.0 的单测也能通过。
 
-> 经过前面的分析，我认为 onBeforeMount 的钩子函数注入似乎并没有必要，我在源码中删除后再跑 Vue.js 3.0 的单测也能通过，如果你有不同意见，欢迎交流探讨。
+之后渲染 B 组件；再次点击按钮修改 flag 值时，会再次触发 KeepAlive 组件重新渲染，此时 onBeforeUpdate 钩子函数缓存的是 B 组件的渲染子树。
 
-这个时候渲染了 B 组件，当我们再次点击按钮，修改 flag 值的时候，会再次触发 KeepAlive 组件的重新渲染，当然此时执行 onBeforeUpdate 钩子函数缓存的就是 B 组件的渲染子树了。
-
-接着再次执行 KeepAlive 组件的 render 函数，此时就可以从缓存中根据 A 组件的 key 拿到对应的渲染子树 cachedVNode 的了，然后执行如下逻辑：
+接着再次执行 KeepAlive 组件的 render 函数，此时可以从缓存中根据 A 组件的 key 拿到对应的渲染子树 cachedVNode，然后执行如下逻辑：
 
 ```js
 if (cachedVNode) {
@@ -341,11 +344,13 @@ else {
 }
 ```
 
-有了缓存的渲染子树后，可以直接拿到它对应的 DOM 以及组件实例 component，赋值给 KeepAlive 的 vnode，并更新 vnode.shapeFlag，以便后续 patch 阶段使用。
+拿到缓存的渲染子树后，可以直接取到它对应的 DOM 以及组件实例 component，赋值给 KeepAlive 的 vnode，并更新 vnode.shapeFlag，供后续 patch 阶段使用。
 
-> 注意，这里有一个额外的缓存管理的逻辑，我们稍后讲 Props 设计的时候会详细说。
+> 注意，这里有一个额外的缓存管理逻辑，在 Props 设计部分详细说明。
 
-对于 KeepAlive 组件的渲染，有缓存和没缓存在 patch 阶段有何区别？KeepAlive 缓存的是有状态的组件 vnode，回顾 patchComponent 函数的实现：
+### 缓存命中后的 patch 流程
+
+KeepAlive 缓存的是有状态的组件 vnode，有缓存和没缓存在 patch 阶段的区别如下。回顾 patchComponent 函数的实现：
 
 ```js
 const processComponent = (n1, n2, container, anchor, parentComponent, parentSuspense, isSVG, optimized) => {
@@ -365,7 +370,7 @@ const processComponent = (n1, n2, container, anchor, parentComponent, parentSusp
 }
 ```
 
-KeepAlive 首次渲染某个子节点时与正常组件节点渲染无区别，但有缓存后由于标记了 shapeFlag，执行 processComponent 时会走到处理 KeepAlive 组件的逻辑，执行 KeepAlive 组件实例上下文中的 activate 函数，看它的实现：
+KeepAlive 首次渲染某个子节点时与正常组件节点渲染无区别；命中缓存后由于标记了 shapeFlag，执行 processComponent 时会走到处理 KeepAlive 组件的逻辑，执行 KeepAlive 组件实例上下文中的 activate 函数：
 
 ```js
 sharedContext.activate = (vnode, container, anchor, isSVG, optimized) => {
@@ -385,17 +390,13 @@ sharedContext.activate = (vnode, container, anchor, isSVG, optimized) => {
 }
 ```
 
-由于此时能从 vnode.el 中拿到缓存的 DOM，可以直接调用 move 方法挂载节点，再执行 patch 方法更新组件以防止 props 变化。
+此时能从 vnode.el 中拿到缓存的 DOM，直接调用 move 方法挂载节点，再执行 patch 方法更新组件以防止 props 变化。随后通过 queuePostRenderEffect 的方式，在组件渲染完毕后执行子节点组件定义的 activated 钩子函数。
 
-接下来，就是通过 queuePostRenderEffect 的方式，在组件渲染完毕后，执行子节点组件定义的 activated 钩子函数。
+缓存机制小结：KeepAlive 包裹的子组件在其渲染后、下一次 KeepAlive 组件更新前会被缓存；缓存后的子组件在下一次渲染时直接从缓存拿到子树 vnode 以及对应的 DOM 元素，直接渲染即可。
 
-至此，了解了 KeepAlive 的缓存设计，KeepAlive 包裹的子组件在其渲染后，下一次 KeepAlive 组件更新前会被缓存，缓存后的子组件在下一次渲染的时候直接从缓存中拿到子树 vnode 以及对应的 DOM 元素，直接渲染即可。
+## Props 设计
 
-当然，光有缓存还不够灵活，有些时候我们想针对某些子组件缓存，某些子组件不缓存，另外，我们还想限制 KeepAlive 组件的最大缓存个数，怎么办呢？KeepAlive 设计了几个 Props，允许我们可以对上述需求做配置。
-
-### Props 设计
-
-KeepAlive 一共支持了三个 Props，分别是 include、exclude 和 max。
+KeepAlive 支持三个 Props：include、exclude 和 max，用于对缓存行为做配置——针对某些子组件缓存、某些不缓存，以及限制最大缓存个数。
 
 ```js
 props: {
@@ -404,6 +405,8 @@ props: {
   max: [String, Number]
 }
 ```
+
+### include 与 exclude
 
 include 和 exclude 对应的实现逻辑如下：
 
@@ -415,9 +418,9 @@ if ((include && (!name || !matches(include, name))) ||
 }
 ```
 
-很好理解，如果子组件名称不匹配 include 的 vnode，以及子组件名称匹配 exclude 的 vnode 都不应该被缓存，而应该直接返回。
+匹配规则：子组件名称不匹配 include 的 vnode，以及子组件名称匹配 exclude 的 vnode，都不缓存、直接返回。
 
-当然，由于 props 是响应式的，在 include 和 exclude props 发生变化的时候也应该有相关的处理逻辑，如下：
+由于 props 是响应式的，include 和 exclude 发生变化时也有相应的处理逻辑：
 
 ```js
 watch(() => [props.include, props.exclude], ([include, exclude]) => {
@@ -426,11 +429,11 @@ watch(() => [props.include, props.exclude], ([include, exclude]) => {
 })
 ```
 
-监听的逻辑也很简单，当 include 发生变化的时候，从缓存中删除那些 name 不匹配 include 的 vnode 节点；当 exclude 发生变化的时候，从缓存中删除那些 name 匹配 exclude 的 vnode 节点。
+监听逻辑：当 include 发生变化时，从缓存中删除那些 name 不匹配 include 的 vnode 节点；当 exclude 发生变化时，从缓存中删除那些 name 匹配 exclude 的 vnode 节点。
 
-除了 include 和 exclude 之外，KeepAlive 组件还支持了 max prop 来控制缓存的最大个数。
+### max 与 LRU 缓存管理
 
-由于缓存本身就是占用了内存，所以有些场景我们希望限制 KeepAlive 缓存的个数，这时我们可以通过 max 属性来控制，当缓存新的 vnode 的时候，会做一定程度的缓存管理，如下：
+max prop 控制缓存的最大个数。缓存本身占用内存，需要限制缓存个数的场景可以通过 max 属性控制。缓存新的 vnode 时会做一定程度的缓存管理：
 
 ```js
 keys.add(key)
@@ -440,19 +443,17 @@ pruneCacheEntry(keys.values().next().value)
 }
 ```
 
-由于新的缓存 key 都是在 keys 的结尾添加的，所以当缓存的个数超过 max 的时候，就从最前面开始删除，符合 LRU 最近最少使用的算法思想。
+新的缓存 key 都在 keys 的结尾添加，当缓存个数超过 max 时从最前面开始删除，符合 LRU（最近最少使用）算法思想。
 
-### 组件的卸载
+## 组件的卸载
 
-了解完 KeepAlive 的渲染、缓存和 Props 设计后，看 KeepAlive 组件的卸载过程。
-
-下面分析 KeepAlive 内部包裹的子组件的卸载过程，前文提到 KeepAlive 渲染的过程实际上是渲染它的第一个子组件节点，并且会给渲染的 vnode 打上如下标记：
+KeepAlive 渲染的过程实际上是渲染它的第一个子组件节点，并会给渲染的 vnode 打上如下标记：
 
 ```js
 vnode.shapeFlag |= 256 /* COMPONENT_SHOULD_KEEP_ALIVE */
 ```
 
-加上这个 shapeFlag 有什么用呢，我们结合前面的示例来分析。
+结合示例分析这个 shapeFlag 的作用：
 
 ```html
 <keep-alive>
@@ -462,9 +463,9 @@ vnode.shapeFlag |= 256 /* COMPONENT_SHOULD_KEEP_ALIVE */
 </keep-alive>
 ```
 
-当 flag 为 true 的时候，渲染 A 组件，然后我们点击按钮修改 flag 的值，会触发 KeepAlive 组件的重新渲染，会先执行 BeforeUpdate 钩子函数缓存 A 组件对应的渲染子树 vnode，然后再执行 patch 更新子组件。
+flag 为 true 时渲染 A 组件；点击按钮修改 flag 值会触发 KeepAlive 组件重新渲染，先执行 BeforeUpdate 钩子函数缓存 A 组件对应的渲染子树 vnode，再执行 patch 更新子组件。
 
-这个时候会执行 B 组件的渲染，以及 A 组件的卸载，我们知道组件的卸载会执行 unmount 方法，其中有一个关于 KeepAlive 组件的逻辑，如下：
+此时会执行 B 组件的渲染以及 A 组件的卸载。组件卸载会执行 unmount 方法，其中有一个关于 KeepAlive 组件的逻辑：
 
 ```js
 const unmount = (vnode, parentComponent, parentSuspense, doRemove = false) => {
@@ -477,7 +478,7 @@ const unmount = (vnode, parentComponent, parentSuspense, doRemove = false) => {
 }
 ```
 
-如果 shapeFlag 满足 KeepAlive 的条件，则执行相应的 deactivate 函数，它的定义如下：
+shapeFlag 满足 KeepAlive 的条件时，执行相应的 deactivate 函数：
 
 ```js
 sharedContext.deactivate = (vnode) => {
@@ -496,11 +497,13 @@ sharedContext.deactivate = (vnode) => {
 }
 ```
 
-函数首先通过 move 方法从 DOM 树中移除该节点，接着通过 queuePostRenderEffect 的方式执行定义的 deactivated 钩子函数。
+deactivate 的处理流程：函数首先通过 move 方法把节点移入 storageContainer（从 DOM 树中移除），接着通过 queuePostRenderEffect 的方式执行定义的 deactivated 钩子函数。
 
-注意，这里我们只是移除了 DOM，并没有真正意义上的执行子组件的整套卸载流程。
+注意：这里只是移除了 DOM，并没有真正执行子组件的整套卸载流程——这正是 KeepAlive 缓存的本质。
 
-除了点击按钮引起子组件卸载外，当 KeepAlive 所在的组件卸载时，由于卸载的递归特性也会触发 KeepAlive 组件卸载，卸载过程中会执行 onBeforeUnmount 钩子函数：
+### KeepAlive 自身卸载
+
+除了切换导致的子组件"卸载"（失活）外，当 KeepAlive 所在的组件卸载时，由于卸载的递归特性也会触发 KeepAlive 组件卸载，卸载过程中会执行 onBeforeUnmount 钩子函数：
 
 ```js
 onBeforeUnmount(() => {
@@ -517,16 +520,31 @@ onBeforeUnmount(() => {
 })
 ```
 
-它会遍历所有缓存的 vnode，并且比对缓存的 vnode 是不是当前 KeepAlive 组件渲染的 vnode。
+处理逻辑：遍历所有缓存的 vnode，比对缓存的 vnode 是否为当前 KeepAlive 组件渲染的 vnode。
 
-如果是的话，则执行 resetShapeFlag 方法，它的作用是修改 vnode 的 shapeFlag，不让它再被当作一个 KeepAlive 的 vnode 了，这样就可以走正常的卸载逻辑。接着通过 queuePostRenderEffect 的方式执行子组件的 deactivated 钩子函数。
+- 如果是，执行 resetShapeFlag 方法修改 vnode 的 shapeFlag，使它不再被当作 KeepAlive 的 vnode，走正常的卸载逻辑；接着通过 queuePostRenderEffect 执行子组件的 deactivated 钩子函数。
+- 如果不是，执行 unmount 方法重置 shapeFlag 并执行缓存 vnode 的整套卸载流程。
 
-如果不是，则执行 unmount 方法重置 shapeFlag 以及执行缓存 vnode 的整套卸载流程。
+### activated / deactivated 钩子的执行时机
 
-### 总结
+activated 与 deactivated 钩子函数都通过 queuePostRenderEffect 注册，在组件渲染完毕后的 post 队列中执行，这一点与普通的生命周期钩子的执行时机不同。
 
-> 思考：是如何给组件注册 activated 和 deactivated 钩子函数的？它们的执行与其他钩子函数相比有何不同？
+## 实践要点
 
-> 本文的相关代码在源代码中的位置如下：
-> packages/runtime-core/src/components/KeepAlive.ts
-> packages/runtime-core/src/renderer.ts
+- **KeepAlive 只支持单个子节点**：children 长度大于 1 时开发环境会收到警告，常见做法是配合动态组件或条件渲染使用。
+- **子节点的 key 是缓存索引**：key 用于在 cache（Map）中定位渲染子树，未显式设置 key 时会退化为使用组件对象本身作为 key。
+- **shapeFlag 标记是机制核心**：`COMPONENT_SHOULD_KEEP_ALIVE`（256）避免 vnode 被真正卸载，`COMPONENT_KEPT_ALIVE`（512）避免 vnode 作为新节点被挂载。
+- **缓存的是渲染子树与 DOM**：命中缓存时直接复用 vnode.el 和 component 实例，跳过递归挂载。
+- **include/exclude 变化会触发缓存修剪**：pruneCache 按名称匹配过滤缓存，被修剪的缓存项会走真正的卸载流程。
+- **max 用 LRU 策略淘汰缓存**：keys（Set）维护访问新鲜度，超出上限时淘汰最久未使用的缓存。
+
+## 小结
+
+KeepAlive 是一个不渲染实体 DOM 的抽象组件：渲染阶段返回子组件 vnode 并打上 shapeFlag 标记；缓存阶段借助 onBeforeUpdate 钩子在更新前缓存前一个子组件的渲染子树；命中缓存时通过 activate 直接复用 DOM 与组件实例，跳过递归挂载；切换时通过 deactivate 仅把 DOM 移入隐藏容器而非真正卸载。include/exclude/max 三个 Props 分别控制缓存的匹配过滤与容量上限（LRU 淘汰），KeepAlive 自身卸载时统一清理全部缓存。
+
+## 源码位置
+
+本文分析的相关代码在源代码中的位置如下：
+
+- packages/runtime-core/src/components/KeepAlive.ts
+- packages/runtime-core/src/renderer.ts

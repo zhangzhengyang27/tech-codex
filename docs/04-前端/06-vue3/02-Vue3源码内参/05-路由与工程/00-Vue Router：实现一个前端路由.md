@@ -12,19 +12,22 @@ keywords:
   - 源码
 ---
 # Vue Router：实现一个前端路由
-路由最初源于服务端，在服务端中路由描述的是 URL 与处理函数之间的映射关系。
+
+## 概念说明
+
+路由最初源于服务端：在服务端中，路由描述的是 URL 与处理函数之间的映射关系。
 
 在 Web 前端单页应用 SPA 中，路由描述的是 URL 与视图之间的映射关系，这种映射是单向的，即 URL 变化会引起视图的更新。
 
 相比于后端路由，前端路由的好处是无须刷新页面，减轻了服务器的压力，提升了用户体验。目前主流支持单页应用的前端框架，基本都有配套的或第三方的路由系统。
 
-> Vue.js 3.0 配套的 Vue Router 源码在[这里](https://github.com/vuejs/vue-router-next)，建议你学习前先把源码 clone 下来。如果你还不会使用路由，建议你先看它的[官网文档](https://next.router.vuejs.org/)，会使用后再来学习本文。
+> Vue.js 3.0 配套的 Vue Router 源码在[这里](https://github.com/vuejs/vue-router-next)，建议学习前先把源码 clone 下来。若还不熟悉路由的使用，建议先阅读它的[官网文档](https://next.router.vuejs.org/)。
 
-### 路由的基本用法
+## 路由的基本用法
 
-下面通过一个简单示例看路由的基本用法，也可以用 Vue CLI 脚手架创建 Vue.js 3.0 项目，并安装 4.x 版本的 Vue Router 把项目跑起来。
+通过一个简单示例看路由的基本用法，也可以用 Vue CLI 脚手架创建 Vue.js 3.0 项目，并安装 4.x 版本的 Vue Router 把项目跑起来。
 
-注意，为了让 Vue.js 可以在线编译模板，你需要在根目录下配置 vue.config.js，并且设置 runtimeCompiler 为 true：
+注意，为了让 Vue.js 可以在线编译模板，需要在根目录下配置 vue.config.js，并设置 runtimeCompiler 为 true：
 
 ```js
 module.exports = {
@@ -32,7 +35,7 @@ module.exports = {
 }
 ```
 
-然后我们修改页面的 HTML 模板，加上如下代码：
+然后修改页面的 HTML 模板，加上如下代码：
 
 ```html
 <div id="app">
@@ -47,11 +50,11 @@ module.exports = {
 
 其中，RouterLink 和 RouterView 是 Vue Router 内置的组件。
 
-RouterLink 表示路由的导航组件，我们可以配置 to 属性来指定它跳转的链接，它最终会在页面上渲染生成 a 标签。
+RouterLink 表示路由的导航组件，可配置 to 属性指定跳转的链接，它最终会在页面上渲染生成 a 标签。
 
 RouterView 表示路由的视图组件，它会渲染路径对应的 Vue 组件，也支持嵌套。
 
-RouterLink 和 RouterView 的具体实现，我们会放到后面去分析。
+RouterLink 和 RouterView 的具体实现放到后文分析。
 
 有了模板之后，接下来看如何初始化路由：
 
@@ -80,13 +83,13 @@ app.use(router)
 app.mount('#app')
 ```
 
-路由的初始化过程很简单：先定义一个路由配置，描述路径和组件的映射关系，即什么路径下 RouterView 渲染什么路由组件。
+路由的初始化过程：先定义一个路由配置，描述路径和组件的映射关系，即什么路径下 RouterView 渲染什么路由组件。
 
-接着创建路由对象实例，传入路由配置对象，并且也可以指定路由模式，Vue Router 目前支持三种模式，hash 模式，HTML5 模式和 memory 模式，我们常用的是前两种模式。
+接着创建路由对象实例，传入路由配置对象，并且也可以指定路由模式。Vue Router 目前支持三种模式：hash 模式、HTML5 模式和 memory 模式，常用的是前两种模式。
 
-最后在挂载页面前，我们需要安装路由，这样可以在各个组件中访问路由对象以及使用路由的内置组件 RouterLink 和 RouterView 了。
+最后在挂载页面前安装路由，这样可以在各个组件中访问路由对象，以及使用路由的内置组件 RouterLink 和 RouterView。
 
-### 路由的实现原理
+## 路由的实现原理
 
 从用户使用的角度分析，先由路由对象的创建过程开始。
 
@@ -104,9 +107,9 @@ flowchart LR
 
 下面分模块拆解这条链路。
 
-#### 路由对象的创建
+### 路由对象的创建
 
-Vue Router 提供 `createRouter` API 来创建路由对象，看它的实现：
+Vue Router 提供 `createRouter` API 来创建路由对象：
 
 ```js
 function createRouter(options) {
@@ -142,13 +145,13 @@ function createRouter(options) {
 }
 ```
 
-省略了大部分代码，只保留路由对象相关的部分。路由对象 `router` 就是一个对象，维护了当前路径 `currentRoute`，并拥有很多辅助方法。
+以上省略了大部分代码，只保留路由对象相关的部分。路由对象 `router` 就是一个对象，维护了当前路径 `currentRoute`，并拥有很多辅助方法。
 
-目前你只需要了解这么多，创建完路由对象后，我们现在来安装它。
+创建完路由对象后，接下来安装它。
 
-#### 路由的安装
+### 路由的安装
 
-Vue Router 作为 Vue 的插件，执行 `app.use(router)` 实际是在执行 router 的 `install` 方法安装路由，并把 `app` 作为参数传入，看它的定义：
+Vue Router 作为 Vue 的插件，执行 `app.use(router)` 实际是在执行 router 的 `install` 方法安装路由，并把 `app` 作为参数传入：
 
 ```js
 const router = {
@@ -197,21 +200,19 @@ const router = {
 }
 ```
 
-路由的安装过程我们需要记住以下两件事情。
+路由的安装过程需要记住以下两件事情。
 
-1. 全局注册 RouterView 和 RouterLink 组件——这是你安装了路由后，可以在任何组件中去使用这两个组件的原因，如果你使用 RouterView 或者 RouterLink 的时候收到提示不能解析  router-link 和 router-view，这说明你压根就没有安装路由。
+1. 全局注册 RouterView 和 RouterLink 组件——这是安装了路由后，可以在任何组件中使用这两个组件的原因。如果使用 RouterView 或者 RouterLink 时收到提示不能解析 router-link 和 router-view，说明根本没有安装路由。
 
-2. 通过 provide 方式全局注入 router 对象和 reactiveRoute 对象，其中 router 表示用户通过 createRouter 创建的路由对象，我们可以通过它去动态操作路由，reactiveRoute 表示响应式的路径对象，它维护着路径的相关信息。
+2. 通过 provide 方式全局注入 router 对象和 reactiveRoute 对象。其中 router 表示用户通过 createRouter 创建的路由对象，可以通过它动态操作路由；reactiveRoute 表示响应式的路径对象，维护着路径的相关信息。
 
-至此已了解路由对象的创建与安装。但前端路由的实现还需解决两个核心问题：路径如何管理，以及路径与路由组件渲染如何映射。
+至此已了解路由对象的创建与安装。但前端路由的实现还需解决两个核心问题：路径如何管理，以及路径与路由组件渲染如何映射。下面依次分析。
 
-下面依次分析这两个问题。
+### 路径的管理
 
-#### 路径的管理
+路由的基础结构就是一个路径对应一种视图，切换路径时对应的视图也会切换，因此一个很重要的方面就是对路径的管理。
 
-路由的基础结构就是一个路径对应一种视图，当我们切换路径的时候对应的视图也会切换，因此一个很重要的方面就是对路径的管理。
-
-首先，我们需要维护当前的路径 currentRoute，可以给它一个初始值 START_LOCATION_NORMALIZED，如下：
+首先，需要维护当前的路径 currentRoute，可以给它一个初始值 START_LOCATION_NORMALIZED：
 
 ```js
 const START_LOCATION_NORMALIZED = {
@@ -229,7 +230,7 @@ const START_LOCATION_NORMALIZED = {
 
 路径对象包含非常丰富的路径信息，具体含义可参考 [官方文档](https://next.router.vuejs.org/api/#meta-3)。
 
-路由变化通过改变路径完成。路由对象提供 `router.push`、`router.replace` 等改变路径的方法，其底层最终都通过 `pushWithRedirect` 完成路径切换，看它的实现：
+路由变化通过改变路径完成。路由对象提供 `router.push`、`router.replace` 等改变路径的方法，其底层最终都通过 `pushWithRedirect` 完成路径切换：
 
 ```js
 function pushWithRedirect(to, redirectedFrom) {
@@ -267,9 +268,9 @@ function pushWithRedirect(to, redirectedFrom) {
 }
 ```
 
-我省略了一部分代码的实现，这里主要来看 pushWithRedirect 的核心思路，首先参数 to 可能有多种情况，可以是一个表示路径的字符串，也可以是一个路径对象，所以要先经过一层 resolve 返回一个新的路径对象，它比前面提到的路径对象多了一个 matched 属性，它的作用我们后续会介绍。
+以上省略了一部分代码的实现，主要看 pushWithRedirect 的核心思路：首先参数 to 可能有多种情况——可以是一个表示路径的字符串，也可以是一个路径对象，所以要先经过一层 resolve 返回一个新的路径对象，它比前面提到的路径对象多了一个 matched 属性（其作用后续介绍）。
 
-得到目标路径后，执行 `navigate` 方法运行路由切换过程中的一系列导航守卫函数（后续介绍）。`navigate` 成功后执行 `finalizeNavigation` 完成导航，在这里完成真正的路径切换，看它的实现：
+得到目标路径后，执行 `navigate` 方法运行路由切换过程中的一系列导航守卫函数（后续介绍）。navigate 成功后执行 `finalizeNavigation` 完成导航，在这里完成真正的路径切换：
 
 ```js
 function finalizeNavigation(toLocation, from, isPush, replace, data) {
@@ -292,11 +293,9 @@ function finalizeNavigation(toLocation, from, isPush, replace, data) {
 }
 ```
 
-这里的 finalizeNavigation 函数，我们重点关注两个逻辑，一个是更新当前的路径 currentRoute 的值，一个是执行 routerHistory.push 或者是 routerHistory.replace 方法更新浏览器的 URL 的记录。
+finalizeNavigation 函数重点关注两个逻辑：一是更新当前的路径 currentRoute 的值，二是执行 routerHistory.push 或 routerHistory.replace 方法更新浏览器的 URL 记录。
 
-切换路由时浏览器 URL 发生变化，但页面并不刷新，这是如何做到的？
-
-在我们创建 router 对象的时候，会创建一个 history 对象，前面提到 Vue Router 支持三种模式，这里我们重点分析 HTML5 的 history 的模式：
+切换路由时浏览器 URL 发生变化，但页面并不刷新，这是如何做到的？创建 router 对象时会创建一个 history 对象。前面提到 Vue Router 支持三种模式，这里重点分析 HTML5 的 history 模式：
 
 ```js
 function createWebHistory(base) {
@@ -325,9 +324,11 @@ function createWebHistory(base) {
 }
 ```
 
-对于 routerHistory 对象而言，它有两个重要的作用，一个是路径的切换，一个是监听路径的变化。
+对 routerHistory 对象而言，它有两个重要作用：一个是路径的切换，一个是监听路径的变化。
 
-路径切换主要通过 `historyNavigation` 完成，它是 `useHistoryStateNavigation` 函数的返回值，看它的实现：
+#### 路径切换：useHistoryStateNavigation
+
+路径切换主要通过 `historyNavigation` 完成，它是 `useHistoryStateNavigation` 函数的返回值：
 
 ```js
 function useHistoryStateNavigation(base) {
@@ -394,13 +395,15 @@ function useHistoryStateNavigation(base) {
 }
 ```
 
-该函数返回的 push 和 replace 函数，会添加给 routerHistory 对象上，因此当我们调用 routerHistory.push 或者是 routerHistory.replace 方法的时候实际上就是在执行这两个函数。
+该函数返回的 push 和 replace 函数会添加到 routerHistory 对象上，因此调用 routerHistory.push 或 routerHistory.replace 方法时实际上就是在执行这两个函数。
 
-push 和 replace 方法内部都是执行了 changeLocation 方法，该函数内部执行了浏览器底层的 history.pushState 或者 history.replaceState 方法，会向当前浏览器会话的历史堆栈中添加一个状态，这样就在不刷新页面的情况下修改了页面的 URL。
+push 和 replace 方法内部都执行了 changeLocation 方法。changeLocation 内部执行浏览器底层的 history.pushState 或 history.replaceState 方法，向当前浏览器会话的历史堆栈中添加一个状态，从而在不刷新页面的情况下修改页面的 URL。
 
-我们使用这种方法修改了路径，这个时候假设我们点击浏览器的回退按钮回到上一个 URL，这需要恢复到上一个路径以及更新路由视图，因此我们还需要监听这种 history 变化的行为，做一些相应的处理。
+用这种方法修改路径后，如果点击浏览器的回退按钮回到上一个 URL，需要恢复到上一个路径并更新路由视图，因此还需要监听 history 变化的行为，做相应的处理。
 
-History 变化的监听主要通过 `historyListeners` 完成，它是 `useHistoryListeners` 函数的返回值，看它的实现：
+#### 路径变化监听：useHistoryListeners
+
+History 变化的监听主要通过 `historyListeners` 完成，它是 `useHistoryListeners` 函数的返回值：
 
 ```js
 function useHistoryListeners(base, historyState, currentLocation, replace) {
@@ -472,13 +475,11 @@ function useHistoryListeners(base, historyState, currentLocation, replace) {
 }
 ```
 
-该函数返回了 listen 方法，允许你添加一些侦听器，侦听 history 的变化，同时这个方法也被挂载到了 routerHistory 对象上，这样外部就可以访问到了。
+该函数返回了 listen 方法，允许添加侦听器侦听 history 的变化；这个方法也挂载到了 routerHistory 对象上，外部可以访问。
 
-该函数内部还监听了浏览器底层 Window 的 popstate 事件，当我们点击浏览器的回退按钮或者是执行了 history.back 方法的时候，会触发事件的回调函数 popStateHandler，进而遍历侦听器 listeners，执行每一个侦听器函数。
+该函数内部还监听了浏览器底层 Window 的 popstate 事件：当点击浏览器的回退按钮或执行 history.back 方法时，会触发事件的回调函数 popStateHandler，进而遍历侦听器 listeners，执行每一个侦听器函数。
 
-Vue Router 添加这些侦听器的时机：安装路由时会执行一次初始化导航，调用 `push` 方法进而执行 `finalizeNavigation` 方法。
-
-在 finalizeNavigation 的最后，会执行 markAsReady 方法，看它的实现：
+Vue Router 添加侦听器的时机：安装路由时会执行一次初始化导航，调用 `push` 方法进而执行 `finalizeNavigation` 方法。finalizeNavigation 的最后会执行 markAsReady 方法：
 
 ```js
 function markAsReady(err) {
@@ -493,7 +494,7 @@ function markAsReady(err) {
 }
 ```
 
-`markAsReady` 内部执行 `setupListeners` 初始化侦听器，且保证只初始化一次。看 `setupListeners` 的实现：
+`markAsReady` 内部执行 `setupListeners` 初始化侦听器，且保证只初始化一次：
 
 ```js
 function setupListeners() {
@@ -535,13 +536,13 @@ function setupListeners() {
 }
 ```
 
-侦听器函数也是执行 navigate 方法，执行路由切换过程中的一系列导航守卫函数，在 navigate 成功后执行 finalizeNavigation 完成导航，完成真正的路径切换。这样就保证了在用户点击浏览器回退按钮后，可以恢复到上一个路径以及更新路由视图。
+侦听器函数也执行 navigate 方法，运行路由切换过程中的一系列导航守卫函数；navigate 成功后执行 finalizeNavigation 完成导航，完成真正的路径切换。这保证了用户点击浏览器回退按钮后，可以恢复到上一个路径并更新路由视图。
 
-至此，完成了路径管理，在内存中通过 currentRoute 维护记录当前的路径，通过浏览器底层 API 实现了路径的切换和 history 变化的监听。
+至此完成路径管理：内存中通过 currentRoute 维护记录当前路径，通过浏览器底层 API 实现路径切换和 history 变化监听。
 
-### 路径和路由组件的渲染的映射
+## 路径和路由组件渲染的映射
 
-前面的示例表明，路由组件通过 `RouterView` 组件渲染。`RouterView` 的渲染过程如下：
+前面的示例表明，路由组件通过 `RouterView` 组件渲染。`RouterView` 的实现如下：
 
 ```js
 const RouterView = defineComponent({
@@ -611,17 +612,15 @@ const RouterView = defineComponent({
 })
 ```
 
-RouterView 组件也是基于 composition API 实现的，我们重点看它的渲染部分，由于 setup 函数的返回值是一个函数，那这个函数就是它的渲染函数。
+RouterView 组件基于 composition API 实现。重点看它的渲染部分：由于 setup 函数的返回值是一个函数，这个函数就是它的渲染函数。
 
-我们从后往前看，通常不带插槽的情况下，会返回 component 变量，它是根据 ViewComponent 渲染出来的，而 ViewComponent 是根据 matchedRoute.components[props.name] 求得的，而 matchedRoute 是 matchedRouteRef 对应的 value。
+从后往前看：通常不带插槽的情况下返回 component 变量，它是根据 ViewComponent 渲染出来的；ViewComponent 根据 matchedRoute.components[props.name] 求得；matchedRoute 是 matchedRouteRef 对应的 value。
 
-matchedRouteRef 一个计算属性，在不考虑 prop 传入 route 的情况下，它的 getter 是由 injectedRoute.matched[depth] 求得的，而 injectedRoute，就是我们在前面在安装路由时候，注入的响应式 currentRoute 对象，而 depth 就是表示这个 RouterView 的嵌套层级。
+matchedRouteRef 是一个计算属性：在不考虑 prop 传入 route 的情况下，它的 getter 由 injectedRoute.matched[depth] 求得。injectedRoute 就是前面安装路由时注入的响应式 currentRoute 对象，depth 表示这个 RouterView 的嵌套层级。
 
-所以 RouterView 渲染的路由组件和当前路径 currentRoute 的 matched 对象相关，也和 RouterView 自身的嵌套层级相关。
+所以 RouterView 渲染的路由组件与当前路径 currentRoute 的 matched 对象相关，也与 RouterView 自身的嵌套层级相关。
 
-下面看路径对象中的 `matched` 的值是如何在路径切换时更新的。
-
-仍用示例说明，对前面的示例稍作修改，加上嵌套路由的场景：
+下面看路径对象中的 `matched` 值如何在路径切换时更新。仍用示例说明，对前面的示例稍作修改，加上嵌套路由的场景：
 
 ```js
 import { createApp } from 'vue'
@@ -658,15 +657,15 @@ app.use(router)
 app.mount('#app')
 ```
 
-它和前面示例的区别在于，我们在 About 路由组件中又嵌套了一个 RouterView 组件，然后对 routes 数组中 path 为 /about 的路径配置扩展了 children 属性，对应的就是 About 组件嵌套路由的配置。
+它和前面示例的区别在于：About 路由组件中又嵌套了一个 RouterView 组件，并且 routes 数组中 path 为 /about 的路径配置扩展了 children 属性，对应 About 组件嵌套路由的配置。
 
-当我们执行 createRouter 函数创建路由的时候，内部会执行如下代码来创建一个 matcher 对象：
+执行 createRouter 函数创建路由时，内部会执行如下代码创建一个 matcher 对象：
 
 ```js
 const matcher = createRouterMatcher(options.routes, options)
 ```
 
-执行了 createRouterMatcher 函数，并传入 routes 路径配置数组，它的目的就是根据路径配置对象创建一个路由的匹配对象，再来看它的实现：
+createRouterMatcher 函数接收 routes 路径配置数组，目的是根据路径配置对象创建一个路由的匹配对象。它的实现如下：
 
 ```js
 function createRouterMatcher(routes, globalOptions) {
@@ -742,13 +741,13 @@ function createRouterMatcher(routes, globalOptions) {
 }
 ```
 
-createRouterMatcher 函数内部定义了一个 matchers 数组和一些辅助函数，我们先重点关注 addRoute 函数的实现，我们只关注核心流程。
+createRouterMatcher 函数内部定义了一个 matchers 数组和一些辅助函数，重点关注 addRoute 函数的实现（只关注核心流程）。
 
 在 createRouterMatcher 函数的最后，会遍历 routes 路径数组调用 addRoute 方法添加初始路径。
 
-在 addRoute 函数内部，首先会把 route 对象标准化成一个 record，其实就是给路径对象添加更丰富的属性。
+在 addRoute 函数内部，首先把 route 对象标准化成一个 record——本质是给路径对象添加更丰富的属性。
 
-然后再执行createRouteRecordMatcher 函数，传入标准化的 record 对象，再看它的实现：
+然后执行 createRouteRecordMatcher 函数，传入标准化的 record 对象：
 
 ```js
 function createRouteRecordMatcher(record, parent, options) {
@@ -775,23 +774,19 @@ function createRouteRecordMatcher(record, parent, options) {
 }
 ```
 
-其实 createRouteRecordMatcher 创建的 matcher 对象不仅仅拥有 record 属性来存储 record，还扩展了一些其他属性，需要注意，如果存在 parent matcher，那么会把当前 matcher 添加到 parent.children 中去，这样就维护了父子关系，构造了树形结构。
+createRouteRecordMatcher 创建的 matcher 对象不仅拥有 record 属性来存储 record，还扩展了一些其他属性。注意：如果存在 parent matcher，会把当前 matcher 添加到 parent.children 中，从而维护父子关系，构造树形结构。
 
-那么什么情况下会有 parent matcher 呢？让我们先回到 addRoute 函数，在创建了 matcher 对象后，接着判断 record 中是否有 children 属性，如果有则遍历 children，递归执行 addRoute 方法添加路径，并把创建 matcher 作为第二个参数 parent 传入，这也就是 parent matcher 存在的原因。
+什么情况下会有 parent matcher？回到 addRoute 函数：创建 matcher 对象后，接着判断 record 中是否有 children 属性，有则遍历 children、递归执行 addRoute 方法添加路径，并把创建的 matcher 作为第二个参数 parent 传入——这就是 parent matcher 存在的原因。
 
-所有 children 处理完毕后，再执行 insertMatcher 函数，把创建的 matcher 存入到 matchers 数组中。
+所有 children 处理完毕后，再执行 insertMatcher 函数，把创建的 matcher 存入 matchers 数组。至此，根据用户配置的 routes 路径数组，初始化好了 matchers 数组。
 
-至此，根据用户配置的 routes 路径数组，初始化好了 matchers 数组。
-
-回到前面的问题：路径对象中的 `matched` 值是如何在路径切换时更新的。
-
-前面提到，切换路径会执行 `pushWithRedirect` 方法，内部执行这段代码：
+回到前面的问题：路径对象中的 `matched` 值如何在路径切换时更新。前面提到，切换路径会执行 `pushWithRedirect` 方法，内部执行这段代码：
 
 ```js
 const targetLocation = (pendingLocation = resolve(to))
 ```
 
-这里会执行 resolve 函数解析生成 targetLocation，这个 targetLocation 最后也会在 finalizeNavigation 的时候赋值 currentRoute 更新当前路径。看 resolve 函数的实现：
+这里会执行 resolve 函数解析生成 targetLocation，这个 targetLocation 最后也会在 finalizeNavigation 时赋值 currentRoute 更新当前路径。resolve 函数的实现如下：
 
 ```js
 function resolve(location, currentLocation) {
@@ -852,19 +847,19 @@ function resolve(location, currentLocation) {
 }
 ```
 
-resolve 函数主要做的事情就是根据 location 的 name 或者 path 从我们前面创建的 matchers 数组中找到对应的 matcher，然后再顺着 matcher 的 parent 一直找到链路上所有匹配的 matcher，然后获取其中的 record 属性构造成一个 matched 数组，最终返回包含 matched 属性的新的路径对象。
+resolve 函数主要做的事情：根据 location 的 name 或 path 从前面创建的 matchers 数组中找到对应的 matcher，再顺着 matcher 的 parent 一直找到链路上所有匹配的 matcher，获取其中的 record 属性构造成一个 matched 数组，最终返回包含 matched 属性的新的路径对象。
 
-这么做的目的就是让 matched 数组完整记录 record 路径，它的顺序和嵌套的 RouterView 组件顺序一致，也就是 matched 数组中的第 n 个元素就代表着 RouterView 嵌套的第 n 层。
+这么做的目的是让 matched 数组完整记录 record 路径：它的顺序与嵌套的 RouterView 组件顺序一致——matched 数组中的第 n 个元素就代表 RouterView 嵌套的第 n 层。
 
-因此 targetLocation 和 to 相比，其实就是多了一个 matched 对象，这样再回到我们的 RouterView 组件，就可以从`injectedRoute.matched[depth] [props.name]`中拿到对应的组件对象定义，去渲染对应的组件了。
+因此 targetLocation 和 to 相比，多了一个 matched 对象。回到 RouterView 组件，就可以从 `injectedRoute.matched[depth]` 中拿到对应层级的路由记录，再通过 `components[props.name]` 拿到组件对象定义，渲染对应的组件。
 
-至此，搞清楚路径和路由组件的渲染是如何映射的了。
+至此，路径和路由组件渲染的映射机制已经清晰。
 
-前面的分析过程中，我们提到过在路径切换过程中，会执行 navigate 方法，它包含了一系列的导航守卫钩子函数的执行，下面来分析这部分的实现原理。
+## 导航守卫的实现
 
-### 导航守卫的实现
+前面的分析过程中提到，路径切换过程中会执行 navigate 方法，它包含一系列导航守卫钩子函数的执行。下面分析这部分的实现原理。
 
-导航守卫主要是让用户在路径切换的生命周期中可以注入钩子函数，执行一些自己的逻辑，也可以取消和重定向导航，举个应用的例子：
+导航守卫主要让用户在路径切换的生命周期中注入钩子函数，执行一些自己的逻辑，也可以取消和重定向导航。应用的例子：
 
 ```js
 router.beforeEach((to, from, next) => {
@@ -876,13 +871,13 @@ router.beforeEach((to, from, next) => {
 })
 ```
 
-这里大致含义就是进入路由前检查用户是否登录，如果没有则跳转到登录的视图组件，否则继续。
+大致含义是进入路由前检查用户是否登录，如果没有则跳转到登录的视图组件，否则继续。
 
-router.beforeEach 传入的参数是一个函数，我们把这类函数就称为导航守卫。
+router.beforeEach 传入的参数是一个函数，这类函数称为导航守卫。
 
-这些导航守卫如何执行？这里不展开 `navigate` 的完整流程，只讲清执行原理；导航守卫的执行顺序可对照 [官网文档](https://next.router.vuejs.org/guide/advanced/navigation-guards.html) 再看实现细节。
+导航守卫如何执行？这里不展开 `navigate` 的完整流程，只讲清执行原理；导航守卫的执行顺序可对照 [官网文档](https://next.router.vuejs.org/guide/advanced/navigation-guards.html) 再看实现细节。
 
-看 `navigate` 函数的实现：
+`navigate` 函数的实现如下：
 
 ```js
 function navigate(to, from) {
@@ -951,9 +946,7 @@ function navigate(to, from) {
 }
 ```
 
-`navigate` 执行导航守卫的方式是先构造 `guards` 数组，数组中每个元素都是一个返回 Promise 对象的函数。
-
-然后通过 runGuardQueue 去执行这些 guards，来看它的实现：
+`navigate` 执行导航守卫的方式：先构造 `guards` 数组，数组中每个元素都是一个返回 Promise 对象的函数；然后通过 runGuardQueue 执行这些 guards：
 
 ```js
 function runGuardQueue(guards) {
@@ -961,11 +954,9 @@ function runGuardQueue(guards) {
 }
 ```
 
-其实就是通过数组的 reduce 方法，链式执行 guard 函数，每个 guard 函数都会返回一个 Promise 对象。
+runGuardQueue 通过数组的 reduce 方法链式执行 guard 函数，每个 guard 函数都返回一个 Promise 对象。
 
-但是从我们的例子看，我们添加的是一个普通函数，并不是一个返回 Promise 对象的函数，那是怎么做的呢？
-
-原来在把 guard 添加到 guards 数组前，都会执行 guardToPromiseFn 函数把普通函数 Promise化，来看它的实现：
+但从示例看，添加的是一个普通函数，并不是返回 Promise 对象的函数，这是怎么处理的？原来在把 guard 添加到 guards 数组前，都会执行 guardToPromiseFn 函数把普通函数 Promise 化：
 
 ```js
 import { warn as warn$1 } from "vue/dist/vue"
@@ -1025,23 +1016,26 @@ function guardToPromiseFn(guard, to, from, record, name) {
 }
 ```
 
-guardToPromiseFn 函数返回一个新的函数，这个函数内部会执行 guard 函数。
+guardToPromiseFn 函数返回一个新函数，这个函数内部会执行 guard 函数。
 
-这里我们要注意 next 方法的设计，当我们在导航守卫中执行 next 时，实际上就是执行这里定义的 next 函数。
+这里要注意 next 方法的设计：在导航守卫中执行 next 时，实际上执行的是这里定义的 next 函数。next 函数的分支逻辑：
 
-在执行 next 函数时，如果不传参数，那么则直接 resolve，执行下一个导航守卫；如果参数是 false，则创建一个导航取消的错误 reject 出去；如果参数是一个 Error 实例，则直接执行 reject，并把错误传递出去；如果参数是一个路径对象，则创建一个导航重定向的错误传递出去。
+- 不传参数：直接 resolve，执行下一个导航守卫；
+- 参数是 false：创建一个导航取消的错误 reject 出去；
+- 参数是一个 Error 实例：直接执行 reject 并把错误传递出去；
+- 参数是一个路径对象：创建一个导航重定向的错误传递出去。
 
-有些时候我们写导航守卫不使用 next 函数，而是直接返回 true 或 false，这种情况则先执行如下代码：
+有些时候导航守卫不使用 next 函数，而是直接返回 true 或 false。这种情况先执行如下代码：
 
 ```js
 guardCall = Promise.resolve(guardReturn)
 ```
 
-把导航守卫的返回值 Promise化，然后再执行 guardCall.then(next)，把导航守卫的返回值传给 next 函数。
+把导航守卫的返回值 Promise 化，然后执行 guardCall.then(next)，把导航守卫的返回值传给 next 函数。
 
-当然，如果你在导航守卫中定义了第三个参数 next，但是你没有在函数中调用它，这种情况也会报警告。
+另外，如果在导航守卫中定义了第三个参数 next，但函数中没有调用它，也会报警告。
 
-所以，对于导航守卫而言，经过 Promise化后添加到 guards 数组中，然后再通过 runGuardQueue 以及 Promise 的方式链式调用，最终依次顺序执行这些导航守卫。
+所以，对于导航守卫而言：经过 Promise 化后添加到 guards 数组，再通过 runGuardQueue 以及 Promise 的方式链式调用，最终依次顺序执行这些导航守卫。
 
 导航守卫的整体执行顺序可由下图概括：
 
@@ -1056,7 +1050,17 @@ flowchart TD
   BR --> D[导航完成<br/>afterEach]
 ```
 
-### 总结
+## 实践要点
+
+- **RouterLink/RouterView 是插件安装时全局注册的**：未安装路由时使用这两个组件会收到解析失败提示。
+- **路径切换不动 DOM、只改 history 栈**：核心是 history.pushState/replaceState，页面不刷新；回退行为通过 popstate 事件捕获。
+- **侦听器只初始化一次**：markAsReady 内的 ready 标记保证 setupListeners 只执行一次，首次导航完成后才挂载 popstate 侦听。
+- **matched 数组与 RouterView 嵌套层级一一对应**：resolve 从 matcher 沿 parent 链回溯构造 matched，RouterView 按注入的 depth 取 matched[depth] 渲染。
+- **matcher 是树形结构**：addRoute 递归处理 children，parent matcher 通过 children 数组维护父子关系。
+- **导航守卫全部 Promise 化**：guardToPromiseFn 统一处理 next 回调、返回值两种风格；runGuardQueue 用 reduce 链式串行执行。
+- **next 的四种分支**：无参数继续、false 取消、Error 抛错、路径对象重定向；声明 next 却不调用会触发警告。
+
+## 小结
 
 Vue Router 的核心链路可归纳为三条主线：
 
@@ -1064,4 +1068,4 @@ Vue Router 的核心链路可归纳为三条主线：
 2. **路径管理**：`currentRoute` 在内存中维护当前路径；切换路径经 `pushWithRedirect → navigate → finalizeNavigation` 完成，底层通过 `history.pushState`/`replaceState` 修改 URL 而不刷新页面，并监听 `popstate` 回退行为。
 3. **组件映射与守卫**：`createRouterMatcher` 根据 `routes` 构建 matcher 树，`resolve` 在路径切换时生成带 `matched` 数组的路径对象；`RouterView` 按 `matched[depth]` 渲染对应嵌套层级的组件；导航守卫经 `guardToPromiseFn` 封装后由 `runGuardQueue` 链式顺序执行。
 
-路由实现的细节还有很多，学完后可对照官网文档的 feature 自行分析其余实现原理。
+路由实现的细节还有很多，其余实现原理可对照官网文档的 feature 自行分析。

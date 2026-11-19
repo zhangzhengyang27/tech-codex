@@ -1,6 +1,6 @@
 ---
 title: Suspense源码分析
-description: "<Suspense> 是一个内置组件，用来在组件树中协调对异步依赖的处理。可以帮助我们更好地完成组件树父组件对子组件的多个嵌套异步依赖关系的管理，当父组件处于等待中时，允许我们自定义挂载一个加载中状态。"
+description: "<Suspense> 是一个内置组件，用于在组件树中协调对异步依赖的处理，管理父组件对子组件多个嵌套异步依赖的关系；当父组件处于等待中时，允许自定义挂载一个加载中状态。"
 keywords: []
 category: Vue
 tags: [Vue3, 进阶特性, Suspense]
@@ -10,7 +10,7 @@ tags: [Vue3, 进阶特性, Suspense]
 
 ## 前言
 
-`<Suspense>` 是一个内置组件，用来在组件树中协调对异步依赖的处理。可以帮助我们更好地完成组件树父组件对子组件的多个嵌套异步依赖关系的管理，当父组件处于等待中时，允许我们自定义挂载一个加载中状态。
+`<Suspense>` 是一个内置组件，用来在组件树中协调对异步依赖的处理，用于管理组件树中父组件对子组件的多个嵌套异步依赖关系；当父组件处于等待中时，允许自定义挂载一个加载中状态。
 
 ```mermaid
 flowchart TB
@@ -24,7 +24,7 @@ flowchart TB
 
 ```
 
-上图中，`AsyncComp A / B / C` 三个子组件的 `setup()` 均返回 `Promise`（即包含异步依赖）。通过 `<Suspense>` 组件我们可以很容易实现在组件异步加载时统一展示加载中状态，在所有组件完成加载时，再统一展示：
+上图中，`AsyncComp A / B / C` 三个子组件的 `setup()` 均返回 `Promise`（即包含异步依赖）。通过 `<Suspense>` 组件可以很容易实现在组件异步加载时统一展示加载中状态，在所有组件完成加载时再统一展示：
 
 ```html
 <Suspense>
@@ -95,7 +95,7 @@ const patch = (n1, n2, container, anchor, ...) => {
 }
 ```
 
-接下来，我们着重先来看看 `Suspense` 的初始化挂载逻辑，这块的代码集中在 `mountSuspense` 中：
+接下来重点分析 `Suspense` 的初始化挂载逻辑，这部分代码集中在 `mountSuspense` 中：
 
 ```js
 function mountSuspense(vnode, container, anchor, parentComponent, parentSuspense, namespace, slotScopeIds, optimized, rendererInternals) {
@@ -157,7 +157,7 @@ function mountSuspense(vnode, container, anchor, parentComponent, parentSuspense
 }
 ```
 
-在开始解读源码之前，我们需要提前认识几个关键变量的含义：
+在开始解读源码之前，需要先认识几个关键变量的含义：
 
 1. `ssContent` 代表的是 `default` 插槽内的内容的 `vnode`。
 2. `ssFallback` 代表的是 `fallback` 插槽内的内容的 `vnode`。
@@ -217,7 +217,7 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
 
 可以看到，这个 `createSuspenseBoundary` 函数本身其实并没有做太多的事情，本质上就是为了构造一个 `suspense` 对象。
 
-接下来会进入到对 `default` 容器中的内容进行 `patch` 的过程。在本课程的第二小节中，提到了 `patch` 函数在进行组件实例化的过程中，会执行 `setupStatefulComponent` 这个设置并运行副作用渲染函数的方法，之前只介绍了该方法处理同步 `setup` 的情况，而对于 `<Suspense>` 组件来说，`setup` 会返回一个 `promise`。下面分析对于这种情况的处理：
+接下来会进入对 `default` 容器中的内容进行 `patch` 的过程。`patch` 函数在组件实例化的过程中会执行 `setupStatefulComponent` 这个设置并运行副作用渲染函数的方法。该方法处理同步 `setup` 的情况在其他章节已有介绍；而对于 `<Suspense>` 场景来说，`setup` 会返回一个 `promise`。下面分析对这种情况的处理：
 
 ```js
 function setupStatefulComponent(instance, isSSR) {
@@ -314,9 +314,9 @@ registerDep(instance, setupRenderEffect, optimized) {
 },
 ```
 
-这里在执行 `createSuspenseBoundary` 函数的时候，有一个变量需要先了解一下，就是 `suspense.deps`。这个变量记录着需要处理的异步数量，比如我们上面的图例中，`deps = 3`。
+这里需要先了解 `createSuspenseBoundary` 函数中的一个变量 `suspense.deps`。该变量记录着需要处理的异步数量，比如上面的图例中 `deps = 3`。
 
-然后会对 `instance.asyncDep` 的执行结果进行处理，如果有异常，则进入到 `handleError` 的逻辑，`handleError` 内部会调用 `onErrorCaptured` 钩子，可以让我们监听到组件的错误。
+然后会对 `instance.asyncDep` 的执行结果进行处理：如果有异常，则进入 `handleError` 的逻辑，`handleError` 内部会调用 `onErrorCaptured` 钩子，使组件的错误可以被上层监听到。
 
 如果正常返回，则会进入到 `then` 的处理逻辑中，这里的处理主要做了以下几件事：
 
@@ -351,7 +351,7 @@ setActiveBranch(suspense, vnode.ssFallback!)
 
 如果不存在异步依赖，`suspense.deps = 0` 此时，也会直接执行 `suspense.resolve()`。
 
-接下来，我们看看这个 `resolve` 到底做了哪些事：
+接下来分析这个 `resolve` 具体做了哪些事：
 
 ```js
 resolve(resume = false, sync = false) {
@@ -443,7 +443,7 @@ resolve(resume = false, sync = false) {
 },
 ```
 
-这里要做的事情也是比较明确的，我们也来一一枚举一下：
+这里要做的事情比较明确，一一列举如下：
 
 1. 卸载 `fallback` 的插槽内容，因为已经完成了异步逻辑，所以没必要了。
 2. 将之前缓存在内存中的 `default` 节点移动到可视区域。
@@ -451,7 +451,7 @@ resolve(resume = false, sync = false) {
 4. 如果设置了 `suspensible` 属性，则递减父级 `suspense` 的 `deps`，当父级 `deps` 为 0 时也会 `resolve`。
 5. 触发 `onResolve` 钩子函数。
 
-这里我想重点说一下第三点，什么情况下会出现子节点已经完成异步依赖执行但父节点还有未完成的异步依赖？可以来看一个 `demo`：
+第三点值得展开说明：什么情况下会出现子节点已经完成异步依赖执行、但父节点还有未完成的异步依赖？可以来看一个 `demo`：
 
 ```javascript
 import { createApp, ref, h, onMounted } from 'vue'
@@ -517,9 +517,9 @@ createApp({
 }).mount('#app')
 ```
 
-此处，构造了一个包含了 `Suspense` 异步渲染的 `Outer` 组件，`Outer` 中又包含了另一个通过 `Suspense` 渲染的 `Inner` 组件。我们通过 `defineAsyncComponent` 函数来模拟组件的异步过程，此时的 `AsyncInner` 组件是优先于 `AsyncOuter` 组件的异步完成的，对于这种情况，就满足了存在父的 `Suspense` 且父级 `Suspense` 还有 `pendingBranch` 待处理的情况，那么会把子组件的 `suspense.effects` 合入父组件当中。
+此处构造了一个包含 `Suspense` 异步渲染的 `Outer` 组件，`Outer` 中又包含另一个通过 `Suspense` 渲染的 `Inner` 组件，并通过 `defineAsyncComponent` 函数模拟组件的异步过程。此时 `AsyncInner` 组件的异步完成早于 `AsyncOuter` 组件，正好满足"存在父级 `Suspense` 且父级 `Suspense` 还有 `pendingBranch` 待处理"的情况，于是子组件的 `suspense.effects` 会被合入父组件当中。
 
-`suspense.effects` 是个什么？
+`suspense.effects` 是什么？
 
 ```js
 // queuePostRenderEffect 在 suspense 模式下指的是 queueEffectWithSuspense
@@ -541,7 +541,7 @@ export function queueEffectWithSuspense(fn, suspense) {
 }
 ```
 
-`suspense.effects` 在 `suspense` 模式下，就是通过 `queuePostRenderEffect` 生成的副作用函数的数组。我们的示例中，会在组件中调用 `onMounted` 钩子函数，在组件被挂载的时候，就会执行通过 `queuePostRenderEffect` 函数，将 `onMounted` 推入 `suspense.effects` 数组中：
+`suspense.effects` 在 `suspense` 模式下，就是通过 `queuePostRenderEffect` 生成的副作用函数的数组。上面的示例中，组件内调用了 `onMounted` 钩子函数，在组件被挂载时会执行 `queuePostRenderEffect` 函数，将 `onMounted` 推入 `suspense.effects` 数组中：
 
 ```js
 // 设置并运行带副作用的渲染函数
@@ -571,7 +571,7 @@ const setupRenderEffect = (...) => {
 
 ## Suspense 更新
 
-接下来我们看一下 `Suspense` 更新的逻辑，这块的逻辑都集中在 `patchSuspense` 函数中：
+`Suspense` 更新的逻辑集中在 `patchSuspense` 函数中：
 
 ```js
 function patchSuspense(n1, n2, container, anchor, parentComponent, namespace, slotScopeIds, optimized, { p: patch, um: unmount, o: { createElement } }) {
@@ -773,7 +773,7 @@ function patchSuspense(n1, n2, container, anchor, parentComponent, namespace, sl
 
 这个函数核心作用是通过判断 `ssContent`、`ssFallback`、`pendingBranch`、`activeBranch` 的内容，进行不同条件的 `diff`。`diff` 完成后的工作和上面初始化的过程是大致一样的，会进行异步依赖 `deps` 数目的判断，如果没有依赖 `deps` 则直接进行 `suspense.resolve`。
 
-该函数看起来分支逻辑比较多，我们可以通过下面的流程图捋顺其中的逻辑：
+该函数的分支逻辑比较多，通过下面的流程图可以捋顺其中的逻辑：
 
 ```mermaid
 flowchart TB
@@ -1077,7 +1077,7 @@ return defineComponent({
 
 ## 总结
 
-本小节我们详细介绍了 `<Suspense>` 组件的实现原理，本质上就是通过一个计数器 `deps` 来记录需要被处理的依赖数量，当异步状态执行完成后，相应的计数器进行递减，当所有 `deps` 清空时，则达到统一完成态。与此同时，如果有父子嵌套的情况出现，会根据父节点的 `suspense` 状态来判断是否需要统一处理 `effects`。
+`<Suspense>` 组件的实现原理，本质上是通过一个计数器 `deps` 记录需要被处理的依赖数量：当异步状态执行完成后，相应的计数器进行递减；当所有 `deps` 清空时，即达到统一完成态。与此同时，如果出现父子嵌套的情况，会根据父节点的 `suspense` 状态判断是否需要统一处理 `effects`。
 
 此外，`Vue 3.5` 对 `Suspense` 组件做了多项重要改进：
 

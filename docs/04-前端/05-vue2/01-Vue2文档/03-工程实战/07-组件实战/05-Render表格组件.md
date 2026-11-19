@@ -10,10 +10,11 @@ tags: [Vue2, 组件设计, 表格, Render 函数]
 
 # Render表格组件
 
-表格组件 Table 是中后台产品中最常用的组件之一，用于展示大量结构化的数据。本节分别使用 **Render 函数**和 **slot-scope** 两种方案来实现可自定义列的表格组件，并对比它们的优劣。
+## 概念说明
 
+表格组件 Table 是中后台产品中最常用的组件之一，用于展示大量结构化的数据。本文分别使用 **Render 函数**和 **slot-scope** 两种方案来实现可自定义列的表格组件，并对比它们的优劣。
 
-大多数组件库都提供了表格组件，比如 [iView](https://www.iviewui.com/components/table)，功能也是非常强大。正规的表格，是由 `<table>`、`<thead>`、`<tbody>`、`<tr>`、`<th>`、`<td>` 这些标签组成，一般分为表头 **columns** 和数据 **data**。本小节就来开发一个最基本的表格组件 Table，它支持使用 Render 函数来自定义某一列。
+大多数组件库都提供了表格组件，比如 [iView](https://www.iviewui.com/components/table)，功能也非常强大。正规的表格由 `<table>`、`<thead>`、`<tbody>`、`<tr>`、`<th>`、`<td>` 这些标签组成，一般分为表头 **columns** 和数据 **data**。本文开发一个最基本的表格组件 Table，它支持使用 Render 函数来自定义某一列。
 
 ## 分析
 
@@ -22,14 +23,14 @@ tags: [Vue2, 组件设计, 表格, Render 函数]
 
 ![](https://user-gold-cdn.xitu.io/2018/11/15/16716c44a664e7f1?w=1876&h=502&f=png&s=60848)
 
-因为结构简单，我们甚至不需要组件，直接使用标准的 table 系列标签就可以。但有的时候，除了呈现数据，也会带有一些交互，比如有一列操作栏，可以编辑整行的数据：
+因为结构简单，甚至不需要组件，直接使用标准的 table 系列标签就可以。但有的时候，除了呈现数据，也会带有一些交互，比如有一列操作栏，可以编辑整行的数据：
 
 
 ![](https://user-gold-cdn.xitu.io/2018/11/15/16716c54fc74a1a5?w=2088&h=456&f=gif&s=520544)
 
-写一个个的 table 系列标签是很麻烦并且重复的，而组件的好处就是省去这些基础的工作，我们直接给 Table 组件传递列的配置 **columns** 和行数据 **data**，其余的都交给 Table 组件做了。
+一个个地写 table 系列标签是很麻烦并且重复的，而组件的好处就是省去这些基础的工作：直接给 Table 组件传递列的配置 **columns** 和行数据 **data**，其余的都交给 Table 组件完成。
 
-开发 Table 组件前，有必要先了解上文说到的一系列 table 标签。一般的 table 结构是这样的：
+开发 Table 组件前，有必要先了解一系列 table 标签。一般的 table 结构是这样的：
 
 ```html
 <table>
@@ -59,11 +60,11 @@ tags: [Vue2, 组件设计, 表格, Render 函数]
 - th：定义表头单元格；
 - td：定义表格单元。
 
-标准的表格系列标签，跟 div+css 实现是有很大区别的，比如表格在做单元格合并时，有提供原生属性，用 div 就很麻烦了；再比如渲染原理上也有一定的区别，table 会在内容全部下载完后加载。详细的介绍可以阅读文末的扩展阅读 1。
+标准的表格系列标签与 div+css 实现有很大区别：表格在单元格合并时有原生属性，用 div 就很麻烦；渲染原理上也有区别，table 会在内容全部下载完后加载。
 
-知道了表格的结构，再来分析如何定制 API。可以看到，表格分为了两部分，表头 thead 和数据 tbody，那 props 也定义两个：
+知道了表格的结构，再来分析如何定制 API。表格分为两部分：表头 thead 和数据 tbody，对应 props 也定义两个：
 
-- columns：列配置，格式为数组，其中每一列 column 是一个对象，用来描述这一列的信息，它的具体说明如下：
+- columns：列配置，格式为数组，其中每一列 column 是一个对象，用来描述这一列的信息，具体说明如下：
 
   - title：列头显示文字；
   - key：对应列内容的字段名；
@@ -85,7 +86,7 @@ tags: [Vue2, 组件设计, 表格, Render 函数]
   ```
 
 
-- data：显示的结构化数据，格式为数组，其中每一个对象，就是一行的数据，比如：
+- data：显示的结构化数据，格式为数组，其中每一个对象就是一行的数据，比如：
 
   ```js
   [
@@ -100,15 +101,15 @@ tags: [Vue2, 组件设计, 表格, Render 函数]
   ]
   ```
 
-column 定义的 `key` 值，与 data 是一一对应的，这是一种常见的数据接口定义规则，也是 Vue.js 组件中，用数据驱动而不是 slot 驱动的经典案例。
+column 定义的 `key` 值与 data 是一一对应的，这是一种常见的数据接口定义规则，也是 Vue.js 组件中"用数据驱动而不是 slot 驱动"的经典案例。
 
-为什么 Table 组件要用数据驱动，而不是 slot 驱动呢？slot 在很多组件中的确很好用，不过 Table 组件包含了大量的基础表格标签，如果都交给使用者由 slot 承载的话，开发成本不亚于自己实现一个 table 了，而数据驱动就简单的多，数据一般从服务端获取后就可以直接使用（或简单处理），使用者主要来定义每列的配置 **columns** 就可以了。
+Table 组件要用数据驱动而不是 slot 驱动，原因在于：slot 在很多组件中的确很好用，不过 Table 组件包含了大量的基础表格标签，如果都交给使用者由 slot 承载，开发成本不亚于自己实现一个 table；而数据驱动就简单得多，数据一般从服务端获取后就可以直接使用（或简单处理），使用者主要定义每列的配置 **columns** 即可。
 
-因为不确定使用者要对某一列做什么交互，所以不能在 Table 内来实现自定义列。使用 Render 函数可以将复杂的自定义列模板的工作交给使用者来配置，Table 内只用一个 Functional Render 做中转。
+因为不确定使用者要对某一列做什么交互，所以不能在 Table 内来实现自定义列。使用 Render 函数可以将复杂的自定义列模板工作交给使用者来配置，Table 内只用一个 Functional Render 做中转。
 
 ## 完成基础表格
 
-我们先来完成一个基础的表格组件，之后再接入 Render 来配置自定义列。
+先完成一个基础的表格组件，之后再接入 Render 来配置自定义列。
 
 在 `src/components` 目录下新建 `table-render` 目录，并创建 `table.vue` 文件：
 
@@ -246,11 +247,11 @@ tbody 内嵌套使用了两次 `v-for`，外层循环数据 data，内层循环�
 
 ![](https://user-gold-cdn.xitu.io/2018/11/15/16716c5b99ef76ac?w=1986&h=416&f=png&s=88452)
 
-表格已经能渲染出来了，但现在的单元格只是将 data 当作纯文本来显示，所以出生日期列显示为时间戳，因为服务端对日期有时会保存为时间戳格式。如果要显示正常的日期（如1991-5-14），目前可以另写一个计算属性（computed），手动将时间戳换算为标准日期格式后，来动态修改 data 里的 `birthday` 字段。这样做对于出生日期这样的数据还好，但对于**操作**这一列就不可取了，因为它带有业务逻辑，点击**编辑**按钮，是可以对当前行数据进行修改的。这时就要用到 Render 函数。
+表格已经能渲染出来，但现在的单元格只是将 data 当作纯文本来显示，所以出生日期列显示为时间戳——服务端对日期有时会保存为时间戳格式。如果要显示正常的日期（如1991-5-14），可以另写一个计算属性（computed），手动将时间戳换算为标准日期格式后，动态修改 data 里的 `birthday` 字段。这样做对于出生日期这样的数据还好，但对于**操作**这一列就不可取了，因为它带有业务逻辑：点击**编辑**按钮，是可以对当前行数据进行修改的。这时就要用到 Render 函数。
 
 ## 使用 Render 自定义列模板
 
-上一节我们已经介绍过函数式组件 Functional Render 的用法，它没有状态和上下文，主要用于中转一个组件，用在本节的 Table 组件非常合适。
+函数式组件 Functional Render 没有状态和上下文，主要用于中转一个组件，用在 Table 组件非常合适。
 
 先在 `src/components/table-render` 目录下新建 `render.js` 文件：
 
@@ -361,15 +362,15 @@ export default {
 
 ![](https://user-gold-cdn.xitu.io/2018/11/15/16716c604e151fa0?w=1738&h=418&f=png&s=77318)
 
-需要注意的是，columns 里定义的 render，是有两个参数的，第一个是 createElement（即 h），第二个是从 render.js 传过来的对象，它包含了当前行数据（`row`）、当前列配置（`column`）、当前是第几行（`index`），使用者可以基于这 3 个参数得到任意想要的结果。由于是自定义列了，显示什么都是使用者决定的，因此在使用了 render 的 column 里可以不用写字段 `key`。
+需要注意的是，columns 里定义的 render 有两个参数：第一个是 createElement（即 h），第二个是从 render.js 传过来的对象，它包含了当前行数据（`row`）、当前列配置（`column`）、当前是第几行（`index`），使用者可以基于这 3 个参数得到任意想要的结果。由于是自定义列，显示什么由使用者决定，因此在使用了 render 的 column 里可以不写字段 `key`。
 
-如果你真正理解了，应该知道 columns 里定义的 render 字段，它仅仅是名字叫 render 的一个普通函数，并非 Vue.js 实例的 *render* 选项，只是我们恰巧把它叫做 render 而已，如果愿意，也可以改为其它名字，比如 renderRow。真正的 Render 函数只有一个地方，那就是 render.js 中的 render 选项，只是它代理了 column 中的 render。这里有点绕，理清这个关系，就对 Functional Render 彻底理解了。
+需要理清的一个关系是：columns 里定义的 render 字段，仅仅是名字叫 render 的一个普通函数，并非 Vue.js 实例的 *render* 选项，只是恰巧把它叫做 render 而已；愿意的话也可以改为其它名字，比如 renderRow。真正的 Render 函数只有一个地方，那就是 render.js 中的 render 选项，只是它代理了 column 中的 render。理清这个关系，就对 Functional Render 彻底理解了。
 
 ## 修改当前行
 
-有了 render，Table 组件就已经完成了，剩余工作都是使用者来配置 columns 完成各种复杂的业务逻辑。本例来介绍最常见的表格中对整行数据编辑的功能。
+有了 render，Table 组件就已经完成了，剩余工作都是使用者配置 columns 完成各种复杂的业务逻辑。下面介绍最常见的表格功能：对整行数据编辑。
 
-**操作**这一列，默认是一个**修改**按钮，点击后，变为**保存**和**取消**两个按钮，同时本行其它各列都变为了输入框，并且初始值就是刚才单元格的数据。变为输入框后，可以任意修改单元格数据，点击保存按钮保存整行数据，点击取消按钮，还原至修改前的数据。
+**操作**这一列默认是一个**修改**按钮，点击后变为**保存**和**取消**两个按钮，同时本行其它各列都变为了输入框，并且初始值就是刚才单元格的数据。变为输入框后，可以任意修改单元格数据：点击保存按钮保存整行数据；点击取消按钮，还原至修改前的数据。
 
 当进入编辑状态时，每一列的输入框都要有一个临时的数据使用 `v-model` 双向绑定来响应修改，所以在 data 里再声明四个数据：
 
@@ -402,7 +403,7 @@ export default {
 }
 ```
 
-`editIndex` 默认给了 -1，也就是一个不存在的行号，当点击修改按钮时，再将它置为正确的行号。我们先定义操作列的 render：
+`editIndex` 默认给了 -1，也就是一个不存在的行号；当点击修改按钮时，再将它置为正确的行号。先定义操作列的 render：
 
 ```js
 // table-render.vue，部分代码省略
@@ -459,9 +460,9 @@ export default {
 }
 ```
 
-render 里的 `if / else` 可以先看 else，因为默认是非编辑状态，也就是说 `editIndex` 还是 -1。当点击**修改**按钮时，把 render 中第二个参数 `{ row }` 中的各列数据赋值给了之前在 data 中声明的 4 个数据，这样做是因为之后点击**取消**按钮时，editName 等值已经修改了，还没有还原，所以在开启编辑状态的同时，初始化各输入框的值（当然也可以在取消时重置）。最后再把 `editIndex` 置为了对应的行序号 `{ index }`，此时 render 的 `if` 条件 `this.editIndex === index` 为真，编辑列变成了两个按钮：保存和取消。点击保存，直接修改表格源数据 data 中对应的各字段值，并将 editIndex 置为 -1，退出编辑状态；点击取消，不保存源数据，直接退出编辑状态。
+render 里的 `if / else` 可以先看 else，因为默认是非编辑状态，也就是说 `editIndex` 还是 -1。当点击**修改**按钮时，把 render 中第二个参数 `{ row }` 中的各列数据赋值给之前在 data 中声明的 4 个数据。这样做是因为之后点击**取消**按钮时，editName 等值已经修改了还没有还原，所以在开启编辑状态的同时，要初始化各输入框的值（当然也可以在取消时重置）。最后再把 `editIndex` 置为对应的行序号 `{ index }`，此时 render 的 `if` 条件 `this.editIndex === index` 为真，编辑列变成了两个按钮：保存和取消。点击保存，直接修改表格源数据 data 中对应的各字段值，并将 editIndex 置为 -1，退出编辑状态；点击取消，不保存源数据，直接退出编辑状态。
 
-除编辑列，其它各数据列都有两种状态：
+除编辑列外，其它各数据列都有两种状态：
 
 1. 当 editIndex 等于当前行号 index 时，呈现输入框状态；
 2. 当 editIndex 不等于当前行号 index 时，呈现默认数据。
@@ -507,7 +508,7 @@ render 里的 `if / else` 可以先看 else，因为默认是非编辑状态，�
 }
 ```
 
-变量 `edit` 根据 editIndex 呈现不同的节点，还是先看 else，直接显示了对应字段的数据。在聚焦时（this.editIndex === index），渲染一个 `input` 输入框，初始值 `value` 通过 render 的 `domProps` 绑定了 `row.name`（这里也可绑定 editName），并监听了 input 事件，将输入的内容，实时缓存在数据 `editName` 中，供保存时使用。事实上，这里绑定的 value 和事件 input 就是语法糖 `v-model` 在 Render 函数中的写法，在 template 中，经常写作 `<input v-model="editName">`。
+变量 `edit` 根据 editIndex 呈现不同的节点。先看 else 分支：直接显示对应字段的数据。在聚焦时（this.editIndex === index），渲染一个 `input` 输入框，初始值 `value` 通过 render 的 `domProps` 绑定了 `row.name`（这里也可绑定 editName），并监听 input 事件，将输入的内容实时缓存在数据 `editName` 中，供保存时使用。事实上，这里绑定的 value 和事件 input 就是语法糖 `v-model` 在 Render 函数中的写法；在 template 中，经常写作 `<input v-model="editName">`。
 
 其它列与姓名类似，只是对应的字段不同：
 
@@ -621,11 +622,11 @@ render 里的 `if / else` 可以先看 else，因为默认是非编辑状态，�
 ## 使用 slot-scope 自定义列
 
 
-前文，我们基于 Render 函数实现了在表格中自定义列模板的组件 Table，虽说 Render 函数能够完全发挥 JavaScript 的编程能力，实现几乎所有的自定义工作，但本质上，使用者写的是一个庞大的 JS 对象，它不具备 DOM 结构，可读性和可维护性都比较差。对于大部分写 Vue.js 的开发者来说，更倾向于使用 template 的语法，毕竟它是 Vue.js 独有的特性。本文则在前文的 Table 组件基础上修改，实现一种达到同样渲染效果，但对使用者更友好的 slot-scope 写法。
+前面基于 Render 函数实现了在表格中自定义列模板的组件 Table。Render 函数能够完全发挥 JavaScript 的编程能力，实现几乎所有的自定义工作，但本质上，使用者写的是一个庞大的 JS 对象，它不具备 DOM 结构，可读性和可维护性都比较差。对于大部分写 Vue.js 的开发者来说，更倾向于使用 template 的语法，毕竟它是 Vue.js 独有的特性。下面的内容在前面的 Table 组件基础上修改，实现一种达到同样渲染效果、但对使用者更友好的 slot-scope 写法。
 
 ### 什么是 slot-scope
 
-slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，用于分发内容。那 slot-scope 是什么呢？先来看一个场景，比如某组件拥有下面的模板：
+slot（插槽）是 Vue.js 组件的 3 个 API 之一，用于分发内容。那 slot-scope 是什么呢？先来看一个场景，比如某组件拥有下面的模板：
 
 ```html
 <ul>
@@ -635,9 +636,9 @@ slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，
 </ul>
 ```
 
-使用者传递一个数组 `books`，由组件内的 `v-for` 循环显示，这里的 `{{ book.name }}` 是纯文本输出，如果想自定义它的模板（即内容分发），就要用到 slot，但 slot 只能是固定的模板，没法自定义循环体中的一个具体的项，事实上这跟前文的 Table 场景是类似的。
+使用者传递一个数组 `books`，由组件内的 `v-for` 循环显示，这里的 `{{ book.name }}` 是纯文本输出。如果想自定义它的模板（即内容分发），就要用到 slot，但 slot 只能是固定的模板，没法自定义循环体中的一个具体的项，事实上这与前面 Table 的场景是类似的。
 
-常规的 slot 无法实现对组件循环体的每一项进行不同的内容分发，这就要用到 slot-scope，它本质上跟 slot 一样，只不过可以传递参数。比如上面的示例，使用 slot-scope 封装：
+常规的 slot 无法实现对组件循环体的每一项进行不同的内容分发，这就要用到 slot-scope。它本质上跟 slot 一样，只不过可以传递参数。比如上面的示例，使用 slot-scope 封装：
 
 ```html
 <ul>
@@ -650,7 +651,7 @@ slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，
 </ul>
 ```
 
-在 slot 上，传递了一个自定义的参数 `book`，它的值绑定的是当前循环项的数据 book，这样在父级使用时，就可以在 slot 中访问它了：
+在 slot 上传递了一个自定义的参数 `book`，它的值绑定的是当前循环项的数据 book。这样在父级使用时，就可以在 slot 中访问它了：
 
 ```html
 <book-list :books="books">
@@ -661,7 +662,7 @@ slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，
 </book-list>
 ```
 
-使用 slot-scope 指定的参数 `slotProps` 就是这个 slot 的全部参数，它是一个对象，在 slot-scope 中是可以传递多个参数的，上例我们只写了一个参数 `book`，所以访问它就是 `slotProps.book`。这里推荐使用 ES6 的解构，能让参数使用起来更方便：
+使用 slot-scope 指定的参数 `slotProps` 就是这个 slot 的全部参数，它是一个对象。slot-scope 中可以传递多个参数，上例只写了一个参数 `book`，所以访问它就是 `slotProps.book`。这里推荐使用 ES6 的解构，能让参数使用起来更方便：
 
 ```html
 <book-list :books="books">
@@ -687,13 +688,13 @@ slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，
 </template>
 ```
 
-这就是作用域 slot（slot-scope），能够在组件的循环体中做内容分发，有了它，Table 组件的自定义列模板就不用写一长串的 Render 函数了。
+这就是作用域 slot（slot-scope），能够在组件的循环体中做内容分发。有了它，Table 组件的自定义列模板就不用写一长串的 Render 函数了。
 
-为了把 Render 函数和 slot-scope 理解透彻，下面我们用 3 种方法来改写 Table，实现 slot-scope 自定义列模板。
+为了把 Render 函数和 slot-scope 理解透彻，下面用 3 种方法来改写 Table，实现 slot-scope 自定义列模板。
 
 ### 方案一
 
-第一种方案，用最简单的 slot-scope 实现，同时也兼容 Render 函数的旧用法。拷贝前文的 Table 组件目录，更名为 `table-slot`，同时也拷贝路由，更名为 `table-slot.vue`。为了兼容旧的 Render 函数用法，在 columns 的列配置 column 中，新增一个字段 `slot` 来指定 slot-scope 的名称：
+第一种方案用最简单的 slot-scope 实现，同时也兼容 Render 函数的旧用法。拷贝前面的 Table 组件目录，更名为 `table-slot`，同时拷贝路由，更名为 `table-slot.vue`。为了兼容旧的 Render 函数用法，在 columns 的列配置 column 中新增一个字段 `slot` 来指定 slot-scope 的名称：
 
 ```html
 <!-- src/components/table-slot/table.vue -->
@@ -721,7 +722,7 @@ slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，
 </template>
 ```
 
-相比原先的文件，只在 `'render' in col` 的条件下新加了一个 `template` 的标签，如果使用者的 column 配置了 render 字段，就优先以 Render 函数渲染，然后再判断是否用 slot-scope 渲染。在定义的作用域 slot 中，将行数据 `row`、列数据 `column` 和第几行 `index` 作为 slot 的参数，并根据 column 中指定的 slot 字段值，动态设置了具名 `name`。使用者在配置 columns 时，只要指定了某一列的 slot，那就可以在 Table 组件中使用 slot-scope。我们以前文的可编辑整行数据为例，用 slot-scope 的写法实现完全一样的效果：
+相比原先的文件，只在 `'render' in col` 的条件下新加了一个 `template` 标签：如果使用者的 column 配置了 render 字段，就优先以 Render 函数渲染，然后再判断是否用 slot-scope 渲染。在定义的作用域 slot 中，将行数据 `row`、列数据 `column` 和第几行 `index` 作为 slot 的参数，并根据 column 中指定的 slot 字段值动态设置具名 `name`。使用者在配置 columns 时，只要指定了某一列的 slot，就可以在 Table 组件中使用 slot-scope。以前面的可编辑整行数据为例，用 slot-scope 的写法实现完全一样的效果：
 
 ```html
 <!-- src/views/table-slot.vue -->
@@ -850,13 +851,13 @@ slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，
 </script>
 ```
 
-示例中在 `<table-slot>` 内的每一个 `<template>` 就对应某一列的 slot-scope 模板，通过配置的 `slot` 字段，指定具名的 slot-scope。可以看到，基本是把 Render 函数还原成了 html 的写法，这样看起来直接多了，渲染效果是完全一样的。在 slot-scope 中，平时怎么写组件，这里就怎么写，Vue.js 所有的 API 都是可以直接使用的。
+示例中 `<table-slot>` 内的每一个 `<template>` 对应某一列的 slot-scope 模板，通过配置的 `slot` 字段指定具名的 slot-scope。可以看到，这基本是把 Render 函数还原成了 html 的写法，看起来直接多了，渲染效果完全一样。在 slot-scope 中，平时怎么写组件，这里就怎么写，Vue.js 所有的 API 都可以直接使用。
 
-方案一是最优解，一般情况下，使用这种方案就可以了，其余两种方案是基于 Render 的。
+方案一是最优解，一般情况下使用这种方案就可以了，其余两种方案是基于 Render 的。
 
 ### 方案二
 
-第二种方案，不需要修改原先的 Table 组件代码，只是在使用层面修改即可。先来看具体的使用代码，然后再做分析。注意，这里使用的 Table 组件，仍然是前文 `src/components/table-render` 的组件，它只有 Render 函数，没有定义 slot-scope：
+第二种方案不需要修改原先的 Table 组件代码，只在使用层面修改即可。先看具体的使用代码，然后再做分析。注意：这里使用的 Table 组件仍然是 `src/components/table-render` 的组件，它只有 Render 函数，没有定义 slot-scope：
 
 ```html
 <!-- src/views/table-render.vue 的改写 -->
@@ -1033,7 +1034,7 @@ slot（插槽）我们都很熟悉，它是 Vue.js 组件的 3 个 API 之一，
 </script>
 ```
 
-在 slot-scope 的使用上（即 template 的内容），与方案一是完全一致的，可以看到，在 column 的定义上，仍然使用了 render 字段，只不过每个 render 都渲染了一个 div 节点，而这个 div 的内容，是在 `<table-render>` 中定义的 slot-scope：
+在 slot-scope 的使用上（即 template 的内容），与方案一完全一致。可以看到，在 column 的定义上仍然使用了 render 字段，只不过每个 render 都渲染了一个 div 节点，而这个 div 的内容是在 `<table-render>` 中定义的 slot-scope：
 
 ```js
 render: (h, { row, column, index }) => {
@@ -1048,19 +1049,19 @@ render: (h, { row, column, index }) => {
 }
 ```
 
-这正是 Render 函数灵活的一个体现，使用 `$scopedSlots` 可以访问 slot-scope，所以上面这段代码的意思是，name 这一列仍然是使用 Functional Render，只不过 Render 的是一个预先定义好的 slot-scope 模板。
+这正是 Render 函数灵活性的一个体现：使用 `$scopedSlots` 可以访问 slot-scope。所以上面这段代码的意思是，name 这一列仍然使用 Functional Render，只不过 Render 的是一个预先定义好的 slot-scope 模板。
 
-有一点需要注意的是，示例中的 `data` 默认是空数组，而在 mounted 里才赋值的，是因为这样定义的 slot-scope，初始时读取 `this.$refs.table.$scopedSlots` 是读不到的，会报错，当没有数据时，也就不会去渲染，也就避免了报错。
+有一点需要注意的是，示例中的 `data` 默认是空数组，而在 mounted 里才赋值。因为这样定义的 slot-scope，初始时读取 `this.$refs.table.$scopedSlots` 是读不到的，会报错；当没有数据时也就不会去渲染，从而避免了报错。
 
-这种方案虽然可行，但归根到底是一种 hack，不是非常推荐，之所以列出来，是为了对 Render 和 slot-scope 有进一步的认识。
+这种方案虽然可行，但归根到底是一种 hack，不是非常推荐；列出来是为了对 Render 和 slot-scope 有进一步的认识。
 
 ### 方案三
 
-第 3 种方案的思路和第 2 种是一样的，它介于方案 1 与方案 2 之间。这种方案要修改 Table 组件代码，但是用例与方案 1 完全一致。
+第 3 种方案的思路和第 2 种一样，它介于方案 1 与方案 2 之间。这种方案要修改 Table 组件代码，但用例与方案 1 完全一致。
 
-在方案 2 中，我们是通过修改用例使用 slot-scope 的，也就是说 Table 组件本身没有支持 slot-scope，是我们“强加”上去的，如果把强加的部分，集成到 Table 内，那对使用者就很友好了，同时也避免了初始化报错，不得不把 data 写在 mounted 的问题。
+方案 2 是通过修改用例来使用 slot-scope 的，也就是说 Table 组件本身没有支持 slot-scope，用法是“强加”上去的。如果把强加的部分集成到 Table 内，对使用者就很友好，同时也避免了初始化报错、不得不把 data 写在 mounted 的问题。
 
-保持方案 1 的用例不变，修改 `src/components/table-render` 中的代码。为了同时兼容 Render 与 slot-scope，我们在 `table-render` 下新建一个 slot.js 的文件：
+保持方案 1 的用例不变，修改 `src/components/table-render` 中的代码。为了同时兼容 Render 与 slot-scope，在 `table-render` 下新建一个 slot.js 文件：
 
 ```js
 // src/components/table-render/slot.js
@@ -1082,7 +1083,7 @@ export default {
 };
 ```
 
-它仍然是一个 Functional Render，使用 `inject` 注入了父级组件 table.vue（下文改写） 中提供的实例 `tableRoot`。在 render 里，也是通过方案 2 中使用 `$scopedSlots`  定义的 slot，不过这是在组件级别定义，对用户来说是透明的，只要按方案 1 的用例来写就可以了。
+它仍然是一个 Functional Render，使用 `inject` 注入了父级组件 table.vue（下文改写）中提供的实例 `tableRoot`。在 render 里，通过方案 2 中使用的 `$scopedSlots` 获取定义的 slot；不过这是在组件级别定义，对使用者来说是透明的，只要按方案 1 的用例来写就可以了。
 
 table.vue 也要做一点修改：
 
@@ -1139,7 +1140,23 @@ table.vue 也要做一点修改：
 </script>
 ```
 
-因为 slot-scope 模板是写在 table.vue 中的（对使用者来说，相当于写在组件 `<table-slot></table-slot>` 之间），所以在 table.vue 中使用 provide 向下提供了 Table 的实例，这样在 slot.js 中就可以通过 inject 访问到它，继而通过 `$scopedSlots` 获取到 slot。需要注意的是，在 Functional Render 是没有 this 上下文的，都是通过 h 的第二个参数临时上下文 ctx 来访问 prop、inject 等的。
+因为 slot-scope 模板写在 table.vue 中（对使用者来说，相当于写在组件 `<table-slot></table-slot>` 之间），所以 table.vue 中使用 provide 向下提供了 Table 的实例，这样 slot.js 中就可以通过 inject 访问到它，继而通过 `$scopedSlots` 获取到 slot。需要注意的是，Functional Render 没有 this 上下文，都是通过 h 的第二个参数（临时上下文 ctx）来访问 prop、inject 等。
 
-方案 3 也是推荐使用的，当 Table 的功能足够复杂，层级会嵌套的比较深，那时方案 1 的 slot 就不会定义在第一级组件中，中间可能会隔许多组件，slot 就要一层层中转，相比在任何地方都能直接使用的 Render 就要麻烦了。所以，如果你的组件层级简单，推荐用第一种方案；如果你的组件已经成型（某 API 基于 Render 函数），但一时间不方便支持 slot-scope，而使用者又想用，那就选方案 2；如果你的组件已经成型（某 API 基于 Render 函数），但组件层级复杂，要按方案 1 那样支持 slot-scope 可能改动较大，还有可能带来新的 bug，那就用方案 3，它不会破坏原有的任何内容，但会额外支持 slot-scope 用法，关键是改动简单。
+## 实践要点
 
+方案选型的判断依据：
+
+- 组件层级简单：推荐方案一（slot + slot-scope 原生支持），实现最简单、可读性最好。
+- 组件已经成型（某 API 基于 Render 函数），一时不方便支持 slot-scope 而使用者又想用：选方案二，仅在使用层面通过 `$scopedSlots` 桥接，无需改动组件，但属于 hack。
+- 组件已经成型且层级复杂，按方案一支持 slot-scope 可能改动较大、带来新 bug：用方案三，在组件内通过 provide/inject 集成 Functional Render 中转，不破坏原有内容，改动简单。
+
+其它要点：
+
+- props 类型为**对象**或**数组**时，默认值必须从工厂函数获取。
+- columns 中使用 render 的列可不写 `key`，渲染内容完全由 render 决定。
+- columns 里配置的 `render` 只是同名普通函数，真正的 Render 函数是中转组件（render.js / slot.js）中的 render 选项。
+- 编辑行数据时，输入框内容与 `data` 分离（editName 等临时数据），避免直接改源数据导致的重渲染问题；取消时还原、保存时写回。
+
+## 小结
+
+可自定义列的 Table 组件有两条实现路线：数据驱动 + Render 函数，或数据驱动 + slot-scope。核心结构是 columns（列配置，含 title/key/render/slot 字段）与 data（行数据）两个 props，通过 column.key 与行数据字段一一对应完成基础渲染；自定义列由 Functional Render 中转组件（render.js）或作用域插槽（slot-scope）承接，二者最终都把 row、column、index 三个上下文参数交给使用者。三种 slot-scope 方案按"组件层级是否复杂、是否已有 Render API"取舍，其中方案一适用于大多数场景，方案三适用于复杂成型组件的无侵入增强。

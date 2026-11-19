@@ -11,7 +11,7 @@ status: 正式
 
 # 可执行 Jar 与启动引导
 
-本篇解析 Spring Boot 应用的“引导”两侧：开发期主启动类如何借助 `@SpringBootApplication` 完成包扫描与 IoC 容器准备；发布期 fat-jar 如何被 `JarLauncher` 引导运行。内容基于 Spring Boot 2.1.9 源码剖析，Boot 3.x 差异见文中版本注。
+本篇解析 Spring Boot 应用的"引导"两侧：开发期主启动类如何借助 `@SpringBootApplication` 完成包扫描与 IoC 容器准备；发布期 fat-jar 如何被 `JarLauncher` 引导运行。内容基于 Spring Boot 2.1.9 源码剖析，Boot 3.x 差异见文中版本注。
 
 ::: tip 分工声明
 启动主流程（`SpringApplication` 构造与 `run()` 阶段、事件体系、容器刷新）见 [20-SpringBoot启动主流程](20-SpringBoot启动主流程.md)；自动装配细节见 [21-自动配置与Starter机制](21-自动配置与Starter机制.md)。
@@ -23,13 +23,9 @@ status: 正式
 
 ### 启动引导：SpringBoot入门程序原理概述和包扫描
 
-启动引导部分大纲：
-
 #### 1. 入门程序创建
 
-如何创建 SpringBoot 应用我就不多提了吧，过程非常简单。如果通过 IDEA/eclipse 的 SpringInitializer 创建就更简单了。这里我选择使用 SpringInitializer 来快速创建 SpringBoot 应用。
-
-入门程序中，pom文件我只引入了 `spring-boot-starter-web`：
+创建 SpringBoot 应用最便捷的方式是通过 IDEA/Eclipse 的 Spring Initializer。入门程序只需引入 `spring-boot-starter-web` 依赖：
 
 ```xml
 <dependency>
@@ -38,7 +34,7 @@ status: 正式
 </dependency>
 ```
 
-下面我们先来编写一个 SpringBoot 的主启动类：
+主启动类代码如下：
 
 ```java
 @SpringBootApplication
@@ -49,9 +45,9 @@ public class DemoApplication {
 }
 ```
 
-这可能是一个最简单的 SpringBoot 应用启动引导类了，运行主启动类的main方法就可以启动 SpringBoot 应用。
+这是一个最简单的 SpringBoot 应用启动引导类，运行主启动类的 main 方法即可启动 SpringBoot 应用。
 
-主启动类上必须要标注 `@SpringBootApplication` 注解，如果主启动类没有被 `@SpringBootApplication` 标注，启动时会报一个错误：
+主启动类上必须标注 `@SpringBootApplication` 注解。如果主启动类没有被 `@SpringBootApplication` 标注，启动时会报一个错误：
 
 ```text
 org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.context.ApplicationContextException: Unable to start ServletWebServerApplicationContext due to missing ServletWebServerFactory bean.
@@ -59,13 +55,11 @@ org.springframework.context.ApplicationContextException: Unable to start web ser
 	......
 ```
 
-我们来划重点：**Unable to start ServletWebServerApplicationContext due to missing ServletWebServerFactory bean.**
+关键字段是：**Unable to start ServletWebServerApplicationContext due to missing ServletWebServerFactory bean.**
 
-因为没有 `ServletWebServerFactory`，而导致无法启动IOC容器。
+即因为没有 `ServletWebServerFactory`，导致无法启动 IOC 容器，所以被传入的类必须被 `@SpringBootApplication` 标注。
 
-所以被传入的类要被 `@SpringBootApplication` 标注。
-
-为什么需要 `@SpringBootApplication`，就需要从它入手。
+为什么需要 `@SpringBootApplication`，就从它本身入手分析。
 
 #### 2. SpringBootApplication
 
@@ -81,28 +75,26 @@ org.springframework.context.ApplicationContextException: Unable to start web ser
 public @interface SpringBootApplication
 ```
 
-由文档注释可见，它是来自 SpringBoot1.2.0，其实在 SpringBoot1.1 及以前的版本，在启动类上标注的注解应该是三个：`@Configuration` + `@EnableAutoConfiguration` + `@ComponentScan`，只不过从1.2以后 SpringBoot 帮我们整合起来了。
+由文档注释可见，它来自 SpringBoot 1.2.0。在 SpringBoot 1.1 及以前的版本，主启动类上标注的注解应该是三个：`@Configuration` + `@EnableAutoConfiguration` + `@ComponentScan`，从 1.2 以后 SpringBoot 将其整合为一个注解。
 
 文档注释原文翻译：
 
 > Indicates a configuration class that declares one or more @Bean methods and also triggers auto-configuration and component scanning. This is a convenience annotation that is equivalent to declaring @Configuration, @EnableAutoConfiguration and @ComponentScan.标识了一个配置类，这个配置类上声明了一个或多个 @Bean 的方法，并且它会触发自动配置和组件扫描。这是一个很方便的注解，它等价于同时标注 @Configuration + @EnableAutoConfiguration + @ComponentScan 。
 
-文档注释已经描述的很详细：它是一个**组合注解**，包括3个注解。标注它之后就会触发自动配置（`@EnableAutoConfiguration`）和组件扫描（`@ComponentScan`）。
-
-至于这几个注解分别都起什么作用，下面逐个来看。
+文档注释描述得很清楚：它是一个**组合注解**，包括 3 个注解。标注它之后就会触发自动配置（`@EnableAutoConfiguration`）和组件扫描（`@ComponentScan`）。下面逐个分析这些注解的作用。
 
 #### 3. @ComponentScan
 
-这个注解在 SpringFramework 中有接触过，它可以指定包扫描的根路径，让 SpringFramework 来扫描指定包及子包下的组件，也可以不指定路径，默认扫描当前配置类所在包及子包里的所有组件**（其实这就解释了为什么 SpringBoot 的启动类要放到所有类所在包的最外层）**。
+这个注解在 SpringFramework 中已存在，它可以指定包扫描的根路径，让 SpringFramework 扫描指定包及子包下的组件；也可以不指定路径，默认扫描当前配置类所在包及子包里的所有组件**（这解释了为什么 SpringBoot 的启动类要放到所有类所在包的最外层）**。
 
-不过在上面的声明中有显式的指定了两个过滤条件：
+上面的声明中还显式指定了两个过滤条件：
 
 ```java
 @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
 		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
 ```
 
-这两个过滤器有值得研究的细节，下面研究一下。
+这两个过滤器的实现细节如下。
 
 ##### 3.1 TypeExcludeFilter
 
@@ -111,9 +103,9 @@ public @interface SpringBootApplication
 > Provides exclusion TypeFilters that are loaded from the BeanFactory and automatically applied to SpringBootApplication scanning. Can also be used directly with @ComponentScan as follows: @ComponentScan(excludeFilters = @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class))
 > Implementations should provide a subclass registered with BeanFactory and override the match(MetadataReader, MetadataReaderFactory) method. They should also implement a valid hashCode and equals methods so that they can be used as part of Spring test's application context caches. Note that TypeExcludeFilters are initialized very early in the application lifecycle, they should generally not have dependencies on any other beans. They are primarily used internally to support spring-boot-test.提供从 BeanFactory 加载并自动应用于 @SpringBootApplication 扫描的排除 TypeFilter 。实现应提供一个向 BeanFactory 注册的子类，并重写 match(MetadataReader, MetadataReaderFactory) 方法。它们还应该实现一个有效的 hashCode 和 equals 方法，以便可以将它们用作Spring测试的应用程序上下文缓存的一部分。注意，TypeExcludeFilters 在应用程序生命周期的很早就初始化了，它们通常不应该依赖于任何其他bean。它们主要在内部用于支持 spring-boot-test 。
 
-从文档注释中大概能看出来，它是给了一种扩展机制，能让我们**向IOC容器中注册一些自定义的组件过滤器，以在包扫描的过程中过滤它们**。
+从文档注释可以看出，它提供了一种扩展机制，允许**向 IOC 容器中注册自定义的组件过滤器，在包扫描的过程中过滤组件**。
 
-这种Filter的核心方法是 `match` 方法，它实现了过滤的判断逻辑：
+这种 Filter 的核心方法是 `match` 方法，它实现了过滤的判断逻辑：
 
 ```java
 public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
@@ -131,13 +123,11 @@ public boolean match(MetadataReader metadataReader, MetadataReaderFactory metada
 }
 ```
 
-注意看if结构体中的第一句，它会从 `BeanFactory` （可以暂时理解成IOC容器）中获取所有类型为 `TypeExcludeFilter` 的组件，去执行自定义的过滤方法。
-
-由此可见，`TypeExcludeFilter` 的作用是做**扩展的组件过滤**。
+if 结构体中的第一句会从 `BeanFactory`（可暂时理解为 IOC 容器）中获取所有类型为 `TypeExcludeFilter` 的组件，去执行自定义的过滤方法。由此可见，`TypeExcludeFilter` 的作用是做**扩展的组件过滤**。
 
 ##### 3.2 AutoConfigurationExcludeFilter
 
-看这个类名，总感觉跟自动配置相关，还是看一眼它的源码：
+从类名看它与自动配置相关，源码如下：
 
 ```java
 public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
@@ -162,7 +152,7 @@ protected List<String> getAutoConfigurations() {
 }
 ```
 
-它的 `match` 方法要判断两个部分：**是否是一个配置类，是否是一个自动配置类**。其实光从方法名上也就看出来了，下面的方法是其调用实现，里面有一个很关键的机制：`SpringFactoriesLoader.loadFactoryNames`，我们留到第21篇再解释。
+它的 `match` 方法要判断两个部分：**是否是一个配置类，是否是一个自动配置类**，从方法名上即可看出。下面的方法是其调用实现，其中有一个关键机制 `SpringFactoriesLoader.loadFactoryNames`，其详细解析见"自动配置与 Starter 机制"相关章节。
 
 #### 4. @SpringBootConfiguration
 
@@ -175,17 +165,15 @@ public @interface SpringBootConfiguration
 
 > Indicates that a class provides Spring Boot application @Configuration . Can be used as an alternative to the Spring's standard @Configuration annotation so that configuration can be found automatically (for example in tests).Application should only ever include one @SpringBootConfiguration and most idiomatic Spring Boot applications will inherit it from @SpringBootApplication.标识一个类作为 SpringBoot 的配置类，它可以是Spring原生的 @Configuration 的一种替换方案，目的是这个配置可以被自动发现。应用应当只在主启动类上标注 @SpringBootConfiguration，大多数情况下都是直接使用 @SpringBootApplication。
 
-从文档注释以及它的声明上可以看出，它被 `@Configuration` 标注，说明它实际上是标注配置类的，而且是标注主启动类的。
+从文档注释以及声明上可以看出，它被 `@Configuration` 标注，说明它实际用于标注配置类，而且是标注主启动类的。
 
-如果对 `@Configuration` 的使用还不熟悉，请继续往下看；已熟悉的读者请直接跳过 4.1 节。
+以下补充 `@Configuration` 的基础用法；已熟悉的开发者可直接跳过 4.1 节。
 
 ##### 4.1 @Configuration的作用
 
-被 `@Configuration` 标注的类，会被 Spring 的IOC容器认定为配置类。
+被 `@Configuration` 标注的类，会被 Spring 的 IOC 容器认定为配置类。一个被 `@Configuration` 标注的类，相当于一个 `applicationContext.xml` 的配置文件。
 
-一个被 `@Configuration` 标注的类，相当于一个 `applicationContext.xml` 的配置文件。
-
-例如：声明一个类，并标注 `@Configuration` 注解：
+例如声明一个类并标注 `@Configuration` 注解：
 
 ```java
 @Configuration
@@ -199,7 +187,7 @@ public class ConfigurationDemo {
 
 > 上述注册Bean的方式类比于xml：xml<bean id="currentDate" class="java.util.Date"/>
 
-之后使用注解启动方式，初始化一个IOC容器，并打印IOC容器中的所有bean的name：
+之后使用注解启动方式初始化一个 IOC 容器，并打印 IOC 容器中的所有 bean 的 name：
 
 ```java
 public class MainApp {
@@ -223,23 +211,21 @@ configurationDemo
 currentDate
 ```
 
-可以发现组件，以及配置类本身被成功加载。
+可以看到组件以及配置类本身被成功加载。
 
 ##### 4.2 @SpringBootConfiguration的附加作用
 
-借助IDEA搜索 `@SpringBootConfiguration` 的出现位置，发现除了 `@SpringBootApplication` 外，只有一个位置使用了它：
+借助 IDE 检索 `@SpringBootConfiguration` 的引用位置，除 `@SpringBootApplication` 外，只有一个位置使用了它：测试包中的一个 usage（默认的 Spring Initializer 会把 `spring-boot-starter-test` 一起带入，因此可以检索到该 usage；若手动使用 Maven 创建 SpringBoot 应用且未导入 `spring-boot-start-test` 依赖，则检索不到）。
 
-发现是一个测试包中的usage（默认的 `SpringInitializer` 会把 `spring-boot-starter-test` 一起带进来，故可以搜到这个usage。如果手动使用 Maven 创建 SpringBoot 应用且没有导入 `spring-boot-start-test` 依赖，则这个 usage 不会搜到）。
-
-它的作用我们不剖析源码了（毕竟作为刚开始就看那么复杂的东西属实是会把你吓跑），我们来翻看 SpringBoot 的官方文档，发现通篇只有两个位置提到了 `@SpringBootConfiguration`，还真有一个跟测试相关：
+其作用可通过 SpringBoot 官方文档确认，通篇只有两个位置提到了 `@SpringBootConfiguration`，其中之一与测试相关：
 
 [https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-testing-spring-boot-applications-detecting-config](https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-testing-spring-boot-applications-detecting-config)
 
-第三段中有对 `@SpringBootConfiguration` 的描述：
+第三段中对 `@SpringBootConfiguration` 的描述如下：
 
 > The search algorithm works up from the package that contains the test until it finds a class annotated with @SpringBootApplication or @SpringBootConfiguration. As long as you structured your code in a sensible way, your main configuration is usually found.搜索算法从包含测试的程序包开始工作，直到找到带有 @SpringBootApplication 或 @SpringBootConfiguration 标注的类。只要您以合理的方式对代码进行结构化，通常就可以找到您的主要配置。
 
-这很明显是解释了 SpringBoot 主启动类与测试的关系，标注 `@SpringBootApplication` 或 `@SpringBootConfiguration` 的主启动类会被 Spring测试框架 的搜索算法找到。回过头看上面的截图，引用 `@SpringBootConfiguration` 的方法恰好叫 **getOrFindConfigurationClasses**，与文档一致。
+这是对 SpringBoot 主启动类与测试的关系的解释：标注 `@SpringBootApplication` 或 `@SpringBootConfiguration` 的主启动类会被 Spring 测试框架的搜索算法找到。前文检索到的引用恰好位于 **getOrFindConfigurationClasses** 方法，与文档一致。
 
 至此，`@SpringBootConfiguration` 的作用解析完毕。
 
@@ -249,19 +235,19 @@ currentDate
 2. `@ComponentScan` 默认扫描当前配置类所在包及子包下的所有组件， `exclude` 属性会将主启动类、自动配置类屏蔽掉。
 3. `@Configuration` 可标注配置类，`@SpringBootConfiguration` 并没有对其做实质性扩展。
 
-`@EnableAutoConfiguration` 的作用篇幅较长，单独成篇，见 [21-自动配置与Starter机制](21-自动配置与Starter机制.md)。建议先掌握前面的内容，再继续往后学习。
+`@EnableAutoConfiguration` 的作用内容较长，单独成篇，见 [21-自动配置与Starter机制](21-自动配置与Starter机制.md)；建议先掌握前面的内容再继续。
 
 ### IOC：SpringFramework与SpringBoot的IOC
 
-在正式开始 IoC 容器分析之前，先了解一下 SpringFramework 中的 IoC 容器，以及 SpringBoot 是如何利用它的。
+在正式开始 IoC 容器分析之前，先了解 SpringFramework 中的 IoC 容器，以及 SpringBoot 是如何利用它的。
 
 #### 1. 重新认识ApplicationContext
 
-我们在初学 SpringFramework 的时候，你接触的第一样IOC容器一般都是 `ClassPathXmlApplicationContext` ，而且我们使用 `ApplicationContext` 来接收它。如下所示：
+初学 SpringFramework 时接触的第一个 IOC 容器通常是 `ClassPathXmlApplicationContext`，并且使用 `ApplicationContext` 接口接收它：
 
 `ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");`
 
-所以我们的一般认知中，`ApplicationContext` 是最顶级的IOC容器，那实际上是这样吗？
+因此一般认知中 `ApplicationContext` 是最顶级的 IOC 容器，实际情况并非如此。
 
 ##### 1.1 ApplicationContext并不是最顶级容器
 
@@ -272,45 +258,43 @@ public interface ApplicationContext extends EnvironmentCapable, ListableBeanFact
 		MessageSource, ApplicationEventPublisher, ResourcePatternResolver
 ```
 
-发现它继承了好多个接口！换句话说，他根本算不上最顶级的IOC容器。那最顶级的容器是什么呢？文档注释中没有很明确的表述，我们来翻看 SpringFramework 的官方文档：
+它继承了多个接口，根本算不上最顶级的 IOC 容器。最顶级的容器是什么，文档注释中没有明确表述，SpringFramework 官方文档给出了答案：
 
 [https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#spring-core](https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#spring-core)
 
-第一章就叫**The IoC Container** ，在1.1节就已经明确的给出了答案：
+第一章就叫 **The IoC Container**，1.1 节明确给出答案：
 
 > The BeanFactory interface provides an advanced configuration mechanism capable of managing any type of object.ApplicationContext is a sub-interface of BeanFactory.BeanFactory 接口提供了一种高级配置机制，能够管理任何类型的对象。ApplicationContext 是 BeanFactory 的子接口。
 
-由此可见 `BeanFactory` 才是IOC容器最顶级的接口。
+由此可见 `BeanFactory` 才是 IOC 容器最顶级的接口。
 
-为什么SpringFramework建议使用 `ApplicationContext` 而不是 `BeanFactory`，以至于我们一开始都不知道他呢？官方文档的1.16.1节有给出解释：
+SpringFramework 官方文档建议使用 `ApplicationContext` 而不是 `BeanFactory`，1.16.1 节给出了解释：
 
 [https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#context-introduction-ctx-vs-beanfactory](https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#context-introduction-ctx-vs-beanfactory)
 
-> You should use an ApplicationContext unless you have a good reason for not doing so, with GenericApplicationContext and its subclass AnnotationConfigApplicationContext as the common implementations for custom bootstrapping. These are the primary entry points to Spring’s core container for all common purposes: loading of configuration files, triggering a classpath scan, programmatically registering bean definitions and annotated classes, and (as of 5.0) registering functional bean definitions.Because an ApplicationContext includes all the functionality of a BeanFactory, it is generally recommended over a plain BeanFactory, except for scenarios where full control over bean processing is needed. Within an ApplicationContext (such as the GenericApplicationContext implementation), several kinds of beans are detected by convention (that is, by bean name or by bean type — in particular, post-processors), while a plain DefaultListableBeanFactory is agnostic about any special beans.For many extended container features, such as annotation processing and AOP proxying, the BeanPostProcessor extension point is essential. If you use only a plain DefaultListableBeanFactory, such post-processors do not get detected and activated by default. This situation could be confusing, because nothing is actually wrong with your bean configuration. Rather, in such a scenario, the container needs to be fully bootstrapped through additional setup.除非有充分的理由，否则你应使用 ApplicationContext，除非将 GenericApplicationContext 及其子类 AnnotationConfigApplicationContext 作为自定义引导的常见实现，否则应使用 ApplicationContext。这些是用于所有常见目的的Spring核心容器的主要入口点：加载配置文件，触发类路径扫描，以编程方式注册Bean定义和带注解的类，以及（从5.0版本开始）注册功能性Bean定义。因为 ApplicationContext 包含 BeanFactory 的所有功能，所以通常建议在纯 BeanFactory 上使用，除非需要对Bean处理的完全控制。在 ApplicationContext（例如 GenericApplicationContext 实现）中，按照约定（即，按Bean名称或Bean类型（尤其是后处理器））检测到几种Bean，而普通的 DefaultListableBeanFactory 不知道任何特殊的Bean。对于许多扩展的容器功能（例如注解处理和AOP代理），BeanPostProcessor 扩展点是必不可少的。如果仅使用普通的 DefaultListableBeanFactory，则默认情况下不会检测到此类后处理器并将其激活。这种情况可能会造成混淆，因为您的bean配置实际上并没有错。而是在这种情况下，需要通过其他设置完全引导容器。
+> You should use an ApplicationContext unless you have a good reason for not doing so, with GenericApplicationContext and its subclass AnnotationConfigApplicationContext as the common implementations for custom bootstrapping. These are the primary entry points to Spring’s core container for all common purposes: loading of configuration files, triggering a classpath scan, programmatically registering bean definitions and annotated classes, and (as of 5.0) registering functional bean definitions.Because an ApplicationContext includes all the functionality of a BeanFactory, it is generally recommended over a plain BeanFactory, except for scenarios where full control over bean processing is needed. Within an ApplicationContext (such as the GenericApplicationContext implementation), several kinds of beans are detected by convention (that is, by bean name or by bean type — in particular, post-processors), while a plain DefaultListableBeanFactory is agnostic about any special beans.For many extended container features, such as annotation processing and AOP proxying, the BeanPostProcessor extension point is essential. If you use only a plain DefaultListableBeanFactory, such post-processors do not get detected and activated by default. This situation could be confusing, because nothing is actually wrong with your bean configuration. Rather, in such a scenario, the container needs to be fully bootstrapped through additional setup.除非有充分的理由，否则你应使用 ApplicationContext，除非将 GenericApplicationContext 及其子类 AnnotationConfigApplicationContext 作为自定义引导的常见实现，否则应使用 ApplicationContext。这些是用于所有常见目的的Spring核心容器的主要入口点：加载配置文件，触发类路径扫描，以编程方式注册Bean定义和带注解的类，以及（从5.0版本开始）注册功能性Bean定义。因为 ApplicationContext 包含 BeanFactory 的所有功能，所以通常建议在纯 BeanFactory 上使用，除非需要对Bean处理的完全控制。在 ApplicationContext（例如 GenericApplicationContext 实现）中，按照约定（即，按Bean名称或Bean类型（尤其是后处理器））检测到几种Bean，而普通的 DefaultListableBeanFactory 不知道任何特殊的Bean。对于许多扩展的容器功能（例如注解处理和AOP代理），BeanPostProcessor 扩展点是必不可少的。如果仅使用普通的 DefaultListableBeanFactory，则默认情况下不会检测到此类后处理器并将其激活。这种情况可能会造成混淆，因为您的bean配置实际上并没有错。而是在这种情况下，需要通过其他设置完全引导容器。
 
-文档已经描述的很清楚了，`ApplicationContext` 的功能更强大，所以选择用它。
+文档已经描述得很清楚：`ApplicationContext` 的功能更强大，所以推荐使用它。
 
 ##### 1.2 ApplicationContext的接口继承
 
-利用IDEA查看 `ApplicationContext` 接口的继承关系，我们只关注它与 `BeanFactory` 的关系：
-
-它通过两个中间的接口，最终继承到 `BeanFactory` 中。那这两个接口分别又是什么呢？
+利用 IDEA 查看 `ApplicationContext` 接口的继承关系，它与 `BeanFactory` 通过两个中间接口最终建立继承关系。
 
 ###### 1.2.1 ListableBeanFactory
 
-它的文档注释原文翻译：
+文档注释原文翻译：
 
 > Extension of the BeanFactory interface to be implemented by bean factories that can enumerate all their bean instances, rather than attempting bean lookup by name one by one as requested by clients. BeanFactory implementations that preload all their bean definitions (such as XML-based factories) may implement this interface. If this is a HierarchicalBeanFactory, the return values will not take any BeanFactory hierarchy into account, but will relate only to the beans defined in the current factory. Use the BeanFactoryUtils helper class to consider beans in ancestor factories too. The methods in this interface will just respect bean definitions of this factory. They will ignore any singleton beans that have been registered by other means like org.springframework.beans.factory.config.ConfigurableBeanFactory's registerSingleton method, with the exception of getBeanNamesOfType and getBeansOfType which will check such manually registered singletons too. Of course, BeanFactory's getBean does allow transparent access to such special beans as well. However, in typical scenarios, all beans will be defined by external bean definitions anyway, so most applications don't need to worry about this differentiation.它是 BeanFactory 接口的扩展，它可以实现枚举其所有bean实例，而不是按客户的要求按名称一一尝试进行bean查找。预加载其所有bean定义的 BeanFactory 实现（例如，基于XML的工厂）可以实现此接口。如果实现类同时也实现了 HierarchicalBeanFactory，返回值也不会考虑任何 BeanFactory 层次结构，而仅与当前工厂中定义的bean有关。但可以使用 BeanFactoryUtils 工具类来获取父工厂中的bean。该接口中的方法将仅遵守该工厂的bean定义。他们将忽略通过其他方式（例如 ConfigurableBeanFactory 的 registerSingleton 方法）注册的任何单例bean，但 getBeanNamesOfType 和 getBeansOfType 除外，它们也将检查此类手动注册的单例。当然，BeanFactory 的getBean 确实也允许透明访问此类特殊bean。但是，在典型情况下，无论如何，所有bean都将由外部bean定义来定义，因此大多数应用程序不必担心这种区别。
 
-从文档注释中可以获取到的最重要的信息：**它可以提供Bean的迭代**！
+从文档注释中可以获取到的最重要信息：**它可以提供 Bean 的迭代**。
 
 ###### 1.2.2 HierarchicalBeanFactory
 
-它的文档注释原文翻译：
+文档注释原文翻译：
 
 > Sub-interface implemented by bean factories that can be part of a hierarchy. The corresponding setParentBeanFactory method for bean factories that allow setting the parent in a configurable fashion can be found in the ConfigurableBeanFactory interface.由Bean工厂实现的子接口，可以是层次结构的一部分。可以在 ConfigurableBeanFactory 接口中找到用于bean工厂的相应 setParentBeanFactory 方法，该方法允许以可配置的方式设置父对象。
 
-文档注释中写的比较模糊，但可以大概看出来它涉及到层次。这个接口有一个方法，可以彻底帮我们解决疑惑：
+文档注释写得比较模糊，但可以大概看出它涉及层次结构。该接口有一个方法：
 
 ```java
 /**
@@ -320,18 +304,16 @@ public interface ApplicationContext extends EnvironmentCapable, ListableBeanFact
 BeanFactory getParentBeanFactory();
 ```
 
-获取父工厂？我们在一开始学 SpringMVC 的时候了解到，在原生的Web开发中，配置 SpringFramework 和 SpringMVC，是需要配置父子容器的！
-
-换言之，这个接口是**实现多层嵌套容器的支撑**。
+即获取父工厂。原生 Web 开发中配置 SpringFramework 和 SpringMVC 时需要配置父子容器，换言之，这个接口是**实现多层嵌套容器的支撑**。
 
 ##### 1.3 ApplicationContext的其他特征
+
+回到 `ApplicationContext` 的接口定义，它还继承了几个接口：
 
 ```java
 public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory,
 		MessageSource, ApplicationEventPublisher, ResourcePatternResolver
 ```
-
-回到 `ApplicationContext` 的接口定义，它还继承了几个接口：
 
 ###### 1.3.1 EnvironmentCapable
 
@@ -352,35 +334,35 @@ public interface EnvironmentCapable {
 }
 ```
 
-发现是跟 `Environment` 相关的。这个 **`Environment`** 的概念非常重要，会在后续IOC容器的解析时起到很大作用，后面会详细解释。
+它与 `Environment` 相关。**`Environment`** 的概念非常重要，会在后续 IOC 容器的解析时起到很大作用，后面会详细解释。
 
 ###### 1.3.2 MessageSource
 
-翻看它的文档注释：
+文档注释：
 
 > Strategy interface for resolving messages, with support for the parameterization and internationalization of such messages.用于解析消息的策略接口，并支持此类消息的参数化和国际化。
 
-很明显，它是实现国际化的接口。说明 `ApplicationContext` 还支持国际化。
+很明显，它是实现国际化的接口，说明 `ApplicationContext` 还支持国际化。
 
 ###### 1.3.3 ApplicationEventPublisher
 
-字面意思都很容易理解：应用事件发布器。它的文档注释：
+字面意思是应用事件发布器，文档注释：
 
 > Interface that encapsulates event publication functionality.封装事件发布功能的接口。
 
 ###### 1.3.4 ResourcePatternResolver
 
-字面意思也能理解：资源模式解析器。它的文档注释：
+字面意思是资源模式解析器，文档注释：
 
 > Strategy interface for resolving a location pattern (for example, an Ant-style path pattern) into Resource objects. This is an extension to the ResourceLoader interface. A passed-in ResourceLoader (for example, an org.springframework.context.ApplicationContext passed in via org.springframework.context.ResourceLoaderAware when running in a context) can be checked whether it implements this extended interface too. PathMatchingResourcePatternResolver is a standalone implementation that is usable outside an ApplicationContext, also used by ResourceArrayPropertyEditor for populating Resource array bean properties. Can be used with any sort of location pattern (e.g. "/WEB-INF/*-context.xml"): Input patterns have to match the strategy implementation. This interface just specifies the conversion method rather than a specific pattern format. This interface also suggests a new resource prefix "classpath*:" for all matching resources from the class path. Note that the resource location is expected to be a path without placeholders in this case (e.g. "/beans.xml"); JAR files or classes directories can contain multiple files of the same name.策略接口，用于将位置模式（例如，Ant样式的路径模式）解析为Resource对象。这是 ResourceLoader 接口的扩展。可以检查传入的 ResourceLoader（例如，在上下文中运行时通过 ResourceLoaderAware 传入的 ApplicationContext）是否也实现了此扩展接口。PathMatchingResourcePatternResolver 是一个独立的实现，可在 ApplicationContext 外部使用，ResourceArrayPropertyEditor 也使用它来填充Resource数组Bean属性。可以与任何类型的位置模式一起使用（例如 "/WEB-INF/*-context.xml"）：输入模式必须与策略实现相匹配。该接口仅指定转换方法，而不是特定的模式格式。 此接口还为类路径中的所有匹配资源建议一个新的资源前缀 "classpath*:"。请注意，在这种情况下，资源位置应该是没有占位符的路径（例如 "/beans.xml"）； jar包或类目录可以包含多个相同名称的文件。
 
-有 SSH/SSM 整合经验的读者，能很清晰地理解上面的意思。我们之前在web.xml中配置 `ContextLoaderListener` ，并且声明 `contextConfigLocation` 时，配置的参数值就是类似于上面的格式。
+有 SSH/SSM 整合经验的话，对上面的格式会很熟悉：在 web.xml 中配置 `ContextLoaderListener` 并声明 `contextConfigLocation` 时，配置的参数值就是类似的格式。
 
 至此，`ApplicationContext` 的结构已经分析完毕，下面来看 `ApplicationContext` 的子接口和一些重要的实现类。
 
 ##### 1.4 ConfigurableApplicationContext
 
-很明显，它是一个可配置的 `ApplicationContext`。它可配置在什么地方呢？我们来对比一下 `ConfigurableApplicationContext` 和 `ApplicationContext`：
+它是一个可配置的 `ApplicationContext`。对比 `ConfigurableApplicationContext` 和 `ApplicationContext`：
 
 ```java
 //ApplicationContext
@@ -406,86 +388,78 @@ void setParent(@Nullable ApplicationContext parent);
 }
 ```
 
-发现 `ApplicationContext` 中全部都是**get**方法，但在 `ConfigurableApplicationContext` 中开始出现了**set**方法。
+`ApplicationContext` 中全部都是 **get** 方法，但 `ConfigurableApplicationContext` 中开始出现了 **set** 方法。
 
 `ConfigurableApplicationContext` 的文档注释原文翻译：
 
 > SPI interface to be implemented by most if not all application contexts. Provides facilities to configure an application context in addition to the application context client methods in the ApplicationContext interface. Configuration and lifecycle methods are encapsulated here to avoid making them obvious to ApplicationContext client code. The present methods should only be used by startup and shutdown code.它是一种SPI接口，将由大多数（如果不是全部）ApplicationContext 的子类实现。除了 ApplicationContext 接口中的应用程序上下文客户端方法外，还提供了用于配置 ApplicationContext 的功能。配置和生命周期方法都封装在这里，以避免这些代码显式的暴露给 ApplicationContext 客户端代码。本方法仅应由启动和关闭容器的代码使用。
 
-其实这个接口是一个非常关键的核心接口。它包含了最核心的方法：**refresh**，它的作用会在后续IOC容器的启动刷新时详细解析。
+这个接口是一个非常关键的核心接口，包含了最核心的方法 **refresh**，其作用会在后续 IOC 容器的启动刷新时详细解析。
 
 ##### 1.5 AbstractApplicationContext
 
-它是 `ConfigurableApplicationContext` 的第一级实现类，同时也是抽象类。它的文档注释原文翻译：
+它是 `ConfigurableApplicationContext` 的第一级实现类，同时也是抽象类。文档注释原文翻译：
 
 > Abstract implementation of the ApplicationContext interface. Doesn't mandate the type of storage used for configuration; simply implements common context functionality. Uses the Template Method design pattern, requiring concrete subclasses to implement abstract methods. In contrast to a plain BeanFactory, an ApplicationContext is supposed to detect special beans defined in its internal bean factory: Therefore, this class automatically registers BeanFactoryPostProcessors, BeanPostProcessors, and ApplicationListeners which are defined as beans in the context. A MessageSource may also be supplied as a bean in the context, with the name "messageSource"; otherwise, message resolution is delegated to the parent context. Furthermore, a multicaster for application events can be supplied as an "applicationEventMulticaster" bean of type ApplicationEventMulticaster in the context; otherwise, a default multicaster of type SimpleApplicationEventMulticaster will be used. Implements resource loading by extending DefaultResourceLoader. Consequently treats non-URL resource paths as class path resources (supporting full class path resource names that include the package path, e.g. "mypackage/myresource.dat"), unless the getResourceByPath method is overridden in a subclass.ApplicationContext 接口的抽象实现。不强制用于配置的存储类型；简单地实现通用上下文功能。这个类使用模板方法模式，需要具体的子类来实现抽象方法。与普通 BeanFactory 相比，ApplicationContext 应该检测其内部bean工厂中定义的特殊bean：因此，此类自动注册在上下文中定义为bean的 BeanFactoryPostProcessors，BeanPostProcessors 和 ApplicationListeners。一个 MessageSource 也可以在上下文中作为bean提供，名称为“messageSource”。否则，将消息解析委托给父上下文。此外，可以在上下文中将用于应用程序事件的广播器作为类型为 ApplicationEventMulticaster 的 "applicationEventMulticaster" bean提供。否则，将使用类型为 SimpleApplicationEventMulticaster 的默认广播器。通过扩展 DefaultResourceLoader 实现资源加载。因此，除非在子类中覆盖了 getResourceByPath 方法，否则将非URL资源路径视为类路径资源（支持包含包路径的完整类路径资源名称，例如 "mypackage / myresource.dat"）。
 
-从文档注释中可以看出，它已经实现了 `ConfigurableApplicationContext` 接口，但里面提供了几个模板方法，用于子类重写（多态）。
-
-这个类的refresh方法是将来IOC容器启动刷新时要分析的核心方法，后续会详细解析。
+从文档注释中可以看出，它已经实现了 `ConfigurableApplicationContext` 接口，并提供了几个模板方法用于子类重写（多态）。这个类的 refresh 方法是将来 IOC 容器启动刷新时要分析的核心方法。
 
 ##### 1.6 常用的ApplicationContext的实现类
 
-前面我们了解完 `ApplicationContext` 和 `BeanFactory` 的关系，对这个接口以及子接口、抽象实现类也有了一个最基本的认知。下面我们对 SpringFramework 中最常用的两个IOC容器实现类来简单介绍一下。
+SpringFramework 中最常用的两个 IOC 容器实现类如下。
 
 ###### 1.6.1 ClassPathXmlApplicationContext
 
-我们都很熟悉，在一开始 SpringFramework 入门的时候就用过了。它的类定义和继承结构图：
+SpringFramework 入门阶段常用的容器实现。类定义和继承结构：
 
 ` public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContext`
 
-在继承关系图中，可以发现 `ClassPathXmlApplicationContext` 的几个特征：**基于XML**，**可刷新的**，**可配置的**。
+从继承关系中可以发现 `ClassPathXmlApplicationContext` 的几个特征：**基于XML**、**可刷新的**、**可配置的**。
 
-在 SpringFramework 的官方文档1.2节有介绍基础IOC容器的使用，这里面大量介绍了 ClassPathXmlApplicationContext，文档不作过多解释。
+SpringFramework 官方文档 1.2 节介绍了基础 IOC 容器的使用，其中大量介绍了 ClassPathXmlApplicationContext：
 
 [https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#beans-basics](https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#beans-basics)
 
 ###### 1.6.2 AnnotationConfigApplicationContext
 
-我们在一开始学习启动原理时也用过了，它是使用注解配置来加载初始化IOC容器的。它的类定义和继承结构图：
+它使用注解配置来加载初始化 IOC 容器。类定义和继承结构：
 
 ` public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry`
 
-它的继承关系相对简单，而且还实现了 Annotation 相关的接口。
-
-在 SpringFramework 的官方文档1.12节，有专门的基于Java配置的容器的介绍。
+它的继承关系相对简单，还实现了 Annotation 相关的接口。SpringFramework 官方文档 1.12 节有专门的基于 Java 配置的容器介绍：
 
 [https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#beans-java](https://docs.spring.io/spring/docs/5.1.10.RELEASE/spring-framework-reference/core.html#beans-java)
 
-它配合的注解前面已经见过不少了。由于文档主要讲解原理和源码，对于这些容器和注解的基本使用不作过多介绍。
+它配合的注解在前文已出现不少。本篇侧重原理和源码，容器和注解的基本使用不再展开。
 
 #### 2. SpringBoot对IOC容器的扩展
 
-【该部分只作为前置知识，可以先不了解】
+（该部分只作为前置知识）
 
-在spring-boot的jar包中，`org.springframework.boot.web` 路径下有一个 context 包，里面有两个接口：`WebServerApplicationContext`、`ConfigurableWebServerApplicationContext`。
+在 spring-boot 的 jar 包中，`org.springframework.boot.web` 路径下有一个 context 包，里面有两个接口：`WebServerApplicationContext`、`ConfigurableWebServerApplicationContext`。
 
-翻看 `WebServerApplicationContext` 的接口定义：
+`WebServerApplicationContext` 的接口定义：
 
 ` public interface WebServerApplicationContext extends ApplicationContext`
 
-发现它直接继承了 `ApplicationContext`，说明它与上面的提到的 `ApplicationContext` 的子接口都没关系了，这是独成一套。它的文档注释原文翻译：
+它直接继承了 `ApplicationContext`，与上面提到的 `ApplicationContext` 子接口均无关联，独成一套。文档注释原文翻译：
 
 > Interface to be implemented by application contexts that create and manage the lifecycle of an embedded WebServer.由创建和管理嵌入式Web服务器的生命周期的应用程序上下文实现的接口。
 
-它与嵌入式Web服务器有关系。而我们之前学习 SpringBoot 的时候，就已经了解 SpringBoot 的一大优势就是嵌入式Web服务器。它在后续的IOC容器启动时也会有相关介绍。
+它与嵌入式 Web 服务器有关系。SpringBoot 的一大优势正是嵌入式 Web 服务器，该接口在后续 IOC 容器启动时也会有相关介绍。
 
-利用IDEA查看这个接口的子接口和实现类：
-
-发现一共有5个实现类，一个子接口（恰好就是之前看到的 `ConfigurableWebServerApplicationContext`）。这里面的 ApplicationContext 会在后续分析启动过程时会遇见，此处仅做接触了解。
+利用 IDE 查看这个接口的子接口和实现类：共有 5 个实现类和 1 个子接口（恰好就是前面看到的 `ConfigurableWebServerApplicationContext`）。相关实现会在后续分析启动过程时遇到，此处仅做接触了解。
 
 #### 小结
 
-1. SpringFramework 原生的IOC容器有几个特点：分层次的、可列举的、可配置的。
-2. SpringBoot 在 SpringFramework 原生的IOC容器上做了扩展，且都是基于注解的扩展。
+1. SpringFramework 原生的 IOC 容器有几个特点：分层次的、可列举的、可配置的。
+2. SpringBoot 在 SpringFramework 原生的 IOC 容器上做了扩展，且都是基于注解的扩展。
 
-【下面我们要正式开始IOC的原理解析了，IOC是 SpringFramework 和 SpringBoot 的基础，一定要慢慢仔细阅读和理解】
+IoC 是 SpringFramework 和 SpringBoot 的基础，以下正式进入 IoC 原理解析。
 
 ### IOC：SpringBoot准备IOC容器
 
-了解背景后，下面一步一步研究 SpringBoot 如何启动 IoC 容器。
-
-先对本篇内容有个整体了解：
+了解背景后，下面逐步分析 SpringBoot 如何启动 IoC 容器。整体流程为：main 方法进入 → SpringApplication.run → new SpringApplication（构造准备）→ run（准备运行时环境）。
 
 #### 1. main方法进入
 
@@ -504,7 +478,7 @@ public static void main(String[] args) {
 
 #### 2. 进入SpringApplication.run方法
 
-进入run方法，可以发现执行的 SpringBoot 应用启动操作分为两步：
+进入 run 方法，SpringBoot 应用启动操作分为两步：
 
 ```java
     public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
@@ -517,10 +491,9 @@ public static void main(String[] args) {
     }
 ```
 
-run方法返回的是 `ApplicationContext` 的子接口：`ConfigurableApplicationContext` ，之前我们已经了解过了，不再赘述。
+run 方法返回的是 `ApplicationContext` 的子接口：`ConfigurableApplicationContext`。
 
-底下的run方法分为两步，分开来看：
-
+底层的 run 方法分为两步，分开来看。
 #### 3. new SpringApplication(primarySources)：创建SpringApplication
 
 最终调用的构造方法是下面的两参数方法。
@@ -551,13 +524,11 @@ public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySourc
 }
 ```
 
-暂且不看这个方法的具体实现，先看一眼构造方法的文档注释：
+先看构造方法的文档注释：
 
 > Create a new SpringApplication instance. The application context will load beans from the specified primary sources (see class-level documentation for details. The instance can be customized before calling run(String...).创建一个新的 SpringApplication 实例。应用程序上下文将从指定的主要源加载Bean（有关详细信息，请参见类级别的文档）。可以在调用run(String...)之前自定义实例。
 
-文档中描述可以在run方法之前自定义实例，换句话说，可以手动配置一些 SpringApplication 的属性。
-
-如果没见过自定义配置 `SpringApplication`，请继续往下看；已了解的读者请跳过 3.0 节。
+文档中描述可以在 run 方法之前自定义实例，即可以手动配置一些 SpringApplication 的属性，示例如下。
 
 ##### 3.0 自定义SpringApplication
 
@@ -575,7 +546,7 @@ public static void main(String[] args) {
 }
 ```
 
-下面对 SpringApplication 的构造方法实现中每一步作详细解析：
+下面对 SpringApplication 构造方法实现中的每一步作详细解析。
 
 ##### 3.1 WebApplicationType.deduceFromClasspath：判断当前应用环境
 
@@ -602,23 +573,19 @@ static WebApplicationType deduceFromClasspath() {
 }
 ```
 
-这个方法没有文档注释，但方法名和返回值类型已经可以描述方法用途：**从classpath下判断当前SpringBoot应用应该使用哪种环境启动**。
+这个方法没有文档注释，但方法名和返回值类型已经可以描述方法用途：**从 classpath 下判断当前 SpringBoot 应用应该使用哪种环境启动**。
 
-上面的代码块中把这个类中定义的一些常量也贴了进来，方便阅读。它们是描述了一些 `Servlet` 的全限定名、`DispatcherServlet` 的全限定名等等，它们的用途是**配合下面的方法判断应用的classpath里是否有这些类**。
+上面代码块中定义的一组常量描述了 `Servlet`、`DispatcherServlet` 等类的全限定名，用途是**配合方法判断应用的 classpath 里是否存在这些类**。方法实现的判断逻辑：
 
-下面的方法实现中：
-
-- 第一个if结构先判断是否是 **Reactive** 环境，发现有 WebFlux 的类但没有 WebMvc 的类，则判定为 Reactive 环境（全NIO）
-- 之后的for循环要检查是否有跟 Servlet 相关的类，如果有任何一个类没有，则判定为非Web环境
-- 如果for循环走完了，证明所有类均在当前 classpath 下，则为 Servlet（WebMvc） 环境
+- 第一个 if 结构先判断是否是 **Reactive** 环境：发现有 WebFlux 的类但没有 WebMvc 的类，则判定为 Reactive 环境（全 NIO）。
+- 之后的 for 循环检查是否有跟 Servlet 相关的类，只要有任何一个类不存在，则判定为非 Web 环境。
+- 如果 for 循环走完，证明所有类均在当前 classpath 下，则为 Servlet（WebMvc）环境。
 
 ##### 3.2 setInitializers：设置初始化器
 
-setInitializers方法会将一组类型为 `ApplicationContextInitializer` 的初始化器放入 `SpringApplication` 中。
+setInitializers 方法会将一组类型为 `ApplicationContextInitializer` 的初始化器放入 `SpringApplication` 中。而这组 **`ApplicationContextInitializer`**，是在构造方法中通过 `getSpringFactoriesInstances` 得到的。
 
-而这组 **`ApplicationContextInitializer`**，是在构造方法中，通过 `getSpringFactoriesInstances` 得到的。
-
-在阅读这部分源码之前，先来了解一下 `ApplicationContextInitializer` 是什么。
+阅读这部分源码之前，先了解 `ApplicationContextInitializer` 的定义。
 
 ###### 3.2.0 【重要】ApplicationContextInitializer
 
@@ -630,11 +597,11 @@ public interface ApplicationContextInitializer<C extends ConfigurableApplication
 
 > Callback interface for initializing a Spring ConfigurableApplicationContext prior to being refreshed. Typically used within web applications that require some programmatic initialization of the application context. For example, registering property sources or activating profiles against the context's environment. See ContextLoader and FrameworkServlet support for declaring a "contextInitializerClasses" context-param and init-param, respectively. ApplicationContextInitializer processors are encouraged to detect whether Spring's Ordered interface has been implemented or if the @Order annotation is present and to sort instances accordingly if so prior to invocation.用于在刷新容器之前初始化Spring ConfigurableApplicationContext 的回调接口。通常在需要对应用程序上下文进行某些编程初始化的Web应用程序中使用。例如，根据上下文环境注册属性源或激活配置文件。请参阅 ContextLoader 和FrameworkServlet 支持，分别声明 "contextInitializerClasses" 的 context-param 和 init-param。鼓励 ApplicationContextInitializer 处理器检测是否已实现Spring的 Ordered 接口，或者是否标注了 @Order 注解，并在调用之前相应地对实例进行排序。
 
-第一句注释已经解释的很明白了，它是在IOC容器之前的回调。它的使用方式有三种：
+第一句注释解释得很明白：它是在 IOC 容器刷新之前的回调。它的使用方式有三种。
 
 ###### 3.2.0.1 运行SpringApplication之前手动添加
 
-先编写一个Demo：
+先编写一个实现类：
 
 ```java
 public class ApplicationContextInitializerDemo implements ApplicationContextInitializer {
@@ -663,7 +630,7 @@ public static void main(String[] args) {
 }
 ```
 
-运行主启动类，控制台打印（看Banner下面的第一行）：
+运行主启动类，控制台打印（Banner 下面的第一行）：
 
 ```text
   .   ____          _            __ _ _
@@ -689,15 +656,15 @@ context.initializer.classes=com.example.demo.ApplicationContextInitializerDemo
 
 ###### 3.2.0.3 spring.factories中配置
 
-在工程的 resources 目录下新建 **“META-INF”** 目录，并在下面创建一个 `spring.factories` 文件。在文件内声明：
+在工程的 resources 目录下新建 **"META-INF"** 目录，并在下面创建一个 `spring.factories` 文件，在文件内声明：
 
 ```properties
 org.springframework.context.ApplicationContextInitializer=com.example.demo.ApplicationContextInitializerDemo
 ```
 
-三种方式效果都是一样的。
+三种方式效果一致。
 
-回到上面的方法中：
+回到 setInitializers 的取值逻辑：
 
 ```java
 public void setInitializers(Collection<? extends ApplicationContextInitializer<?>> initializers) {
@@ -721,11 +688,11 @@ private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] 
 }
 ```
 
-方法中有两步是比较重要的，下面分别来看：
+方法中有两步比较重要，分别来看。
 
 ###### 3.2.1 SpringFactoriesLoader.loadFactoryNames
 
-这个方法我们已经在之前详细解析过，这里不重复解释，不过我们可以看一眼 ` spring-boot` 和 `spring-boot-autoconfigure` 包下的 `spring.factories` 里面对于 `ApplicationContextInitializer` 的配置：
+`SpringFactoriesLoader.loadFactoryNames` 的机制在自动配置篇已有详细解析，此处看一眼 `spring-boot` 和 `spring-boot-autoconfigure` 包下的 `spring.factories` 中对 `ApplicationContextInitializer` 的配置：
 
 ```properties
 # Application Context Initializers
@@ -743,14 +710,14 @@ org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitial
 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener
 ```
 
-它一共配置了6个 `ApplicationContextInitializer`，对这些Initializer作简单介绍：
+两个包一共配置了 6 个 `ApplicationContextInitializer`，作用如下：
 
-- ConfigurationWarningsApplicationContextInitializer：报告IOC容器的一些常见的错误配置
-- ContextIdApplicationContextInitializer：设置Spring应用上下文的ID
-- DelegatingApplicationContextInitializer：加载 `application.properties` 中 `context.initializer.classes` 配置的类
-- ServerPortInfoApplicationContextInitializer：将内置servlet容器实际使用的监听端口写入到 `Environment` 环境属性中
-- SharedMetadataReaderFactoryContextInitializer：创建一个 SpringBoot 和 `ConfigurationClassPostProcessor` 共用的 `CachingMetadataReaderFactory` 对象
-- ConditionEvaluationReportLoggingListener：将 `ConditionEvaluationReport` 写入日志
+- ConfigurationWarningsApplicationContextInitializer：报告 IOC 容器的一些常见的错误配置。
+- ContextIdApplicationContextInitializer：设置 Spring 应用上下文的 ID。
+- DelegatingApplicationContextInitializer：加载 `application.properties` 中 `context.initializer.classes` 配置的类。
+- ServerPortInfoApplicationContextInitializer：将内置 servlet 容器实际使用的监听端口写入到 `Environment` 环境属性中。
+- SharedMetadataReaderFactoryContextInitializer：创建一个 SpringBoot 和 `ConfigurationClassPostProcessor` 共用的 `CachingMetadataReaderFactory` 对象。
+- ConditionEvaluationReportLoggingListener：将 `ConditionEvaluationReport` 写入日志。
 
 ###### 3.2.2 createSpringFactoriesInstances：反射创建这些组件的实例
 
@@ -777,7 +744,7 @@ private <T> List<T> createSpringFactoriesInstances(Class<T> type, Class<?>[] par
 
 ##### 3.3 setListeners：设置监听器
 
-与上面一样，先了解下 `ApplicationListener` ：
+与上面一样，先了解 `ApplicationListener`。
 
 ###### 3.3.0 【重要】ApplicationListener
 
@@ -787,11 +754,11 @@ import java.util.EventListener;
 public interface ApplicationListener<E extends ApplicationEvent> extends EventListener
 ```
 
-它的文档注释原文翻译：
+文档注释原文翻译：
 
 > Interface to be implemented by application event listeners. Based on the standard java.util.EventListener interface for the Observer design pattern. As of Spring 3.0, an ApplicationListener can generically declare the event type that it is interested in. When registered with a Spring ApplicationContext, events will be filtered accordingly, with the listener getting invoked for matching event objects only.由应用程序事件监听器实现的接口。基于观察者模式的标准 java.util.EventListener 接口。从Spring 3.0开始，ApplicationListener 可以一般性地声明监听的事件类型。向IOC容器注册后，将相应地过滤事件，并且仅针对匹配事件对象调用监听器。
 
-文档注释也写的很明白，它就是监听器，用于监听IOC容器中发布的各种事件。至于事件是干嘛的，要到后续看IOC容器的刷新过程时才能看到。
+文档注释写得很明白：它是监听器，用于监听 IOC 容器中发布的各种事件。事件机制的具体作用要到后续 IOC 容器的刷新过程才能看到。
 
 ###### 3.3.1 加载Listener
 
@@ -800,7 +767,7 @@ public interface ApplicationListener<E extends ApplicationEvent> extends EventLi
 setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 ```
 
-套路与 `setInitializers` 一致，同样的我们来看看它加载了的 Listener：
+加载机制与 `setInitializers` 一致，默认加载的 Listener 如下：
 
 ```properties
 # Application Listeners
@@ -822,16 +789,16 @@ org.springframework.context.ApplicationListener=\
 org.springframework.boot.autoconfigure.BackgroundPreinitializer
 ```
 
-- ClearCachesApplicationListener：应用上下文加载完成后对缓存做清除工作
-- ParentContextCloserApplicationListener：监听双亲应用上下文的关闭事件并往自己的子应用上下文中传播
-- FileEncodingApplicationListener：检测系统文件编码与应用环境编码是否一致，如果系统文件编码和应用环境的编码不同则终止应用启动
-- AnsiOutputApplicationListener：根据 `spring.output.ansi.enabled` 参数配置 AnsiOutput
-- ConfigFileApplicationListener：从常见的那些约定的位置读取配置文件
-- DelegatingApplicationListener：监听到事件后转发给 `application.properties` 中配置的 `context.listener.classes` 的监听器
-- ClasspathLoggingApplicationListener：对环境就绪事件 `ApplicationEnvironmentPreparedEvent` 和应用失败事件 `ApplicationFailedEvent` 做出响应
-- LoggingApplicationListener：配置 `LoggingSystem`。使用 `logging.config` 环境变量指定的配置或者缺省配置
-- LiquibaseServiceLocatorApplicationListener：使用一个可以和 SpringBoot 可执行jar包配合工作的版本替换 LiquibaseServiceLocator
-- BackgroundPreinitializer：使用一个后台线程尽早触发一些耗时的初始化任务
+- ClearCachesApplicationListener：应用上下文加载完成后对缓存做清除工作。
+- ParentContextCloserApplicationListener：监听双亲应用上下文的关闭事件并往自己的子应用上下文中传播。
+- FileEncodingApplicationListener：检测系统文件编码与应用环境编码是否一致，如果系统文件编码和应用环境的编码不同则终止应用启动。
+- AnsiOutputApplicationListener：根据 `spring.output.ansi.enabled` 参数配置 AnsiOutput。
+- ConfigFileApplicationListener：从常见的约定位置读取配置文件。
+- DelegatingApplicationListener：监听到事件后转发给 `application.properties` 中配置的 `context.listener.classes` 的监听器。
+- ClasspathLoggingApplicationListener：对环境就绪事件 `ApplicationEnvironmentPreparedEvent` 和应用失败事件 `ApplicationFailedEvent` 做出响应。
+- LoggingApplicationListener：配置 `LoggingSystem`，使用 `logging.config` 环境变量指定的配置或者缺省配置。
+- LiquibaseServiceLocatorApplicationListener：使用一个可以和 SpringBoot 可执行 jar 包配合工作的版本替换 LiquibaseServiceLocator。
+- BackgroundPreinitializer：使用一个后台线程尽早触发一些耗时的初始化任务。
 
 ##### 3.4 deduceMainApplicationClass：确定主配置类
 
@@ -853,11 +820,9 @@ private Class<?> deduceMainApplicationClass() {
 }
 ```
 
-源码很简单，从 `deduceMainApplicationClass` 方法开始往上爬，哪一层调用栈上有main方法，方法对应的类就是主配置类，就返回这个类。
+源码逻辑简单：从 `deduceMainApplicationClass` 方法开始往上遍历调用栈，哪一层调用栈上有 main 方法，方法对应的类就是主配置类并返回该类。
 
-实际上通过Debug可以发现，发现这部分的 stackTrace 就是调用栈：
-
-那自然最下面调用的方法是main方法，由此可确定主配置类。
+通过 Debug 可以发现，这部分的 stackTrace 就是调用栈：最下面调用的方法是 main 方法，由此可确定主配置类。
 
 ##### 3.5 【补充】与SpringBoot1.x的区别
 
@@ -882,13 +847,12 @@ private void initialize(Object[] sources) {
 #### 小结
 
 1. `SpringApplication` 的创建和运行是两个不同的步骤。
-2. SpringBoot 会根据当前classpath下的类来决定Web应用类型。
-3. SpringBoot 的应用中包含两个关键组件：`ApplicationContextInitializer` 和 `ApplicationListener` ，分别是初始化器和监听器，它们都在构建 `SpringApplication` 时注册。
+2. SpringBoot 会根据当前 classpath 下的类来决定 Web 应用类型。
+3. SpringBoot 的应用中包含两个关键组件：`ApplicationContextInitializer` 和 `ApplicationListener`，分别是初始化器和监听器，它们都在构建 `SpringApplication` 时注册。
 
-【至此，`SpringApplication` 的初始化完成，下面会开始真正的启动 SpringApplication 】
+至此，`SpringApplication` 的初始化完成，接下来开始真正的启动过程。
 
 ### IOC：准备运行时环境
-
 
 ```java
 public static ConfigurableApplicationContext run(Class<?>[] primarySources, String[] args) {
@@ -896,13 +860,9 @@ public static ConfigurableApplicationContext run(Class<?>[] primarySources, Stri
 }
 ```
 
-`new SpringApplication()` 完成后，下面开始执行run方法：
-
-在开始走 run 方法之前，先大体对这部分有一个宏观的认识，便于接下来理解。
+`new SpringApplication()` 完成后，开始执行 run 方法。run() 源码较长，本篇聚焦前置准备与运行时环境准备两个阶段。
 
 #### 4. run()：启动SpringApplication
-
-源码很长，这里我们拆成几篇来看，本篇先来看前置准备和运行时环境的准备。
 
 ```java
 public ConfigurableApplicationContext run(String... args) {
@@ -929,11 +889,11 @@ public ConfigurableApplicationContext run(String... args) {
 
 ##### 4.1 new StopWatch()：创建StopWatch对象
 
-这个组件看上去貌似跟时间相关，看它的文档注释（最后一句）：
+StopWatch 与时间统计相关，看它的文档注释（最后一句）：
 
 > This class is normally used to verify performance during proof-of-concepts and in development, rather than as part of production applications.常用于在概念验证和开发过程中验证性能，而不是作为生产应用程序的一部分。
 
-注释已经解释的很明确了：**仅用于验证性能**。也就是说，这个组件是用来监控启动时间的，不是很重要，我们不作深入研究。看一眼源码吧：
+注释解释得很明确：**仅用于验证性能**。也就是说，这个组件是用来监控启动时间的，不是核心组件，不作深入研究。看一眼源码：
 
 ```java
 public void start() throws IllegalStateException {
@@ -957,7 +917,7 @@ public void start(String taskName) throws IllegalStateException {
     Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
 ```
 
-这段源码本身非常简单，但 `SpringBootExceptionReporter` 是什么呢？
+这段源码本身非常简单，但 `SpringBootExceptionReporter` 是一个新的接口。
 
 ###### 4.2.0 SpringBootExceptionReporter
 
@@ -967,11 +927,11 @@ public interface SpringBootExceptionReporter {
 }
 ```
 
-这个接口是SpringBoot2.0出现的，它是一种异常分析器。它的文档注释原文翻译：
+这个接口是 SpringBoot 2.0 出现的，它是一种异常分析器。文档注释原文翻译：
 
 > Callback interface used to support custom reporting of SpringApplication startup errors. reporters are loaded via the SpringFactoriesLoader and must declare a public constructor with a single ConfigurableApplicationContext parameter.用于支持 SpringApplication 启动错误报告的自定义报告的回调接口，它通过 SpringFactoriesLoader 加载，并且必须使用单个 ConfigurableApplicationContext 参数声明公共构造函数。
 
-文档注释已经写明白了，它是启动错误报告的报告器，并且也是用 `SpringFactoriesLoader` 加载。通过使用IDEA的实现继承关系查看，发现它的实现类只有一个： `FailureAnalyzers`。
+文档注释已经写明白：它是启动错误报告的报告器，并且也是用 `SpringFactoriesLoader` 加载。通过 IDE 查看实现继承关系，它的实现类只有一个：`FailureAnalyzers`。
 
 ###### 4.2.1 与SpringBoot1.x的对比
 
@@ -980,7 +940,7 @@ public interface SpringBootExceptionReporter {
     FailureAnalyzers analyzers = null;
 ```
 
-SpringBoot1.x中声明的直接是 `FailureAnalyzers`，而且是一个。
+SpringBoot 1.x 中声明的直接是 `FailureAnalyzers`，而且是一个。
 
 ##### 4.3 configureHeadlessProperty：设置awt相关
 
@@ -991,9 +951,7 @@ private void configureHeadlessProperty() {
 }
 ```
 
-这段源码很诡异，它从 `System` 中取了一个配置，又给设置回去了。这样做的目的是什么呢？
-
-这就要看jdk中 `System` 类的这两个方法了：
+这段源码从 `System` 中取了一个配置，又给设置回去了，目的需要结合 jdk 中 `System` 类的这两个方法来理解：
 
 ```java
 public static String getProperty(String key) {
@@ -1028,15 +986,13 @@ public static String setProperty(String key, String value) {
 }
 ```
 
-发现 `System` 类中有两个重载的 `getProperty` 方法，但只有一个 `setProperty`！仔细观察源码，发现重载的方法有一点微妙的区别。这里要提一下 `Properties` 的机制：
+`System` 类中有两个重载的 `getProperty` 方法，但只有一个 `setProperty`。重载方法之间有一点微妙的区别，这里要提一下 `Properties` 的机制：
 
-`setProperty` 方法中调用的是 `Properties` 的两参数 `setProperty` 方法，分别代表key和value，这自然不必多说。`getProperty` 方法的两个重载的方法唯一的区别是调用 `Properties` 的一参数和两参数方法，它的区别类似于Map中的`get`和`getOrDefault`。换句话说，`getProperty` 的两参数方法如果取不到指定的key，则会返回一个默认值；一个参数的方法调用时没有则返回null。
+`setProperty` 方法中调用的是 `Properties` 的两参数 `setProperty` 方法，分别代表 key 和 value。`getProperty` 的两个重载方法的唯一区别是调用 `Properties` 的一参数和两参数方法，区别类似于 Map 中的 `get` 和 `getOrDefault`：两参数的 `getProperty` 方法如果取不到指定的 key，则返回一个默认值；一参数方法调用时没有则返回 null。
 
-经过上述源码的设置后，这样无论如何都能取到这个key为 `SYSTEM_PROPERTY_JAVA_AWT_HEADLESS` 的value了。那这个 `SYSTEM_PROPERTY_JAVA_AWT_HEADLESS` 又是什么呢？
+经过上述源码的设置后，无论如何都能取到 key 为 `SYSTEM_PROPERTY_JAVA_AWT_HEADLESS` 的 value。这个 `SYSTEM_PROPERTY_JAVA_AWT_HEADLESS` 的值是 `java.awt.headless`——显示器缺失。
 
-` private static final String SYSTEM_PROPERTY_JAVA_AWT_HEADLESS = "java.awt.headless";` ——显示器缺失
-
-由此可得，这段源码的真正作用是：设置应用在启动时，**即使没有检测到显示器也允许其继续启动**。（服务器嘛，没显示器照样得运行。）
+由此可得，这段源码的真正作用是：设置应用在启动时，**即使没有检测到显示器也允许其继续启动**，保证应用在无显示器的服务器环境下正常运行。
 
 ##### 4.4 getRunListeners：获取SpringApplicationRunListeners
 
@@ -1049,11 +1005,9 @@ private SpringApplicationRunListeners getRunListeners(String[] args) {
 }
 ```
 
-加载机制我们懂，那 `SpringApplicationRunListeners` 是什么呢？
+加载机制与前面一致，`SpringApplicationRunListener` 的定义与回调时机如下。
 
 ###### 4.4.0 【重要】SpringApplicationRunListeners
-
-文档注释已在源码中直接标注，不再拆分到正文。
 
 ```java
 /**
@@ -1122,11 +1076,9 @@ public interface SpringApplicationRunListener {
 }
 ```
 
-值得注意的是，started、running、failed方法是 SpringBoot2.0 才加入的。
+值得注意的是，started、running、failed 方法是 SpringBoot 2.0 才加入的。后续 run 方法中会多次出现这些 `SpringApplicationRunListeners` 的回调，文中均以【回调】标注。
 
-后续这个 run 方法中会常出现这些 `SpringApplicationRunListeners` 的身影，文中会特别标注，请多加留意。
-
-通过Debug，发现默认情况下加载的listeners有一个，类型为 `EventPublishingRunListener`：
+通过 Debug 可以发现，默认情况下加载的 listeners 有一个，类型为 `EventPublishingRunListener`。
 
 回到 run 方法中：
 
@@ -1141,15 +1093,13 @@ public interface SpringApplicationRunListener {
         //......
 ```
 
-在 `prepareEnvironment` 之前，run方法中调用了：`listeners.starting()` ，已经开始了事件回调。
+在 `prepareEnvironment` 之前，run 方法中调用了 `listeners.starting()`，事件回调已经开启。
 
-接下来要执行的方法：`prepareEnvironment`
+接下来要执行的方法是 `prepareEnvironment`。
 
 ##### 4.5 prepareEnvironment：准备运行时环境
 
-暂且不看方法实现，先了解一下 `Environment` 是什么东西（之前说过 `Environment` 非常重要）。
-
-如果不了解 `Environment`，请继续往下看；已熟悉的读者请直接跳过 4.5.0 节。
+在分析 prepareEnvironment 实现前，先了解 `Environment` 的定义（`Environment` 是后续分析的关键概念，已熟悉的开发者可直接跳过 4.5.0 节）。
 
 ###### 4.5.0 【重要】Environment与ConfigurableEnvironment
 
@@ -1159,17 +1109,15 @@ public interface SpringApplicationRunListener {
 
 > Interface representing the environment in which the current application is running. Models two key aspects of the application environment: profiles and properties. Methods related to property access are exposed via the PropertyResolver superinterface. A profile is a named, logical group of bean definitions to be registered with the container only if the given profile is active. Beans may be assigned to a profile whether defined in XML or via annotations; see the spring-beans 3.1 schema or the @Profile annotation for syntax details. The role of the Environment object with relation to profiles is in determining which profiles (if any) are currently active, and which profiles (if any) should be active by default. Properties play an important role in almost all applications, and may originate from a variety of sources: properties files, JVM system properties, system environment variables, JNDI, servlet context parameters, ad-hoc Properties objects, Maps, and so on. The role of the environment object with relation to properties is to provide the user with a convenient service interface for configuring property sources and resolving properties from them. Beans managed within an ApplicationContext may register to be EnvironmentAware or @Inject the Environment in order to query profile state or resolve properties directly. In most cases, however, application-level beans should not need to interact with the Environment directly but instead may have to have ${...} property values replaced by a property placeholder configurer such as PropertySourcesPlaceholderConfigurer, which itself is EnvironmentAware and as of Spring 3.1 is registered by default when using <context:property-placeholder/>. Configuration of the environment object must be done through the ConfigurableEnvironment interface, returned from all AbstractApplicationContext subclass getEnvironment() methods. See ConfigurableEnvironment Javadoc for usage examples demonstrating manipulation of property sources prior to application context refresh().表示当前应用程序正在其中运行的环境的接口。它为应用环境制定了两个关键的方面：profile 和 properties。与属性访问有关的方法通过 PropertyResolver 这个父接口公开。profile机制保证了仅在给定 profile 处于激活状态时，才向容器注册的Bean定义的命名逻辑组。无论是用XML定义还是通过注解定义，都可以将Bean分配给指定的 profile。有关语法的详细信息，请参见spring-beans 3.1规范文档 或 @Profile 注解。Environment 的作用是决定当前哪些配置文件（如果有）处于活动状态，以及默认情况下哪些配置文件（如果有）应处于活动状态。Properties 在几乎所有应用程序中都起着重要作用，并且可能来源自多种途径：属性文件，JVM系统属性，系统环境变量，JNDI，ServletContext 参数，临时属性对象，Map等。Environment 与 Properties 的关系是为用户提供方便的服务接口，以配置属性源，并从中解析属性值。在 ApplicationContext 中管理的Bean可以注册为 EnvironmentAware 或使用 @Inject 标注在 Environment 上，以便直接查询profile的状态或解析 Properties。但是，在大多数情况下，应用程序级Bean不必直接与 Environment 交互，而是通过将${...}属性值替换为属性占位符配置器进行属性注入（例如 PropertySourcesPlaceholderConfigurer），该属性本身是 EnvironmentAware，当配置了 <context:property-placeholder/> 时，默认情况下会使用Spring 3.1的规范注册。必须通过从所有 AbstractApplicationContext 子类的 getEnvironment() 方法返回的 ConfigurableEnvironment 接口完成环境对象的配置。请参阅 ConfigurableEnvironment 的Javadoc以获取使用示例，这些示例演示在应用程序上下文 refresh() 方法被调用之前对属性源进行的操作。
 
-简单概括一下：**它是IOC容器的运行环境，它包括Profile和Properties两大部分，它可由一个到几个激活的Profile共同配置，它的配置可在应用级Bean中获取**。
-
-可以这样理解：
+简单概括：**它是 IOC 容器的运行环境，包括 Profile 和 Properties 两大部分；它可由一个到几个激活的 Profile 共同配置；它的配置可在应用级 Bean 中获取**。
 
 ###### 4.5.0.2 ConfigurableEnvironment
 
-它的文档注释更长，我们只摘选最核心的部分，举例部分不作阅读：
+它的文档注释很长，这里只摘选最核心的部分：
 
 > Configuration interface to be implemented by most if not all Environment types. Provides facilities for setting active and default profiles and manipulating underlying property sources. Allows clients to set and validate required properties, customize the conversion service and more through the ConfigurablePropertyResolver superinterface.大多数（如果不是全部）Environment 类型的类都将实现的配置接口。提供用于设置 Profile 和默认配置文件以及操纵基础属性源的工具。允许客户端通过ConfigurablePropertyResolver 根接口设置和验证所需的属性、自定义转换服务以及其他功能。
 
-从文档注释中发现这种机制与 `ApplicationContext`、`ConfigurableApplicationContext` 类似，都是一个只提供get，另一个扩展的提供set。具体源码文档不再贴出，可借助 IDE 自行查看。
+从文档注释可以发现这种机制与 `ApplicationContext`、`ConfigurableApplicationContext` 类似：一个只提供 get，另一个扩展提供 set。具体源码不再贴出，可借助 IDE 自行查看。
 
 回到方法实现：
 
@@ -1213,7 +1161,7 @@ private ConfigurableEnvironment getOrCreateEnvironment() {
 }
 ```
 
-源码很简单，还是根据当前的应用运行环境类型，创建不同的 `Environment` 。默认 SpringBoot 环境下会创建 `StandardServletEnvironment` 。
+源码很简单：根据当前的应用运行环境类型创建不同的 `Environment`。默认 SpringBoot 环境下会创建 `StandardServletEnvironment`。
 
 ###### 4.5.2 configureEnvironment：配置运行时环境
 
@@ -1228,9 +1176,7 @@ protected void configureEnvironment(ConfigurableEnvironment environment, String[
 }
 ```
 
-前面的if结构是向 `Environment` 中添加一个 `ConversionService`。至于 `ConversionService` 是什么，把这个方法先大概看一遍再了解。
-
-添加完 `ConversionService` 之后，要分别配置 PropertySource 和 Profiles，底层比较简单且一般情况不会执行，不再展开描述。
+方法开头的 if 结构是向 `Environment` 中添加一个 `ConversionService`。添加完 `ConversionService` 之后，分别配置 PropertySource 和 Profiles，底层比较简单且一般情况不会执行，不再展开。
 
 ###### 4.5.2.1 ConversionService是什么
 
@@ -1238,9 +1184,9 @@ protected void configureEnvironment(ConfigurableEnvironment environment, String[
 
 > A service interface for type conversion. This is the entry point into the convert system. Call convert(Object, Class) to perform a thread-safe type conversion using this system.用于类型转换的服务接口。这是转换系统的入口，调用 convert(Object, Class) 使用此系统执行线程安全的类型转换。
 
-可以看出它是一个类型转换的根接口。利用IDEA查看它的实现类，发现有一个实现类叫 `DefaultConversionService` 。不出意外的话，它至少能把这个接口所要描述的方法能实现了。
+可以看出它是一个类型转换的根接口。利用 IDE 查看它的实现类，其中一个实现类叫 `DefaultConversionService`。
 
-翻看 `DefaultConversionService` 的源码，发现里面有好多的 `addXXXConverters` 的方法。而这里面不乏有一些我们看上去比较熟悉的也比较容易猜测的：
+翻看 `DefaultConversionService` 的源码，里面有很多 `addXXXConverters` 方法，其中有一些容易辨认的转换器：
 
 - StringToNumberConverterFactory
 - StringToBooleanConverter
@@ -1249,7 +1195,7 @@ protected void configureEnvironment(ConfigurableEnvironment environment, String[
 - StringToArrayConverter
 - ......
 
-果然它能做得类型转换还不少。实际上就是它**在 SpringWebMvc 中做参数类型转换**。
+可见它覆盖的类型转换场景较多，实际上**在 SpringWebMvc 中承担参数类型转换**的工作。
 
 ###### 4.5.3 bindToSpringApplication：环境与应用绑定
 
@@ -1264,7 +1210,7 @@ protected void bindToSpringApplication(ConfigurableEnvironment environment) {
 }
 ```
 
-这里面的核心源码就一句话，`Binder` 的 bind 方法：
+核心源码只有一句：`Binder` 的 bind 方法：
 
 ```java
 public <T> BindResult<T> bind(String name, Bindable<T> target) {
@@ -1281,30 +1227,30 @@ public <T> BindResult<T> bind(ConfigurationPropertyName name, Bindable<T> target
 }
 ```
 
-手头有 IDE 的读者，再点开下面 bind 方法时心情可能会非常复杂。随着调用的方法一层一层深入，可以发现这部分非常复杂。这里不作过多深入的探究，仅从方法的文档注释上看它的解释：
+继续深入 bind 方法的调用链会发现这部分实现相当复杂，此处不作深入探究，仅引用方法的文档注释：
 
 > Bind the specified target Bindable using this binder's property sources.使用此绑定器的属性源，绑定指定的 可绑定的目标。
 
-说白了，也就是把配置内容绑定到指定的属性配置类中（类似于 `@ConfigurationProperties`）。
+其作用是把配置内容绑定到指定的属性配置类中（类似于 `@ConfigurationProperties`）。
 
 #### 小结
 
 1. SpringApplication 应用中可以使用 `SpringApplicationRunListener` 来监听 SpringBoot 应用的启动过程。
-2. 在创建IOC容器前，SpringApplication会准备运行时环境 `Environment` 。
+2. 在创建 IOC 容器前，SpringApplication 会准备运行时环境 `Environment`。
 
 ### JarLauncher：应用打jar包后的运行原理
 
-完成了整个 Web 的部分，最后研究一个主题。前面在 WebMvc 的部分解析过：打 war 包运行、使用外部 Servlet 容器启动 SpringBoot 应用时，需要一个 `ServletInitializer` 来引导启动 SpringBoot 应用。而使用 jar 包启动时走的是主启动类的 main 方法，但那是开发时直接指定主启动类的方式，jar 包启动时是另一种方式。本节就来看 jar 包启动 SpringBoot 应用的原理。
+前面在 WebMvc 部分解析过：打 war 包运行、使用外部 Servlet 容器启动 SpringBoot 应用时，需要一个 `ServletInitializer` 来引导启动 SpringBoot 应用；而使用 jar 包启动时走的是主启动类的 main 方法——那是开发时直接指定主启动类的方式，jar 包启动时是另一种方式。本节分析 jar 包启动 SpringBoot 应用的原理。
 
-翻开打好的jar包，会发现3个文件夹：
+翻开打好的 jar 包，会发现 3 个文件夹：
 
-- BOOT-INF：存放自己编写并编译好的 .class 文件和静态资源文件、配置文件等
-- META-INF：有一个 `MANIFEST.MF` 的文件
-- org：`spring-boot-loader` 的一些 .class 文件
+- BOOT-INF：存放自己编写并编译好的 .class 文件和静态资源文件、配置文件等。
+- META-INF：有一个 `MANIFEST.MF` 的文件。
+- org：`spring-boot-loader` 的一些 .class 文件。
 
 其中，`org.springframework.boot.loader` 里开始能找到 .class 文件了。
 
-翻看 `META-INF` 下面的 `MANIFEST.MF` 文件，发现里面的内容如下：
+翻看 `META-INF` 下面的 `MANIFEST.MF` 文件，内容如下：
 
 ```properties
 Manifest-Version: 1.0
@@ -1319,12 +1265,12 @@ Created-By: Maven Archiver 3.4.0
 Main-Class:org.springframework.boot.loader.JarLauncher
 ```
 
-这个文件中有两个值得关注的：
+这个文件中有两个值得关注的点：
 
-- 在 `Start-Class` 中注明了 SpringBoot 的主启动类
-- 在 `Main-Class` 中注明了一个类： `JarLauncher`
+- `Start-Class` 中注明了 SpringBoot 的主启动类。
+- `Main-Class` 中注明了一个类：`JarLauncher`。
 
-如果能靠 SpringBoot 的主启动类完成应用的启动，那为什么还要标注下面的那个 `JarLauncher` 呢？
+既然主启动类已经记录在 `Start-Class` 中，为什么 `Main-Class` 还要标注 `JarLauncher`？
 
 #### 1. JarLauncher是什么东西
 
@@ -1357,7 +1303,7 @@ public static void main(String[] args) throws Exception {
 }
 ```
 
-发现有个 **main** 方法！而且上面定义了两个常量，恰好就是在jar包中 `BOOT-INF` 里面的两个部分：自己的源码，和第三方jar包。
+该类中存在一个 **main** 方法，且定义的两个常量恰好对应 jar 包中 `BOOT-INF` 的两个部分：自己的源码和第三方 jar 包。
 
 #### 2. 测试直接启动两个带main方法的类
 
@@ -1365,38 +1311,34 @@ public static void main(String[] args) throws Exception {
 
 **错误: 找不到或无法加载主类 `com.example.demo.DemoApplication`**
 
-发现启动失败，根本就找不到这个类。
+直接运行主启动类启动失败，根本找不到这个类。
 
 ##### 2.2 JarLauncher
 
-能正常启动，打印 Banner 等。
+运行 `org.springframework.boot.loader.JarLauncher` 能正常启动，打印 Banner 等。
 
 #### 3. 【拓展】主启动类无法正常引导启动的原理
 
-用正常的指令启动时，java 指令没有指定 classpath，而当前 SpringBoot 应用依赖的jar包均放在 `BOOT-INF/lib` 下，这部分无法被识别。
+用正常指令启动时，java 指令没有指定 classpath，而当前 SpringBoot 应用依赖的 jar 包均放在 `BOOT-INF/lib` 下，这部分无法被识别。
 
 ##### 3.1 标准jar包的启动规范
 
-在可执行jar包中，有一个规范：**被标记为Main-Class的类必须连同自己的包，直接放在jar包的最外层（没有额外的文件夹包含）。**
+在可执行 jar 包中有一个规范：**被标记为 Main-Class 的类必须连同自己的包，直接放在 jar 包的最外层（没有额外的文件夹包含）。**
 
 - `SpringBootApplication` 的位置：`"BOOT-INF/classes/com.example.demo.DemoApplication.class"`
 - `JarLauncher` 的位置：`"org.springframework.boot.loader.JarLauncher"`
 
-所以 `JarLauncher` 能引导成功，而直接运行主启动类却无法成功启动。
+所以 `JarLauncher` 能引导成功，而直接运行主启动类无法成功启动。
 
-这也解释了另外一个现象：
-
-SpringBoot 在打jar包时，没有直接将 `spring-boot-loader` 包直接依赖到lib目录，而是将这个包下面的所有 .class 文件都复制到要打的jar包中。
+这也解释了另外一个现象：SpringBoot 在打 jar 包时，没有将 `spring-boot-loader` 包直接依赖到 lib 目录，而是将这个包下面的所有 .class 文件都复制到要打的 jar 包中。
 
 ##### 3.2 标准jar包的内嵌jar规范
 
-可执行jar包中还有一个规范：**jar包中原则上不允许嵌套jar包。**
+可执行 jar 包中还有一个规范：**jar 包中原则上不允许嵌套 jar 包。**
 
-传统的打jar包的方式是将所有依赖的jar包都复制到一个新的jar包中。这样会出现一个致命问题：
+传统的打 jar 包方式是将所有依赖的 jar 包都复制到一个新的 jar 包中，这样会出现一个致命问题：如果两个不同的 jar 包中有一个**全限定类名相同的文件**，会出现**覆盖**现象。
 
-如果两个不同的jar包中有一个**全限定类名相同的文件**，会出现**覆盖**现象。
-
-SpringBoot 使用自定义的 `ClassLoader`，可以解决这个问题，具体的部分要剖析源码才能看到实现机制。
+SpringBoot 使用自定义的 `ClassLoader` 解决了这个问题，具体实现机制见下文源码剖析。
 
 #### 4. JarLauncher的main方法都做了什么
 
@@ -1406,9 +1348,9 @@ public static void main(String[] args) throws Exception {
 }
 ```
 
-只有这一句，而且从上面的源码中可以发现，调用的空参数构造方法没有任何实际作用，也没有调父类的构造方法。
+只有这一句，而且 `JarLauncher` 的空参数构造方法没有任何实际作用，也没有调父类的构造方法。
 
-那一切的功能都在 `launch` 方法中。`launch` 方法不在 `JarLauncher` 里，在父类的 `Launcher` 内有定义：
+一切的功能都在 `launch` 方法中。`launch` 方法不在 `JarLauncher` 里，在父类 `Launcher` 内有定义：
 
 ```java
 // 这个方法是一个入口点，且应该被一个public static void main(String[] args)调用
@@ -1422,7 +1364,7 @@ protected void launch(String[] args) throws Exception {
 }
 ```
 
-从文档注释可以发现，这个方法必须被 main 方法调用，这跟上面的 `JarLauncher` 中 main 方法直接调用一致。
+从文档注释可以发现，这个方法必须被 main 方法调用，与上面 `JarLauncher` 中 main 方法直接调用一致。
 
 ##### 4.1 registerUrlProtocolHandler
 
@@ -1452,13 +1394,11 @@ private static void resetCachedUrlHandlers() {
 }
 ```
 
-先设置当前系统的一个变量 **`java.protocol.handler.pkgs`**，而这个变量的作用，是设置 `URLStreamHandler` 实现类的包路径。
-
-之后要重置缓存，目的是清除之前启动的残留（文档注释已标明）。
+第一步先设置系统变量 **`java.protocol.handler.pkgs`**，这个变量的作用是设置 `URLStreamHandler` 实现类的包路径。之后重置缓存，目的是清除之前启动的残留（文档注释已标明）。
 
 ##### 4.2 createClassLoader
 
-它要来创建 `ClassLoader`，而创建之前先调了 `getClassPathArchives` 方法来取一些 `Archive` 对象。
+它要创建 `ClassLoader`，创建之前先调用 `getClassPathArchives` 方法获取一组 `Archive` 对象。
 
 ```java
 protected ClassLoader createClassLoader(List<Archive> archives) throws Exception {
@@ -1480,9 +1420,9 @@ protected List<Archive> getClassPathArchives() throws Exception {
 }
 ```
 
-从最后看起，`isNestedArchive` 方法在调用时要传入 `Archive.Entry`，而这个参数的来源尚不明确，先搁置一边。
+`isNestedArchive` 方法在调用时要传入 `Archive.Entry`，这个参数的来源见下文 `Archive` 接口的分析。
 
-往前看，有一个 `this.archive`，而这个 `archive` 的成员属性是在这个类创建时被调用的。
+方法中还有一个成员 `this.archive`，它在类创建时被赋值。
 
 ```java
 private final Archive archive;
@@ -1512,13 +1452,9 @@ protected final Archive createArchive() throws Exception {
 }
 ```
 
-`Archive` 对象最终创建在下面的 `createArchive` 方法。
+`Archive` 对象最终创建在 `createArchive` 方法中。`File root = new File` 之前的部分都是在找当前类所在 jar 包的绝对路径，之后把这个文件创建出来，并以此创建一个 `JarFileArchive` 对象。
 
-到 `File root = new File` 之前的部分，这段代码都是在找当前类的所在jar包的绝对路径
-
-之后下面把这个文件创建出来，并以此创建一个 `JarFileArchive` 对象。
-
-而这个 `JarFileArchive` 是 `Archive` 的子类，这个 `Archive` 就可以被 `Launcher` 启动。文档注释和类定义：
+`JarFileArchive` 是 `Archive` 的子类，这个 `Archive` 就可以被 `Launcher` 启动。文档注释和类定义：
 
 ```java
 /**
@@ -1527,11 +1463,7 @@ protected final Archive createArchive() throws Exception {
 public interface Archive extends Iterable<Archive.Entry>
 ```
 
-恰巧从 `Archive` 中得到一个意外收获：`Archive` 里的 `Archive.Entry` 可以被迭代！
-
-跟前面的那个方法引用刚好能对应上了。
-
-`isNestedArchive` 方法传入的参数就是 `archive` 对象中的那一组 `Entry` 对象（一个 `Entry` 相当于一个 `"File"`）。
+这里有一个关键信息：`Archive` 继承了 `Iterable<Archive.Entry>`，即 `Archive.Entry` 可以被迭代，与前文 `getNestedArchives` 的方法引用刚好对应。`isNestedArchive` 方法传入的参数就是 `archive` 对象中的那一组 `Entry` 对象（一个 `Entry` 相当于一个 `"File"`）。
 
 ###### 4.2.2 getNestedArchives
 
@@ -1547,9 +1479,7 @@ public List<Archive> getNestedArchives(EntryFilter filter) throws IOException {
 }
 ```
 
-`archive` 对象要执行 `getNestedArchives` 时，会传入一个 `EntryFilter`，以此来获取一组被嵌套的 `Archive` 。
-
-而这个 `EntryFilter` 的工作机制就是上面的 `isNestedArchive` 方法，在 `JarLauncher` 中也有定义：
+`archive` 对象执行 `getNestedArchives` 时会传入一个 `EntryFilter`，以此获取一组被嵌套的 `Archive`。`EntryFilter` 的工作机制就是上面的 `isNestedArchive` 方法，在 `JarLauncher` 中也有定义：
 
 ```java
 protected boolean isNestedArchive(Archive.Entry entry) {
@@ -1560,13 +1490,9 @@ protected boolean isNestedArchive(Archive.Entry entry) {
 }
 ```
 
-很明显，看看是不是 `BOOT-INF/lib` 开头的jar包，如果不是，看看是不是 `BOOT-INF/classes` 文件夹。
+过滤逻辑很明确：判断是否是 `BOOT-INF/lib` 开头的 jar 包，若不是，再判断是否是 `BOOT-INF/classes` 文件夹。
 
-这部分的意义正好跟前面测试主启动类与 `JarLauncher` 的启动相呼应：
-
-位于 `BOOT-INF/classes` 的启动类**需要后续被扫描到，才能被处理**。
-
-由此可见，得到的 `archives` 集合就是 **`BOOT-INF/classes`** 与 **`BOOT-INF/lib`** 下面的所有文件。
+这部分的意义与前文主启动类与 `JarLauncher` 的启动测试相呼应：位于 `BOOT-INF/classes` 的启动类**需要后续被扫描到才能被处理**。由此可见，得到的 `archives` 集合就是 **`BOOT-INF/classes`** 与 **`BOOT-INF/lib`** 下面的所有文件。
 
 ###### 4.2.3 postProcessClassPathArchives
 
@@ -1576,7 +1502,7 @@ protected void postProcessClassPathArchives(List<Archive> archives) throws Excep
 }
 ```
 
-这个后置处理的方法是空的，且没有子类重写，说明默认就是拿 **`BOOT-INF/classes`** 与 **`BOOT-INF/lib`** 下面的文件了。
+这个后置处理方法是空的，且没有子类重写，说明默认就是取 **`BOOT-INF/classes`** 与 **`BOOT-INF/lib`** 下面的文件。
 
 ##### 4.3 createClassLoader
 
@@ -1595,9 +1521,9 @@ protected ClassLoader createClassLoader(URL[] urls) throws Exception {
 }
 ```
 
-上面部分的源码很容易可以看出是将每个 `Archive` 的绝对路径保存到一个 `List` 中，之后调用下面的 `createClassLoader` 方法。
+上面部分源码的作用是将每个 `Archive` 的绝对路径保存到一个 `List` 中，之后调用下面的 `createClassLoader` 方法。
 
-下面直接创建了一个 `LaunchedURLClassLoader`，传入的 `ClassLoader` 很明显是默认的，也就是 `AppClassLoader` 。
+下面直接创建了一个 `LaunchedURLClassLoader`，传入的 `ClassLoader` 是默认的 `AppClassLoader`。
 
 ###### 4.3.1 构造方法
 
@@ -1607,9 +1533,7 @@ public LaunchedURLClassLoader(URL[] urls, ClassLoader parent) {
 }
 ```
 
-很简单，直接调用父类的构造方法（指定 `ClassLoader` 是双亲委托机制）
-
-而 `LaunchedURLClassLoader` 的父类是： `java.net.URLClassLoader` ，是jdk内部的 `ClassLoader`，不再深入描述。
+很简单，直接调用父类的构造方法（指定 ClassLoader 即双亲委托机制）。`LaunchedURLClassLoader` 的父类是 `java.net.URLClassLoader`，是 jdk 内部的 `ClassLoader`，不再深入描述。
 
 ##### 4.4 launch
 
@@ -1633,9 +1557,7 @@ protected String getMainClass() throws Exception {
 }
 ```
 
-它要从 `Launcher` 类的成员 `archive` 中获取 `Manifest` 文件，这个文件就是之前在 `META-INF` 下面的 `MANIFEST.MF` 文件。
-
-之后从这个文件中取出 `Start-Class` 的值，这个值就是主启动类的全限定类名。
+它要从 `Launcher` 类的成员 `archive` 中获取 `Manifest` 文件，即之前 `META-INF` 下面的 `MANIFEST.MF` 文件，之后从该文件中取出 `Start-Class` 的值——主启动类的全限定类名。
 
 之后调用 `launch` 方法：
 
@@ -1647,9 +1569,7 @@ protected void launch(String[] args, String mainClass, ClassLoader classLoader) 
 }
 ```
 
-先设置当前线程的上下文类加载器为新的类加载器，也就是 `LaunchedURLClassLoader` （默认为 `AppClassLoader`）。
-
-之后要开始创建 main 方法的运行器，并运行。
+先设置当前线程的上下文类加载器为新的类加载器（即 `LaunchedURLClassLoader`，默认为 `AppClassLoader`），之后创建 main 方法的运行器并运行。
 
 ##### 4.5 mainMethodRunner.run
 
@@ -1659,7 +1579,7 @@ protected MainMethodRunner createMainMethodRunner(String mainClass, String[] arg
 }
 ```
 
-简单的创建了 `MainMethodRunner` 的对象，之后上面会调用 run 方法。
+简单创建了 `MainMethodRunner` 的对象，之后调用 run 方法。
 
 `MainMethodRunner` 的结构：
 
@@ -1685,13 +1605,13 @@ public void run() throws Exception {
 }
 ```
 
-核心是 **run** 方法。
+核心是 **run** 方法：先拿到当前线程的上下文类加载器（`LaunchedURLClassLoader`），再用这个 `ClassLoader` 加载主启动类，最后运行 main 方法。
 
-先拿到当前线程的上下文类加载器，就是 `LaunchedURLClassLoader` 。
+这也解释了为什么 SpringBoot 应用在开发期间只需要写 main 方法即可引导启动。至此，主启动类的 main 方法被引导运行成功，jar 包方式启动成功。
 
-之后用这个 `ClassLoader` 加载主启动类，之后运行 main 方法。
+## 小结
 
-这也解释了为什么 `SpringBoot` 应用在开发期间只需要写 main 方法，引导启动即可。
-
-至此，主启动类的 main 方法被引导运行成功，jar 包方式启动成功。
-
+- 开发期引导链路：主启动类标注 `@SpringBootApplication`（组合注解：`@SpringBootConfiguration` + `@EnableAutoConfiguration` + `@ComponentScan`）→ `SpringApplication.run()` → 构造阶段判定 `WebApplicationType`、注册 `ApplicationContextInitializer` 与 `ApplicationListener`、推断主配置类 → run 阶段创建 StopWatch、异常报告器、配置 headless、获取运行监听器、准备 `Environment` 并绑定到 SpringApplication。
+- `ApplicationContext` 并非最顶层容器，`BeanFactory` 才是根接口；SpringBoot 通过 `WebServerApplicationContext` 等接口对原生容器做了嵌入式 Web 扩展。
+- 发布期引导链路：fat-jar 的 `MANIFEST.MF` 中 `Main-Class` 指向 `JarLauncher` → `launch()` 注册 URL 协议处理器 → 收集 `BOOT-INF/classes` 与 `BOOT-INF/lib` 的 Archive → 创建 `LaunchedURLClassLoader` → 读取 `Start-Class` → `MainMethodRunner` 反射执行主启动类 main 方法。
+- 关键规范：Main-Class 必须位于 jar 包最外层；标准 jar 不允许嵌套 jar，SpringBoot 通过自定义 ClassLoader 解决嵌套依赖的全限定类名覆盖问题。

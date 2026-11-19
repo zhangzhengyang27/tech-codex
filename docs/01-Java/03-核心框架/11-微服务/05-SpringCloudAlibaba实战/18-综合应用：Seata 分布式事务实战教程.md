@@ -7,13 +7,9 @@ tags: [Java, SpringCloudAlibaba实战]
 ---
 # 综合应用：Seata 分布式事务实战教程
 
-在前面的章节，我们分别讲解了 Spring Cloud Alibaba 中主要的组成部分，其中包括：注册中心与配置管理组件 Nacos、Ribbon 客户端负载均衡、OpenFeign 与 Dubbo 通信组件、Sentinel 服务限流与熔断保护组件、Sleuth+Zipkin 与 Skywalking 实现分布式追踪、Seata 分布式事务组件以及 RocketMQ 消息异步通信中间件，这些组件各司其职为微服务架构提供了有效的支撑。
+Spring Cloud Alibaba 的主要组成部分包括：注册中心与配置管理组件 Nacos、Ribbon 客户端负载均衡、OpenFeign 与 Dubbo 通信组件、Sentinel 服务限流与熔断保护组件、Sleuth+Zipkin 与 SkyWalking 实现分布式追踪、Seata 分布式事务组件以及 RocketMQ 消息异步通信中间件，这些组件各司其职，为微服务架构提供了有效的支撑。
 
-从本章开始，我们综合运用这些组件，再结合我多年来分布式开发的经验，为你分享一些成熟的组合搭配与案例，让你在分布式开发这条路上少走些弯路。
-
-本文我们进入第一个话题：利用 Seata 与 Nacos 构建分布式事务架构。在第16节我们介绍了Seata 的使用原理及解决方案，但并未涉及落地的开发技巧。今天我们补上这一块内容，本文手把手搭建可用的 Seata 分布式事务架构。
-
-本文涉及的内容较多，按搭建顺序将分为以下几个阶段：
+本篇将这些组件综合运用，进入第一个话题：利用 Seata 与 Nacos 构建分布式事务架构，完成一套可落地的搭建方案。本文涉及的内容较多，按搭建顺序分为以下几个阶段：
 
 - 部署 Nacos 注册中心与配置中心；
 
@@ -25,11 +21,9 @@ tags: [Java, SpringCloudAlibaba实战]
 
 - 验证分布式事务。
 
-下面我们一步步实现“商城销售积分”应用案例，整体架构如下：
+以下逐步实现"商城销售积分"应用案例，整体架构：基于 Seata 的分布式事务架构。
 
-基于 Seata 的分布式事务架构
-
-我在 192.168.31.103 虚拟机构建了 5 个 MySQL 5.7 数据库实例，通过设置不同端口来模拟 5 台数据库服务器，它们的用途是：
+案例环境在 192.168.31.103 虚拟机上构建了 5 个 MySQL 5.7 数据库实例，通过设置不同端口来模拟 5 台数据库服务器，它们的用途是：
 
 - 3309 端口数据库存储 Nacos 配置信息以及 Seata-Server 的分布式事务数据；
 
@@ -47,17 +41,13 @@ tags: [Java, SpringCloudAlibaba实战]
 
 - 192.168.31.107:8091 节点是 Seata-Server，也就是 TC 组件，用于协调全局事务的开启、提交与回滚；
 
-- 192.168.31.106:8001 节点是 TM，也就是商城应用，TM用于定义事务边界与事务的范围；
+- 192.168.31.106:8001 节点是 TM，也就是商城应用，TM 用于定义事务边界与事务的范围；
 
 - 192.168.31.106:8002/8003/8004 则是具体的 RM 实例，分别对应订单、积分与库存服务。
 
-其中所有 TM、RM、TC 实例在启动时都要向 Nacos 进行注册登记，以保证服务可以被发现。同时 TC(Seata-Server) 自身的配置信息也要托管在 Nacos 配置中心中，不再单独存储。所有 TM、RM 在启动时也要额外在 TC 中进行注册，以保证全局事务的完整性。
+其中所有 TM、RM、TC 实例在启动时都要向 Nacos 进行注册登记，以保证服务可以被发现。同时 TC（Seata-Server）自身的配置信息也要托管在 Nacos 配置中心中，不再单独存储。所有 TM、RM 在启动时也要额外在 TC 中进行注册，以保证全局事务的完整性。
 
-下面我们开始第一个阶段：部署 Nacos 注册中心与配置中心。
-
-## 部署 Nacos 注册中心与配置中心
-
-部署 Nacos 注册中心与配置中心与前面课程内容并无二致，我们快速完成即可。
+## 阶段一：部署 Nacos 注册中心与配置中心
 
 第一步，下载 Nacos，上传到 192.168.31.103 节点解压缩。
 
@@ -92,23 +82,19 @@ db.password=root
 sh /usr/local/nacos/bin/startup.sh
 ```
 
-至此，阶段一：Nacos 注册中心与配置中心部署完成，因为这些内容前面都讲过，所以不再赘述。
-下面我们开始阶段二：部署 TC 组件 Seata-Server。
+至此，阶段一：Nacos 注册中心与配置中心部署完成。
 
-从部署 TC 组件 Seata-Server 开始就是全新的内容，我将更细致地为你介绍每一步操作过程。
-
-## 部署 TC 组件 Seata-Server
+## 阶段二：部署 TC 组件 Seata-Server
 
 第一步，下载 Seata-Server。
 
-在 192.168.31.107 设备上安装好 JDK 1.8，之后访问 Seata 的 GitHub，下载最新的 1.4.0 压缩包。
+在 192.168.31.107 设备上安装好 JDK 1.8，之后访问 Seata 的 GitHub，下载 1.4.0 压缩包。
 
 [https://github.com/seata/seata/releases/download/v1.4.0/seata-server-1.4.0.tar.gz](https://github.com/seata/seata/releases/download/v1.4.0/seata-server-1.4.0.tar.gz)
 
 解压后将 seata-server-1.4 上传到 192.168.31.107 节点的 /usr/local 目录下。
 
-
-第二步，编辑 conf/registry.conf 文件，这个配置文件说明 Seata-Server 接入哪种注册中心与配置中心，官方提供的默认模板存在大量冗余配置，这里我提供接入 Nacos 最精简的配置内容以方便学习。下面是 Seata-Server 接入注册中心的配置信息。
+第二步，编辑 conf/registry.conf 文件。这个配置文件说明 Seata-Server 接入哪种注册中心与配置中心，官方提供的默认模板存在大量冗余配置，下面给出接入 Nacos 的最精简配置。以下是 Seata-Server 接入注册中心的配置信息。
 
 ```properties
 registry {
@@ -150,25 +136,23 @@ config {
 }
 ```
 
-上面的配置文件你可以直接复制到自己工程中修改下 IP 端口即可。
+该配置文件可直接复制到工程中使用，修改 IP 与端口即可。
 
 第三步，在 Nacos 配置中心中初始化 Seata 配置。
 
-Seata 官方也为我们提供了初始化配置脚本，请按我的步骤操作。
+Seata 官方提供了初始化配置脚本，操作步骤如下。
 
 首先访问下面的地址查看 Seata 在 Nacos 中需要的设置项。
 
 [https://github.com/seata/seata/blob/1.4.0/script/config-center/config.txt](https://github.com/seata/seata/blob/1.4.0/script/config-center/config.txt)
 
-
 将 GitHub 页面中 80 行文本内容复制后，在 /usr/local/seata-server-1.4.0 目录下创建 config.txt 文件，将 80 行文本粘贴其中。
 
+内容粘贴到 config.txt 后，有两个地方需要修改：
 
-在内容粘贴到 config.txt 后，有两个地方需要修改：
+- 34 行 store.mode=file 改为 store.mode=db，代表采用数据库存储 Seata-Server 的全局事务数据
 
-- 34 行 store.mode=file 改为 store.mode=db 代表采用数据库存储 Seata-Server 的全局事务数据
-
-- 44~46 行配置 Seata-Server 的全局事务数据库，数据库 URL 指向 107 节点 3309 端口。这个全局事务数据库是 Seata 维护分布式事务的关键所在，后面我们马上就要创建这个数据库。
+- 44~46 行配置 Seata-Server 的全局事务数据库，数据库 URL 指向 107 节点 3309 端口。这个全局事务数据库是 Seata 维护分布式事务的关键所在。
 
 ```properties
 store.db.url=jdbc:mysql://192.168.31.103:3309/seata?useUnicode=true&rewriteBatchedStatements=true
@@ -179,9 +163,7 @@ store.db.password=root
 config.txt 保存后，还需要访问下面地址下载 nacos-config.sh 运行脚本。
 [https://github.com/seata/seata/blob/1.4.0/script/config-center/nacos/nacos-config.sh](https://github.com/seata/seata/blob/1.4.0/script/config-center/nacos/nacos-config.sh)
 
-
 这个脚本用来读取前面的 config.txt 并将配置项载入 Nacos 配置中心。将页面中 101 行文本复制，然后在 /usr/local/seata-server-1.4.0 目录下创建 script 子目录，在 scirpt 子目录下创建 nacos-config.sh 文件，并将 101 行文本保存其中。
-
 
 保存后执行下面命令运行导入脚本。
 
@@ -189,7 +171,7 @@ config.txt 保存后，还需要访问下面地址下载 nacos-config.sh 运行�
 sh nacos-config.sh -h 192.168.31.103
 ```
 
-这条命令有两个参数，h 选项指向 Nacos 的 IP，执行后你会看到如下日志。
+这条命令的 h 选项指向 Nacos 的 IP，执行后输出如下日志。
 
 ```log
 ...
@@ -202,18 +184,14 @@ Set metrics.exporterPrometheusPort=9898 successfully
  Init nacos config finished, please start seata-server.
 ```
 
-80 个配置选项导入成功后，我们便可在 Nacos 的配置中心页面看到它们，访问 Nacos 后台 [http://192.168.31.103:8848/nacos](http://192.168.31.103:8848/nacos)
-你会看到大量 SEATA_GROUP 分组的配置，这些配置信息在 Seata-Server 启动时都会自动读取。
-
+80 个配置选项导入成功后，便可在 Nacos 的配置中心页面看到它们。访问 Nacos 后台 [http://192.168.31.103:8848/nacos](http://192.168.31.103:8848/nacos)，会看到大量 SEATA_GROUP 分组的配置，这些配置信息在 Seata-Server 启动时都会自动读取。
 
 第四步，创建并初始化 Seata-Server 全局事务数据库。
 
 访问下面网址
-
 [https://github.com/seata/seata/blob/1.4.0/script/server/db/mysql.sql](https://github.com/seata/seata/blob/1.4.0/script/server/db/mysql.sql)，下载 SQL 脚本。在 3309 端口 MySQL 创建新的数据库 seata，执行 SQL 脚本创建全局事务表。
 
-
-脚本执行后会创建 3 张表，我们了解下即可。
+脚本执行后会创建 3 张表：
 
 - global_table 保存全局事务数据；
 
@@ -236,18 +214,17 @@ sh bin/seata-server.sh
 10:52:38.501  INFO --- [                     main] i.s.core.rpc.netty.NettyServerBootstrap  : Server started, listen port: 8091
 ```
 
-这里有个细节，如果启动过程中提示数据库无法访问，说明 IP、端口配置有问题，可以通过 Nacos 配置中心设置 store.db.url 选项，而不是重新导入 config.txt。
-
+这里有个细节：如果启动过程中提示数据库无法访问，说明 IP、端口配置有问题，可以通过 Nacos 配置中心设置 store.db.url 选项，而不是重新导入 config.txt。
 
 到这里，**阶段二：部署 TC 组件 Seata-Server 已经完成**。后面的事情就是基于 TC 组件 Seata-Server 实现分布式事务。
 
-## 开发 RM 资源管理器
+## 阶段三：开发 RM 资源管理器
 
-在 Seata 中 RM 资源管理器代表处理具体业务的模块，例如：订单服务创建订单、会员服务增加积分、库存服务减少库存都是 RM 资源管理器，下面我们来开发订单服务、会员服务与库存服务。
+在 Seata 中 RM 资源管理器代表处理具体业务的模块，例如：订单服务创建订单、会员服务增加积分、库存服务减少库存都是 RM 资源管理器。下面开发订单服务、会员服务与库存服务。
 
 ### 订单服务 rm-order
 
-这里开发框架采用 Spring Boot + JPA（Hibernate）+ Druid 实现。
+开发框架采用 Spring Boot + JPA（Hibernate）+ Druid 实现。
 
 第一步，创建 seata-order 数据库与 undo_log 表。
 
@@ -288,12 +265,11 @@ CREATE TABLE `undo_log`  (
 SET FOREIGN_KEY_CHECKS = 1;
 ```
 
-数据库包含两张表，一张是订单业务表 order，字段含义已在脚本中注释。而另一张 undo_log 回滚日志表。undo_log 是 Seata 强制要求在每个 RM 端数据库创建的表，用于存储反向 SQL 的元数据。undo_log 表的脚本可以从 Seata GitHub 官方获取，然后在自己的业务库中执行。
+数据库包含两张表：一张是订单业务表 order，字段含义已在脚本中注释；另一张是 undo_log 回滚日志表。undo_log 是 Seata 强制要求在每个 RM 端数据库创建的表，用于存储反向 SQL 的元数据。undo_log 表的脚本可以从 Seata GitHub 官方获取，然后在业务库中执行。
 
 [https://github.com/seata/seata/blob/1.4.0/script/client/at/db/mysql.sql](https://github.com/seata/seata/blob/1.4.0/script/client/at/db/mysql.sql)
 
 到这里 RM 数据库创建完毕。
-
 
 第二步，利用 Spring Initializr 向导创建 rm-order 工程，确保 pom.xml 引入以下依赖。
 
@@ -348,11 +324,11 @@ SET FOREIGN_KEY_CHECKS = 1;
 </dependency>
 ```
 
-这份依赖有个注意事项，默认 starter-alibaba-seata 依赖内置的是旧版 1.3.0 的 Seata 客户端，因此要排除，在后面引入最新的 1.4.0，保证客户端与 Seata-Server 版本一致。
+这份依赖有个注意事项：默认 starter-alibaba-seata 依赖内置的是旧版 1.3.0 的 Seata 客户端，因此要排除，在后面引入最新的 1.4.0，保证客户端与 Seata-Server 版本一致。
 
 第三步，配置 application.yml。
 
-application.yml 额外配置了事务分组与 Nacos 的信息，我已在配置文件中进行了注释说明。
+application.yml 额外配置了事务分组与 Nacos 的信息，配置文件中已添加注释说明。
 
 ```yaml
 #seata配置
@@ -419,7 +395,7 @@ logging:
       seata: debug
 ```
 
-第四步，像单机应用一样开发数据库 CRUD，代码很简单，我已给出注释。
+第四步，像单机应用一样开发数据库 CRUD。
 
 Order 实体类，让属性与字段进行映射。
 
@@ -456,7 +432,7 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
 }
 ```
 
-OrderService 的 createOrder 方法实现创建订单的业务逻辑，注意在 createOrder 方法上必须增加 @Transactional 注解，Seata 客户端对这个注解进行扩展支持了分布式事务。
+OrderService 的 createOrder 方法实现创建订单的业务逻辑。注意在 createOrder 方法上必须增加 @Transactional 注解，Seata 客户端对这个注解进行扩展支持了分布式事务。
 
 ```java
 @Service
@@ -488,7 +464,7 @@ public class OrderController {
 }
 ```
 
-第五步，最重要的一步，要让 Seata 客户端在处理事务时自动生成反向 SQL，必须额外配置 DataSourceProxy 数据源代理类，DataSourceProxy 是 Seata 提供的 DataSource 代理类，在分布式事务执行过程中，用于自动生成 undo_log 回滚数据，以及自动完成 RM 端分布式事务的提交或回滚操作。
+第五步，最重要的一步：要让 Seata 客户端在处理事务时自动生成反向 SQL，必须额外配置 DataSourceProxy 数据源代理类。DataSourceProxy 是 Seata 提供的 DataSource 代理类，在分布式事务执行过程中，用于自动生成 undo_log 回滚数据，以及自动完成 RM 端分布式事务的提交或回滚操作。
 
 在 Spring Boot 中利用 Java Config 方式对 DataSourceProxy 进行配置。
 
@@ -527,14 +503,11 @@ public class DataSourceProxyConfig {
 }
 ```
 
-
-以上是 rm-order 订单服务的开发过程，除了配置 Seata 选项与创建 DataSourceProxy 外，其他的开发要素与单机应用几乎是一样的，这使得新人也可以很快上手。
-
-下面我们如法炮制开发 rm-points 积分服务与 rm-storage 库存服务。
+以上是 rm-order 订单服务的开发过程。除了配置 Seata 选项与创建 DataSourceProxy 外，其他的开发要素与单机应用几乎是一样的，这使得新人也可以很快上手。
 
 ### 积分服务 rm-points
 
-因为积分服务的开发过程与订单服务几乎是一致的，我们只需给出关键代码。
+积分服务的开发过程与订单服务几乎一致，下面只需给出关键代码。
 
 第一步，在 3307 端口数据库创建 seata-points 数据库，包含 points 会员积分表与 undo_log 表。
 
@@ -574,7 +547,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 第二步，创建 rm-points 积分服务，pom.xml 与 rm-order 依赖完全相同。
 
-第三步，配置 application.yml，只有应用名、端口与数据库 URL 不同，其他与 rm-order 完全相同，这里就不再赘述。
+第三步，配置 application.yml，只有应用名、端口与数据库 URL 不同，其他与 rm-order 完全相同。
 
 ```yaml
 # seata 配置与 rm-order 完全相同
@@ -600,7 +573,7 @@ server:
   port: 8003
 ```
 
-第四步：实现新增积分代码，基础的实体类与 Repository 不做赘述，我们关注 PointsService 与 PointsController。
+第四步：实现新增积分代码。基础的实体类与 Repository 不再赘述，重点看 PointsService 与 PointsController。
 
 PointsService.addPoints 方法实现会员积分增加业务，同样需要 @Transactional 注解。
 
@@ -636,11 +609,11 @@ public class PointsController {
 }
 ```
 
-第五步，最后不要忘记设置 DataSourceProxyConfig，代码与 rm-order 完全相同。
+第五步，最后同样需要设置 DataSourceProxyConfig，代码与 rm-order 完全相同。
 
-代码书写完毕，启动应用访问地址[http://localhost:8003/add_points?memberId=1&points=20](http://localhost:8003/add_points?memberId=1&points=20)
+代码书写完毕，启动应用访问地址 [http://localhost:8003/add_points?memberId=1&points=20](http://localhost:8003/add_points?memberId=1&points=20)
 
-可以得到“add points success ”结果。
+可以得到 "add points success" 结果。
 
 ```text
 {
@@ -651,7 +624,7 @@ public class PointsController {
 
 ### 库存服务 rm-storage
 
-RM 库存服务也是遵循相同套路开发。
+RM 库存服务也遵循相同套路开发。
 
 第一步，创建数据库 seata-storage，执行建表脚本，包含库存表 storage 与回滚表 undo_log。
 
@@ -761,13 +734,13 @@ public class StorageController {
 }
 ```
 
-第五步，DataSourceProxyConfig 代码与 rm-order 完全相同不再赘述。
+第五步，DataSourceProxyConfig 代码与 rm-order 完全相同，不再赘述。
 
 启动应用，访问地址
 
 [http://localhost:8004/reduce_storage?goodsId=2&quantity=10](http://localhost:8004/reduce_storage?goodsId=2&quantity=10)
 
-得到结果 ”reduce storage success”。
+得到结果 "reduce storage success"。
 
 ```text
 {
@@ -776,16 +749,15 @@ public class StorageController {
 }
 ```
 
-到这里我们将**订单、积分、库存**三个 RM 示例都已开发完毕，这些服务都是独立运行，并没有形成整体，最后我们还要开发商城应用 tm-mall，tm-mall 作为 TM 将服务串行调用，并形成分布式事务整体。
+到这里，**订单、积分、库存**三个 RM 示例都已开发完毕。这些服务都是独立运行，并没有形成整体，最后还要开发商城应用 tm-mall：tm-mall 作为 TM 将服务串行调用，并形成分布式事务整体。
 
-## 开发 TM 事务管理器
+## 阶段四：开发 TM 事务管理器
 
 ### 商城应用 tm-mall
 
-第一步，3305 端口创建 seata-mall 数据库，因为真实的商城应用本身也需要往本地库写入数据，TM 本身也是一个 RM，因此在商城库中也要创建 undo_log 表。
+第一步，3305 端口创建 seata-mall 数据库。因为真实的商城应用本身也需要往本地库写入数据，TM 本身也是一个 RM，因此在商城库中也要创建 undo_log 表。
 
-
-第二步，创建 tm-mall 应用，框架同样采用 SpringBoot + JPA + druid，除了依赖 Seata 外，还需要额外引入 OpenFeign 实现微服务的远程调用。
+第二步，创建 tm-mall 应用，框架同样采用 SpringBoot + JPA + druid。除了依赖 Seata 外，还需要额外引入 OpenFeign 实现微服务的远程调用。
 
 ```xml
 <dependency>
@@ -862,7 +834,7 @@ server:
   port: 8001
 ```
 
-第四步，在应用入口增加 @EnableFeignClients 注解，开启OpenFeign远程调用功能。
+第四步，在应用入口增加 @EnableFeignClients 注解，开启 OpenFeign 远程调用功能。
 
 ```java
 @SpringBootApplication
@@ -875,6 +847,7 @@ public class TmMallApplication {
 ```
 
 第五步，开发三个 RM 的 OpenFeign 客户端。
+
 OrderFeignClient 是 rm-order 服务的 OpenFeign 客户端。
 
 ```java
@@ -913,7 +886,7 @@ public interface StorageFeignClient {
 }
 ```
 
-第六步，开发 MallService，定义全局事务范围。这里最重要的是 @GlobalTransactional 注解，该注解是全局事务注解，当进入 MallService.sale 方法时通知 TC 开启全局事务，sale 方法执行成功自动通知 TC 进行全局提交；sale 方法抛出异常时自动通知 TC 进行全局回滚。
+第六步，开发 MallService，定义全局事务范围。这里最重要的是 @GlobalTransactional 注解，该注解是全局事务注解：当进入 MallService.sale 方法时通知 TC 开启全局事务，sale 方法执行成功自动通知 TC 进行全局提交；sale 方法抛出异常时自动通知 TC 进行全局回滚。
 
 ```java
 @Service
@@ -949,7 +922,7 @@ public class MallController {
 }
 ```
 
-第八步，最后不要忘记配置 DataSourceProxyConfig，这是所有 TM 与 RM 都要设置的。
+第八步，最后同样需要配置 DataSourceProxyConfig，这是所有 TM 与 RM 都要设置的。
 
 ```java
 @Configuration
@@ -967,9 +940,9 @@ public class DataSourceProxyConfig {
 }
 ```
 
-到这里所有 TM 与 RM 都已开发完毕，下面我们来验证分布式事务的执行效果。
+到这里所有 TM 与 RM 都已开发完毕，接下来验证分布式事务的执行效果。
 
-## 验证分布式事务
+## 阶段五：验证分布式事务
 
 将 Nacos、TC、TM、3 个 RM 都启动，之后访问 tm-mall 的 sale 接口。
 
@@ -981,7 +954,7 @@ public class DataSourceProxyConfig {
 / {"code":"0","message":"reduce storage success"}
 ```
 
-从结果中可以看到三个服务调用都已成功，我们从控制台看一下具体过程。
+从结果中可以看到三个服务调用都已成功，从控制台日志看具体过程。
 
 从日志中可以发现 TM 端负责开启全局事务，执行成功后通知 TC 全局事务提交。
 
@@ -995,7 +968,7 @@ i.seata.tm.api.DefaultGlobalTransaction  : Begin new global transaction [192.168
 i.seata.tm.api.DefaultGlobalTransaction  : [192.168.31.107:8091:100622589646344192] commit status: Committed
 ```
 
-而 RM 端则负责两件事，成功提交本地的分支事务与删除 undo_log 回滚日志。
+而 RM 端则负责两件事：成功提交本地的分支事务与删除 undo_log 回滚日志。
 
 ```log
 
@@ -1006,7 +979,7 @@ i.s.c.r.p.c.RmBranchCommitProcessor      : branch commit result:xid=192.168.31.1
 i.s.r.d.undo.mysql.MySQLUndoLogManager   : batch delete undo log size 1
 ```
 
-分析了提交过程，下面我们再进行异常验证，将 quantity 设置为 200，这必将超出库存报错，看能否全局回滚。
+提交过程验证完成后，再进行异常验证：将 quantity 设置为 200，超出库存触发报错，验证能否全局回滚。
 [http://localhost:8001/sale?orderId=6&memberId=1&goodsId=2&points=20&quantity=200](http://localhost:8001/sale?orderId=6&memberId=1&goodsId=2&points=20&quantity=200)
 
 运行后程序报异常。
@@ -1032,13 +1005,15 @@ io.seata.rm.AbstractRMHandler            : Branch Rollbacking: 192.168.31.107:80
 i.s.r.d.undo.AbstractUndoLogManager      : xid 192.168.31.107:8091:100626590567763968 branch 100626590894919681, undo_log deleted with GlobalFinished
 ```
 
-到这里搭建 Seata 分布式事务架构的内容全部完成，最后我们来做一下总结。
+到这里搭建 Seata 分布式事务架构的内容全部完成。
 
 ## 小结
 
-本文是一套 Spring Cloud Alibaba 微服务架构的综合运用，我们从零开始一步步搭建了一套分布式事务的基础架构，也开发了实际的案例，通过程序运行结果让我们也理解了 Seata 的执行过程。这套框架的难点在于如何将 Seata-Server 与 Nacos 配置中心整合起来，因 Seata-Server 迭代很快，文档严重滞后，在搭建过程中又遇到了很多 BUG，没办法只能通过分析源码一点点排查，在这个过程中自己也对 Seata 有了更深刻的理解，你也能按我的操作过程完成分布式事务架构的搭建。
+本篇综合运用了 Spring Cloud Alibaba 的多个组件，从零开始搭建了一套分布式事务的基础架构，并开发了实际案例，通过程序运行结果理解了 Seata 的执行过程。这套框架的难点在于如何将 Seata-Server 与 Nacos 配置中心整合起来：Seata-Server 迭代很快、文档严重滞后，搭建过程中容易遇到很多 BUG，需要通过分析源码逐点排查。
 
-在这我给你留一道动手题：当前架构 Nacos 与 Seata-Server 都是单点的，不具备高可用特性，请你搭建对应的高可用集群。
+::: tip 扩展练习
+当前架构 Nacos 与 Seata-Server 都是单点的，不具备高可用特性，可以在此基础上搭建对应的高可用集群。
+:::
 
 ## 版本差异（Spring Cloud Alibaba 旧版 → 2025.x）
 

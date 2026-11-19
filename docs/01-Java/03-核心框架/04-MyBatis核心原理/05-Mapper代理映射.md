@@ -8,25 +8,21 @@ tags: [Java, MyBatis]
 
 # Mapper 代理映射机制
 
-在使用 MyBatis 实现订单系统示例的时候，我们会为每个 Mapper.xml 配置文件创建一个对应的 Mapper 接口，例如，订单系统示例中的 CustomerMapper.xml 配置文件与 CustomerMapper 接口，定义完 CustomerMapper 接口之后，我们无须提供 CustomerMapper 接口实现，就可以直接调用 CustomerMapper 对象的方法执行 CustomerMapper.xml 配置文件中的 SQL 语句。
+## 概念说明
 
-这里你可能会有几个疑惑：
+使用 MyBatis 实现订单系统示例时，会为每个 Mapper.xml 配置文件创建一个对应的 Mapper 接口。例如，订单系统示例中的 CustomerMapper.xml 配置文件与 CustomerMapper 接口：定义完 CustomerMapper 接口之后，无须提供 CustomerMapper 接口的实现类，就可以直接调用 CustomerMapper 对象的方法执行 CustomerMapper.xml 配置文件中的 SQL 语句。
 
-为什么需要 CustomerMapper 接口来执行对应的 SQL 语句呢？
+围绕这一机制存在几个核心问题：
 
-为什么无须提供 CustomerMapper 接口的实现类呢？
+- 为什么需要 CustomerMapper 接口来执行对应的 SQL 语句？
+- 为什么无须提供 CustomerMapper 接口的实现类？
+- 实际使用的 CustomerMapper 对象是什么？它如何创建？底层原理是什么？
 
-实际使用的 CustomerMapper 对象是什么呢？CustomerMapper 对象是怎么创建的呢？底层原理是什么呢？
+**接口存在的原因**：MyBatis 的前身是 iBatis。使用 iBatis 时，查询一个 Customer 对象需要调用 `SqlSession.queryForObject("find", customerId)` 方法，两个参数分别是要执行的 SQL 语句唯一标识（示例中即定义在 CustomerMapper.xml 中的 id 为 find 的 SQL 语句），以及 SQL 语句执行时需要的实参（示例中即顾客 ID）。
 
-学习完本文，你就会找到这些问题的答案。
+这里 SQL 语句的唯一标识是一个字符串，如果编码时不小心写错了唯一标识（例如将 "find" 写成了 "finb"），在代码编译以及 iBatis 初始化的过程中根本发现不了这个问题，而是在真正执行到这行代码的时候才会抛出异常，这样对线上流量是有损的。
 
-MyBatis 的前身是 iBatis，我们在使用 iBatis 的时候，如果想查询一个 Customer 对象的话，可以调用 SqlSession.queryForObject ("find", customerId) 方法，queryForObject() 方法的这两个参数分别是要执行的 SQL 语句唯一标识（示例中就是定义在 CustomerMapper.xml 中的 id 为 find 的 SQL 语句），以及 SQL 语句执行时需要的实参（示例中就是顾客 ID）。
-
-这里 SQL 语句的唯一标识是一个字符串，如果我们在写代码的时候，不小心写错了这个唯一标识，例如将“find”写成了“finb”，在代码编译以及 iBatis 初始化的过程中，根本发现不了这个问题，而是在真正执行到这行代码的时候才会抛出异常，这样其实对流量是有损的。
-
-MyBatis 中的 Mapper 接口就可以很好地解决这个问题。
-
-示例中的 CustomerMapper 接口中定义了 SQL 语句唯一标识同名的 find() 方法，我们在写代码的时候使用的是 CustomerMapper.find() 方法，如果拼写成 CustomerMapper.finb()，编译会失败。这是因为 MyBatis 初始化的时候会尝试**将 CustomerMapper 接口中的 find() 方法名与 CustomerMapper.xml 配置文件中的 SQL 唯一标识进行映射**，如果 SQL 语句唯一标识写错成“finb”，MyBatis 会发现这个错误，并在初始化过程中就抛出异常，这样编译器以及 MyBatis 就可以帮助我们更早发现异常，避免线上流量的损失。
+MyBatis 中的 Mapper 接口可以很好地解决这个问题：CustomerMapper 接口中定义了与 SQL 语句唯一标识同名的 find() 方法，编码时使用的是 `CustomerMapper.find()` 方法；如果拼写为 `CustomerMapper.finb()`，编译会直接失败。这是因为 MyBatis 初始化的时候会尝试**将 CustomerMapper 接口中的 find() 方法名与 CustomerMapper.xml 配置文件中的 SQL 唯一标识进行映射**，如果 SQL 语句唯一标识写错成 "finb"，MyBatis 会发现这个错误，并在初始化过程中就抛出异常。这样编译器以及 MyBatis 可以帮助开发人员更早发现异常，避免线上流量的损失。
 
 **在 MyBatis 中，实现 CustomerMapper 接口与 CustomerMapper.xml 配置文件映射功能的是 binding 模块**，其中涉及的核心类如下图所示：
 
@@ -60,27 +56,35 @@ classDiagram
 
 binding 模块核心组件关系图
 
-下面开始详细分析 binding 模块中涉及的这些核心组件。
+## 核心要点
+
+- binding 模块由四个核心组件构成：MapperRegistry（统一维护 Mapper 接口与代理对象工厂）、MapperProxyFactory（创建代理对象的工厂）、MapperProxy（实现 InvocationHandler 的代理逻辑）、MapperMethod（最终执行 SQL 语句）。
+- MapperProxyFactory 的底层核心原理是 JDK 动态代理，InvocationHandler 实现为 MapperProxy。
+- MapperProxy.invoke() 是代理对象执行的入口，拦截所有非 Object 方法；被拦截的方法会通过 cachedInvoker() 查询/创建 MapperMethodInvoker 并缓存到 methodCache。
+- MapperMethodInvoker 有两个实现：DefaultMethodInvoker（处理 default 方法，基于 MethodHandle）与 PlainMethodInvoker（处理普通方法，基于 MapperMethod）。
+- MapperMethod 的两个核心字段：command（SqlCommand 类型，记录 SQL 唯一标识与操作类型）、method（MethodSignature 类型，记录方法返回值与参数列表信息）。
+- SQL 语句操作类型分为 INSERT、UPDATE、DELETE、SELECT 和 FLUSH 五种。
+- execute() 方法根据 SQL 类型分发到 SqlSession 的对应方法；INSERT/UPDATE/DELETE 的 int 返回值由 rowCountResult() 按 Mapper 方法返回值类型转换。
+- ParamNameResolver 负责解析方法参数列表：@Param 指定的名称优先，未指定时依据 useActualParamName 全局配置，同时总会生成 `param1、param2…` 兜底别名。
 
 ## MapperRegistry
 
-**MapperRegistry 是 MyBatis 初始化过程中构造的一个对象，主要作用就是统一维护 Mapper 接口以及这些 Mapper 的代理对象工厂**。
+**MapperRegistry 是 MyBatis 初始化过程中构造的一个对象，主要作用是统一维护 Mapper 接口以及这些 Mapper 的代理对象工厂**。
 
-先来看 MapperRegistry 中的核心字段。
+MapperRegistry 中的核心字段：
 
-config（Configuration 类型）：指向 MyBatis 全局唯一的 Configuration 对象，其中维护了解析之后的全部 MyBatis 配置信息。
+- config（Configuration 类型）：指向 MyBatis 全局唯一的 Configuration 对象，其中维护了解析之后的全部 MyBatis 配置信息。
+- knownMappers（Map<Class<?>, MapperProxyFactory<?>> 类型）：维护了所有解析到的 Mapper 接口与 MapperProxyFactory 工厂对象之间的映射关系。
 
-knownMappers（Map<Class<?>, MapperProxyFactory<?>> 类型）：维护了所有解析到的 Mapper 接口以及 MapperProxyFactory 工厂对象之间的映射关系。
+在 MyBatis 初始化时，会读取全部 Mapper.xml 配置文件，还会扫描全部 Mapper 接口中的注解信息，之后调用 `MapperRegistry.addMapper()` 方法填充 knownMappers 集合。在 addMapper() 方法填充 knownMappers 集合之前，MapperRegistry 会先保证传入的 type 参数是一个接口且 knownMappers 集合没有加载过 type 类型，然后才会创建相应的 MapperProxyFactory 工厂并记录到 knownMappers 集合中。
 
-在 MyBatis 初始化时，会读取全部 Mapper.xml 配置文件，还会扫描全部 Mapper 接口中的注解信息，之后会调用 MapperRegistry.addMapper() 方法填充 knownMappers 集合。在 addMapper() 方法填充 knownMappers 集合之前，MapperRegistry 会先保证传入的 type 参数是一个接口且 knownMappers 集合没有加载过 type 类型，然后才会创建相应的 MapperProxyFactory 工厂并记录到 knownMappers 集合中。
-
-在我们使用 CustomerMapper.find() 方法执行数据库查询的时候，MyBatis 会先从MapperRegistry 中获取 CustomerMapper 接口的代理对象，这里就使用到 MapperRegistry.getMapper()方法，它会拿到前面创建的 MapperProxyFactory 工厂对象，并调用其 newInstance() 方法创建 Mapper 接口的代理对象。
+使用 `CustomerMapper.find()` 方法执行数据库查询时，MyBatis 会先从 MapperRegistry 中获取 CustomerMapper 接口的代理对象，这里使用到 `MapperRegistry.getMapper()` 方法：它会拿到前面创建的 MapperProxyFactory 工厂对象，并调用其 `newInstance()` 方法创建 Mapper 接口的代理对象。
 
 ## MapperProxyFactory
 
-正如分析 MapperRegistry 时介绍的那样，**MapperProxyFactory 的核心功能就是创建 Mapper 接口的代理对象**，其底层核心原理就是前面[日志适配、数据源与事务](04-日志适配与数据源事务.md)中介绍的 JDK 动态代理。
+**MapperProxyFactory 的核心功能是创建 Mapper 接口的代理对象**，其底层核心原理是 [日志适配、数据源与事务](04-日志适配与数据源事务.md)中介绍的 JDK 动态代理。
 
-在 MapperRegistry 中会依赖 MapperProxyFactory 的 newInstance() 方法创建代理对象，底层则是通过 JDK 动态代理的方式生成代理对象的，如下代码所示，这里使用的 InvocationHandler 实现是 MapperProxy。
+MapperRegistry 依赖 MapperProxyFactory 的 newInstance() 方法创建代理对象，底层通过 JDK 动态代理的方式生成代理对象，如下代码所示，这里使用的 InvocationHandler 实现是 MapperProxy。
 
 ```
 protected T newInstance(MapperProxy<T> mapperProxy) {
@@ -93,35 +97,28 @@ protected T newInstance(MapperProxy<T> mapperProxy) {
 
 ## MapperProxy
 
-通过分析 MapperProxyFactory 这个工厂类，我们可以清晰地看到**MapperProxy 是生成 Mapper 接口代理对象的关键，它实现了 InvocationHandler 接口**。
+通过分析 MapperProxyFactory 这个工厂类可以清晰地看到，**MapperProxy 是生成 Mapper 接口代理对象的关键，它实现了 InvocationHandler 接口**。
 
-先来介绍一下 MapperProxy 中的核心字段。
+MapperProxy 中的核心字段：
 
-sqlSession（SqlSession 类型）：记录了当前 MapperProxy 关联的 SqlSession 对象。在与当前 MapperProxy 关联的代理对象中，会用该 SqlSession 访问数据库。
+- sqlSession（SqlSession 类型）：记录了当前 MapperProxy 关联的 SqlSession 对象。在与当前 MapperProxy 关联的代理对象中，会用该 SqlSession 访问数据库。
+- mapperInterface（Class<T> 类型）：Mapper 接口类型，也是当前 MapperProxy 关联的代理对象实现的接口类型。
+- methodCache（Map<Method, MapperMethodInvoker> 类型）：用于缓存 MapperMethodInvoker 对象的集合。methodCache 中的 key 是 Mapper 接口中的方法，value 是该方法对应的 MapperMethodInvoker 对象。
+- lookupConstructor（Constructor 类型）：针对 JDK 8 的特殊处理，该字段指向 MethodHandles.Lookup 的构造方法。
+- privateLookupInMethod（Method 类型）：除 JDK 8 之外的其他 JDK 版本会使用该字段，该字段指向 MethodHandles.privateLookupIn() 方法。
 
-mapperInterface（Class<T> 类型）：Mapper 接口类型，也是当前 MapperProxy 关联的代理对象实现的接口类型。
-
-methodCache（Map<Method, MapperMethodInvoker> 类型）：用于缓存 MapperMethodInvoker 对象的集合。methodCache 中的 key 是 Mapper 接口中的方法，value 是该方法对应的 MapperMethodInvoker 对象。
-
-lookupConstructor（Constructor 类型）：针对 JDK 8 中的特殊处理，该字段指向了 MethodHandles.Lookup 的构造方法。
-
-privateLookupInMethod（Method 类型）：除了 JDK 8 之外的其他 JDK 版本会使用该字段，该字段指向 MethodHandles.privateLookupIn() 方法。
-
-这里涉及 MethodHandle 的内容，所以下面就来补充一下 MethodHandle 的基础知识点。
+lookupConstructor 与 privateLookupInMethod 两个字段涉及 MethodHandle 的内容，以下补充 MethodHandle 的基础知识点。
 
 ### 1. MethodHandle 简介
 
-从 Java 7 开始，除了反射之外，在 java.lang.invoke 包中新增了 MethodHandle 这个类，它的基本功能与反射中的 Method 类似，但它比反射更加灵活。**反射是 Java API 层面支持的一种机制，MethodHandle 则是 JVM 层支持的机制，相较而言，反射更加重量级，MethodHandle 则更轻量级，性能也比反射更好些**。
+从 Java 7 开始，除了反射之外，java.lang.invoke 包中新增了 MethodHandle 这个类。它的基本功能与反射中的 Method 类似，但比反射更加灵活。**反射是 Java API 层面支持的一种机制，MethodHandle 则是 JVM 层支持的机制；相较而言，反射更加重量级，MethodHandle 更轻量级，性能也比反射更好些**。
 
-使用 MethodHandle 进行方法调用的时候，往往会涉及下面几个核心步骤：
+使用 MethodHandle 进行方法调用时，涉及以下几个核心步骤：
 
-创建 MethodType 对象，确定方法的签名，这个签名会涉及方法参数及返回值的类型；
-
-在 MethodHandles.Lookup 这个工厂对象中，根据方法名称以及上面创建的 MethodType 查找对应 MethodHandle 对象；
-
-将 MethodHandle 绑定到一个具体的实例对象；
-
-调用 MethodHandle.invoke()/invokeWithArguments()/invokeExact() 方法，完成方法调用。
+1. 创建 MethodType 对象，确定方法的签名，签名涉及方法参数及返回值的类型；
+2. 在 MethodHandles.Lookup 这个工厂对象中，根据方法名称以及上面创建的 MethodType 查找对应 MethodHandle 对象；
+3. 将 MethodHandle 绑定到一个具体的实例对象；
+4. 调用 MethodHandle.invoke()/invokeWithArguments()/invokeExact() 方法，完成方法调用。
 
 下面是 MethodHandle 的一个简单示例：
 
@@ -157,17 +154,15 @@ public class MethodHandleDemo {
 
 ```
 
-在 MethodHandle 调用方法的时候，也是支持多态的，在通过 bindTo() 方法绑定到某个实例对象的时候，在 bind 过程中会进行类型检查等一系列检查操作。
+MethodHandle 调用方法时也支持多态：通过 bindTo() 方法绑定到某个实例对象时，bind 过程中会进行类型检查等一系列检查操作。
 
-通过上面这个示例我们可以看出，使用 MethodHandle 实现反射的效果，更像我们平时通过 Java 代码生成的字节码，例如，在字节码中可以看到创建的方法签名（MethodType）、方法的具体调用方式（findStatic()、findSpecial()、findVirtual() 等方法）以及类型的隐式转换。
+从上述示例可以看出，使用 MethodHandle 实现反射的效果，更接近 Java 代码编译生成的字节码：在字节码中可以看到创建的方法签名（MethodType）、方法的具体调用方式（findStatic()、findSpecial()、findVirtual() 等方法）以及类型的隐式转换。
 
 ### 2. MapperProxy 中的代理逻辑
 
-介绍完 MethodHandle 的基础之后，我们回到 MapperProxy 继续分析。
+**MapperProxy.invoke() 方法是代理对象执行的入口**，其中会拦截所有非 Object 方法。针对每个被拦截的方法，都会调用 cachedInvoker() 方法获取对应的 MapperMethod 对象，并调用其 invoke() 方法执行代理逻辑以及目标方法。
 
-**MapperProxy.invoke() 方法是代理对象执行的入口**，其中会拦截所有非 Object 方法，针对每个被拦截的方法，都会调用 cachedInvoker() 方法获取对应的 MapperMethod 对象，并调用其 invoke() 方法执行代理逻辑以及目标方法。
-
-在 cachedInvoker() 方法中，首先会查询 methodCache 缓存，如果查询的方法为 default 方法，则会根据当前使用的 JDK 版本，获取对应的 MethodHandle 并封装成 DefaultMethodInvoker 对象写入缓存；如果查询的方法是非 default 方法，则创建 PlainMethodInvoker 对象写入缓存。
+在 cachedInvoker() 方法中，首先会查询 methodCache 缓存：如果查询的方法为 default 方法，则会根据当前使用的 JDK 版本获取对应的 MethodHandle 并封装成 DefaultMethodInvoker 对象写入缓存；如果查询的方法是非 default 方法，则创建 PlainMethodInvoker 对象写入缓存。
 
 cachedInvoker() 方法的具体实现如下：
 
@@ -216,7 +211,7 @@ public Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlS
 
 ```
 
-在 PlainMethodInvoker.invoke() 方法中，会通过底层维护的 MapperMethod 完成方法调用，其核心实现如下：
+在 PlainMethodInvoker.invoke() 方法中，会通过底层维护的 MapperMethod 完成方法调用，核心实现如下：
 
 ```
 public Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlSession) throws Throwable {
@@ -228,13 +223,13 @@ public Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlS
 
 ## MapperMethod
 
-通过对 MapperProxy 的分析我们知道，**MapperMethod 是最终执行 SQL 语句的地方，同时也记录了 Mapper 接口中的对应方法**，其核心字段也围绕这两方面的内容展开。
+**MapperMethod 是最终执行 SQL 语句的地方，同时也记录了 Mapper 接口中的对应方法**，其核心字段围绕这两方面展开。
 
 ### 1. SqlCommand
 
-**MapperMethod 的第一个核心字段是 command（SqlCommand 类型），其中维护了关联 SQL 语句的相关信息**。在 MapperMethod$SqlCommand 这个内部类中，通过 name 字段记录了关联 SQL 语句的唯一标识，通过 type 字段（SqlCommandType 类型）维护了 SQL 语句的操作类型，这里 SQL 语句的操作类型分为 INSERT、UPDATE、DELETE、SELECT 和 FLUSH 五种。
+**MapperMethod 的第一个核心字段是 command（SqlCommand 类型），其中维护了关联 SQL 语句的相关信息**。在 MapperMethod$SqlCommand 这个内部类中，通过 name 字段记录关联 SQL 语句的唯一标识，通过 type 字段（SqlCommandType 类型）维护 SQL 语句的操作类型。SQL 语句的操作类型分为 INSERT、UPDATE、DELETE、SELECT 和 FLUSH 五种。
 
-下面来看看 SqlCommand 如何查找 Mapper 接口中一个方法对应的 SQL 语句的信息，该逻辑在 SqlCommand 的构造方法中实现，如下：
+SqlCommand 查找 Mapper 接口中一个方法对应的 SQL 语句信息的逻辑在其构造方法中实现：
 
 ```
 public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
@@ -265,7 +260,7 @@ public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method 
 
 ```
 
-这里调用的 resolveMappedStatement() 方法不仅会尝试根据 SQL 语句的唯一标识从 Configuration 全局配置对象中查找关联的 MappedStatement 对象，还会尝试顺着 Mapper 接口的继承树进行查找，直至查找成功为止。具体实现如下：
+这里调用的 `resolveMappedStatement()` 方法不仅会尝试根据 SQL 语句的唯一标识从 Configuration 全局配置对象中查找关联的 MappedStatement 对象，还会尝试顺着 Mapper 接口的继承树进行查找，直至查找成功为止：
 
 ```
 private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String methodName,
@@ -300,33 +295,29 @@ private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String 
 
 **MapperMethod 的第二个核心字段是 method 字段（MethodSignature 类型），其中维护了 Mapper 接口中方法的相关信息。**
 
-首先是 Mapper 接口方法返回值的相关信息，涉及下面七个字段。
+首先是 Mapper 接口方法返回值的相关信息，涉及下面七个字段：
 
-returnsMany、returnsMap、returnsVoid、returnsCursor、returnsOptional（boolean 类型）：用于表示方法返回值是否为 Collection 集合或数组、Map 集合、void、Cursor、Optional 类型。
+- returnsMany、returnsMap、returnsVoid、returnsCursor、returnsOptional（boolean 类型）：用于表示方法返回值是否为 Collection 集合或数组、Map 集合、void、Cursor、Optional 类型。
+- returnType（Class<?> 类型）：方法返回值的具体类型。
+- mapKey（String 类型）：如果方法的返回值为 Map 集合，则通过 mapKey 字段记录作为 key 的列名。mapKey 字段的值通过解析方法上的 @MapKey 注解得到。
 
-returnType（Class<?> 类型）：方法返回值的具体类型。
+其次是与 Mapper 接口方法参数列表相关的三个字段：
 
-mapKey（String 类型）：如果方法的返回值为 Map 集合，则通过 mapKey 字段记录了作为 key 的列名。mapKey 字段的值是通过解析方法上的 @MapKey 注解得到的。
+- resultHandlerIndex（Integer 类型）：记录了 Mapper 接口方法参数列表中 ResultHandler 类型参数的位置。
+- rowBoundsIndex（Integer 类型）：记录了 Mapper 接口方法参数列表中 RowBounds 类型参数的位置。
+- paramNameResolver（ParamNameResolver 类型）：用来解析方法参数列表的工具类。
 
-是与 Mapper 接口方法的参数列表相关的三个字段。
+#### ParamNameResolver
 
-resultHandlerIndex（Integer 类型）：记录了 Mapper 接口方法的参数列表中 ResultHandler 类型参数的位置。
+ParamNameResolver 中有一个 names 字段（SortedMap<Integer, String> 类型），记录了各个参数在参数列表中的位置以及参数名称：key 是参数在参数列表中的位置索引，value 为参数的名称。可以通过 @Param 注解指定一个参数名称；如果没有特别指定，则默认使用参数列表中的变量名称作为其名称，这与 ParamNameResolver 的 useActualParamName 字段相关（useActualParamName 是一个全局配置）。
 
-rowBoundsIndex（Integer 类型）：记录了 Mapper 接口方法的参数列表中 RowBounds 类型参数的位置。
-
-paramNameResolver（ParamNameResolver 类型）：用来解析方法参数列表的工具类。
-
-在上述字段中，需要着重讲解的是 ParamNameResolver 这个解析方法参数列表的工具类。
-
-在 ParamNameResolver 中有一个 names 字段（SortedMap<Integer, String>类型）记录了各个参数在参数列表中的位置以及参数名称，其中 key 是参数在参数列表中的位置索引，value 为参数的名称。我们可以通过 @Param 注解指定一个参数名称，如果没有特别指定，则默认使用参数列表中的变量名称作为其名称，这与 ParamNameResolver 的 useActualParamName 字段相关。useActualParamName 是一个全局配置。
-
-如果我们将 useActualParamName 配置为 false，ParamNameResolver 会使用参数的下标索引作为其名称。另外，names 集合会跳过 RowBounds 类型以及 ResultHandler 类型的参数，如果使用下标索引作为参数名称，在 names 集合中就会出现 KV 不一致的场景。例如下图就很好地说明了这种不一致的场景，其中 saveCustomer(long id, String name, RowBounds bounds, String address) 方法对应的 names 集合为 {{0, "0"}, {1, "1"}, {2, "3"}}。
+如果将 useActualParamName 配置为 false，ParamNameResolver 会使用参数的下标索引作为其名称。另外，names 集合会跳过 RowBounds 类型以及 ResultHandler 类型的参数，如果使用下标索引作为参数名称，在 names 集合中就会出现 KV 不一致的场景。例如 saveCustomer(long id, String name, RowBounds bounds, String address) 方法对应的 names 集合为 {{0, "0"}, {1, "1"}, {2, "3"}}：
 
 ![](/mybatis-course-images/08-Mapper_文件与_Java_接口的优雅映射之道__CioPOWAs1x-ARSPuAAEfe6Ixv48515.png)
 
 从图中可以看到，由于 RowBounds 参数的存在，第四个参数在 names 集合中的 KV 出现了不一致（即 key = 2 与 value = "3" 不一致）。
 
-完成 names 集合的初始化之后，我们再来看如何从 names 集合中查询参数名称，该部分逻辑在 ParamNameResolver.getNamedParams() 方法，其中会将 Mapper 接口方法的实参与 names 集合中记录的参数名称相关联，其核心逻辑如下：
+完成 names 集合的初始化之后，从 names 集合中查询参数名称的逻辑位于 `ParamNameResolver.getNamedParams()` 方法，其中会将 Mapper 接口方法的实参与 names 集合中记录的参数名称相关联，核心逻辑如下：
 
 ```
 public Object getNamedParams(Object[] args) {
@@ -379,7 +370,7 @@ List<User> findByIdAndUsername3(User user);
 三种写法最终都会被 ParamNameResolver 归一化：`@Param` 指定的名称优先；未指定时按 useActualParamName（实际参数名）或下标记录，同时总会生成 `param1、param2…` 兜底别名——这就是写法一里 arg0 与 param1 并存的原因。
 :::
 
-了解了 ParamNameResolver 的核心功能之后，我们回到 MethodSignature 继续分析，在其构造函数中会解析方法中的返回值、参数列表等信息，并初始化前面介绍的核心字段，这里也会使用到前面介绍的 ParamNameResolver 工具类。下面是 MethodSignature 构造方法的核心实现：
+了解 ParamNameResolver 的核心功能之后，回到 MethodSignature 继续分析。MethodSignature 的构造函数会解析方法中的返回值、参数列表等信息，并初始化前述核心字段，其中也会使用到 ParamNameResolver 工具类。MethodSignature 构造方法的核心实现如下：
 
 ```
 public MethodSignature(Configuration configuration, Class<?> mapperInterface, Method method) {
@@ -403,11 +394,9 @@ public MethodSignature(Configuration configuration, Class<?> mapperInterface, Me
 
 ```
 
-在初始化过程中，我们看到会调用 getUniqueParamIndex() 方法查找目标类型参数的下标索引位置，其核心原理就是遍历方法的参数列表，逐个匹配参数的类型是否为目标类型，如果匹配成功，则会返回当前参数的下标索引。getUniqueParamIndex() 方法的具体实现比较简单，这里就不再展示，你若感兴趣的话可以参考源码进行学习。
+初始化过程中会调用 `getUniqueParamIndex()` 方法查找目标类型参数的下标索引位置，其核心原理是遍历方法的参数列表，逐个匹配参数的类型是否为目标类型，匹配成功则返回当前参数的下标索引。getUniqueParamIndex() 方法的具体实现比较简单，深入理解时可参考源码学习。
 
 ### 3. 深入 execute() 方法
-
-分析完 MapperMethod 中的几个核心内部类，我们回到 MapperMethod 继续介绍。
 
 execute() 方法是 MapperMethod 中最核心的方法之一。**execute() 方法会根据要执行的 SQL 语句的具体类型执行 SqlSession 的相应方法完成数据库操作**，其核心实现如下：
 
@@ -450,25 +439,19 @@ public Object execute(SqlSession sqlSession, Object[] args) {
 
 ```
 
-**在 execute() 方法中，对于 INSERT、UPDATE、DELETE 三类 SQL 语句的返回结果，都会通过 rowCountResult() 方法处理**。我们知道，上述三种类型的 SQL 语句的执行结果是一个数字，多数场景中代表了 SQL 语句影响的数据行数（注意，这个返回值的具体含义根据 MySQL 的配置有所变化），rowCountResult() 方法会将这个 int 值转换成 Mapper 接口方法的返回值，具体规则如下：
+**在 execute() 方法中，INSERT、UPDATE、DELETE 三类 SQL 语句的返回结果都会通过 rowCountResult() 方法处理**。这三种类型的 SQL 语句的执行结果是一个数字，多数场景中代表了 SQL 语句影响的数据行数（返回值的具体含义根据 MySQL 的配置有所变化），rowCountResult() 方法会将这个 int 值转换成 Mapper 接口方法的返回值，具体规则如下：
 
-Mapper 方法返回值为 void，则忽略 SQL 语句的 int 返回值，直接返回 null；
+- Mapper 方法返回值为 void，则忽略 SQL 语句的 int 返回值，直接返回 null；
+- Mapper 方法返回值为 int 或 Integer 类型，则将 SQL 语句返回的 int 值直接返回；
+- Mapper 方法返回值为 long 或 Long 类型，则将 SQL 语句返回的 int 值转换成 long 类型之后返回；
+- Mapper 方法返回值为 boolean 或 Boolean 类型，则将 SQL 语句返回的 int 值与 0 比较大小，并将比较结果返回。
 
-Mapper 方法返回值为 int 或 Integer 类型，则将 SQL 语句返回的 int 值直接返回；
+**针对 SELECT 语句查询到的结果集的处理**：
 
-Mapper 方法返回值为 long 或 Long 类型，则将 SQL 语句返回的 int 值转换成 long 类型之后返回；
-
-Mapper 方法返回值为 boolean 或 Boolean 类型，则将 SQL 语句返回的 int 值与 0 比较大小，并将比较结果返回。
-
-看 execute() 方法**针对 SELECT 语句查询到的结果集的处理**。
-
-如果在方法参数列表中有 ResultHandler 类型的参数存在，则会使用 executeWithResultHandler() 方法完成查询，底层依赖的是 SqlSession.select() 方法，结果集将会交由传入的 ResultHandler 对象进行处理。
-
-如果方法返回值为集合类型或是数组类型，则会调用 executeForMany() 方法，底层依赖 SqlSession.selectList() 方法进行查询，并将得到的 List 转换成目标集合类型。
-
-如果方法返回值为 Map 类型，则会调用 executeForMap() 方法，底层依赖 SqlSession.selectMap() 方法完成查询，并将结果集映射成 Map 集合。
-
-针对 Cursor 以及 Optional返回值的处理，也是依赖的 SqlSession 的相关方法完成查询的，这里不再展开。
+- 如果方法参数列表中有 ResultHandler 类型的参数存在，则会使用 executeWithResultHandler() 方法完成查询，底层依赖 SqlSession.select() 方法，结果集交由传入的 ResultHandler 对象进行处理。
+- 如果方法返回值为集合类型或数组类型，则会调用 executeForMany() 方法，底层依赖 SqlSession.selectList() 方法进行查询，并将得到的 List 转换成目标集合类型。
+- 如果方法返回值为 Map 类型，则会调用 executeForMap() 方法，底层依赖 SqlSession.selectMap() 方法完成查询，并将结果集映射成 Map 集合。
+- 针对 Cursor 以及 Optional 返回值的处理，同样依赖 SqlSession 的相关方法完成查询。
 
 ::: details 注解方式开发 Mapper（@Select/@Results/@One/@Many 等，来自 SSM 篇）
 除了 XML 映射文件，Mapper 接口还可以直接用注解声明 SQL——本篇剖析的 MapperProxy/Binding 机制对两种方式完全一致，注解 SQL 会被解析成对应的 MappedStatement。原「08-SSM/缓存与注解开发」篇已解体，其注解用法并入此处。

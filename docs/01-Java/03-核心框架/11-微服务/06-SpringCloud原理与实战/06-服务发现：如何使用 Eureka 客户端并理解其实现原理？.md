@@ -9,15 +9,15 @@ tags: [Java, SpringCloud原理与实战]
 
 > ⚠️ **组件状态说明**：Eureka 2.x 已由 Netflix 官方宣布停止维护（进入维护模式，仅存量修复），Spring Cloud Netflix 后续版本仅对 Eureka 1.x 做兼容支持。本文保留其原理讲解价值（客户端注册、心跳续约、增量拉取与本地缓存刷新等服务发现机制并未过时），生产选型请参考 [Nacos](<../05-SpringCloudAlibaba实战/04-服务治理：Nacos 如何实现微服务服务治理.md>) 等现代替代方案（文中组件对照见尾部版本差异表）。
 
-在介绍完 Eureka 服务器端组件之后，今天我们详细地展开讲解 Eureka 的客户端组件。我们的思路同样是先介绍使用 Eureka 注册和发现服务的使用方法，然后基于源码，剖析 Eureka 客户端的实现原理。
+## 概念说明
 
-## 使用 Eureka 注册和发现服务
+在 Eureka 服务器端组件之外，Eureka 客户端组件是服务注册与发现的执行者。理解思路同样是从使用方法入手，再基于源码剖析 Eureka 客户端的实现原理。
 
-现在我们的 SpringHealth 案例中已经有了第一个独立的微服务，即**上一节构建的 eureka-server 服务**。对于 Eureka 服务器而言，user-service、device-service 和 intervention-service 都是它的客户端，今天我们将先以 user-service 为例来演示如何完成服务的注册和发现。
+在 SpringHealth 案例中，**eureka-server 服务**是已构建的 Eureka 服务器。对于 Eureka 服务器而言，user-service、device-service 和 intervention-service 都是它的客户端，下面以 user-service 为例演示如何完成服务的注册和发现。
 
 ### 实现服务注册
 
-使用 Eureka 注册基于 Spring Boot 构建的 user-service，它非常简单，其主要工作也是通过配置来完成的。在介绍配置内容之前，我们首先需要确保在 Maven 工程中添加对 Eureka 客户端组件 spring-cloud-starter-netflix-eureka-client 的依赖，如下所示。
+使用 Eureka 注册基于 Spring Boot 构建的 user-service 非常简单，其主要工作也是通过配置来完成的。在介绍配置内容之前，首先需要确保在 Maven 工程中添加对 Eureka 客户端组件 spring-cloud-starter-netflix-eureka-client 的依赖，如下所示。
 
 ```xml
 <dependency>
@@ -26,7 +26,7 @@ tags: [Java, SpringCloud原理与实战]
 </dependency>
 ```
 
-然后，我们来看 user-service 的 Bootstrap 类，如下所示：
+然后，看 user-service 的 Bootstrap 类，如下所示：
 
 ```java
 @SpringBootApplication
@@ -39,9 +39,9 @@ public class UserApplication {
 }
 ```
 
-这里引入了一个新的注解 @EnableEurekaClient，该注解用于表明当前服务就是一个 Eureka 客户端，这样该服务就可以自动注册到 Eureka 服务器。当然，随着我们后续内容的演进，你会发现可以使用统一的 @SpringCloudApplication 注解，来实现 @SpringBootApplication 和 @EnableEurekaClient 这两个注解整合在一起的效果。
+这里引入了一个新的注解 @EnableEurekaClient，该注解用于表明当前服务就是一个 Eureka 客户端，这样该服务就可以自动注册到 Eureka 服务器。随着后续内容的演进，可以使用统一的 @SpringCloudApplication 注解来实现 @SpringBootApplication 和 @EnableEurekaClient 这两个注解整合在一起的效果。
 
-这里使用独立的 @EnableEurekaClient 注解是为了帮助你更好地理解该注解的作用，而关于 @SpringCloudApplication 注解我们会在介绍到服务熔断时再进行专门引入。
+这里使用独立的 @EnableEurekaClient 注解是为了更清晰地展示该注解的作用，而关于 @SpringCloudApplication 注解会在介绍服务熔断时再进行专门引入。
 
 接下来就是最重要的配置工作，user-service 中的配置内容如下所示：
 
@@ -58,21 +58,21 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 ```
 
-显然，这里包含两段配置内容。第一段配置指定了服务的名称和运行时端口。在上面的示例中，user-service 的名称通过“spring.application.name=userservice”进行指定，也就是说 user-service 在注册中心中的名称为 userservice。在后续的示例中，我们会使用这一名称获取 user-service 在 Eureka 中的各种注册信息。
+显然，这里包含两段配置内容。第一段配置指定了服务的名称和运行时端口。在上面的示例中，user-service 的名称通过“spring.application.name=userservice”进行指定，也就是说 user-service 在注册中心中的名称为 userservice。在后续的示例中，将使用这一名称获取 user-service 在 Eureka 中的各种注册信息。
 
-在 eureka.client 段中，我们设置 Eureka 客户端行为。这里的 serviceUrl 配置项在上一节中已经介绍过，serviceUrl.defaultZone 指定的就是 Eureka 服务器的地址。
+在 eureka.client 段中设置 Eureka 客户端行为。这里的 serviceUrl 配置项已在前文介绍过，serviceUrl.defaultZone 指定的就是 Eureka 服务器的地址。
 
-当然，如果我们同样基于上一节中介绍的 Peer Awareness 模式构建了 Eureka 服务器集群，那么 eureka.client.serviceUrl.defaultZone 配置项的内容就应该是“http://eureka1:8761/eureka/,http://eureka2:8762/eureka/”，用于指向当前的集群环境。
+如果基于 Peer Awareness 模式构建了 Eureka 服务器集群，那么 eureka.client.serviceUrl.defaultZone 配置项的内容就应该是“http://eureka1:8761/eureka/,http://eureka2:8762/eureka/”，用于指向当前的集群环境。
 
 ### 实现服务发现
 
-当我们成功创建并启动了 user-service 之后，Eureka 服务监控页面中就包含了该服务的注册信息。可以看到，现在的 Eureka 中注册了两个 user-service 的服务实例，运行端口分别是 8082 和 8083。这时候，你可能会好奇，user-service 在 Eureka 服务器中的注册信息是如何进行表示的呢？为了获取注册到 Eureka 服务器上具体某一个服务实例的详细信息，我们可以访问如下地址：
+成功创建并启动 user-service 之后，Eureka 服务监控页面中就包含了该服务的注册信息。可以看到，此时 Eureka 中注册了两个 user-service 的服务实例，运行端口分别是 8082 和 8083。user-service 在 Eureka 服务器中的注册信息可以通过如下地址获取：
 
 ```text
 http://<eureka-ip-port>:8761/eureka/apps/<APPID>
 ```
 
-该地址代表的就是一个普通的 HTTP 请求，URL 中的 APPID 就是服务名称。以 user-service 为例，我们发送 HTTP 请求到 [http://localhost:8761/eureka/apps/userservice](http://localhost:8761/eureka/apps/userservice) 可以得到如下信息：
+该地址代表的就是一个普通的 HTTP 请求，URL 中的 APPID 就是服务名称。以 user-service 为例，发送 HTTP 请求到 [http://localhost:8761/eureka/apps/userservice](http://localhost:8761/eureka/apps/userservice) 可以得到如下信息：
 
 ```xml
 <application>
@@ -117,25 +117,25 @@ http://<eureka-ip-port>:8761/eureka/apps/<APPID>
 </application>
 ```
 
-这里出现了两个 <instance> 标签，代表存在两个 user-service 服务实例。根据如上所示的服务实例详细信息，我们可以获取该服务的服务名称、IP 地址、端口、是否可用等基本信息，也可以访问 statusPageUrl、healthCheckUrl 等地址查看当前服务的运行状态，更为重要的是得到了 leaseInfo 等与服务注册过程直接相关的基础数据，这些基础数据有助于我们理解 Eureka 作为注册中心的工作原理。
+这里出现了两个 <instance> 标签，代表存在两个 user-service 服务实例。根据如上所示的服务实例详细信息，可以获取该服务的服务名称、IP 地址、端口、是否可用等基本信息，也可以访问 statusPageUrl、healthCheckUrl 等地址查看当前服务的运行状态；更为重要的是得到了 leaseInfo 等与服务注册过程直接相关的基础数据，这些基础数据有助于理解 Eureka 作为注册中心的工作原理。
 
-## 理解 Eureka 客户端基本原理
+## 原理与机制：Eureka 客户端基本结构
 
-对于 Eureka 而言，微服务的提供者和消费者都是它的客户端，其中服务提供者关注**服务注册、服务续约**和**服务下线**等功能，而服务消费者关注于服务信息的获取。同时，对于服务消费者而言，为了提高服务获取的性能以及在注册中心不可用的情况下继续使用服务，一般都还会具有缓存机制。
+对于 Eureka 而言，微服务的提供者和消费者都是它的客户端：服务提供者关注**服务注册、服务续约**和**服务下线**等功能，而服务消费者关注于服务信息的获取。同时，对于服务消费者而言，为了提高服务获取的性能以及在注册中心不可用的情况下继续使用服务，一般都还会具有缓存机制。
 
-在 Netflix Eureka 中，专门提供了一个客户端包，并抽象了一个客户端接口 EurekaClient。EurekaClient 接口继承自 LookupService 接口，这个 LookupService 接口实际上也是我们上一节中所介绍的 InstanceRegistry 接口的父接口。EurekaClient 在 LookupService 接口的基础上提供了一系列扩展方法，**这些扩展方法并不是重点，我们更应该关注于它的类层结构**。可以看到 EurekaClient 接口有个实现类 DiscoveryClient（位于 com.netflix.discovery 包中），该类包含了服务提供者和服务消费者的核心处理逻辑，同时提供了我们在介绍 Eureka 服务器端基本原理时所介绍的 register、renew 等方法。DiscoveryClient 类的实现非常复杂，我们重点关注它构造方法中的这行代码：
+在 Netflix Eureka 中，专门提供了一个客户端包，并抽象了一个客户端接口 EurekaClient。EurekaClient 接口继承自 LookupService 接口，这个 LookupService 接口实际上也是前文介绍的 InstanceRegistry 接口的父接口。EurekaClient 在 LookupService 接口的基础上提供了一系列扩展方法，**扩展方法并不是重点，更应关注的是它的类层结构**。EurekaClient 接口有个实现类 DiscoveryClient（位于 com.netflix.discovery 包中），该类包含了服务提供者和服务消费者的核心处理逻辑，同时提供了介绍 Eureka 服务器端基本原理时所涉及的 register、renew 等方法。DiscoveryClient 类的实现非常复杂，重点关注它构造方法中的这行代码：
 
 ```java
 initScheduledTasks();
 ```
 
-通过分析该方法中的代码，我们看到系统在这里初始化了一批调度任务，具体包含缓存刷新 cacheRefresh、心跳 heartbeat、服务实例复制 InstanceInfoReplicator 等，其中缓存刷新面向服务消费者，而心跳和服务实例复制面向服务提供者。接下来我们将分别从这两个 Eureka 客户端组件出发讨论服务注册和发现的客户端操作。
+通过分析该方法中的代码，可以看到系统在这里初始化了一批调度任务，具体包含缓存刷新 cacheRefresh、心跳 heartbeat、服务实例复制 InstanceInfoReplicator 等，其中缓存刷新面向服务消费者，而心跳和服务实例复制面向服务提供者。下面分别从这两个 Eureka 客户端组件出发讨论服务注册和发现的客户端操作。
 
 ### 服务提供者操作源码解析
 
-服务提供者关注**服务注册、服务续约和服务下线**等功能，它可以使用 Eureka 服务器提供的 RESTful API 完成上述操作。因为篇幅关系，这里同样以服务注册为例给出服务提供者的操作流程。
+服务提供者关注**服务注册、服务续约和服务下线**等功能，它可以使用 Eureka 服务器提供的 RESTful API 完成上述操作。因为篇幅关系，这里以服务注册为例给出服务提供者的操作流程。
 
-在 DiscoveryClient 类中，服务注册操作由register 方法完成，如下所示。为了简单起见，我们对代码进行了裁剪，省略了日志相关等非核心代码：
+在 DiscoveryClient 类中，服务注册操作由 register 方法完成，如下所示。为了简单起见，代码进行了裁剪，省略了日志相关等非核心代码：
 
 ```java
 boolean register() throws Throwable {
@@ -150,9 +150,9 @@ boolean register() throws Throwable {
 }
 ```
 
-上述 register 方法会在 InstanceInfoReplicator 类的 run 方法中进行执行。从操作流程上讲，上述代码的逻辑非常简单，即服务提供者先将自己注册到 Eureka 服务器中，然后根据返回的结果确定操作是否成功。显然，这里的重点代码是eurekaTransport.registrationClient.register()，DiscoveryClient 通过这行代码发起了远程请求。
+上述 register 方法会在 InstanceInfoReplicator 类的 run 方法中进行执行。从操作流程上讲，上述代码的逻辑非常简单，即服务提供者先将自己注册到 Eureka 服务器中，然后根据返回的结果确定操作是否成功。显然，这里的重点代码是 eurekaTransport.registrationClient.register()，DiscoveryClient 通过这行代码发起了远程请求。
 
-首先我们来看 EurekaTransport 类，这是 DiscoveryClient 类中的一个内部类，定义了 registrationClient 变量用于实现服务注册。registrationClient 的类型是 EurekaHttpClient 接口，该接口的定义如下：
+首先看 EurekaTransport 类，这是 DiscoveryClient 类中的一个内部类，定义了 registrationClient 变量用于实现服务注册。registrationClient 的类型是 EurekaHttpClient 接口，该接口的定义如下：
 
 ```java
 public interface EurekaHttpClient {
@@ -172,7 +172,7 @@ public interface EurekaHttpClient {
 }
 ```
 
-可以看到这个 EurekaHttpClient 接口定义了 Eureka 服务器的一些底层 REST API，包括 register、cancel、sendHeartBeat、statusUpdate、getApplications 等。在 Eureka 中，关于如何实现客户端与服务器端的远程通信，从工作原理上讲只是一个 RESTful 风格的 HTTP 请求，但在具体设计和实现上可以说是非常考究，因此类层结构上也比较复杂。我们先来看 EurekaHttpClient 接口的一个实现类 EurekaHttpClientDecorator，从命名上看它是一个装饰器（Decorator），如下所示：
+可以看到这个 EurekaHttpClient 接口定义了 Eureka 服务器的一些底层 REST API，包括 register、cancel、sendHeartBeat、statusUpdate、getApplications 等。在 Eureka 中，关于如何实现客户端与服务器端的远程通信，从工作原理上讲只是一个 RESTful 风格的 HTTP 请求，但在具体设计和实现上非常考究，类层结构也比较复杂。先来看 EurekaHttpClient 接口的一个实现类 EurekaHttpClientDecorator，从命名上看它是一个装饰器（Decorator），如下所示：
 
 ```java
 public abstract class EurekaHttpClientDecorator implements EurekaHttpClient {
@@ -190,7 +190,7 @@ public enum RequestType {
 public interface RequestExecutor<R> {
         EurekaHttpResponse<R> execute(EurekaHttpClient delegate);
 
-RequestType getRequestType();
+	RequestType getRequestType();
     }
 
 protected abstract <R> EurekaHttpResponse<R> execute(RequestExecutor<R> requestExecutor);
@@ -216,7 +216,7 @@ protected abstract <R> EurekaHttpResponse<R> execute(RequestExecutor<R> requestE
 
 可以看到 EurekaHttpClientDecorator 通过定义一个抽象方法 execute(RequestExecutor requestExecutor) 来包装 EurekaHttpClient，这种包装是代理机制的一种表现形式。
 
-然后我们再来看如何构建一个 EurekaHttpClient，Eureka 也专门提供了 EurekaHttpClientFactory 类来负责构建具体的 EurekaHttpClient。显然，这是工厂模式的一种典型应用。EurekaHttpClientFactory 接口定义如下：
+然后再看如何构建一个 EurekaHttpClient，Eureka 也专门提供了 EurekaHttpClientFactory 类来负责构建具体的 EurekaHttpClient。显然，这是工厂模式的一种典型应用。EurekaHttpClientFactory 接口定义如下：
 
 ```java
 public interface EurekaHttpClientFactory {
@@ -256,13 +256,13 @@ public interface TransportClientFactory {
 
 TransportClientFactory 同样存在一批实现类，其中有些是实名类，有些是匿名类。以实名的实现类 JerseyEurekaHttpClientFactory 为例，它位于 com.netflix.discovery.shared.transport.jersey 包下，通过 EurekaJerseyClient 获取 Jersey 客户端，而 EurekaJerseyClient 又会使用 ApacheHttpClient4 对象，从而完成 REST 调用。
 
-作为总结，这里也给你分享一个 Eureka 在设计和实现上的技巧，也就是所谓的高阶（High Level）API 和低阶（Low Level）API。针对高阶 API，主要是通过装饰器模式进行一系列包装，从而创建目标 EurekaHttpClient。而关于低阶 API 的话，主要是 HTTP 远程调用的实现，Netflix 提供的是基于 Jersey 的版本，而 Spring Cloud 则提供了基于 RestTemplate 的版本，这点我们后面会再讲到。
+作为总结，这里体现了一个 Eureka 在设计和实现上的技巧，即所谓的高阶（High Level）API 和低阶（Low Level）API：高阶 API 主要是通过装饰器模式进行一系列包装，从而创建目标 EurekaHttpClient；低阶 API 主要是 HTTP 远程调用的实现，Netflix 提供的是基于 Jersey 的版本，而 Spring Cloud 则提供了基于 RestTemplate 的版本。
 
 ### 服务消费者操作源码解析
 
-我们在介绍注册中心模型时，服务消费者可以配备缓存机制以加速服务路由。对于 Eureka 而言，作为客户端组件的 DiscoveryClient 同样具备这种缓存功能。
+在介绍注册中心模型时提到，服务消费者可以配备缓存机制以加速服务路由。对于 Eureka 而言，作为客户端组件的 DiscoveryClient 同样具备这种缓存功能。
 
-Eureka 客户端通过定时任务完成缓存刷新操作，我们已经在前面的内容中提到 DiscoveryClient 中的 initScheduledTasks 方法用于初始化各种调度任务，对于缓存刷新而言，调度器的初始化过程如下所示：
+Eureka 客户端通过定时任务完成缓存刷新操作。前文已提到 DiscoveryClient 中的 initScheduledTasks 方法用于初始化各种调度任务，对于缓存刷新而言，调度器的初始化过程如下所示：
 
 ```java
 if (clientConfig.shouldFetchRegistry()) {
@@ -292,7 +292,7 @@ class CacheRefreshThread implements Runnable {
 }
 ```
 
-对于服务消费者而言，最重要的操作就是**获取服务注册信息**。在这里的 refreshRegistry 方法中，我们发现在进行一系列的校验之后，最终调用了 fetchRegistry 方法以完成注册信息的更新，该方法代码如下。为了简单起见，我们对代码进行了部分裁剪，只保留主流程：
+对于服务消费者而言，最重要的操作就是**获取服务注册信息**。在 refreshRegistry 方法中，进行一系列的校验之后，最终调用了 fetchRegistry 方法以完成注册信息的更新，该方法代码如下。为了简单起见，代码进行了部分裁剪，只保留主流程：
 
 ```java
 private boolean fetchRegistry(boolean forceFullRegistryFetch) {
@@ -321,20 +321,20 @@ private boolean fetchRegistry(boolean forceFullRegistryFetch) {
 }
 ```
 
-这里的几个带注释的方法都非常有用，因为 getAndStoreFullRegistry 的逻辑相对比较简单，我们将重点介绍 getAndUpdateDelta 方法，以便学习在 Eureka 中如何实现增量数据更新的设计技巧。裁剪之后的 getAndUpdateDelta 方法代码如下所示：
+这里的几个带注释的方法都非常有用。getAndStoreFullRegistry 的逻辑相对比较简单，重点介绍 getAndUpdateDelta 方法，以便学习 Eureka 中实现增量数据更新的设计技巧。裁剪之后的 getAndUpdateDelta 方法代码如下所示：
 
 ```java
 private void getAndUpdateDelta(Applications applications) throws Throwable {
         long currentUpdateGeneration = fetchRegistryGeneration.get();
 
-Applications delta = null;
+	Applications delta = null;
         //通过 eurekaTransport.queryClient 获取增量信息
         EurekaHttpResponse<Applications> httpResponse = eurekaTransport.queryClient.getDelta(remoteRegionsRef.get());
         if (httpResponse.getStatusCode() == Status.OK.getStatusCode()) {
             delta = httpResponse.getEntity();
         }
 
-if (delta == null) {
+	if (delta == null) {
               //如果增量信息为空，就直接发起一次全量更新
             getAndStoreFullRegistry();
         } else if (fetchRegistryGeneration.compareAndSet(currentUpdateGeneration, currentUpdateGeneration + 1)) {//通过CAS来确保请求的线程安全性
@@ -344,7 +344,7 @@ if (delta == null) {
                  //比对从服务器端返回的增量数据和本地数据，合并两者的差异数据
                     updateDelta(delta);
 
-//用合并了增量数据之后的本地数据来生成一致性 hashcode
+	//用合并了增量数据之后的本地数据来生成一致性 hashcode
                     reconcileHashCode = getReconcileHashCode(applications);
                 } finally {
                     fetchRegistryUpdateLock.unlock();
@@ -362,7 +362,7 @@ if (delta == null) {
 }
 ```
 
-回顾 Eureka 服务器端基本原理，我们知道 Eureka 服务器端会保存一个服务注册列表的缓存。Eureka 官方文档中提到这个数据保留时间是三分钟，而 Eureka 客户端的定时调度机制会每隔 30 秒刷新本地缓存。原则上，只要 Eureka 客户端不停地获取服务器端的更新数据，就能保证自己的数据和 Eureka 服务器端的保持一致。但如果客户端在 3 分钟之内没有获取更新数据，就会导致自身与服务器端的数据不一致，这是这种更新机制所必须要考虑的问题，也是我们自己在设计类似场景时的一个注意点。
+回顾 Eureka 服务器端基本原理可知，Eureka 服务器端会保存一个服务注册列表的缓存。Eureka 官方文档中提到这个数据保留时间是三分钟，而 Eureka 客户端的定时调度机制会每隔 30 秒刷新本地缓存。原则上，只要 Eureka 客户端不停地获取服务器端的更新数据，就能保证自己的数据和 Eureka 服务器端保持一致。但如果客户端在 3 分钟之内没有获取更新数据，就会导致自身与服务器端的数据不一致，这是这种更新机制所必须考虑的问题，也是自行设计类似场景时的一个注意点。
 
 针对上述问题，Eureka 采用了一致性 HashCode 方法来进行解决。Eureka 服务器端每次返回的增量数据中都会带有一个一致性 HashCode，这个 HashCode 会与 Eureka 客户端用本地服务列表数据算出的一致性 HashCode 进行比对，如果两者不一致就证明增量更新出了问题，这时候就需要执行一次全量更新。
 
@@ -381,11 +381,17 @@ public static String getReconcileHashCode(Map<String, AtomicInteger> instanceCou
 
 作为总结，Eureka 客户端缓存定时更新的流程与服务注册的流程基本一致，也就是说在 Eureka 中，服务提供者和服务消费者作为 Eureka 服务器的客户端采用了同一套体系完成与服务器端的交互。
 
+## 实践要点
+
+- 服务注册只需 spring-cloud-starter-netflix-eureka-client 依赖、@EnableEurekaClient 注解与 eureka.client.serviceUrl.defaultZone 配置；集群环境下 defaultZone 以逗号分隔指向多个 Eureka 节点。
+- Eureka 服务器的 /eureka/apps/<APPID> REST 端点可查看服务实例的 IP、端口、状态、leaseInfo（续约间隔 30 秒、过期时长 90 秒）等注册明细，是排查注册问题的直接手段。
+- DiscoveryClient 通过 initScheduledTasks 初始化三类调度任务：cacheRefresh（面向消费者）、heartbeat 与 InstanceInfoReplicator（面向提供者）。
+- EurekaHttpClient 的实现分为两层：高阶 API 用装饰器（Redirecting/Retryable/Sessioned/MetricsCollecting 等 EurekaHttpClientDecorator 子类）层层包装，低阶 API 由 TransportClientFactory 创建真实 HTTP 客户端（Netflix 用 Jersey，Spring Cloud 用 RestTemplate）。
+- 缓存刷新采用“增量优先 + 全量兜底”策略：默认 getDelta 增量拉取，增量数据为空或一致性 HashCode 比对失败时触发全量更新；注意服务器端缓存保留 3 分钟与客户端 30 秒刷新间隔的组合效应。
+
 ## 小结
 
-延续上一节内容，今天我们讨论了 Eureka 客户端组件的使用方法和实现原理。在使用方法上，我们同样只需要在 Spring Boot 的启动类中添加一个注解，就可以将服务自身注册到 Eureka 服务器中。而在实现原理上，服务的提供者和服务的消费者都是 Eureka 客户端，但却有不同的操作流程，需要我们分别进行分析。
-
-这里给你留一道思考题：针对位于 Eureka 服务器上的服务列表信息，Eureka 客户端如何实现注册信息的同步和增量更新？
+Eureka 客户端组件的使用方法非常简单，只需在 Spring Boot 的启动类中添加一个注解即可将服务自身注册到 Eureka 服务器中。在实现原理上，服务的提供者和服务的消费者都是 Eureka 客户端，但操作流程不同：提供者通过 register/heartbeat 等调度任务维护注册与续约，消费者通过 CacheRefreshThread 定时刷新本地缓存，并以“增量拉取 + 一致性 HashCode 校验 + 全量兜底”的机制保证与服务器端数据的最终一致。
 
 ## 版本差异（Spring Cloud 旧版 → 2025.x）
 
@@ -398,4 +404,4 @@ public static String getReconcileHashCode(Map<String, AtomicInteger> instanceCou
 | 配置中心 | Spring Cloud Config | Nacos Config / Apollo |
 | 版本对应 | Hoxton/2020.x + Boot 2.x + JDK 8 | 2025.x + Boot 3.5.x + JDK 17+ |
 
-> 本文为 Spring Cloud 旧版课程（Hoxton/2020.x 时代）。Hystrix、Ribbon、Zuul 1.x、Eureka 已停止维护，新项目请使用 Spring Cloud Gateway + LoadBalancer + Resilience4j（或 Alibaba 系 Nacos/Sentinel/Seata），并升级到 Spring Cloud 2025.x + Spring Boot 3.5.x。
+> 本文基于 Spring Cloud 旧版（Hoxton/2020.x 时代）编写。Hystrix、Ribbon、Zuul 1.x、Eureka 已停止维护，新项目请使用 Spring Cloud Gateway + LoadBalancer + Resilience4j（或 Alibaba 系 Nacos/Sentinel/Seata），并升级到 Spring Cloud 2025.x + Spring Boot 3.5.x。

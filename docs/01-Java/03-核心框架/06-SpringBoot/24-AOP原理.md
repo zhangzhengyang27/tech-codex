@@ -15,9 +15,7 @@ tags: [Java, SpringBoot]
 
 ## AOP原理
 
-### AOP：注解使用AOP基础与@EnableAspectJAutoProxy的作用
-
-【第1章节先回顾注解使用AOP的一些基础，熟悉的小伙伴请直接看第2章节】
+### 注解 AOP 基础与 @EnableAspectJAutoProxy 的作用
 
 #### 1. 注解AOP基础
 
@@ -33,7 +31,7 @@ tags: [Java, SpringBoot]
 
 ##### 1.2 AOP的重要概念
 
-在开始研究AOP原理之前，我们先一起回顾下AOP的重要核心概念术语：
+AOP 的重要核心概念术语如下：
 
 - **JoinPoint**（连接点）：可能被拦截到的点，在Spring中指的是类中的任意方法（SpringFramework 只支持方法类型的连接点）
 - **Pointcut**（切入点）：要对哪些 **JoinPoint** 进行拦截的定义（可以简单理解为已经被增强的方法）（哪些切入点要被增强，需要由切入点表达式来描述）
@@ -123,7 +121,7 @@ public class LogAspect {
 
 之后要在主启动类上标注一个注解，告诉IOC容器开启AOP：**`@EnableAspectJAutoProxy`** 。
 
-既然到这里已经提到了这个关键的注解，那咱就来分析这个注解都干了什么吧。
+下面分析这个注解的具体作用。
 
 #### 2. @EnableAspectJAutoProxy的作用
 
@@ -142,7 +140,7 @@ boolean exposeProxy() default false;
 
 > Registers an AnnotationAwareAspectJAutoProxyCreator against the current BeanDefinitionRegistry as appropriate based on a given @EnableAspectJAutoProxy annotation.根据给定的 @EnableAspectJAutoProxy 注解，根据当前 BeanDefinitionRegistry 在适当的位置注册 AnnotationAwareAspectJAutoProxyCreator 。
 
-从文档注释中可以发现它要在IOC容器中注册一个 `AnnotationAwareAspectJAutoProxyCreator` 。暂且不关注这个类是干嘛的，先进这个 `AspectJAutoProxyRegistrar` 中看一下它是如何实现的。
+从文档注释中可以发现它要在IOC容器中注册一个 `AnnotationAwareAspectJAutoProxyCreator` 。下面进入 `AspectJAutoProxyRegistrar` 查看其实现。
 
 ##### 2.1 AspectJAutoProxyRegistrar
 
@@ -217,7 +215,7 @@ if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 }
 ```
 
-下面的方法就是创建 `AnnotationAwareAspectJAutoProxyCreator` 的核心方法，可以发现逻辑还是比较简单的。方法进入后先判断IOC容器中是否包含一个特定的Bean，如果没有，下面直接用 `RootBeanDefinition` 创建。
+创建 `AnnotationAwareAspectJAutoProxyCreator` 的核心方法逻辑比较简单：方法进入后先判断IOC容器中是否包含一个特定的Bean，如果没有，直接用 `RootBeanDefinition` 创建。
 
 ###### 2.1.2 解析@EnableAspectJAutoProxy注解
 
@@ -236,11 +234,11 @@ if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 
 这部分因为默认的 `@EnableAspectJAutoProxy` 中两个属性默认均为false，故这部分不起作用。
 
-至此，可以发现，`@EnableAspectJAutoProxy` 的根本作用是在IOC容器中注册了一个 `AnnotationAwareAspectJAutoProxyCreator` 。下面来解析这个类的作用。
+至此可以得出：`@EnableAspectJAutoProxy` 的根本作用是在IOC容器中注册一个 `AnnotationAwareAspectJAutoProxyCreator` 。下面解析这个类的作用。
 
 #### 3. AnnotationAwareAspectJAutoProxyCreator的作用时机
 
-先看一眼这个类的文档注释原文翻译：
+先看这个类的文档注释原文翻译：
 
 > AspectJAwareAdvisorAutoProxyCreator subclass that processes all AspectJ annotation aspects in the current application context, as well as Spring Advisors. Any AspectJ annotated classes will automatically be recognized, and their advice applied if Spring AOP's proxy-based model is capable of applying it. This covers method execution joinpoints. If the <aop:include> element is used, only @AspectJ beans with names matched by an include pattern will be considered as defining aspects to use for Spring auto-proxying. Processing of Spring Advisors follows the rules established in org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator.AspectJAwareAdvisorAutoProxyCreator子类，用于处理当前应用程序上下文中的所有 @AspectJ 注解的切面，以及Spring的Advisor。如果Spring AOP的基于代理的模型能够应用任何被 @AspectJ 注解标注的类，那么它们的增强方法将被自动识别。这涵盖了方法执行的切入点表达式。如果使用<aop:include>元素，则只有名称与包含模式匹配的被 @AspectJ 标注的Bean将被视为定义要用于Spring自动代理的方面。Spring Advisor的处理遵循 AbstractAdvisorAutoProxyCreator 中建立的规则。
 
@@ -265,7 +263,7 @@ public class ProxyProcessorSupport
     implements Ordered, BeanClassLoaderAware, AopInfrastructureBean
 ```
 
-上面的类继承结构已经很清晰了，从这里面可以获得两个信息：
+从上面的类继承结构中可以获得两个信息：
 
 - 实现了 **`SmartInstantiationAwareBeanPostProcessor`** ，可以做组件的 **创建前后、初始化前后的后置处理工作** 。
 - 实现了 **`BeanFactoryAware`** ，可以将 **`BeanFactory`** 注入到组件中
@@ -276,13 +274,13 @@ public class ProxyProcessorSupport
 
 > Extension of the InstantiationAwareBeanPostProcessor interface, adding a callback for predicting the eventual type of a processed bean. NOTE: This interface is a special purpose interface, mainly for internal use within the framework. In general, application-provided post-processors should simply implement the plain BeanPostProcessor interface or derive from the InstantiationAwareBeanPostProcessorAdapter class.扩展 InstantiationAwareBeanPostProcessor 接口，添加了用于预测已处理bean的最终类型的回调。 注意：此接口是专用接口，主要供框架内部使用。通常，应用程序提供的后处理器应简单地实现纯 BeanPostProcessor 接口或从 InstantiationAwareBeanPostProcessorAdapter 类派生。
 
-它扩展了 `InstantiationAwareBeanPostProcessor` 接口，这个接口之前咱在IOC部分介绍过，它用于组件的创建前后做后置处理，恰好AOP的核心是用代理对象代替普通对象，用这种后置处理器刚好能完成需求。
+它扩展了 `InstantiationAwareBeanPostProcessor` 接口，该接口用于组件的创建前后做后置处理，恰好AOP的核心是用代理对象代替普通对象，用这种后置处理器刚好能完成需求。
 
 下面将结合IOC容器的启动原理，研究 `AnnotationAwareAspectJAutoProxyCreator` 的创建时机和作用流程。
 
 ##### 3.1 SpringBoot引导创建IOC容器
 
-根据前面的SpringBoot启动IOC容器的原理，最终会在一系列初始化后进入IOC容器的refresh方法。
+按照SpringBoot启动IOC容器的原理，最终会在一系列初始化后进入IOC容器的refresh方法。
 
 ```java
 // AbstractApplicationContext
@@ -366,29 +364,29 @@ public static void registerBeanPostProcessors(
 }
 ```
 
-之前看 `AnnotationAwareAspectJAutoProxyCreator` 的类继承和接口实现，发现它实现了 `Ordered` 接口，会在实际分类时进入 `orderedPostProcessorNames` 集合中。
+`AnnotationAwareAspectJAutoProxyCreator` 实现了 `Ordered` 接口，会在实际分类时进入 `orderedPostProcessorNames` 集合中。
 
-通过Debug，发现实现了 `Ordered` 接口的就它一个。
+Debug 验证表明，实现了 `Ordered` 接口的BeanPostProcessor 仅此一个。
 
-之后要调用下面一段源码中，这里要直接 **getBean** 来创建 `AnnotationAwareAspectJAutoProxyCreator` 了！
+接下来调用下面一段源码，直接通过 **getBean** 创建 `AnnotationAwareAspectJAutoProxyCreator`：
 
 ##### 3.3 getBean → doCreateBean
 
-根据前面的IOC原理，肯定会执行一系列操作：**getBean → doGetBean → createBean → doCreateBean** 。最终创建这个后置处理器，放入IOC容器中，此部分还没有涉及到AOP的实际创建时机，我们暂且略过。
+按照IOC容器原理，会依次执行：**getBean → doGetBean → createBean → doCreateBean** ，最终创建这个后置处理器并放入IOC容器中。此部分还没有涉及到AOP的实际创建时机，暂且略过。
 
 #### 小结
 
 1. 注解AOP的使用需要在切面类上标注 `@Aspect` 和 `@Component` 。
 2. 启动AOP的核心是向容器中注册了一个 `AnnotationAwareAspectJAutoProxyCreator` 。
 
-### AOP：AnnotationAwareAspectJAutoProxyCreator的后置处理功能
+### AnnotationAwareAspectJAutoProxyCreator 的后置处理功能
 
 
 #### 4. AnnotationAwareAspectJAutoProxyCreator的后置处理功能
 
 `AnnotationAwareAspectJAutoProxyCreator` 创建并注册到IOC容器中，接下来的切面类和被切类方法会受到它的影响。
 
-下面由一个被切面的Bean为主线，研究它的创建流程。
+下面以一个被切面的Bean为主线，研究它的创建流程。
 
 ##### 4.1 refresh → createBean
 
@@ -416,7 +414,7 @@ try {
 }
 ```
 
-中间的try块中，之前咱在IOC原理中提到过，它就是AOP创建代理对象的入口。
+中间的try块就是AOP创建代理对象的入口。
 
 注意看 resolveBeforeInstantiation 方法上面的单行注释：
 
@@ -465,9 +463,9 @@ protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, 
 }
 ```
 
-到这里发现是真正执行 `InstantiationAwareBeanPostProcessor` 的 `postProcessBeforeInstantiation` 方法了。
+到这里，真正执行的是 `InstantiationAwareBeanPostProcessor` 的 `postProcessBeforeInstantiation` 方法。
 
-来到 `AnnotationAwareAspectJAutoProxyCreator` ，搜索 `postProcessBeforeInstantiation` 方法，发现这个方法在 `AbstractAutoProxyCreator` 中定义。
+在 `AnnotationAwareAspectJAutoProxyCreator` 中搜索 `postProcessBeforeInstantiation` 方法，发现这个方法在 `AbstractAutoProxyCreator` 中定义。
 
 ##### 4.4 AbstractAutoProxyCreator#postProcessBeforeInstantiation
 
@@ -534,13 +532,13 @@ protected boolean isInfrastructureClass(Class<?> beanClass) {
 }
 ```
 
-在 上有一大串单行注释，我单独摘到下面，咱一块来看：
+`isInfrastructureClass` 方法上有一大串单行注释，摘录如下：
 
 > Previously we setProxyTargetClass(true) in the constructor, but that has too broad an impact. Instead we now override isInfrastructureClass to avoid proxying aspects. I'm not entirely happy with that as there is no good reason not to advise aspects, except that it causes advice invocation to go through a proxy, and if the aspect implements e.g the Ordered interface it will be proxied by that interface and fail at runtime as the advice method is not defined on the interface. We could potentially relax the restriction about not advising aspects in the future.以前我们在构造函数中有 setProxyTargetClass(true)，但是影响范围太广。相反，我们现在重写 isInfrastructureClass 方法，以避免代理切面。我对此并不完全满意，因为没有充分的理由不增强那些切面，只是它会导致增强方法只能通过代理调用，并且如果方面实现了例如 Ordered 接口，它将被该接口代理并在以下位置失败运行时，因为未在切面上定义增强方法。我们将来可能会放宽对非增强切面的限制。
 
-这段解释不是很好理解，但从上面的调用机制可以看出应该是重构过，不然也不会出现子类重写的现象（当然这是咱的推测）。还是来看方法实现吧。
+这段解释比较晦涩，但从上面的调用机制可以看出该方法经历过重构，否则不会出现子类重写的现象。下面看方法实现。
 
-这个方法会调用到父类的方法，而父类的方法会判断Bean的class是否为一些指定的类型（`Advice` 、`Pointcut` 、`Advisor` 、`AopInfrastructureBean`）的子类。很显然我们在用注解AOP的时候都是打 `@Aspect` 注解，没有继承操作，故这部分返回false。
+这个方法会调用到父类的方法，而父类的方法会判断Bean的class是否为一些指定的类型（`Advice` 、`Pointcut` 、`Advisor` 、`AopInfrastructureBean`）的子类。很显然使用注解AOP时都是打 `@Aspect` 注解，没有继承操作，故这部分返回false。
 
 后面还有一段：`this.aspectJAdvisorFactory.isAspect(beanClass)` ：
 
@@ -580,7 +578,7 @@ protected boolean shouldSkip(Class<?> beanClass, String beanName) {
 }
 ```
 
-上面的方法是扩展了下面父类的方法。父类的方法很简单，它就是判断**目标对象是不是原始对象**（没有经过代理）。咱着重看子类重写的上面那段预判断。
+上面的方法是扩展了下面父类的方法。父类的方法很简单，它就是判断**目标对象是不是原始对象**（没有经过代理）。重点看子类重写的预判断。
 
 ###### 4.4.2.1 findCandidateAdvisors：加载增强器
 
@@ -672,7 +670,7 @@ public List<Advisor> findAdvisorBeans() {
 }
 ```
 
-可以发现这部分源码只是把那些增强器先创建、初始化出来，放入IOC容器中就完事了。
+这部分源码只是把那些增强器先创建、初始化出来，放入IOC容器中。
 
 上面的方法返回后，要准备构建增强器了，它要调 `aspectJAdvisorsBuilder.buildAspectJAdvisors` 方法：
 
@@ -689,7 +687,7 @@ protected List<Advisor> findCandidateAdvisors() {
 }
 ```
 
-###### 4.4.2.3 【创建增强器】aspectJAdvisorsBuilder.buildAspectJAdvisors
+###### 4.4.2.3 aspectJAdvisorsBuilder.buildAspectJAdvisors：创建增强器
 
 ```java
 // 在当前的BeanFactory中查找带有@AspectJ注解的切面类Bean，然后返回代表它们的增强器列表。为每个AspectJ通知方法创建一个增强器
@@ -783,7 +781,7 @@ public List<Advisor> buildAspectJAdvisors() {
 3. 根据Bean中定义的通知（Advice，即被五种通知类型标注的方法），创建增强器
 4. 将增强器放入缓存，以备后续加载
 
-注意源码中有一步我标注了序号：`advisorFactory.getAdvisors` ：
+注意源码中标注了序号的一步：`advisorFactory.getAdvisors`：
 
 ###### 4.4.2.4 advisorFactory.getAdvisors：缓存Bean中的所有增强器
 
@@ -858,11 +856,9 @@ public Advisor getAdvisor(Method candidateAdviceMethod, MetadataAwareAspectInsta
 }
 ```
 
-这个方法中先是解析切入点，之后把**切入点**和**通知**包装成一个**切面**（回想AOP的术语）。
+这个方法中先是解析切入点，之后把**切入点**和**通知**包装成一个**切面**（对应 AOP 术语中的切面概念）。
 
-注意有一点咱多留意一下：
-
-【切入点】`AspectJExpressionPointcut` 的类结构与实现
+有一点需要留意——切入点 `AspectJExpressionPointcut` 的类结构与实现：
 
 ```java
 public class AspectJExpressionPointcut extends AbstractExpressionPointcut
@@ -989,11 +985,11 @@ protected TargetSource getCustomTargetSource(Class<?> beanClass, String beanName
 }
 ```
 
-这段源码中的if判断就已经给拦截死了：默认情况下 `customTargetSourceCreators` 为 null（没有注册任何自定义 `TargetSourceCreator`），普通单实例 Bean 的创建根本进不了自定义 TargetSource 的分支，因此方法直接返回null。这也解释了为什么上面的 `postProcessBeforeInstantiation` 方法会直接返回null。
+这段源码中的if判断已经决定了走向：默认情况下 `customTargetSourceCreators` 为 null（没有注册任何自定义 `TargetSourceCreator`），普通单实例 Bean 的创建根本进不了自定义 TargetSource 的分支，因此方法直接返回null。这也解释了为什么上面的 `postProcessBeforeInstantiation` 方法会直接返回null。
 
 ###### 4.4.4 并没有创建代理对象，直接返回出去了
 
-Debug发现 `postProcessBeforeInstantiation` 方法并没有创建出Bean实例来，下一步回到 `createBean` 方法中：
+Debug 结果表明 `postProcessBeforeInstantiation` 方法并没有创建出Bean实例，下一步回到 `createBean` 方法中：
 
 ```java
 protected Object createBean(String beanName, RootBeanDefinition mbd) {
@@ -1018,7 +1014,7 @@ protected Object createBean(String beanName, RootBeanDefinition mbd) {
 }
 ```
 
-上面发现bean为null，下面的判断也不会进，会往下执行 `doCreateBean` 。
+上面 bean 为 null，下面的判断不会进入，会往下执行 `doCreateBean`。
 
 ##### 4.5 doCreateBean
 
@@ -1115,7 +1111,7 @@ protected Object[] getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanN
 }
 ```
 
-这里就是拿之前收集好的增强器。但通过Debug时发现增强器的集合中除了前面定义的Before增强器，还有一个 **`ExposeInvocationInterceptor`** 。
+这里就是拿之前收集好的增强器。但通过 Debug 发现，增强器集合中除了前面定义的Before增强器，还有一个 **`ExposeInvocationInterceptor`**。
 
 ###### 4.8.1.0 ExposeInvocationInterceptor
 
@@ -1140,9 +1136,9 @@ private static final ThreadLocal<MethodInvocation> invocation =
 }
 ```
 
-它实现了 `MethodInterceptor` 接口，`invoke` 方法中它只干了一件事，暂时咱可以这么理解：**把当前执行的目标方法放入 `ThreadLocal` 中**。
+它实现了 `MethodInterceptor` 接口，`invoke` 方法只做一件事：**把当前执行的目标方法放入 `ThreadLocal` 中**。
 
-回过头来，看看 `findEligibleAdvisors` 方法的内部实现：
+再看 `findEligibleAdvisors` 方法的内部实现：
 
 ###### 4.8.2 findEligibleAdvisors
 
@@ -1158,9 +1154,9 @@ protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName
 }
 ```
 
-首先要获取所有之前收集好的增强器，通过Debug发现是只有那一个before增强器。
+首先要获取所有之前收集好的增强器，Debug 结果显示只有那一个before增强器。
 
-之后 `findAdvisorsThatCanApply` 方法要过滤出**可以代理的增强器**（也就是能切该Bean的切面），这部分就是使用**切入点表达式**与当前Bean中方法进行匹配。解析切入点表达式的部分很复杂，文档在这里不作过多研究，有兴趣的小伙伴可以深入分析一下。
+之后 `findAdvisorsThatCanApply` 方法要过滤出**可以代理的增强器**（也就是能切该Bean的切面），这部分就是使用**切入点表达式**与当前Bean中方法进行匹配。解析切入点表达式的部分很复杂，本文不作过多展开，可参考官方文档与源码深入分析。
 
 `findAdvisorsThatCanApply` 方法执行完后，下面还要再调一个 `extendAdvisors` 方法：
 
@@ -1299,9 +1295,9 @@ List<Object> allInterceptors = new ArrayList<>();
 }
 ```
 
-这部分的思路也是比较简单的，它除了用参数传递过来的一组增强器，还会去找一些通用的拦截器作为增强器，最后组合在一起封装为一组 `Advisor` 增强器对象，返回出去。最前面获取到的通用拦截器，通过Debug发现压根就没有（数组为空）：
+这部分的思路比较简单：除用参数传递过来的一组增强器外，还会去找一些通用的拦截器作为增强器，最后组合在一起封装为一组 `Advisor` 增强器对象返回出去。最前面获取到的通用拦截器，通过 Debug 验证为空（数组为空）：
 
-那相当于还是将参数中传入的两个增强器进行最下面的 `wrap` 操作。
+即只将参数中传入的两个增强器进行最后的 `wrap` 操作。
 
 ###### 4.10.1.1 advisorAdapterRegistry.wrap
 
@@ -1403,7 +1399,7 @@ public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException 
 }
 ```
 
-源码中已经很明显的看到我们熟悉的东西：**jdk动态代理**，和**cglib动态代理**了。判断逻辑也很简单，跟我们之前学习两种代理方式的工作场景时一样：**如果目标对象有接口，用jdk动态代理；没有接口，用cglib动态代理**。
+源码中可以明显看到 **jdk动态代理** 与 **cglib动态代理**。判断逻辑也很简单：**如果目标对象有接口，用jdk动态代理；没有接口，用cglib动态代理**。
 
 > 注意：这是 Spring Framework 默认 `proxyTargetClass=false` 时的行为。**Spring Boot 从 1.5 起默认 `spring.aop.proxy-target-class=true`**，即无论目标对象是否实现接口，都走第一个分支用 CGLIB 创建代理（除非目标类本身是接口或已是 JDK 代理类才会用 JdkDynamicAopProxy）。
 
@@ -1416,7 +1412,7 @@ protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
 }
 ```
 
-创建好代理工厂，下一步就要创建真正的代理对象了。我们以 jdk动态代理 为例，看一下它的创建原理：
+创建好代理工厂，下一步就要创建真正的代理对象。以 jdk动态代理 为例，看一下它的创建原理：
 
 ###### 4.10.2.3 [jdk] getProxy
 
@@ -1433,9 +1429,9 @@ public Object getProxy(@Nullable ClassLoader classLoader) {
 }
 ```
 
-看最后一步：**`Proxy.newProxyInstance`** ，这是最底层的原理，也是我们一开始学动态代理时接触的方式。
+看最后一步：**`Proxy.newProxyInstance`**，这是动态代理最底层的实现原理。
 
-【cglib动态代理在底层的实现实在是复杂而且通过Debug也无法找到根源，有兴趣的小伙伴可以Debug跟进一下看到底怎么回事（断点可打在CglibAopProxy的205行 [createProxyClassAndInstance]方法上面），这一步是创建代理对象，但里面走着走着就走丢了，莫名其妙的就创建好了（这就是操作字节码我们无法观察的地方了）】
+cglib动态代理的底层实现较为复杂，通过Debug无法完整跟踪其根源，可尝试Debug跟进（断点可打在CglibAopProxy的205行 [createProxyClassAndInstance]方法上面）：这一步是创建代理对象，但内部直接操作字节码，代理类在字节码操作过程中即已生成完毕，无法逐步观察。
 
 #### 小结
 
@@ -1443,7 +1439,7 @@ public Object getProxy(@Nullable ClassLoader classLoader) {
 2. AOP创建的核心方法在 `AbstractAutoProxyCreator` 的 `wrapIfNecessary` 方法。
 3. AOP增强方法的核心是增强器，而增强器的创建在创建目标对象之前。
 
-### AOP：jdk动态代理&Cglib的执行调用链
+### JDK 动态代理与 CGLIB 的执行调用链
 
 
 #### 5. 目标方法执行的调用链
@@ -1552,7 +1548,7 @@ Object retVal;
 }
 ```
 
-源码中前面的一组if-else if中出现了一个很陌生的概念：`DecoratingProxy` 。为了研究它，我们要先回到上文 4.10.2.3 节的最后部分，来看看 `getProxy` 方法还有什么名堂。
+源码中前面的一组if-else if中出现了一个新概念：`DecoratingProxy`。回到上文 4.10.2.3 节的最后部分，查看 `getProxy` 方法的完整逻辑。
 
 ###### 5.1.0 getProxy与DecoratingProxy
 
@@ -1567,7 +1563,7 @@ public Object getProxy(@Nullable ClassLoader classLoader) {
 }
 ```
 
-除了最后一句话我们很熟悉以外，注意倒数第三行，它获取了一组 `proxiedInterfaces` ，通过Debug发现它除了目标对象实现的接口以外，还有3个新的接口（`SpringProxy`、`Advised`、`DecoratingProxy`），其中就有上面咱看到的那个陌生的 `DecoratingProxy` 接口。咱先来研究研究这三个新的接口都是什么吧。
+注意倒数第三行获取了一组 `proxiedInterfaces`，通过 Debug 发现，其中除了目标对象实现的接口以外，还有3个新的接口（`SpringProxy`、`Advised`、`DecoratingProxy`）。下面分析这三个接口的作用。
 
 ###### 5.1.0.1 SpringProxy
 
@@ -1591,7 +1587,7 @@ public Object getProxy(@Nullable ClassLoader classLoader) {
 
 > Interface to be implemented by decorating proxies, in particular Spring AOP proxies but potentially also custom proxies with decorator semantics. Note that this interface should just be implemented if the decorated class is not within the hierarchy of the proxy class to begin with. In particular, a "target-class" proxy such as a Spring AOP CGLIB proxy should not implement it since any lookup on the target class can simply be performed on the proxy class there anyway.通过装饰代理（尤其是Spring的AOP代理）实现的接口，但也可能具有装饰器语义的自定义代理。请注意，仅当装饰的类不在代理类的层次结构中时才应实现此接口。特别是，诸如SpringAOP的CGLIB代理之类的“目标类”代理不应该实现它，因为无论如何都可以在该代理类上简单地对目标类进行任何查找。
 
-这段文档注释不是很好理解，咱来看看接口中的定义：
+这段文档注释比较晦涩，来看接口中的定义：
 
 ```java
 public interface DecoratingProxy {
@@ -1602,9 +1598,9 @@ public interface DecoratingProxy {
 }
 ```
 
-看到这个方法，这下可以很容易理解了，实现了这个接口，可以保证能从代理对象中很方便的取到目标对象的所属类。
+实现了这个接口，就可以从代理对象中很方便地取到目标对象的所属类。
 
-知道了这三个接口的意义，那回到那段if-else中：
+了解了这三个接口的意义，回到那段if-else中：
 
 ```java
         else if (method.getDeclaringClass() == DecoratingProxy.class) {
@@ -1785,9 +1781,9 @@ public Object proceed() throws Throwable {
 }
 ```
 
-这段方法看上去逻辑有点复杂但又不太复杂。它提到了一个计数器的概念，用于记录当前拦截器链中调用的位置，以便拦截器链中的拦截器可以有序地调用。
+这段方法的逻辑围绕一个计数器（`currentInterceptorIndex`）展开，用于记录当前拦截器链中调用的位置，以便拦截器链中的拦截器可以有序地调用。
 
-我们来通过一个实例尝试模拟一下：
+下面通过一个实例模拟执行过程：
 
 ###### 5.1.2.1 proceed方法进入
 
@@ -1947,11 +1943,11 @@ public class DemoService implements IService {
 
 此时才真正的执行test方法。
 
-好了走完这个全程，由此我们可以得出算法逻辑：
+走完全程后可以得出算法逻辑：
 
 **利用一个全局索引值，决定每次执行的拦截器，当所有拦截器都执行完时，索引值刚好等于 `size() - 1`，此时就可以执行真正的目标方法了** 。
 
-以上就是jdk动态代理的全部内容，下面咱再来看cglib的调用链原理：
+以上就是jdk动态代理的全部内容，下面来看cglib的调用链原理：
 
 ##### 5.2 cglib的intercept方法 - CglibAopProxy.DynamicAdvisedInterceptor
 
@@ -2093,7 +2089,16 @@ public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
 3. 两种动态代理的核心思想都是获取增强器调用链，然后链式执行增强器（拦截器）。
 4. 执行拦截器链时，为保证拦截器链能有序执行，会引入下标索引机制。
 
-【至此，AOP的核心部分已经解析完毕。接下来咱来看一个AOP的最经典应用：Spring事务控制。通过了解Spring的事务控制机制，可以更深入的了解AOP，以及事务的控制原理】
+至此，AOP的核心部分解析完毕。AOP 的一个最经典应用是 Spring 事务控制：通过了解 Spring 的事务控制机制，可以更深入地理解 AOP 以及事务的控制原理。
+
+## 实践要点
+
+- Spring Boot 从 1.5 起默认 `spring.aop.proxy-target-class=true`，即默认使用 CGLIB 类代理；纯 Spring Framework 默认 `proxyTargetClass=false` 时，目标对象有接口走 JDK 动态代理，无接口才走 CGLIB。
+- `@EnableAspectJAutoProxy` 的根本作用是向 IOC 容器注册 `AnnotationAwareAspectJAutoProxyCreator`；代理对象的实际创建发生在 Bean 初始化之后的 `postProcessAfterInitialization` → `wrapIfNecessary` 中，而不是实例化之前（`postProcessBeforeInstantiation` 对普通单实例 Bean 返回 null）。
+- 增强器（Advisor）的创建先于普通目标 Bean：`shouldSkip` → `findCandidateAdvisors` → `buildAspectJAdvisors` 链路中，切面类中被通知注解标注的方法会被解析为 Advisor 并缓存（单例切面缓存增强器列表，非单例切面缓存增强器工厂）。
+- 需要在同一线程内拿到当前代理对象时，可开启 `@EnableAspectJAutoProxy(exposeProxy = true)`，代理的 invoke/intercept 逻辑会通过 `AopContext.setCurrentProxy` 在线程内共享代理对象。
+- 五种通知的执行语义由对应拦截器的 invoke 实现决定：`@Before` 先于目标方法；`@After` 在 finally 中执行（目标方法抛异常也会执行）；`@AfterReturning` 未用 try-catch 包裹，仅在方法正常返回后执行；`@AfterThrowing` 在 catch 中按异常类型匹配执行并重新抛出。
+- 拦截器链的有序执行依赖 `currentInterceptorIndex` 下标索引：每次 proceed() 索引加 1 并取出下一个拦截器，索引到达 size-1 时通过反射执行真正的目标方法。
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 

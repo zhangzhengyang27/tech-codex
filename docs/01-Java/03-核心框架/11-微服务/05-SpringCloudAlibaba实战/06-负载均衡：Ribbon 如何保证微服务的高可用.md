@@ -9,25 +9,27 @@ tags: [Java, SpringCloudAlibaba实战]
 
 > ⚠️ **组件状态说明**：Ribbon 已由 Netflix 官方宣布停止维护（Netflix 已将其转入归档状态，Spring Cloud 自 2020.0 版本起移除 Ribbon，以 Spring Cloud LoadBalancer 全面替代）。本文保留其原理讲解价值（负载均衡策略与客户端高可用通信的设计思想并未过时），生产选型请参考 [Spring Cloud LoadBalancer 官方文档](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/loadbalancer.html)（文中组件对照见尾部版本差异表）。
 
-上一节我们对 Nacos 的集群环境与实现原理进行了讲解，我们已经可以轻松将单个微服务接入到 Nacos 进行注册，但是微服务本不是孤岛，如何实现有效的服务间稳定通信是本文即将介绍的主要内容，本次我们将主要学习三方面知识：
+单个微服务接入 Nacos 注册中心后，微服务之间如何实现稳定通信是本篇的核心内容，主要涵盖三方面知识：
 
-1. 介绍 Ribbon 负载均衡器；
+1. Ribbon 负载均衡器；
 
-2. 讲解 Ribbon+RestTemplate 两种实现方式；
+2. Ribbon+RestTemplate 两种实现方式；
 
-3. 讲解 Ribbon 的负载均衡策略。
+3. Ribbon 的负载均衡策略。
 
 ## Ribbon 负载均衡器
 
-在介绍 Ribbon 之前，我们先来认识下负载均衡以及它的两种实现方式。
+### 概念：负载均衡的两种实现方式
 
-负载均衡顾名思义，是指通过软件或者硬件措施，将来自客户端的请求按照某种策略平均的分配到集群的每一个节点上，保证这些节点的 CPU、内存等设备负载情况大致在一条水平线，避免由于局部节点负载过高产生宕机，再将这些处理压力传递到其他节点上产生系统性崩溃。
+负载均衡是指通过软件或者硬件措施，将来自客户端的请求按照某种策略平均地分配到集群的每一个节点上，保证这些节点的 CPU、内存等设备负载情况大致在一条水平线，避免由于局部节点负载过高产生宕机，再将这些处理压力传递到其他节点上产生系统性崩溃。
 
 负载均衡按实现方式分类可区分为：**服务端负载均衡**与**客户端负载均衡**。
 
-服务端负载均衡顾名思义，在架构中会提供专用的负载均衡器，由负载均衡器持有后端节点的信息，服务消费者发来的请求经由专用的负载均衡器分发给服务提供者，进而实现负载均衡的作用。目前常用的负载均衡器软硬件有：F5、Nginx、HaProxy 等。
+服务端负载均衡在架构中会提供专用的负载均衡器，由负载均衡器持有后端节点的信息，服务消费者发来的请求经由专用的负载均衡器分发给服务提供者，进而实现负载均衡的作用。目前常用的负载均衡器软硬件有：F5、Nginx、HaProxy 等。
 
-客户端负载均衡是指，在架构中不再部署额外的负载均衡器，在每个服务消费者内部持有客户端负载均衡器，由内置的负载均衡策略决定向哪个服务提供者发起请求。说到这，我们的主角登场了，Netfilx Ribbon 是 Netflix 公司开源的一个负载均衡组件，是属于客户端负载均衡器。目前Ribbon 已被 Spring Cloud 官方技术生态整合，运行时以 SDK 形式内嵌到每一个微服务实例中，为微服务间通信提供负载均衡与高可用支持。为了更容易理解，我们通过应用场景说明 Ribbon 的执行流程。
+客户端负载均衡是指在架构中不再部署额外的负载均衡器，在每个服务消费者内部持有客户端负载均衡器，由内置的负载均衡策略决定向哪个服务提供者发起请求。Netflix Ribbon 是 Netflix 公司开源的一个客户端负载均衡组件，目前 Ribbon 已被 Spring Cloud 官方技术生态整合，运行时以 SDK 形式内嵌到每一个微服务实例中，为微服务间通信提供负载均衡与高可用支持。
+
+Ribbon 的执行流程如下：
 
 1. 订单服务（order-service）与商品服务（goods-service）实例在启动时向 Nacos 注册；
 
@@ -35,19 +37,17 @@ tags: [Java, SpringCloudAlibaba实战]
 
 3. Ribbon 根据设置的负载策略从商品服务可用实例列表中选择实例；
 
-4. 订单服务实例向商品服务实例发起请求，完成 RESTful 通信；
-
-了解了 Ribbon 执行流程后，我们通过代码方式体现这个完整流程。
+4. 订单服务实例向商品服务实例发起请求，完成 RESTful 通信。
 
 ## Ribbon+RestTemplate 实现服务间高可用通信
 
-开始前，我们首先介绍下 Spring Cloud 自带的 RestTemplate 对象，RestTemplate 对象是 Spring 封装的 RESTful 通信对象，它封装了基于 HTTP 协议的操作，通过简单的API便可发起 HTTP 请求并自动处理响应。RestTemplate 天然与 Ribbon 兼容，两者配合可以极大简化服务间通信过程。Ribbon + RestTemplate 提供了两种开发模式：代码模式，注解模式。
+RestTemplate 是 Spring 封装的 RESTful 通信对象，它封装了基于 HTTP 协议的操作，通过简单的 API 便可发起 HTTP 请求并自动处理响应。RestTemplate 天然与 Ribbon 兼容，两者配合可以极大简化服务间通信过程。Ribbon + RestTemplate 提供了两种开发模式：代码模式与注解模式。
 
-#### 代码模式
+### 代码模式
 
-第一种代码模式是指通过纯 Java 代码实现微服务间通信，虽然工作中代码模式很少使用，但它却是理解 Ribbon+RestTemplate 最直观的途径，所以我对它首先进行讲解。该模式使用主要分为两个阶段：
+代码模式指通过纯 Java 代码实现微服务间通信。虽然在生产中代码模式很少使用，但它是理解 Ribbon+RestTemplate 最直观的途径。该模式的使用分为两个阶段。
 
-**第一阶段**，创建服务提供者，服务提供者是请求的实际处理者，也是标准的 Spring Boot 工程，利用 Controller 对外暴露 RESTful API 供服务消费者调用。
+**第一阶段**：创建服务提供者。服务提供者是请求的实际处理者，也是标准的 Spring Boot 工程，利用 Controller 对外暴露 RESTful API 供服务消费者调用。
 
 第一步，利用 Spring Initializr 向导创建 provider-service 微服务。
 
@@ -95,13 +95,13 @@ public class ProviderController {
 }
 ```
 
-到这里服务提供者 provider-service 已经开发完毕，细心的你应该已注意到，服务提供者就是标准的 Spring Cloud 微服务，向 Nacos 进行注册的同时对外暴露 msg 接口并返回一段静态文本，并没有任何与 Ribbon 相关的内容。确实，Ribbon 与 RestTemplate 应出现在服务消费者，而非提供者一端。
+服务提供者 provider-service 就是标准的 Spring Cloud 微服务：向 Nacos 进行注册的同时对外暴露 msg 接口并返回一段静态文本，没有任何与 Ribbon 相关的内容。Ribbon 与 RestTemplate 应出现在服务消费者，而非提供者一端。
 
-为了演示需要，我们准备五台虚拟机：192.168.31.102 部署 Nacos，111~113 三台部署 provider-service 实例，120 部署 consumer-service。
+为了演示，准备五台虚拟机：192.168.31.102 部署 Nacos，111~113 三台部署 provider-service 实例，120 部署 consumer-service。
 
 在 provider-service 工程中利用 maven package 命令生成 provider-service-0.0.1-SNAPSHOT.jar。
 
-分别上传至到 111 至 113 节点后执行 Java 命令启动微服务实例。
+分别上传至 111 至 113 节点后执行 Java 命令启动微服务实例。
 
 ```shell
 java -jar provider-service-0.0.1-SNAPSHOT.jar
@@ -117,11 +117,9 @@ http://192.168.31.112/provider/msg
 http://192.168.31.113/provider/msg
 ```
 
-到这里，第一阶段开发服务提供者 provider-service 告一段落。
+**第二阶段**：开发服务消费者 consumer-service，即服务的使用方，在服务消费者内置 Ribbon+RestTemplate 实现服务间高可用通信。
 
-**第二阶段**，开发服务消费者 consumer-service，服务消费者说白了就是服务的使用方，我们需要在服务消费者内置 Ribbon+RestTemplate 实现服务间高可用通信。
-
-第一步，利用 Spring Initializr 创建 consumer-service微服务。
+第一步，利用 Spring Initializr 创建 consumer-service 微服务。
 
 pom.xml 确保引入以下三个依赖。
 
@@ -141,7 +139,7 @@ pom.xml 确保引入以下三个依赖。
 </dependency>
 ```
 
-这里需要重点说明，starter-netflix-ribbon 就是通过 Spring Boot Starter 向当前微服务工程集成 Ribbon，无须做其他额外配置。与此同时，用于 RESTful 通信的 RestTemplate 对象已被集成到 starter-web 模块，无须额外依赖。
+这里需要重点说明：starter-netflix-ribbon 就是通过 Spring Boot Starter 向当前微服务工程集成 Ribbon，无须做其他额外配置。与此同时，用于 RESTful 通信的 RestTemplate 对象已被集成到 starter-web 模块，无须额外依赖。
 
 第二步，配置 application.yml，与 provider-service 除微服务 id 外并无其他变化。
 
@@ -176,7 +174,7 @@ public class ConsumerServiceApplication {
 }
 ```
 
-第四步，创建 ConsumerController，通过 Ribbon+RestTemplate 实现负载均衡通信，重要的代码我通过注释进行说明。
+第四步，创建 ConsumerController，通过 Ribbon+RestTemplate 实现负载均衡通信。
 
 ```java
 package com.lagou.consumerservice.controller;
@@ -233,8 +231,7 @@ public class ConsumerController {
 java -jar consumer-service-0.0.1-SNAPSHOT.jar
 ```
 
-启动成功后，在 Nacos 中确认 consumer-service 已注册。
-在浏览器输入[http://192.168.31.120/consumer/msg](http://192.168.31.120/consumer/msg)，F5 多次刷新，看日志会得到以下结果。
+启动成功后，在 Nacos 中确认 consumer-service 已注册。在浏览器输入 [http://192.168.31.120/consumer/msg](http://192.168.31.120/consumer/msg)，多次刷新，日志会得到以下结果。
 
 ```log
 本次调用由 provider-service 的 192.168.31.111:80 实例节点负责处理
@@ -249,17 +246,17 @@ consumer-service 获得数据:This is the message from provider service!
 consumer-service 获得数据:This is the message from provider service!
 ```
 
-不难看出，因为在 Nacos 中存在 3 个 provider-service 的可用实例，默认 Ribbon 是以轮询方式按顺序逐次发送。如果遇到某个 provider-service 实例宕机，Nacos 心跳机制会检测到并将其剔除，同时通知所有 consumer-service 实例，服务提供者节点状态发生变化，之后 consumer-service 便不会向宕机节点发出请求。
+不难看出，因为 Nacos 中存在 3 个 provider-service 的可用实例，默认 Ribbon 以轮询方式按顺序逐次发送。如果遇到某个 provider-service 实例宕机，Nacos 心跳机制会检测到并将其剔除，同时通知所有 consumer-service 实例服务提供者节点状态发生变化，之后 consumer-service 便不会向宕机节点发出请求。
 
-以上便是代码模式的处理过程。它清晰的说明了 Ribbon 的执行过程，先从 Nacos 获取可用服务提供者实例信息，再通过 RestTemplate.getForObject() 向该实例发起 RESTful 请求完成处理。但可能你也感觉到了，代码模式使用复杂，需要自己获取可用实例 IP、端口信息，再拼接 URL 实现服务间通信，那有没有更简单的办法呢？答案是肯定的，利用 @LoadBalanced 注解可自动化实现这一过程。
+以上便是代码模式的处理过程，它清晰说明了 Ribbon 的执行过程：先从 Nacos 获取可用服务提供者实例信息，再通过 RestTemplate.getForObject() 向该实例发起 RESTful 请求完成处理。但代码模式使用复杂，需要自己获取可用实例 IP、端口信息，再拼接 URL 实现服务间通信；@LoadBalanced 注解可以自动化实现这一过程。
 
-#### 注解模式
+### 注解模式
 
-注解模式仍然分为两阶段：
+注解模式同样分为两阶段。
 
-**第一阶段**，创建服务提供者 provider-service，因服务提供者并不涉及 Ribbon，所以与代码模式一阶段代码完全相同，这里不再复述。
+**第一阶段**：创建服务提供者 provider-service，因服务提供者并不涉及 Ribbon，与代码模式第一阶段代码完全相同。
 
-**第二阶段**，创建新的服务消费者 consumer-service。
+**第二阶段**：创建新的服务消费者 consumer-service。
 
 第一步，利用 Spring Initializr 创建 consumer-service 微服务。
 
@@ -298,7 +295,7 @@ logging:
     root: debug
 ```
 
-第三步，关键点来了，在 Spring 初始化 RestTemplate 实例时增加 @LoadBalanced 注解，使 RestTemplate 进行服务通信时自动与 Ribbon 整合，自动实现负载均衡。
+第三步，在 Spring 初始化 RestTemplate 实例时增加 @LoadBalanced 注解，使 RestTemplate 进行服务通信时自动与 Ribbon 整合，自动实现负载均衡。
 
 ```java
 @SpringBootApplication
@@ -314,7 +311,7 @@ public class ConsumerServiceApplication {
 }
 ```
 
-第四步，在 Controller 发起通信时，原有 RestTemplate.getForObject() 方法书写 URL 时，将 IP 端口部分要替换为服务名，如下所示：
+第四步，在 Controller 发起通信时，原有 RestTemplate.getForObject() 方法书写 URL 时，将 IP 端口部分替换为服务名。
 
 ```java
 @RestController
@@ -335,7 +332,7 @@ public class ConsumerController {
 
 在新的 getProviderMessage 代码中，不再出现 LoadBalancerClient 与 ServiceInstance 对象，这一切都被 @LoadBalanced 进行封装，在 RestTemplate 查询前自动处理。
 
-第五步，重新部署 consumer-service，多次访问地址[http://192.168.31.120/consumer/msg](http://192.168.31.120/consumer/msg)，在控制台会看到 Debug 级别日志，通过实际IP地址也同样印证 Ribbon 默认采用轮询策略进行分配。
+第五步，重新部署 consumer-service，多次访问地址 [http://192.168.31.120/consumer/msg](http://192.168.31.120/consumer/msg)，控制台会看到 Debug 级别日志，通过实际 IP 地址也同样印证 Ribbon 默认采用轮询策略进行分配。
 
 ```log
 s.n.www.protocol.http.HttpURLConnection : {GET /provider/msg ...}{Accept: ...}{User-Agent: ...}{Host: 192.168.31.111:80}
@@ -345,7 +342,7 @@ s.n.www.protocol.http.HttpURLConnection : {GET /provider/msg ...}{Accept: ...}{U
 s.n.www.protocol.http.HttpURLConnection : {GET /provider/msg ...}{Accept: ...}{User-Agent: ...}{Host: 192.168.31.113:80}
 ```
 
-以上便是注解模式的使用办法，相比代码模式是不是简单很多啊。对了，你注意到了吗？无论注解模式还是代码模式，默认的负载均衡策略都是轮询，即按顺序依次访问，作为 Ribbon 还支持哪些其他负载均衡策略呢?我们又该如何设置呢？本次最后一小节，本文讲解这块知识。
+以上便是注解模式的使用办法，相比代码模式简单很多。无论注解模式还是代码模式，默认的负载均衡策略都是轮询，即按顺序依次访问；Ribbon 还支持其他负载均衡策略。
 
 ## 如何配置 Ribbon 负载均衡策略
 
@@ -353,31 +350,31 @@ Ribbon 内置多种负载均衡策略，常用的分为以下几种。
 
 - **RoundRobinRule：**
 
-轮询策略，Ribbon 默认策略。默认超过 10 次获取到的 server 都不可用，会返回⼀个空的 server。
+轮询策略，Ribbon 默认策略。默认超过 10 次获取到的 server 都不可用，会返回一个空的 server。
 
 - **RandomRule：**
 
-随机策略，如果随机到的 server 为 null 或者不可用的话。会不停地循环选取。
+随机策略，如果随机到的 server 为 null 或者不可用的话，会不停地循环选取。
 
 - **RetryRule**：
 
-重试策略，在⼀定时限内循环重试。默认继承 RoundRobinRule，也⽀持自定义注⼊，RetryRule 会在每次选取之后，对选举的 server 进⾏判断，是否为 null，是否 alive，并且在 500ms 内会不停地选取判断。而 RoundRobinRule 失效的策略是超过 10 次，RandomRule 没有失效时间的概念，只要 serverList 没都挂。
+重试策略，在一定时限内循环重试。默认继承 RoundRobinRule，也支持自定义注入。RetryRule 会在每次选取之后，对选举的 server 进行判断，是否为 null，是否 alive，并且在 500ms 内会不停地选取判断。而 RoundRobinRule 失效的策略是超过 10 次，RandomRule 没有失效时间的概念，只要 serverList 没都挂。
 
 - **BestAvailableRule**：
 
-最小连接数策略，遍历 serverList，选取出可⽤的且连接数最小的⼀个 server；若没有可⽤的 server，则调用 RoundRobinRule 重新选取。
+最小连接数策略，遍历 serverList，选取出可用的且连接数最小的一个 server；若没有可用的 server，则调用 RoundRobinRule 重新选取。
 
 - **AvailabilityFilteringRule**：
 
-可用过滤策略。扩展了轮询策略，会先通过默认的轮询选取⼀个 server，再去判断该 server 是否超时可用、当前连接数是否超限，都成功再返回。
+可用过滤策略。扩展了轮询策略，会先通过默认的轮询选取一个 server，再去判断该 server 是否超时可用、当前连接数是否超限，都成功再返回。
 
 - **ZoneAvoidanceRule**：
 
-区域权衡策略。扩展了轮询策略，除了过滤超时和链接数过多的 server，还会过滤掉不符合要求的 zone 区域⾥⾯的所有节点，始终保证在⼀个区域/机房内的服务实例进行轮询。
+区域权衡策略。扩展了轮询策略，除了过滤超时和链接数过多的 server，还会过滤掉不符合要求的 zone 区域里面的所有节点，始终保证在一个区域/机房内的服务实例进行轮询。
 
-这里所有负载均衡策略名本质都是 com.netflix.loadbalancer 包下的类：
+所有负载均衡策略名本质都是 com.netflix.loadbalancer 包下的类。
 
-要更改微服务通信时采用的负载均衡策略也很简单，在 application.yml 中采用下面格式书写即可。
+更改微服务通信时采用的负载均衡策略，在 application.yml 中采用下面格式书写即可。
 
 ```yaml
 provider-service: #服务提供者的微服务id
@@ -400,13 +397,13 @@ consumer-service 获得数据:This is the message from provider service!
 consumer-service 获得数据:This is the message from provider service!
 ```
 
-讲到这里，想必你对 Ribbon 已经有了直观的认识，在项目中合理的使用 Ribbon 负载均衡可以使系统性能有显著的提升，最后我们来做下总结。
+::: tip 自定义策略
+如果 Ribbon 自带的负载均衡策略不能满足实际项目的需要，可以通过实现 IRule 接口自定义负载均衡策略，并在 application.yml 中通过 NFLoadBalancerRuleClassName 指定自定义实现类。
+:::
 
 ## 小结
 
-本文我们介绍了三方面知识，开始介绍了 Ribbon 负载均衡器的作用，之后讲解了 Ribbon 的两种开发模式，最后讲解了 Ribbon 的负载均衡策略与设置办法。
-
-这里给你留一道课外题：如果 Ribbon 自带的负载均衡策略不能满足实际项目的需要，我们如何自定义 Ribbon 负载均衡策略呢？
+本文介绍了三方面知识：首先介绍了负载均衡的两种实现方式与 Ribbon 负载均衡器的作用；之后讲解了 Ribbon 的两种开发模式（代码模式与 @LoadBalanced 注解模式）；最后讲解了 Ribbon 的负载均衡策略与配置办法。在项目中合理使用 Ribbon 负载均衡可以使系统性能有显著的提升。
 
 ## 版本差异（Spring Cloud Alibaba 旧版 → 2025.x）
 

@@ -7,49 +7,39 @@ tags: [Java, SpringCloudAlibaba实战]
 ---
 # 配置中心：基于 Nacos 集中管理应用配置
 
-上一节我们讲解 Sentinel 中熔断与限流的处理方式，了解了 Sentinel 对系统实施保护的原理。
+## 概念说明
 
-本文我们对原有主线内容做一个扩展，先来讲解基于 Nacos 如何集中管理应用配置，实现微服务架构中“配置中心”组件。本文内容与本章“系统保护”的主题并不冲突，因为构建 Nacos 配置中心正是 Sentinel 实现集群保护的基础所在，前面我们在 Dashboard 配置的一系列规则都要在生产环境中基于 Nacos 配置中心进行持久化存储。
+本篇是系统保护主线内容的扩展，讲解基于 Nacos 如何集中管理应用配置，实现微服务架构中的"配置中心"组件。该内容与"系统保护"主题并不冲突：构建 Nacos 配置中心正是 Sentinel 实现集群保护的基础所在，在 Dashboard 中配置的一系列规则在生产环境中都要基于 Nacos 配置中心进行持久化存储。
 
-本文我们将讲解以下三方面内容：
+本篇包含三方面内容：
 
 - 为什么微服务架构必须部署配置中心；
-
-- Nacos 配置中心的快速部署与持久化配置；
-
+- Nacos 配置中心的快速部署与微服务接入；
 - Nacos 生产环境中的配置技巧。
 
 ## 为什么微服务架构必须部署配置中心
 
-现在微服务开发的主流技术是基于 Spring Boot 进行的，我们都知道 Spring Boot 默认配置文件为 application.yml 或者 application.properties。它保存了应用的主要配置信息，这些配置文件会随着应用发布被打包放入 Jar 文件，随着应用加载并运行。
+当前微服务开发的主流技术基于 Spring Boot，其默认配置文件为 application.yml 或 application.properties，保存应用的主要配置信息。这些配置文件会随着应用发布被打包放入 Jar 文件，随应用加载并运行。
 
+应用只有几个微服务时，配置文件分散存放在各个 Jar 中问题不大。但如果是大型互联网应用，涉及几十个研发团队、上百台服务器、上千个服务实例时，运维团队就要面对数量级增加带来的挑战，主要体现在三个方面。
 
-当我们的应用只有几个微服务时这些配置文件分散的存放在各个 Jar 中还没有问题。但是如果我们开发了大型互联网应用，涉及几十个研发团队、上百台服务器、上千个服务实例时，互联网的运维团队就要面对因为数量级增加带来的挑战了，总结下运维主要来自三个方面。
+第一，纯粹的工作量增加。假设微服务 A 有 400 个实例，application.yml 分散存储在每一个 Jar 中，一旦机房环境变化、数据库服务器 IP 变更，运维人员就不得不在 400 个实例中对每一个数据库连接 URL 进行调整，费时费力还容易出错。
 
-第一，纯粹的工作量增加。假设微服务 A 有 400 个实例，这些配置文件 application.yml 分散存储在每一个 Jar 中，此时因为机房环境变化，数据库服务器的 IP 变更，运维人员就不得不在 400 个实例中对每一个数据库连接 URL 进行调整，这个过程费时费力还容易出错。
+第二，版本管理的需求。生产环境的状况远比开发、测试环境复杂，无法保证新版本服务上线时一定不出问题。一旦出现重大故障，生产环境必须具备应用版本回滚机制，在保证生产可用的前提下再分析故障原因，这个场景中如何对配置文件进行版本管理是必须要考虑的。
 
-第二，版本管理的需求。因为生产环境的状况远比开发、测试环境复杂，谁都无法保证新版本服务上线时新应用一定不会出问题。如果出现重大故障，生产环境下必须具备应用版本回滚的机制，保证生产可用的前提下再分析故障原因，而这个场景中如何对配置文件进行版本管理也是必须要考虑到的。
+第三，多环境之间的切换。成熟的软件研发流程拥有多套不同环境，例如开发环境、测试环境、UAT 环境、仿真环境、生产环境。不同环境中各种组件的 IP、用户名、密码、配置项都会有差异，在不同环境下运行要求应用具备快速切换并加载对应配置文件的能力，将配置写死在 Jar 中显然无法满足这个要求。
 
-第三，多环境之间的切换。在成熟的软件研发流程中，是拥有多套不同环境的，例如：开发环境、测试环境、UAT 环境、仿真环境、生产环境。不同环境中各种组件的 IP、用户名、密码、配置项都会有差异，在不同环境下运行要求应用具备快速切换并加载对应的配置文件的能力，显然将配置写死在 Jar 中是无法满足这个要求的。
+为了解决这些问题，微服务架构必须额外引入"**配置中心**"组件，其职责是集中管理微服务架构中每一个服务实例的配置数据。引入配置中心后，微服务应用只需持有应用启动的最小化配置，应用启动时所需的其他配置数据（诸如数据库连接字符串、各种用户名密码、IP 等）均从配置中心远程下载，不再本地保存。开发人员书写应用配置时也不再直接写入 application.yml，而是直接在配置中心提供的 UI 进行设置。
 
-为了解决这些问题，在现有的微服务架构下，必须额外的引入“**配置中心**”这一组件，配置中心的职责就是集中管理微服务架构中每一个服务实例的配置数据。当微服务架构引入配置中心后，微服务应用只需持有应用启动的最小化配置，在应用启动时微服务应用所需的其他配置数据，诸如数据库连接字符串、各种用户名密码、IP 等信息均从配置中心远程下载，不再本地保存。同时，作为开发应用的程序员，在书写应用配置时也不再直接写入 application.yml 配置，而是直接在配置中心提供的 UI 进行设置。
+引入配置中心后，微服务的架构产生如下变化：研发运维人员在配置中心提前定义各种环境的配置信息；微服务实例启动时根据服务名、环境等从配置中心查询配置数据并下载到本地；服务实例加载这些来自配置中心的配置信息完成应用启动。
 
-
-当引入配置中心后，微服务的架构会产生如下变化。
-
-
-研发运维人员在配置中心提前定义各种环境的配置信息，之后在微服务实例启动时根据服务名、环境等从配置中心查询配置数据并下载到服务实例本地，最后服务实例加载这些来自配置中心的配置信息完成应用的启动。
-
-说到这想必你对配置中心的作用已经了解，在 Spring Cloud Alibaba 这个架构下，Nacos 除了能作为注册中心，还提供了配置中心的功能。别看 Nacos 身兼多职，但每一项职责也并不平庸，Nacos 作为配置中心，除了基本的配置存储，还提供了版本管理、变更推送、监听查询以及友好的中文 UI 界面，无论是研发人员还是运维人员都可以快速上手实现应用配置。
-
-
-下面我们来讲解如何对 Nacos 配置中心进行部署与服务接入。
+在 Spring Cloud Alibaba 架构下，Nacos 除了能作为注册中心，还提供配置中心的功能。Nacos 作为配置中心，除了基本的配置存储，还提供版本管理、变更推送、监听查询以及友好的中文 UI 界面，研发人员和运维人员都可以快速上手实现应用配置。
 
 ## 部署 Nacos 配置中心与服务接入
 
 ### 部署 Nacos 配置中心
 
-因为 Nacos 本身就同时具备注册中心与配置中心职责，在部署方面与之前部署 Nacos 集群基本一致。唯一不同点是因为 Nacos 要将应用的配置数据保存在数据库以防丢失，所以要配置 Nacos 的数据库访问地址，这里我们快速过一遍。
+Nacos 本身同时具备注册中心与配置中心职责，部署方面与部署 Nacos 集群基本一致。唯一不同点是 Nacos 要将应用的配置数据保存在数据库以防丢失，因此要配置 Nacos 的数据库访问地址。
 
 第一步，下载并解压缩 Nacos。
 
@@ -57,15 +47,9 @@ tags: [Java, SpringCloudAlibaba实战]
 tar -xvf nacos-server-1.4.0.tar.gz
 ```
 
-第二步，配置数据库，这一步最重要，在 MySQL 加载执行 /nacos/conf/nacos-mysql.sql，完成建表工作。
+第二步，配置数据库。这一步最重要：在 MySQL 加载执行 /nacos/conf/nacos-mysql.sql，完成建表工作。其中所有 config_ 开头的表都是 Nacos 配置中心保存应用配置的表。
 
-
-
-其中所有 config_ 开头的表都是 Nacos 配置中心使用时保存应用配置的表。
-
-第三步，配置 Nacos 数据源。
-
-打开 /usr/local/nacos/conf/application.properties，定位到 36 行 Count of DB “数据源”配置附近，按下方示例配置数据源即可。
+第三步，配置 Nacos 数据源。打开 /usr/local/nacos/conf/application.properties，定位到 36 行 Count of DB "数据源"配置附近，按下方示例配置数据源即可。
 
 ```properties
 ### Count of DB: 数据库总数
@@ -82,7 +66,7 @@ db.password=root
 cp cluster.conf.example cluster.conf
 ```
 
-打开 cluster.conf，添加所有 Nacos 集群节点 IP 及端口，为了方便演示，我们只部署一个节点。
+打开 cluster.conf，添加所有 Nacos 集群节点 IP 及端口。为方便演示，这里只部署一个节点。
 
 ```shell
 #vim cluster.conf
@@ -101,12 +85,9 @@ sh /usr/local/nacos/bin/startup.sh
 http://192.168.31.10:8848/nacos/#/configurationManagement?dataId=&group=&appName=
 ```
 
-
-下面我们让微服务接入 Nacos 配置中心，实现配置的集中管理。
-
 ### 微服务接入 Nacos 配置中心
 
-第一步，创建工程引入依赖。
+**第一步，创建工程引入依赖。**
 
 利用 Spring Initializr 向导创建 order-service 订单服务工程，确保 pom.xml 引入以下 3 个依赖。
 
@@ -128,9 +109,9 @@ http://192.168.31.10:8848/nacos/#/configurationManagement?dataId=&group=&appName
 </dependency>
 ```
 
-第二步，在工程创建配置文件。
+**第二步，在工程创建配置文件。**
 
-在接入 Nacos 配置中心之前，要确保 Spring Boot 配置是完整的。application.yml 文件内容如下，注意最后两行，custom 开头的配置项是自定义的，等一下用于演示环境切换。
+在接入 Nacos 配置中心之前，要确保 Spring Boot 配置是完整的。application.yml 文件内容如下，注意最后两行，custom 开头的配置项是自定义的，用于后续演示环境切换。
 
 ```yaml
 server:
@@ -149,7 +130,7 @@ custom: #自定义配置项
   database: 192.168.10.31
 ```
 
-第三步，创建演示代码。
+**第三步，创建演示代码。**
 
 新建 TestController，增加 /test 接口，将配置文件中两个自定义配置输出。
 
@@ -167,9 +148,9 @@ public class TestController {
 }
 ```
 
-第四步，启动应用查看结果。
+**第四步，启动应用查看结果。**
 
-打开浏览器，访问下面网址。
+打开浏览器访问下面网址。
 
 ```text
 http://localhost:8000/test
@@ -178,34 +159,27 @@ flag:development
 database:192.168.10.31
 ```
 
-其中 flag：development 说明当前是“开发环境”。
-一切准备就绪，下面我们接入 Nacos 配置中心。
+其中 flag:development 说明当前是"开发环境"。一切准备就绪，即可正式接入 Nacos 配置中心。
 
-第一步，打开 Nacos 配置中心页面，点击右上角“+”号新建配置。
+**接入第一步：在配置中心新建配置。**
 
+打开 Nacos 配置中心页面，点击右上角"+"号新建配置。新建配置页面包含六个选项：Data ID、Group、描述、说明、配置格式与配置内容，各选项作用如下：
 
-在新建配置页面包含六个选项：Data ID、Group、描述、说明、配置格式与配置内容，我们分别了解下这些选项的作用。
-
-
-- **Data ID**：配置的唯一标识，格式固定为：{微服务id}-{环境名}.yml，这里填写 order-service-dev.yml，其中 dev 就是环境名代表这个配置文件是 order-service 的开发环境配置文件。
-
-- **Group**：指定配置文件的分组，这里设置默认分组 DEFAULT_GROUP 即可。
-
+- **Data ID**：配置的唯一标识，格式固定为：{微服务id}-{环境名}.yml。这里填写 order-service-dev.yml，其中 dev 就是环境名，代表这个配置文件是 order-service 的开发环境配置文件。
+- **Group**：指定配置文件的分组，设置默认分组 DEFAULT_GROUP 即可。
 - **描述**：说明 order-service-dev.yml 配置文件的用途。
-
-- **配置格式**：指定“配置内容”的类型，这里选择 YAML 即可。
-
+- **配置格式**：指定"配置内容"的类型，这里选择 YAML 即可。
 - **配置内容**：将 order-service 工程的 application.yml 文件内容粘贴过来。
 
-之后点击右下角的“发布”按钮完成设置。
+之后点击右下角的"发布"按钮完成设置。与此同时，在 nacos_config 数据库的 config_info 表中也出现了对应配置数据。
 
+**接入第二步：删除本地 application.yml。**
 
-与此同时，在 nacos_config 数据库的 config_info 表中也出现了对应配置数据。
+回到 order-service 工程，删除 application.yml，因为这个文件内容已经保存在 Nacos 配置中心中。
 
+**接入第三步：创建 bootstrap.yml 引导文件。**
 
-第二步，回到 order-service 工程，删除 application.yml，因为这个文件内容已经保存在 Nacos 配置中心中了。
-
-第三步，在 resources 目录下创建 bootstrap.yml 引导文件，对 Nacos 配置中心地址进行设置。注意，bootstrap.yml 文件名是固定的，不要随意改变。
+在 resources 目录下创建 bootstrap.yml 引导文件，对 Nacos 配置中心地址进行设置。注意，bootstrap.yml 文件名是固定的，不要随意改变。
 
 ```yaml
 spring:
@@ -225,11 +199,11 @@ logging: #开启debug日志，仅为学习时使用
     root: debug
 ```
 
-在上面的配置中，包含了两部分内容，第一部分说明 Nacos 配置中心的 IP 端口等信息，第二部分是通过文件中的 “微服务 id”-“环境名”.“文件扩展名” 三部分组合为有效的 data id，即order-service-dev.yml。
+上面的配置包含两部分内容：第一部分说明 Nacos 配置中心的 IP、端口等信息；第二部分通过文件中的"微服务 id"-"环境名"."文件扩展名"三部分组合为有效的 data id，即 order-service-dev.yml。
 
-**这个 data id 要和 Nacos 的设置大小写保持完全一致**，这样在微服务启动时便自动会从 Nacos配置中心获取 order-service-dev.yml 配置并下载到本地完成启动过程。
+**这个 data id 要和 Nacos 的设置大小写保持完全一致**，这样在微服务启动时便会自动从 Nacos 配置中心获取 order-service-dev.yml 配置并下载到本地完成启动过程。
 
-下面我们启动应用看一下日志输出。
+启动应用后的日志输出如下：
 
 ```log
 ...
@@ -253,45 +227,43 @@ custom: #自定义配置项
 [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
 ```
 
-通过 Debug 日志发现，在启动时微服务向 Nacos 查询 order-service-dev.yml 的内容，并将配置内容打印在 Debug 级别日志中，之后作为应用配置加载完成启动。
-访问 http://localhost:8000/test 运行结果如下：
+通过 Debug 日志可以发现，启动时微服务向 Nacos 查询 order-service-dev.yml 的内容，并将配置内容打印在 Debug 级别日志中，之后作为应用配置加载完成启动。访问 http://localhost:8000/test 运行结果如下：
 
 ```plain
 flag:development
 database:192.168.10.31
 ```
 
-到这里我们完成了 Nacos 配置中心的接入。这里做个小总结，因为我们把配置数据放在 Nacos 配置中心中，微服务在启动时自动进行下载，因此同一个微服务的所有实例得到的配置信息都是一致的，如果需要调整里面的配置，只需在 Nacos 中进行调整，然后让微服务实例重启即可重新下载生效。
+至此完成 Nacos 配置中心的接入。小结一下：配置数据放在 Nacos 配置中心中，微服务在启动时自动下载，因此同一个微服务的所有实例得到的配置信息都是一致的；如果需要调整配置，只需在 Nacos 中调整，然后让微服务实例重启即可重新下载生效。
 
-说到这你肯定又联想到另一个问题，一旦配置变更就必须手动重启，那运维的效率还是太低，如果微服务能自动监听到配置变化自动加载新配置那岂不是更好。答案是肯定的，Nacos 通过主动推送方式允许程序在运行期间重新下载配置，下面我们就来介绍几个在生产中实用的配置技巧。
+接下来的自然问题是：一旦配置变更就必须手动重启，运维效率仍然太低。如果微服务能自动监听配置变化并自动加载新配置则更理想。答案是肯定的——Nacos 通过主动推送方式允许程序在运行期间重新下载配置。下面介绍几个生产环境中实用的配置技巧。
 
 ## Nacos 生产环境中的配置技巧
 
 ### 配置热加载技术
 
-在 Nacos 中支持配置热加载，在运行过程中允许直接对新的配置项进行重新加载而不需要手动重启。首先我们了解下热加载背后的处理机制。
+Nacos 支持配置热加载，在运行过程中允许直接对新的配置项进行重新加载而不需要手动重启。
 
-Nacos 采用的是 Pull 拉取模式，但并不是简单的 Pull，而是一种长轮询机制。客户端采用长轮询的方式定时发起 Pull 请求，去检查服务端配置信息是否发生了变更，如果发生了变更，则客户端会根据变更的数据获得最新的配置。所谓的长轮询，是客户端发起轮询请求之后，服务端如果有配置发生变更，就直接返回。
+#### 热加载背后的长轮询机制
 
-如果客户端发起 Pull 请求后，发现服务端的配置和客户端的配置是保持一致的，那么服务端会先“Hold”住这个请求，也就是服务端拿到这个连接之后在指定的时间段内一直不返回结果，直到这段时间内配置发生变化，服务端会把原来“Hold”住的请求进行返回。
+Nacos 采用的是 Pull 拉取模式，但并不是简单的 Pull，而是一种长轮询机制。客户端采用长轮询的方式定时发起 Pull 请求，检查服务端配置信息是否发生变更；如果发生了变更，客户端会根据变更的数据获得最新的配置。所谓长轮询，是客户端发起轮询请求之后，服务端如果有配置发生变更就直接返回。
 
+如果客户端发起 Pull 请求后发现服务端的配置与客户端保持一致，服务端会先"Hold"住这个请求——服务端拿到这个连接之后在指定的时间段内一直不返回结果，直到这段时间内配置发生变化，服务端把原来"Hold"住的请求进行返回。
 
-Nacos 服务端收到请求之后，先检查配置是否发生了变更，如果没有，则设置一个定时任务，延期 29.5s 执行，并且把当前的客户端长轮询连接加入 allSubs 队列。这时候有两种方式触发该连接结果的返回：
+Nacos 服务端收到请求之后，先检查配置是否发生了变更；如果没有，则设置一个定时任务延期 29.5s 执行，并把当前的客户端长轮询连接加入 allSubs 队列。这时有两种方式触发该连接结果的返回：
 
-• 第一种是在等待 29.5s 后触发自动检查机制，这时候不管配置有没有发生变化，都会把结果返回客户端。而 29.5s 就是这个长连接保持的时间。
+- 第一种是在等待 29.5s 后触发自动检查机制，这时不管配置有没有发生变化，都会把结果返回客户端，29.5s 就是这个长连接保持的时间。
+- 第二种是在 29.5s 内任意一个时刻，通过 Nacos Dashboard 或者 API 的方式对配置进行了修改，这会触发一个事件机制，监听到该事件的任务会遍历 allSubs 队列，找到发生变更的配置项对应的 ClientLongPolling 任务，将变更的数据通过该任务中的连接进行返回，完成一次"推送"操作。
 
-• 第二种是在 29.5s 内任意一个时刻，通过 Nacos Dashboard 或者 API 的方式对配置进行了修改，这会触发一个事件机制，监听到该事件的任务会遍历 allSubs 队列，找到发生变更的配置项对应的 ClientLongPolling 任务，将变更的数据通过该任务中的连接进行返回，就完成了一次“推送”操作。
+这样既能够保证客户端实时感知配置的变化，也降低了服务端的压力。长连接的会话超时时间默认为 30s。
 
-这样既能够保证客户端实时感知配置的变化，也降低了服务端的压力。其中，这个长连接的会话超时时间默认为 30s。
+#### 热加载的代码改造
 
-为了支持热加载，服务 A 的程序针对热加载需要作出如下变动：
+为了支持热加载，服务程序需要作出如下变动：
 
-第一，配置数据必须被封装到单独的配置 Bean 中；
+第一，配置数据必须被封装到单独的配置 Bean 中；第二，这个配置 Bean 需要被 @Configuration 与 @RefreshScope 两个注解描述。
 
-第二，这个配置 Bean 需要被 @Configuration 与 @RefreshScope 两个注解描述。
-
-下面我们通过实例讲解：
-对原有 order-service 作出修改，将 flag 与 database 两个属性移到单独的配置 Bean，并加入 @Configuration 与 @RefreshScope 注解。
+以 order-service 为例：将 flag 与 database 两个属性移到单独的配置 Bean，并加入 @Configuration 与 @RefreshScope 注解。
 
 ```java
 package com.lagou.orderservice.config;
@@ -320,7 +292,8 @@ public class CustomConfig {
 }
 ```
 
-其中，@Configuration 说明当前 Bean 是一个配置 Bean。是 Spring Boot 自带的 Java Config 注解。而 @RefreshScope 则让该 Bean 在收到配置刷新事件时被重建，重新注入最新的属性值。
+其中，@Configuration 说明当前 Bean 是一个配置 Bean，是 Spring Boot 自带的 Java Config 注解；@RefreshScope 则让该 Bean 在收到配置刷新事件时被重建，重新注入最新的属性值。
+
 此外，原有的 TestController 代码变更为引用 CustomConfig 对象。
 
 ```java
@@ -335,13 +308,7 @@ public class TestController {
 }
 ```
 
-启动应用后，我们在 Nacos 手动改变 database 配置项从 31 变为 33。
-
-
-点击发布后，出现前后配置对比，左边是新版本，右边是上一个旧版本，之间的差异使用红绿线已经标出。
-
-
-确认发布后，在 order-service 服务的日志立即产生重新加载的信息，提示“Refresh Nacos config”。
+启动应用后，在 Nacos 中手动改变 database 配置项从 31 变为 33。点击发布后出现前后配置对比，左边是新版本，右边是上一个旧版本，差异使用红绿线标出。确认发布后，order-service 服务的日志立即产生重新加载的信息，提示"Refresh Nacos config"。
 
 ```log
 [192.168.31.10_8848] c.a.c.n.refresh.NacosContextRefresher    : Refresh Nacos config group=DEFAULT_GROUP,dataId=order-service-dev.yml,configInfo=server:
@@ -361,24 +328,18 @@ custom: #自定义配置项
 [192.168.31.10_8848] c.a.nacos.client.config.impl.CacheData   : [fixed-192.168.31.10_8848] [notify-ok] dataId=order-service-dev.yml, group=DEFAULT_GROUP, md5=aeee8dceea709b3081d3c882ae2464b2, listener=com.alibaba.cloud.nacos.refresh.NacosContextRefresher$1@5bcff640
 ```
 
-访问 http://localhost:8000/test
-运行结果如下，新的配置已即时生效：
+访问 http://localhost:8000/test，运行结果如下，新的配置已即时生效：
 
 ```plain
 flag:development
 database:192.168.10.33
 ```
 
-到这里，热加载的所有配置已设置完毕。下面我们介绍如何进行环境切换。
-
 ### 切换环境配置文件
 
-假如产品开发完成准备投产，便可利用 Nacos 提供的环境配置迅速完成从开发到生产环境的切换，来看我演示。
+产品开发完成准备投产时，可以利用 Nacos 提供的环境配置迅速完成从开发到生产环境的切换。
 
-第一步，在 Nacos 中设置生产环境的配置，Data Id 为 order-service-prd.yml，其中 prd 是 production 的缩写，代表生产环境配置。
-
-
-这份配置最大的变化是 Nacos 通信地址与自定义配置均指向生产环境 IP，同时 flag 也变为production 代表生产环境。
+第一步，在 Nacos 中设置生产环境的配置，Data Id 为 order-service-prd.yml，其中 prd 是 production 的缩写，代表生产环境配置。这份配置最大的变化是 Nacos 通信地址与自定义配置均指向生产环境 IP，同时 flag 变为 production 代表生产环境。
 
 ```yaml
 server:
@@ -414,8 +375,7 @@ spring:
         password: nacos
 ```
 
-访问 http://localhost:8000/test
-运行结果如下，这里看到 flag:production 说明已切换到生产环境。
+访问 http://localhost:8000/test，运行结果如下，flag:production 说明已切换到生产环境。
 
 ```plain
 flag:production
@@ -424,10 +384,9 @@ database:10.181.36.22
 
 ### 管理基础配置数据
 
-对比 order-service-dev.yml 与 order-service-prd.yml 发现，在不同环境的配置文件中普遍存在固定的配置项，例如：spring.application.name=order-service 配置项就是稳定的，且修改它会影响所有环境配置文件。对于这种基础的全局配置，我们可以将其存放到单独的 order-service.yml 配置中，在 order-service 服务启动时，这个不带环境名的配置文件必然会被加载。
+对比 order-service-dev.yml 与 order-service-prd.yml 可以发现，不同环境的配置文件中普遍存在固定的配置项。例如 spring.application.name=order-service 配置项就是稳定的，且修改它会影响所有环境配置文件。对于这种基础的全局配置，可以将其存放到单独的 order-service.yml 配置中：order-service 服务启动时，这个不带环境名的配置文件必然会被加载。
 
-
-其中，order-service.yml 包含了应用名称，是其他环境配置都需要包含的内容。
+其中，order-service.yml 包含应用名称这一其他环境配置都需要包含的内容。
 
 ```yaml
 spring:
@@ -435,7 +394,7 @@ spring:
     name: order-service
 ```
 
-order-service-dev.yml 只包含与开发环境的相关配置。
+order-service-dev.yml 只包含与开发环境相关的配置。
 
 ```yaml
 server:
@@ -452,7 +411,7 @@ custom: #自定义配置项
   database: 192.168.10.33
 ```
 
-order-service-prd.yml 只包含与生产环境的相关配置。
+order-service-prd.yml 只包含与生产环境相关的配置。
 
 ```yaml
 server:
@@ -469,13 +428,15 @@ custom: #自定义配置项
   database: 10.181.36.22
 ```
 
-以上就是在 Nacos 配置中心的设置技巧，你可以根据实际情况在项目中加以利用，下面我们进行下内容总结。
+以上即 Nacos 配置中心的常用设置技巧，可结合项目实际情况加以利用。
 
 ## 小结
 
-本文我们学习了三方面内容，首先我们了解到配置中心在微服务架构中的重要性，配置中心将各服务实例的配置数据进行集中管理，让运维人员摆脱烦琐的重复工作；其次介绍了 Nacos 作为配置中心是如何部署以及微服务的接入过程，微服务通过 bootstrap.yml 引导文件加载 Nacos 指定 data id 的配置数据；最后我介绍了三种常用在生产环境中的 Nacos 使用技巧，包括配置热加载技术、切换环境配置文件与管理基础配置数据。
+- 配置中心在微服务架构中承担集中管理各服务实例配置数据的职责，解决多实例批量修改、版本管理与多环境切换三大痛点，让运维人员摆脱烦琐的重复工作。
+- Nacos 兼具注册中心与配置中心职责；微服务通过 bootstrap.yml 引导文件加载 Nacos 指定 data id 的配置数据，data id 由"微服务 id-环境名.文件扩展名"组合而成。
+- 三种生产环境常用技巧：配置热加载（长轮询 + @RefreshScope 重建配置 Bean）、切换环境配置文件（调整 profiles 与 Nacos 通信地址）、管理基础配置数据（无环境名的全局配置文件优先加载）。
 
-这里为你留一道思考题：假如没有 Nacos 这种成熟的配置中心产品，Redis 能否作为配置中心的替代品呢。
+延伸思考：假如没有 Nacos 这种成熟的配置中心产品，Redis 能否作为配置中心的替代品。
 
 ## 版本差异（Spring Cloud Alibaba 旧版 → 2025.x）
 
@@ -489,4 +450,4 @@ custom: #自定义配置项
 | 链路追踪 | Sleuth + Zipkin（Sleuth 已停止维护） | Micrometer Tracing + Zipkin/OTel |
 | 版本对应 | Boot 2.x + JDK 8 | Boot 3.5.x + JDK 17+（2022.0.0.0+ 起） |
 
-> 本文为 Spring Cloud Alibaba 旧版课程。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。
+> 本文基于 Spring Cloud Alibaba 旧版编写。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。

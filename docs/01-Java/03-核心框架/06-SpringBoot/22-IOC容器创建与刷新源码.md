@@ -16,7 +16,7 @@ tags: [Java, SpringBoot]
 ### IOC：创建、初始化IOC容器
 
 
-（本篇文章篇幅较长且有重要内容 **`BeanDefinition`**，小伙伴一定要仔细阅读和理解）
+（本篇篇幅较长，且包含重要概念 **`BeanDefinition`**，宜仔细阅读理解）
 
 #### 4. run：启动SpringApplication
 
@@ -53,7 +53,7 @@ private void configureIgnoreBeanInfo(ConfigurableEnvironment environment) {
 }
 ```
 
-它提到了一个配置：`spring.beaninfo.ignore`，我们没见过他也没配置过，那就只好借助文档注释。在文档注释中有一句话比较关键：
+这里出现了一个配置：`spring.beaninfo.ignore`，借助文档注释可以了解其含义，其中有一句话比较关键：
 
 > "spring.beaninfo.ignore", with a value of "true" skipping the search for BeanInfo classes (typically for scenarios where no such classes are being defined for beans in the application in the first place).“spring.beaninfo.ignore” 的值为 “true” 时，跳过对 BeanInfo 类的搜索（通常用于应用中的 Bean 本就没有定义对应 BeanInfo 类的情况）。
 
@@ -63,7 +63,7 @@ private void configureIgnoreBeanInfo(ConfigurableEnvironment environment) {
 
 在阅读这部分源码之前，先看看 `Banner` 到底是什么。
 
-【如果小伙伴仅仅是知道 `Banner`，不妨继续往下看看。对 `Banner` 很熟悉的小伙伴可以跳过4.7.0节】
+（对 `Banner` 已经很熟悉的读者可跳过4.7.0节）
 
 ###### 4.7.0 Banner和它的实现类
 
@@ -82,7 +82,7 @@ void printBanner(Environment environment, Class<?> sourceClass, PrintStream out)
 
 它是一个接口，并且内置了一个枚举类型，代表 Banner 输出的模式（关闭、控制台打印、日志输出）。
 
-借助IDEA，可以发现它的实现类中，第一眼应该关注的就是最熟悉的 `SpringBootBanner`。翻看它的源码：
+借助IDEA，可以发现它的实现类中，最值得优先关注的就是 `SpringBootBanner`。其源码如下：
 
 ```java
 class SpringBootBanner implements Banner {
@@ -118,7 +118,7 @@ printStream.println(AnsiOutput.toString(AnsiColor.GREEN, SPRING_BOOT, AnsiColor.
 }
 ```
 
-看到了上面一堆奇怪但又有些熟悉的东西，常量名是 `BANNER`，它就是在默认情况下打印在控制台的 `Banner`。
+常量名 `BANNER` 就是默认情况下打印在控制台的 `Banner` 内容。
 
 它重写的 `printBanner` 方法，就是拿输出对象，把定义好的 Banner 和 SpringBoot 的版本号打印出去，逻辑比较简单。
 
@@ -167,7 +167,7 @@ Resource getResource(String location);
 
 > Strategy interface for loading resources (e.g. class path or file system resources).用于加载资源（例如类路径或文件系统资源）的策略接口。
 
-从接口定义和文档注释，已经基本证实了我们的猜测是正确的。上面方法默认创建的是 `DefaultResourceLoader`，看它的 `getResource` 方法：
+从接口定义和文档注释已经基本证实了上述猜测。上面方法默认创建的是 `DefaultResourceLoader`，看它的 `getResource` 方法：
 
 ```java
 public Resource getResource(String location) {
@@ -202,7 +202,7 @@ for (ProtocolResolver protocolResolver : getProtocolResolvers()) {
 }
 ```
 
-前面的实现都可以不看，注意最后的try块中，它借助URL类来加载资源，这种方式已经跟 classLoader 的方式差不太多了，至此石锤我们的猜测是正确的。
+前面的实现都可以不看，注意最后的try块中，它借助URL类来加载资源，这种方式已经跟 classLoader 的方式差不太多了，至此证实上述猜测是正确的。
 
 回到 `printBanner` 中：
 
@@ -253,7 +253,7 @@ private Banner getBanner(Environment environment) {
 }
 ```
 
-很明显它要先试着找有没有 `图片Banner` 和 `文字Banner` ，如果都没有，则会取默认的 Banner，而这个 Banner 恰好就是一开始看到的，也是我们最熟悉的 Banner。
+很明显它要先试着找有没有 `图片Banner` 和 `文字Banner` ，如果都没有，则会取默认的 Banner，也就是最常见的那个默认 Banner。
 
 以获取 文字Banner 为例，看看它是怎么拿的：
 
@@ -273,7 +273,7 @@ private Banner getTextBanner(Environment environment) {
 }
 ```
 
-首先它要看你有没有显式的在 `application.properties` 中配置 `spring.banner.location` 这个属性，如果有，就加载它，否则加载默认的位置，叫 `banner.txt`。
+首先检查是否在 `application.properties` 中显式配置了 `spring.banner.location` 属性，如果有，就加载它，否则加载默认的位置，叫 `banner.txt`。
 
 由此可见 SpringBoot 的设计原则：**约定大于配置**。
 
@@ -329,7 +329,7 @@ public GenericApplicationContext() {
 
 之前分析过，默认导入 `spring-boot-start-web` 时，**Servlet**环境生效，故上面导入的类为：`AnnotationConfigServletWebServerApplicationContext` 。这个类将在后续的分析中大量出现。
 
-到这里，咱对三种类型的运行时环境、IOC容器的类型归纳一下：
+到这里，对三种类型的运行时环境、IOC容器的类型归纳一下：
 
 - Servlet - `StandardServletEnvironment` - `AnnotationConfigServletWebServerApplicationContext`
 - Reactive - `StandardReactiveWebEnvironment` - `AnnotationConfigReactiveWebServerApplicationContext`
@@ -337,7 +337,7 @@ public GenericApplicationContext() {
 
 ##### 4.9 prepareContext：初始化IOC容器
 
-先大体浏览这部分源码的内容，其中几个复杂的地方我们单独来看。
+先大体浏览这部分源码的内容，其中几个复杂的地方单独来看。
 
 ```java
 private void prepareContext(ConfigurableApplicationContext context, ConfigurableEnvironment environment,
@@ -459,7 +459,7 @@ public Set<Object> getAllSources() {
 
 它要加载 primarySources 和 sources 。
 
-在之前分析的时候， primarySources 已经被设置过了，就是主启动类。sources 不清楚也没见过，通过Debug发现它确实为空。
+在之前分析的时候， primarySources 已经被设置过了，就是主启动类。sources 通过Debug可以发现它确实为空。
 
 也就是说，getAllSources 实际上是把主启动类加载进来了。
 
@@ -507,7 +507,7 @@ private BeanDefinitionRegistry getBeanDefinitionRegistry(ApplicationContext cont
 
 发现它在拿IOC容器进行类型判断和强转。
 
-前面分析了，我们最终拿到的IOC容器是 `AnnotationConfigServletWebServerApplicationContext`，它的类继承结构：
+前面分析了，最终拿到的IOC容器是 `AnnotationConfigServletWebServerApplicationContext`，它的类继承结构：
 
 ```java
 public class AnnotationConfigServletWebServerApplicationContext extends ServletWebServerApplicationContext
@@ -533,7 +533,7 @@ protected BeanDefinitionLoader createBeanDefinitionLoader(BeanDefinitionRegistry
 }
 ```
 
-源码非常简单，直接new了一个 `BeanDefinitionLoader` 。那 `BeanDefinitionLoader` 的构造方法都干了什么呢？
+源码非常简单，直接new了一个 `BeanDefinitionLoader` 。`BeanDefinitionLoader` 的构造方法内容如下：
 
 ```java
 BeanDefinitionLoader(BeanDefinitionRegistry registry, Object... sources) {
@@ -551,7 +551,7 @@ BeanDefinitionLoader(BeanDefinitionRegistry registry, Object... sources) {
 }
 ```
 
-这里面发现了几个关键的组件：`AnnotatedBeanDefinitionReader`（注解驱动的Bean定义解析器）、`XmlBeanDefinitionReader`（Xml定义的Bean定义解析器）、`ClassPathBeanDefinitionScanner`（类路径下的Bean定义扫描器），还有一个我们不用的 `GroovyBeanDefinitionReader`（它需要经过isGroovyPresent方法，而这个方法需要判断classpath下是否有 `groovy.lang.MetaClass` 类）。
+这里面发现了几个关键的组件：`AnnotatedBeanDefinitionReader`（注解驱动的Bean定义解析器）、`XmlBeanDefinitionReader`（Xml定义的Bean定义解析器）、`ClassPathBeanDefinitionScanner`（类路径下的Bean定义扫描器），还有一个按需启用的 `GroovyBeanDefinitionReader`（它需要经过isGroovyPresent方法，而这个方法需要判断classpath下是否有 `groovy.lang.MetaClass` 类）。
 
 `BeanDefinitionLoader` 的文档注释原文翻译：
 
@@ -613,7 +613,7 @@ private int load(Class<?> source) {
 }
 ```
 
-上面的 Groovy 相关的我们不关心，下面它要检测是否为一个 **Component**。
+上面的 Groovy 相关的逻辑可忽略，下面它要检测是否为一个 **Component**。
 
 回想主启动类，它被 `@SpringBootApplication` 注解标注，而 `@SpringBootApplication` 组合了一个 `@SpringBootConfiguration`，它又组合了一个 `@Configuration` 注解，`@Configuration` 的底层就是一个 `@Component` 。
 
@@ -641,7 +641,7 @@ public void registerBean(Class<?> beanClass) {
 }
 ```
 
-【**规律总结**】SpringFramework 和 SpringBoot中 有很多类似于 **xxx** 方法和 **doXXX** 方法。一般情况下，xxx方法负责引导到 **doXXX** 方法，**doXXX** 方法负责真正的逻辑和工作。
+**规律总结**：SpringFramework 和 SpringBoot中 有很多类似于 **xxx** 方法和 **doXXX** 方法。一般情况下，xxx方法负责引导到 **doXXX** 方法，**doXXX** 方法负责真正的逻辑和工作。
 
 进入 `doRegisterBean` 中：
 
@@ -736,7 +736,7 @@ static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, Anno
 }
 ```
 
-原来这部分是在解析一些咱之前学习 SpringFramework 时候接触的注解啊！
+原来这部分是在解析学习 SpringFramework 时接触的注解（@Lazy、@Primary、@DependsOn、@Role、@Description）。
 
 最终会将这个 BeanDefinition 注册到IOC容器中，调用 `BeanDefinitionReaderUtils` 的 `registerBeanDefinition` 方法。
 
@@ -761,11 +761,11 @@ public static void registerBeanDefinition(
 }
 ```
 
-第7行，看到了 `registry.registerBeanDefinition`，有没有想起来之前在之前介绍手动装配时的 `ImportBeanDefinitionRegistrar`？（第21篇 自动配置与 Starter 机制中，4.1.4小节）
+第7行，看到了 `registry.registerBeanDefinition`，它与手动装配时的 `ImportBeanDefinitionRegistrar` 底层是同一注册机制。
 
 在这里它就是这么把Bean的定义信息注册进IOC容器的。其中，Bean的名称和别名在这个方法也被分开处理。
 
-看到这里，读者可能会疑惑，这个 **BeanDefinition** 是个什么东西，它在IOC容器中起到了什么作用呢？
+这里需要重点说明 **BeanDefinition** 的概念，以及它在IOC容器中起到的作用。
 
 ###### 4.9.5 【重要】BeanDefinition
 
@@ -773,7 +773,7 @@ public static void registerBeanDefinition(
 
 > A BeanDefinition describes a bean instance, which has property values, constructor argument values, and further information supplied by concrete implementations. This is just a minimal interface: The main intention is to allow a BeanFactoryPostProcessor such as PropertyPlaceholderConfigurer to introspect and modify property values and other bean metadata.BeanDefinition 描述了一个bean实例，该实例具有属性值，构造函数参数值以及具体实现所提供的更多信息。这只是一个最小的接口：主要目的是允许 BeanFactoryPostProcessor （例如 PropertyPlaceholderConfigurer ）内省和修改属性值和其他bean元数据。
 
-从文档注释中可以看出，它是描述Bean的实例的一个定义信息，但它不是真正的Bean。这个接口还定义了很多方法，不一一列举，全部的方法定义读者可以自行从IDE中了解。
+从文档注释中可以看出，它是描述Bean的实例的一个定义信息，但它不是真正的Bean。这个接口还定义了很多方法，不一一列举，全部的方法定义可以在IDE中查看。
 
 - `String getBeanClassName();`
 - `String getScope();`
@@ -782,9 +782,9 @@ public static void registerBeanDefinition(
 - `boolean isSingleton();`
 - .....
 
-`SpringFramework` 设计的这种机制会在后续的Bean加载和创建时起到非常关键的作用，读者一定要留意。
+`SpringFramework` 设计的这种机制会在后续的Bean加载和创建时起到非常关键的作用，需要重点留意。
 
-下面提到了一个 `BeanPostProcessor` ，这个概念我们到下一篇再了解。
+下文 prepareBeanFactory 的分析中会涉及一个重要概念 `BeanPostProcessor`。
 
 #### 小结
 
@@ -792,13 +792,11 @@ public static void registerBeanDefinition(
 2. SpringApplication 会根据前面确定好的应用类型，创建对应的IOC容器。
 3. IOC容器在刷新之前会进行初始化、加载主启动类等预处理工作。
 
-【至此，主启动类也被注册进IOC容器中，IOC容器已经准备好，下面的几篇将是IOC容器最核心的部分：**refresh**】
+至此，主启动类也被注册进IOC容器中，IOC容器已经准备好，接下来是IOC容器最核心的部分：**refresh**。
 
 ### IOC：刷新容器-BeanFactory的预处理
 
-（接下来的几篇将会有非常多的干货，读者一定要好好理解好好消化）
-
-（因为IOC容器的刷新部分实在太多而且复杂，这部分将不延续之前文章的标号，单独成编号体系）
+（IOC容器的刷新部分非常多而且复杂，这一部分单独成编号体系）
 
 
 ```java
@@ -807,7 +805,7 @@ public static void registerBeanDefinition(
         afterRefresh(context, applicationArguments);
 ```
 
-上一篇IOC容器已经准备好了，下面到了IOC容器最核心的部分：**refresh**。
+IOC容器已经准备好了，下面到了IOC容器最核心的部分：**refresh**。
 
 #### 0. refreshContext
 
@@ -831,7 +829,7 @@ private void refreshContext(ConfigurableApplicationContext context) {
 
 可以大概看出来，这个钩子的作用是监听JVM关闭时销毁IOC容器和里面的Bean。这里面有一个很经典的应用：应用停止时释放数据库连接池里面的连接。
 
-下面咱来看这个refresh方法：
+下面来看refresh方法：
 
 ```java
 protected void refresh(ApplicationContext applicationContext) {
@@ -840,7 +838,7 @@ protected void refresh(ApplicationContext applicationContext) {
 }
 ```
 
-没有什么复杂的逻辑，它会直接强转成 `AbstractApplicationContext`，调它的refresh方法。之前我们有了解过，`AbstractApplicationContext` 中的 **refresh** 是IOC容器启动时的最核心方法：
+没有什么复杂的逻辑，它会直接强转成 `AbstractApplicationContext`，调它的refresh方法。前文已经了解过，`AbstractApplicationContext` 中的 **refresh** 是IOC容器启动时的最核心方法：
 
 ```java
 //最终调到AbstractApplicationContext的refresh方法
@@ -924,7 +922,7 @@ catch (BeansException ex) {
 }
 ```
 
-这个方法非常长，一共有13个步骤，本篇我们来看前3个步骤：
+这个方法非常长，一共有13个步骤，本节先来看前3个步骤：
 
 ```java
 public void refresh() throws BeansException, IllegalStateException {
@@ -1066,9 +1064,9 @@ public void validateRequiredProperties() {
 
 > Specify which properties must be present, to be verified by validateRequiredProperties().指定必须存在哪些属性，以通过 validateRequiredProperties 方法进行验证。
 
-它是说指定了属性，就可以通过 `validateRequiredProperties` 方法校验。那到底有没有字段校验呢？咱通过Debug来看一眼：
+它是说指定了属性，就可以通过 `validateRequiredProperties` 方法校验。通过Debug来验证一下：
 
-。。根本就没有要校验的。那这一步就跳过去吧。。
+（Debug结果：默认情况下没有需要校验的属性，这一步直接通过。）
 
 回到 `prepareRefresh` 方法：
 
@@ -1082,7 +1080,7 @@ public void validateRequiredProperties() {
     this.earlyApplicationEvents = new LinkedHashSet<>();
 ```
 
-这个早期事件，目前还不好解释，得联系后面的一个组件来解释。
+这个早期事件的作用需要结合后文 registerListeners 中的相关组件来解释。
 
 #### 2. obtainFreshBeanFactory：获取BeanFactory，加载所有bean的定义信息
 
@@ -1102,7 +1100,7 @@ protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
 protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
 ```
 
-发现它是一个抽象方法，留给子类重写。对于XML配置的IOC容器，和注解配置的IOC容器，分别有一种实现。借助IDEA，发现 `GenericApplicationContext` 和 `AbstractRefreshableApplicationContext` 重写了它。根据前面的分析，`AnnotationConfigServletWebServerApplicationContext` 继承了 `GenericApplicationContext`，故咱来看它的 `refreshBeanFactory` 方法：
+发现它是一个抽象方法，留给子类重写。对于XML配置的IOC容器，和注解配置的IOC容器，分别有一种实现。借助IDEA，发现 `GenericApplicationContext` 和 `AbstractRefreshableApplicationContext` 重写了它。根据前面的分析，`AnnotationConfigServletWebServerApplicationContext` 继承了 `GenericApplicationContext`，故来看它的 `refreshBeanFactory` 方法：
 
 ```java
 protected final void refreshBeanFactory() throws IllegalStateException {
@@ -1234,9 +1232,9 @@ protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 }
 ```
 
-在源码中发现了一个组件概念：**`BeanPostProcessor`**。这个概念非常非常重要，我们先来了解一下它。
+在源码中发现了一个组件概念：**`BeanPostProcessor`**。这个概念非常非常重要，先来了解一下它。
 
-【如果小伙伴不是很了解或不了解 **`BeanPostProcessor`**，请继续往下看；对 `BeanPostProcessor` 很熟悉的小伙伴可以跳过第3.0节】
+（对 `BeanPostProcessor` 已经很熟悉的读者可跳过第3.0节）
 
 ##### 3.0 【重要】BeanPostProcessor
 
@@ -1308,7 +1306,7 @@ public class ConfigurationDemo {
 
 ###### 3.0.2 【执行时机】Bean初始化的顺序及BeanPostProcessor的执行时机
 
-我们在学过 SpringFramework 的时候，知道Bean的几种额外的初始化方法的指定（`init-method`，`@PostConstruct`，`InitializingBean接口`）。那么它们以及构造方法的执行顺序，以及 `BeanPostProcessor` 的执行时机分别是什么呢？我们修改上面的代码来测试一下：
+SpringFramework 中 Bean 有几种额外的初始化方法的指定方式（`init-method`，`@PostConstruct`，`InitializingBean接口`）。它们以及构造方法的执行顺序，与 `BeanPostProcessor` 的执行时机分别是什么呢？修改上面的代码来测试一下：
 
 修改 Cat：
 
@@ -1372,7 +1370,7 @@ Cat postProcessAfterInitialization run...
 - 初始化回调执行顺序：构造方法 → BeanPostProcessor 的 before → @PostConstruct → InitializingBean 的 afterPropertiesSet → init-method → BeanPostProcessor 的 after
 - BeanPostProcessor的执行时机：before 在构造方法之后、@PostConstruct 之前；after 在初始化回调（afterPropertiesSet / init-method）之后
 
-出现这种情况的原理，我们可以先翻看文档注释，等到后面初始化单实例Bean时会有源码解析。
+出现这种情况的原理，可以先翻看文档注释，等到后面初始化单实例Bean时会有源码解析。
 
 - @PostConstructThe PostConstruct annotation is used on a method that needs to be executed after dependency injection is done to perform any initialization. This method MUST be invoked before the class is put into service. This annotation MUST be supported on all classes that support dependency injection.PostConstruct注解，用于标注在需要依赖注入完成，以执行任何初始化之后需要执行的方法上。在Bean投入使用之前必须调用此方法。所有支持依赖注入的类都必须支持该注解。
 - InitializingBean：Interface to be implemented by beans that need to react once all their properties have been set by a BeanFactory: e.g. to perform custom initialization, or merely to check that all mandatory properties have been set. An alternative to implementing InitializingBean is specifying a custom init method, for example in an XML bean definition.由 BeanFactory 设置完所有属性后需要作出反应的bean所实现的接口：执行自定义初始化，或仅检查是否已设置所有必填属性。实现InitializingBean的替代方法是指定自定义 init-method，例如在XML bean定义中。
@@ -1398,7 +1396,7 @@ BeanPostProcessor：
     beanFactory.ignoreDependencyInterface(ApplicationContextAware.class);
 ```
 
-它先配置了一个 `ApplicationContextAwareProcessor`，之后又忽略了下面几个接口。它这么做的原因是什么呢？咱不妨先来看看 `ApplicationContextAwareProcessor` 是什么。
+它先配置了一个 `ApplicationContextAwareProcessor`，之后又忽略了下面几个接口。它这么做的原因是什么呢？不妨先来看看 `ApplicationContextAwareProcessor` 是什么。
 
 ###### 3.1.1 ApplicationContextAwareProcessor
 
@@ -1406,7 +1404,7 @@ BeanPostProcessor：
 
 > BeanPostProcessor implementation that passes the ApplicationContext to beans that implement the EnvironmentAware, EmbeddedValueResolverAware, ResourceLoaderAware, ApplicationEventPublisherAware, MessageSourceAware and/or ApplicationContextAware interfaces. Implemented interfaces are satisfied in order of their mention above. Application contexts will automatically register this with their underlying bean factory. Applications do not use this directly.BeanPostProcessor 实现，它将 ApplicationContext 传递给实现 EnvironmentAware，EmbeddedValueResolverAware，ResourceLoaderAware，ApplicationEventPublisherAware，MessageSourceAware 和/或 ApplicationContextAware 接口的bean。按照上面提到的顺序满足已实现的接口。IOC容器将自动在其基础bean工厂中注册它。应用程序不直接使用它。
 
-看到这段文档注释，就已经能明白上面的几个ignore的意义了。我们再看一眼源码，便更能理解它的设计了：
+看到这段文档注释，就已经能明白上面的几个ignore的意义了。再看一眼源码，更能理解它的设计：
 
 ```java
 public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
@@ -1474,7 +1472,7 @@ private void invokeAwareInterfaces(Object bean) {
 
 > BeanFactory 接口未在普通工厂中注册为可解析类型。MessageSource 注册为Bean（并发现用于自动装配）。
 
-上面一句还能看懂，下面是干什么？讲真我也不是很清楚，咱还是看看这个方法的文档注释吧。
+上面一句还能看懂，下面一句的用途可以借助这个方法的文档注释理解。
 
 > Register a special dependency type with corresponding autowired value. This is intended for factory/context references that are supposed to be autowirable but are not defined as beans in the factory: e.g. a dependency of type ApplicationContext resolved to the ApplicationContext instance that the bean is living in. Note: There are no such default types registered in a plain BeanFactory, not even for the BeanFactory interface itself.用相应的自动装配值注册一个特殊的依赖类型。这适用于应该是可自动执行但未在工厂中定义为bean的工厂/上下文引用：类型为 ApplicationContext 的依赖关系已解析为Bean所在的 ApplicationContext 实例。注意：在普通 BeanFactory 中没有注册这样的默认类型，甚至 BeanFactory 接口本身也没有。
 
@@ -1634,7 +1632,7 @@ public Object postProcessBeforeInitialization(Object bean, String beanName) thro
 }
 ```
 
-跟上一篇中的注册几乎是一个套路，不再赘述。
+与前文 prepareBeanFactory 中注册处理器的套路一致，不再赘述。
 
 ###### 4.1.2 registerWebApplicationScopes
 
@@ -1678,7 +1676,7 @@ static {
 
 下面的 `restore` 方法，是把现在缓存的所有作用域，注册到 BeanFactory 中。
 
-大概猜测这是**将Web的request域和session域注册到IOC容器，让IOC容器知道这两种作用域**（学过 SpringFramework 都知道Bean的作用域有request 和 session）。
+由此可推测，这一步是**将Web的request域和session域注册到IOC容器，让IOC容器感知这两种作用域**（Bean 的作用域包括request 和 session）。
 
 ###### 4.1.2.2 WebApplicationContextUtils.registerWebApplicationScopes
 
@@ -1727,9 +1725,9 @@ public static void registerWebApplicationScopes(ConfigurableListableBeanFactory 
     }
 ```
 
-下一步是进行组件的包扫描。不过注意一点，在这个位置上打断点，Debug运行时发现 basePackages 为null，故此处不进，小伙伴不要觉得之前已经知道了 primarySource 就觉得这个地方 basePackages 就肯定有值了。
+下一步是进行组件的包扫描。不过注意一点：在这个位置上打断点，Debug运行时发现 basePackages 为null，故此处不进；虽然前面已知 primarySource，但此处 basePackages 并不一定有值。
 
-咱先了解下这个包扫描，方便后续我们看到时理解。
+先了解包扫描的原理，便于后续理解。
 
 ##### 4.2 【重要】包扫描
 
@@ -2071,7 +2069,7 @@ protected Set<Resource> doFindAllClassPathResources(String path) throws IOExcept
 
 它要拿到所有要扫描的包的文件路径，来进行真正的包扫描工作。
 
-首先 `resolveRootDirResource` 方法在实现中直接把 `rootDirResource` 返回了（不知道这什么鬼才操作），之后要判断扫描包路径前缀是否为vfs或jar，都不是则进入最底下的方法（默认情况下我们只配置扫描本项目的组件，则扫描最终的扫描包路径前缀为 `file:/`）。
+首先 `resolveRootDirResource` 方法在实现中直接把 `rootDirResource` 返回了，之后要判断扫描包路径前缀是否为vfs或jar，都不是则进入最底下的方法（默认情况下只配置扫描本项目的组件，则最终的扫描包路径前缀为 `file:/`）。
 
 ###### 4.2.4.5 doFindPathMatchingFileResources
 
@@ -2259,7 +2257,7 @@ protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOE
 
 判定为 Component 后，会将这个class封装为 `BeanDefinition`，最后返回。
 
-这部分的逻辑非常复杂，咱用一个图来理解这部分过程：
+这部分的逻辑非常复杂，可结合前述各步骤梳理理解：
 
 返回到4.2中的doScan中：
 
@@ -2291,7 +2289,7 @@ protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOE
 
 ###### 4.3.1 beanNameGenerator.generateBeanName
 
-之前我们见过它，它的作用到后面加载它的时候咱再看。
+前文见过它，其作用在后文加载时再看。
 
 ###### 4.3.2 postProcessBeanDefinition
 
@@ -2324,7 +2322,7 @@ protected void registerBeanDefinition(BeanDefinitionHolder definitionHolder, Bea
 }
 ```
 
-遇见了熟悉的方法，这个方法之前已经看过了，不再详细解析。（第10篇4.9.4.6章节）
+遇见了熟悉的方法，前文4.9.4.6章节已经解析过，不再详细展开。
 
 至此，`BeanFactory` 的后置处理就结束了，但下面还有一组后置处理器，也是对 `BeanFactory` 进行处理。
 
@@ -2385,13 +2383,13 @@ void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws B
 
 它的执行时机是**所有Bean的定义信息即将被加载但未实例化时**，也就是**先于 `BeanFactoryPostProcessor`**。
 
-【**规律**】`BeanPostProcessor` 是对Bean的后置处理，`BeanFactoryPostProcessor` 是对 `BeanFactory` 的后置处理，后续再看到这样的同理。
+**规律**：`BeanPostProcessor` 是对Bean的后置处理，`BeanFactoryPostProcessor` 是对 `BeanFactory` 的后置处理，后续再看到这样的同理。
 
 回到源码：
 
 ##### 5.1 PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors：回调后置处理器
 
-这段源码非常长（130行+），为了浏览方便，我直接把关键注释写在源码中了。
+这段源码非常长（130行+），关键注释已直接写在源码中。
 
 ```java
 public static void invokeBeanFactoryPostProcessors(
@@ -2553,9 +2551,7 @@ public static void invokeBeanFactoryPostProcessors(
 }
 ```
 
-这一部分非常重要。可以简单地这样理解：
-
-将这段源码分成几部分来看：
+这一部分非常重要，可以将这段源码分成几部分来看：
 
 ###### 5.1.1 参数中的PostProcessor分类
 
@@ -2632,7 +2628,7 @@ public static void invokeBeanFactoryPostProcessors(
 
 > BeanFactoryPostProcessor used for bootstrapping processing of @Configuration classes. Registered by default when using <context:annotation-config/> or <context:component-scan/>. Otherwise, may be declared manually as with any other BeanFactoryPostProcessor. This post processor is priority-ordered as it is important that any Bean methods declared in @Configuration classes have their corresponding bean definitions registered before any other BeanFactoryPostProcessor executes.BeanFactoryPostProcessor，用于 @Configuration 类的扫描加载处理。 使用 <context：annotation-config /> 或 <context：component-scan /> 时默认注册。否则，可以像其他任何 BeanFactoryPostProcessor 一样手动声明。 此后处理器按优先级排序，因为在 @Configuration 标注的类中声明的任何Bean方法在执行任何其他 BeanFactoryPostProcessor 之前都要注册其相应的Bean定义，这一点很重要。
 
-那自然我们应该去看它的 `postProcessBeanDefinitionRegistry` 方法：
+那自然要看它的 `postProcessBeanDefinitionRegistry` 方法：
 
 ```java
 public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
@@ -2767,7 +2763,7 @@ candidates.clear();
 }
 ```
 
-源码中有几部分是比较复杂且重要的环节，我们一一来看：
+源码中有几部分是比较复杂且重要的环节，一一来看：
 
 ###### 5.2.1 确定配置类和组件
 
@@ -2793,11 +2789,11 @@ candidates.clear();
 - `isLiteConfigurationClass`：判断一个配置类是否为lite类型
 - `checkConfigurationClassCandidate`：检查一个类是否为配置类
 
-上面提到了两个类型，都是可以从源码中看到的。那这个full和lite都是什么呢？
+上面提到了两个类型，都可以从源码中看到。那这个full和lite都是什么呢？
 
 ###### 5.2.1.1 full与lite
 
-其实，了解full和lite，只需要到最后一个方法 `checkConfigurationClassCandidate` 中看一下就知道了：
+了解full和lite，只需要到最后一个方法 `checkConfigurationClassCandidate` 中看一下就知道了：
 
 ```java
 public static boolean checkConfigurationClassCandidate(
@@ -2925,7 +2921,7 @@ public void parse(Set<BeanDefinitionHolder> configCandidates) {
 }
 ```
 
-它要遍历每一个 `BeanDefinition`，并根据类型来决定如何解析。SpringBoot 通常使用注解配置，这里会进入第一个if结构：
+它要遍历每一个 `BeanDefinition`，并根据类型来决定如何解析。SpringBoot 通常使用注解配置，这里会进入第一个 if 结构：
 
 ```java
 protected final void parse(AnnotationMetadata metadata, String beanName) throws IOException {
@@ -3036,7 +3032,7 @@ if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 
 由此可知，在这一步，一个配置类的所有信息就已经被解析完成了。
 
-我们以解析 `@ComponentScan` 为例：
+以解析 `@ComponentScan` 为例：
 
 ###### 5.2.3.1 解析 @ComponentScan
 
@@ -3068,7 +3064,7 @@ if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 
 ###### 5.2.3.2 ComponentScanAnnotationParser.parse
 
-（这里只记录重要的部分，中间省略的部分读者可借助IDE查看）
+（这里只记录重要的部分，中间省略的部分可借助IDE查看）
 
 ```java
 public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, final String declaringClass) {
@@ -3082,7 +3078,7 @@ public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, final
 
 先看一眼最后的return：`doScan` 方法！原来包扫描的触发时机在这里：**执行 `ConfigurationClassPostProcessor` 的 `postProcessBeanDefinitionRegistry` 方法，解析 `@ComponentScan` 时触发**。
 
-除了最后的 `doScan`，这里面有一个关注的点：
+除了最后的 `doScan`，这里面还有一个值得关注的点：
 
 ###### 5.2.3.3 new ClassPathBeanDefinitionScanner
 
@@ -3190,7 +3186,7 @@ protected String buildDefaultBeanName(BeanDefinition definition) {
     }
 ```
 
-从重写的方法开始：
+Bean 名称的生成规则如下：
 
 先执行下面的 `determineBeanNameFromAnnotation` 方法，看这些模式注解上是否有显式的声明 value 属性，如果没有，则进入下面的 `buildDefaultBeanName` 方法，它会取类名的全称，之后调 `Introspector.decapitalize` 方法将首字母转为小写。
 
@@ -3205,7 +3201,7 @@ public void loadBeanDefinitions(Set<ConfigurationClass> configurationModel) {
 }
 ```
 
-这里它会循环所有的配置类，去加载配置类里面的Bean定义信息。继续往下看：
+这里会循环所有的配置类，去加载配置类里面的Bean定义信息。继续往下看：
 
 ```java
 private void loadBeanDefinitionsForConfigurationClass(
@@ -3234,7 +3230,7 @@ if (configClass.isImported()) {
 
 由于在之前已经解析过这个 `configClass` 了，所以在这里可以很容易的解析出这里面的 `@Import` 、标注了 `@Bean` 的方法、`@ImportResource` 等，并进行相应处理。
 
-我们以 读取 `@Bean` 注解标注的方法为例，看一眼它对Bean的解析和加载：（方法很长，关键注释已标注在源码中）
+以读取 `@Bean` 注解标注的方法为例，看一眼它对Bean的解析和加载（方法很长，关键注释已标注在源码中）：
 
 ```java
 private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
@@ -3376,9 +3372,9 @@ Autowire autowire = bean.getEnum("autowire");
         }
 ```
 
-这部分的判断比较有趣：在上面的配置类都加载完成后，它要比对 `BeanDefinition` 的个数，以及被处理过的数量。只要数量不对应，就会展开那些配置类继续加载。这部分的源码与上面比较类似，只是检测逻辑的不同，文档不再详细展开，有兴趣的小伙伴可以自行Debug看一下效果。
+这部分的判断比较有趣：在上面的配置类都加载完成后，它要比对 `BeanDefinition` 的个数，以及被处理过的数量。只要数量不对应，就会展开那些配置类继续加载。这部分的源码与上面比较类似，只是检测逻辑的不同，不再详细展开，有兴趣可以自行Debug看一下效果。
 
-（这部分想演示出这个情况，文档提供一个思路：声明一个配置类，再在配置类中使用 `@Bean` 注册一个组件，这样进到这个方法中就会引发两个数量不对应进入if结构体了）
+（演示思路：声明一个配置类，再在配置类中使用 `@Bean` 注册一个组件，这样进到这个方法中就会引发两个数量不对应进入if结构体了）
 
 #### 小结
 
@@ -3518,11 +3514,11 @@ String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.
 
 文档注释似乎并没有说明太多意思，它是说给 `BeanDefinition` 做合并。借助IDEA，看一眼它的实现类：
 
-这里面有一个我们一看就很兴奋： `AutowiredAnnotationBeanPostProcessor` 。
+其中有一个关键实现类： `AutowiredAnnotationBeanPostProcessor` 。
 
 ###### 6.1.1 【重要】AutowiredAnnotationBeanPostProcessor
 
-它的文档注释非常长，这里我们截取重要的部分：
+它的文档注释非常长，这里截取重要的部分：
 
 > BeanPostProcessor implementation that autowires annotated fields, setter methods and arbitrary config methods. Such members to be injected are detected through a Java 5 annotation: by default, Spring's @Autowired and @Value annotations. Also supports JSR-330's @Inject annotation, if available, as a direct alternative to Spring's own @Autowired. Only one constructor (at max) of any given bean class may declare this annotation with the 'required' parameter set to true, indicating the constructor to autowire when used as a Spring bean. If multiple non-required constructors declare the annotation, they will be considered as candidates for autowiring. The constructor with the greatest number of dependencies that can be satisfied by matching beans in the Spring container will be chosen. If none of the candidates can be satisfied, then a primary/default constructor (if present) will be used. If a class only declares a single constructor to begin with, it will always be used, even if not annotated. An annotated constructor does not have to be public. Fields are injected right after construction of a bean, before any config methods are invoked. Such a config field does not have to be public.BeanPostProcessor 的实现，可自动连接带注解的字段，setter方法和任意config方法。通过Java 5注释检测要注入的此类成员：默认情况下，Spring的 @Autowired 和 @Value 注解。 还支持JSR-330的 @Inject 注解（如果可用），以替代Spring自己的 @Autowired 。 任何给定bean类的构造器（最大）只能使用 "required" 参数设置为true来声明此批注，指示在用作Spring bean时要自动装配的构造器。如果多个不需要的构造函数声明了注释，则它们将被视为自动装配的候选对象。将选择通过匹配Spring容器中的bean可以满足的依赖关系数量最多的构造函数。如果没有一个候选者满意，则将使用主/默认构造函数（如果存在）。如果一个类仅声明一个单一的构造函数开始，即使没有注释，也将始终使用它。带注解的构造函数不必是public的。 在构造任何bean之后，调用任何配置方法之前，立即注入字段。这样的配置字段不必是public的。 Config方法可以具有任意名称和任意数量的参数。这些参数中的每个参数都将与Spring容器中的匹配bean自动连接。 Bean属性设置器方法实际上只是这种常规config方法的特例。 Config方法不必是public的。
 
@@ -3535,7 +3531,7 @@ public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, C
 }
 ```
 
-这里面分两步，先获取注入的依赖，再进行对象检查。分步骤来看：
+这里面分两步，先获取注入的依赖，再进行对象检查，分步骤来看：
 
 ###### 6.1.1.1 findAutowiringMetadata
 
@@ -3627,7 +3623,7 @@ elements.addAll(0, currElements);
 }
 ```
 
-先看一眼这个 do-while 循环，这个 do-while 循环是用来一步一步往父类上爬的（可以看到这个循环体的最后一行是获取父类，判断条件是判断是否爬到了 `Object`）。
+先看一眼这个 do-while 循环，它是用来一步一步往父类上爬的（循环体的最后一行是获取父类，判断条件是判断是否爬到了 `Object`）。
 
 循环体中，先是反射遍历当前类的属性，并判断上面是否有 `@Autowired` 等类型的注解。这部分注解的加载在这个方法中可以追溯到：
 
@@ -3697,15 +3693,15 @@ public void checkConfigMembers(RootBeanDefinition beanDefinition) {
 
 看文档注释的意思，大概可以看出来它是表示类中的一个成员。
 
-源码中的for循环，里面有两个很迷的方法。这两个方法都操作了 `RootBeanDefinition` 的一个属性：`externallyManagedConfigMember` ，而这部分除了这两个方法有调过，也没别的地方用了。这两个方法除了这个方法中使用过，别的地方也没用过。那看来这部分不会影响到大局，大可忽略。
+源码中的for循环里，有两个方法都操作了 `RootBeanDefinition` 的一个属性：`externallyManagedConfigMember` ，这两个方法只在当前方法中使用，不会影响到整体逻辑，可忽略。
 
-至此，咱先对 `AutowiredAnnotationBeanPostProcessor` 这个后置处理器作一个了解，自动注入的原理会在后续慢慢看到。
+至此，先对 `AutowiredAnnotationBeanPostProcessor` 这个后置处理器作一个了解，自动注入的原理会在后续慢慢看到。
 
-再来看一个后置处理器，它是在注册BeanPostProcessor中的最后一步，显式声明的。
+再来看一个后置处理器，它是在注册BeanPostProcessor过程中的最后一步被显式声明的。
 
 ##### 6.2 ApplicationListenerDetector
 
-注意上面的截图，会发现 `ApplicationListenerDetector` 也实现了 `MergedBeanDefinitionPostProcessor` 。而且这个类在之前第11篇的3.3章节介绍过它，它的作用是收集监听器。它是 `BeanPostProcessor` ，但同时它也是 `MergedBeanDefinitionPostProcessor` 。那咱来看看它实现 `MergedBeanDefinitionPostProcessor` 后实现的方法：
+注意，`ApplicationListenerDetector` 也实现了 `MergedBeanDefinitionPostProcessor` 。前文3.3章节介绍过它，它的作用是收集监听器。它是 `BeanPostProcessor` ，但同时它也是 `MergedBeanDefinitionPostProcessor` 。来看看它实现 `MergedBeanDefinitionPostProcessor` 接口的方法：
 
 ```java
 public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
@@ -3713,7 +3709,7 @@ public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, C
 }
 ```
 
-可以发现非常简单，只是保存Bean是否为单实例Bean的信息。这个单实例Bean的机制在前面也提到过，只有单实例Bean才能注册到监听器列表中。
+可以发现非常简单，只是保存Bean是否为单实例Bean的信息。这个单实例Bean的机制在前面也提到过：只有单实例Bean才能注册到监听器列表中。
 
 至此，`registerBeanPostProcessors` 方法执行完毕。
 
@@ -3755,13 +3751,13 @@ protected void initMessageSource() {
 }
 ```
 
-这个组件我们在之前第22篇的IOC容器介绍（1.3.2章节）中说过，它是实现国际化的接口。
+这个组件在前文IOC容器介绍（1.3.2章节）中说过，它是实现国际化的接口。
 
 它默认创建的实现类是 `DelegatingMessageSource` ，它的文档注释：
 
 > Empty MessageSource that delegates all calls to the parent MessageSource. If no parent is available, it simply won't resolve any message.Used as placeholder by AbstractApplicationContext, if the context doesn't define its own MessageSource. Not intended for direct use in applications.空的MessageSource，将所有调用委派给父MessageSource。如果没有父母可用，它将根本无法解决任何消息。如果上下文未定义其自己的MessageSource，则AbstractApplicationContext用作占位符。不适用于直接在应用程序中使用。
 
-其实，`DelegatingMessageSource` 扮演的角色更像是一种 “消息源解析的委派”（用户未指定时，IOC容器会默认使用 `DelegatingMessageSource` ）。它的功能比较简单：将字符串和参数数组格式化为一个国际化后的消息。
+`DelegatingMessageSource` 扮演的角色更像是一种 “消息源解析的委派”（用户未指定时，IOC容器会默认使用 `DelegatingMessageSource` ）。它的功能比较简单：将字符串和参数数组格式化为一个国际化后的消息。
 
 #### 8. initApplicationEventMulticaster：初始化事件派发器
 
@@ -3873,7 +3869,7 @@ protected void onRefresh() throws BeansException {
 }
 ```
 
-发现又是模板方法。这部分我们单独留到第16篇再展开描述，SpringBoot 在这里做了额外的操作。
+发现又是模板方法。SpringBoot 在这里做了额外的操作（嵌入式Web容器的创建，见下文第9步的扩展分析）。
 
 #### 10. registerListeners：注册监听器
 
@@ -3913,7 +3909,7 @@ public Collection<ApplicationListener<?>> getApplicationListeners() {
 
 在上面方法的最后一段，它广播了早期事件。
 
-之前在最开始我们遇见过早期事件（refresh的第一步），下面咱要真正的说说这个早期事件了。
+前文 refresh 的第一步 prepareRefresh 中出现过早期事件，这里具体说明这个早期事件。
 
 ##### 10.1 earlyEvent：早期事件
 
@@ -3948,7 +3944,7 @@ public Collection<ApplicationListener<?>> getApplicationListeners() {
 2. 注册 `ApplicationListener` 的时机是 `BeanPostProcessor` 注册完，但还没有初始化单实例Bean。
 3. IOC容器使用 `ApplicationEventMulticaster` 广播事件。
 
-【至此，后置处理器、监听器都已经注册完毕，下面到了最复杂的部分之一：**初始化剩余单实例Bean**】
+至此，后置处理器、监听器都已经注册完毕，下面到了最复杂的部分之一：**初始化剩余单实例Bean**。
 
 
 
@@ -3957,7 +3953,7 @@ public Collection<ApplicationListener<?>> getApplicationListeners() {
 ### IOC：刷新后的处理&SpringBoot在刷新容器时的扩展
 
 
-本篇我们解析第9、12、13步骤：
+本节解析第9、12、13步骤：
 
 ```java
 public void refresh() throws BeansException, IllegalStateException {
@@ -4063,7 +4059,7 @@ protected void initLifecycleProcessor() {
 
 > A common interface defining methods for start/stop lifecycle control. The typical use case for this is to control asynchronous processing. NOTE: This interface does not imply specific auto-startup semantics. Consider implementing SmartLifecycle for that purpose. Can be implemented by both components (typically a Spring bean defined in a Spring context) and containers (typically a Spring ApplicationContext itself). Containers will propagate start/stop signals to all components that apply within each container, e.g. for a stop/restart scenario at runtime. Can be used for direct invocations or for management operations via JMX. In the latter case, the org.springframework.jmx.export.MBeanExporter will typically be defined with an org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler, restricting the visibility of activity-controlled components to the Lifecycle interface. Note that the present Lifecycle interface is only supported on top-level singleton beans. On any other component, the Lifecycle interface will remain undetected and hence ignored. Also, note that the extended SmartLifecycle interface provides sophisticated integration with the application context's startup and shutdown phases.定义启动/停止生命周期控制方法的通用接口。典型的用例是控制异步处理。注意：此接口并不意味着特定的自动启动语义。考虑为此目的实施 SmartLifecycle。可以通过组件（通常是在Spring上下文中定义的 Spring bean）和容器（通常是Spring ApplicationContext 本身）实现。容器会将开始/停止信号传播到每个容器中应用的所有组件，例如在运行时停止/重新启动的情况。可以用于直接调用或通过JMX进行管理操作。在后一种情况下，通常将使用 InterfaceBasedMBeanInfoAssembler 定义 MBeanExporter，从而将活动控制的组件的可见性限制为 Lifecycle 接口。请注意，当前的 Lifecycle 接口仅在顶级 Singleton Bean 上受支持。在任何其他组件上，Lifecycle 接口将保持未被检测到并因此被忽略。另外，请注意，扩展的 SmartLifecycle 接口提供了与应用程序上下文的启动和关闭阶段的复杂集成。
 
-到这里我们大概看懂了，实现了 `Lifecycle` 接口的Bean可以**规范化它的生命周期**，可以在IOC容器的启动、停止时，自动触发接口中定义的 `start` 方法和 `stop` 方法。
+到这里可以看懂：实现了 `Lifecycle` 接口的Bean可以**规范化它的生命周期**，可以在IOC容器的启动、停止时，自动触发接口中定义的 `start` 方法和 `stop` 方法。
 
 ###### 12.2.2 【扩展】SmartLifeCycle
 
@@ -4076,7 +4072,7 @@ protected void initLifecycleProcessor() {
 - `getPhase` - Bean的排序（类似于 `@Order` 或 `Ordered` 接口）
 - `isAutoStartup` - 如果该方法返回 false ，则不执行 start 方法。
 
-这两个接口比较简单，不再深入研究，有兴趣的小伙伴可以写几个测试Demo体会一下。
+这两个接口比较简单，不再深入研究，有兴趣可以写几个测试Demo体会一下。
 
 ##### 12.3 onRefresh：触发 Lifecycle 处理器刷新
 
@@ -4116,7 +4112,7 @@ private void startBeans(boolean autoStartupOnly) {
 
 ##### 12.4 publishEvent：发布 ContextRefreshedEvent
 
-很明显它发布了 `ContextRefreshedEvent` 事件，代表IOC容器已经刷新完成。有关事件与监听器的部分，我们在13篇中已经解释过了，不再赘述。
+很明显它发布了 `ContextRefreshedEvent` 事件，代表IOC容器已经刷新完成。有关事件与监听器的部分，前文已经解释过了，不再赘述。
 
 #### 13. resetCommonCaches：清除缓存
 
@@ -4131,11 +4127,11 @@ protected void resetCommonCaches() {
 
 清除缓存也是够简单了，不再深追。
 
-以上就是全部 `AbstractApplicationContext` 的 **refresh** 方法了。之前留了一个章节，说 `SpringBoot` 对 `onRefresh` 方法有一个扩展，下面咱来看看都扩展了个什么东西：
+以上就是全部 `AbstractApplicationContext` 的 **refresh** 方法了。前文留了一个章节：`SpringBoot` 对 `onRefresh` 方法有一个扩展，下面来看看都扩展了什么：
 
 #### 9. ServletWebServerApplicationContext.onRefresh
 
-在第13篇中，我们说在 `AbstractApplicationContext` 中没有真正实现这个方法，而是留给了子类。SpringBoot 扩展的IOC容器中对这个方法进行了真正地实现：
+前文提到 `AbstractApplicationContext` 中没有真正实现这个方法，而是留给了子类。SpringBoot 扩展的IOC容器中对这个方法进行了真正地实现：
 
 ```java
 protected void onRefresh() {
@@ -4194,9 +4190,9 @@ protected ServletWebServerFactory getWebServerFactory() {
 
 因为一次创建只能运行在一个 Servlet容器中，说明一次只能取出一个Bean来。
 
-默认的 `Tomcat` 创建工厂应该从这里取出：`TomcatServletWebServerFactory`，他实现了 `ServletWebServerFactory` 接口。
+默认的 `Tomcat` 创建工厂应该从这里取出：`TomcatServletWebServerFactory`，它实现了 `ServletWebServerFactory` 接口。
 
-这个 `TomcatServletWebServerFactory`，应该是在自动配置时注册好的。
+这个 `TomcatServletWebServerFactory`，是在自动配置时注册好的。
 
 ###### 9.1.1 自动配置下的 TomcatServletWebServerFactory 注册时机
 
@@ -4213,7 +4209,7 @@ protected ServletWebServerFactory getWebServerFactory() {
 public class ServletWebServerFactoryAutoConfiguration
 ```
 
-这个类我们之前看过，它使用 `@Import` 导入了 `ServletWebServerFactoryConfiguration` 以及三个内部类：
+这个类使用 `@Import` 导入了 `ServletWebServerFactoryConfiguration` 以及三个内部类：
 
 ```java
 @Configuration
@@ -4310,7 +4306,7 @@ private WebServer startWebServer() {
 
 这里调用了 `WebServer` 的start方法真正启动嵌入式Web容器。
 
-嵌入式Tomcat容器的更多原理解读和源码分析，在后面会有专门的篇章来读，此处不作过多解释，只希望读者知道在这个时机创建的嵌入式Tomcat即可。
+嵌入式Tomcat容器的更多原理解读和源码分析此处不作展开，需要记住的是：嵌入式Tomcat正是在这个时机创建的。
 
 #### 回到原来SpringApplication.run的标号
 
@@ -4386,7 +4382,7 @@ protected void publishEvent(Object event, @Nullable ResolvableType eventType) {
 }
 ```
 
-上面的预处理部分我们不关心，关键的看这两段if-else：
+上面的预处理部分可忽略，关键的看这两段if-else：
 
 - 第一段if-else是在当前IOC容器发布 `ApplicationStartedEvent` 事件
 - 下面的if结构会向父容器发布 `ApplicationStartedEvent` 事件
@@ -4450,7 +4446,7 @@ private void callRunner(CommandLineRunner runner, ApplicationArguments args) {
 
 [https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-command-line-runner](https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-command-line-runner)
 
-官方文档甚至没有说明这两个接口到底能干什么，只告诉我们怎么用。那这两个组件到底是干什么的呢？
+官方文档甚至没有说明这两个接口到底能干什么，只给出了用法。这两个组件的定位如下：
 
 ###### 4.13.3 【扩展】SpringBoot1.x中对这两个组件的应用
 
@@ -4466,7 +4462,7 @@ private void callRunner(CommandLineRunner runner, ApplicationArguments args) {
 
 ### IOC：小结与收获
 
-读者，能走到这里，真的要恭喜你们，你们在文档的辅助下已经成功走完一遍 `SpringBoot` 的IOC容器启动原理了。咱暂且先不急继续前行，先回过头来看看咱读完IOC原理后，都有哪些归纳总结的，以及咱能有什么收获吧，毕竟温故而知新。
+至此已成功走完一遍 `SpringBoot` 的IOC容器启动原理。回过头对IOC原理做一个归纳总结，温故而知新。
 
 #### 1. Web应用类型判定
 
@@ -4488,7 +4484,7 @@ Spring应用的IOC容器需要依赖 `Environment` - 运行环境，它用来表
 
 #### 5. 多种后置处理器
 
-IOC容器中出现的后置处理器类型非常多，咱来回顾一下都有哪些：
+IOC容器中出现的后置处理器类型非常多，回顾一下都有哪些：
 
 - BeanPostProcessor：Bean实例化后，初始化的前后触发
 - BeanDefinitionRegistryPostProcessor：所有Bean的定义信息即将被加载但未实例化时触发
@@ -4508,9 +4504,9 @@ Bean的初始化经过的步骤非常多，其中也包括AOP的部分。其中I
 
 #### 8. 嵌入式Web容器的创建
 
-`SpringBoot` 扩展的 `ServletWebServerApplicationContext` 会在IOC容器的模板方法 `onRefresh` 方法中创建嵌入式Web容器，这部分涉及到的内容会在后面专门的篇章中解析。
+`SpringBoot` 扩展的 `ServletWebServerApplicationContext` 会在IOC容器的模板方法 `onRefresh` 方法中创建嵌入式Web容器。
 
-【读者，IOC的部分到这里就全部完结了。下面咱来一起进入AOP的部分，来探究 `SpringFramework` 是如何实现AOP的吧】
+IOC 的部分到这里就全部完结了。
 
 ## 版本差异(旧版 → Spring Boot 3.5.x)
 

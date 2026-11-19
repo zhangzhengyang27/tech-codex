@@ -7,21 +7,23 @@ tags: [Java, SpringCloud原理与实战]
 ---
 # 消息集成：如何剖析 Spring Cloud Stream 集成消息中间件的实现原理？
 
-Spring Cloud Stream 中的内容比较多，今天我们重点关注的是如何实现 Spring Cloud Stream 与其他消息中间件的整合过程，因此只介绍消息发送和接收的主流程。我们将分别从**Spring Cloud Stream**以及**消息中间件**的角度出发，分析如何基于这一主流程，完成两者之间的无缝集成。
+## 概念说明
+
+Spring Cloud Stream 与各种消息中间件整合的核心是 Binder 组件。本篇聚焦消息发送和接收的主流程，分别从 **Spring Cloud Stream** 和**消息中间件**两个角度出发，分析如何基于该主流程完成两者之间的无缝集成。
 
 ## Spring Cloud Stream 中的 Binder
 
-通过前面几个节的介绍，我们明确了 Binder 组件是 Spring Cloud Stream 与各种消息中间件进行集成的核心组件，而 Binder 组件的实现过程涉及一批核心类之间的相互协作。接下来，我们就对 Binder 相关的核心类做源码级的展开。
+Binder 组件是 Spring Cloud Stream 与各种消息中间件进行集成的核心组件，其实现过程涉及一批核心类之间的相互协作。以下对 Binder 相关的核心类做源码级展开。
 
 ### BindableProxyFactory
 
-我们知道在发送和接收消息时，需要使用 @EnableBinding 注解，该注解的作用就是告诉 Spring Cloud Stream 将该应用程序绑定到消息中间件，从而实现两者之间的连接。我们来到 org.springframework.cloud.stream.binding 包下的 BindableProxyFactory 类。根据该类上的注释，BindableProxyFactory 是用于初始化由 @EnableBinding 注解所提供接口的工厂类，该类的定义如下所示：
+发送和接收消息时需要使用 @EnableBinding 注解，该注解的作用是告诉 Spring Cloud Stream 将该应用程序绑定到消息中间件，从而实现两者之间的连接。org.springframework.cloud.stream.binding 包下的 BindableProxyFactory 类，根据类上的注释，是用于初始化由 @EnableBinding 注解所提供接口的工厂类，该类的定义如下所示：
 
 ```java
 public class BindableProxyFactory implements MethodInterceptor, FactoryBean<Object>, Bindable, InitializingBean
 ```
 
-注意到 BindableProxyFactory 同时实现了 MethodInterceptor 接口和 Bindable 接口。其中前者是 AOP 中的方法拦截器，而后者是一个标明能够绑定 Input 和 Output 的接口。我们先来看 MethodInterceptor 中用于拦截的 invoke 方法，如下所示：
+BindableProxyFactory 同时实现了 MethodInterceptor 接口和 Bindable 接口：前者是 AOP 中的方法拦截器，后者是标明能够绑定 Input 和 Output 的接口。MethodInterceptor 中用于拦截的 invoke 方法如下所示：
 
 ```java
 @Override
@@ -53,9 +55,9 @@ Object boundTarget = targetCache.get(method);
 }
 ```
 
-这里的逻辑比较简单，可以看到 BindableProxyFactory 保存了一个缓存对象 targetCache。如果所调用方法已经存在于缓存中，则直接返回目标对象。反之，会根据 @Input 和 @Output 注解从 inputHolders 和 outputHolders 中获取对应的目标对象并放入缓存中。这里使用缓存的作用仅仅是为了加快每次方法调用的速度，而系统在初始化时通过重写 afterPropertiesSet 方法，已经将所有的目标对象都放置在 inputHolders 和 outputHolders 这两个集合中。至于这里提到的这个目标对象，暂时可以把它理解为就是一种 MessageChannel 对象，后面会对其进行展开。
+这段逻辑比较简单：BindableProxyFactory 保存了一个缓存对象 targetCache，如果所调用方法已经存在于缓存中，则直接返回目标对象；反之，会根据 @Input 和 @Output 注解从 inputHolders 和 outputHolders 中获取对应的目标对象并放入缓存中。使用缓存的作用是加快每次方法调用的速度，而系统在初始化时通过重写 afterPropertiesSet 方法，已经将所有的目标对象都放置在 inputHolders 和 outputHolders 这两个集合中。这里提到的目标对象，可以暂时理解为一种 MessageChannel 对象，后文会展开。
 
-然后我们来看 Bindable 接口的定义，如下所示：
+Bindable 接口的定义如下所示：
 
 ```java
 public interface Bindable {
@@ -75,7 +77,7 @@ public interface Bindable {
 }
 ```
 
-显然，这个接口提供了对 Input 和 Output 的绑定和解绑操作。在 BindableProxyFactory 中，对以上几个方法的实现过程基本都类似，我们随机挑选一个 bindOutputs 方法进行展开，如下所示：
+显然，这个接口提供了对 Input 和 Output 的绑定和解绑操作。在 BindableProxyFactory 中，以上几个方法的实现过程基本类似，以 bindOutputs 方法为例：
 
 ```java
 @Override
@@ -93,7 +95,7 @@ public void bindOutputs(BindingService bindingService) {
 }
 ```
 
-这里需要引入另一个重要的工具类 BindingService，该类提供了对 Input 和 Output 目标对象进行绑定的能力。但事实上，通过类上的注释可以看到，这也是一个外观类，它将底层的绑定动作委托给了 Binder。我们以绑定生产者的 bindProducer 方法为例展开讨论，该方法如下所示：
+这里需要引入另一个重要的工具类 BindingService，该类提供了对 Input 和 Output 目标对象进行绑定的能力。事实上，通过类上的注释可以看到，这也是一个外观类，它将底层的绑定动作委托给了 Binder。以绑定生产者的 bindProducer 方法为例：
 
 ```java
 public <T> Binding<T> bindProducer(T output, String outputName) {
@@ -118,7 +120,7 @@ public <T> Binding<T> bindProducer(T output, String outputName) {
 }
 ```
 
-显然，这里的 doBindProducer 方法完成了真正的绑定操作，如下所示：
+其中的 doBindProducer 方法完成了真正的绑定操作：
 
 ```java
 public <T> Binding<T> doBindProducer(T output, String bindingTarget, Binder<T, ?, ProducerProperties> binder,
@@ -139,11 +141,11 @@ public <T> Binding<T> doBindProducer(T output, String bindingTarget, Binder<T, ?
 }
 ```
 
-从这个方法中，我们终于看到了 Spring Cloud Stream 中最核心的概念 Binder，通过 Binder 的 bindProducer 方法完成了目标对象的绑定。
+从这个方法中可以看到 Spring Cloud Stream 中最核心的概念 Binder：通过 Binder 的 bindProducer 方法完成了目标对象的绑定。
 
 ### Binder
 
-Binder 是一个接口，分别提供了绑定生产者和消费者的方法，如下所示：
+Binder 是一个接口，分别提供了绑定生产者和消费者的方法：
 
 ```java
 public interface Binder<T, C extends ConsumerProperties, P extends ProducerProperties> {
@@ -153,7 +155,7 @@ public interface Binder<T, C extends ConsumerProperties, P extends ProducerPrope
 }
 ```
 
-在介绍 Binder 接口的具体实现类之前，我们先来看一下如何获取一个 Binder，getBinder 方法如下所示。
+在介绍 Binder 接口的具体实现类之前，先了解如何获取一个 Binder。getBinder 方法如下所示：
 
 ```java
 protected <T> Binder<T, ?, ?> getBinder(String channelName, Class<T> bindableType) {
@@ -162,7 +164,7 @@ protected <T> Binder<T, ?, ?> getBinder(String channelName, Class<T> bindableTyp
 }
 ```
 
-显然，这里用到了个工厂模式。工厂类 BinderFactory 的定义如下所示：
+这里用到了工厂模式，工厂类 BinderFactory 的定义如下所示：
 
 ```java
 public interface BinderFactory {
@@ -172,19 +174,19 @@ public interface BinderFactory {
 }
 ```
 
-BinderFactory 只有一个方法，根据给定的配置名称 configurationName 和绑定类型 bindableType 获取 Binder 实例。而 BinderFactory 的实现类也只有一个，即 DefaultBinderFactory。在该实现类的 getBinder 方法中对配置信息进行了校验，并通过 getBinderInstance 获取真正的 Binder 实例。在 getBinderInstance 方法中，我们通过一系列基于 Spring 容器的步骤构建了一个上下文对象 ConfigurableApplicationContext，并通过该上下文对象获取实现了 Binder 接口的 Java bean，核心代码就是下面这句：
+BinderFactory 只有一个方法，根据给定的配置名称 configurationName 和绑定类型 bindableType 获取 Binder 实例。BinderFactory 的实现类只有一个，即 DefaultBinderFactory。该实现类的 getBinder 方法对配置信息进行了校验，并通过 getBinderInstance 获取真正的 Binder 实例。在 getBinderInstance 方法中，通过一系列基于 Spring 容器的步骤构建了一个上下文对象 ConfigurableApplicationContext，并通过该上下文对象获取实现了 Binder 接口的 Java bean，核心代码就是下面这句：
 
 ```java
 Binder<T, ?, ?> binder = binderProducingContext.getBean(Binder.class);
 ```
 
-当然，对于 BinderFactory 而言，缓存也是需要的。在 DefaultBinderFactory 中存在一个 binderInstanceCache 变量，使用了一个 Map 来保存配置名称所对应的 Binder 对象。
+对 BinderFactory 而言，缓存也是必要的。DefaultBinderFactory 中存在一个 binderInstanceCache 变量，使用一个 Map 保存配置名称所对应的 Binder 对象。
 
 ### AbstractMessageChannelBinder
 
-既然我们已经能够获取 Binder 实例，接下去就来讨论 Binder 实例中对 bindConsumer 和 bindProducer 方法的实现过程。在 Spring Cloud Stream 中，Binder 接口的类层关系中，除了 AbstractBinder、AbstractMessageChannelBinder 等抽象类，还包括 spring-cloud-stream-binder-rabbit 代码工程中的 RabbitMessageChannelBinder 类，这个类在本文讲到 Spring Cloud Stream 与 RabbitMQ 进行集成时会具体展开。
+获取 Binder 实例之后，接下来讨论 Binder 实例中对 bindConsumer 和 bindProducer 方法的实现过程。Spring Cloud Stream 中 Binder 接口的类层关系中，除了 AbstractBinder、AbstractMessageChannelBinder 等抽象类，还包括 spring-cloud-stream-binder-rabbit 代码工程中的 RabbitMessageChannelBinder 类，这个类在 Spring Cloud Stream 与 RabbitMQ 集成的部分具体展开。
 
-Spring Cloud Stream 首先提供了一个 AbstractBinder，这是一个抽象类，提供的 bindConsumer 和 bindProducer 方法实现如下所示：
+Spring Cloud Stream 首先提供了一个 AbstractBinder 抽象类，其 bindConsumer 和 bindProducer 方法实现如下所示：
 
 ```java
 @Override
@@ -205,9 +207,9 @@ public final Binding<T> bindProducer(String name, T outboundBindTarget, P proper
 protected abstract Binding<T> doBindProducer(String name, T outboundBindTarget, P properties);
 ```
 
-可以看到，它对 Binder 接口中相关方法只是提供了空实现，并把具体实现过程通过 doBindConsumer 和 doBindProducer 抽象方法交由子类进行完成。显然，从设计模式上讲，AbstractBinder 应用了很典型的模板方法模式。
+可以看到，它对 Binder 接口中相关方法只提供了空实现，并把具体实现过程通过 doBindConsumer 和 doBindProducer 抽象方法交由子类完成。从设计模式上讲，AbstractBinder 应用了很典型的模板方法模式。
 
-AbstractBinder 的子类是 AbstractMessageChannelBinder，它同样也是一个抽象类。我们来看它的 doBindProducer 方法，并对该方法中的核心语句进行提取和整理：
+AbstractBinder 的子类是 AbstractMessageChannelBinder，它同样是一个抽象类。它的 doBindProducer 方法如下（已对核心语句进行提取和整理）：
 
 ```java
 @Override
@@ -230,7 +232,7 @@ postProcessOutputChannel(outputChannel, producerProperties);
         ((SubscribableChannel) outputChannel).subscribe(
                 new SendingHandler(producerMessageHandler, HeaderMode.embeddedHeaders
                         .equals(producerProperties.getHeaderMode()), this.headersToEmbed,
-	                     producerProperties.isUseNativeEncoding()));
+	             producerProperties.isUseNativeEncoding()));
 
 Binding<MessageChannel> binding = new DefaultBinding<MessageChannel>(destination, null, outputChannel,
                 producerMessageHandler instanceof Lifecycle ? (Lifecycle) producerMessageHandler : null) {
@@ -242,7 +244,7 @@ Binding<MessageChannel> binding = new DefaultBinding<MessageChannel>(destination
 }
 ```
 
-上述代码的核心逻辑在于，Source 里的 output 发送消息到 outputChannel 通道之后会被 SendingHandler 这个 MessageHandler 进行处理。从设计模式上讲，SendingHandler 是一个静态代理类，因此它又将这个处理过程委托给了由 createProducerMessageHandler 方法所创建的 producerMessageHandler，这点从 SendingHandler 的定义中可以得到验证，如下所示的 delegate 就是传入的 producerMessageHandler：
+上述代码的核心逻辑在于：Source 里的 output 发送消息到 outputChannel 通道之后，会被 SendingHandler 这个 MessageHandler 进行处理。从设计模式上讲，SendingHandler 是一个静态代理类，它又将处理过程委托给了由 createProducerMessageHandler 方法所创建的 producerMessageHandler。这一点从 SendingHandler 的定义中可以得到验证——如下所示的 delegate 就是传入的 producerMessageHandler：
 
 ```java
 private final class SendingHandler extends AbstractMessageHandler implements Lifecycle {
@@ -260,41 +262,41 @@ private final MessageHandler delegate;
 }
 ```
 
-请注意，同样作为一个模板方法类，AbstractMessageChannelBinder 具有三个抽象方法，即 createProducerMessageHandler、postProcessOutputChannel 和 afterUnbindProducer，这三个方法都需要由它的子类进行实现。也就是说，SendingHandler 所使用的 producerMessageHandler 需要由 AbstractMessageChannelBinder 子类负责进行创建。
+需要注意：作为模板方法类，AbstractMessageChannelBinder 具有三个抽象方法，即 createProducerMessageHandler、postProcessOutputChannel 和 afterUnbindProducer，这三个方法都需要由它的子类实现。也就是说，SendingHandler 所使用的 producerMessageHandler 需要由 AbstractMessageChannelBinder 子类负责创建。
 
-需要注意的是，作为统一的数据模型，SendingHandler 以及 producerMessageHandler 中使用的都是 Spring Messaging 组件中的 Message 消息对象，而 createProducerMessageHandler 内部会把这个 Message 消息对象转换成对应中间件的消息数据格式并进行发送。
+另外，作为统一的数据模型，SendingHandler 以及 producerMessageHandler 中使用的都是 Spring Messaging 组件中的 Message 消息对象，而 createProducerMessageHandler 内部会把这个 Message 消息对象转换成对应中间件的消息数据格式并进行发送。
 
-下面转到消息消费的场景，我们来看 AbstractMessageChannelBinder 的 doBindConsumer 方法。该方法的核心语句是创建一个消费者端点 ConsumerEndpoint，如下所示：
+转到消息消费的场景，AbstractMessageChannelBinder 的 doBindConsumer 方法的核心语句是创建一个消费者端点 ConsumerEndpoint：
 
 ```java
 MessageProducer consumerEndpoint = createConsumerEndpoint(destination, group, properties);
 consumerEndpoint.setOutputChannel(inputChannel);
 ```
 
-这两行代码有两个注意点。首先，createConsumerEndpoint 是一个抽象方法，需要 AbstractMessageChannelBinder 的子类进行实现。与 createProducerMessageHandler 一样，createConsumerEndpoint 需要把中间件对应的消息数据结构转换成 Spring Messaging 中统一的 Message 消息对象。
+这两行代码有两个注意点。首先，createConsumerEndpoint 是一个抽象方法，需要 AbstractMessageChannelBinder 的子类实现。与 createProducerMessageHandler 一样，createConsumerEndpoint 需要把中间件对应的消息数据结构转换成 Spring Messaging 中统一的 Message 消息对象。
 
-然后，我们注意到这里的 consumerEndpoint 类型是 MessageProducer。MessageProducer 在 Spring Integration 中代表的是消息的生产者，它会把从第三方消息中间件中收到的消息转发到 inputChannel 所指定的通道中。基于 @StreamListener 注解，在 Spring Cloud Stream 中存在一个 StreamListenerMessageHandler 类，用于订阅 inputChannel 消息通道中传入的消息并进行消费。
+其次，这里的 consumerEndpoint 类型是 MessageProducer。MessageProducer 在 Spring Integration 中代表消息的生产者，它会把从第三方消息中间件中收到的消息转发到 inputChannel 所指定的通道中。基于 @StreamListener 注解，Spring Cloud Stream 中存在一个 StreamListenerMessageHandler 类，用于订阅 inputChannel 消息通道中传入的消息并进行消费。
 
-作为总结，我们可以把整个消息发送和消费流程概括为：发送侧由 Source 通过 output 通道发出消息，经 SendingHandler 委托 producerMessageHandler 转换并写入消息中间件；消费侧由中间件经 ConsumerEndpoint 转换为统一的 Message 投递到 input 通道，再由 @StreamListener 对应的 StreamListenerMessageHandler 完成消费。
+**整个消息发送和消费流程可以概括为**：发送侧由 Source 通过 output 通道发出消息，经 SendingHandler 委托 producerMessageHandler 转换并写入消息中间件；消费侧由中间件经 ConsumerEndpoint 转换为统一的 Message 投递到 input 通道，再由 @StreamListener 对应的 StreamListenerMessageHandler 完成消费。
 
 ## Spring Cloud Stream 集成 RabbitMQ
 
-到目前为止，Spring Cloud Stream 提供了对 RabbitMQ 和 Kafka 这两款主流消息中间件的集成。今天，我们选择使用 RabbitMQ 作为示例，讲解如何通过 Spring Cloud Stream 所提供的 Binder 完成与具体消息中间件的整合。
+Spring Cloud Stream 提供了对 RabbitMQ 和 Kafka 这两款主流消息中间件的集成。本节以 RabbitMQ 为例，讲解如何通过 Spring Cloud Stream 提供的 Binder 完成与具体消息中间件的整合。
 
-Spring Cloud Stream 团队提供了 spring-cloud-stream-binder-rabbit 作为与 RabbitMQ 集成的代码工程。这个工程只有四个类，我们需要重点关注的就是实现了 AbstractMessageChannelBinder 中几个抽象方法的 RabbitMessageChannelBinder 类。
+Spring Cloud Stream 团队提供了 spring-cloud-stream-binder-rabbit 作为与 RabbitMQ 集成的代码工程。这个工程只有四个类，重点关注的是实现了 AbstractMessageChannelBinder 中几个抽象方法的 RabbitMessageChannelBinder 类。
 
 ### 集成消息发送
 
-首先找到 RabbitMessageChannelBinder中的 createProducerMessageHandler 方法，我们知道该方法用于完成消息的发送。我们在 createProducerMessageHandler 中找到了以下核心代码：
+RabbitMessageChannelBinder 中的 createProducerMessageHandler 方法用于完成消息的发送，其中的核心代码如下：
 
 ```java
 final AmqpOutboundEndpoint endpoint = new AmqpOutboundEndpoint(         buildRabbitTemplate(producerProperties.getExtension(), errorChannel != null));
 endpoint.setExchangeName(producerDestination.getName());
 ```
 
-首先，在 buildRabbitTemplate 方法中，我们看到了 RabbitTemplate 的构建过程。RabbitTemplate 是 Spring Amqp 组件中提供的专门用于封装与 RabbitMQ 底层交互 API 的模板类。在构建 RabbitTemplate 的整个过程中，涉及设置与 RabbitMQ 相关的 ConnectionFactory 等众多参数。
+首先，在 buildRabbitTemplate 方法中可以看到 RabbitTemplate 的构建过程。RabbitTemplate 是 Spring Amqp 组件中提供的专门用于封装与 RabbitMQ 底层交互 API 的模板类，构建 RabbitTemplate 的整个过程中涉及设置与 RabbitMQ 相关的 ConnectionFactory 等众多参数。
 
-然后，我们发现 RabbitMessageChannelBinder 也是直接集成了 Spring Integration 中用于整合 AMQP 协议的 AmqpOutboundEndpoint。AmqpOutboundEndpoint 提供了如下所示的 send 方法进行消息的发送：
+其次，RabbitMessageChannelBinder 直接集成了 Spring Integration 中用于整合 AMQP 协议的 AmqpOutboundEndpoint。AmqpOutboundEndpoint 提供了如下所示的 send 方法进行消息的发送：
 
 ```java
 private void send(String exchangeName, String routingKey,
@@ -317,11 +319,11 @@ private void send(String exchangeName, String routingKey,
 }
 ```
 
-可以看到这里依赖于 Spring Amqp 提供的 AmqpTemplate 接口进行消息的发送，而 RabbitTemplate 是 AmqpTemplate 的一个实现类。同时，通过 Spring Integration 组件中提供的 MessageConverter 工具类完成了从 org.springframework.messaging.Message 到 org.springframework.amqp.core.Message 这两个消息数据结构之间的转换。
+这里依赖 Spring Amqp 提供的 AmqpTemplate 接口进行消息的发送，RabbitTemplate 是 AmqpTemplate 的一个实现类。同时，通过 Spring Integration 组件中提供的 MessageConverter 工具类完成了从 org.springframework.messaging.Message 到 org.springframework.amqp.core.Message 这两个消息数据结构之间的转换。
 
 ### 集成消息消费
 
-RabbitMessageChannelBinder 中与消息消费相关的是 createConsumerEndpoint 方法。这个方法中大量使用了 Spring Amqp 和 Spring Integration 中的工具类。该方法最终返回的是一个 AmqpInboundChannelAdapter 对象。在 Spring Integration 中，AmqpInboundChannelAdapter 是一种 InboundChannelAdapter，代表面向输入的通道适配器，提供了消息监听功能，如下所示：
+RabbitMessageChannelBinder 中与消息消费相关的是 createConsumerEndpoint 方法。这个方法大量使用了 Spring Amqp 和 Spring Integration 中的工具类，最终返回的是一个 AmqpInboundChannelAdapter 对象。在 Spring Integration 中，AmqpInboundChannelAdapter 是一种 InboundChannelAdapter，代表面向输入的通道适配器，提供了消息监听功能：
 
 ```java
 protected class Listener implements ChannelAwareMessageListener, RetryListener {
@@ -333,7 +335,7 @@ protected class Listener implements ChannelAwareMessageListener, RetryListener {
 }
 ```
 
-在这个 onMessage 方法中，调用了 createAndSend 方法完成消息的创建和发送，如下所示：
+在 onMessage 方法中，调用了 createAndSend 方法完成消息的创建和发送：
 
 ```java
 private void createAndSend(Message message, Channel channel) {
@@ -362,13 +364,17 @@ private org.springframework.messaging.Message<Object> createMessage(Message mess
 }
 ```
 
-显然，在上述 createMessage 方法中，我们完成了消息数据格式从 org.springframework.amqp.core.Message 到 org.springframework.messaging.Message 的反向转换。
+在上述 createMessage 方法中，完成了消息数据格式从 org.springframework.amqp.core.Message 到 org.springframework.messaging.Message 的反向转换。
 
 ## 小结
 
-Binder 是 Spring Cloud Stream 的核心组件，通过这个组件，Spring Cloud Stream 完成了与第三方消息中间件的集成。在本文中，我们花了较大篇幅系统分析了 Binder 组件相关的核心类。然后，基于这些核心类以及 RabbitMQ，我们给出了 Spring Cloud Stream 集成 RabbitMQ 的实现原理。
+Binder 是 Spring Cloud Stream 的核心组件，Spring Cloud Stream 通过这个组件完成与第三方消息中间件的集成。围绕 Binder 的核心类协作关系如下：
 
-这里给你留一道思考题：在 Spring Cloud Stream 中，Binder 组件对于消息发送和消费做了哪些抽象？
+- **BindableProxyFactory**：@EnableBinding 接口的工厂类，兼作方法拦截器，通过 inputHolders/outputHolders 与 targetCache 管理 Input/Output 目标对象（MessageChannel）。
+- **BindingService**：外观类，把绑定动作委托给 Binder；doBindProducer 中通过 getBinder 获取 Binder 实例并完成绑定。
+- **BinderFactory/DefaultBinderFactory**：工厂模式创建并缓存 Binder 实例，从 Spring 容器中获取实现了 Binder 接口的 bean。
+- **AbstractBinder → AbstractMessageChannelBinder**：模板方法模式；发送侧由子类实现 createProducerMessageHandler，经 SendingHandler 静态代理写入中间件；消费侧由子类实现 createConsumerEndpoint，经 MessageProducer 将统一 Message 投递到 input 通道，由 @StreamListener 的 StreamListenerMessageHandler 消费。
+- **RabbitMessageChannelBinder**（spring-cloud-stream-binder-rabbit）：发送侧封装 RabbitTemplate + AmqpOutboundEndpoint，用 MessageConverter 完成 Message ↔ AMQP Message 的双向转换；消费侧通过 AmqpInboundChannelAdapter 监听并转换为统一 Message。
 
 ## 版本差异（Spring Cloud 旧版 → 2025.x）
 
@@ -381,7 +387,7 @@ Binder 是 Spring Cloud Stream 的核心组件，通过这个组件，Spring Clo
 | 配置中心 | Spring Cloud Config | Nacos Config / Apollo |
 | 版本对应 | Hoxton/2020.x + Boot 2.x + JDK 8 | 2025.x + Boot 3.5.x + JDK 17+ |
 
-> 本文为 Spring Cloud 旧版课程（Hoxton/2020.x 时代）。Hystrix、Ribbon、Zuul 1.x、Eureka 已停止维护，新项目请使用 Spring Cloud Gateway + LoadBalancer + Resilience4j（或 Alibaba 系 Nacos/Sentinel/Seata），并升级到 Spring Cloud 2025.x + Spring Boot 3.5.x。
+> 本文基于 Spring Cloud 旧版（Hoxton/2020.x 时代）编写。Hystrix、Ribbon、Zuul 1.x、Eureka 已停止维护，新项目请使用 Spring Cloud Gateway + LoadBalancer + Resilience4j（或 Alibaba 系 Nacos/Sentinel/Seata），并升级到 Spring Cloud 2025.x + Spring Boot 3.5.x。
 
 ## 相关阅读
 

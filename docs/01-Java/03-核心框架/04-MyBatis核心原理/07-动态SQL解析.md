@@ -8,9 +8,9 @@ tags: [Java, MyBatis]
 
 # 动态 SQL 解析流程
 
-在前面两篇中，我们详细介绍了 mybatis-config.xml 全局配置文件以及 Mapper.xml 映射文件的解析流程，MyBatis 会将 Mapper 映射文件中定义的 SQL 语句解析成 SqlSource 对象，其中的动态标签、SQL 语句文本等，会解析成对应类型的 SqlNode 对象。
+在前文中已经详细介绍了 mybatis-config.xml 全局配置文件以及 Mapper.xml 映射文件的解析流程。MyBatis 会将 Mapper 映射文件中定义的 SQL 语句解析成 SqlSource 对象，其中的动态标签、SQL 语句文本等，会解析成对应类型的 SqlNode 对象。
 
-在开始介绍 SqlSource 接口、SqlNode 接口等核心接口的相关内容之前，我们需要先来了解一下动态 SQL 中使用到的基础知识和基础组件。
+在开始介绍 SqlSource 接口、SqlNode 接口等核心接口的相关内容之前，需要先了解动态 SQL 中使用到的基础知识和基础组件。
 
 ::: details 动态 SQL 用法速查（if / set / foreach / sql 片段、#{} 与 ${}，来自 SSM 篇）
 本篇以下内容聚焦动态标签的**解析与构建原理**（SqlNode 树、SqlSource、BoundSql）。使用层面的常用写法速查如下（原「08-SSM/MyBatis 高级查询」篇已解体，用法内容并入此处，各标签与后文 SqlNode 实现一一对应）：
@@ -59,9 +59,9 @@ tags: [Java, MyBatis]
 
 **OGNL 表达式语言是一款成熟的、面向对象的表达式语言**。在动态 SQL 语句中使用到了 OGNL 表达式读写 JavaBean 属性值、执行 JavaBean 方法这两个基础功能。
 
-OGNL 表达式是相对完备的一门表达式语言，我们可以通过“对象变量名称.方法名称（或属性名称）”调用一个 JavaBean 对象的方法（或访问其属性），还可以通过“@[类的完全限定名]@[静态方法（或静态字段）]”调用一个 Java 类的静态方法（或访问静态字段）。OGNL 表达式还支持很多更复杂、更强大的功能，这里不再一一介绍。
+OGNL 表达式是相对完备的一门表达式语言：可以通过“对象变量名称.方法名称（或属性名称）”调用一个 JavaBean 对象的方法（或访问其属性），还可以通过“@[类的完全限定名]@[静态方法（或静态字段）]”调用一个 Java 类的静态方法（或访问静态字段）。OGNL 表达式还支持很多更复杂、更强大的功能，这里不再一一介绍。
 
-下面我就通过一个示例来帮助你快速了解 OGNL 表达式的基础使用：
+下面通过一个示例来了解 OGNL 表达式的基础使用：
 
 ```java
 public class OGNLDemo {
@@ -114,11 +114,11 @@ public class OGNLDemo {
 
 ```
 
-MyBatis 为了提高 OGNL 表达式的工作效率，添加了一层 OgnlCache 来**缓存**表达式编译之后的结果（不是表达式的执行结果），OgnlCache 通过一个 ConcurrentHashMap<String, Object> 类型的集合（expressionCache 字段，静态字段）来**记录**OGNL 表达式编译之后的结果。通过缓存拿到表达式编译的结果之后，OgnlCache 底层还会依赖上述示例中的 OGNL 工具类以及 OgnlContext 完成表达式的执行。
+MyBatis 为了提高 OGNL 表达式的工作效率，添加了一层 OgnlCache 来**缓存**表达式编译之后的结果（不是表达式的执行结果）。OgnlCache 通过一个 ConcurrentHashMap<String, Object> 类型的集合（expressionCache 字段，静态字段）来**记录** OGNL 表达式编译之后的结果。通过缓存拿到表达式编译的结果之后，OgnlCache 底层还会依赖上述示例中的 OGNL 工具类以及 OgnlContext 完成表达式的执行。
 
 ## DynamicContext 上下文
 
-在 MyBatis 解析一条动态 SQL 语句的时候，可能整个流程非常长，其中涉及多层方法的调用、方法的递归、复杂的循环等，其中**产生的中间结果需要有一个地方进行存储，那就是 DynamicContext 上下文对象**。
+在 MyBatis 解析一条动态 SQL 语句的时候，可能整个流程非常长，其中涉及多层方法的调用、方法的递归、复杂的循环等。**产生的中间结果需要有一个地方进行存储，那就是 DynamicContext 上下文对象**。
 
 DynamicContext 中有两个核心属性：一个是 sqlBuilder 字段（StringJoiner 类型），用来记录解析之后的 SQL 语句；另一个是 bindings 字段，用来记录上下文中的一些 KV 信息。
 
@@ -150,11 +150,11 @@ ContextMap 继承了 HashMap 并覆盖了 get() 方法，在 get() 方法中有�
 
 最后，根据当前是否包含 parameterObject 相应的 TypeHandler 决定是返回整个 parameterObject 对象，还是返回 null。
 
-后面在介绍 <foreach>、<trim> 等标签的处理逻辑中，你可以看到向 DynamicContext.bindings 集合中写入 KV 数据的操作，但是读取这个 ContextMap 的地方主要是在 OGNL 表达式中，也就是在 DynamicContext 中定义了一个静态代码块，指定了 OGNL 表达式读写 ContextMap 集合的逻辑，这部分读取逻辑封装在 ContextAccessor 中。除此之外，你还可以看到 ContextAccessor 中的 getProperty() 方法会将传入的 target 参数（实际上就是 ContextMap）转换为 Map，并先尝试按照 Map 规则进行查找；查找失败之后，会尝试获取“_parameter”对应的 parameterObject 对象，从 parameterObject 中获取指定的 Value 值。
+后面在介绍 <foreach>、<trim> 等标签的处理逻辑中，可以看到向 DynamicContext.bindings 集合中写入 KV 数据的操作，但是读取这个 ContextMap 的地方主要是在 OGNL 表达式中。也就是在 DynamicContext 中定义了一个静态代码块，指定了 OGNL 表达式读写 ContextMap 集合的逻辑，这部分读取逻辑封装在 ContextAccessor 中。此外，ContextAccessor 中的 getProperty() 方法会将传入的 target 参数（实际上就是 ContextMap）转换为 Map，并先尝试按照 Map 规则进行查找；查找失败之后，会尝试获取“_parameter”对应的 parameterObject 对象，从 parameterObject 中获取指定的 Value 值。
 
 ## 组合模式
 
-**组合模式（有时候也被称为“部分-整体”模式）是将同一类型的多个对象组合成一个树形结构。在使用这个树形结构的时候，我们可以像处理一个对象那样进行处理，而不用关心其复杂的树形结构。**
+**组合模式（有时候也被称为“部分-整体”模式）是将同一类型的多个对象组合成一个树形结构。在使用这个树形结构的时候，可以像处理一个对象那样进行处理，而不用关心其复杂的树形结构。**
 
 组合模式的核心结构如下图所示：
 
@@ -182,7 +182,7 @@ classDiagram
   Composite o-- "0..*" Component : 组合子节点
 ```
 
-从上图中，我们可以看出组合模式的核心组件有下面三个。
+从上图中可以看出组合模式的核心组件有下面三个。
 
 **Component 接口：定义了整个树形结构中每个节点的基础行为**。一般情况下会定义两类方法，一类是真正的业务行为，另一类是管理子节点的行为，例如 addChild()、removeChild()、getChildren() 等方法。
 
@@ -190,7 +190,7 @@ classDiagram
 
 **Composite 类：抽象了树形结构中的树枝节点（非叶子节点）**。Composite 类不仅要实现 Component 接口的业务方法，而且还需要实现子节点管理的相关方法，并在内部维护一个集合类来管理这些子节点。Composite 实现的业务方法一般逻辑比较简单，大都是直接循环调用所有子节点的业务方法。
 
-通过以上对组合模式的介绍，你可以看出组合模式有以下两个优势：
+通过以上对组合模式的介绍，可以总结出组合模式的两个优势：
 
 由于使用方并不关心自己使用的是树形 Component 结构还是单个 Component 对象，所以可以帮助上层使用方屏蔽复杂的树形结构，将使用方的逻辑与树形结构解耦；
 
@@ -200,7 +200,7 @@ classDiagram
 
 在 MyBatis 处理动态 SQL 语句的时候，会将动态 SQL 标签解析为 SqlNode 对象，**多个 SqlNode 对象就是通过组合模式组成树形结构供上层使用的**。
 
-下面来讲解一下 SqlNode 的相关实现。首先，介绍一下 SqlNode 接口的定义，如下所示：
+下面讲解 SqlNode 的相关实现。首先介绍 SqlNode 接口的定义，如下所示：
 
 ```
 public interface SqlNode {
@@ -213,7 +213,7 @@ public interface SqlNode {
 
 ```
 
-MyBatis 为 SqlNode 接口提供了非常多的实现类（如下图），其中很多实现类都对应一个动态 SQL 标签，但是也有 SqlNode 实现扮演了组合模式中 Composite 的角色，例如，MixedSqlNode 实现类。
+MyBatis 为 SqlNode 接口提供了非常多的实现类（如下图），其中很多实现类都对应一个动态 SQL 标签，但是也有 SqlNode 实现扮演了组合模式中 Composite 的角色，例如 MixedSqlNode 实现类。
 
 ```mermaid
 classDiagram
@@ -269,7 +269,7 @@ SqlNode 继承关系图
 
 **StaticTextSqlNode 用于表示非动态的 SQL 片段**，其中维护了一个 text 字段（String 类型），用于记录非动态 SQL 片段的文本内容，其 apply() 方法会直接将 text 字段值追加到 DynamicContext.sqlBuilder 的最末尾。
 
-**MixedSqlNode 在整个 SqlNode 树中充当了树枝节点，也就是扮演了组合模式中 Composite 的角色**，其中维护了一个 List<SqlNode> 集合用于记录 MixedSqlNode 下所有的子 SqlNode 对象。MixedSqlNode 对于 apply() 方法的实现也相对比较简单，核心逻辑就是遍历 List<SqlNode> 集合中全部的子 SqlNode 对象并调用 apply() 方法，由子 SqlNode 对象完成真正的动态 SQL 处理逻辑。
+**MixedSqlNode 在整个 SqlNode 树中充当了树枝节点，也就是扮演了组合模式中 Composite 的角色**，其中维护了一个 List<SqlNode> 集合用于记录 MixedSqlNode 下所有的子 SqlNode 对象。MixedSqlNode 对 apply() 方法的实现也相对比较简单，核心逻辑就是遍历 List<SqlNode> 集合中全部的子 SqlNode 对象并调用 apply() 方法，由子 SqlNode 对象完成真正的动态 SQL 处理逻辑。
 
 ### 2. TextSqlNode
 
@@ -287,7 +287,7 @@ public boolean apply(DynamicContext context) {
 
 ```
 
-这里**使用 GenericTokenParser 识别“${}”占位符**，在识别到占位符之后，会**通过 BindingTokenParser 将“${}”占位符替换为用户传入的实参**。BindingTokenParser 继承了TokenHandler 接口，在其 handleToken() 方法实现中，会根据 DynamicContext.bindings 这个 ContextMap 中的 KV 数据替换 SQL 语句中的“${}”占位符，相关的代码片段如下：
+这里**使用 GenericTokenParser 识别“${}”占位符**，在识别到占位符之后，会**通过 BindingTokenParser 将“${}”占位符替换为用户传入的实参**。BindingTokenParser 继承了 TokenHandler 接口，在其 handleToken() 方法实现中，会根据 DynamicContext.bindings 这个 ContextMap 中的 KV 数据替换 SQL 语句中的“${}”占位符，相关的代码片段如下：
 
 ```
 public String handleToken(String content) {
@@ -317,7 +317,7 @@ public String handleToken(String content) {
 
 **TrimSqlNode 对应 MyBatis 动态 SQL 语句中的 <trim> 标签**。
 
-在使用 <trim> 标签的时候，我们可以指定 prefix 和 suffix 属性添加前缀和后缀，也可以指定 prefixOverrides 和 suffixOverrides 属性来删除多个前缀和后缀（使用“|”分割不同字符串）。在 TrimSqlNode 中维护了同名的四个字段值，即 prefix 字段、suffix 字段（这两个是 String 类型）以及 prefixesToOverride 字段、suffixesToOverride 字段（这两个是 List<String> 类型）。
+在使用 <trim> 标签的时候，可以指定 prefix 和 suffix 属性添加前缀和后缀，也可以指定 prefixOverrides 和 suffixOverrides 属性来删除多个前缀和后缀（使用“|”分割不同字符串）。在 TrimSqlNode 中维护了同名的四个字段值，即 prefix 字段、suffix 字段（这两个是 String 类型）以及 prefixesToOverride 字段、suffixesToOverride 字段（这两个是 List<String> 类型）。
 
 下面先来看一下 TrimSqlNode 的 apply() 方法的实现：
 
@@ -345,17 +345,17 @@ applySuffix() 方法在处理后缀的时候，首先会遍历 suffixesToOverrid
 
 在 SetSqlNode 中将 prefix 设置为“SET”关键字，prefixesToOverride 集合和 suffixesToOverride 集合只包含“，”（逗号）字符串，这样就实现了删除 SQL 片段开头和结尾多余的逗号，并添加“SET”关键字的效果。
 
-在前文，我们讲解了 MyBatis 中动态 SQL 语句的相关内容，重点介绍了 MyBatis 使用到的 OGNL 表达式、组合模式、DynamicContext 上下文以及多个动态 SQL 标签对应的 SqlNode 实现。本文我们就紧接着前文，继续介绍剩余 SqlNode 实现以及 SqlSource 的相关内容。
+前文重点介绍了 MyBatis 使用到的 OGNL 表达式、组合模式、DynamicContext 上下文以及多个动态 SQL 标签对应的 SqlNode 实现，下文继续介绍剩余 SqlNode 实现以及 SqlSource 的相关内容。
 
 ## SqlNode 剩余实现类
 
-在前文我们已经介绍了 StaticTextSqlNode、MixedSqlNode、TextSqlNode、IfSqlNode、TrimSqlNode 这几个 SqlNode 的实现，再把剩下的三个 SqlNode 实现类也说明下。
+前文已介绍了 StaticTextSqlNode、MixedSqlNode、TextSqlNode、IfSqlNode、TrimSqlNode 这几个 SqlNode 的实现，下面说明剩下的三个 SqlNode 实现类。
 
 ### 1. ForEachSqlNode
 
-在动态 SQL 语句中，我们可以**使用 <foreach> 标签对一个集合进行迭代**。在迭代过程中，我们可以通过 index 属性值指定的变量作为元素的下标索引（迭代 Map 集合的话，就是 Key 值），使用 item 属性值指定的变量作为集合元素（迭代 Map 集合的话，就是 Value 值）。另外，我们还可以通过 open 和 close 属性在迭代开始前和结束后添加相应的字符串，也允许使用 separator 属性自定义分隔符。这里要介绍的 ForEachSqlNode 就是 <foreach> 标签的抽象。
+在动态 SQL 语句中，可以**使用 <foreach> 标签对一个集合进行迭代**。在迭代过程中，可以通过 index 属性值指定的变量作为元素的下标索引（迭代 Map 集合的话，就是 Key 值），使用 item 属性值指定的变量作为集合元素（迭代 Map 集合的话，就是 Value 值）。另外，还可以通过 open 和 close 属性在迭代开始前和结束后添加相应的字符串，也允许使用 separator 属性自定义分隔符。这里要介绍的 ForEachSqlNode 就是 <foreach> 标签的抽象。
 
-下面来分析一下 ForEachSqlNode 的 apply() 方法是如何实现循环的。
+下面分析 ForEachSqlNode 的 apply() 方法是如何实现循环的。
 
 首先，向 DynamicContext.sqlBuilder 中追加 open 属性值指定的字符串，然后通过 ExpressionEvaluator 工具类解析 <foreach> 标签中 collection 属性指定的表达式，得到一个集合对象，并遍历这个集合。
 
@@ -416,13 +416,13 @@ public void appendSql(String sql) {
 
 ### 2. ChooseSqlNode
 
-在有的业务场景中，可能会碰到非常多的分支判断，在 Java 中，我们可以通过 switch...case...default 的方式来编写这段代码；在 MyBatis 的动态 SQL 语句中，我们可以使用 <choose>、<when> 和 <otherwise> 三个标签来实现类似的效果。
+在有的业务场景中，可能会碰到非常多的分支判断。在 Java 中，可以通过 switch...case...default 的方式来编写这段代码；在 MyBatis 的动态 SQL 语句中，可以使用 <choose>、<when> 和 <otherwise> 三个标签来实现类似的效果。
 
 **<choose> 标签会被 MyBatis 解析成 ChooseSqlNode 对象，<when> 标签会被解析成 IfSqlNode 对象，<otherwise> 标签会被解析成 MixedSqlNode 对象。**
 
-IfSqlNode 和 MixedSqlNode 的核心实现在前文中我们已经分析过了，这里不再重复。ChooseSqlNode 的实现也比较简单，其中维护了一个 List<SqlNode> 集合（ifSqlNodes 字段）用来记录所有 <when> 子标签对应的 IfSqlNode 对象，同时还维护了一个 SqlNode 类型字段（defaultSqlNode 字段）用来记录 <otherwise> 子标签生成的 MixedSqlNode 对象，该字段可以为 null。
+IfSqlNode 和 MixedSqlNode 的核心实现已在前文中分析过，这里不再重复。ChooseSqlNode 的实现也比较简单：其中维护了一个 List<SqlNode> 集合（ifSqlNodes 字段）用来记录所有 <when> 子标签对应的 IfSqlNode 对象，同时还维护了一个 SqlNode 类型字段（defaultSqlNode 字段）用来记录 <otherwise> 子标签生成的 MixedSqlNode 对象，该字段可以为 null。
 
-在 ChooseSqlNode 的 apply() 方法中，首先会尝试迭代全部 IfSqlNode 节点并执行 apply() 方法，我们知道任意一个 IfSqlNode.apply() 方法返回 true，即表示命中该分支，此时整个 ChooseSqlNode.apply() 返回 true，否则尝试执行 defaultSqlNode.apply() 方法并返回 true，即进入默认分支。如果 defaultSqlNode 字段为 null，则返回 false。
+在 ChooseSqlNode 的 apply() 方法中，首先会尝试迭代全部 IfSqlNode 节点并执行 apply() 方法。任意一个 IfSqlNode.apply() 方法返回 true，即表示命中该分支，此时整个 ChooseSqlNode.apply() 返回 true；否则尝试执行 defaultSqlNode.apply() 方法并返回 true，即进入默认分支。如果 defaultSqlNode 字段为 null，则返回 false。
 
 ### 3. VarDeclSqlNode
 
@@ -444,7 +444,7 @@ SqlSourceBuilder 的核心操作主要有两个：
 
 SqlSourceBuilder 的入口是 parse() 方法，这里首先会创建一个识别“#{}”占位符的 GenericTokenParser 解析器，当识别到“#{}”占位符的时候，就**由 ParameterMappingTokenHandler 这个 TokenHandler 实现完成上述两个核心步骤**。
 
-ParameterMappingTokenHandler 中维护了一个 List<ParameterMapping> 类型的集合（parameterMappings 字段），用来记录每个占位符参数解析后的结果，ParameterMapping 记录了占位符名称（property 字段）、jdbcType 属性值（jdbcType 字段）、javaType 属性值（javaType 字段）、typeHandler 属性值（typeHandler 字段）等。
+ParameterMappingTokenHandler 中维护了一个 List<ParameterMapping> 类型的集合（parameterMappings 字段），用来记录每个占位符参数解析后的结果。ParameterMapping 记录了占位符名称（property 字段）、jdbcType 属性值（jdbcType 字段）、javaType 属性值（javaType 字段）、typeHandler 属性值（typeHandler 字段）等。
 
 在 buildParameterMapping() 方法中会通过 ParameterExpression 工具类解析“#{}”占位符，然后通过 ParameterMapping.Builder 创建对应的 ParameterMapping 对象。这里得到的 ParameterMapping 就会被记录到 parameterMappings 集合中。
 
@@ -511,19 +511,19 @@ public BoundSql getBoundSql(Object parameterObject) {
 
 ```
 
-这里最终返回的 BoundSql 对象，包含了解析之后的 SQL 语句（sql 字段）、每个“#{}”占位符的属性信息（parameterMappings 字段 ，List<ParameterMapping> 类型）、实参信息（parameterObject 字段）以及 DynamicContext 中记录的 KV 信息（additionalParameters 集合，Map<String, Object> 类型）。
+这里最终返回的 BoundSql 对象，包含了解析之后的 SQL 语句（sql 字段）、每个“#{}”占位符的属性信息（parameterMappings 字段，List<ParameterMapping> 类型）、实参信息（parameterObject 字段）以及 DynamicContext 中记录的 KV 信息（additionalParameters 集合，Map<String, Object> 类型）。
 
-后面在讲解 StatementHandler、Executor 如何执行 SQL 语句的时候，我们还会继续介绍 BoundSql 的相关内容，到时候你可以跟这里联系起来学习。
+后面在讲解 StatementHandler、Executor 如何执行 SQL 语句时，还会继续介绍 BoundSql 的相关内容，可与本节内容联系起来学习。
 
 ### 2. RawSqlSource
 
-我们看 SqlSource 的第二个实现—— RawSqlSource，它与 DynamicSqlSource 有两个不同之处：
+SqlSource 的第二个实现是 RawSqlSource，它与 DynamicSqlSource 有两个不同之处：
 
 RawSqlSource 处理的是非动态 SQL 语句，DynamicSqlSource 处理的是动态 SQL 语句；
 
 RawSqlSource 解析 SQL 语句的时机是在初始化流程中，而 DynamicSqlSource 解析动态 SQL 的时机是在程序运行过程中，也就是运行时解析。
 
-这里我们需要先来回顾一下前面介绍的 XMLScriptBuilder.parseDynamicTags() 方法，其中会**判断一个 SQL 片段**是否为动态 SQL，判断的标准是：**如果这个 SQL 片段包含了未解析的“${}”占位符或动态 SQL 标签，则为动态 SQL 语句**。但注意，如果是只包含了“#{}”占位符，也不是动态 SQL。
+这里先回顾一下前面介绍的 XMLScriptBuilder.parseDynamicTags() 方法，其中会**判断一个 SQL 片段**是否为动态 SQL，判断的标准是：**如果这个 SQL 片段包含了未解析的“${}”占位符或动态 SQL 标签，则为动态 SQL 语句**。但注意，如果是只包含了“#{}”占位符，也不是动态 SQL。
 
 XMLScriptBuilder.parseScriptNode() 方法则会**判断整个 SQL 语句**是否为动态 SQL，判断的依据是：**如果 SQL 语句中包含任意一个动态 SQL 片段，那么整个 SQL 即为动态 SQL 语句**。
 
@@ -533,7 +533,17 @@ RawSqlSource 在构造方法中，会调用 SqlNode.apply() 方法将 SQL 片段
 
 最后，RawSqlSource.getBoundSql() 方法实现是直接调用 StaticSqlSource.getBoundSql() 方法返回一个 BoundSql 对象。
 
-通过前面的介绍我们知道，无论是 DynamicSqlSource 还是 RawSqlSource，底层都依赖 SqlSourceBuilder 解析之后得到的 StaticSqlSource 对象。StaticSqlSource 中维护了解析之后的 SQL 语句以及“#{}”占位符的属性信息（List<ParameterMapping> 集合），其 getBoundSql() 方法是真正创建 BoundSql 对象的地方，这个 BoundSql 对象包含了上述 StaticSqlSource 的两个字段以及实参的信息。
+通过前面的介绍可知，无论是 DynamicSqlSource 还是 RawSqlSource，底层都依赖 SqlSourceBuilder 解析之后得到的 StaticSqlSource 对象。StaticSqlSource 中维护了解析之后的 SQL 语句以及“#{}”占位符的属性信息（List<ParameterMapping> 集合），其 getBoundSql() 方法是真正创建 BoundSql 对象的地方，这个 BoundSql 对象包含了上述 StaticSqlSource 的两个字段以及实参的信息。
+
+## 实践要点
+
+- 动态 SQL 解析的组件链路：OGNL 表达式（含 OgnlCache 编译缓存）→ DynamicContext 上下文（sqlBuilder 暂存 SQL、bindings 暂存 KV）→ SqlNode 组合模式树 → SqlSourceBuilder（“#{}”属性解析与“?”替换）→ StaticSqlSource → BoundSql。
+- “${}”与“#{}”的源码级差异：“${}”由 TextSqlNode/BindingTokenParser 原文拼接（有注入风险，经 checkInjection 过滤），“#{}”由 SqlSourceBuilder 统一替换为“?”并生成 ParameterMapping。
+- 动态 SQL 的判定：片段级标准是含未解析“${}”占位符或动态标签（parseDynamicTags），语句级标准是含任意一个动态片段（parseScriptNode）；只含“#{}”不算动态 SQL。
+- DynamicSqlSource 与 RawSqlSource 的本质区别是解析时机：前者运行时解析（getBoundSql 调用时），后者初始化时解析并缓存为 StaticSqlSource，静态 SQL 性能更优。
+- TrimSqlNode 通过 FilteredDynamicContext 装饰器实现前后缀增删，其子类 WhereSqlNode/SetSqlNode 分别预设“WHERE/SET”与对应 override 集合。
+- <foreach> 的占位符改写机制：PrefixedContext 绑定 index/item 变量，FilteredDynamicContext 将 #{i} 改写为 #{__frch_i_0} 形式以支持逐元素传参。
+- <choose>/<when>/<otherwise> 分别映射 ChooseSqlNode/IfSqlNode/MixedSqlNode；<bind> 映射 VarDeclSqlNode，将 OGNL 表达式结果绑定到变量。
 
 ## 版本差异(旧版 → MyBatis 3.5.x)
 

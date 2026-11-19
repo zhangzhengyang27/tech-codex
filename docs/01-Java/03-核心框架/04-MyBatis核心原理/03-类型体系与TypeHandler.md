@@ -8,21 +8,33 @@ tags: [Java, MyBatis]
 
 # 类型体系与 TypeHandler
 
-作为一个 Java 程序员，你应该已经具备了使用 JDBC 操作数据库的基础技能。在使用 JDBC 的时候，你会发现 JDBC 的数据类型与 Java 语言中的数据类型虽然有点对应关系，如下图所示，但还是无法做到一一对应，也自然无法做到自动映射。
+## 概念说明
+
+使用 JDBC 操作数据库时会发现：JDBC 的数据类型与 Java 语言中的数据类型虽然存在对应关系（如下图所示），但无法做到一一对应，自然也无法做到自动映射。
 
 ![](/mybatis-course-images/05-数据库类型体系与_Java_类型体系之间的_爱恨情仇___Cgp9HWAeMiSAcga0AAEpsa9onlg651.png)
 
 数据库类型与 Java 类型对应图表
 
-在使用 PreparedStatement 执行 SQL 语句之前，都是需要手动调用 setInt()、setString() 等 set 方法绑定参数，这不仅仅是告诉 JDBC 一个 SQL 模板中哪个占位符需要使用哪个实参，还会将数据从 Java 类型转换成 JDBC 类型。当从 ResultSet 中获取数据的时候，则是一个逆过程，数据会从 JDBC 类型转换为 Java 类型。
+在使用 PreparedStatement 执行 SQL 语句之前，需要手动调用 setInt()、setString() 等 set 方法绑定参数。这一步不仅仅是告诉 JDBC 一个 SQL 模板中哪个占位符使用哪个实参，还会将数据从 Java 类型转换成 JDBC 类型。当从 ResultSet 中获取数据时则是一个逆过程：数据从 JDBC 类型转换为 Java 类型。
 
-可以使用 MyBatis 中的**类型转换器**，完成上述两次类型转换，如下图所示：
+MyBatis 中的**类型转换器**用于完成上述两次类型转换，如下图所示：
 
 ![](/mybatis-course-images/05-数据库类型体系与_Java_类型体系之间的_爱恨情仇___CioPOWAeMi6AdTRAAAENMX_HsyU054.png)
 
+## 核心要点
+
+- MyBatis 中的类型转换器就是 `TypeHandler` 接口：`setParameter()` 负责绑定参数时将 Java 类型转换成 JdbcType 类型，`getResult()` 的三个重载负责读取数据时将 JdbcType 类型转换成 Java 类型。
+- MyBatis 定义了 `BaseTypeHandler` 抽象类实现公共逻辑：setParameter() 判空后委托抽象方法 `setNonNullParameter()`，getResult() 直接调用抽象方法 `getNullableResult()`，两者均由子类实现。
+- 全部 TypeHandler 实例由 `TypeHandlerRegistry` 统一管理，管理依赖四个核心集合：jdbcTypeHandlerMap、typeHandlerMap（两层 Map，Java 类型 -> JdbcType -> TypeHandler）、allTypeHandlersMap、NULL_TYPE_HANDLER_MAP。
+- TypeHandler 可通过 `<typeHandler>` 标签或 `<result>` 等映射标签的 typeHandler 属性配置；注册过程支持 `@MappedTypes`（可处理的 Java 类型集合）与 `@MappedJdbcTypes`（可处理的 JDBC 类型集合）注解，也支持扫描包注册。
+- 查询 TypeHandler 的核心方法是 `TypeHandlerRegistry.getTypeHandler(Type, JdbcType)`：先按 JdbcType 精确查找，失败则尝试 null 键，再尝试唯一注册的 TypeHandler（pickSoleHandler）。
+- 枚举类型有专门的查找分支（defaultEnumTypeHandler）；未注册的 Java 类型会沿继承树向上查找父类的 TypeHandler 集合。
+- 别名管理由 `TypeAliasRegistry` 实现，typeAliases 字段记录别名与 Java 类型的对应关系；别名统一转小写，冲突即抛异常；支持 `@Alias` 注解与包扫描注册。
+
 ## 深入 TypeHandler
 
-说了这么多，类型转换器到底是怎么定义的呢？其实，**MyBatis 中的类型转换器就是 TypeHandler 这个接口**，其定义如下：
+**MyBatis 中的类型转换器就是 TypeHandler 这个接口**，其定义如下：
 
 ```java
 public interface TypeHandler<T> {
@@ -42,19 +54,18 @@ public interface TypeHandler<T> {
 
 TypeHandler 继承关系图
 
-在 BaseTypeHandler 中，简单实现了 TypeHandler 接口的 setParameter() 方法和 getResult() 方法。
+在 BaseTypeHandler 中，简单实现了 TypeHandler 接口的 setParameter() 方法和 getResult() 方法：
 
-在 setParameter() 实现中，会判断传入的 parameter 实参是否为空，如果为空，则调用 PreparedStatement.setNull() 方法进行设置；如果不为空，则委托 setNonNullParameter() 这个抽象方法进行处理，setNonNullParameter() 方法由 BaseTypeHandler 的子类提供具体实现。
+- 在 setParameter() 实现中，会判断传入的 parameter 实参是否为空：如果为空，则调用 PreparedStatement.setNull() 方法进行设置；如果不为空，则委托 setNonNullParameter() 这个抽象方法进行处理，setNonNullParameter() 方法由 BaseTypeHandler 的子类提供具体实现。
+- 在 getResult() 的三个重载实现中，会直接调用相应的 getNullableResult() 抽象方法。这里有三个重载的 getNullableResult() 抽象方法，它们都由 BaseTypeHandler 的子类提供具体实现。
 
-在 getResult() 的三个重载实现中，会直接调用相应的 getNullableResult() 抽象方法，这里有三个重载的 getNullableResult() 抽象方法，它们都由 BaseTypeHandler 的子类提供具体实现。
+BaseTypeHandler 的具体实现比较简单，深入理解时可参考源码学习。
 
-BaseTypeHandler 的具体实现比较简单，这里就不再展示，你若感兴趣的话可以参考源码进行学习。
-
-下图展示了 BaseTypeHandler 的全部实现类，虽然实现类比较多，但是它们的实现方式大同小异。
+下图展示了 BaseTypeHandler 的全部实现类，虽然实现类比较多，但是它们的实现方式大同小异：
 
 ![](/mybatis-course-images/05-数据库类型体系与_Java_类型体系之间的_爱恨情仇___Cgp9HWAeMkuAI22uAApwhcDLfQ4596.png)
 
-这里我们以 LongTypeHandler 为例进行分析，具体实现如下：
+以 LongTypeHandler 为例进行分析，具体实现如下：
 
 ```java
 public class LongTypeHandler extends BaseTypeHandler<Long> {
@@ -85,31 +96,24 @@ public class LongTypeHandler extends BaseTypeHandler<Long> {
 
 ```
 
-可以看到：LongTypeHandler 的核心还是通过 PreparedStatement.setLong() 方法以及 ResultSet.getLong() 方法实现的。至于其他 BaseTypeHandler 的核心实现，同样也是依赖了 JDBC 的 API，这里就不再展开介绍了。
+可以看到：LongTypeHandler 的核心还是通过 PreparedStatement.setLong() 方法以及 ResultSet.getLong() 方法实现的。其他 BaseTypeHandler 的核心实现同样依赖 JDBC 的 API。
 
 ## TypeHandler 注册
 
-了解了 TypeHandler 接口实现类的核心原理之后，我们就来解决下面两个问题：
+TypeHandler 的两个核心管理问题是：MyBatis 如何管理这么多的 TypeHandler 接口实现？如何在合适的场景中使用合适的 TypeHandler 实现进行类型转换？
 
-MyBatis 如何管理这么多的 TypeHandler 接口实现呢？
+在 mybatis-config.xml 中可以通过 `<typeHandler>` 标签配置自定义的 TypeHandler 实现，也可以在 Mapper.xml 配置文件定义 `<result>` 等映射标签时指定 typeHandler 属性。无论哪种配置方式，MyBatis 都会在初始化过程中获取所有已知的 TypeHandler（包括内置实现和自定义实现），然后创建所有 TypeHandler 实例并注册到 TypeHandlerRegistry 中，**由 TypeHandlerRegistry 统一管理所有 TypeHandler 实例**。
 
-如何在合适的场景中使用合适的 TypeHandler 实现进行类型转换呢？
+TypeHandlerRegistry 管理 TypeHandler 用到了以下四个最核心的集合：
 
-你若使用过 MyBatis 的话，应该知道我们可以在 mybatis-config.xml 中通过 <typeHandler> 标签配置自定义的 TypeHandler 实现，也可以在 Mapper.xml 配置文件定义 <result> 等映射标签的时候指定 typeHandler 属性。无论是哪种配置方式，MyBatis 都会在初始化过程中，获取所有已知的 TypeHandler（包括内置实现和自定义实现），然后创建所有 TypeHandler 实例并注册到 TypeHandlerRegistry 中，**由 TypeHandlerRegistry 统一管理所有 TypeHandler 实例**。
+- **jdbcTypeHandlerMap**（Map<JdbcType, TypeHandler<?>> 类型）：记录 JdbcType 与 TypeHandler 之间的关联关系。JdbcType 是一个枚举类型，每个 JdbcType 枚举值对应一种 JDBC 类型，例如 JdbcType.VARCHAR 对应的就是 JDBC 中的 varchar 类型。从 ResultSet 中读取数据时，就会从 jdbcTypeHandlerMap 集合中根据 JDBC 类型查找对应的 TypeHandler，将数据转换成 Java 类型。
+- **typeHandlerMap**（Map<Type, Map<JdbcType, TypeHandler<?>>> 类型）：第一层 Key 是需要转换的 Java 类型，第二层 Key 是转换的目标 JdbcType，最终的 Value 是完成此次转换时所需要使用的 TypeHandler 对象。采用两层 Map 设计的原因：Java 类型中的 String 可能转换成数据库中的 varchar、char、text 等多种类型，存在一对多关系，所以就可能有不同的 TypeHandler 实现。
+- **allTypeHandlersMap**（Map<Class, TypeHandler> 类型）：记录全部 TypeHandler 的类型以及对应的 TypeHandler 实例对象。
+- **NULL_TYPE_HANDLER_MAP**（Map<JdbcType, TypeHandler<?>> 类型）：空 TypeHandler 集合的标识，默认值为 Collections.emptyMap()。
 
-TypeHandlerRegistry 管理 TypeHandler 的时候，用到了以下四个最核心的集合。
+MyBatis 初始化时，实例化全部 TypeHandler 对象之后，会立即调用 TypeHandlerRegistry 的 register() 方法完成这些 TypeHandler 对象的注册。注册过程的核心逻辑是向上述四个核心集合中添加 TypeHandler 实例以及与 Java 类型、JDBC 类型之间的映射。
 
-jdbcTypeHandlerMap（Map<JdbcType, TypeHandler<?>>类型）：该集合记录了 JdbcType 与 TypeHandler 之间的关联关系。JdbcType 是一个枚举类型，每个 JdbcType 枚举值对应一种 JDBC 类型，例如，JdbcType.VARCHAR 对应的就是 JDBC 中的 varchar 类型。在从 ResultSet 中读取数据的时候，就会从 jdbcTypeHandlerMap 集合中根据 JDBC 类型查找对应的 TypeHandler，将数据转换成 Java 类型。
-
-typeHandlerMap（Map<Type, Map<JdbcType, TypeHandler<?>>>类型）：该集合第一层 Key 是需要转换的 Java 类型，第二层 Key 是转换的目标 JdbcType，最终的 Value 是完成此次转换时所需要使用的 TypeHandler 对象。那为什么要有两层 Map 的设计呢？这里我们举个例子：Java 类型中的 String 可能转换成数据库中的 varchar、char、text 等多种类型，存在一对多关系，所以就可能有不同的 TypeHandler 实现。
-
-allTypeHandlersMap（Map<Class, TypeHandler>类型）：该集合记录了全部 TypeHandler 的类型以及对应的 TypeHandler 实例对象。
-
-NULL_TYPE_HANDLER_MAP（Map<JdbcType, TypeHandler<?>>类型）：空 TypeHandler 集合的标识，默认值为 Collections.emptyMap()。
-
-在 MyBatis 初始化的时候，实例化全部 TypeHandler 对象之后，会立即调用 TypeHandlerRegistry 的 register() 方法完成这些 TypeHandler 对象的注册，这个注册过程的核心逻辑就是向上述四个核心集合中添加 TypeHandler 实例以及与 Java 类型、JDBC 类型之间的映射。
-
-TypeHandlerRegistry.register() 方法有多个重载实现，这些重载中最基础的实现是三个参数的重载实现，具体实现如下：
+TypeHandlerRegistry.register() 方法有多个重载实现，这些重载中最基础的是三参数重载：
 
 ```java
 private void register(Type javaType, JdbcType jdbcType, TypeHandler<?> handler) {
@@ -129,9 +133,9 @@ private void register(Type javaType, JdbcType jdbcType, TypeHandler<?> handler) 
 
 ```
 
-除了上面的 register() 重载，在有的 register() 重载中会尝试从 TypeHandler 类中的@MappedTypes 注解和 @MappedJdbcTypes 注解中读取信息。其中，**@MappedTypes 注解中可以配置 TypeHandler 实现类能够处理的 Java 类型的集合，@MappedJdbcTypes 注解中可以配置该 TypeHandler 实现类能够处理的 JDBC 类型集合**。
+除了上面的 register() 重载，在有的 register() 重载中会尝试从 TypeHandler 类中的 @MappedTypes 注解和 @MappedJdbcTypes 注解中读取信息。其中，**@MappedTypes 注解中可以配置 TypeHandler 实现类能够处理的 Java 类型的集合，@MappedJdbcTypes 注解中可以配置该 TypeHandler 实现类能够处理的 JDBC 类型集合**。
 
-如下就是读取 @MappedJdbcTypes 注解的 register() 重载方法：
+读取 @MappedJdbcTypes 注解的 register() 重载方法：
 
 ```java
 private <T> void register(Type javaType, TypeHandler<? extends T> typeHandler) {
@@ -155,7 +159,7 @@ private <T> void register(Type javaType, TypeHandler<? extends T> typeHandler) {
 
 ```
 
-下面是读取 @MappedTypes 注解的 register() 方法重载：
+读取 @MappedTypes 注解的 register() 方法重载：
 
 ```java
 public <T> void register(TypeHandler<T> typeHandler) {
@@ -188,9 +192,9 @@ public <T> void register(TypeHandler<T> typeHandler) {
 
 ```
 
-我们看最后一个 register() 重载。**TypeHandlerRegistry 提供了扫描一个包下的全部 TypeHandler 接口实现类的 register() 重载**。在该重载中，会首先读取指定包下面的全部的 TypeHandler 实现类，然后再交给 register() 重载读取 @MappedTypes 注解和 @MappedJdbcTypes 注解，并最终完成注册。这个 register() 重载的具体实现比较简单，这里就不再展示，你若感兴趣的话可以参考源码进行学习。
+TypeHandlerRegistry 还提供了**扫描一个包下全部 TypeHandler 接口实现类的 register() 重载**：该重载会首先读取指定包下面的全部 TypeHandler 实现类，然后交给 register() 重载读取 @MappedTypes 注解和 @MappedJdbcTypes 注解，并最终完成注册。该重载的具体实现比较简单，深入理解时可参考源码学习。
 
-最后，我们再来看看 TypeHandlerRegistry 的构造方法，其中会通过 register() 方法注册多个 TypeHandler 对象，下面就展示了为 String 类型注册 TypeHandler 的核心实现：
+最后看 TypeHandlerRegistry 的构造方法，其中会通过 register() 方法注册多个 TypeHandler 对象。下面展示了为 String 类型注册 TypeHandler 的核心实现：
 
 ```java
 public TypeHandlerRegistry() {
@@ -212,9 +216,9 @@ public TypeHandlerRegistry() {
 
 ## TypeHandler 查询
 
-分析完注册 TypeHandler 实例的具体实现之后，我们就来看看 MyBatis 是如何从 TypeHandlerRegistry 底层的这几个集合中查找正确的 TypeHandler 实例，**该功能的具体实现是在 TypeHandlerRegistry 的 getTypeHandler() 方法中**。
+**从 TypeHandlerRegistry 底层的几个集合中查找正确 TypeHandler 实例的功能，实现在 TypeHandlerRegistry 的 getTypeHandler() 方法中。**
 
-这里的 getTypeHandler() 方法也有多个重载，最核心的重载是 getTypeHandler(Type,JdbcType) 这个重载方法，其中会根据传入的 Java 类型和 JDBC 类型，从底层的几个集合中查询相应的 TypeHandler 实例，具体实现如下：
+getTypeHandler() 方法也有多个重载，最核心的是 getTypeHandler(Type,JdbcType) 重载：根据传入的 Java 类型和 JDBC 类型，从底层的几个集合中查询相应的 TypeHandler 实例：
 
 ```java
 private <T> TypeHandler<T> getTypeHandler(Type type, JdbcType jdbcType) {
@@ -241,13 +245,11 @@ private <T> TypeHandler<T> getTypeHandler(Type type, JdbcType jdbcType) {
 
 ```
 
-在 getTypeHandler() 方法中会调用 getJdbcHandlerMap() 方法检测 typeHandlerMap 集合中相应的 TypeHandler 集合是否已经初始化。
+getTypeHandler() 方法中会调用 getJdbcHandlerMap() 方法检测 typeHandlerMap 集合中相应的 TypeHandler 集合是否已经初始化：
 
-如果已初始化，则直接使用该集合进行查询；
-
-如果未初始化，则尝试以传入的 Java 类型的、已初始化的父类对应的 TypeHandler 集合作为初始集合；
-
-如果该 Java 类型的父类没有关联任何已初始化的 TypeHandler 集合，则将该 Java 类型对应的 TypeHandler 集合初始化为 NULL_TYPE_HANDLER_MAP 标识。
+- 如果已初始化，则直接使用该集合进行查询；
+- 如果未初始化，则尝试以传入的 Java 类型的、已初始化的父类对应的 TypeHandler 集合作为初始集合；
+- 如果该 Java 类型的父类没有关联任何已初始化的 TypeHandler 集合，则将该 Java 类型对应的 TypeHandler 集合初始化为 NULL_TYPE_HANDLER_MAP 标识。
 
 getJdbcHandlerMap() 方法具体实现如下：
 
@@ -281,9 +283,9 @@ private Map<JdbcType, TypeHandler<?>> getJdbcHandlerMap(Type type) {
 
 ```
 
-这里调用的 getJdbcHandlerMapForSuperclass() 方法会判断传入的 clazz 的父类是否为空或 Object。如果是，则方法直接返回 null；如果不是，则尝试从 typeHandlerMap 集合中获取父类对应的 TypeHandler 集合，但如果父类没有关联 TypeHandler 集合，则递归调用 getJdbcHandlerMapForSuperclass() 方法顺着继承树继续向上查找父类，直到查找到父类的 TypeHandler 集合，然后直接返回。
+这里调用的 getJdbcHandlerMapForSuperclass() 方法会判断传入的 clazz 的父类是否为空或 Object：如果是，则方法直接返回 null；如果不是，则尝试从 typeHandlerMap 集合中获取父类对应的 TypeHandler 集合；如果父类没有关联 TypeHandler 集合，则递归调用 getJdbcHandlerMapForSuperclass() 方法顺着继承树继续向上查找父类，直到查找到父类的 TypeHandler 集合，然后直接返回。
 
-下面是 getJdbcHandlerMapForSuperclass() 方法的具体实现：
+getJdbcHandlerMapForSuperclass() 方法的具体实现：
 
 ```java
 private Map<JdbcType, TypeHandler<?>> getJdbcHandlerMapForSuperclass(Class<?> clazz) {
@@ -304,9 +306,9 @@ private Map<JdbcType, TypeHandler<?>> getJdbcHandlerMapForSuperclass(Class<?> cl
 
 ## 别名管理
 
-在[快速上手与整体架构](01-快速上手与整体架构.md)分析的 MyBatis 示例中，我们在 mybatis-config.xml 配置文件中使用 <typeAlias> 标签为 Customer 等 Java 类的完整名称定义了相应的别名，后续编写 SQL 语句、定义 <resultMap> 的时候，**直接使用这些别名即可完全替代相应的完整 Java 类名，这样就非常易于代码的编写和维护**。
+在 [快速上手与整体架构](01-快速上手与整体架构.md)分析的 MyBatis 示例中，mybatis-config.xml 配置文件使用 `<typeAlias>` 标签为 Customer 等 Java 类的完整名称定义了相应的别名。后续编写 SQL 语句、定义 `<resultMap>` 时，**直接使用这些别名即可完全替代相应的完整 Java 类名，便于代码的编写和维护**。
 
-**TypeAliasRegistry 是维护别名配置的核心实现所在**，其中提供了别名注册、别名查询的基本功能。在 TypeAliasRegistry 的 typeAliases 字段（Map<String, Class<?>>类型）中记录了别名与 Java 类型之间的对应关系，我们可以通过 registerAlias() 方法完成别名的注册，具体实现如下：
+**TypeAliasRegistry 是维护别名配置的核心实现**，其中提供了别名注册、别名查询的基本功能。TypeAliasRegistry 的 typeAliases 字段（Map<String, Class<?>> 类型）中记录了别名与 Java 类型之间的对应关系，通过 registerAlias() 方法可以完成别名的注册，具体实现如下：
 
 ```java
 public void registerAlias(String alias, Class<?> value) {
@@ -325,9 +327,9 @@ public void registerAlias(String alias, Class<?> value) {
 
 ```
 
-在 TypeAliasRegistry 的构造方法中，会通过上述 registerAlias() 方法将 Java 的基本类型、基本类型的数组类型、基本类型的封装类、封装类型的数组类型、Date、BigDecimal、BigInteger、Map、HashMap、List、ArrayList、Collection、Iterator、ResultSet 等常用类型添加了别名，具体实现比较简单，这里就不再展示，你若感兴趣的话可以参考源码进行学习。
+在 TypeAliasRegistry 的构造方法中，会通过上述 registerAlias() 方法为 Java 的基本类型、基本类型的数组类型、基本类型的封装类、封装类型的数组类型、Date、BigDecimal、BigInteger、Map、HashMap、List、ArrayList、Collection、Iterator、ResultSet 等常用类型添加别名，具体实现比较简单，深入理解时可参考源码学习。
 
-除了明确传入别名与相应的 Java 类型之外，TypeAliasRegistry 还提供了扫描指定包名下所有的类中的 @Alias 注解获取别名配置，并完成注册的功能，这个功能涉及两个 registerAliases() 方法的重载，相关实现如下：
+除了明确传入别名与相应的 Java 类型之外，TypeAliasRegistry 还提供了扫描指定包名下所有类中的 @Alias 注解获取别名配置并完成注册的功能，该功能涉及两个 registerAliases() 方法的重载，相关实现如下：
 
 ```java
 public void registerAliases(String packageName, Class<?> superType) {

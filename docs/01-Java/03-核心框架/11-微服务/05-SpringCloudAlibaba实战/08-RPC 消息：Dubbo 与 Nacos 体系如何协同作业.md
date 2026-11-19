@@ -7,7 +7,7 @@ tags: [Java, SpringCloudAlibaba实战]
 ---
 # RPC 消息：Dubbo 与 Nacos 体系如何协同作业
 
-上一节我介绍了什么是 OpenFeign 通信组件，讲解了如何基于 OpenFeign 实现微服务间的高可用通信。本文我们将继续探讨微服务通信话题，了解阿里巴巴自家的 RPC 框架 Dubbo 是如何与 Spring Cloud Alibaba 协同作业的。在本文我们将介绍以下三方面内容：
+微服务间通信除基于 OpenFeign 的 RESTful 方案外，还有以 Dubbo 为代表的 RPC 方案。本文介绍 Dubbo 与 Spring Cloud Alibaba 的协同作业，包含三方面内容：
 
 - 对比 RESTful 与 RPC；
 
@@ -19,12 +19,11 @@ tags: [Java, SpringCloudAlibaba实战]
 
 在微服务定义中提到，每个小服务运行在自己的进程中，并以**轻量级的机制**进行通信。这里并没有明确给出具体的通信方式，只是要求以轻量级的机制进行通信，虽然作者推荐使用 RESTful 作为首选方案，但微服务间通信本身还有另一个轻量级的选择：以 Dubbo 为代表的 RPC 通信方式。
 
-那什么是 RPC 呢？RPC 是远程过程调用（Remote Procedure Call）的缩写形式，RPC 与 RESTful 最大的不同是，RPC 采用**客户端（Client）- 服务端（Server）** 的架构方式实现跨进程通信，实现的通信协议也没有统一的标准，具体实现依托于研发厂商的设计。
-
+RPC 是远程过程调用（Remote Procedure Call）的缩写形式。RPC 与 RESTful 最大的不同是，RPC 采用**客户端（Client）- 服务端（Server）** 的架构方式实现跨进程通信，实现的通信协议也没有统一的标准，具体实现依托于研发厂商的设计。
 
 目前开源市场上 RPC 框架有很多，例如 Google gRPC、Alibaba Dubbo、Facebook Thrift，每一种产品都有自己的设计与实现方案。
 
-那 RESTful 与 RPC 孰优孰劣呢？我们通过一个表格进行说明：
+RESTful 与 RPC 的对比如下表所示：
 
 | 对比维度 | RESTful | RPC |
 |---------|---------|-----|
@@ -33,18 +32,15 @@ tags: [Java, SpringCloudAlibaba实战]
 | 性能 | 一般，延时相对较高 | 高性能、低延时 |
 | 适用场景 | 延时不敏感、轻量级的短连接调用 | 长连接、低延时、高性能要求的场景 |
 
-可以发现，RESTful 通信更适合调用延时不敏感、短连接的场景。而 RPC 则拥有更好的性能，适用于长连接、低延时系统。两者本质是互补的，并不存在孰优孰劣。在微服务架构场景下，因为大多数服务都是轻量级的，同时 90%的任务通过短连接就能实现，因此马丁·福勒更推荐使用 RESTful 通信。这只是因为应用场景所决定的，并不代表 RPC 比 RESTful 落后。
-
-在了解 RPC 方式后，我们来聊一聊 RPC领域最具代表性的国产开源框架 Apache Dubbo。
+从表中可以看出，RESTful 通信更适合调用延时不敏感、短连接的场景。而 RPC 则拥有更好的性能，适用于长连接、低延时系统。两者本质是互补的，并不存在孰优孰劣。在微服务架构场景下，因为大多数服务都是轻量级的，同时 90%的任务通过短连接就能实现，因此马丁·福勒更推荐使用 RESTful 通信。这只是应用场景所决定的，并不代表 RPC 比 RESTful 落后。
 
 ## Apache Dubbo
 
-Dubbo 是阿里巴巴开源的高性能、轻量级的开源 Java 框架，目前被 Apache收录，官网是：
+RPC 领域最具代表性的国产开源框架是 Apache Dubbo。Dubbo 是阿里巴巴开源的高性能、轻量级的开源 Java 框架，目前被 Apache收录，官网是：
 
 ```text
 http://dubbo.apache.org/
 ```
-
 
 Dubbo 是典型的 RPC 框架的代表，通过客户端/服务端结构实现跨进程应用的高效二进制通信。
 
@@ -62,9 +58,7 @@ Apache Dubbo 提供了六大核心能力：
 
 - 可视化的服务治理与运维。
 
-
 Dubbo 官方架构中包含以下 5 种角色，据此来讲解 Apache Dubbo 的组成。
-
 
 1. **Provider**：RPC服务提供者，Provider 是消息的最终处理者。
 
@@ -72,16 +66,15 @@ Dubbo 官方架构中包含以下 5 种角色，据此来讲解 Apache Dubbo 的
 
 3. **Consumer**：消费者，调用的发起者。Consumer 需要在客户端持有 Provider 的通信接口才能完成通信过程。
 
-4. **Registry**：注册中心，Dubbo 架构中注册中心与微服务架构中的注册中心职责类似，提供了 Dubbo Provider 的注册与发现职能，Consumer通过 Registry 可以获取Provider 可用的节点实例的 IP、端口等，并产生直接通信。需要注意的是，前面我们讲解的 Alibaba Nacos 除了可以作为微服务架构中的注册中心外，同样对自家的 Dubbo 提供了 RPC 调用注册发现的职责，这是其他 Spring Cloud 注册中心所不具备的功能。
+4. **Registry**：注册中心，Dubbo 架构中注册中心与微服务架构中的注册中心职责类似，提供了 Dubbo Provider 的注册与发现职能，Consumer通过 Registry 可以获取Provider 可用的节点实例的 IP、端口等，并产生直接通信。需要注意的是，Alibaba Nacos 除了可以作为微服务架构中的注册中心外，同样为 Dubbo 提供 RPC 调用注册发现的职责，这是其他 Spring Cloud 注册中心所不具备的功能。
 
 5. **Monitor**：监控器，监控器提供了Dubbo的监控职责。在 Dubbo 产生通信时，Monitor 进行收集、统计，并通过可视化 UI 界面帮助运维人员了解系统进程间的通信状况。Dubbo Monitor 主流产品有 Dubbo Admin、Dubbo Ops 等。
 
-下面我们通过实例讲解 Dubbo 与 Nacos 如何协同作业实现服务间调用
+下面通过实例讲解 Dubbo 与 Nacos 如何协同作业实现服务间调用。
 
 ## Dubbo 与 Nacos 协同作业
 
-为了方便理解，我们仍然采用 07 讲“订单与库存服务”案例，改由 RPC 方式实现通信。
-
+为了方便理解，下面将“订单与库存服务”案例改由 RPC 方式实现通信。
 
 #### 开发 Provider 仓储服务
 
@@ -139,8 +132,7 @@ dubbo: #dubbo与nacos的通信配置
     base-packages: com.lagou.warehouseservice.dubbo
 ```
 
-很多人不明白，为什么上面配置了 spring.cloud.nacos.discovery.server-addr 还要在下面配置 dubbo.registry.address 呢？前面介绍架构时介绍了，Dubbo 需要依托 Container（容器）对外暴露服务，而这个容器配置与微服务配置是分开的，需要额外占用一个网络端口20880提供服务。
-
+为什么配置了 spring.cloud.nacos.discovery.server-addr 之后还要配置 dubbo.registry.address？原因在于 Dubbo 需要依托 Container（容器）对外暴露服务，而这个容器配置与微服务配置是分开的，需要额外占用一个网络端口20880提供服务。
 
 这里还有一个配置点需要特别注意：dubbo.scan.base-packages 代表在 Dubbo 容器启动时自动扫描 com.lagou.warehouseservice.dubbo 包下的接口与实现类，并将这些接口信息在Nacos 进行登记，因此 Dubbo 对外暴露的接口必须放在该包下。
 
@@ -214,7 +206,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 }
 ```
 
-实现逻辑非常简单，不做赘述，重点是在实现类上需要额外增加 @DubboService注解。@DubboService 是 Provider 注解，说明该类所有方法都是服务提供者，加入该注解会自动将类与方法的信息在 Nacos中注册为 Provider。
+实现逻辑比较简单，重点是在实现类上需要额外增加 @DubboService注解。@DubboService 是 Provider 注解，说明该类所有方法都是服务提供者，加入该注解会自动将类与方法的信息在 Nacos中注册为 Provider。
 
 第四步，启动微服务，验证 Nacos 注册信息。
 
@@ -224,13 +216,11 @@ public class WarehouseServiceImpl implements WarehouseService {
 http://192.168.31.101:8848/nacos/#/serviceManagement?dataId=&group=&appName=&namespace=
 ```
 
+此时在服务列表中出现了 2 条数据，warehouse-service 是仓储微服务的注册信息，providers 开头的是 Dubbo 在 Nacos 的注册 Provider 信息，这也验证了 Dubbo 的注册过程。
 
-此时在服务列表中出现了 2 条数据，warehouse-service 是仓储微服务的注册信息，providers 开头的是 Dubbo 在 Nacos 的注册 Provider 信息，这也验证了前面介绍 Dubbo 的注册过程。
+而查看 Provider详情后，可以得到更多信息，其中包含 Provider 的 IP、端口、接口、方法、pid、版本的明细，方便开发、运维人员对应用进行管理。
 
-而查看 Provider详情后，你会得到更多信息，其中包含 Provider 的 IP、端口、接口、方法、pid、版本的明细，方便开发、运维人员对应用进行管理。
-
-
-到这里，仓储服务与 Dubbo Provider 的开发已完成。下面我们开发Consumer消费者。
+到这里，仓储服务与 Dubbo Provider 的开发已完成。下面开发Consumer消费者。
 
 #### 开发 Consumer 订单服务
 
@@ -259,6 +249,7 @@ http://192.168.31.101:8848/nacos/#/serviceManagement?dataId=&group=&appName=&nam
 ```
 
 第二步，设置微服务、Dubbo 与 Nacos通信选项。
+
 打开 application.yml文件，配置 Nacos 与 Dubbo 通信选项，因为 order-service 是消费者，因此不需要专门配置端口与 base-packages选项。
 
 ```yaml
@@ -280,8 +271,7 @@ dubbo:
     address: nacos://192.168.31.101:8848
 ```
 
-第三步，将 Provider 端接口 WarehouseService 以及依赖的 Stock类复制到 order-service 工程，注意要求包名、类名及代码保持完全一致。当然我这种做法比较原始，在项目环境通常是将接口与依赖的类发布到 Maven 仓库，由 Consumer 直接依赖即可。
-
+第三步，将 Provider 端接口 WarehouseService 以及依赖的 Stock类复制到 order-service 工程，注意要求包名、类名及代码保持完全一致。示例采用直接复制源码的做法；在实际项目中，通常是将接口与依赖的类发布到 Maven 仓库，由 Consumer 直接依赖即可。
 
 第四步，Consumer 调用接口实现业务逻辑。
 
@@ -321,8 +311,7 @@ public class OrderController {
 }
 ```
 
-业务逻辑非常简单，前文讲过不再赘述，关键点是第三行 @DubboReference 注解。
-
+业务逻辑比较简单，关键点是 @DubboReference 注解：通过该注解注入 Provider 端接口后，Consumer 即可像调用本地方法一样完成业务逻辑。
 
 第五步，启动微服务，验证 Nacos 注册信息。
 
@@ -331,7 +320,6 @@ public class OrderController {
 ```text
 http://192.168.31.101:8848/nacos/#/serviceManagement?dataId=&group=&appName=&namespace=
 ```
-
 
 此时 Consumer 已在服务列表中出现，说明消费者已注册成功。
 
@@ -346,7 +334,6 @@ message: "订单创建成功"
 }
 ```
 
-
 ```text
 http://192.168.31.106:9000/create_order?skuId=1102&salesQuantity=1
 {
@@ -356,14 +343,17 @@ message: "商品库存数量不足"
 }
 ```
 
+## 实践要点
 
-至此，Dubbo 与 Nacos 完整的接入流程与开发技巧我们通过案例方式进行了讲解，最后我们来总结一下。
+- Dubbo 对外暴露的接口与实现类必须放在 dubbo.scan.base-packages 指定的包下，接口信息才会自动登记到 Nacos。
+- RPC 传输对象必须实现 Serializable 接口，因为 Dubbo 在对象传输过程中使用 JDK 序列化。
+- Provider 实现类标注 @DubboService 自动注册为 Provider；Consumer 通过 @DubboReference 注入接口代理，以本地方法调用风格发起远程调用。
+- dubbo.registry.address 使用 nacos:// 前缀指向 Nacos 地址，与 spring.cloud.nacos.discovery.server-addr 保持一致；Provider 额外占用 dubbo.protocol.port（默认 20880）端口对外提供服务。
+- 实际项目中，Provider 的接口与依赖 DTO 通常发布到 Maven 仓库，由 Consumer 以 Maven 依赖方式引入，而非复制源码。
 
 ## 小结
 
-本文主要学习了三方面知识，首先介绍 RPC 与 RESTful 的区别，之后对 Dubbo 架构进行了介绍，最后通过案例详细讲解了 Dubbo 与 Nacos的协同作业过程。
-
-在这里我为你准备了一道思考题：目前以微信、QQ 为代表的即时通信类软件，为保证低延时，通信方式使用 RESTful 还是 RPC 呢？
+本文介绍了三方面知识：首先对比了 RESTful 与 RPC 两种通信方式（协议形态、连接方式、性能与适用场景），随后介绍了 Dubbo 的六大核心能力与 Provider、Container、Consumer、Registry、Monitor 五种架构角色，最后通过“订单与库存服务”案例完整演示了基于 Dubbo + Spring Cloud Alibaba + Nacos 的 Provider/Consumer 开发流程。
 
 ## 版本差异（Spring Cloud Alibaba 旧版 → 2025.x）
 
@@ -377,4 +367,4 @@ message: "商品库存数量不足"
 | 链路追踪 | Sleuth + Zipkin（Sleuth 已停止维护） | Micrometer Tracing + Zipkin/OTel |
 | 版本对应 | Boot 2.x + JDK 8 | Boot 3.5.x + JDK 17+（2022.0.0.0+ 起） |
 
-> 本文为 Spring Cloud Alibaba 旧版课程。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。
+> 本文基于 Spring Cloud Alibaba 旧版撰写。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。

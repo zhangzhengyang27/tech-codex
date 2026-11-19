@@ -1,15 +1,17 @@
 ---
 title: "组件测试：如何使用 Mock 和注解实施组件级别测试？"
 description: "使用 @SpringBootTest、@DataJpaTest、@WebMvcTest 与 @MockBean/MockMvc 对 Spring Boot 微服务的启动类、Repository、Service、Controller 四个层级实施组件级别测试。"
-keywords: [组件测试, 如何使用, Mock, 和注解实施组件级别测试]
+keywords: [组件测试, Mock, 注解, 组件级别测试]
 category: "Java"
 tags: [Java, SpringCloud原理与实战]
 ---
 # 组件测试：如何使用 Mock 和注解实施组件级别测试？
 
-## 组件级别的测试方案
+## 概念说明
 
-在上一节中，我们已经讨论到使用 Mock 来对组件进行测试。Mock 是一种策略而不是技术，今天我们就需要给出如何实现 Mock 的技术体系。假设在 intervention-service 中存在这样一个 InterventionService 类，其中包含一个 getInterventionById 方法，如下所示：
+组件级别测试针对单个微服务内部的各个组件展开，涉及数据访问 Repository 层、服务构建 Service 层和提供外部端点的 Controller 层。基于常见的代码组织结构，组件测试体现为一种层次关系，即需要测试从 Repository 层到 Service 层再到 Controller 层的完整业务链路。
+
+Mock 是一种测试策略而不是具体技术。对某一个或一些被测试对象所依赖的方法而言，编写 Mock 相对简单，只需模拟被使用的方法即可。以 intervention-service 中的 InterventionService 类为例：
 
 ```java
 @Service
@@ -21,11 +23,9 @@ public class InterventionService {
 }
 ```
 
-那么，如何对这个方法进行 Mock 呢？通常，我们可以使用 easymock、jmock 等工具包来隐式实现这个方法。对于某一个或一些被测试对象所依赖的方法而言，编写 Mock 相对简单，只需要模拟被使用的方法即可。在这个例子中，如果依赖于 InterventionService，我们只需要给出 getInterventionById 方法的实现。
+对该方法进行 Mock 通常使用 easymock、jmock 等工具包来隐式实现。例如某个被测试对象依赖 InterventionService，只需给出 getInterventionById 方法的实现即可完成隔离。
 
-让我们回到单个微服务的内部，涉及组件级别测试的维度有很多，包括数据访问 Repository 层、服务构建 Service 层和提供外部端点的 Controller 层。同时，基于常见的代码组织结构，组件测试也体现为一种层次关系，即我们需要测试从 Repository 层到 Service 层再到 Controller 层的完整业务链路。
-
-另一方面，Spring Boot 也内置了一个测试模块可以用于组件级别的测试场景。在该模块中，提供了一批非常有用的注解来简化测试过程，要想使用这些注解，我们需要引入 spring-boot-starter-test 依赖，如下所示：
+Spring Boot 内置了一个测试模块用于组件级别的测试场景，其中提供了一批非常有用的注解来简化测试过程。使用这些注解需引入 spring-boot-starter-test 依赖，如下所示：
 
 ```xml
 <dependency>
@@ -35,16 +35,18 @@ public class InterventionService {
 </dependency>
 ```
 
-首先，因为 Spring Boot 程序的入口是 Bootstrap 类，Spring Boot 专门提供了一个 @SpringBootTest 注解来测试你的 Bootstrap 类，使用方法如下所示：
+## 启动类测试：@SpringBootTest 注解
+
+Spring Boot 程序的入口是 Bootstrap 类，Spring Boot 专门提供了 @SpringBootTest 注解来测试 Bootstrap 类，使用方法如下所示：
 
 ```java
 @SpringBootTest(classes = UserApplication.class,
 	webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 ```
 
-在 Spring Boot 中，@SpringBootTest 注解主要用于测试基于自动配置的 ApplicationContext，它允许你来设置测试上下文中的 Servlet 环境。在多数场景下，一个真实的 Servlet 环境对于测试而言过于重量级，所以我们一般通过 WebEnvironment.MOCK 环境来模拟测试环境。
+在 Spring Boot 中，@SpringBootTest 注解主要用于测试基于自动配置的 ApplicationContext，它允许设置测试上下文中的 Servlet 环境。在多数场景下，一个真实的 Servlet 环境对于测试而言过于重量级，因此一般通过 WebEnvironment.MOCK 环境来模拟测试环境。
 
-我们知道对于一个 Spring Boot 应用程序而言，Bootstrap 类中的 main() 入口通过 SpringApplication.run() 方法将启动 Spring 容器。如下所示的 intervention-service 中的启动类 InterventionApplication：
+对于一个 Spring Boot 应用程序而言，Bootstrap 类中的 main() 入口通过 SpringApplication.run() 方法将启动 Spring 容器。如下所示为 intervention-service 中的启动类 InterventionApplication：
 
 ```java
 @SpringBootApplication
@@ -56,7 +58,7 @@ public class InterventionApplication {
 }
 ```
 
-针对这个 BootStrap 类，我们可以通过编写测试用例的方式来验证 Spring 容器是否能够正常启动，该测试用例如下所示：
+针对这个 Bootstrap 类，可以通过编写测试用例的方式验证 Spring 容器是否能够正常启动，该测试用例如下所示：
 
 ```java
 package com.tianyalan.testing.orders;
@@ -83,21 +85,23 @@ public class ApplicationContextTests {
 }
 ```
 
-我们看到这里用到了 @SpringBootTest 注解和 @RunWith 注解。前面已经介绍了 @SpringBootTest 注解，而 @RunWith 注解由 JUnit 框架提供，用于设置测试运行器，例如我们可以通过 @RunWith(SpringRunner.class) 让测试运行于 Spring 测试环境中。
+这里用到了 @SpringBootTest 注解和 @RunWith 注解。@SpringBootTest 注解的作用如前所述；@RunWith 注解由 JUnit 框架提供，用于设置测试运行器，例如通过 @RunWith(SpringRunner.class) 可以让测试运行于 Spring 测试环境中。
 
-同时，我们在 testContextLoaded 方法上添加了一个 @Test 注解，该注解来自 JUnit 框架，代表该方法为一个有效的测试用例。这里测试的场景是指对 Spring 中的 ApplicationContext 作了非空验证。执行该测试用例，我们从输出的控制台信息中看到 Spring Boot 应用程序被正常启动，同时测试用例本身也会给出执行成功的提示。
-
-在验证完容器可以正常启动之后，我们继续来看一个 Spring Boot 应用程序的其他组件层。对于 Repository 层而言，主要的交互媒介是数据库，所以 Spring Boot 专门提供了一个 @DataJpaTest 注解来模拟基于 JPA 规范的数据访问过程。同样，对于 Controller 层而言，Spring Boot 也提供了一个 @WebMvcTest 注解来模拟 Web 交互的测试场景。
-
-讲到这里，你可能会奇怪，为什么 Service 层没有专门的测试注解呢？实际上原因也很简单，因为对于 Repository 层和 Controller 层组件而言，它们都涉及与某一种特定技术体系的交互，Repository 层的交互对象是数据库，而 Controller 层的交互对象是 Web 请求，所以需要专门的测试注解。而 Service 层因为主要是业务代码，并没有跟具体某一项技术体系有直接的关联，所以我们在测试过程中只需要充分使用 Mock 机制就可以了。下图展示了一个业务微服务中各层的测试方法：
-
-组件测试的层次和实现方式
-
-接下来，我们就将对上图中的三个层次和对应的实现方法分别展开讨论。
+testContextLoaded 方法上添加了一个 @Test 注解，该注解来自 JUnit 框架，代表该方法为一个有效的测试用例。这里测试的场景是对 Spring 中的 ApplicationContext 作非空验证。执行该测试用例，从控制台输出信息中可以看到 Spring Boot 应用程序被正常启动，同时测试用例本身也会给出执行成功的提示。
 
 ## Repository 层：@DataJpaTest 注解
 
-对于业务微服务而言，一般都涉及数据持久化，我们将首先从数据持久化的角度出发讨论如何对 Repository 层进行测试，并引入 @DataJpaTest 注解。@DataJpaTest 注解会自动注入各种 Repository 类，并会初始化一个内存数据库及访问该数据库的数据源。为了演示方便，我们使用 h2 作为内存数据库，并通过 Mysql 实现数据持久化，因此需要引入以下 Maven 依赖。
+验证容器正常启动之后，继续分析应用程序的其他组件层。对于 Repository 层而言，主要的交互媒介是数据库，所以 Spring Boot 专门提供了 @DataJpaTest 注解来模拟基于 JPA 规范的数据访问过程；对于 Controller 层而言，Spring Boot 也提供了 @WebMvcTest 注解来模拟 Web 交互的测试场景。
+
+Service 层没有专门的测试注解，原因在于：Repository 层和 Controller 层组件都涉及与某一种特定技术体系的交互——Repository 层的交互对象是数据库，Controller 层的交互对象是 Web 请求，所以需要专门的测试注解；而 Service 层主要是业务代码，没有与具体某一项技术体系直接关联，测试过程中只需充分使用 Mock 机制即可。下图展示了一个业务微服务中各层的测试方法：
+
+组件测试的层次和实现方式
+
+下面对上述三个层次及对应的实现方法分别展开。
+
+## Repository 层测试实践
+
+业务微服务一般都涉及数据持久化。对 Repository 层的测试从数据持久化角度出发，使用 @DataJpaTest 注解完成。@DataJpaTest 注解会自动注入各种 Repository 类，并会初始化一个内存数据库及访问该数据库的数据源。为了演示方便，使用 h2 作为内存数据库，并通过 Mysql 实现数据持久化，因此需要引入以下 Maven 依赖。
 
 ```xml
 <dependency>
@@ -112,7 +116,7 @@ public class ApplicationContextTests {
 </dependency>
 ```
 
-让我们回顾 SpringHealth 案例系统中的 intervention-service 中的 InterventionRepository 接口，如下所示：
+以 SpringHealth 案例系统中 intervention-service 的 InterventionRepository 接口为例：
 
 ```java
 public interface InterventionRepository extends JpaRepository<Intervention, Long> {
@@ -123,7 +127,7 @@ List<Intervention> findInterventionsByUserId(@Param("userId") String userId);
 }
 ```
 
-注意到这里 InterventionRepository 扩展了 Spring Data 中的 JpaRepository 接口。针对该 InterventionRepository 接口的测试用例如下所示：
+InterventionRepository 扩展了 Spring Data 中的 JpaRepository 接口。针对该接口的测试用例如下所示：
 
 ```java
 @RunWith(SpringRunner.class)
@@ -143,7 +147,7 @@ public class InterventionRepositoryTest {
 
 Long userId = 1L;
         List<Intervention> interventions = this.interventionRepository.findInterventionsByUserId(userId);
-        assertThat(interventions).size().isEqualTo(2);
+        assertThat(intervations).size().isEqualTo(2);
         Intervention actual = interventions.get(0);
         assertThat(actual.getUserId()).isEqualTo(userId);
     }
@@ -160,13 +164,15 @@ Long userId = 1L;
 }
 ```
 
-可以看到这里使用了 @DataJpaTest 以完成 InterventionRepository 的注入。同时，我们还注意到另一个核心测试组件 TestEntityManager，该类内部定义了一个 EntityManagerFactory 变量，而 EntityManagerFactory 能够构建数据持久化操作所需要的 EntityManager 对象。所以，TestEntityManager 的效果相当于不使用真正的 InterventionRepository 来完成数据的持久化，从而提供了一种数据与环境之间的隔离机制。TestEntityManager 中包含的方法这里不再一一展开，你可以参考官方文档进一步了解。基于 InterventionRepository 中的方法定义以及我们初始化的数据，以上测试用例的结果显而易见。你可以尝试执行这些单元测试，并观察控制台的日志输出，从这些日志中可以看出各种 SQL 语句的效果。
+这里使用了 @DataJpaTest 完成 InterventionRepository 的注入。另一个核心测试组件是 TestEntityManager，该类内部定义了一个 EntityManagerFactory 变量，而 EntityManagerFactory 能够构建数据持久化操作所需要的 EntityManager 对象。TestEntityManager 的效果相当于不使用真正的 InterventionRepository 来完成数据的持久化，从而提供了一种数据与环境之间的隔离机制。TestEntityManager 中包含的方法可参考官方文档进一步了解。
+
+基于 InterventionRepository 中的方法定义以及初始化的数据，以上测试用例的结果显而易见。执行这些单元测试并观察控制台的日志输出，可以从日志中看到各种 SQL 语句的执行效果。
 
 ## Service 层：Mock
 
-前面我们已经介绍了 @SpringBootTest 注解中的 SpringBootTest.WebEnvironment.MOCK 选项，该选项用于加载 WebApplicationContext 并提供一个 Mock 的 Servlet 环境，内置的 Servlet 容器并没有真实的启动。现在，我们就针对 Service 层来演示这种测试方式。
+前面介绍的 @SpringBootTest 注解中的 SpringBootTest.WebEnvironment.MOCK 选项用于加载 WebApplicationContext 并提供一个 Mock 的 Servlet 环境，内置的 Servlet 容器并没有真实启动。下面针对 Service 层演示这种测试方式。
 
-InterventionService 类的 generateIntervention 方法是其最核心的方法，涉及对 user-service 和 device-service 的远程调用，让我们做一些回顾：
+InterventionService 类的 generateIntervention 方法是其最核心的方法，涉及对 user-service 和 device-service 的远程调用：
 
 ```java
 public Intervention generateIntervention(String userName, String deviceCode) {
@@ -202,7 +208,7 @@ interventionRepository.save(intervention);
 }
 ```
 
-请注意以上代码中的 getUser 方法和 getDevice 方法中涉及了远程访问。以 getUser 方法为例，就会基于 UserServiceClient 发送HTTP请求，我们在前面的文中都已经介绍过这个类，这里也做一下回顾：
+以上代码中的 getUser 方法和 getDevice 方法涉及远程访问。以 getUser 方法为例，它基于 UserServiceClient 发送 HTTP 请求，该类的实现如下：
 
 ```java
 @Component
@@ -226,7 +232,7 @@ UserMapper user = restExchange.getBody();
 }
 ```
 
-对于测试而言，InterventionService 类实际上不需要关注这个 UserServiceClient 中如何实现远程访问的具体过程，因为对于测试过程而言只需要关注方法调用返回的结果。所以，我们对于 UserServiceClient 以及 DeviceServiceClient 同样将采用 Mock 机制完成隔离。针对 InterventionService 的测试用例代码如下所示，可以看到我们采用的是同样的测试方式：
+对于测试而言，InterventionService 类不需要关注 UserServiceClient 中如何实现远程访问的具体过程，因为测试过程只需关注方法调用返回的结果。所以对 UserServiceClient 以及 DeviceServiceClient 采用 Mock 机制完成隔离。针对 InterventionService 的测试用例代码如下所示：
 
 ```java
 @RunWith(SpringRunner.class)
@@ -262,11 +268,11 @@ Intervention actual = interventionService.generateIntervention(userName, deviceC
 }
 ```
 
-这里同样基于 mockito 对 UserServiceClient 和 DeviceServiceClient 这两个远程访问类的返回结果做了模拟。上述测试用例演示了在 Service 层中进行集成测试的各种手段，这些手段已经能够满足一般场景的需要。
+这里基于 mockito 对 UserServiceClient 和 DeviceServiceClient 这两个远程访问类的返回结果做了模拟。上述测试用例演示了在 Service 层中进行集成测试的各种手段，这些手段已经能够满足一般场景的需要。
 
 ## Controller 层：@WebMvcTest 注解
 
-我们再回到 intervention-service 来看看如何对 InterventionController 进行测试。InterventionController 类的功能非常简单，基本都是对 InterventionService 的直接封装，代码如下所示：
+对 intervention-service 中 InterventionController 的测试方式如下。InterventionController 类的功能非常简单，基本都是对 InterventionService 的直接封装，代码如下所示：
 
 ```java
 @RestController
@@ -293,7 +299,7 @@ return intervention;
 }
 ```
 
-在测试 Controller 类之前，我们先介绍一个新的注解 @WebMvcTest，该注解将初始化测试 Controller 所必需的 Spring MVC 基础设施。InterventionController 类的测试用例如下所示：
+@WebMvcTest 注解将初始化测试 Controller 所必需的 Spring MVC 基础设施。InterventionController 类的测试用例如下所示：
 
 ```java
 import org.junit.Test;
@@ -326,13 +332,18 @@ given(this.interventionService.generateIntervention(userName, deviceCode))
 }
 ```
 
-以上代码的关键是 MockMvc 工具类，对这个工具类我们有必要展开一下。MockMvc 类提供了一系列基础方法来满足对 Controller 层组件的测试需求。首先，我们需要声明发送 HTTP 请求的方式，MockMvc 类中的一组 get/post/put/delete 方法用来初始化一个 HTTP 请求。然后我们可以使用 param 方法来为该请求添加参数。一旦请求构建完成，perform 方法负责执行请求，并自动将请求映射到相应的 Controller 进行处理。执行完请求之后就是验证结果，这时候可以使用 andExpect、andDo 和 andReturn 等方法对返回的数据进行判断来验证 HTTP 请求执行结果是否正确。
+以上代码的关键是 MockMvc 工具类。MockMvc 类提供了一系列基础方法来满足对 Controller 层组件的测试需求：首先通过 MockMvc 类中的一组 get/post/put/delete 方法声明发送 HTTP 请求的方式并初始化一个 HTTP 请求；然后使用 param 方法为该请求添加参数；请求构建完成后，perform 方法负责执行请求，并自动将请求映射到相应的 Controller 进行处理；执行完请求之后进入验证阶段，使用 andExpect、andDo 和 andReturn 等方法对返回的数据进行判断，验证 HTTP 请求执行结果是否正确。
 
-执行该测试用例，我们从输出的控制台日志中不难发现整个流程相当于启动了 InterventionController 并执行远程访问，而 InterventionController 中所用到的 InterventionService 则做了 Mock。显然测试 InterventionController 的目的在于验证请求是否成功发送和返回，所以我们通过 perform、accept 和 andExpect 方法最终模拟 HTTP 请求的整个过程并验证结果的正确性。
+执行该测试用例，从控制台日志中可以看到，整个流程相当于启动了 InterventionController 并执行远程访问，而 InterventionController 中所用到的 InterventionService 则做了 Mock。测试 InterventionController 的目的在于验证请求是否成功发送和返回，因此通过 perform、accept 和 andExpect 方法最终模拟 HTTP 请求的整个过程并验证结果的正确性。
+
+## 实践要点
+
+- 测试 Repository 层使用 @DataJpaTest + TestEntityManager：前者自动注入 Repository 并初始化内存数据库，后者提供数据与环境之间的隔离机制。
+- Service 层没有专属测试注解，通过 @SpringBootTest(MOCK 环境) + @MockBean 隔离远程访问类（如 UserServiceClient、DeviceServiceClient）与 Repository 依赖，基于 Mockito 的 given/willReturn 模拟返回结果。
+- 测试 Controller 层使用 @WebMvcTest + MockMvc：get/post/put/delete 初始化请求，param 添加参数，perform 执行请求，andExpect/andDo/andReturn 验证结果。
+- 对所依赖组件的行为进行模拟，统一使用 @MockBean 注入 Mock 对象替换容器中的真实 Bean，再配合 MockMvc 或直接方法调用完成验证。
 
 ## 小结
-
-今天讨论了如何对单个微服务中的各个组件进行测试，我们大量使用到了 Spring 框架中的测试注解。作为小结，这里通过一张表格来对这些注解和工具做一个梳理：
 
 | 注解/工具 | 作用 | 适用层级 |
 |---------|------|---------|
@@ -342,8 +353,6 @@ given(this.interventionService.generateIntervention(userName, deviceCode))
 | @MockBean | 向容器中注入 Mock 对象以替换真实的依赖 Bean | 各层依赖 |
 | TestEntityManager | 提供持久化操作与数据环境隔离机制 | Repository 层 |
 | MockMvc | 模拟 HTTP 请求并验证响应结果 | Controller 层 |
-
-这里给你留一道思考题：如果我们想要对所依赖的组件的行为进行模拟，可以使用什么方法？
 
 ## 版本差异（Spring Cloud 旧版 → 2025.x）
 
@@ -356,4 +365,4 @@ given(this.interventionService.generateIntervention(userName, deviceCode))
 | 配置中心 | Spring Cloud Config | Nacos Config / Apollo |
 | 版本对应 | Hoxton/2020.x + Boot 2.x + JDK 8 | 2025.x + Boot 3.5.x + JDK 17+ |
 
-> 本文为 Spring Cloud 旧版课程（Hoxton/2020.x 时代）。Hystrix、Ribbon、Zuul 1.x、Eureka 已停止维护，新项目请使用 Spring Cloud Gateway + LoadBalancer + Resilience4j（或 Alibaba 系 Nacos/Sentinel/Seata），并升级到 Spring Cloud 2025.x + Spring Boot 3.5.x。
+> 本篇示例基于 Spring Cloud 旧版（Hoxton/2020.x 时代）。Hystrix、Ribbon、Zuul 1.x、Eureka 已停止维护，新项目请使用 Spring Cloud Gateway + LoadBalancer + Resilience4j（或 Alibaba 系 Nacos/Sentinel/Seata），并升级到 Spring Cloud 2025.x + Spring Boot 3.5.x。

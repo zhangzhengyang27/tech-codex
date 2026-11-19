@@ -7,26 +7,26 @@ tags: [Java, SpringCloudAlibaba实战]
 ---
 # 服务门户：Spring Cloud Gateway 如何把好微服务的大门
 
-上一节我们学习了 Dubbo 是如何与 Nacos 协同作业。通过对比 RESTful 与 RPC，我们介绍了两种通信方式的区别，再通过实例讲解如何将 Dubbo 与 Nacos 进行整合。但你是否发现无论是基于 OpenFeign 的 RESTful 通信，还是基于 Dubbo 的 RPC 通信，它们都在强调的是微服务间的信息传递，属于微服务架构内部的事情。而对于用户端从外侧访问微服务如何有效管理，微服务又是如何将接口暴露给用户呢？这就需要通过 API 网关实现需求了，本文我们就针对 API 网关学习三方面知识：
+无论是基于 OpenFeign 的 RESTful 通信，还是基于 Dubbo 的 RPC 通信，强调的都是微服务间的信息传递，属于微服务架构内部的事情。而用户端从外侧访问微服务如何有效管理、微服务如何将接口暴露给用户，则需要通过 API 网关实现。本文围绕 API 网关介绍三方面知识：
 
-1. 介绍 API 网关的用途与产品；
+1. API 网关的用途与产品；
 
-2. 讲解 Spring Cloud Gateway 的配置技巧；
+2. Spring Cloud Gateway 的配置技巧；
 
-3. 讲解 Gateway执行原理与自定义过滤器（Filter）。
+3. Gateway 执行原理与自定义过滤器（Filter）。
 
 ## API 网关的作用
 
-对于整个微服务来说如果将每一个微服务的接口直接暴露给用户是错误的做法，这里主要体现出三个问题：
+对整个微服务系统来说，将每一个微服务的接口直接暴露给用户是错误的做法，主要体现出三个问题：
 
 - 服务将所有 API 接口对外直接暴露给用户端，这本身就是不安全和不可控的，用户可能越权访问不属于它的功能，例如普通的用户去访问管理员的高级功能。
 
-- 后台服务可能采用不同的通信方式，如服务 A 采用 RESTful 通信，服务 B 采用 RPC 通信，不同的接入方式让用户端接入困难。尤其是 App 端接入 RPC 过程更为复杂。
+- 后台服务可能采用不同的通信方式，如服务 A 采用 RESTful 通信，服务 B 采用 RPC 通信，不同的接入方式让用户端接入困难，尤其是 App 端接入 RPC 过程更为复杂。
 
 - 在服务访问前很难做到统一的前置处理，如服务访问前需要对用户进行鉴权，这就必须将鉴权代码分散到每个服务模块中，随着服务数量增加代码将难以维护。
 
 
-为了解决以上问题，API 网关应运而生，加入网关后，应用架构在用户端与后端微服务之间增加了一道统一入口。
+为了解决以上问题，API 网关应运而生。加入网关后，应用架构在用户端与后端微服务之间增加了一道统一入口。
 
 
 当引入 API 网关后，在用户端与微服务之间建立了一道屏障，通过 API 网关为微服务访问提供了统一的访问入口，所有用户端的请求被 API 网关拦截并在此基础上可以实现额外功能，例如：
@@ -39,28 +39,26 @@ tags: [Java, SpringCloudAlibaba实战]
 
 - API 网关是用户端访问 API 的唯一入口，从用户的角度来说只需关注 API 网关暴露哪些接口，至于后端服务的处理细节，用户是不需要知道的。从这方面讲，微服务架构通过引入 API 网关，将用户端与微服务的具体实现进行了解耦。
 
-以上便是 API 网关的作用，那 API 网关有哪些产品呢？
-
 ### API 网关主流产品
 
-API 网关是微服务架构中必要的组件，具体的实现产品在软件市场上层出不穷，下面我列举三款在国内外主流的开源产品。
+API 网关是微服务架构中必要的组件，具体的实现产品在软件市场上层出不穷，以下列举三款国内外主流的开源产品。
 
 ### OpenResty
 
-OpenResty 是一个强大的 Web 应用服务器，Web 开发人员可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，更主要的是在性能方面，OpenResty可以快速构造出足以胜任 10K 以上并发连接响应的超高性能 Web 应用系统。360、UPYUN、阿里云、新浪、腾讯网、去哪儿网、酷狗音乐等都是 OpenResty 的深度用户。
+OpenResty 是一个强大的 Web 应用服务器，Web 开发人员可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块。更主要的是在性能方面，OpenResty 可以快速构造出足以胜任 10K 以上并发连接响应的超高性能 Web 应用系统。360、UPYUN、阿里云、新浪、腾讯网、去哪儿网、酷狗音乐等都是 OpenResty 的深度用户。
 
-OpenResty 因为性能强大在微服务架构早期深得架构师的喜爱。但 OpenResty 是一款独立的产品，与主流的注册中心存在一定兼容问题，需要架构师独立实现其服务注册、发现的功能。后来 Spring Cloud 官方极力推崇自家封装的 Zuul 或者 Spring Cloud Gateway，渐渐 OpenResty 便淡出了我们的视野。但不能否认，OpenResty 仍是一款优秀的 API 网关产品。
+OpenResty 因为性能强大，在微服务架构早期深得架构师的喜爱。但 OpenResty 是一款独立的产品，与主流的注册中心存在一定兼容问题，需要架构师独立实现其服务注册、发现的功能。后来 Spring Cloud 官方极力推崇自家封装的 Zuul 或者 Spring Cloud Gateway，OpenResty 便渐渐淡出主流视野。但不能否认，OpenResty 仍是一款优秀的 API 网关产品。
 
 ### Spring Cloud Zuul
 
 Zuul 是 Netflix 开源的微服务网关，它的主要职责是对用户请求进行路由转发与过滤。早期 Spring Cloud 与 Netflix 合作，使用 Zuul 作为微服务架构的首选网关产品。Zuul 是基于 J2EE Servlet 实现路由转发，网络通信采用同步方式，使用简单部署方便。经过 Spring Cloud 对 Zuul 的封装，Spring Cloud Zuul 应运而生。Spring Cloud Zuul 在原有 Zuul 的基础上，增加对注册中心的支持，同时在基于 Spring Boot Starter 机制基础上，可以在极短的时间内完成 API 网关的开发部署任务。
 
 
-但好景不长，后来 Netflix 内部产生分歧，Netflix 官方宣布 Zuul 停止维护，这让 Spring 机构也必须转型。于是 Spring Cloud 团队决定开发自己的第二代 API 网关产品：Spring Cloud Gateway。
+后来 Netflix 内部产生分歧，Netflix 官方宣布 Zuul 停止维护，这让 Spring 机构也必须转型。于是 Spring Cloud 团队决定开发自己的第二代 API 网关产品：Spring Cloud Gateway。
 
 ### Spring Cloud Gateway
 
-与 Zuul 是“别人家的孩子”不同，Spring Cloud Gateway 是 Spring 自己开发的新一代 API 网关产品。它基于 NIO 异步处理，摒弃了 Zuul 基于 Servlet 同步通信的设计，因此拥有更好的性能。同时，Spring Cloud Gateway 对配置进行了进一步精简，比 Zuul 更加简单实用。
+不同于来自 Netflix 的 Zuul，Spring Cloud Gateway 是 Spring 自己开发的新一代 API 网关产品。它基于 NIO 异步处理，摒弃了 Zuul 基于 Servlet 同步通信的设计，因此拥有更好的性能。同时，Spring Cloud Gateway 对配置进行了进一步精简，比 Zuul 更加简单实用。
 
 以下是 Spring Cloud Gateway 的关键特征：
 
@@ -76,15 +74,13 @@ Zuul 是 Netflix 开源的微服务网关，它的主要职责是对用户请求
 
 - ...
 
-当下 Spring Cloud Gateway 已然是 Spring Cloud 体系上的 API 网关标准组件。Spring Cloud Gateway 十分优秀，Spring Cloud Alibaba 也默认选用该组件作为网关产品，下面我们就通过实例讲解 Spring Cloud Gateway 的使用办法。
+当下 Spring Cloud Gateway 已然是 Spring Cloud 体系上的 API 网关标准组件。Spring Cloud Alibaba 也默认选用该组件作为网关产品。
 
 ## Spring Cloud Gateway 的配置技巧
 
 ### Spring Cloud Gateway 使用入门
 
-示例说明：
-
-假设 service-a 与 service-b 两个微服务各自提供了若干 RESTful 接口，如何通过部署 Spring Cloud Gateway 实现 API 路由功能来屏蔽后端细节呢？
+示例说明：假设 service-a 与 service-b 两个微服务各自提供了若干 RESTful 接口，如何通过部署 Spring Cloud Gateway 实现 API 路由功能来屏蔽后端细节？
 
 第一步，利用 Spring Initializr 向导创建 Gateway 工程，确保 pom.xml 引入以下依赖：
 
@@ -137,13 +133,13 @@ management:
 spring.cloud.gateway.discovery.locator.enabled=true
 ```
 
-这是一个自动项，允许 Gateway 自动实现后端微服务路由转发， Gateway 工程启动后，在浏览器地址栏按下面格式访问后端服务。
+这是一个自动项，允许 Gateway 自动实现后端微服务路由转发。Gateway 工程启动后，在浏览器地址栏按下面格式访问后端服务。
 
 ```text
 http://网关IP:端口/微服务id/URI
 ```
 
-例如，网关 IP 为：192.168.31.103，我们需要通过网关执行 service-a 的 list 方法，具体写法为：
+例如，网关 IP 为 192.168.31.103，需要通过网关执行 service-a 的 list 方法，具体写法为：
 
 ```text
 http://192.168.31.103:80/service-a/list
@@ -152,7 +148,7 @@ http://192.168.31.103:80/service-a/list
 访问后 Gateway 会自动完成请求路由转发。
 
 
-我们来梳理下路由转发流程：
+路由转发流程梳理如下：
 
 1. Gateway、service-a 这些都是微服务实例，在启动时向 Nacos 注册登记；
 
@@ -168,17 +164,17 @@ http://192.168.31.103:80/service-a/list
 
 7. Gateway 返回给用户端，完成一次完整的请求路由转发过程。
 
-讲到这，我们已理解了 Spring Cloud Gateway 的执行过程。但是真实项目中，存在着各种特殊的路由转发规则，而非自动路由能简单解决的，在 Spring Cloud Gateway 项目中内置了强大的“谓词”系统，可以满足企业应用中的各种转发规则要求，下一小节我们就来介绍常见的谓词用法。
+以上是 Spring Cloud Gateway 自动路由的执行过程。真实项目中往往存在各种特殊的路由转发规则，而非自动路由能简单解决的。Spring Cloud Gateway 项目中内置了强大的“谓词”系统，可以满足企业应用中的各种转发规则要求。
 
 ### 谓词（Predicate）与过滤器（Filter）
 
-在讲解前需要引入 Gateway 网关三个关键名词：路由（Route）、谓词（Predicate）、过滤器（Filter）。
+讲解前需要引入 Gateway 网关三个关键名词：路由（Route）、谓词（Predicate）、过滤器（Filter）。
 
-路由（Route）是指一个完整的网关地址映射与处理过程。一个完整的路由包含两部分配置：谓词（Predicate）与过滤器（Filter）。前端应用发来的请求要被转发到哪个微服务上，是由谓词决定的；而转发过程中请求、响应数据被网关如何加工处理是由过滤器决定的。说起来有些晦涩，我们通过实例进行讲解就容易理解了。
+路由（Route）是指一个完整的网关地址映射与处理过程。一个完整的路由包含两部分配置：谓词（Predicate）与过滤器（Filter）。前端应用发来的请求要被转发到哪个微服务上，是由谓词决定的；而转发过程中请求、响应数据被网关如何加工处理是由过滤器决定的。
 
 **谓词（Predicate）**
 
-这里我们给出一个实例，将原有 Gateway 工程的 application.yml 文件修改为下面的设置：
+以下实例将 Gateway 工程的 application.yml 文件修改为下面的设置：
 
 ```yaml
 spring:
@@ -226,8 +222,7 @@ management:
         include: '*'
 ```
 
-我来翻译下上面的配置：
-在 2020 年 10 月 5 日后，当用户端发来 /a/... 开头的请求时，Spring Cloud Gateway 会自动获取 service-a 可用实例，默认采用轮询方式将URI附加至实例地址后，形成新地址，service-a处理后 Gateway 网关自动在响应头附加 X-Response=Blue。至于第二个 service_b_route，比较简单，只说明当用户访问/b开头 URL 时，转发到 service-b 可用实例。
+上述配置的含义：在 2020 年 10 月 5 日后，当用户端发来 /a/... 开头的请求时，Spring Cloud Gateway 会自动获取 service-a 可用实例，默认采用轮询方式将 URI 附加至实例地址后形成新地址，service-a 处理后 Gateway 网关自动在响应头附加 X-Response=Blue。至于第二个 service_b_route，比较简单，只说明当用户访问 /b 开头 URL 时，转发到 service-b 可用实例。
 
 完整的路由配置格式固定如下：
 
@@ -247,7 +242,7 @@ spring:
             - StripPrefix=1 #具体的过滤器
 ```
 
-其中 predicates 是重点，说明路由生效条件，在这里我将常见的谓词使用形式列出来。
+其中 predicates 是重点，说明路由生效条件。常见的谓词使用形式如下。
 
 - After 代表在指定时点后路由规则生效。
 
@@ -277,7 +272,7 @@ predicates:
     - Header=X-Request-Id, \d+
 ```
 
-这里额外解释下，如果请求具有名为 X-Request-Id 的 Header，其值与\d+正则表达式匹配（具有一个或多个数字的值），则该路由匹配。
+这里额外解释下，如果请求具有名为 X-Request-Id 的 Header，其值与 \d+ 正则表达式匹配（具有一个或多个数字的值），则该路由匹配。
 
 - Method 代表要求 HTTP 方法符合规定时生效。
 
@@ -286,11 +281,11 @@ predicates:
     - Method=GET
 ```
 
-谓词是 Gateway 网关中最灵活的部分，刚才列举的是最常用的谓词，还有很多谓词是在文中没有提到，如果你对这部分感兴趣可以翻阅 [Spring Cloud Gateway 官方文档](https://docs.spring.io/spring-cloud-gateway/reference/index.html) 进行学习。
+谓词是 Gateway 网关中最灵活的部分，以上列举的是最常用的谓词，还有很多谓词未在文中提到，可通过 [Spring Cloud Gateway 官方文档](https://docs.spring.io/spring-cloud-gateway/reference/index.html) 进一步学习。
 
 **过滤器（Filter）**
 
-过滤器（Filter）可以对请求或响应的数据进行额外处理，这里我们列出三个最常用的内置过滤器进行说明。
+过滤器（Filter）可以对请求或响应的数据进行额外处理，以下列出三个最常用的内置过滤器进行说明。
 
 - AddRequestParameter 是对所有匹配的请求添加一个查询参数。
 
@@ -320,15 +315,13 @@ filters:
 
 以上片段含义为，当后端服务返回 503 状态码的响应后，Retry 过滤器会重新发起请求，最多重试 3 次。
 
-以上是三种最常用的内置过滤器的使用案例，因为 Spring Cloud 内置过滤器将近 30 个，这里我们就不一一列举，有兴趣的同学可以查询官方资料。
+以上是三种最常用的内置过滤器的使用案例。Spring Cloud 内置过滤器将近 30 个，完整列表见官方资料：
 
 [https://docs.spring.io/spring-cloud-gateway/docs/2.2.6.RELEASE/reference/html/#gatewayfilter-factories](https://docs.spring.io/spring-cloud-gateway/docs/2.2.6.RELEASE/reference/html/#gatewayfilter-factories)
 
 ## Gateway 的执行原理与自定义过滤器
 
 ### Spring Cloud Gateway 的执行原理
-
-在初步掌握 Spring Cloud Gateway 的配置技巧与谓词用法后，我们来关注 Gateway 底层的实现细节。
 
 Spring Cloud Gateway 的执行流程按顺序可以拆解为以下几步：
 
@@ -338,13 +331,13 @@ Spring Cloud Gateway 的执行流程按顺序可以拆解为以下几步：
 
 3. 当过滤链前置（Pre）处理完毕后，请求会被 Gateway 转发到真正的微服务实例进行处理，微服务处理后会返回响应数据，这些响应数据会按原路径返回被 Gateway 配置的过滤链进行后置处理（Post），后置处理通常是对响应进行额外处理，例如：将处理过程写入日志、为响应附加额外的响应头或者流量监控等。
 
-可以看到，在整个处理过程中谓词（Predicate）与过滤器（Filter）起到了重要作用，谓词决定了路径的匹配规则，让 Gateway 确定应用哪个微服务，而 Filter 则是对请求或响应作出实质的前置、后置处理。
+可以看到，在整个处理过程中谓词（Predicate）与过滤器（Filter）起到了重要作用：谓词决定了路径的匹配规则，让 Gateway 确定路由到哪个微服务；而 Filter 则是对请求或响应作出实质的前置、后置处理。
 
-在项目中功能场景多种多样，像日常的用户身份鉴权、日志记录、黑白名单、反爬虫等基础功能都可以通过自定义 Filter 为 Gateway 进行功能扩展，下面我们通过“计时过滤器”为例，讲解如何为 Gateway 绑定自定义全局过滤器。
+项目中的功能场景多种多样，像日常的用户身份鉴权、日志记录、黑白名单、反爬虫等基础功能都可以通过自定义 Filter 为 Gateway 进行功能扩展。下面以“计时过滤器”为例，讲解如何为 Gateway 绑定自定义全局过滤器。
 
 ### 自定义全局过滤器
 
-在 Spring Cloud Gateway 中，自定义过滤器分为两种，全局过滤器与局部过滤器。两者唯一的区别是：全局过滤器默认应用在所有路由（Route）上，而局部过滤器可以为指定的路由绑定。下面我们通过“计时过滤器”这个案例讲解全局过滤器的配置。所谓计时过滤器是指任何从网关访问的请求，都要在日志中记录下从请求进入到响应退出的执行时间，通过这个时间运维人员便可以收集并分析哪些功能进行了慢处理，以此为依据进行进一步优化。下面是计时过滤器的代码，重要的部分我通过注释进行了说明。
+在 Spring Cloud Gateway 中，自定义过滤器分为两种：全局过滤器与局部过滤器。两者唯一的区别是：全局过滤器默认应用在所有路由（Route）上，而局部过滤器可以为指定的路由绑定。下面通过“计时过滤器”这个案例讲解全局过滤器的配置。所谓计时过滤器是指任何从网关访问的请求，都要在日志中记录下从请求进入到响应退出的执行时间，通过这个时间运维人员便可以收集并分析哪些功能进行了慢处理，以此为依据进行进一步优化。下面是计时过滤器的代码，重要部分通过注释说明。
 
 ```java
 package com.lagou.gateway.filter;
@@ -415,15 +408,22 @@ public class ElapsedFilter implements GlobalFilter, Ordered {
 
 - cost 821ms 是具体的执行时间。
 
-以上就是全局过滤器的开发方法，至于局部过滤器的配置方法与全局过滤器极为相似，有兴趣的同学通过下面的官方文档了解更详细的内容。
+以上就是全局过滤器的开发方法。至于局部过滤器的配置方法与全局过滤器极为相似，更详细的内容可通过下面的官方文档了解。
 
 [https://docs.spring.io/spring-cloud-gateway/reference/index.html](https://docs.spring.io/spring-cloud-gateway/reference/index.html)
 
+## 实践要点
+
+- 微服务接口不应直接暴露给用户端：直接暴露会带来越权访问、多通信协议接入困难、前置处理代码分散三个问题，API 网关通过统一入口解决。
+- 自动路由（`spring.cloud.gateway.discovery.locator.enabled=true`）适合开发调试；生产上建议通过 `routes` 显式配置路由，避免网关代理注册中心的所有服务。
+- 路由配置的固定结构为 id + uri（`lb://微服务id`）+ predicates + filters；谓词决定转发目标，过滤器决定请求/响应的加工方式。
+- 常用谓词：After/Before（时间窗生效）、Path（URI 映射）、Header（请求头正则匹配）、Method（HTTP 方法）；常用过滤器：AddRequestParameter、AddResponseHeader、Retry（配合 status 与 retries 控制重试条件）。
+- 全局过滤器实现 GlobalFilter + Ordered 两个接口，通过 exchange.attributes 在 Pre/Post 间传递上下文数据，getOrder() 控制过滤链执行顺序。
+- 计时、鉴权、日志、黑白名单、反爬虫等跨路由能力适合用全局过滤器实现，避免侵入各微服务。
+
 ## 小结
 
-本文我们学了三方面内容，首先讲解了什么是 API 网关，API 网关是负责微服务请求统一路由转发的组件，用户端所有的请求都要经过 API 网关路由、加工、过滤后送达给后端微服务。其次，讲解了 Spring Cloud Gateway 网关的部署方式，了解到谓词（Predicate）与过滤器（Filter）的作用。最后，我们通过实例介绍了 Spring Cloud Gateway 的执行原理并实现了计时功能的全局过滤器。
-
-这里给你出一道思考题：结合你当前的项目思考下，API 网关除了路由还能额外实现哪些功能呢？
+API 网关是负责微服务请求统一路由转发的组件，用户端所有的请求都要经过 API 网关路由、加工、过滤后送达给后端微服务。主流产品经历了 OpenResty → Zuul → Spring Cloud Gateway 的演进，Spring Cloud Gateway 基于 NIO 异步模型成为 Spring Cloud 体系的标准网关组件。其核心由谓词（决定请求匹配哪个路由）与过滤器（决定请求与响应如何被加工）构成；执行流程为 Netty Server 监听 → Handler Mapping 谓词匹配 → Web Handler 过滤链前置处理 → 转发微服务 → 响应后置处理。通过实现 GlobalFilter + Ordered 接口可扩展自定义全局过滤器，如计时过滤器记录每个请求的执行耗时。
 
 ## 版本差异（Spring Cloud Alibaba 旧版 → 2025.x）
 
@@ -437,4 +437,4 @@ public class ElapsedFilter implements GlobalFilter, Ordered {
 | 链路追踪 | Sleuth + Zipkin（Sleuth 已停止维护） | Micrometer Tracing + Zipkin/OTel |
 | 版本对应 | Boot 2.x + JDK 8 | Boot 3.5.x + JDK 17+（2022.0.0.0+ 起） |
 
-> 本文为 Spring Cloud Alibaba 旧版课程。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。
+> 本文基于 Spring Cloud Alibaba 旧版编写。升级到 Spring Cloud Alibaba 2025.x + Spring Boot 3.5.x 时，注意 Nacos 2.x 鉴权、Seata 2.x 配置与 Dubbo 3.x 应用级注册的迁移。

@@ -67,17 +67,33 @@ export function ChatMessage({ message, streaming, urlMap = {}, onFeedback }: Cha
               {message.sources.map((s, idx) => {
                 const href = urlMap[s.filePath] ?? null;
                 const label = s.title || s.filePath;
+                const section = s.headingPath?.trim();
+                const meta = section
+                  ? (s.chunkType === 'code' ? `代码 · ${s.codeLang || 'code'} · ${section}` : section)
+                  : null;
                 return (
                   <li key={idx}>
                     {href ? (
                       <Link
                         href={href}
-                        className="line-clamp-1 text-xs text-accent hover:underline"
+                        className="block text-xs text-accent hover:underline"
                       >
-                        {label}
+                        <span className="line-clamp-1">{label}</span>
+                        {meta && (
+                          <span className="mt-0.5 block line-clamp-1 text-[10px] font-normal text-foreground/45">
+                            {meta}
+                          </span>
+                        )}
                       </Link>
                     ) : (
-                      <span className="line-clamp-1 text-xs text-foreground/50">{label}</span>
+                      <span className="block text-xs text-foreground/50">
+                        <span className="line-clamp-1">{label}</span>
+                        {meta && (
+                          <span className="mt-0.5 block line-clamp-1 text-[10px] text-foreground/45">
+                            {meta}
+                          </span>
+                        )}
+                      </span>
                     )}
                   </li>
                 );

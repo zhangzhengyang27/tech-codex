@@ -55,6 +55,18 @@ export interface KbChunkHit {
   score: number | null;
   /** frontmatter slug（相对 /docs/ 的跳转标识，多数字段为空串） */
   siteSlug?: string;
+  /** 标题路径（如 Java > 集合 > HashMap；后端 V4 起返回，旧数据可能为空） */
+  headingPath?: string;
+  /** 当前分块所属标题文本（前端可用 extractToc 映射锚点） */
+  heading?: string;
+  /** 预留锚点字段；后端暂不生成 slug，与 heading 同值便于兜底 */
+  anchor?: string;
+  /** 标题序号（0=首个标题前） */
+  headingOrdinal?: number;
+  /** 分块类型：text=正文，code=代码块 */
+  chunkType?: string;
+  /** 代码语言（chunkType=code 时如 java/bash） */
+  codeLang?: string;
 }
 
 /** SSE 流式事件类型 */

@@ -1,6 +1,6 @@
 ---
 title: 创造视觉奇迹：深入理解带有 CSS 的 SVG 动画
-description: ""带有 CSS 的 SVG 动画"指的是使用 CSS 给 SVG 元素添加动画,有点类似于 CSS 给 HTML 元素添加动画。SVG 和 CSS 的结合为 Web 开发者提供了创建引人入胜动画效果的强大工具。"
+description: 「带有 CSS 的 SVG 动画」指的是使用 CSS 给 SVG 元素添加动画,有点类似于 CSS 给 HTML 元素添加动画。SVG 和 CSS 的结合为 Web 开发者提供了创建引人入胜动画效果的强大工具。
 keywords: [创造视觉奇迹, 深入理解带有, CSS, SVG, 动画]
 category: CSS
 tags: [CSS, 布局, 动画, 响应式]

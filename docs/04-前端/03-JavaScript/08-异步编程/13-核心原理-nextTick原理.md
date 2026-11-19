@@ -8,36 +8,48 @@ tags: [JavaScript, Node.js, 微任务, Vue]
 
 
 # 核心原理-nextTick原理
-前文我们讨论了宏任务和微任务的运行机制和原理，我在最后提到了 process.nextTick 是微任务的一种，那么本文我们就来深挖一下 Process.nextTick 的相关知识。
 
-本文我除了结合前文说的究宏任务和微任务的运行机制外，还将通过一些代码片段来带你研究 process.nextTick 的执行逻辑，帮你把这块知识点重新梳理。在日常开发中，process.nextTick 在浏览器端代码中很少使用，但在 Node.js 开发中却极为常见，所以你要好好掌握。
+## 概念说明
 
-那么，为了方便你更好地理解本节的内容，在课程开始前请你先思考：
+在宏任务和微任务的运行机制中,`process.nextTick` 属于微任务的一种。它在浏览器端代码中很少使用,但在 Node.js 开发中极为常见。与此同时,Vue 框架在浏览器端也提供了一个同名概念 `nextTick`(`$nextTick`),两者的运行机制不同,需要注意区分。
 
-- process.nextTick 和其他微任务方法在一起的时候，执行顺序是怎么样的？
-- Vue 也有个 nextTick，它的逻辑又是什么样的？
-带着疑问，我们先来了解一下 process.nextTick。
+理解这两个 nextTick,需要回答两个关键问题:
+
+- process.nextTick 和其他微任务方法在一起的时候,执行顺序是怎么样的?
+- Vue 的 nextTick 的逻辑又是什么样的?
+
+## 核心要点
+
+- `process.nextTick` 会将回调添加到 "next tick queue";该队列在当前 JavaScript 调用栈执行完成后、下一次事件循环开始前按 FIFO 出队。
+- 严格来说 `process.nextTick` 并不是事件循环(eventloop)的一部分:"next tick queue" 在当前操作完成之后立即被处理,而不管当前处于事件循环的哪个阶段。
+- 递归调用 `process.nextTick` 可能导致无限循环,挂起 I/O 使事件循环永远无法到达轮询阶段,需要适时终止递归。
+- `process.nextTick` 的设计理念:Node.js 中的 API 应该总是异步的,即使某些地方并不需要异步;它保证回调在用户代码执行完毕后、事件循环继续工作前执行。
+- Vue 的 nextTick 用于缓冲同一事件循环中的数据变化,在下一个"tick"中批量更新 DOM;避免同一个 watcher 被重复触发导致的多余计算。
+- Vue 2.5+ 中 nextTick 的实现在 `src/core/util/next-tick.js`,核心是 `timerFunc`,按兼容性优先级降级选择:**Promise → MutationObserver → setImmediate → setTimeout**。
+
+## process.nextTick 的执行机制
 
 ### 基本语法
 
-process.nextTick 的语法有两个参数：
+process.nextTick 的语法有两个参数:
 
 > process.nextTick(callback[, ...args])
 
-其中，第一个参数是 callback 回调函数，第二个参数是 args 调用 callback 时额外传的参数，是可选参数。
+第一个参数是 callback 回调函数;第二个参数是 args,调用 callback 时额外传递的参数,是可选参数。
 
-再来看下 process.nextTick 的运行逻辑：
+process.nextTick 的运行逻辑:
 
-- process.nextTick 会将 callback 添加到“next tick queue”；
-- “next tick queue”会在当前 JavaScript stack 执行完成后，下一次 event loop 开始执行前按照 FIFO 出队；
-- 如果递归调用 process.nextTick 可能会导致一个无限循环，需要去适时终止递归。
-可能你已经注意到 process.nextTick 其实是微任务，同时也是异步 API 的一部分。但是从技术上来说 process.nextTick 并不是事件循环（eventloop）的一部分，相反地，“next tick queue”将会在当前操作完成之后立即被处理，而不管当前处于事件循环的哪个阶段。
+- process.nextTick 会将 callback 添加到"next tick queue";
+- "next tick queue" 会在当前 JavaScript stack 执行完成后、下一次 event loop 开始执行前,按照 FIFO 出队;
+- 如果递归调用 process.nextTick 可能会导致一个无限循环,需要适时终止递归。
 
-思考一下上面的逻辑，如果任何时刻你在一个给定的阶段调用 process.nextTick，则所有被传入 process.nextTick 的回调将在事件循环继续往下执行前被执行。这可能会导致一些很糟的情形，因为它允许用户递归调用 process.nextTick 来挂起 I/O 进程的进行，这会导致事件循环永远无法到达轮询阶段。
+process.nextTick 是微任务,同时也是异步 API 的一部分。但从技术上来说,它并不是事件循环(eventloop)的一部分——"next tick queue" 将会在当前操作完成之后立即被处理,而不管当前处于事件循环的哪个阶段。
 
-### 为什么使用 Process.nextTick()
+据此推论:在任何给定阶段调用 process.nextTick,所有传入的回调将在事件循环继续往下执行前被执行。这可能造成很糟的情形:用户可以递归调用 process.nextTick 来挂起 I/O 进程,导致事件循环永远无法到达轮询阶段。
 
-那么为什么 process.nextTick 这样的 API 会被允许出现在 Node.js 中呢？一部分原因是设计理念，Node.js 中的 API 应该总是异步的，即使是那些不需要异步的地方。下面的代码片段展示了一个例子：
+## 为什么使用 process.nextTick()
+
+process.nextTick 这样的 API 被允许出现在 Node.js 中,一部分原因是设计理念:Node.js 中的 API 应该总是异步的,即使是那些不需要异步的地方:
 
 ```javascript
 function apiCall(arg, callback) {
@@ -46,11 +58,13 @@ function apiCall(arg, callback) {
 }
 ```
 
-通过上面的代码检查参数，如果检查不通过，它将一个错误对象传给回调。Node.js API 最近进行了更新，其已经允许向 process.nextTick 中传递参数来作为回调函数的参数，而不必写嵌套函数。
+上面的代码检查参数,检查不通过时将一个错误对象传给回调。Node.js API 后来已允许向 process.nextTick 传递参数作为回调函数的参数,而不必写嵌套函数。
 
-我们所做的就是将一个错误传递给用户，但这只允许在用户代码被执行完毕后执行。使用 process.nextTick 我们可以保证 apiCall() 的回调总是在用户代码被执行后，且在事件循环继续工作前被执行。为了达到这一点，JS 调用栈被允许展开，然后立即执行所提供的回调。该回调允许用户对 process.nextTick 进行递归调用，而不会达到 RangeError，即 V8 调用栈的最大值。
+这里做的事是将一个错误传递给用户,但只在用户代码被执行完毕后执行。使用 process.nextTick 可以保证 `apiCall()` 的回调总是在用户代码被执行后、且在事件循环继续工作前被执行。为了达到这一点,JS 调用栈被允许展开,然后立即执行所提供的回调;该回调允许用户对 process.nextTick 递归调用而不会达到 RangeError(V8 调用栈的最大值)。
 
-这种设计理念会导致一些潜在的问题，观察下面的代码片段：
+### 问题场景:伪异步函数
+
+这种设计理念也对应一类潜在问题:
 
 ```javascript
 let bar;
@@ -61,9 +75,9 @@ someAsyncApiCall(() => {
 bar = 1;
 ```
 
-用户定义函数 someAsyncApiCall() 有一个异步签名，但实际上它是同步执行的。当它被调用时，提供给 someAsyncApiCall() 的回调函数会在执行 someAsyncApiCall() 本身的同一个事件循环阶段被执行，因为 someAsyncApiCall() 实际上并未执行任何异步操作。结果就是，即使回调函数尝试引用变量 bar，但此时在作用域中并没有该变量。因为程序还没运行到对 bar 赋值的部分。
+用户定义的 `someAsyncApiCall()` 有一个异步签名,但实际上是同步执行的。它被调用时,提供给它的回调函数会在执行 `someAsyncApiCall()` 本身的同一个事件循环阶段被执行,因为 `someAsyncApiCall()` 实际上并未执行任何异步操作。结果就是:回调函数尝试引用变量 bar,但此时作用域中还没有该变量,因为程序还没运行到对 bar 赋值的部分。
 
-将回调放到 process.nextTick 中，程序依然可以执行完毕，且所有的变量、函数等都在执行回调之前被初始化，它还具有不会被事件循环打断的优点。以下是将上面的例子改用 process.nextTick 的代码：
+将回调放到 process.nextTick 中,程序依然可以执行完毕,且所有的变量、函数等都在执行回调之前被初始化;它还具有不会被事件循环打断的优点:
 
 ```javascript
 let bar;
@@ -79,9 +93,9 @@ someAsyncApiCall(() => {
 bar = 1;
 ```
 
-通过这个例子，你就可以体会到 process.nextTick 的作用了。其实在日常的 Node.js 开发中，这样的情况也经常会遇见，之前在“[16 | 进阶练习（上）：怎样轻松实现一个 EventEmitter](11-核心原理-手写EventEmitter.md)”中我有讲过 EventEmitter，那么我们看下 EventEmitter 在 Node.js 的使用的一个例子。
+### 典型场景:EventEmitter 构造函数中触发事件
 
-因为 Node.js 直接有 event 模块，其实就是一个 EventEmitter，下面代码是在造函数中触发一个事件：
+Node.js 内置的 `events` 模块就是一个 EventEmitter(EventEmitter 的实现原理可参阅[手写 EventEmitter](11-核心原理-手写EventEmitter.md))。直接在构造函数中触发事件是有问题的:
 
 ```javascript
 const EventEmitter = require('events');
@@ -99,7 +113,7 @@ console.log('an event occurred!');
 });
 ```
 
-你无法在构造函数中立即触发一个事件，因为此时程序还未运行到将回调赋值给事件的那段代码。因此，在构造函数内部，你可以使用 process.nextTick 设置一个回调以在构造函数执行完毕后触发事件，下面的代码满足了我们的预期。
+在构造函数中无法立即触发一个事件,因为此时程序还未运行到将回调赋值给事件的那段代码。在构造函数内部,可以使用 process.nextTick 设置一个回调,让事件在构造函数执行完毕后触发:
 
 ```javascript
 const EventEmitter = require('events');
@@ -119,19 +133,17 @@ const myEmitter = new MyEmitter();
 });
 ```
 
-通过上面的改造可以看出，使用 process.nextTick 就可以解决问题了，即使 event 事件还没进行绑定，但也可以让代码在前面进行触发，因为根据代码执行顺序，process.nextTick 是在每一次的事件循环最后执行的。因此这样写，代码也不会报错，同样又保持了代码的逻辑。
+即使 event 事件还没绑定,也可以让触发代码写在前面:process.nextTick 的回调在用户代码执行完毕后、事件循环继续之前执行,因此不报错,同时保持了代码的逻辑顺序。
 
-通过这两个例子你应该对 process.nextTick 这个知识有了更好的理解了吧？下面我们再来看看浏览器端 Vue 框架的 nextTick 是干什么用的，注意不要将二者混淆了，前面讲的是 Node.js 服务端的事情，而下面要说的是浏览器端 Vue 框架的知识。
+## Vue 的 nextTick 是什么
 
-### Vue 的 nextTick 又是什么意思？
-
-我们看下 Vue 官网最直白的解释：
+Vue 官网对 nextTick 的解释如下:
 
 > Vue 异步执行 DOM 的更新。当数据发生变化时，Vue 会开启一个队列，用于缓冲在同一事件循环中发生的所有数据改变的情况。如果同一个 watcher 被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和 DOM 操作上非常重要。然后在下一个的事件循环“tick”中。例如：当你设置 vm.someData = 'new value'，该组件不会立即重新渲染。当刷新队列时，组件会在事件循环队列清空时的下一个“tick”更新。多数情况我们不需要关心这个过程，但是如果你想在 DOM 状态更新后做点什么，这就可能会有些棘手。
 
-我们细细地根据 Vue 的官网理解一下，其实是不是有点像 EventLoop 的味道，这里只不过是 Vue 开启了一个队列，当你在 nextTick 方法中改变数据的时候，视图层不会立马更新，而是要在下次的时间循环队列中更新。
+也就是说,Vue 开启了一个队列:在 nextTick 方法中改变数据时,视图层不会立即更新,而是要在下一次事件循环队列中更新。这一点与 Node.js 的 process.nextTick 思路相近,只是运行环境不同。
 
-这点是不是类似上面讲的 Node.js 的 process.nextTick 的意思？虽然运行的环境不一样，但是这个意思你可以细细品味一下。这里我们再来看一段 Vue 代码，让你理解 Vue 的 nextTick 的作用。
+看一段 Vue 代码,理解 nextTick 的作用:
 
 ```javascript
 <template>
@@ -165,9 +177,11 @@ new Vue({
 </script>
 ```
 
-你可以将这一段代码放到自己的 Vue 的项目里执行一下，看看通过按钮点击之后，div 里面的 msg1 和 msg2 的变化情况。你会发现第一次点击按钮调用 changeMsg 方法时，其实 msg2 并没有变化，因为 msg2 的变化是在下一个 tick 才进行执行的。
+在 Vue 项目中执行这段代码并点击按钮,可以观察到 msg1 和 msg2 的变化:第一次点击按钮调用 `changeMsg` 方法时,msg2 并没有变化,因为 msg2 的变化是在下一个 tick 才执行的——`$nextTick` 的回调等 DOM 更新完成后才运行,此时读取 `innerHTML` 拿到的是新值。
 
-最后我们再来看下 Vue 中 nextTick 的源码。在 Vue 2.5+ 之后的版本中，有一个单独的 JS 文件来维护，路径是在 src/core/util/next-tick.js 中，源码如下：
+### Vue nextTick 的源码实现
+
+Vue 2.5+ 版本中,nextTick 由单独的 JS 文件维护,路径是 `src/core/util/next-tick.js`:
 
 ```javascript
 /* @flow */
@@ -282,7 +296,7 @@ new Vue({
 	}
 ```
 
-整体代码不是太多，注释比较多，其核心部分代码比较精简，主要在 40~80 行之间，核心在于 timerFunc 这个函数的逻辑实现，timerFunc 这个函数采用了好几种处理方式，主要是针对系统以及 Promise 的支持几个情况同时进行兼容性处理。处理逻辑情况是这样的：
+整体代码不多、注释较多,核心部分在 40~80 行之间,核心在于 `timerFunc` 函数的逻辑实现。`timerFunc` 采用多种处理方式,针对系统以及 Promise 的支持情况进行兼容性处理:
 
 ```mermaid
 flowchart TD
@@ -298,11 +312,10 @@ flowchart TD
 ```
 
 > `timerFunc` 按兼容性优先级选择触发方式：**Promise → MutationObserver → setTimeout(0)**，将回调统一压入异步任务队列，在下一轮循环执行。
-关于 Promise 以及 MutationObserver 的相关知识我已经在前面的课时中都讲过，因此这些方法你只要理解的话，那么再去理解本文 nextTick 的 timerFunc 这个函数的逻辑就会比较轻松了。这里主要是一些兼容性的判断，即使你之前不清楚，但是看一下源码也就能很容易理解了，只要你的基础知识足够牢靠，学习这些并不复杂。
 
-### 总结
+理解 Promise 与 MutationObserver 之后,`timerFunc` 的逻辑就比较容易理解:主要是一些兼容性判断,原生 Promise 可用时优先使用微任务;否则在支持 MutationObserver 的环境中借助文本节点变化触发回调;最后降级到宏任务队列(setImmediate 或 setTimeout)。
 
-最后，针对 process.nextTick() 和 Vue 的 nextTick 这两种不同的 tick ，我总结了下面这个表格，方便你深入理解。
+## process.nextTick 与 Vue nextTick 对比
 
 | 对比维度 | `Process.nextTick()` | Vue 的 `nextTick` |
 |---------|---------------------|------------------|
@@ -314,6 +327,6 @@ flowchart TD
 
 > `Process.nextTick` 优先于 `Promise`，而 Vue 的 `nextTick` 则按"Promise → MutationObserver → setTimeout"降级选择触发方式。
 
-那么关于这部分知识，你如果有不理解的地方可以多学习几遍。本系列主课内容到这里也就告一段落了，很高兴你能坚持到最后，也希望我的分享可以为你带来帮助。
+## 小结
 
-别着急走开，之后我们将进入彩蛋环节，一来是帮你梳理前端面试中经常考察的知识点，二来要给你传递学习算法的思路，我想这些也是你前端进阶的必要内容。
+`process.nextTick`(Node.js)将回调插入本轮循环,优先于其他微任务执行,适合在用户代码执行完毕后、事件循环继续前运行回调,典型用途是避免阻塞 I/O 与解决"伪异步"函数的时序问题;Vue 的 `nextTick`(浏览器端)通过 `timerFunc` 按 Promise → MutationObserver → setImmediate/setTimeout 的优先级降级,将回调压入异步队列,在 DOM 更新完成后执行,用于等待最新渲染状态。两者同名不同源,使用时需注意区分运行环境。

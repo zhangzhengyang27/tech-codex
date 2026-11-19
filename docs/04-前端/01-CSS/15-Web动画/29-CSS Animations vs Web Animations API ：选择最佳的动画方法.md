@@ -1,6 +1,6 @@
 ---
 title: CSS Animations vs Web Animations API ：选择最佳的动画方法
-description: "在 Web 设计中，动画是提高用户体验和吸引注意力的重要元素。随着 Web 技术的发展，CSS 动画（@keyframes）与 Web Animations API（WAAPI）各有优劣，本文从创建、控制、生命周期、缓动函数等维度对比两者，帮助你选择最佳的动画方法。"
+description: "在 Web 设计中，动画是提高用户体验和吸引注意力的重要元素。随着 Web 技术的发展，CSS 动画（@keyframes）与 Web Animations API（WAAPI）各有优劣，本文从创建、控制、生命周期、缓动函数等维度对比两者，帮助开发者选择最佳的动画方法。"
 keywords: [CSS, Animations, vs, Web, Animations]
 category: CSS
 tags: [CSS, 布局, 动画, 响应式]
@@ -9,51 +9,17 @@ tags: [CSS, 布局, 动画, 响应式]
 
 # CSS Animations vs Web Animations API ：选择最佳的动画方法
 
-在 Web 设计中，动画是提高用户体验和吸引注意力的重要元素。这也是导致许多 JavaScript 动画库的增长，包括 [Framer Motion](https://www.framer.com/motion/) 和 [GreenSock](https://gsap.com/)。然而，随着 Web 技术的发展，Web 开发人员实现 Web 动画效果仍然选择使用 CSS 过渡（transition）、CSS 动画（animation）或 WAAPI。
+## 概念说明
 
-  
+在 Web 设计中，动画是提高用户体验和吸引注意力的重要元素。这也是许多 JavaScript 动画库（如 [Framer Motion](https://www.framer.com/motion/) 和 [GreenSock](https://gsap.com/)）持续增长的原因。不过，随着 Web 技术的发展，实现 Web 动画效果的原生方案仍然是 CSS 过渡（`transition`）、CSS 动画（`animation`）和 WAAPI。
 
+三者之中，CSS 动画通常指过渡动画（`transition`）和关键帧动画（`animation`）；本文讨论的 CSS 动画以关键帧动画为主，即使用 CSS 的 `@keyframes` 定义、以 `animation` 属性设置参数的动画。WAAPI 则是通过一系列 JavaScript API 定义的动画。因此，**CSS 动画与 WAAPI 最大的差异是：CSS 动画是一种声明式动画；WAAPI 是一种命令式动画**。
 
-CSS 动画和 WAAPI 具有不同的特性和用法，因此在选择动画方法时需要权衡各种因素。也就是说，在选择 CSS 动画或 WAAPI 时，Web 开发人员应该根据具体项目需求和团队技能做出明智的决策。综合考虑各种因素，可以根据动画的复杂性、性能需求和开发团队的熟悉程度来确定最佳的动画实现方法。
+选择 CSS 动画还是 WAAPI，需要根据具体项目需求和团队技能权衡：动画的复杂性、性能需求和开发团队对技术的熟悉程度，都是决定最佳实现方法的因素。
 
-  
+### 同一个动画的两种实现
 
-
-在本文中，我将与大家一起探讨 CSS 动画和 WAAPI 两种方法的优势、劣势以及在不同场景下选择最佳动画方法的考虑因素。通过深入了解两者的利弊，Web 开发人员才能更好的决定在特定的情境下使用哪种动画技术，以实现最佳的用户体验。
-
-  
-
-
-## CSS Animations vs. WAAPI
-
-  
-
-
-  
-
-
-通常情况之下，CSS 动画指的是过渡动画（`transition`）和关键帧动画（`animation`），但在本文中，我们所说的 CSS 动画主要以关键帧动画为主，即使用 CSS 的 `@keyframes` 定义的关键帧动画，并以 `animation` 属性设置动画相关参数。而 WAAPI 则是通过一系列 JavaScript API 定义的动画。从这一点而言，CSS 动画与 WAAPI 最大的差异就是：**CSS 动画是一种声明式动画；WAAPI 是一种命令式动画**。
-
-  
-
-
-在深入探讨 CSS 动画和 WAAPI 之间差异之前，我们先来看看，如何通过它们来制作同一个动画。
-
-  
-
-
-假设你有一个名为 `slideInBlurredTop` 的入场动画，它的效果看起来像下面这样：
-
-  
-
-
-  
-
-
-使用 CSS 实现这个效果的动画，需要的代码如下：
-
-  
-
+以名为 `slideInBlurredTop` 的入场动画为例。使用 CSS 实现：
 
 ```CSS
 /* 使用 @keyframe 创建名为 slideInBlurredTop 动画 */
@@ -78,13 +44,7 @@ CSS 动画和 WAAPI 具有不同的特性和用法，因此在选择动画方法
 }
 ```
 
-  
-
-
-在 WAAPI 中，我们可以使用两种不同的方式来创建该动画效果。第一种是使用 `new Animation()` 和 `new KeyframeEffect()` 来构建，另一种是使用 `Element.animate()` 来实现。不管是使用哪种方式，它们都需要一个类似 CSS 的 `@keyframes` 的关键帧 `keyframes` 和类似于 `animation-*` 属性值列表，即 `options` ：
-
-  
-
+在 WAAPI 中有两种创建方式：使用 `new Animation()` 和 `new KeyframeEffect()` 构建，或使用 `Element.animate()`。两种方式都需要一个类似 CSS `@keyframes` 的关键帧对象 `keyframes` 和一个类似 `animation-*` 属性值列表的 `options`：
 
 ```JavaScript
 // 创建关键帧，类似于 CSS 的 @keyframes
@@ -115,18 +75,9 @@ const options = {
 }
 ```
 
-  
+> 注意，在 WAAPI 中还可以以对象形式来创建 `keyframes`，详细内容参见《掌握 Web Animations API 的精髓》中关于 `keyframes` 定义的部分。
 
-
-> 注意，在 WAAPI 中还可以以对象形式来创建 `keyframes` ，有关于这方面详细介绍，请移步阅读上一篇《掌握 Web Animations API 的精髓》中关于 `keyframes` 定义的内容。
-
-  
-
-
-在 WAAPI 中，你可以将已定义好的 `keyframes` 和 `options` 分别传递给 `new KeyframeEffect()` 构建函数或 `Element.animate()` 函数。
-
-  
-
+将定义好的 `keyframes` 和 `options` 分别传递给 `new KeyframeEffect()` 构造函数或 `Element.animate()` 函数：
 
 ```JavaScript
 const animEle = document.querySelector('.animated'); // 获取要应用动画的目标元素，相当于 CSS 中的 .animated 选择中的元素
@@ -141,13 +92,7 @@ const animation = new Animation(slideInBlurredTop, document.timeline);
 animation.play()
 ```
 
-  
-
-
-如果使用 `Element.animate()` 会更省事一些：
-
-  
-
+使用 `Element.animate()` 则更简洁：
 
 ```JavaScript
 const animEle = document.querySelector('.animated'); // 获取要应用动画的目标元素，相当于 CSS 中的 .animated 选择中的元素
@@ -155,21 +100,11 @@ const animEle = document.querySelector('.animated'); // 获取要应用动画的
 animEle.animate(keyframes, options);
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/rNRzzGb
 
-  
-
-
-不难发现，动画最终的效果几乎是一致的。但从代码层面来说，对于熟悉 CSS 动画的 Web 开发者而言，有一些术语在习惯上还是会有所不同的：
-
-  
-
+动画最终效果几乎一致。但从代码层面看，对熟悉 CSS 动画的开发者而言，部分术语的习惯不同。下表列出 CSS `animation` 属性与 WAAPI `options` 的对应关系：
 
 | **CSS** **`animation`** **属性**  | **WAAPI 等效 API（** **`options`** **）** | **描述**                                                                                                                                               |
 | ------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -177,7 +112,7 @@ animEle.animate(keyframes, options);
 | **`animation-duration`**        | **`duration`**                        | 动画单次迭代所需时间（动画持续时间），等同于 CSS 的 `animation-duration` 。在 WAAPI 中 `duration` 的值不带单位，而且只能是 `ms` ，但在 CSS 中可以是 `ms` 也可以是 `s`                                 |
 | **`animation-timing-function`** | **`easing`**                          | 动画缓动函数，等同于 CSS 的 `animation-timing-function`。                                                                                                        |
 | **`animation-fill-mode`**       | **`fill`**                            | 动画填充模式，等同于 CSS 的 `animation-fill-mode`                                                                                                               |
-| **`animation-iteration-count`** | **`iterations`**                      | 动画循环播放次数，等同于 CSS 的 `animation-iteration-count` 。如果我们希望动画无限循环播放，是 `Infinity` 而不是 `infinite`。`Infinity` 不用引号括起来，因为 `Infinity` 是JavaScript关键字，而其他值是字符串。 |
+| **`animation-iteration-count`** | **`iterations`**                      | 动画循环播放次数，等同于 CSS 的 `animation-iteration-count` 。如果希望动画无限循环播放，是 `Infinity` 而不是 `infinite`。`Infinity` 不用引号括起来，因为 `Infinity` 是JavaScript关键字，而其他值是字符串。 |
 | **`animation-direction`**       | **`direction`**                       | 动画运动方向，等同于 CSS 的 `animation-direction`                                                                                                               |
 | **`animation-delay`**           | **`delay`**                           | 动画延迟时间，等同于 CSS 的 `animation-delay` 。在 WAAPI 中 `delay` 的值不带单位，而且只能是 `ms` ，但在 CSS 中可以是 `ms` 也可以是 `s`                                                   |
 | **`animation-play-state`**      | ❌                                     | 与 WAAPI 中的 `play()` 和 `pause()` 方法有点类似                                                                                                               |
@@ -185,24 +120,12 @@ animEle.animate(keyframes, options);
 | ❌                               | **`endDelay`**                        | 指定动画结束后的延迟时间                                                                                                                                         |
 | ❌                               | **`iterationStart`**                  | 指定动画应该在迭代的哪个点开始                                                                                                                                      |
 
-  
+WAAPI 配置动画参数时，没有类似 `animation-play-state` 的参数，但可以通过 `play()` 和 `pause()` 方法控制动画的播放和暂停。CSS 中没有 `endDelay` 和 `iterationStart` 的概念，只有动画延迟播放的概念。两者的含义：
 
+- `endDelay`：指定动画结束后的延迟时间。串联多个动画、并希望在一个动画结束和后续动画开始之间留出间隔时，`endDelay` 很有用
+- `iterationStart`：指定动画在迭代的哪个点开始，取值范围 `0.0 ~ 1.0`。值为 `0.5` 表示动画从 `50%` 关键帧点（即动画中间）开始。若迭代次数设置为 `1` 而 `iterationStart` 为 `0.5`，则动画从中间播放到结束，然后从头重新播放，并在中间结束
 
-注意，在 WAAPI 中配置动画参数时，并没有类似 `animation-play-state` 属性的参数，但可以通过 `play()` 和 `pause()` 方法来控制动画的播放和暂停。另外，在 CSS 中是没有 `endDelay` 和 `iterationStart` 的概念，它只有一个动画延迟播放的概念。 在 WAAPI 中，`endDelay` 和 `iterationStart` 指的是：
-
-  
-
-
--   `endDelay`：指定动画结束后的延迟时间，如果你想在彼此之后串联多个动画，但希望在一个动画结束和任何后续动画开始之间有一段间隔，则 `endDelay` 很有用
--   `iterationStart`：指定动画应该在迭代的哪个点开始，取值范围从 `0.0 ~ 1.0`。例如，值为 `0.5` 表示动画应该在 `50%` 的关键帧点开始，即动画从中间开始。因此如果你的迭代次数设置为 `1` ，而你的 `iterationStart` 设置为 0.5，则动画将从中间开始播放到动画结束，然后从动画的开始重新播放，并在中间结束
-
-  
-
-
-值得注意的是，你还可以将总迭代次数设置为小于一。例如：
-
-  
-
+此外，总迭代次数还可以设置为小于一的值：
 
 ```JavaScript
 const options = {
@@ -211,38 +134,13 @@ const options = {
 }
 ```
 
-  
+这将使动画从中间播放到结束。`endDelay` 和 `iterationStart` 的详细机制参见《掌握 Web Animations API 的精髓》。
 
-
-这将使动画从中间播放到结束。
-
-  
-
-
-> 注意，上一篇《掌握 Web Animations API 的精髓》对 WAAPI 的 endDelay 和 iterationStart 有过详细的阐述，这里就不做再重复性阐述。
-
-  
-
-
-作为一名 Web 开发者，尤其是 CSSer，在平时开发过程中，只要是 CSS 能实现的，我都会首先使用 CSS。在创作 Web 动画时亦是如此。在这个过程中，我享受了 CSS 动画（`transition` 和 `animation`）给我带来的便利与优越性同时，CSS 动画也让我在某些方面感到沮丧，例如动态创建、播放控制和监听动画的生命周期等方面。
-
-  
-
-
-不过，令我感到振奋的是，WAAPI 解决了所有这些问题。
-
-  
-
+从工程角度对比：CSS 动画（`transition` 和 `animation`）在声明静态动画时便利且高效，但在动态创建、播放控制和监听动画生命周期等方面存在局限；WAAPI 则解决了这些问题。
 
 ## 动画的创建
 
-  
-
-
-虽然在 CSS 中，我们可以很容易为元素状态变化添加动画效果，例如在按钮的悬浮状态改变其 `transform` 的值：
-
-  
-
+CSS 可以很容易地为元素状态变化添加动画，例如在按钮悬浮状态改变 `transform` 的值：
 
 ```CSS
 .button {
@@ -254,13 +152,7 @@ const options = {
 }
 ```
 
-  
-
-
-或者：
-
-  
-
+或者使用关键帧动画：
 
 ```CSS
 @keyframes scale {
@@ -277,13 +169,7 @@ const options = {
 }
 ```
 
-  
-
-
-CSS 动画显得容易是因为我们预先知道动画化属性开始值和结束值。换句话说，要是动画化属性的开始值和结束值事先未知的话，那么使用 CSS 就没有那么容易了。例如，按钮悬浮状态下的 `scale()` 值是一个随机值。在这种情况之下，Web 开发者通常会采用 JavaScript 来处理：
-
-  
-
+CSS 动画显得容易，是因为动画化属性的开始值和结束值预先已知。如果开始值和结束值事先未知（例如按钮悬浮状态下 `scale()` 的值是一个随机值），CSS 就没那么方便了，此时通常采用 JavaScript 处理：
 
 ```JavaScript
 const buttonHandler = document.querySelector(".button");
@@ -315,31 +201,15 @@ buttonHandler.addEventListener("mouseout", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/PoLKMWW
 
-  
+这种方式存在一些问题：示例中强制进行样式失效不会让浏览器在它认为最合适的时间执行该任务；而且这只是一个单一动画，页面上若有多个类似效果，将导致样式失效倍增，降低页面性能。
 
+若改用 CSS 关键帧动画，就必须先生成一个专用的 `@keyframes` 规则并插入 `<style>` 元素——未能封装的、针对单个元素的样式更改会导致昂贵的样式失效。
 
-就这个情境而言，JavaScript 可以帮助 Web 开发者解决问题。不过，使用这种方式实现动画时，还有其他的一些因素需要考虑。例如示例中的强制进行样式失效不会让浏览器在它认为最合适的时间执行该任务。而且这只是一个单一的动画，如果页面上有多个与这个相似的效果，这将导致样式失效的倍增，降低页面性能。
-
-  
-
-
-如果考虑使用 CSS 关键帧动画（`animation`），就必须先生成一个专用的 `@keyframes` 规则并将其插入到 `<style>` 元素中，未能封装对于单个元素而言实际上是有针对性的样式更改，会导致昂贵的样式失效。
-
-  
-
-
-要是换作 WAAPI 就不一样了，因为 WAAPI 提供了很多 JavaScript API，它保留了让浏览器引擎高效运行动画的能力，同时使你对动画有更高级别的控制。使用 WAAPI，我们可以通过调用 `Element.animate()` 来实现上面那个按钮悬浮的动画效果：
-
-  
-
+WAAPI 则不同：它保留让浏览器引擎高效运行动画的能力，同时提供更高级别的动画控制。使用 `Element.animate()` 实现同样的按钮悬浮动画：
 
 ```JavaScript
 const buttonHandler = document.querySelector(".button");
@@ -380,68 +250,33 @@ buttonHandler.addEventListener("mouseout", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/mdoMNjW
 
-  
+`Element.animate()` 的第一个参数类似 CSS 的 `@keyframes`，第二个参数类似 CSS 的 `animation-*` 属性值，可以表达 CSS 动画的所有特性。
 
-
-虽然这个示例非常简单，但 `Element.animate()` 是一把真正的瑞士军刀，它可以表达更高级的功能。正如课程 开头那节所述， `Element.animate()` 的第一个参数类似于 CSS 的 `@keyframes` ，第二个参数类似于 CSS 的 `animation-*` 属性值。简单地说，它可以表达 CSS 动画的所有特性。
-
-  
-
-
-现在我们知道如何使用 WAAPI 创建动画，但它与前一个过渡动画相比有何优势呢？前一个示例只是告诉浏览器要对什么进行动画以及如何对其进行动画，但没有指定何时进行动画。使用 WAAPI 创建的动画则有所不同，浏览器将能够在下一个最合适的时刻处理所有新的动画，而无需强制进行样式失效。这意味着，你自己创建的动画以及可能来自第三方 JavaScript 库的动画，甚至是位于不同文档中的动画，都将同时启动并同步进行。
-
-  
-
+与前面基于过渡的方案相比，WAAPI 的优势在于时机：前一个方案只是告诉浏览器对什么进行动画以及如何动画，但没有指定何时进行动画，且需要强制样式失效；使用 WAAPI 创建的动画，浏览器会在下一个最合适的时刻处理所有新动画，无需强制样式失效。自建动画、第三方 JavaScript 库的动画、甚至位于不同文档中的动画，都将同时启动并同步进行。
 
 ## 动画的控制
 
-  
+控制一个动画通常涉及三个方面：
 
+- 控制动画的播放状态（开始播放、暂停、重播和取消等）
+- 动画播放速度（速率）
+- 动画的时间（动画持续时间和延迟时间）
 
-通常情况之下，我们通过下面三个方面来控制一个动画：
+### CSS 动画控制能力的边界
 
-  
+**播放状态**方面，CSS 过渡动画（`transition`）最弱：一旦被触发只能往前运行，无法在播放过程中暂停或取消。CSS 关键帧动画（`animation`）稍强，可以通过 `animation-play-state` 属性控制播放（`running`）和暂停（`paused`），但与过渡动画一样，CSS 中无法使一个动画重新播放，通常需要借助 JavaScript 才能实现重播。
 
+**时间**方面，CSS 通过 `transition-duration` 或 `animation-duration` 控制持续时间，通过 `transition-delay` 或 `animation-delay` 控制延迟时间；但设置动画的"当前时间"只能采用变通手段，例如巧妙地操纵负的 `animation-delay` 或 `transition-delay` 值（参见《深入了解 CSS 动画的持续时间和延迟时间》）。
 
--   控制动画的播放状态（比如开始播放、暂停、重播和取消等）
--   动画播放速度（速率）
--   动画的时间（动画持续时间和延迟时间）
+**播放速度**方面，CSS 中没有属性可以直接调整动画播放速率，只能通过调整缓动函数和时间值间接影响：相同距离和时间条件下，不同的缓动曲线（除恒速 `linear` 外）会影响播放速度；调整持续时间也会影响播放速度。
 
-  
+### WAAPI 的专用控制 API
 
-
-先来说 CSS 动画。
-
-  
-
-
-动画播放状态这个方面来说，CSS 过渡动画（`transition`）是最弱的，它一旦被触发，只能往前运行，你无法在其播放过程中暂停、取消动画。CSS 关键帧动画（`animation`）要稍微强一点，你可以通过 `animation-play-state` 属性来控制动画的播放（`running`）和暂停（`pasued`），但与过渡动画一样，在 CSS 中，你无法使一个动画重新播放（重播）。通常情况下，需要借助 JavaScript 脚本才能使动画进行重播。
-
-  
-
-
-对于动画的时间而言，我们可以通过`transition-duration` 或 `animation-duration` 来控制过渡动画和关键帧动画的持续时间；还可以通过 `transition-delay` 或 `animation-delay` 来控制过渡动画和关键帧动画的延迟时间。但要设置动画的当前时间，只能采用巧妙的方法，比如巧妙地操纵负的 `animation-delay` 或 `transition-delay` 值。有关这方面的介绍，可以回过头阅读《深入了解 CSS 动画的持续时间和延迟时间》！
-
-  
-
-
-如果要调整 CSS 动画播放的速度，可以考虑调整动画的缓动函数和时间值，因为在 CSS 中没有相应的属性可以直接调整动画的播放速度。在相同的距离和时间条件下，不同的缓动曲线（除恒速 `linear` 之外）也会影响动画的播放速度；另外，调整动画持续时间也会影响到动画的播放速度。
-
-  
-
-
-上面所提到的这些方面，对于 WAAPI 来说都不是什么问题，因为这些问题都由专用的 API 处理。例如，我们可以使用 `play()` （播放）、`pause()` （暂停）、`cancel()` （取消）和 `finish()` （结束）等方法控制动画播放状态；使用 `currentTime` 、 `startTime` 、`endDelay` 和 `iterationStart` 来查询和设置时间；使用 `playbackRate` 控制动画播放速度。
-
-  
-
+上述各方面对 WAAPI 都不是问题，因为它们由专用 API 处理：`play()`（播放）、`pause()`（暂停）、`cancel()`（取消）和 `finish()`（结束）等方法控制播放状态；`currentTime`、`startTime`、`endDelay` 和 `iterationStart` 查询和设置时间；`playbackRate` 控制播放速度。
 
 ```JavaScript
 const animEle = document.querySelector(".animated");
@@ -479,23 +314,13 @@ buttonHandler.addEventListener("click", () => {
 });
 ```
 
-  
 
 
-这使得 Web 开发人员可以在动画创建后控制其行为。现在执行以前可能令人生畏的任务变得微不足道。要在按下按钮时切换动画的播放状态：
-
-  
-
-
-  
-
+这使得开发者可以在动画创建后控制其行为，例如在按下按钮时切换动画的播放状态：
 
 > Demo 地址：https://codepen.io/airen/full/ExMwVpR
 
-  
-
-
-你还可以根据一个 `<input type="range">` 来调整动画的 `currentTime` ：
+还可以根据一个 `<input type="range">` 来调整动画的 `currentTime`：
 
 ```JavaScript
 const animEle = document.querySelector(".animated");
@@ -526,21 +351,11 @@ inputHandler.addEventListener("input", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/eYXGpqr
 
-  
-
-
-如果你将在其自然播放范围之外暂停的动画的开始时间设置为以下内容，可以将其从暂停状态转换为已完成状态，而无需重新启动：
-
-  
-
+对于在其自然播放范围之外暂停的动画，通过设置新的持续时间和开始时间，可以将其从暂停状态转换为已完成状态，而无需重新启动：
 
 ```JavaScript
 const animEle = document.querySelector(".animated");
@@ -580,26 +395,13 @@ animation.ready.then(function() {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/eYXGJgP
 
-  
+### 完成状态的通知机制
 
-
-这个示例演示了如何将已暂停的动画在其自然播放范围之外的位置转换为已完成状态，而无需重新启动。通过设置新的持续时间和开始时间，可以在动画暂停后修改其状态。
-
-  
-
-
-通常，关于动画完成状态的通知是异步执行的。这允许动画暂时进入已完成的播放状态，而不触发事件或解析 Promise。例如，下面这个示例，动画暂时进入已完成的状态。如果有关已完成状态的通知同步发生，这段代码将导致完成事件排队和当前已完成的 Promise 被解析。然而，如果我们颠倒两个语句的顺序，首先更新迭代次数，这将不会发生。为了避免这种令人惊讶的行为，通常会异步执行关于动画完成状态的通知。
-
-  
-
+动画完成状态的通知通常是异步执行的，这允许动画暂时进入已完成的播放状态，而不触发事件或解析 Promise。下面示例中动画暂时进入已完成状态；如果完成状态的通知同步发生，这段代码将导致完成事件排队和当前已完成的 Promise 被解析——而如果颠倒两个语句的顺序（先更新迭代次数），则不会发生。为了避免这种令人惊讶的行为，完成状态通知被设计为异步执行：
 
 ```JavaScript
 const animEle = document.querySelector(".animated");
@@ -627,26 +429,13 @@ buttonHandler.addEventListener("click", (etv) => {
 });
 ```
 
-  
 
 
-这种设置可能会导致动画在点击按钮后以加速的速度重新播放，并在播放两次后停止。
-
-  
-
-
-  
-
+这种设置可能导致动画在点击按钮后以加速的速度重新播放，并在播放两次后停止。
 
 > Demo 地址：https://codepen.io/airen/full/WNmZXBR
 
-  
-
-
-这种异步行为的唯一例外是执行完成动画过程（通常通过调用`finish()`方法）。在这种情况下，Web 开发者明确希望完成动画，因此有关动画完成状态的通知是同步执行的，如下例所示：
-
-  
-
+异步行为的唯一例外是显式执行完成动画过程（通常通过调用 `finish()` 方法）。此时开发者明确希望完成动画，完成状态的通知同步执行：
 
 ```JavaScript
 const animEle = document.querySelector(".animated");
@@ -670,42 +459,20 @@ buttonHandler.addEventListener("click", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/xxBXpxm
 
-  
-
-
-上面这个示例，当点击 `buttonHandler` 元素时，会创建一个动画对象，立即调用 `finish` 方法触发完成事件，然后将动画的当前时间设置为 `0`，使其离开已完成状态，准备好重新播放。
-
-  
-
+点击 `buttonHandler` 元素时会创建动画对象，立即调用 `finish` 方法触发完成事件，然后将动画当前时间设置为 `0`，使其离开已完成状态，准备好重新播放。
 
 ## 动画生命周期
 
-  
+JavaScript 为 CSS 的 transition 和 animation 提供了相关事件：
 
+- CSS `transition` 对应的 JavaScript 事件：`transitionstart`、`transitionrun`、`transitionend` 和 `transitioncancel`
+- CSS `animation` 对应的 JavaScript 事件：`animationstart`、`animationend`、`animationcancel` 和 `animationiteration`
 
-JavaScript 为 CSS 的 transition 和 animation 提供了相关的事件，例如：
-
-  
-
-
--   CSS `transition` 对应的 JavaScript 事件：`transitionstart` 、`transitionrun` 、`transitionend` 和 `transitioncancel`
--   CSS `animation` 对应的 JavaScript 事件：`animationstart` 、`animationend` 、`animationcancel` 和 `animationiteration`
-
-  
-
-
-虽然我们可以通过这些事件监听 CSS 动画如何开始、结束和取消等，但要正确使用它们却还很困难。例如下面这个示例，元素应用了一个 `fadeOut` 动画，在该动画结束时从 DOM 中删除该元素。通常，使用 CSS 动画，会像下面这样编写代码：
-
-  
-
+通过这些事件可以监听 CSS 动画的开始、结束和取消，但正确使用它们并不容易。例如元素应用了一个 `fadeOut` 动画，动画结束时从 DOM 中删除该元素。使用 CSS 动画的常见写法：
 
 ```CSS
 @keyframes fadeOut {
@@ -719,7 +486,6 @@ JavaScript 为 CSS 的 transition 和 animation 提供了相关的事件，例�
 }
 ```
 
-  
 
 
 ```JavaScript
@@ -730,26 +496,13 @@ animEle.addEventListener('animationend', etv => {
 })
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/MWxErML
 
-  
+这段代码看似没问题，实际上有隐患：它会在元素上分派 `animationend` 事件时立即删除元素，但动画事件会冒泡，事件可能来自 DOM 层次结构中子元素完成的动画。虽然可以采取措施使代码更安全，但使用 WAAPI 编写这类代码更容易也更安全——可以直接引用 `Animation` 对象，而不依赖元素层次结构范围内的动画事件。
 
-
-看起来没问题，但进一步检查发现问题。这段代码将在元素上分派 `animationend` 事件时立即删除元素，但由于动画事件会冒泡，事件可能来自DOM层次结构中子元素的完成的动画。你可以采取措施使这种代码更安全，但使用WAAPI，编写这种代码不仅更容易，而且更安全，因为你可以直接引用 `Animation` 对象，而不是通过元素层次结构范围内的动画事件。
-
-  
-
-
-除此之外，WAAPI 还使用 Promises 来监视动画的准备和完成状态：
-
-  
-
+此外，WAAPI 还使用 Promises 监视动画的准备和完成状态：
 
 ```JavaScript
 const animEle = document.querySelector(".animated");
@@ -779,21 +532,11 @@ buttonHandler.addEventListener("click", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/poYWaPm
 
-  
-
-
-想象一下，如果你想在删除共享容器之前监视针对多个元素的多个 CSS 动画的完成，执行相同的任务会有多么复杂。使用 WAAPI 及其对 Promises 的支持，现在可以简洁地表示如下：
-
-  
-
+若要在删除共享容器之前监视针对多个元素的多个 CSS 动画的完成，传统方式会非常复杂；使用 WAAPI 及其对 Promises 的支持，可以简洁地表达：
 
 ```JavaScript
 // 在删除容器之前等待所有动画完成。
@@ -805,23 +548,11 @@ Promise.all(
 );
 ```
 
-  
-
-
 ## 缓动函数
 
-  
+缓动函数（缓动曲线）对任何动画都非常重要。CSS 关键帧动画和 WAAPI 各有两种设置方式。
 
-
-缓动函数（缓动曲线）对于任何动画而言都非常重要。
-
-  
-
-
-在 CSS 的过渡动画（`transition`）中，我们可以使用 `transition-timing-function` 属性为过渡动画指定缓动函数。在 CSS 的关键帧动画（`animation`）和 WAAPI 中，我们可以使用两种不同的方式给动画设置缓动函数。第一种是与过渡动画相似，CSS 关键帧动画使用 `animation-timing-function` 属性为整个动画指定缓动函数，WAAPI 在 `options` 中设置 `easing` 属性值为整个动画指定缓动函数：
-
-  
-
+第一种：为整个动画指定缓动函数。CSS 关键帧动画使用 `animation-timing-function` 属性；WAAPI 在 `options` 中设置 `easing` 属性：
 
 ```CSS
 .animation {
@@ -829,7 +560,6 @@ Promise.all(
 }
 ```
 
-  
 
 
 ```JavaScript
@@ -838,13 +568,7 @@ const options = {
 }
 ```
 
-  
-
-
-另一种方式是可以在定义关键帧的时候指定缓动函数：
-
-  
-
+第二种：在定义关键帧时指定缓动函数：
 
 ```CSS
 @keyframes fadeIn {
@@ -862,7 +586,6 @@ const options = {
 }
 ```
 
-  
 
 
 ```JavaScript
@@ -884,18 +607,11 @@ const keyframes = [
 ]
 ```
 
-  
+::: warning 关键帧缓动的两个要点
+关键帧中定义的缓动函数只应用于关键帧之间，而不是整个动画，这样可以实现精细控制。另外，无论 CSS 还是 WAAPI，都不应为最后一帧传递缓动值——这没有任何效果，这是一个常见错误。
+:::
 
-
-实际上，在关键帧中定义的缓动函数，它只是应用于关键帧之间，而不是整个动画。这样可以对动画进行精细的控制。值得注意的是，在 CSS 和 WAAPI 中，不应为最后一帧传递缓动值，因为这将没有效果。这是许多人犯的一个错误。
-
-  
-
-
-我们来看一个 WAAPI 的示例，在下面这个示例中，分别在关键帧 `keyframes` 和 `options` 中定义了缓动函数，这两个动画呈现给用户的效果是有所不同的：
-
-  
-
+以下 WAAPI 示例分别在 `keyframes` 和 `options` 中定义缓动函数，两个动画呈现的效果不同：
 
 ```JavaScript
 const animEle1 = document.querySelector(".animated1");
@@ -952,26 +668,15 @@ buttonHandler.addEventListener("click", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/dyrVdwJ
 
-  
+注意默认值差异：CSS 动画缓动函数的默认值是 `ease`，WAAPI 的默认值是 `linear`。`linear` 是恒速运动，动画看起来比较机械、不自然。因此在 WAAPI 中需要手动重置 `easing` 的值，避免动画显得乏味呆板。
 
+### 能否在 WAAPI 中使用 JavaScript 缓动函数
 
-值得注意的是，CSS 动画的缓动函数的默认值是 `ease` ，而 WAAPI 的缓动函数的默认值是 `linear` 。相对而言，`linear` 是一种恒速运动，应用该缓动函数的动画看上去比较机械而不自然。因此，在 WAAPI 中，需要手动重置 `easing` 的值，以免你的动画看起来乏味和呆板。
-
-  
-
-
-通过前面的学习，我们知道 WAAPI 提供了很多 JavaScript 的 API，那么像 easings.net 定义的一些缓动函数是否就可以直接应用于 WAAPI 的 `easing` 上呢？如果是的话，那么应用于 WAAPI 的缓动函数可选项就多了。但事实上呢？有点令人感到失望，并不能直接在 WAAPI 上应用 JavaScript 定义的缓动函数。以 easings.net 定义 `bounce` 为例：
-
-  
-
+easings.net 等站点定义了大量 JavaScript 版缓动函数。它们能否直接应用于 WAAPI 的 `easing`？答案是不能。以 easings.net 定义的 `bounce` 为例：
 
 ```JavaScript
 const bounce = (pos) => {
@@ -1010,18 +715,9 @@ const options = {
 animEle.animate(keyframes, options);
 ```
 
-  
+`easing` 只接受字符串（如 `cubic-bezier()`、`linear()` 的字符串表示），不接受函数。要让 JavaScript 缓动函数生效，需要其他方法。
 
-
-如果要让它起作用，还是要另辟蹊径。
-
-  
-
-
-如果你了解缓动函数的话，那就应该知道。缓动函数只不过是一个简单的函数，它接受一个输入值并产生一个输出值，并且输入值通常在 `[0,1]` 范围内。如果用代码表示的话，大致像下面这样：
-
-  
-
+理解原理有助于选择替代方案：缓动函数是一个接受输入值并产生输出值的函数，输入值通常在 `[0,1]` 范围内：
 
 ```JavaScript
 const easingInput = 0.5; // 缓动函数的输入值，通常在 0 ~ 1 之间
@@ -1030,13 +726,7 @@ const easingInput = 0.5; // 缓动函数的输入值，通常在 0 ~ 1 之间
 const easingOutput = easingFn(easingInput); 
 ```
 
-  
-
-
-对于 `linear` 缓动，输出与输入相同，因为它以恒速的方式运行：
-
-  
-
+`linear` 缓动的输出与输入相同，因为它以恒速运行：
 
 ```JavaScript
 const linear = (input) => {
@@ -1045,26 +735,13 @@ const linear = (input) => {
 }
 ```
 
-  
 
 
-  
+在 `x` 轴上绘制输入（`input`）、`y` 轴上绘制输出（`output`）即可将它可视化。`bounce` 比 `linear` 复杂得多，但原理相同：根据给定输入 `input` 产生特定输出 `output` 的函数。在 WAAPI 中有几种方式实现它的功能。
 
+### 方式一：CustomEffect（提案阶段）
 
-以 `linear` 缓动为例，通过在 `x` 轴上绘制输入（`input`）和在 `y` 轴上绘制输出（`output`）即可将它可视化。
-
-  
-
-
-当然，前面所提到的 `bounce` 要比 `linear` 复杂得多，但它与 `linear` 的原理是相同的：它也是一个根据给定输入 `input` 产生特定输出值 `output` 的函数 `bounce()` 。在 WAAPI 中，我们可以通过一些方法来实现 `bounce()` 函数的功能。
-
-  
-
-
-最简单的是使用 WAAPI Level 2 中提议的 `CustomEffect` ，允许你通过 JavaScript 来定义效果。例如：
-
-  
-
+WAAPI Level 2 提议的 `CustomEffect` 允许通过 JavaScript 定义效果：
 
 ```JavaScript
 const animEle = document.querySelector('.animated');
@@ -1093,18 +770,11 @@ animation.effect = new CustomEffect((progress) => {
 animation.play();
 ```
 
-  
+`CustomEffect` 尚未得到主流浏览器支持，未来可能发生很大变化；而且它不如常规动画高效，因为始终在主线程上运行。
 
+### 方式二：CSS 的 linear() 函数（推荐）
 
-只不过，到现在还没有得到主流浏览器的支持，而且该功能在未来有可能会发生很大的变化。还有就是，`CustomEffect` 不像常规动画那样高效，因为它始终在主线程上运行。
-
-  
-
-
-另一个方法是使用最新增加到 CSS 中的 `linear()` 缓动函数。它允许你以简单的方式构建复杂的缓动函数。它通过将原始曲线简化为一系列点来实现。例如，前面提到的 `bounce()` 函数要是使用 `linear()` 函数来表示的话，看上去会像下面这样：
-
-  
-
+CSS 新增的 `linear()` 缓动函数允许以简单方式构建复杂缓动函数：它将原始曲线简化为一系列点。`bounce()` 用 `linear()` 表示如下：
 
 ```JavaScript
 const bounce = `linear(
@@ -1115,13 +785,7 @@ const bounce = `linear(
   );`
 ```
 
-  
-
-
-在 WAAPI 中，可以直接将 `linear()` 作为 WAAPI 的 `easing` 选项的值，通过将其作为字符串传递。
-
-  
-
+在 WAAPI 中，可以直接将 `linear()` 字符串作为 `easing` 选项的值：
 
 ```JavaScript
 const animEle = document.querySelector('.animated');
@@ -1155,40 +819,23 @@ buttonHandler.addEventListener("click", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/LYazmPa
 
-  
-
-
-没有接触过 CSS 的 `linear()` 缓动函数的读者，一定会好奇，`bounce()` 函数是如何转换成 `linear()` 函数的。正如《使用 linear() 函数创建令人惊叹的动画曲线》一文中所介绍的，我们可以通过 [@Jake Archibald](https://twitter.com/jaffathecake) 创建了一个[在线生成器](https://linear-easing-generator.netlify.app/)，将 `bounce()` 函数或其他 JavaScript 版本的缓动函数转换为 `linear()` 函数：
-
-  
-
-
-  
-
+`bounce()` 函数到 `linear()` 函数的转换可借助 [@Jake Archibald](https://twitter.com/jaffathecake) 创建的[在线生成器](https://linear-easing-generator.netlify.app/)完成，它可以将 `bounce()` 或其他 JavaScript 版本的缓动函数转换为 `linear()` 函数：
 
 > URL：https://linear-easing-generator.netlify.app/
 
-  
 
 
-在 WAAPI 中，你可以直接在 JavaScript 中使用 [@Michelle Barker](https://michellebarker.co.uk/) 提供的转换函数，将 JavaScript 版本定义的缓动函数转换为 `linear()` 函数。比如，上面那个示例，我们可以像下面这样编写 JavaScript：
-
-  
-
+在 WAAPI 中也可以直接在 JavaScript 里使用 [@Michelle Barker](https://michellebarker.co.uk/) 提供的转换函数，将 JavaScript 定义的缓动函数转换为 `linear()` 函数：
 
 ```JavaScript
 const animEle = document.querySelector('.animated');
 const buttonHandler = document.querySelector('.button');
 
-// 来自 easings.net 的 bounce 缓动函数
+// 来自 easings.net 的 bounce 缓动函数
 const bounce =  (pos) => {
     const n1 = 7.5625;
     const d1 = 2.75;
@@ -1234,21 +881,13 @@ buttonHandler.addEventListener("click", (etv) => {
 });
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/RwdLyOK
 
-  
+### 方式三：注册自定义缓动函数（提案阶段）
 
-
-在不久的未来，你可能还会拥有更高级的方法，即注册自定义缓动函数。这是 [W3C 的 CSS 工作小组最新提出的一个建议，允许 Web 开发人员注册自定义缓动函数](https://github.com/w3c/csswg-drafts/issues/1012)。该建议提出了一个新的方法 `document.registerTimingFunction` 来实现：
-
-  
-
+更高级的方法是注册自定义缓动函数。[W3C CSS 工作小组提出的建议](https://github.com/w3c/csswg-drafts/issues/1012)允许 Web 开发人员注册自定义缓动函数，通过新的方法 `document.registerTimingFunction` 实现：
 
 ```JavaScript
 document.registerTimingFunction('bounce', function (pos) {
@@ -1267,13 +906,7 @@ document.registerTimingFunction('bounce', function (pos) {
 });
 ```
 
-  
-
-
-注册后，该方法将可用于CSS 动画：
-
-  
-
+注册后，该缓动函数可用于 CSS 动画：
 
 ```CSS
 .animated {
@@ -1285,13 +918,7 @@ document.registerTimingFunction('bounce', function (pos) {
 }
 ```
 
-  
-
-
-也可以用于 WAAPI 中 `options` 的 `easing` 选项：
-
-  
-
+也可用于 WAAPI 中 `options` 的 `easing` 选项：
 
 ```JavaScript
 const options = {
@@ -1299,23 +926,11 @@ const options = {
 }
 ```
 
-  
-
-
-这仍然只是一个提案。目前还没有关于它的正式内容，但我很希望看到这一点取得进展。
-
-  
-
+这仍然只是一个提案，尚无正式规范内容，值得持续关注其进展。
 
 ## 文档中的动画
 
-  
-
-
-如果你在 `document.timeline` 中描述了所有动画，你就可以通过 `getAnimations()` 获得你站点上的所有动画，其中包括 WAAPI 定义的任何动画对象，以及任何 CSS 过渡动画和关键帧动画。例如：
-
-  
-
+所有动画都在 `document.timeline` 中描述。通过 `getAnimations()` 可以获得站点上的所有动画，包括 WAAPI 定义的动画对象，以及任何 CSS 过渡动画和关键帧动画：
 
 ```JavaScript
 // 获取文档中所有动画
@@ -1325,18 +940,9 @@ const animations = document.getAnimations()
 const animations = element.getAnimations()
 ```
 
-  
+`getAnimations()` 可以和 `@keyframes` 一起使用：即使动画用 CSS 创作，需要通过 API 控制时，`getAnimations()` 会让事情变得容易得多。
 
-
-你可以将 `getAnimations()` 和 `@keyframes` 一起使用。假设你和我一样，比较喜欢使用 CSS 来创作动画，但有时需要通过一些 API 来控制动画。那么使用 `getAnimations()` 会让事情变得容易得多。
-
-  
-
-
-需要注意的是，`getAnimations()` 方法始终返回的是一个数组。即使 DOM 元素只应用了一个动画，`getAnimations()` 仍然会返回一个数组。我们可以通过下面这种方式来获取应用于元素上的那个单一的动画对象：
-
-  
-
+注意 `getAnimations()` 始终返回一个数组——即使 DOM 元素只应用了一个动画。获取应用于元素上的单一动画对象的方式：
 
 ```JavaScript
 const animEle = document.querySelector(".animated");
@@ -1345,39 +951,20 @@ const animEle = document.querySelector(".animated");
 const animation = animEle.getAnimations()[0]
 ```
 
-  
-
-
-如此一来，你就可以通过相关的 API 来控制 CSS 动画，例如：
-
-  
-
+取得动画对象后，就可以通过相关 API 控制 CSS 动画，例如：
 
 ```JavaScript
 animation.playbackRate = 4;
 animation.reverse()
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/MWxEXjd
 
-  
+`getAnimations()` 在可访问性场景中也有实用价值。好的 Web 动画能为 Web 应用或网站锦上添花，但开发者需要为创作的动画负责：动画可能对患有前庭障碍等疾病的用户产生心理负担，甚至触发疾病。正因如此，现在很多终端设备都提供了"减少运动"（`prefers-reduced-motion`）的用户偏好设置（参见《提升可访问性动画的关键技巧》）。
 
-
-不知道大家是否还记得，我曾在《提升可访问性动画的关键技巧》提出一个观点，好的 Web 动画能给 Web 应用或网站起到锦上添花的作用。但作为一名 Web 开发者，我们需要为自己创作的 Web 动画负责任。我们不能因为自己创作给一些用户带伤害，比如患有类似前庭障碍疾病的用户。因为你的动画创作，可能对这个群体的用户产生心理负担，甚至有可能导致他们触发疾病。正因为如此，现在很多终端设备都提供了“减少运动”的用户偏好设置。
-
-  
-
-
-就这个情境而言，`getAnimations()` 能起到很好的作用，它可以获取到文档中的所有动画，你可以根据需要取消动画：
-
-  
-
+`getAnimations()` 可以获取文档中的所有动画，并按需取消：
 
 ```JavaScript
 if (window.matchMedia('(prefers-reduced-motion)')) {
@@ -1385,18 +972,13 @@ if (window.matchMedia('(prefers-reduced-motion)')) {
 }
 ```
 
-  
-
-
 ## 多动画
 
-  
+多动画有两种形式：同一个元素上应用多个动画；同一个页面上多个元素应用动画。两种形式下，CSS 中多动画的时序主要依赖持续时间和延迟时间进行编排。
 
+### 同一元素上的多个动画
 
-多动画通常有两种形式，第一种形式是同一个元素上应用多个动画，第二种形式是同一个页面有多个元素应用动画。不管哪种方式，在 CSS 中，多动画的时序主要依赖于动画的持续时间和延迟时间来进行编排。例如下面这个示例，在同一个元素上应用了 `rotate` 、`scale` 和 `opacity` 三个关键帧动画：
-
-  
-
+以下示例在同一个元素上应用 `rotate`、`scale` 和 `opacity` 三个关键帧动画：
 
 ```CSS
 @keyframes rotate{
@@ -1431,21 +1013,11 @@ if (window.matchMedia('(prefers-reduced-motion)')) {
 }
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/wvOrYzX
 
-  
-
-
-在 WAAPI 中，你可以在同一个元素上调用 `Element.animate()` ，类似于 CSS 一样，给元素设置多个动画：
-
-  
-
+在 WAAPI 中，可以在同一个元素上多次调用 `Element.animate()`，给元素设置多个动画：
 
 ```JavaScript
 const animEle = document.querySelector('.animated');
@@ -1476,26 +1048,13 @@ const scaleEffect = animEle.animate(scaleKeyframe, options);
 const opacityEffect = animEle.animate(opacityKeyframe, options);
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/wvOrYPY
 
-  
+两种方法虽然不同，但都可以使用 `getAnimations()` 获取应用于 `.animated` 上的 `rotate`、`scale` 和 `opacity` 三个动画，每个动画都可以暂停、播放、完成、取消，并通过时间轴或播放速率进行操作。
 
-
-上面这两个示例，虽然使用的方法不相同，但你都可以使用 `getAnimations()` 获取应用于 `.animated` 上的 `rotate` 、`scale` 和 `opacity` 三个动画，每个动画都可以暂停、播放、完成、取消，并通过时间轴或播放速率进行操作。
-
-  
-
-
-继续以这个动画效果为例，假设你希望 `rotate` 、`scale` 和 `opacity` 三个动画不是同时播放，持续时间和缓动函数都有所不同。在 CSS 中你只能利用多动画的特性，为每个动画设置不一样的参数，比如动画延迟时间和持续时间以及缓动函数等：
-
-  
-
+若希望三个动画不是同时播放、持续时间和缓动函数都有所不同，CSS 中只能利用多动画的特性为每个动画设置不同的参数（延迟时间、持续时间、缓动函数等）：
 
 ```CSS
 .animated {
@@ -1503,34 +1062,17 @@ const opacityEffect = animEle.animate(opacityKeyframe, options);
 }
 ```
 
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/jOJaPEv
 
-  
-
-
-在 WAAPI 中，同样可以通过 `delay` 和 `duration` 来控制动画的时间，但与 CSS 不同的是，WAAPI 还可以通过 `endDelay` 和 `iterationStart` 来控制动画在时间轴上的时间。
-
-  
-
-
-  
-
+WAAPI 中同样可以通过 `delay` 和 `duration` 控制动画时间；与 CSS 不同的是，WAAPI 还可以通过 `endDelay` 和 `iterationStart` 控制动画在时间轴上的时间：
 
 > Demo 地址：https://codepen.io/smashingmag/full/VwWWrzz
 
-  
+### 多个元素上的动画
 
-
-第二种多动画是指在 Web 上多个元素应用动画，哪怕是相同的动画效果。相比之下，控制 Web 页面上多个元素的动画效果，WAAPI 要比 CSS 更具优势。例如下面这个效果，二十个 `div` 分别应用 `transform` 、`opacity` 和 `backgroundColor` 关键帧效果，并且每个动画的 `duration` 和 `delay` 都不相同：
-
-  
-
+第二种多动画指页面上多个元素应用动画（即使是相同的动画效果）。控制多个元素的动画，WAAPI 比 CSS 更具优势。以下示例中二十个 `div` 分别应用 `transform`、`opacity` 和 `backgroundColor` 关键帧效果，且每个动画的 `duration` 和 `delay` 都不相同：
 
 ```JavaScript
 const animEles = document.querySelectorAll(".animated");
@@ -1574,49 +1116,21 @@ animEles.forEach((animEle, index) => {
 });
 ```
 
-  
-
-
-你将看到的效果如下：
-
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/abMEOQd
 
-  
+此外，WAAPI Level 2 规范还提供了 `GroupEffect`（组合效果）和 `SequenceEffect`（序列效果）两个 API，用于更好地创建多动画。
 
+### GroupEffect：组合效果
 
-除此之外，WAAPI 的 Level 2 规范还提供了 `GroupEffect` （组合效果）和 `SequenceEffect` （序列效果）两个 API，使得 Web 开发者能更好的创建多动画。
+`GroupEffect` 将一个或多个 `KeyframeEffect` 组合在一起同时播放。它接受一个 `effects` 参数，可在其中传递表示多个动画的 `KeyframeEffect` 数组。定义之后，可以在默认时间轴上播放动画组。
 
-  
-
-
-WAAPI 的 `GroupEffect` 将一个或多个 `KeyframeEffect` 组合在一起同时播放。它接受一个 `effects` 参数，我们可以在其中传递表示多个动画的 `KeyframeEffect` 数组。一旦定义，我们可以在默认时间轴上播放动画组。
-
-  
-
-
-例如下面这个效果：
-
-  
-
-
-  
-
+以下示例是一个分组动画效果：第一组元素沿 `Y` 轴向上移动，第二组元素沿 `Y` 轴向下移动。以下将第一组称为"舞蹈组"，第二组称为"滑雪组"：
 
 > Demo 地址：https://codepen.io/airen/full/gOEoapK
 
-  
-
-
-很明显，这是一个分组动画效果，第一组的元素会沿着 `Y` 轴向上移，第二组的元素会沿着 `Y` 轴向下移。我在这里把第一组称为舞蹈组，第二组称为滑雪组。
-
-  
-
+HTML 结构：
 
 ```HTML
 <div class="container">
@@ -1631,26 +1145,14 @@ WAAPI 的 `GroupEffect` 将一个或多个 `KeyframeEffect` 组合在一起同�
 <button class="button" id="play">Play</button>
 ```
 
-  
-
-
-我们首先初始化两个对象来保存动画所需的关键帧效果：
-
-  
-
+首先初始化两个对象来保存动画所需的关键帧效果：
 
 ```JavaScript
 const danceKeyframeEffects = [];
 const skiingKeyframeEffects = [];
 ```
 
-  
-
-
-然后，分别给“舞蹈组”和“滑雪组”定义动画效果。这两个动画效果其实很简单，在关键帧中改变 `translate` 属性 `Y` 轴的值，具体代码如下：
-
-  
-
+分别给"舞蹈组"和"滑雪组"定义动画效果：在关键帧中改变 `translate` 属性 `Y` 轴的值：
 
 ```JavaScript
 const effects = {
@@ -1687,13 +1189,7 @@ const effects = {
 };
 ```
 
-  
-
-
-在这个示例中，我们为这两组动画设置了相同的动画参数：
-
-  
-
+为两组动画设置相同的动画参数：
 
 ```JavaScript
 const options = {
@@ -1704,13 +1200,7 @@ const options = {
 };
 ```
 
-  
-
-
-接下来，使用 `new KeyframeEffect()` 分别为“舞蹈组”和“滑雪组”中的成员创建动画，并推送到相应的 `KeyframeEffect` 数组中。这是创建具有相同动画和定时功能的多个对象的方法。还要注意，我们使用关键帧效果而不是直接调用 `Element.animate()` ，因为我们想更多地控制何时启动动画：
-
-  
-
+使用 `new KeyframeEffect()` 分别为两组中的成员创建动画，并推送到相应的数组。这是创建具有相同动画和定时功能的多个对象的方法。注意这里使用关键帧效果而不是直接调用 `Element.animate()`，因为需要更多地控制何时启动动画：
 
 ```JavaScript
 const dances = document.querySelectorAll(".dance");
@@ -1727,13 +1217,7 @@ skiings.forEach((skiing) => {
 });
 ```
 
-  
-
-
-使用刚刚创建的关键帧效果作为 `new GroupEffect()` 的参数，就可以创建两个组效果，一个用于“舞蹈组”，一个用于“滑雪组”：
-
-  
-
+将关键帧效果数组作为 `new GroupEffect()` 的参数，创建两个组效果：
 
 ```JavaScript
 const danceEffect = new GroupEffect(danceKeyframeEffects);
@@ -1743,13 +1227,7 @@ const skiingEffect = new GroupEffect(skiingKeyframeEffects);
 const anim2 = document.timeline.play(skiingEffect);
 ```
 
-  
-
-
-最后要做的一件事情就是创建一个按钮来控制动画的播放和暂停。我们可以创建单独的按钮来独立控制每个动画。
-
-  
-
+最后创建按钮控制动画的播放和暂停——可以为每个动画组创建独立的控制：
 
 ```JavaScript
 const buttonHandler = document.getElementById("play");
@@ -1769,31 +1247,15 @@ buttonHandler.addEventListener("click", (etv) => {
 });
 ```
 
-  
-
-
-这样我们就能看到示例所呈现的效果，页面上四个元素分为两组动画效果，其中“舞蹈组”的两个元素会沿着 `Y` 轴向上移动，“滑雪组”的两个元素会沿着 `Y` 轴向下移动：
-
-  
-
-
-  
-
+最终效果：页面上四个元素分为两组动画，"舞蹈组"的两个元素沿 `Y` 轴向上移动，"滑雪组"的两个元素沿 `Y` 轴向下移动：
 
 > Demo 地址：https://codepen.io/airen/full/gOEoapK
 
-  
+### SequenceEffect：序列效果
 
+`SequenceEffect` 与 `GroupEffect` 类似，允许将多个动画（由 `KeyframeEffects` 指定）分组在一起，但不是并行播放，而是一个接一个地播放。
 
-`SequenceEffects` 与 `GroupEffect` 有点类似，允许 Web 开发者将多个动画（由 `KeyframeEffects` 指定）分组在一起，但不是并行播放，而是一个接一个地播放。
-
-  
-
-
-我们把上面示例中的 `new GroupEffect()` 替换为 `new SequenceEffect()` ，其他代码不变：
-
-  
-
+把上面示例中的 `new GroupEffect()` 替换为 `new SequenceEffect()`，其他代码不变：
 
 ```JavaScript
 const danceEffect = new SequenceEffect(danceKeyframeEffects);
@@ -1803,105 +1265,42 @@ const skiingEffect = new SequenceEffect(skiingKeyframeEffects);
 const anim2 = document.timeline.play(skiingEffect);
 ```
 
-  
-
-
-你将看到的效果如下：
-
-  
-
-
-  
 
 
 > Demo 地址：https://codepen.io/airen/full/NWJXjxw
 
-  
+`SequenceEffect` 解决了 CSS 以及前述动画 API 中难以解决的问题：在 CSS 中维持序列动画需要基于先前动画的持续时间维护延迟，或使用完成回调，这些方法难以维护且不够精确。
 
+注意：`GroupEffect` 和 `SequenceEffect` 是制作多动画的更高级 API，目前使用需要 [WAAPI 的 Polyfill](https://github.com/web-animations/web-animations-js)。
 
-`SequenceEffect` 为我们解决了在 CSS 或到目前为止所见动画 API 中难以解决的问题。我们必须基于先前动画的持续时间维护延迟，或使用完成回调。这些方法可能难以维护，并且可能不太精确。
-
-  
-
-
-注意，`GroupEffect` 和 `SequenceEffect` 为我们提供了制作多动画更高级的 API，如果现在要使用这两个 API 相关的功能，[需要使用 WAAPI 的 Polyfill](https://github.com/web-animations/web-animations-js)。
-
-  
-
-
-最后，通过下面这个示例向大家呈现 `GroupEffect` 和 `SequenceEffect` 之间的差异：
-
-  
-
-
-  
-
+以下示例直观呈现 `GroupEffect` 和 `SequenceEffect` 之间的差异：
 
 > Demo 地址：https://codepen.io/airen/full/oNVpWZj
 
-  
-
-
 ## 硬件加速
 
-  
+过去，CSS 动画通常更受青睐，因为它可以提供硬件加速，提高动画性能。现在，如果浏览器已支持 WAAPI，在 WAAPI 中也将获得同样的加速。
 
+使用 WAAPI 时，所有动画都在 `document.timeline` 中描述，浏览器可以访问所有动画并进行优化。
 
-在过去，你通常会更喜欢 CSS 动画，因为它可以提供硬件加速，提高动画性能。但是现在，如果浏览器已经支持 WAAPI，你在 WAAPI 中也将获得此加速。
-
-  
-
-
-当你使用 WAAPI 时，所有动画将在 `document.timeline` 中描述，你（以及浏览器）可以访问所有动画。
-
-  
-
-
-外部动画库的问题之一是浏览器有时无法识别动画库的元素是正在进行动画的元素，因此它们不会被提升到自己的层级或在 GPU 上呈现。使用 WAAPI，我们告诉浏览器：“嘿浏览器，我正在使用你提供的 API 对这个元素进行动画，你能否使用你可用的方式对其进行优化？”
-
-  
-
+外部动画库的一个问题是：浏览器有时无法识别动画库操作的元素正在进行动画，因此这些元素不会被提升到自己的层级或在 GPU 上呈现。使用 WAAPI 则是明确告诉浏览器：该元素正在通过浏览器提供的 API 进行动画，浏览器可以使用其可用的方式对其进行优化。
 
 ## WAAPI 与 CSS 集成
 
-  
+WAAPI 并非用来替代 CSS 动画或现有技术，而是与之紧密集成。开发者可以自由选择适合用例和偏好的任何技术。
 
+WAAPI 规范不仅定义了一个 API，还为 Web 上的动画提供一个共享模型——处理动画的其他规范都使用相同的模型和术语。最好将 WAAPI 视为 Web 上动画的基础，而 WAAPI API、CSS 过渡动画（`transition`）和关键帧动画（`animation`）都是共享基础之上的层。
 
-WAAPI 并不是用来替代 CSS 动画或者说现有技术，而是紧密集成在其中。你可以自由选择使用适合你用例和偏好的任何技术。
+这意味着创建一个出色的 WAAPI 动画引擎，需要为 CSS Animations、CSS Transitions 和 WAAPI 建立全新且共享的动画引擎：即使不使用 WAAPI、只编写 CSS Animations 和 CSS Transitions，也会在新的 WAAPI 引擎中运行。无论选择哪种技术，所有动画都将同步运行和更新，由 CSS 发起的动画和 WAAPI 分派的事件将一起传递。
 
-  
+对开发者而言更重要的是：整个 WAAPI 都可以用于查询或控制由 CSS 创建的动画——使用 `Document.getAnimations()` 和 `Element.getAnimations()` 可以获取纯 CSS 中的动画，再用 WAAPI 控制它们。
 
-
-WAAPI 规范不仅定义了一个 API，还旨在为 Web 上的动画提供一个共享的模型。处理动画的其他规划都使用相同的模型和术语。因此，最好将 WAAPI 视为 Web 上动画的基础，并将其 API 以及 CSS 过渡动画（`transition`）和关键帧动画（`animation`）视为共享基础之上的层。
-
-  
-
-
-这意味着，为了创建一个出色的 WAPI 动画，我们必须从头开始，为 CSS Animations、CSS Transitions 和新的 WAAPI 创建一个全新且共享的动画引擎。即使你不使用 WAAPI，你编写 CSS Animations 和 CSS Transitions ，也可以在新的 WAAPI 引擎中运行。无论选择哪种技术，所有动画都将同步运行和更新，由 CSS 发起的动画和 WAAPI 分派的事件将一起传递等。
-
-  
-
-
-但对于 Web 开发者来说，可能更重要的是整个 WAAPI 都可以用于查询或控制由 CSS 创建的动画。你可以使用 `Document.getAnimations()` 和 `Element.getAnimations()` 指定纯 CSS 中的动画，但也可以使用 WAAPI 控制它们。
-
-  
-
-
-很不幸的是，到目前为止，SVG Animations 仍然与 WAAPI 模型不同，并且 WAAPI 与 SVG 之间没有集成。这仍然是 Web 平台改进的一个方向。
-
-  
-
+目前的局限：SVG Animations 仍然与 WAAPI 模型不同，WAAPI 与 SVG 之间没有集成，这仍是 Web 平台改进的一个方向。
 
 ## 小结
 
-  
+WAAPI 在 Web 动画领域有着重要地位：它建立了在所有浏览器中描述动画的基础，提供了播放控制、CSS 硬件加速、访问文档中所有动画等新能力，并允许将更复杂的动画行为放在 JavaScript 中，使 CSS 动画保持简单。
 
+Web 上实现动画的方式很多，WAAPI 并不是解决所有动画问题的方法。对于常见问题，纯 CSS 往往已有出色的解决方案，建议优先尝试在纯 CSS 中执行动画——深入掌握 CSS 本身收益很大，并非所有场景都需要 JavaScript。
 
-WAAPI 在 Web 动画领域确实有着重要的地位，因为它建立了在所有浏览器中描述动画的基础。它为我们提供了许多新选项，如播放控制、JavaScript 中 CSS 硬件加速以及对文档中所有动画的访问。它还允许 Web 开发者将更复杂的动画行为放在 JavaScript 中，从而可以使用 CSS 动画更简单。
-
-总的来说，在 Web 上有很多动画的方式，而 WAAPI 并不是解决所有动画问题的方法。对于常见问题，有一些真正惊人的纯 CSS 解决方案，我建议每个人都尝试在纯 CSS 中执行动画，因为深入研究 CSS 可能真的很有益，因为你并不总是需要 Javascript。 CSS 本身就非常强大。
-
-  
-
-
-然而，当动画变得更加复杂且您希望更好地控制本机动画时，WAAPI 将成为你的朋友。当你想要创建动态值或处理 DOM 事件以使某些内容更具交互性时，Javascript 将为你提供很大的灵活性。
+当动画变得更复杂、需要更好地控制原生动画时，WAAPI 是合适的工具；当需要创建动态值或处理 DOM 事件以增强交互性时，JavaScript 能提供很大的灵活性。

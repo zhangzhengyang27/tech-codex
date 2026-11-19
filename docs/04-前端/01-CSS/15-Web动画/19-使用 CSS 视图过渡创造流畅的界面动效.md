@@ -25,17 +25,17 @@ category: CSS
   
 
 
-可是，在现代 Web 开发中，为用户提供令人印象深刻的用户界面和交互效果变得越来越重要。任何一个人都会对笨拙的过渡效果和错综复杂的页面状态切换感到厌倦。那么来认识一下 CSS View Transition API 吧，它允许你将原生应用程序的过渡效果引入到 Web 应用或网站中，不仅适用于单页应用程序，还适用于多页应用程序。简单地说，如果你要为 Web 应用程序创建优雅、丝滑般动画效果，那么 CSS View Transition API 将是你的得力助手，让你不再被重叠的状态所困惑。你的 Web 应用或网站即将迎来一次重大升级！
+可是，在现代 Web 开发中，为用户提供令人印象深刻的用户界面和交互效果变得越来越重要。任何一个人都会对笨拙的过渡效果和错综复杂的页面状态切换感到厌倦。CSS View Transition API 允许开发者将原生应用程序的过渡效果引入到 Web 应用或网站中，不仅适用于单页应用程序，还适用于多页应用程序。简单地说，如果要为 Web 应用程序创建优雅、丝滑般动画效果，那么 CSS View Transition API 将是得力助手，使开发者不再被重叠的状态所困惑，Web 应用或网站的用户体验将迎来一次重大升级。
 
   
 
 
-CSS View Transition API 是一个令人兴奋的新技术，它为 Web 开发者提供了一个强大的工具，可用于创建流畅、生动的页面过渡和动画效果，比如页面滚动时的淡入淡出、元素的平滑移动以及各种各样的过渡效果，而无需繁琐的 JavaScript 代码。通过简单的 CSS 和一些 HTML 标记，你就可以在 Web 网站或应用程序中实现引人注目的动画和过渡，提升用户体验。
+CSS View Transition API 是一个令人兴奋的新技术，它为 Web 开发者提供了一个强大的工具，可用于创建流畅、生动的页面过渡和动画效果，比如页面滚动时的淡入淡出、元素的平滑移动以及各种各样的过渡效果，而无需繁琐的 JavaScript 代码。通过简单的 CSS 和一些 HTML 标记，就可以在 Web 网站或应用程序中实现引人注目的动画和过渡，提升用户体验。
 
   
 
 
-在本文中，我将引导你深入了解 CSS View Transition API 的工作原理，并提供实用的示例和技巧，帮助你在自己的项目中利用这一强大的技术。
+本文深入介绍 CSS View Transition API 的工作原理，并提供实用的示例和技巧，帮助开发者在自己的项目中利用这一强大的技术。
 
   
 
@@ -112,12 +112,12 @@ CSS View Transitions API 允许 Web 开发者在视觉 DOM 更改状态之间添
   
 
 
-在开始深入了解 CSS View Transitions API 之前，我们先一起来看一些相关的案例，这些案例将让你对这个 API 感到兴奋，并帮助你了解它的重要性和可能性。
+在开始深入了解 CSS View Transitions API 之前，先来看一些相关的案例，这些案例展示了该 API 的重要性和可能性。
 
   
 
 
-为了确保你能正常浏览这些案例，你需要使用支持 View Transitions API 的浏览器（如 Chrome 111+ 或 Edge 111+，API 默认已启用）。在早期版本中，需要手动开启相关实验标志：
+为了确保能正常浏览这些案例，需要使用支持 View Transitions API 的浏览器（如 Chrome 111+ 或 Edge 111+，API 默认已启用）。在早期版本中，需要手动开启相关实验标志：
 
   
 
@@ -138,7 +138,7 @@ chrome://flags#view-transition-on-navigation
   
 
 
-我们先从页面切换过渡的案例开始，这些案例展示了 CSS View Transitions API 最初的设计意图，该 API 最初设计用于单页面应用程序（SPA），通过使用 CSS View Transitions API，在单页面应用程序中不同页面之间实现平滑的过渡效果，可以包括从一个页面到另一个页面的导航，而无需刷新整个页面。
+先从页面切换过渡的案例开始，这些案例展示了 CSS View Transitions API 最初的设计意图：该 API 最初设计用于单页面应用程序（SPA），通过使用 CSS View Transitions API，在单页面应用程序中不同页面之间实现平滑的过渡效果，可以包括从一个页面到另一个页面的导航，而无需刷新整个页面。
 
   
 
@@ -146,7 +146,7 @@ chrome://flags#view-transition-on-navigation
   
 
 
-> Demo 地址：https://live-transitions.pages.dev/ （你可以[点击这里下载源代码](https://github.com/Charca/view-transitions-live)）
+> Demo 地址：https://live-transitions.pages.dev/ （可[点击这里下载源代码](https://github.com/Charca/view-transitions-live)）
 
   
 
@@ -154,7 +154,7 @@ chrome://flags#view-transition-on-navigation
   
 
 
-> Demo 地址：https://astro-records.netlify.app/ （你可以[点击这里下载源代码](https://github.com/Charca/astro-records)）
+> Demo 地址：https://astro-records.netlify.app/ （可[点击这里下载源代码](https://github.com/Charca/astro-records)）
 
   
 
@@ -162,7 +162,7 @@ chrome://flags#view-transition-on-navigation
   
 
 
-> Demo 地址：https://astro-movies.pages.dev/ （你可以[点击这里下载源代码](https://github.com/Charca/astro-movies)）
+> Demo 地址：https://astro-movies.pages.dev/ （可[点击这里下载源代码](https://github.com/Charca/astro-movies)）
 
   
 
@@ -177,7 +177,7 @@ Astro 是最早接受并尝试使用 CSS View Transitions API 的，该 API 已�
   
 
 
-现在，你也可以不使用任何 Web 框架实现类似的效果。比如 [@Jake Archibald](https://twitter.com/jaffathecake) 制作的这个案例展示了这一点：
+现在，不使用任何 Web 框架也可以实现类似的效果。比如 [@Jake Archibald](https://twitter.com/jaffathecake) 制作的案例就展示了这一点：
 
   
 
@@ -203,12 +203,12 @@ Astro 是最早接受并尝试使用 CSS View Transitions API 的，该 API 已�
   
 
 
-正如你在示例中所看到的，CSS View Transitions API 在路由级别的情况下表现得非常出色。但是，我想说明你还可以在更细粒度的层面上利用这个 API，甚至可以到达原子级别，以创建更令人兴奋的交互。
+正如示例中所展示的，CSS View Transitions API 在路由级别的情况下表现得非常出色。此外，还可以在更细粒度的层面上利用这个 API，甚至可以到达原子级别，以创建更令人兴奋的交互。
 
   
 
 
-换句话说，上面所展示的都是页面切换过渡效果，其实在 Web 内容元素的动态加载也可以很好的利用这个 API。当你在 Web 页面上添加或删除元素时，元素的显示和隐藏过程中可以使用 CSS View Transition API 添加过渡动画效果。比如下面这两个效果：
+换句话说，上面所展示的都是页面切换过渡效果，其实在 Web 内容元素的动态加载上也可以很好地利用这个 API。当在 Web 页面上添加或删除元素时，元素的显示和隐藏过程中可以使用 CSS View Transition API 添加过渡动画效果。比如下面这两个效果：
 
   
 
@@ -229,7 +229,7 @@ Astro 是最早接受并尝试使用 CSS View Transitions API 的，该 API 已�
   
 
 
-上面这两个效果是由 [@Adam Argyle](https://codepen.io/argyleink) 制作的。你可以在 CodePen 上查看示例的源代码。在第一个示例中，你点击加号按钮时添加新标签（即添加元素）和点击标签项上的关闭按钮时删除标签（即删除元素）都具有平滑的过渡效果。另一个示例演示了使用 CSS View Transitions API 为一个拖放组件添加过渡效果。
+上面这两个效果是由 [@Adam Argyle](https://codepen.io/argyleink) 制作的，可以在 CodePen 上查看示例的源代码。在第一个示例中，点击加号按钮时添加新标签（即添加元素）和点击标签项上的关闭按钮时删除标签（即删除元素）都具有平滑的过渡效果。另一个示例演示了使用 CSS View Transitions API 为一个拖放组件添加过渡效果。
 
   
 
@@ -263,12 +263,12 @@ Astro 是最早接受并尝试使用 CSS View Transitions API 的，该 API 已�
   
 
 
-这些出色的案例有没有惊艳到你？它们展示了 CSS View Transitions API 如何为 Web 应用程序提供平滑、可定制的过渡效果，以增强用户体验。更为重要的是，这些出色的案例都是基于 HTML 和 CSS 以及几行简单的 JavaScript 完成的。当然，这其中离不开 CSS View Transitions API 的功劳。
+这些出色的案例展示了 CSS View Transitions API 如何为 Web 应用程序提供平滑、可定制的过渡效果，以增强用户体验。更为重要的是，这些出色的案例都是基于 HTML 和 CSS 以及几行简单的 JavaScript 完成的，这其中离不开 CSS View Transitions API 的功劳。
 
   
 
 
-我想，看到这些出色案例之后，你对 CSS View Transition API 会更为好奇，甚至想亲自尝试一下如何使用该 API 来制作出属于自己的案例。我也相信你已经准备好了解这个 API 的工作原理以及如何使用它。那就让我们一起开始进入 CSS View Transitions API 的世界吧！
+看到这些出色案例之后，接下来了解 CSS View Transition API 的工作原理以及如何使用它，就可以着手制作属于自己的视图过渡案例。
 
   
 
@@ -278,17 +278,17 @@ Astro 是最早接受并尝试使用 CSS View Transitions API 的，该 API 已�
   
 
 
-我们先从简单的示例着手，这样更有利于你理解 CSS View Transitions API。
+先从简单的示例着手，这样更有利于理解 CSS View Transitions API。
 
   
 
 
-假设页面上有一个按钮，当你点击这个按钮时会往 Web 页面上塞入一张图片。通常情况下，当图片被塞入到页面时，不会有任何花哨的动画效果。现在，让我们看看如何使用 CSS View Transitions API 给图片添加平滑的过渡效果。
+假设页面上有一个按钮，点击这个按钮时会往 Web 页面上塞入一张图片。通常情况下，当图片被塞入到页面时，不会有任何花哨的动画效果。下面看看如何使用 CSS View Transitions API 给图片添加平滑的过渡效果。
 
   
 
 
-首先，你在 HTML 文档中，需要一个 `<button>` 和放置图片的容器：
+首先，在 HTML 文档中，需要一个 `<button>` 和放置图片的容器：
 
   
 
@@ -301,7 +301,7 @@ Astro 是最早接受并尝试使用 CSS View Transitions API 的，该 API 已�
   
 
 
-你需要写几行 JavaScript 代码，使得用户点击“添加图片”按钮后，可以往 `.figure` 容器中塞入 `<img>` （即图片）：
+需要写几行 JavaScript 代码，使得用户点击“添加图片”按钮后，可以往 `.figure` 容器中塞入 `<img>` （即图片）：
 
   
 
@@ -333,12 +333,12 @@ function getRandomInteger(min, max) {
   
 
 
-正如你所看到的，用户点击按钮可以正常的往 `.figure` 容器中新增图片（`img`），但这个过程没有任何动画效果，显得有点生硬。
+正如上面所展示的，用户点击按钮可以正常地往 `.figure` 容器中新增图片（`img`），但这个过程没有任何动画效果，显得有点生硬。
 
   
 
 
-接下来，我们要做的是，使用 CSS View Transitions API 给图片添加过渡效果。我们只需要在想要将图片（`img`）塞入到 `.figure` 容器时调用 `document.startViewTransition()`方法，如下所示：
+接下来要做的，是使用 CSS View Transitions API 给图片添加过渡效果。只需要在想要将图片（`img`）塞入到 `.figure` 容器时调用 `document.startViewTransition()`方法，如下所示：
 
   
 
@@ -387,7 +387,7 @@ button.addEventListener("click", () => {
   
 
 
-正如你所看到的，当你点击按钮时，会注意到平滑的淡入过渡。
+正如上面所展示的，点击按钮时可以观察到平滑的淡入过渡。
 
   
 
@@ -410,7 +410,7 @@ button.addEventListener("click", () => {
   
 
 
-实现上面这个示例，你需要类似下面这样的 HTML 结构：
+实现上面这个示例，需要类似下面这样的 HTML 结构：
 
   
 
@@ -431,7 +431,7 @@ button.addEventListener("click", () => {
   
 
 
-和上面那个案例相似，我们在 `document.startViewTransition()` 方法中使 `figure` 重新显示图片 `displayNewImage()` ：
+和上面那个案例相似，在 `document.startViewTransition()` 方法中使 `figure` 重新显示图片 `displayNewImage()` ：
 
   
 
@@ -511,7 +511,7 @@ thumbnails.addEventListener("click", thumbnailHandler, false);
   
 
 
-与 CSS View Transitions API 一起工作非常简单。然而，在创建更多示例之前，让我们花点时间了解 CSS View Transitions API 幕后的工作机制。
+与 CSS View Transitions API 一起工作非常简单。然而，在创建更多示例之前，有必要花点时间了解 CSS View Transitions API 幕后的工作机制。
 
   
 
@@ -521,12 +521,12 @@ thumbnails.addEventListener("click", thumbnailHandler, false);
   
 
 
-大多数 Web 开发者最初都可能会觉得 CSS View Transitions API 很神秘，用起来很复杂，学起来较困难。事实上并非如此，一旦你了解它是如何工作的，并创建一些示例，你就会对它有很好的掌握。现在，我们一起来探究它的基础知识，让我们看看 View Transitions API 幕后发生了什么？
+大多数 Web 开发者最初都可能会觉得 CSS View Transitions API 很神秘，用起来很复杂，学起来较困难。事实上并非如此，一旦了解它是如何工作的，并创建一些示例，就能对它有很好的掌握。现在一起来探究它的基础知识，看看 View Transitions API 幕后发生了什么。
 
   
 
 
-我们先从最简单的示例开始来深入了解 CSS View Transitions API 的世界。尝试一下。每次单击页面时，都会随机出现一个表情符：
+先从最简单的示例开始来深入了解 CSS View Transitions API 的世界：每次单击页面时，都会随机出现一个表情符：
 
   
 
@@ -539,22 +539,22 @@ thumbnails.addEventListener("click", thumbnailHandler, false);
   
 
 
-你可能已经注意到了，在离开的表情符号和新出现的表情符号之间有一个微妙的淡入淡出的过渡效果。这实际上是浏览器在处理视图过渡时的默认行为。它会无缝地处理旧状态和新状态之间的过渡效果，采用一个交叉淡入的效果。
+可以注意到，在离开的表情符号和新出现的表情符号之间有一个微妙的淡入淡出的过渡效果。这实际上是浏览器在处理视图过渡时的默认行为：它会无缝地处理旧状态和新状态之间的过渡效果，采用一个交叉淡入的效果。
 
   
 
 
-这个效果是通过在 DOM 更新之前使用 `document.startViewTransition()` 方法实现的，它是 [CSS View Transitions 中的一个 API](https://www.w3.org/TR/css-view-transitions-1/#ViewTransition-prepare)。当你调用 `document.startViewTransition()` 时，它会提示浏览器捕获当前 DOM 状态的快照。可以将其视为当前屏幕上显示内容的快速照片。
+这个效果是通过在 DOM 更新之前使用 `document.startViewTransition()` 方法实现的，它是 [CSS View Transitions 中的一个 API](https://www.w3.org/TR/css-view-transitions-1/#ViewTransition-prepare)。当调用 `document.startViewTransition()` 时，它会提示浏览器捕获当前 DOM 状态的快照。可以将其视为当前屏幕上显示内容的快速照片。
 
   
 
 
-然后，魔法就开始了。你在 `document.startViewTransition()` 中提供的回调函数被调用，这是你可以更改 Web 页面上内容的地方。也就是说，浏览器在捕获当前 DOM 状态的快照之后，就触发了 `document.startViewTransition()` 提供的回调函数。一旦你的回调函数完成了它的任务，浏览器会再次获取快照，但这一次是新的页面状态，即你刚刚更新的状态。同时，浏览器在此回调期间巧妙地暂停了渲染，以防止任何闪烁，并且执行得非常迅速。
+然后，魔法就开始了。在 `document.startViewTransition()` 中提供的回调函数被调用，这是更改 Web 页面上内容的地方。也就是说，浏览器在捕获当前 DOM 状态的快照之后，就触发了 `document.startViewTransition()` 提供的回调函数。一旦回调函数完成了它的任务，浏览器会再次获取快照，但这一次是新的页面状态，即刚刚更新的状态。同时，浏览器在此回调期间巧妙地暂停了渲染，以防止任何闪烁，并且执行得非常迅速。
 
   
 
 
-在这个示例中，我们还使用 `document.startViewTransition` 来检测浏览器是否支持 CSS View Transitions API。如果检测到支持，就会调用带有指定回调函数的 `document.startViewTransition()` 。如果不支持，回调函数会立即被调用。这种方法可以让我们逐渐增强 CSS View Transitions API 的使用。
+在这个示例中，还使用 `document.startViewTransition` 来检测浏览器是否支持 CSS View Transitions API。如果检测到支持，就会调用带有指定回调函数的 `document.startViewTransition()` ；如果不支持，回调函数会立即被调用。这种方法可以让 CSS View Transitions API 的使用以渐进增强的方式进行。
 
   
 
@@ -642,7 +642,7 @@ document.startViewTransition(() => {
   
 
 
-根据这个结构安排，浏览器使用 CSS 动画来优雅的从 `::view-transition-old(root)` 淡出到 `::view-transition-new(root)` 。即旧快照（`::view-transition-old(root)`）会淡出，就像将不透明度从 `1` 降低到 `0` （有点类似于下面的代码中 `-ua-view-transition-fade-out` 的动画效果），新快照（`::view-transition-new(root)`）会淡入，就像将不透明度从 `0` 增加到 `1` （有点类似于下面代码中 `-ua-view-transition-fade-in` 的动画效果 ）。这样一来，浏览器就为视图过渡创建了我们熟悉的交叉淡入淡出的效果。
+根据这个结构安排，浏览器使用 CSS 动画来优雅的从 `::view-transition-old(root)` 淡出到 `::view-transition-new(root)` 。即旧快照（`::view-transition-old(root)`）会淡出，就像将不透明度从 `1` 降低到 `0` （有点类似于下面的代码中 `-ua-view-transition-fade-out` 的动画效果），新快照（`::view-transition-new(root)`）会淡入，就像将不透明度从 `0` 增加到 `1` （有点类似于下面代码中 `-ua-view-transition-fade-in` 的动画效果 ）。这样一来，浏览器就为视图过渡创建了常见的交叉淡入淡出的效果。
 
   
 
@@ -694,7 +694,7 @@ html::view-transition-new() {
   
 
 
-现在，我们来看一下真正有趣的部分。这些伪 DOM 结构层都可以被 CSS 选择器选中，因为我们可以添加任何有效的 CSS 属性来自定义动画和行为。例如，你可以通过以下方式延长淡入淡出的持续时间（`animation-duration`）：
+现在来看一下真正有趣的部分。这些伪 DOM 结构层都可以被 CSS 选择器选中，因此可以添加任何有效的 CSS 属性来自定义动画和行为。例如，可以通过以下方式延长淡入淡出的持续时间（`animation-duration`）：
 
   
 
@@ -721,7 +721,7 @@ html::view-transition-new() {
   
 
 
-你还可以通过 `::view-transition-old()` 和 `::view-transition-new()` 伪元素，分别给新旧两种状态设置不同的延迟时间。比如：
+还可以通过 `::view-transition-old()` 和 `::view-transition-new()` 伪元素，分别给新旧两种状态设置不同的延迟时间。比如：
 
   
 
@@ -780,7 +780,7 @@ html::view-transition-new() {
   
 
 
-当然，你还可以重置浏览器给视图过渡的默认动画效果，比如：
+当然，还可以重置浏览器给视图过渡的默认动画效果，比如：
 
   
 
@@ -826,9 +826,9 @@ html::view-transition-new() {
   
 
 
-你所看到就是调整后的动画效果，这个示例告诉我们，我们完全可以使用 CSS 动画来自定义视图过渡的动画效果。
+上面所看到的就是调整后的动画效果。这个示例说明，完全可以使用 CSS 动画来自定义视图过渡的动画效果。
 
-这就是 CSS View Transitions API 的基础原理！它捕捉快照，应用你的更改，使用交叉淡入淡出进行动画处理，并平稳呈现最终结果。
+这就是 CSS View Transitions API 的基础原理：它捕捉快照，应用更改，使用交叉淡入淡出进行动画处理，并平稳呈现最终结果。
 
   
 
@@ -838,12 +838,12 @@ html::view-transition-new() {
   
 
 
-通过上面的学习，我想你对 CSS View Transitions API 有了一定的认知，也可以使用它制作出一些视图过渡的效果。但 CSS View Transitions API 的能力不仅限于此。如果你感兴趣的话，可以继续往下阅读，我将和大家一起更进一步的探究 CSS View Transitions API 的功能。
+通过上面的学习，对 CSS View Transitions API 应该有了一定的认知，也可以使用它制作出一些视图过渡的效果。但 CSS View Transitions API 的能力不仅限于此，接下来进一步探究它的功能。
 
   
 
 
-我们接着从上面示例开始聊起。正如你所看到的，上面示例使用自定义动画效果覆盖了浏览器默认给视图过渡设置的动画效果。这个效果作用于整个文档，因此我们看到的效果，是整个文档在变化，而不是页面某个部分或某个元素在变化：
+接着从上面示例开始聊起。正如上面所看到的，上面示例使用自定义动画效果覆盖了浏览器默认给视图过渡设置的动画效果。这个效果作用于整个文档，因此看到的效果是整个文档在变化，而不是页面某个部分或某个元素在变化：
 
   
 
@@ -851,12 +851,12 @@ html::view-transition-new() {
   
 
 
-事实上，我们所期望的仅是表情符的更换时，有相应的过渡效果。也就是说，视图过渡动效只希望用在 `.stage` 元素（`<h1>`）上。要实现这个效果，我们将要使用到 CSS View Transitions API 中的 `view-transition-name` 功能 。`view-transition-name` 是一个 CSS 属性，允许我们为选中的元素（例如 `.stage`）提供一个特殊的名称，即给视图过渡命名，它能很好的与根视图过渡区分开。
+事实上，期望的仅是表情符更换时有相应的过渡效果，也就是说，视图过渡动效只希望用在 `.stage` 元素（`<h1>`）上。要实现这个效果，将要使用到 CSS View Transitions API 中的 `view-transition-name` 功能。`view-transition-name` 是一个 CSS 属性，允许为选中的元素（例如 `.stage`）提供一个特殊的名称，即给视图过渡命名，它能很好地与根视图过渡区分开。
 
   
 
 
-例如，上面大部分示例中，我们只使用了 `::view-transition-group(root)` 、`::view-transition-old(root)` 和 `::view-transition-new(root)` ，它们其实相当于：
+例如，上面大部分示例中只使用了 `::view-transition-group(root)` 、`::view-transition-old(root)` 和 `::view-transition-new(root)` ，它们其实相当于：
 
   
 
@@ -875,7 +875,7 @@ html::view-transition-new(root) {}
   
 
 
-如果我们把 `view-transition-name` 引入进来的话，那么可以这么来理解。客户端默认使用 `view-transition-name` 定义了一个名为 `root` 的视图过渡：
+如果把 `view-transition-name` 引入进来的话，那么可以这么来理解：客户端默认使用 `view-transition-name` 定义了一个名为 `root` 的视图过渡：
 
   
 
@@ -930,7 +930,7 @@ html::view-transition-new(root) {}
   
 
 
-现在，视图过渡服务于 `.stage` 元素。你将看到的效果也是你所期望的：
+现在，视图过渡服务于 `.stage` 元素，看到的效果也是所期望的：
 
   
 
@@ -943,7 +943,7 @@ html::view-transition-new(root) {}
   
 
 
-现在回过头来看[ @Adam Argyle 的文本替换的过渡动画效果就一目了然了](https://codepen.io/argyleink/full/KKBWwMr)。你甚至可以在它的基础将整个效果变得更为灵活一些：
+现在回过头来看[ @Adam Argyle 的文本替换的过渡动画效果就一目了然了](https://codepen.io/argyleink/full/KKBWwMr)。甚至可以在它的基础上将整个效果变得更为灵活一些：
 
   
 
@@ -1057,7 +1057,7 @@ CSS 的关键部分如下所示：
   
 
 
-你也可以将示例中的文本换成表情符：
+也可以将示例中的文本换成表情符：
 
   
 
@@ -1070,7 +1070,7 @@ CSS 的关键部分如下所示：
   
 
 
-注意，在这个示例中，我们在 `:root` 元素中将 `view-transition-name` 属性的值显式设置为 `none` ：
+注意，在这个示例中，在 `:root` 元素中将 `view-transition-name` 属性的值显式设置为 `none` ：
 
   
 
@@ -1089,17 +1089,17 @@ CSS 的关键部分如下所示：
   
 
 
-换句话说，使用 `view-transition-name` 给视图过渡组命名时，可以是任何你喜欢的名称，只要不是 `none` 。就我个人经验而言，给视图过渡组命名时，尽量不要使用 CSS 值关键词，比如 `auto` 、`inherit` 等，这样可以尽可能的避免带来不必要的麻烦。
+换句话说，使用 `view-transition-name` 给视图过渡组命名时，可以使用任何喜欢的名称，只要不是 `none` 。从实践经验来看，给视图过渡组命名时尽量不要使用 CSS 值关键词，比如 `auto` 、`inherit` 等，这样可以尽可能地避免带来不必要的麻烦。
 
   
 
 
-还有一点需要知道，我们在给视图过渡组命名时，应该确保在每个页面上保持这个名称的唯一性。如果同一个页面上的两个元素在同一时间共享相同的 `view-transition-name` 属性值，那么过渡就不会发生。
+还有一点需要知道，在给视图过渡组命名时，应该确保在每个页面上保持这个名称的唯一性。如果同一个页面上的两个元素在同一时间共享相同的 `view-transition-name` 属性值，那么过渡就不会发生。
 
   
 
 
-还记得我们讨论过的伪 DOM 树吗？当你使用 `view-transition-name` 添加另一个视图过渡时，你会创建一个新的分支。例如：
+前面讨论过视图过渡的伪 DOM 树。当使用 `view-transition-name` 添加另一个视图过渡时，会创建一个新的分支。例如：
 
   
 
@@ -1121,7 +1121,7 @@ CSS 的关键部分如下所示：
   
 
 
-[@Bramus 在 CodePen 上提供了一个可视化工具](https://codepen.io/seyedi/full/bGOpyrX)，可以更好的帮助我们理解视图过渡中的伪 DOM 结构：
+[@Bramus 在 CodePen 上提供了一个可视化工具](https://codepen.io/seyedi/full/bGOpyrX)，可以更好地帮助理解视图过渡中的伪 DOM 结构：
 
   
 
@@ -1152,7 +1152,7 @@ CSS 的 `view-transition-name` 属性对特定过渡组的这种细粒度控制�
   
 
 
-这意味着我们可以使用新的伪元素来自定义新的视图过渡。例如：
+这意味着可以使用新的伪元素来自定义新的视图过渡。例如：
 
   
 
@@ -1170,7 +1170,7 @@ CSS 的 `view-transition-name` 属性对特定过渡组的这种细粒度控制�
   
 
 
-虽然我们使用 CSS View Transitions API 实现了我们所期望的视图过渡效果，但它也带来一个小问题。或许你已经注意到我们所演示的 Demo 中存在一个小问题。在过渡到新状态期间，浏览器会生成伪 DOM 结构。这个结构的最顶层 `::view-transition` 元素，它无意中阻止了整个视图过渡期间的点击交互。为了避免这个现象，我们可以通过将其 `pointer-events` 属性设置为 `none` ：
+虽然使用 CSS View Transitions API 实现了期望的视图过渡效果，但它也带来一个小问题：在过渡到新状态期间，浏览器会生成伪 DOM 结构，这个结构的最顶层 `::view-transition` 元素会无意中阻止整个视图过渡期间的点击交互。为了避免这个现象，可以通过将其 `pointer-events` 属性设置为 `none` ：
 
   
 
@@ -1184,7 +1184,7 @@ CSS 的 `view-transition-name` 属性对特定过渡组的这种细粒度控制�
   
 
 
-通过上面的学习，你应该知道如何使用 CSS View Transitions API 了：
+通过上面的学习，应该已经知道如何使用 CSS View Transitions API 了：
 
   
 
@@ -1197,7 +1197,7 @@ CSS 的 `view-transition-name` 属性对特定过渡组的这种细粒度控制�
   
 
 
-换句话说，你要给一个元素添加视图过渡效果，可以通过以下几个步骤来完成。
+换句话说，要给一个元素添加视图过渡效果，可以通过以下几个步骤来完成。
 
   
 
@@ -1216,7 +1216,7 @@ CSS 的 `view-transition-name` 属性对特定过渡组的这种细粒度控制�
   
 
 
-接着**自定义 CSS 动画**，以描述元素在过渡期间应该如何变化。你可以使用 `@keyframes` 规则来创建动画，也可以使用现代的 CSS 动画库，比如 `animate.css` 。在定义动画时，最好让它们成对出现，其中一个用于旧状态（离开 `exit`），另一个则用于新状态（进入 `entrances`）。例如：
+接着**自定义 CSS 动画**，以描述元素在过渡期间应该如何变化。可以使用 `@keyframes` 规则来创建动画，也可以使用现代的 CSS 动画库，比如 `animate.css` 。在定义动画时，最好让它们成对出现，其中一个用于旧状态（离开 `exit`），另一个则用于新状态（进入 `entrances`）。例如：
 
   
 
@@ -1290,12 +1290,12 @@ viewTransition(() => {
   
 
 
-把它们结合在一起，我们就可以使用 CSS View Transitions API 制作出很多有创意的视图过渡效果。
+把它们结合在一起，就可以使用 CSS View Transitions API 制作出很多有创意的视图过渡效果。
 
   
 
 
-我们来看一个综合案例，根据一定的条件对内容进行过滤，这在 Web 上是一个很常见的效果：
+来看一个综合案例：根据一定的条件对内容进行过滤，这在 Web 上是一个很常见的效果：
 
   
 
@@ -1308,12 +1308,12 @@ viewTransition(() => {
   
 
 
-在这个案例中，使用位于顶部的控件（条件选项），你可以切换内容可见性（根据条件过滤内容），改变顺序，以及两者结合。此外，单击任何一张图片都会触发效果，它会扩展，占据网格中的额外行和列。
+在这个案例中，使用位于顶部的控件（条件选项），可以切换内容可见性（根据条件过滤内容）、改变顺序，以及两者结合。此外，单击任何一张图片都会触发效果：它会扩展，占据网格中的额外行和列。
 
   
 
 
-实现这个效果，你可能需要像下面这样的 HTML 结构：
+实现这个效果，需要像下面这样的 HTML 结构：
 
   
 
@@ -1337,12 +1337,12 @@ viewTransition(() => {
   
 
 
-在每个 `figure` 元素上使用自定义属性 `--index` 设置了它的索引号，该索引号从 `1` 开始。因为我们后面在定义每个视图过渡组时，需要用到 `--index` 自定义属性。
+在每个 `figure` 元素上使用自定义属性 `--index` 设置了它的索引号，该索引号从 `1` 开始，因为后面在定义每个视图过渡组时，需要用到 `--index` 自定义属性。
 
   
 
 
-我们这个示例最大的特点是，每个 `figure` 元素都具有视图过渡效果。因此，我们首要做的就是确保每个 `figure` 元素都有自己独特的视图过渡名称。
+这个示例最大的特点是，每个 `figure` 元素都具有视图过渡效果。因此，首要做的就是确保每个 `figure` 元素都有自己独特的视图过渡名称。
 
   
 
@@ -1363,7 +1363,7 @@ galleryItems.forEach((item) => {
   
 
 
-上在的代码，我们对所有 `figure` 进行了遍历，并且以字符串 `item-` 为前缀，结合自定义属性 `--index` 的值组合成 `view-transition-name` 属性的值。这样一来，每个 `figure` 元素都具有独特的视图过渡名称。即：
+上面的代码对所有 `figure` 进行了遍历，并且以字符串 `item-` 为前缀，结合自定义属性 `--index` 的值组合成 `view-transition-name` 属性的值。这样一来，每个 `figure` 元素都具有独特的视图过渡名称。即：
 
   
 
@@ -1384,7 +1384,7 @@ figure {
   
 
 
-使用简短的几行 JavaScript 代码，可以帮助省去编写很多重复性的 CSS 代码。当然，你也可以使用 CSS 自定义属性的方式来设置 `view-transition-name` 的值。例如：
+使用简短的几行 JavaScript 代码，可以帮助省去编写很多重复性的 CSS 代码。当然，也可以使用 CSS 自定义属性的方式来设置 `view-transition-name` 的值。例如：
 
   
 
@@ -1415,7 +1415,7 @@ figure {
   
 
 
-为每个元素命名好视图过渡名称之后，你就可以使用 CSS 的 `@keyframes` 来定义视图过渡所需的动画效果了：
+为每个元素命名好视图过渡名称之后，就可以使用 CSS 的 `@keyframes` 来定义视图过渡所需的动画效果了：
 
   
 
@@ -1437,7 +1437,7 @@ figure {
   
 
 
-在这个示例中，我们定义两个动画：
+在这个示例中，定义了两个动画：
 
   
 
@@ -1448,7 +1448,7 @@ figure {
   
 
 
-它们分别用于 `::view-transition-old()` 和 `::view-transition-new()` 伪元素上。只不过，在我们这个示例，同样使用 JavaScript 编写，有利于你减少重复性的代码编写：
+它们分别用于 `::view-transition-old()` 和 `::view-transition-new()` 伪元素上。只不过，在这个示例中同样使用 JavaScript 编写，有利于减少重复性的代码编写：
 
   
 
@@ -1492,7 +1492,7 @@ galleryItems.forEach((item) => {
   
 
 
-它相当于你在 CSS 中编写类似下面这样的代码：
+它相当于在 CSS 中编写类似下面这样的代码：
 
   
 
@@ -1534,7 +1534,7 @@ galleryItems.forEach((item) => {
   
 
 
-如果你的代码中有 `N` 个 `figure` 元素，那你就会有 `N` 个 `::view-transition-old(item-N)` 、`::view-transition-new(item-N)` 和 `::view-transition-group(item-N)` 。这样机械性的编写 CSS 代码，对于 Web 开发者来说是极其痛苦，又毫无意义的。
+如果代码中有 `N` 个 `figure` 元素，就会有 `N` 个 `::view-transition-old(item-N)` 、`::view-transition-new(item-N)` 和 `::view-transition-group(item-N)` 。这样机械性地编写 CSS 代码，对于 Web 开发者来说是极其痛苦又毫无意义的。
 
   
 
@@ -1666,7 +1666,7 @@ figure.active {
   
 
 
-到此你就完成了 Demo 所有编码。[最终代码请查看 Demo 的源码](https://codepen.io/airen/full/GRPGgPK)。
+到此就完成了 Demo 所有编码。[最终代码请查看 Demo 的源码](https://codepen.io/airen/full/GRPGgPK)。
 
   
 
@@ -1684,7 +1684,7 @@ figure.active {
   
 
 
-构建上面这个示例，我们需要一个像下面这样的 HTML 结构：
+构建上面这个示例，需要一个像下面这样的 HTML 结构：
 
   
 
@@ -1808,7 +1808,7 @@ deleteButton.addEventListener("click", () => {
   
 
 
-CSS 视图过渡（CSS View Transitions API）可以在许多 Web 开发场景中使用。例如，你可以使用视图过渡来为特定元素的状态变化添加动画效果（如前面示例所示），还可以在单页应用（SPA）或多页应用（MPA）中来创建平滑的页面切换效果。
+CSS 视图过渡（CSS View Transitions API）可以在许多 Web 开发场景中使用。例如，可以使用视图过渡来为特定元素的状态变化添加动画效果（如前面示例所示），还可以在单页应用（SPA）或多页应用（MPA）中创建平滑的页面切换效果。
 
   
 
@@ -1818,12 +1818,12 @@ CSS 视图过渡（CSS View Transitions API）可以在许多 Web 开发场景�
   
 
 
-你可以使用视图过渡来为特定元素的状态变化添加平滑的动画效果。正如前面所演示的示例，在用户与特定元素交互时，你可以使用视图过渡来实现平滑的状态变化，而无需编写大量 JavaScript 代码。
+可以使用视图过渡来为特定元素的状态变化添加平滑的动画效果。正如前面所演示的示例，在用户与特定元素交互时，可以使用视图过渡来实现平滑的状态变化，而无需编写大量 JavaScript 代码。
 
   
 
 
-简单地说，如果你正在进行 DOM 更改，例如向 DOM 添加和移除元素，使用 CSS 视图过渡可以让元素进入和退出的动画效果更平滑。以下是使用 CSS 视图过渡构建的示例。
+简单地说，如果正在进行 DOM 更改，例如向 DOM 添加和移除元素，使用 CSS 视图过渡可以让元素进入和退出的动画效果更平滑。以下是使用 CSS 视图过渡构建的示例。
 
   
 
@@ -1910,7 +1910,7 @@ buttons.forEach((button, i) => {
   
 
 
-我将原 Demo 的 SCSS 改成了 CSS，并且对 CSS 做了一些优化。在 HTML 元素上使用 CSS 自定义属性 `--view-transition-name` ，为每个 `li` （即元素）定义不同的视图名称，然后将它用于 `view-transition-name` 属性。另外，调整后的案例，使用 `::view-transition-group` 替代了原案例中的 `::page-transition-container` ：
+这里将原 Demo 的 SCSS 改成了 CSS，并且对 CSS 做了一些优化：在 HTML 元素上使用 CSS 自定义属性 `--view-transition-name` ，为每个 `li` （即元素）定义不同的视图名称，然后将它用于 `view-transition-name` 属性。另外，调整后的案例使用 `::view-transition-group` 替代了原案例中的 `::page-transition-container` ：
 
   
 
@@ -1936,7 +1936,7 @@ buttons.forEach((button, i) => {
   
 
 
-你还可以把它与 CSS 的路径动画、动画合成、`dialog` 以及 [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) 等技术结合起来为 `Modal` 和 `Popover` 等组件添加过渡动效。例如下面这个 `Modal` 的过渡动效：
+还可以把它与 CSS 的路径动画、动画合成、`dialog` 以及 [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) 等技术结合起来为 `Modal` 和 `Popover` 等组件添加过渡动效。例如下面这个 `Modal` 的过渡动效：
 
   
 
@@ -1962,7 +1962,7 @@ buttons.forEach((button, i) => {
   
 
 
-你还可以使用它为主题切换添加过渡动效，例如下面这个示例：
+还可以使用它为主题切换添加过渡动效，例如下面这个示例：
 
   
 
@@ -2044,12 +2044,12 @@ toggleButton.addEventListener('click', (etv)=>{
   
 
 
-这里通过给 `html` 切换类名 `.darker` 来实现主题色的切换，并且在示例中使用了 `color-scheme` 属性。当然，你也可以使用 CSS 媒体查询中的 prefers-color-scheme 来实现暗黑模式的切换，甚至还可以将 `color-scheme` 和 `prefers-color-scheme` 结合起来使用。
+这里通过给 `html` 切换类名 `.darker` 来实现主题色的切换，并且在示例中使用了 `color-scheme` 属性。当然，也可以使用 CSS 媒体查询中的 prefers-color-scheme 来实现暗黑模式的切换，甚至还可以将 `color-scheme` 和 `prefers-color-scheme` 结合起来使用。
 
   
 
 
-最为关键的是，要重置客户端默认的视图过渡效果，你需要将 `mix-blend-mode` 属性的值重置为 `normal` 。
+最为关键的是，要重置客户端默认的视图过渡效果，需要将 `mix-blend-mode` 属性的值重置为 `normal` 。
 
   
 
@@ -2062,7 +2062,7 @@ toggleButton.addEventListener('click', (etv)=>{
   
 
 
-现如今我们可以使用视图过渡来实现上面这样的动画效果：
+现如今可以使用视图过渡来实现上面这样的动画效果：
 
   
 
@@ -2145,7 +2145,7 @@ function viewTransition(fn, params) {
   
 
 
-你将看到的效果如下：
+看到的效果如下：
 
   
 
@@ -2158,7 +2158,7 @@ function viewTransition(fn, params) {
   
 
 
-视图过渡除了运用于动画场景上之外，也可以应用于布局中。[@Chris Coyier 提供了一个网格项目扩展的案例](https://codepen.io/chriscoyier/full/GRYKObj)，当你点击它们中任意一个卡片（网格项目），它会向上展开并且占满整个网格，其余的卡片会重新排列在它的下面。与任何 Web 布局一样，有很多方法可以实现这个布局效果。但 @Chris Coyier 使用了视图过渡 API 以 FLIP 的方式实现了这个效果：
+视图过渡除了运用于动画场景上之外，也可以应用于布局中。[@Chris Coyier 提供了一个网格项目扩展的案例](https://codepen.io/chriscoyier/full/GRYKObj)：点击任意一个卡片（网格项目），它会向上展开并且占满整个网格，其余的卡片会重新排列在它的下面。与任何 Web 布局一样，有很多方法可以实现这个布局效果。而 @Chris Coyier 使用了视图过渡 API 以 FLIP 的方式实现了这个效果：
 
   
 
@@ -2267,7 +2267,7 @@ function activateCard(card) {
   
 
 
-你可能已经发现了，在 Web 中很多动画和交互效果我们都可以基于 CSS View Transitions API 来实现，这样的好处就不重复阐述了。我想，在未来不久，CSS View Transitions API 在 Web 上的应用会越来越频繁！
+可以发现，在 Web 中很多动画和交互效果都可以基于 CSS View Transitions API 来实现。可以预见，在未来不久，CSS View Transitions API 在 Web 上的应用会越来越频繁。
 
   
 
@@ -2277,7 +2277,7 @@ function activateCard(card) {
   
 
 
-在单页应用程序（SPA）中使用 CSS 视图过渡（CSS View Transitions API）与在常规网页中使用它类似，但有一些区别。SPA 通常使用 JavaScript 来动态更改 DOM 以实现页面切换，因此你需要将 CSS View Transitions API 与这些 DOM 更改集成在一起。
+在单页应用程序（SPA）中使用 CSS 视图过渡（CSS View Transitions API）与在常规网页中使用它类似，但有一些区别。SPA 通常使用 JavaScript 来动态更改 DOM 以实现页面切换，因此需要将 CSS View Transitions API 与这些 DOM 更改集成在一起。
 
   
 
@@ -2391,7 +2391,7 @@ loadTemplate('#content_1');
   
 
 
-你也[可以基于一些 JavaScript 框架给 SPA 添加视图过渡的动画效果，比如 Astro、SvelteKit、Nuxt 和 Angular 等](https://developer.chrome.com/docs/web-platform/view-transitions/#working-with-frameworks)。不过，有关于 CSS View Transitions API 在 JavaScript 框架中的使用已超出本文的范畴，在这里不做相关阐述。如果你对这方面知识感兴趣的话，可以移步阅读下面这些教程：
+也[可以基于一些 JavaScript 框架给 SPA 添加视图过渡的动画效果，比如 Astro、SvelteKit、Nuxt 和 Angular 等](https://developer.chrome.com/docs/web-platform/view-transitions/#working-with-frameworks)。不过，有关于 CSS View Transitions API 在 JavaScript 框架中的使用已超出本文的范畴，在这里不做相关阐述。如果对这方面知识感兴趣的话，可以移步阅读下面这些教程：
 
   
 
@@ -2410,7 +2410,7 @@ loadTemplate('#content_1');
   
 
 
-到目前为止，你看到的案例演示都是在同一个文档内的过渡，这可能是因为视图过渡这个概念是最初在浏览器中提出和实现的。然而，CSS View Transitions API 有一个扩展，称为“[跨文档视图过渡](https://github.com/WICG/view-transitions/blob/main/cross-doc-explainer.md)”，允许你在不同文档之间导航时添加过渡效果。换句话说，这意味着你也可以为多页面应用程序添加过渡效果。
+到目前为止，上面看到的案例演示都是在同一个文档内的过渡，这可能是因为视图过渡这个概念是最初在浏览器中提出和实现的。然而，CSS View Transitions API 有一个扩展，称为“[跨文档视图过渡](https://github.com/WICG/view-transitions/blob/main/cross-doc-explainer.md)”，允许在不同文档之间导航时添加过渡效果。换句话说，这意味着也可以为多页面应用程序添加过渡效果。
 
   
 
@@ -2428,7 +2428,7 @@ loadTemplate('#content_1');
   
 
 
-要在这些页面之间启用视图过渡，你可以使用以下步骤来实现。
+要在这些页面之间启用视图过渡，可以使用以下步骤来实现。
 
   
 
@@ -2476,7 +2476,7 @@ loadTemplate('#content_1');
   
 
 
-现在你的页面拥有了页面过渡效果！这一行代码为你的整个网站应用了一个淡入淡出效果。你的网站现在就像一个幻灯片演示一样。
+现在页面就拥有了页面过渡效果：这一行代码为整个网站应用了一个淡入淡出效果，网站现在就像一个幻灯片演示一样。
 
   
 
@@ -2484,7 +2484,7 @@ loadTemplate('#content_1');
   
 
 
-你所看到的淡入淡出效果是浏览器默认的视图过渡效果。你可以使用 CSS 的 `view-transition-name` 给视图命名。给你想要从中进行过渡的元素（在 `index.html` 上）和你想要过渡到的元素（在 `about.html` 上）分配相同的唯一的视图过渡名称：
+所看到的淡入淡出效果是浏览器默认的视图过渡效果。可以使用 CSS 的 `view-transition-name` 给视图命名：给想要从中进行过渡的元素（在 `index.html` 上）和想要过渡到的元素（在 `about.html` 上）分配相同的唯一的视图过渡名称：
 
   
 
@@ -2528,7 +2528,7 @@ loadTemplate('#content_1');
   
 
 
-如果你不喜欢使用行内样式的话，也可以在样式文件中（例如 `style.css`）定义视图名称：
+如果不喜欢使用行内样式，也可以在样式文件中（例如 `style.css`）定义视图名称：
 
   
 
@@ -2543,7 +2543,7 @@ loadTemplate('#content_1');
   
 
 
-然后，你可以像前面所展示的示例那样，重新定义视图过渡的动画效果：
+然后，可以像前面所展示的示例那样，重新定义视图过渡的动画效果：
 
   
 
@@ -2589,7 +2589,7 @@ loadTemplate('#content_1');
   
 
 
-当然，你也可以运用前面的知识，给多页面添加更优雅的视图过渡效果。
+当然，也可以运用前面的知识，给多页面添加更优雅的视图过渡效果。
 
   
 
@@ -4042,7 +4042,7 @@ CSS View Transitions API 的精致之处在于它管理了新旧 DOM 状态之�
   
 
 
-如果你想更深入了解 CSS View Transitions API，个人建议你花些时间[阅读 @Jake Archibald 关于该主题的文章](https://developer.chrome.com/docs/web-platform/view-transitions/)。他是这个 API 背后的主要人物之一。在本文中，我用我自己简单的话解释了 CSS View Transitions API 是什么，并且通过大量的实际案例向大家展示了该 API 可以用来做些什么。
+如果想更深入了解 CSS View Transitions API，建议花些时间[阅读 @Jake Archibald 关于该主题的文章](https://developer.chrome.com/docs/web-platform/view-transitions/)，他是这个 API 背后的主要人物之一。本文用简明的语言解释了 CSS View Transitions API 是什么，并且通过大量的实际案例展示了该 API 可以用来做些什么。
 
   
 

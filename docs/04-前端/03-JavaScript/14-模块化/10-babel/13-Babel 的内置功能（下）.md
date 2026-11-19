@@ -9,14 +9,14 @@ tags: [Babel, 编译, AST, 插件]
 
 # Babel 的内置功能（下）
 
-上一节我们学习了 babel 插件的分类、babel 的 preset、helper、runtime。babel 的功能基本都建立在这些之上。
+上一篇学习了 babel 插件的分类、babel 的 preset、helper、runtime。babel 的功能基本都建立在这些之上。
 
-我们通过插件完成了各种代码（es next、proposal、typescript/flow/jsx...）到 es5 的转换，然后把不同的转换插件封装到不同的 preset （preset-env、preset-typescript、preset-react...）里，而且还把插件内部的公共逻辑抽成 helper 来复用，并且提供了 runtime 包用于注入运行时的 api。这样已经能够达到不同语法的代码转 es5 同时对 api 进行 polyfill 的目标了。
+通过插件可以完成各种代码（es next、proposal、typescript/flow/jsx...）到 es5 的转换，然后把不同的转换插件封装到不同的 preset （preset-env、preset-typescript、preset-react...）里，而且还把插件内部的公共逻辑抽成 helper 来复用，并且提供了 runtime 包用于注入运行时的 api。这样已经能够达到不同语法的代码转 es5 同时对 api 进行 polyfill 的目标了。
 
-平时我们使用 babel 并不需要了解 runtime、helper 都是什么，plugin 怎么写，只需要会用 preset 就行了。
+平时使用 babel 并不需要了解 runtime、helper 都是什么，plugin 怎么写，只需要会用 preset 就行了。
 
 
-由 preset 引入一系列 plugin，我们只需要选择不同的 preset 即可。
+由 preset 引入一系列 plugin，只需要选择不同的 preset 即可。
 
 那 babel 的 preset 都是怎么设计的呢？
 
@@ -61,14 +61,14 @@ babel7 废弃了 stage-x 和 es20xx 的 preset，改成 preset-env 和 plugin-pr
 也可以反过来查询 [chromium 版本在哪些 electron 版本中使用](https://github.com/Kilian/electron-to-chromium/blob/master/full-chromium-versions.js)。
 
 
-有了这些数据，我们就能知道每一个特性在哪些环境的什么版本支持。
+有了这些数据，就能知道每一个特性在哪些环境的什么版本支持。
 
 babel7 在 @babel/compat-data 这个包里面维护了这种特性到环境支持版本的映射关系，包括 [plugin 实现的特性的版本支持情况](https://github.com/babel/babel/blob/main/packages/babel-compat-data/data/plugins.json)（包括 transform 和 proposal ），也包括 [corejs 所 polyfill 的特性的版本支持情况](https://github.com/babel/babel/blob/main/packages/babel-compat-data/data/corejs2-built-ins.json)。
 
 比如：
 
 
-这样我们就知道每一个特性是在什么环境中支持的了，接下来只要用户指定一个环境，我们就能做到按需转换！
+这样就知道每一个特性是在什么环境中支持的了，接下来只要用户指定一个环境，就能做到按需转换！
 
 ### browserslist
 
@@ -76,7 +76,7 @@ babel7 在 @babel/compat-data 这个包里面维护了这种特性到环境支�
 
 让开发者写每个环境的版本是啥肯定不靠谱，这时候就要借助 browerslist 了，它提供了一个从 query （查询表达式） 到对应环境版本的转换。
 
-比如我们可以通过 last 1 version 来查询最新的各环境的版本
+比如可以通过 last 1 version 来查询最新的各环境的版本
 
 
 也可以通过 supports es6-module 查询所有支持 es module 的环境版本
@@ -129,7 +129,7 @@ babel7 在 @babel/compat-data 这个包里面维护了这种特性到环境支�
 
 #### @babel/preset-env 的配置
 
-这个包的配置比较多，首先我们要指定的是 targets，也就是 browserslist 的 query，这个同样可以在 .browserslistrc 的配置文件中指定（别的工具也可能用到）。
+这个包的配置比较多，首先需要指定的是 targets，也就是 browserslist 的 query，这个同样可以在 .browserslistrc 的配置文件中指定（别的工具也可能用到）。
 
 具体有啥配置可以看 [@babel/preset-env 的文档](https://www.babeljs.cn/docs/babel-preset-env)，这里简单讲几个：
 
@@ -181,7 +181,7 @@ modules 就是指定目标模块规范的，取值有 amd、umd、systemjs、com
 
 - auto 则是自动探测，默认值也是这个。
 
-其实一般这个 option 都是 bundler 来设置的，因为 bundler 负责模块转换，自然知道要转换成什么模块规范。我们平时就用默认值 auto 即可。
+其实一般这个 option 都是 bundler 来设置的，因为 bundler 负责模块转换，自然知道要转换成什么模块规范。平时就用默认值 auto 即可。
 
 auto 会根据探测到的目标环境支持的模块规范来做转换。依据是在 transform 的时候传入的 caller 数据。
 
@@ -197,7 +197,7 @@ babel.transformFileSync("example.js", {
 
 ##### debug
 
-我们知道 preset-env 会根据 targets 支持的特性来引入一系列插件。
+preset-env 会根据 targets 支持的特性来引入一系列插件。
 
 想知道最终使用了啥插件，那就可以把 debug 设为 true，这样在控制台打印这些数据。
 
@@ -291,7 +291,7 @@ Based on your code and targets, the regenerator polyfill did not add any polyfil
 ```
 用到了哪些插件一目了然，开发时可以开启这个配置项。
 
-我们知道了 preset-env 能够根据目标环境引入对应的插件，最终会注入 helper 到代码里，但这样还是有问题的：
+preset-env 能够根据目标环境引入对应的插件，最终会注入 helper 到代码里，但这样还是有问题的：
 
 ## 从 helper 到 runtime
 
@@ -312,11 +312,11 @@ babel7 通过 preset-env 实现了按需编译和 polyfill，还可以用 plugin
 
 ### babel7 的问题
 
-我们先来试验一下：查看 Array.prototype.fill 的环境支持情况——Chrome 45 及以上支持这个特性，而 Chrome 44 不支持。
+先来试验一下：查看 Array.prototype.fill 的环境支持情况——Chrome 45 及以上支持这个特性，而 Chrome 44 不支持。
 
-我们先单独试一下 preset-env：当指定 targets 为 Chrome 44 时，会自动引入 polyfill；指定为 Chrome 45 时，则不需要引入。结果符合预期，44 引入，45 不引入。
+先单独试一下 preset-env：当指定 targets 为 Chrome 44 时，会自动引入 polyfill；指定为 Chrome 45 时，则不需要引入。结果符合预期，44 引入，45 不引入。
 
-我们再来试试 @babel/plugin-transform-runtime：结果发现问题了——Chrome 45 明明支持 Array.prototype.fill 方法，为啥还是引入了 polyfill。
+再来试试 @babel/plugin-transform-runtime：结果发现问题了——Chrome 45 明明支持 Array.prototype.fill 方法，为啥还是引入了 polyfill。
 
 因为 babel 中插件的应用顺序是：先 plugin 再 preset，plugin 从左到右，preset 从右到左，这样 plugin-transform-runtime 是在 preset-env 前面的。等 @babel/plugin-transform-runtime 转完了之后，再交给 preset-env 这时候已经做了无用的转换了。而 @babel/plugin-transform-runtime 并不支持 targets 的配置，就会做一些多余的转换和 polyfill。
 
@@ -326,7 +326,7 @@ babel7 通过 preset-env 实现了按需编译和 polyfill，还可以用 plugin
 
 babel8 提供了 [一系列 babel polyfill 的包](https://github.com/babel/babel-polyfills)，解决了 babel7 的 @babel/plugin-transform-runtime 的遗留问题，可以通过 targets 来按需精准引入 polyfill。
 
-babel8 支持配置一个 polyfill provider，也就是说你可以指定 corejs2、corejs3、es-shims 等 polyfill，还可以自定义 polyfill。
+babel8 支持配置一个 polyfill provider，也就是说可以指定 corejs2、corejs3、es-shims 等 polyfill，还可以自定义 polyfill。
 
 有了 polyfill 源之后，使用 polyfill 的方式也把之前 transform-runtime 做的事情内置了，从之前的 useBuiltIns: entry、 useBuiltIns: usage 的两种，变成了 3 种：
 
@@ -341,7 +341,7 @@ babel8 支持配置一个 polyfill provider，也就是说你可以指定 corejs
 
 其实这三种方式 babel 7 也支持，但是 babel8 不再需要 transform-runtime 插件了，而且还支持了 polyfill provider 的配置。
 
-babel 的功能都是通过插件完成的，但是直接指定插件太过麻烦，所以设计出了 preset，我们学习 babel 的内置功能基本等价于学习 preset 的使用。主要是 preset-env、preset-typescript 这些。
+babel 的功能都是通过插件完成的，但是直接指定插件太过麻烦，所以设计出了 preset，学习 babel 的内置功能基本等价于学习 preset 的使用。主要是 preset-env、preset-typescript 这些。
 
 但是一些 proposal 的插件需要单独引入，并且 @babel/plugin-transform-runtime 也要单独引入。
 
@@ -349,12 +349,12 @@ babel 的功能都是通过插件完成的，但是直接指定插件太过麻�
 
 ## 总结
 
-上一节我们基于 plugin 和 preset 已经能够完成 esnext 等代码转目标环境 js 代码的功能，但是还不完美。
+上一篇基于 plugin 和 preset 已经能够完成 esnext 等代码转目标环境 js 代码的功能，但是还不完美。
 
-这一节我们介绍了 @babel/preset-env，它基于每种特性的在不同环境的最低支持版本的数据和配置的 targets 来过滤插件，这样能减少很多没必要的转换和 polyfill。
+本文介绍了 @babel/preset-env，它基于每种特性的在不同环境的最低支持版本的数据和配置的 targets 来过滤插件，这样能减少很多没必要的转换和 polyfill。
 
 如果希望把一些公共的 helper、core-js、regenerator 等注入的 runtime 函数抽离出来，并且以模块化的方式引入，那么需要用 @babel/plugin-transform-runtime 这个包。
 
 @babel/plugin-transform-runtime 不支持根据 targets 的过滤，和 @babel/preset-env 配合时有问题，这个在 babel8 中得到了解决。babel8 提供了很多 babel polyfill 包，支持了 polyfill provider 的配置，而且还可以选择注入方式。不再需要 @babel/plugin-transform-runtime 插件了。
 
-学完这一节，我们知道了 babel 如何基于 targets 的配置做到精准的转换，我们平时开发主要是使用 preset，了解下 preset 设计和演变还是很有意义的。 
+至此，本文介绍了 babel 如何基于 targets 的配置做到精准的转换。平时开发主要是使用 preset，了解 preset 的设计和演变还是很有意义的。

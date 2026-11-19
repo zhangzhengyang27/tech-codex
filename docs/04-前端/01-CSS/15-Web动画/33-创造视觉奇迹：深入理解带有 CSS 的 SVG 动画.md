@@ -1,151 +1,52 @@
 ---
 title: 创造视觉奇迹：深入理解带有 CSS 的 SVG 动画
-description: "“带有 CSS 的 SVG 动画”指的是使用 CSS 给 SVG 元素添加动画，有点类似于 CSS 给 HTML 元素添加动画。SVG 和 CSS 的结合为 Web 开发者提供了创建引人入胜动画效果的强大工具。"
+description: ""带有 CSS 的 SVG 动画"指的是使用 CSS 给 SVG 元素添加动画,有点类似于 CSS 给 HTML 元素添加动画。SVG 和 CSS 的结合为 Web 开发者提供了创建引人入胜动画效果的强大工具。"
 keywords: [创造视觉奇迹, 深入理解带有, CSS, SVG, 动画]
 category: CSS
 tags: [CSS, 布局, 动画, 响应式]
 ---
 
-
 # 创造视觉奇迹：深入理解带有 CSS 的 SVG 动画
 
-在上一篇文章结尾时，我曾抛出了 SMIL 动画虽然很强大，但它却逐渐的没落了，甚至有可能会像 Flash 一样，成为历史。但庆幸的是，SMIL 动画或者说 SVG 原生动画能很容易找到替代方案，比如本文要聊的“带有 CSS 的 SVG 动画”，就是其中替代方案之一。
+## 概念说明
 
-  
+SMIL 动画(SVG 原生动画)虽然强大,却在逐渐没落,甚至可能像 Flash 一样成为历史。它很容易找到替代方案,"带有 CSS 的 SVG 动画"就是其中之一。
 
+"带有 CSS 的 SVG 动画"指的是使用 CSS 给 SVG 元素添加动画,类似于 CSS 给 HTML 元素添加动画。能这样做的主要原因之一是,SVG 和 CSS 的结合为 Web 开发者提供了强大的工具,可以创建出引人入胜的动画效果。而且这种组合是轻量级的:带有 CSS 的 SVG 动画可以获得最佳速度,有助于创建加载更快、体验更流畅的动画。
 
-“带有 CSS 的 SVG 动画”指的是使用 CSS 给 SVG 元素添加动画，有点类似于 CSS 给 HTML 元素添加动画。简而言之就是使用 CSS 技术为 SVG 元素添加动画。能这样做的主要原因之一是，SVG 和 CSS 的结合为 Web 开发者提供了强大的工具，它们的结合可以使 Web 开发者创建出引人入胜的动画效果。而且这种组合是轻量级的，带有 CSS 的 SVG 动画，可以获得最佳速度，这有助于创建加载更快、确保更流畅用户体验和更快页面加载的更好动画。
+本文覆盖使用 SVG 和 CSS 创建简单且可扩展动画的过程,包括线条动画、路径动画、变形动画、文本动画、遮罩动画、粒子动画等技术,并涉及动画性能优化与响应式设计。阅读要求:对 CSS 有基本了解,并对 SVG 有一定了解。
 
-  
+## 核心要点
 
-
-在本文中，我们将探讨使用 SVG 和 CSS 创建简单且可扩展动画的过程。全文包含从基础到高级的内容，覆盖了线条动画、路径动画、关键帧动画、过渡效果等方面的技术。通过本文的学习，你将能够优化 SVG 动画的性能，实现响应式设计，并应用这一技术创造出令人印象深刻的用户体验。我也将带领大家走进一个充满创意和创新的动画世界。
-
-  
-
-
-让我们一同探索，如何通过CSS的力量，将静态的SVG图形变成生动而引人入胜的用户体验。唯一的要求是你需要对 CSS 有基本的了解以及对 SVG 有一些了解。
-
-  
-
+- SVG 使用 XML 语法定义元素,并可用 CSS 设置样式,处理方式与 HTML 类似;但 SVG 大多数元素没有子元素,通常用 `<g>` 元素组合与变换。
+- SVG 元素不受 CSS 盒模型约束,定位与转换依赖 `viewport`、`viewBox` 和 `preserveAspectRatio` 三个属性。
+- CSS 可通过内联 `style`、`@import`、`<style>`(含 CDATA)、外部样式表四种方式应用到 SVG。
+- 过渡动画与关键帧动画(`transition`/`animation`)对 SVG 元素同样适用;SVG 颜色过渡可借助 `currentColor` 技巧。
+- SVG 线条动画的核心是 `stroke-dasharray` 与 `stroke-dashoffset`:通过调整虚线模式与偏移,可控制绘制方向、起点、终点,实现各种"线条逐渐绘制"效果。
+- SMIL 的 `<animateMotion>` 路径动画可用 CSS 的 `offset-path`/`offset-distance` 等属性替代。
+- SMIL 的 `<animate>` 变形动画可用 CSS 动画 `d` 属性(`d: path(...)`)替代。
+- SVG 文本、遮罩(`mask`)与粒子动画均可与 CSS/JS 结合,实现文字描边、探照灯、粒子迸发等效果。
+- `stroke-dashoffset` 应避免使用负值,负值在 Safari 上可能出现闪烁现象。
 
 ## 使用 CSS 对 SVG 进行动画的常见用例
 
-  
+SVG 可以顺利适应不同情况,缩放时保持图形质量。使用 CSS 对 SVG 进行动画可以创造各种引人注目的效果。常见用例:
 
+- **图标动画**:在 Web 应用或网站中使用 SVG 图标,通过 CSS 动画添加生动的交互效果。对引导屏幕、加载旋转器、菜单切换、视频播放控件等微交互和视觉反馈特别有益。
+- **路径动画**:利用 CSS 关键帧动画创建路径动画,呈现线条、形状或图标的平滑过渡,可用于复杂的形状转变或线条动态绘制效果。
+- **按钮效果**:通过 CSS 动画为按钮添加吸引人的效果,例如悬停时的颜色变化、阴影效果或按钮大小的微妙变化,提高交互体验。
+- **数据可视化**:使用 SVG 创建干净、可伸缩、动态且高度可定制的图表、图形和地图,通过动态改变数据点的位置、颜色或大小实现动态可视化。
+- **形状转变**:利用 CSS 的形状转变功能,为 SVG 元素创建平滑的形状转变动画,包括大小、旋转、倾斜等转换。
+- **文字动画**:将文字嵌入 SVG,使用 CSS 动画添加逐字显示、颜色变化或文字路径动画等效果。
+- **加载动画**:页面加载或异步操作期间使用 SVG 图标,通过 CSS 实现旋转、脉冲或其他加载动画,向用户传达操作正在进行中的信息。
 
-SVG 可以顺利地适应不同的情况，当进行缩放时可以保持图形质量。使用 CSS 对 SVG 进行动画可以创造出各种引人注目的效果。在进行代码之前，让我们看一些常见的用例。
-
-  
-
-
-### 图标动画
-
-  
-
-
-  
-
-
-在 Web 应用或网站中使用 SVG 图标，并通过 CSS 动画为其添加生动的交互效果。动画 SVG 图标对于引导屏幕、加载旋转器、菜单切换、视频播放控件等方面的微交互和视觉反馈特别有益。
-
-  
-
-
-### 路径动画
-
-  
-
-
-  
-
-
-利用 CSS 的关键帧动画，创建路径动画以呈现线条、形状或图标的平滑过渡。这可以用于制作复杂的形状转变或线条的动态绘制效果。
-
-  
-
-
-### 按钮效果
-
-  
-
-
-  
-
-
-通过 CSS 动画为按钮添加吸引人的动画效果，例如悬停时的颜色变化、阴影效果或按钮大小的微妙变化，以提高用户交互体验。
-
-  
-
-
-### 数据可视化
-
-  
-
-
-数据可视化可以使用 SVG 创建干净、可伸缩、动态且高度可定制的图表、图形和图表。利用 CSS 动画为 SVG 创建动态的数据可视化效果，例如图表、图形或地图。这可以通过动态改变数据点的位置、颜色或大小来实现。
-
-  
-
-
-### 形状转变
-
-  
-
-
-  
-
-
-利用 CSS 的形状转变功能，为 SVG 元素创建平滑的形状转变动画。这可以包括大小、旋转、倾斜等转换。
-
-  
-
-
-### 文字动画
-
-  
-
-
-  
-
-
-将文字嵌入到 SVG 中，并使用 CSS 动画为文字添加各种效果，如逐字显示、颜色变化或文字路径动画。
-
-  
-
-
-### 加载动画
-
-  
-
-
-  
-
-
-在页面加载或异步操作期间使用 SVG 图标，并通过 CSS 实现旋转、脉冲或其他加载动画，向用户传达操作正在进行中的信息。
-
-  
-
-
-这些只是使用 CSS 对 SVG 进行动画的一些常见用例。通过巧妙地结合 SVG 和 CSS，Web 开发者可以创造出丰富多彩、生动有趣的用户界面效果。
-
-  
-
+巧妙结合 SVG 和 CSS,可以创造出丰富多彩、生动有趣的用户界面效果。
 
 ## 如何为动画准备 SVG
 
-  
+使用 CSS 为 SVG 添加动画之前,需要了解 SVG 在内部如何工作。SVG 和 HTML 非常相似:**使用 XML 语法定义 SVG 元素,并使用 CSS 为其设置样式,就像它们是 HTML 一样**。
 
-
-在本文中，我们的重点是从头开始创建 SVG，并且使用 CSS 为 SVG 添加动画。在使用 CSS 为 SVG 添加动画效果之前，Web 开发人员需要了解 SVG 在内部是如何工作的。幸运的是，SVG 和 HTML 非常相似：**我们使用 XML 语法定义 SVG 元素，并使用 CSS 为其设置样式，就像它们是 HTML 一样**。
-
-  
-
-
-SVG 元素是专门用于绘制图形的。我们可以使用 `<rect>` 绘制矩形、`<circle>` 创建圆形等。它还定义了 `<ellipse>` 、`<line>` 、`<polyline>` 、`<polygon>` 和 `<path>` 等：
-
-  
-
+SVG 元素专门用于绘制图形:使用 `<rect>` 绘制矩形、`<circle>` 创建圆形等,还定义了 `<ellipse>`、`<line>`、`<polyline>`、`<polygon>` 和 `<path>` 等:
 
 ```SVG
 <svg>
@@ -175,23 +76,11 @@ SVG 元素是专门用于绘制图形的。我们可以使用 `<rect>` 绘制矩
 </svg>    
 ```
 
-  
+除了绘制静态形状,SVG 还允许使用 SMIL 创建动画,例如 `<animate>`、`<animateMotion>`、`<animateTransform>` 和 `<set>` 等元素给静态 SVG 元素添加动画效果。
 
+> 注意,这里提到的 SVG 元素仅是 SVG 中的一小部分,[可以在 MDN 上查看到每个 SVG 元素](https://developer.mozilla.org/en-US/docs/Web/SVG/Element)。
 
-在 SVG 中除了使用图形元素绘制静态形状之外，它还允许你使用 SMIL 创建动画。例如，你可以使用 `<animate>` 、`<animateMotion>` 、`<animateTransform>` 和 `<set>` 等元素给静态 SVG 元素添加动画效果。
-
-  
-
-
-> 注意，这里所提到的 SVG 元素仅仅是 SVG 中的一小部分，[你可以在 MDN 上查看到每个 SVG 元素](https://developer.mozilla.org/en-US/docs/Web/SVG/Element)。
-
-  
-
-
-虽然说，SVG 和 HTML 非常相似，但也有一些不同。比如，HTML 中大多数元素都可以有子元素，但在 SVG 中，其大多数元素是没有子元素的。这也意味着，SVG 中很多元素是不能相互嵌套的。不过，在 SVG 中，我们通常使用 `<g>` 元素来组合多个 SVG 元素，进行组织结构化以及集体变换或动画。这个分组可以通过分配 `id` 或类名来样式化。然而，对于单个 SVG 元素或单个组，组标签是不必要的：
-
-  
-
+SVG 与 HTML 也存在差异:HTML 中大多数元素可以有子元素,而 SVG 中大多数元素没有子元素,很多元素不能相互嵌套。SVG 通常使用 `<g>` 元素组合多个元素,进行组织结构化以及集体变换或动画。分组可以通过分配 `id` 或类名来样式化;对单个 SVG 元素或单个组,组标签并非必要:
 
 ```SVG
 <svg xmlns="http://www.w3.org/2000/svg" class="icon--hamburger" width="200" height="200" viewBox="0 0 1024 1024">
@@ -201,45 +90,19 @@ SVG 元素是专门用于绘制图形的。我们可以使用 `<rect>` 绘制矩
 </svg>
 ```
 
-  
+HTML 和 SVG 之间的另一个重要区别是 **SVG 元素不像 HTML 元素那样受 CSS 盒模型的约束**。这使得定位和转换这些元素更加棘手,乍看之下可能不太直观;但理解了 SVG 坐标系统和变换的工作原理后,操作 SVG 会变得更容易、更合乎逻辑。控制 SVG 坐标系统的三个最重要的属性是 `viewport`、`viewBox` 和 `preserveAspectRatio`:
 
+- **`preserveAspectRatio`** 属性:控制 SVG 图形在视口中的放置方式和缩放行为。语法格式是 `preserveAspectRatio="align meet/slice defer"`;`align` 可选值:`none`、`xMinYMin`、`xMidYMin`、`xMaxYMin`、`xMinYMid`、`xMidYMid`、`xMaxYMid`、`xMinYMax`、`xMidYMax`、`xMaxYMax`。`meet` 表示保持纵横比的前提下尽量占满视口;`slice` 表示保持纵横比的前提下尽量不超出视口;`defer` 表示是否推迟对 `preserveAspectRatio` 的处理。
+- **`viewBox`** 属性:定义 SVG 用户坐标系统的位置和大小。语法格式是 `viewBox="min-x min-y width height"`;`min-x` 和 `min-y` 定义视口坐标系中的左上角位置;`width` 和 `height` 定义视口坐标系的宽度和高度。
+- **`width`** 和 **`height`** 属性:分别定义 SVG 元素在文档中的宽度和高度。通常,没有指定 `width` 和 `height` 时,SVG 会根据视口大小自动调整。
 
-HTML 和 SVG 之间的另一个重要区别是 **SVG 元素不像 HTML 元素那样受 CSS 盒模型的约束**。这使得定位和转换这些元素变得更加棘手，并且乍看之下可能会显得不太直观。然而，一旦你理解了 SVG 坐标系统和变换的工作原理，操作 SVG 就会变得更加容易，也更加合乎逻辑。这里简单地介绍一下控制 SVG 坐标系统的三个最重要的 SVG 属性：`viewport`、`viewBox` 和 `preserveAspectRatio`。
+这些属性之间的关系:
 
-  
+- 没有指定 `width` 和 `height` 时,SVG 根据视口大小自动调整,`viewBox` 属性定义用户坐标系统的大小和位置。
+- `preserveAspectRatio` 属性决定调整大小时是否保持 SVG 图形的纵横比,以及在视口中的对齐方式。
+- 指定了 `width` 和 `height` 时,SVG 被强制缩放到指定大小,但 `preserveAspectRatio` 仍然影响在这个指定大小内的显示方式。
 
-
-  
-
-
-在 SVG 中，`<svg>` 元素的 `preserveAspectRatio`、`viewBox`、`width` 和 `height` 属性之间有密切的关系，它们共同决定了 SVG 图形在渲染时的表现和显示方式。
-
-  
-
-
--   **`preserveAspectRatio`** 属性：用于控制 SVG 图形在视口中的放置方式和缩放行为。其语法格式是 `preserveAspectRatio="align meet/slice defer"`；`align` 可选值：`none`、`xMinYMin`、`xMidYMin`、`xMaxYMin`、`xMinYMid`、`xMidYMid`、`xMaxYMid`、`xMinYMax`、`xMidYMax`、`xMaxYMax`。`meet` 表示保持纵横比的前提下尽量占满视口；`slice` 表示保持纵横比的前提下尽量不超出视口。`defer` 表示是否推迟对 `preserveAspectRatio` 的处理。
--   **`viewBox`** 属性：定义 SVG 用户坐标系统的位置和大小。其语法格式是 `viewBox="min-x min-y width height"`；其中 `min-x` 和 `min-y` 定义了视口坐标系中的左上角位置；`width` 和 `height` 定义了视口坐标系的宽度和高度。
--   **`width`** 和 **`height`** 属性：分别定义 SVG 元素在文档中的宽度和高度。通常，如果没有指定 `width` 和 `height`，SVG 将会根据视口的大小自动调整。
-
-  
-
-
-这些属性之间的关系可以通过以下方式理解：
-
-  
-
-
--   如果没有指定 `width` 和 `height`，SVG 将会根据视口的大小自动调整，同时 `viewBox` 属性定义了用户坐标系统的大小和位置。
--   `preserveAspectRatio` 属性则决定了在调整大小时，是否保持 SVG 图形的纵横比，以及如何在视口中对齐。
--   如果指定了 `width` 和 `height`，SVG 将会被强制缩放到指定的大小，但 `preserveAspectRatio` 仍然可以影响如何在这个指定大小内显示。
-
-  
-
-
-例如：
-
-  
-
+例如:
 
 ```SVG
 <svg viewBox="0 0 100 50" width="200" height="100" preserveAspectRatio="xMidYMid meet">
@@ -247,54 +110,19 @@ HTML 和 SVG 之间的另一个重要区别是 **SVG 元素不像 HTML 元素那
 </svg>
 ```
 
-  
+`viewBox` 定义用户坐标系统大小为 `100x50`,`width` 和 `height` 定义 SVG 元素在文档中的大小为 `200x100`,`preserveAspectRatio` 指示在这个大小范围内如何对齐和缩放 SVG 图形。
 
+手工编写 SVG 代码适合具备一定基础的开发者和简单图形;复杂图形可以依赖矢量图形软件,例如 Sketch 和 Figma,或从矢量图库获取所需图形,例如 [Undraw](https://undraw.co/) 提供了很多优秀的 SVG 插图。
 
-在这个例子中，`viewBox` 定义了用户坐标系统的大小为 `100x50`，而 `width` 和 `height` 定义了 SVG 元素在文档中的大小为 `200x100`。`preserveAspectRatio` 则指示在这个大小范围内如何对齐和缩放 SVG 图形。
-
-  
-
-
-尽管在具备一定 SVG 的基础上，你可以在文档中手工编写 SVG 代码来绘制所需图形，但对于复杂的图形而言，你可能还是需要依赖矢量图形软件，例如 Sketch 和 Figma 等。我通常会基于 Figma 软件来辅助我绘制一些复杂的矢量图形。当然，你也可以从一些矢量图库上来获取所需图形，例如 [Undraw](https://undraw.co/) 提供了很多优秀的 SVG 插图：
-
-  
-
-
-  
-
-
-不过，需要注意的是，当你通过图形编辑软件或其他生成 SVG 图形工具获得的 SVG 代码或 `.svg` 文件，可能会包含一些不必要的代码。因此，建议使用像 [SVGOMG](https://jakearchibald.github.io/svgomg/) 或 [SVG Cleaner ](https://iconly.io/tools/svg-cleaner)等工具对 SVG 代码进行优化是非常有必要的，这些工具可以帮助你最小化 SVG 文件大小和删除冗余标签和元数据。如此一来，你将获得一份整洁干净的 SVG 代码：
-
-  
-
-
-  
-
+通过图形编辑软件或其他工具获得的 SVG 代码或 `.svg` 文件可能包含不必要的代码,建议使用 [SVGOMG](https://jakearchibald.github.io/svgomg/) 或 [SVG Cleaner](https://iconly.io/tools/svg-cleaner) 等工具优化:最小化文件大小、删除冗余标签和元数据,获得整洁干净的 SVG 代码。
 
 > SVGOMG：https://jakearchibald.github.io/svgomg/
 
-  
-
-
 ## 应用 CSS 到 SVG
 
-  
+有多种方式可以将 CSS 应用到 SVG,与 HTML 类似:
 
-
-假设你已经知道如何获得 SVG 代码，不管是硬编码还是通过工具获得。有了这个基础之后，我们就可以进入下一步，应用 CSS 到 SVG 。
-
-  
-
-
-众所周知，有多种不同的方式可以将 CSS 应用到 HTML 中。同样的，也有多种不同的方式可以将 CSS 应用于 SVG 中。
-
-  
-
-
-由于 SVG 与 HTML 无缝集成，它支持内联 CSS 样式。你可以使用 `style` 属性将 CSS 样式添加到 SVG 元素上，像就在 HTML 中一样。例如：
-
-  
-
+**内联样式**:SVG 与 HTML 无缝集成,支持内联 CSS 样式,使用 `style` 属性添加样式:
 
 ```SVG
 <svg width="64" height="64" viewBox="0 0 48 48">
@@ -303,18 +131,9 @@ HTML 和 SVG 之间的另一个重要区别是 **SVG 元素不像 HTML 元素那
 </svg>
 ```
 
-  
+上面代码演示了使用 CSS 给 `<rect>` 元素设置填充色(`fill`)和描边色(`stroke`)。
 
-
-上面代码演示了使用 CSS 给 `<rect>` 元素设置填充色（`fill`）和描边色（`stroke`）。
-
-  
-
-
-第二种将 CSS 样式应用于 SVG 的方法涉及使用 CSS 的 `@import` 规则。此规则放置在 SVG 内的 `<style>` 元素中，用于引用和导入外部 CSS 样式表。例如：
-
-  
-
+**`@import` 规则**:将 `@import` 规则放置在 SVG 内的 `<style>` 元素中,引用和导入外部 CSS 样式表:
 
 ```SVG
 <svg width="64" height="64" viewBox="0 0 48 48">
@@ -325,13 +144,7 @@ HTML 和 SVG 之间的另一个重要区别是 **SVG 元素不像 HTML 元素那
 </svg>
 ```
 
-  
-
-
-第三种方式是直接在 SVG 内部编写样式，但最好将其包含在 `CDATA` 部分中，以防止与 XML 解析可能发生冲突：
-
-  
-
+**SVG 内部编写样式**:直接在 SVG 内部编写样式,最好将其包含在 `CDATA` 部分中,以防止与 XML 解析发生冲突:
 
 ```SVG
 <svg width="64" height="64" viewBox="0 0 48 48">
@@ -352,51 +165,19 @@ HTML 和 SVG 之间的另一个重要区别是 **SVG 元素不像 HTML 元素那
 </svg>
 ```
 
-  
-
-
-最后一种方式是将 CSS 和 SVG 分离，即把 CSS 和 SVG 代码放置在单独的文件中，然后在包含这些 SVG 文件的文档中使用它们。因此，根据使用它们的文档，SVG 将自动获得样式。我个人是比较喜欢这种方式，可以保持 SVG 代码整洁干净，也便于对 SVG 样式调整。这一点与 CSS 和 HTML 分离是一样的。
-
-  
-
+**CSS 与 SVG 分离**:把 CSS 和 SVG 代码放置在单独的文件中,然后在包含这些 SVG 文件的文档中使用,SVG 将自动获得样式。这种方式可以保持 SVG 代码整洁干净,便于对样式调整,与 CSS 和 HTML 分离的道理相同。
 
 ## 给 SVG 添加 CSS 动画
 
-  
-
-
-通常情况，给 SVG 添加动画的方式有 SMIL、CSS 和 WAAPI 等，但在这里我们主要围绕着“CSS 给 SVG 元素应用动画”来展开。
-
-  
-
-
-在 CSS 中，我们主要分为过渡动画和关键帧动画两大类型，即使用 `transition` 和 `animation` 给元素添加动画。也就是说，我们也可以通过给 SVG 元素应用 `transition` 和 `animation` ，实现不同类型的动画效果。
-
-  
-
+给 SVG 添加动画的方式有 SMIL、CSS 和 WAAPI 等,这里主要围绕"CSS 给 SVG 元素应用动画"展开。CSS 动画分为过渡动画和关键帧动画两大类型,即使用 `transition` 和 `animation` 给元素添加动画;同样可以通过给 SVG 元素应用 `transition` 和 `animation`,实现不同类型的动画效果。
 
 ### 给 SVG 添加过渡动画
 
-  
-
-
-CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时间，与立即从起始值跳到结束值不同，值会平滑过渡。就像下面这个示例，当你用鼠标悬停在卡片时，图标的颜色会发生变化：
-
-  
-
-
-  
-
+CSS 过渡(`transition`)允许定义属性更改的速率和持续时间:与立即从起始值跳到结束值不同,值会平滑过渡。例如用鼠标悬停在卡片上时,图标的颜色发生变化:
 
 > Demo 地址：https://codepen.io/airen/full/GReaQMb
 
-  
-
-
-我们可以使用 `transition` 定义 SVG 图标的 `fill` 属性过渡效果：
-
-  
-
+使用 `transition` 定义 SVG 图标的 `fill` 属性过渡效果:
 
 ```CSS
 @layer transition {
@@ -422,13 +203,7 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 }
 ```
 
-  
-
-
-其实给 SVG 颜色（例如 `fill` 、`stroke` 等）添加过渡动画效果，有一个小技巧，那就是利用 CSS 的 `currentColor` 属性，然后对 `color` 属性进行过渡动画处理。使用这个技巧有一个前提条件，那就是需要将 SVG 对应的元素的 `fill` 的值设置为 `currentColor` ，你也可以在 CSS 中设置 `fill` 的值为 `currentColor` 。
-
-  
-
+给 SVG 颜色(例如 `fill`、`stroke` 等)添加过渡动画有一个小技巧:利用 CSS 的 `currentColor` 属性,对 `color` 属性做过渡动画。前提条件是将 SVG 对应元素的 `fill` 值设置为 `currentColor`,也可以在 CSS 中设置 `fill` 的值为 `currentColor`:
 
 ```HTML
 <div class="card">
@@ -438,9 +213,6 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
     Walk
 </div>
 ```
-
-  
-
 
 ```CSS
 @layer transition {
@@ -465,39 +237,15 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 }
 ```
 
-  
-
-
-最终得到的效果是相同的，但相比而言，这种方式的灵活性要更强，它能自动匹配组件的文本颜色（`color`）：
-
-  
-
-
-  
-
+最终效果相同,但 `currentColor` 方式的灵活性更强,能自动匹配组件的文本颜色(`color`):
 
 > Demo 地址：https://codepen.io/airen/full/QWoRQYd
 
-  
-
-
-除了可以动画化 SVG 颜色之外，还可以使用 `transition` 给 SVG 添加微动效，使交互变得更具吸引力。例如下面这个下载按钮，当用户鼠标悬浮在按钮上时，下载图标具有微妙的动画效果：
-
-  
-
-
-  
-
+除了动画化 SVG 颜色,还可以使用 `transition` 给 SVG 添加微动效。例如一个下载按钮,鼠标悬浮时下载图标具有微妙的动画效果:
 
 > Demo 地址：https://codepen.io/airen/full/abMrGgw
 
-  
-
-
-按钮上的 SVG 图标是由三个 `<path>` 元素构建的，并且将需要动画化的部分（箭头部分）用一个 `<g>` 元素包裹起来，同时将类名命名为 `arrow` 。这样做是为了在 CSS 中能更好地选中这部分，然后为其添加微妙的动画效果：
-
-  
-
+按钮上的 SVG 图标由三个 `<path>` 元素构建,需要动画化的部分(箭头)用一个 `<g>` 元素包裹,类名命名为 `arrow`,以便在 CSS 中选中并添加动画:
 
 ```HTML
 <div class="button">
@@ -526,13 +274,7 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 </div>
 ```
 
-  
-
-
-我们使用 CSS 为 `.arrow` 添加了一个很微妙的动画，在鼠标悬浮状态时，沿着 `y` 轴向上移动：
-
-  
-
+CSS 为 `.arrow` 添加一个微妙的动画:鼠标悬浮时,沿 `y` 轴向上移动:
 
 ```CSS
 @layer transition {
@@ -555,28 +297,13 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 }
 ```
 
-  
-
-
-上面所演示的是两个非常常见，而且非常简单的过渡动画效果。你可能已经发现了，使用 `transition` 为 SVG 元素添加过渡动画效果和为 HTML 元素添加过渡动画效果是相似的。也就是说，为 SVG 元素添加过渡动画效果，技术不是问题，我们始终缺少的是创意，是想法。
-
-  
-
+使用 `transition` 为 SVG 元素添加过渡动画和为 HTML 元素添加过渡动画是相似的。技术不是问题,缺少的始终是创意和想法。
 
 ### 给 SVG 添加关键帧动画
 
-  
+通过 CSS 的 `@keyframes` 规则定义一系列动画的关键帧,指导元素随时间推移而演变,可以将 SVG 元素转化为引人入胜的动画。
 
-
-我们可以通过使用 CSS 的 `@keyframes` 规则定义一系列动画的关键帧，指导元素随时间的推移而演变。这些关键帧将 SVG 元素转化为引人入胜的动画。
-
-  
-
-
-例如，我们把一个 `bounce` 的动画效果应用于上面示例中的 `.arrow` 上：
-
-  
-
+例如,把一个 `bounce` 动画效果应用于上面示例中的 `.arrow`:
 
 ```CSS
 @layer animation {
@@ -624,26 +351,9 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 }
 ```
 
-  
-
-
-你现在看到的效果将如下：
-
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/bGZPbvd
 
-  
-
-
-接着再来看一个 CSS 关键帧给 SVG 添加动画的案例。假设你使用 SVG 绘制了一个小铃铛的图形：
-
-  
-
+再来看一个案例。使用 SVG 绘制一个小铃铛图形:
 
 ```SVG
 <svg class="bell" width="200" height="200" viewBox="-100 -100 200 200">
@@ -655,13 +365,7 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 </svg>
 ```
 
-  
-
-
-我们通过 CSS 给这个小铃铛添加一个摆动的动画效果：
-
-  
-
+通过 CSS 给小铃铛添加摆动的动画效果:
 
 ```CSS
 @layer animation {
@@ -684,34 +388,13 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/VwRJZgR
 
-  
-
-
-上面所演示的都是最基础的 SVG 动画。我们还可以使 SVG 动画变得更为复杂，例如下面这个 `TodoList` 效果，使用 SVG 给复选框添加动画，当用户勾选和不勾选复选框都会有一个动画效果：
-
-  
-
-
-  
-
+SVG 动画还可以更复杂。例如一个 `TodoList` 效果,使用 SVG 给复选框添加动画,勾选和不勾选复选框都有动画效果:
 
 > Demo 地址：https://codepen.io/airen/full/poYXzMw
 
-  
-
-
-上面示例中复选框选中和未选中两个状态的以及文本的删除线都是 SVG 绘制的：
-
-  
-
+复选框选中、未选中两个状态以及文本删除线都是 SVG 绘制的:
 
 ```HTML
 <label class="todo">
@@ -727,13 +410,7 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 </label>
 ```
 
-  
-
-
-这里使用了 SVG 的 `<use>` ，重复利用了下面这个 SVG 绘制的图形：
-
-  
-
+这里使用了 SVG 的 `<use>`,重复利用下面这个 SVG 绘制的图形:
 
 ```SVG
 <svg viewBox="0 0 0 0" style="position: absolute; z-index: -1; opacity: 0;">
@@ -756,13 +433,7 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 </svg>
 ```
 
-  
-
-
-然后使用 CSS 给 SVG 元素添加下面的动画效果：
-
-  
-
+然后使用 CSS 给 SVG 元素添加动画效果:
 
 ```CSS
 @layer animation {
@@ -853,53 +524,21 @@ CSS 过渡（`transition`）允许我们定义属性更改的速率和持续时�
 }
 ```
 
-  
+其中,`stroke-dasharray` 属性控制用于描边路径的虚线和间隙的模式——将线条绘制为一组虚线和间隙而不是一条连续的墨迹时就使用它;`stroke-dashoffset` 属性指定从虚线模式的哪里开始绘制虚线。它们都可以使用 CSS 控制。利用这两个属性为 SVG 路径添加动画,会给用户一种路径逐渐被绘制的幻觉。
 
+## CSS 可动画的 SVG 属性与案例
 
-其中，`stroke-dasharray` 属性控制用于描边路径的虚线和间隙的模式。如果你想将线条绘制为一组虚线和间隙，而不是一条连续的墨迹，这就是你会使用的属性。`stroke-dashoffset` 属性指定从虚线模式的哪里开始绘制虚线。它们都可以使用 CSS 进行控制。
-
-  
-
-
-你将在 CSS 中利用 `stroke-dasharray` 和 `stroke-dashoffset` 属性为 SVG 路径添加动画。它们给用户一种路径逐渐被绘制的幻觉。稍后的示例还会用到这两种属性。
-
-  
-
-
-## 你可以使用 CSS 对哪些内容进行动画呢？
-
-  
-
-
-CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果。虽然并非所有属性都是“可动画的”，但许多属性可以使用 CSS 与 SVG 进行平滑地过渡或动画。
-
-  
-
-
-接下来，我们通过一些实际案例来向大家演示 CSS 对 SVG 动画化的威力，它可以通过 `transform` 、`opacity` 和 `color` 等属性转换静态 SVG，这些动画利用基本数学来创建动态的菜单切换、加载动画、流体线条移动、生动的插图以及平滑的文本动画。
-
-  
-
+CSS 能够通过对各种属性进行动画创建动态的视觉效果。虽然并非所有属性都是"可动画的",但许多属性可以使用 CSS 与 SVG 平滑地过渡或动画。以下案例演示 CSS 对 SVG 动画化的威力:通过 `transform`、`opacity`、`color` 等属性转换静态 SVG,创建动态的菜单切换、加载动画、流体线条移动、生动的插图以及平滑的文本动画。
 
 ### SVG 线条动画
 
-  
+SVG 线条动画能给用户一种线条(路径)逐渐被绘制的幻觉,效果美观且实现简单,在 Web 上得到广泛运用。
 
+如 `TodoList` 复选框的效果所示,使用 `stroke-dasharray` 和 `stroke-dashoffset` 属性可以对 SVG 进行动画化,实现线条动画。除了基本用法,还有一些较少人知的高级技巧,包括操纵起点或使线条向多个方向延伸。
 
-我喜欢 SVG 线条动画，因为我觉得它能给用户一种线条（路径）逐渐被绘制的幻觉，这种效果看起来很棒，而且足够简单，以至于这种效果在 Web 上得到了广泛的运用。
+**stroke-dasharray 基础**
 
-  
-
-
-正如上面那个 `TodoList` 中复选框的效果所示，可以使用 `stroke-dasharray` 和 `stroke-dashoffset` 属性来对 SVG 进行动画化，从而实现线条动画效果。虽然使用它们能很容易实现 SVG 线条动画，但其中也有一些较少人知道的或者高级技巧。其中包括操纵起点或使线条向多个方向延伸。
-
-  
-
-
-首先简单的了解一下 SVG 的 `stroke-dasharray` 属性。它用于使 SVG 路径成为虚线而不是实线。这个属性的值越大，虚线之间的间隔就越大。
-
-  
-
+`stroke-dasharray` 用于使 SVG 路径成为虚线而不是实线,值越大,虚线之间的间隔越大:
 
 ```CSS
 @layer demo {
@@ -911,50 +550,20 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-尝试拖动示例中的手柄来改变 `stroke-dasharray` 属性的值：
-
-  
-
-
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/NWJZXoo
 
-  
+示例中的心形由 SVG 的 `path` 元素绘制,整个路径长度为 `100` 个单位(根据 `SVGGeometryElement.getTotalLength()` 确定),红色标记表示路径起点。`stroke-dasharray` 的值为 `50` 时,表示线条有 `50` 个单位实色,然后是 `50` 个单位的空白。
 
+`stroke-dasharray` 属性定义线条的虚线间隙模式,最多可取四个值,取值不同时描述的虚线不同:
 
-上面示例中的心形是 SVG 的 `path` 元素绘制的，整个路径的长度是 `100` 个单位（根据 `SVGGeometryElement.getTotalLength()` 确定）。其中红色标记是表示路径的起点。假设 `stroke-dasharray` 的值为 `50` ，将表示线条有 `50` 个单位实色，然后是 `50` 个单位的空白。
+- 一个值,例如 `stroke-dasharray: 40`,表示虚线和间隙的大小相同
+- 两个值,例如 `stroke-dasharray: 40 20`,第一个值用于虚线长度,第二个值应用于间隙
+- 三个值,例如 `stroke-dasharray: 40 20 80`,第一个值用于第一段虚线长度,第二个值应用于间隙,第三个值用于第二段虚线长度,依此类推
+- 四个值,例如 `stroke-dasharray: 40 20 80 120`,第一个值用于第一段虚线长度,第二个值应用于第一个间隙,第三个值应用于第二段虚线长度,第四个值应用于第二个间隙,依此类推
 
-  
+**stroke-dashoffset 偏移**
 
-
-也就是说，我们可以使用 `stroke-dasharray` 属性来定义线条虚线间隙模式。它最多可以采用四个值，取值不同时，所描述的虚线则不同：
-
-  
-
-
--   一个值，例如 `stroke-dasharray: 40` ，表示虚线和间隙的大小相同
--   两个值，例如 `stroke-dasharray: 40 20` ，第一个值用于虚线长度，第二个值应用于间隙
--   三个值，例如 `stroke-dasharray: 40 20 80` ，第一个值用于第一段虚线长度，第二个值应用于间隙，第三个值用于第二段虚线长度，依此类推
--   四个值，例如 `stroke-dasharray: 40 20 80 120` ，第一个值用于第一段虚线长度，第二个值应用于第一个间隙，第三个值应用于第二段虚线长度，第四个值应用于第二个间隙，依此类推
-
-  
-
-
-  
-
-
-除了使用`stroke-dasharray` 使虚线的长度不同之外，我们还可以使用 `stroke-dashoffset` 来偏移描边位置。如果我们改变这个属性，看起来就像我们的虚线沿着路径移动一样。
-
-  
-
+除改变虚线长度之外,还可以使用 `stroke-dashoffset` 偏移描边位置。改变该属性,看起来就像虚线沿着路径移动:
 
 ```CSS
 @layer demo {
@@ -968,21 +577,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/vYPqdpQ
 
-  
-
-
-如此一来，我们就可以在 `@keyframes` 中改变 `stroke-dashoffset` 的值，实现 SVG 线条动画。例如：
-
-  
-
+在 `@keyframes` 中改变 `stroke-dashoffset` 的值,即可实现 SVG 线条动画:
 
 ```CSS
 @layer animation {
@@ -1000,26 +597,11 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/vYPqRjO
 
-  
+从起点开始(红色标记处),动画在 `100` 个单位后结束:`stroke-dasharray: 100` 定义虚线模式(`100` 个单位实色,`100` 个单位间隙);`stroke-dashoffset: 100` 将其向后拉 `100` 个单位;`@keyframes` 中将 `stroke-dashoffset` 减少到 `0`,动画将线条的实色部分推入视图,产生绘制线条的动画效果。
 
-
-上面这个示例，从起点开始（红色标记处），动画在 `100` 个单位后结束。CSS 的 `stroke-dasharray: 100` 定义了虚线的模式，`100` 个单位实色，然后是 `100` 个单位的空白（间隙）。使用 `stroke-dashoffset: 100` ，将其向后拉了 `100` 个单位。然后在 `@keyframes` 中将 `stroke-dashoffset` 减少到 `0` ，以便动画可以将线条的实色部分推入视图，使人产生一种绘制线条的动画效果。
-
-  
-
-
-类似的方式，可以给 SVG 绘制的任何线条（`<line>` 、`<circle>` 、`<polygon>` 或 `<path>` 等）添加动画效果：
-
-  
-
+类似的方式可以给 SVG 绘制的任何线条(`<line>`、`<circle>`、`<polygon>` 或 `<path>` 等)添加动画效果:
 
 ```SVG
 <svg viewBox="0 0 120 120" width="80vh">
@@ -1058,21 +640,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 </svg>  
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/YzgoaOX
 
-  
-
-
-正如你所看到的，我们可以按照下面的模式动画化绘制线条：
-
-  
-
+线条绘制动画可以按照下面的通用模式实现:
 
 ```CSS
 @keyframes reveal {
@@ -1090,25 +660,15 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
+注意:`FULL_LENGTH` 指 SVG 路径的长度,可根据 `SVGGeometryElement.getTotalLength()` 获得;`stroke-dashoffset` 应尽量避免使用负值,负值在 Safari 上可能出现闪烁现象。
 
+**反转线条运动方向**
 
-注意，`FULL_LENGTH` 是指 SVG 路径的长度，可以根据 `SVGGeometryElement.getTotalLength()` 获得该值。另外，`stroke-dashoffset` 应尽量避免使用负值，因为负值在 Safari 上可能会出现闪烁的现象。
+给 SVG 线条添加动画时,常需要控制动画方向(顺时针或逆时针)。示例中足球(`football`)和心形(`heart`)的方向是逆时针的,其他图形是顺时针的。希望足球和心形也按顺时针运动,可以这样做:
 
-  
-
-
-在给 SVG 线条添加动画时，你希望能控制动画的方向，比如，按顺时针方向运动或按逆时针方向运动。在上面的示例中，足球（`football`）和心形（`heart`）的方向是逆时针的，其他图形则是顺时针的。如果你希望足球和心形的运动方向也是顺时针的话，我们可以通过下面这种方式来完成：
-
-  
-
-
--   该线是不可见的，有 `0` 个单位的虚线和 `100` 个单位间隔
--   它变为可见，有 `100` 个单位的虚线和 `0` 个单位的间距
--   `stroke-dashoffset` 将其拉回 `100` 个单位，从而反转它
-
-  
-
+- 该线是不可见的,有 `0` 个单位的虚线和 `100` 个单位间隔
+- 它变为可见,有 `100` 个单位的虚线和 `0` 个单位的间距
+- `stroke-dashoffset` 将其拉回 `100` 个单位,从而反转它
 
 ```CSS
 @keyframes reversed {
@@ -1127,21 +687,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/KKEjRKB
 
-  
-
-
-也就是说，你可以按照以下的方式来反转线条运动方向：
-
-  
-
+通用模式:
 
 ```CSS
 @keyframes reversed {
@@ -1160,18 +708,7 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-只要理解了线条的虚线模式，就能很容易理解上面的代码发生了什么。
-
-  
-
-
-另外一种方式是，使线条的 `stroke-dasharray` 保持在完整长度（`FULL_LENGTH`）的固定位置，只动画化线条的 `stroke-dashoffset` ，并且从完整长度（`FULL_LENGTH`）过渡到双倍长度（`FULL_LENGTH x 2`）：
-
-  
-
+另一种方式:使线条的 `stroke-dasharray` 保持在完整长度(`FULL_LENGTH`)的固定位置,只动画化 `stroke-dashoffset`,从完整长度过渡到双倍长度(`FULL_LENGTH x 2`):
 
 ```CSS
 @keyframes reversed {
@@ -1190,30 +727,17 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/BabgxQY
 
-  
+**控制线条绘制的起点**
 
+线条就像一个环绕循环的火车,轨道从哪里开始并不重要。移动动画起点有三种方式:
 
-接下来，我们再来看看如何控制线条绘制的起点，即移动动画的起点。由于线条就像一个环绕循环的火车，轨道从哪里开始并不重要。通常情况之下，移动动画的起点有三种不同的方式：
+- 从另一侧开始:从封闭路径的另一侧或开放路径的中点开始
+- 反向并从另一侧开始:在保留先前更改方向的同时,从相反的一侧开始
+- 任意起点:具有自定义的起点
 
-  
-
-
--   从另一侧开始：从封闭路径的另一侧或开放路径的中点开始
--   反向并从另一侧开始：在保留先前更改的方向的同时，从相反的一侧开始
--   任意起点：具有自定义的起点
-
-  
-
-
-先来看从封闭路径的另一侧或开放路径的中点开始为例。类似于上一个技巧，`stroke-dasharray` 属性的值互换位置，从而绘制一条线。由于 `stroke-dashoffset` 保持不变，原始绘制方向将保持不变。然后，通过将 `stroke-dashoffset` 设置为线条总长度（`FULL_LENGTH`）的一半，线条动画将从相反的一侧开始，这对于对称路径非常有用：
-
-  
-
+**从另一侧开始**:`stroke-dasharray` 属性的值互换位置来绘制一条线;`stroke-dashoffset` 保持不变,原始绘制方向保持不变;将 `stroke-dashoffset` 设置为线条总长度(`FULL_LENGTH`)的一半,线条动画将从相反的一侧开始,对对称路径非常有用:
 
 ```CSS
 @keyframes start-from-other-side {
@@ -1232,21 +756,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/qBvzYpN
 
-  
-
-
-注意，就上面这个示例，还可以将 `@keyframes` 中的 `stroke-dashoffset` 移到动画元素（需要动画的线条元素）上：
-
-  
-
+还可以将 `@keyframes` 中的 `stroke-dashoffset` 移到动画元素上,最终效果一样:
 
 ```CSS
 @keyframes start-from-other-side {
@@ -1264,18 +776,7 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-它们最终达到的效果是一样的。
-
-  
-
-
-你也可以选择动画反向并从另一侧开始。你可以选择在线条的半长度上偏移（`stroke-dashoffset` 的值是线长总长度 `FULL_LENGTH` 的一半），也可以选择从其他值开始。然而，你需要将完整的长度添加到其中，以反转方向：
-
-  
-
+**反向并从另一侧开始**:可以在线条的半长度上偏移(`stroke-dashoffset` 的值为线长总长度的一半),也可以从其他值开始;需要将完整长度添加到其中以反转方向:
 
 ```CSS
 @keyframes other-side-and-reverse {
@@ -1294,21 +795,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/poYXVKm
 
-  
-
-
-你只需要将 `stroke-dashoffset` 属性设置为任意值，例如 `17` 个单位，可以指定线条动画的任意起点：
-
-  
-
+**任意起点**:将 `stroke-dashoffset` 属性设置为任意值,例如 `17` 个单位:
 
 ```CSS
 @keyframes custom-start-point {
@@ -1326,21 +815,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/JjzQvmb
 
-  
-
-
-你还可以将线条从内向外移动。只需要将 `stroke-dashoffset` 从线长总长度（`FULL_LENGTH`）过渡到总长度的一半：
-
-  
-
+**从内向外移动**:将 `stroke-dashoffset` 从线长总长度(`FULL_LENGTH`)过渡到总长度的一半:
 
 ```CSS
 @keyframes inside-out {
@@ -1359,21 +836,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/rNREvEx
 
-  
-
-
-同样的，反过来也是可以的，动画从外到内。对于开放路径（例如直线），将会创建出“双线”效果，就像有两支笔在同时绘制 SVG 线条一样。它通过将 `0` 虚线、`100` 间隙的线换为 `50` 虚线、`0` 间隙的线来实现。
-
-  
-
+**从外到内移动**:反过来即可。对于开放路径(例如直线),会创建出"双线"效果,就像有两支笔在同时绘制 SVG 线条——通过将 `0` 虚线、`100` 间隙的线换为 `50` 虚线、`0` 间隙的线实现:
 
 ```CSS
 @keyframes outside-in {
@@ -1390,21 +855,9 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/wvOLXwN
 
-  
-
-
-对动画如何绘制线条有完全的控制权可能非常方便。从定义上来说，控制起始点和结束点意味着动画具有两个移动的线头，它们共同到达目的地。否则，SVG 的一部分将保持不可见。如果关键点靠近，一条线段将移动缓慢，而另一条线段需要快速移动，以同时覆盖更多区域。
-
-  
-
+**自定义起点与终点**:控制起始点和结束点意味着动画具有两个移动的线头,它们共同到达目的地;否则 SVG 的一部分将保持不可见。关键点靠近时,一条线段移动缓慢,另一条线段需要快速移动以同时覆盖更多区域:
 
 ```CSS
 @keyframes custom-start-end {
@@ -1423,39 +876,17 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/YzgovXa
 
-  
+在 `@keyframes` 中调整 `stroke-dasharray` 和 `stroke-dashoffset` 可以得到不同的线条动画,这是 SVG 线条动画在 Web 应用中得到广泛应用的主要原因之一。
 
+**应用案例**
 
-正如前面这几个示例所演示的一样，在 `@keyframes` 中调整 `stroke-dasharray` 和 `stroke-dashoffset` 将得到不同的线条动画。这也是 SVG 线条动画在 Web 应用或网站上得到广泛应用的主要原因之一。
-
-  
-
-
-例如，给链接添加与众不同的悬浮效果：
-
-  
-
-
-  
-
+给链接添加与众不同的悬浮效果:
 
 > Demo 地址：https://codepen.io/airen/full/qBvzGJY
 
-  
-
-
-上面示例中的下划线是 SVG 的 `<rect>` 绘制的：
-
-  
-
+示例中的下划线由 SVG 的 `<rect>` 绘制:
 
 ```HTML
 <div class="container">
@@ -1466,13 +897,7 @@ CSS 使你能够通过对各种属性进行动画来创建动态的视觉效果�
 </div> 
 ```
 
-  
-
-
-CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性，使其在视觉上看上去不是一个矩形，只是文本的下划线。然后在 `@keyframes` 中修改它们的最终值，最终得到你所看到的悬浮效果：
-
-  
-
+CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性,使其在视觉上不是一个矩形,只是文本的下划线;然后在 `@keyframes` 中修改它们的最终值,得到悬浮效果:
 
 ```CSS
 @layer animation {
@@ -1503,26 +928,11 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
 }
 ```
 
-  
-
-
-还可以给文本和图标制作自擦除的动画效果，例如下面这个文本描边效果：
-
-  
-
-
-  
-
+还可以给文本和图标制作自擦除的动画效果,例如文本描边效果:
 
 > Demo 地址：https://codepen.io/airen/full/abMgrXq
 
-  
-
-
-实现上面效果，其核心代码如下：
-
-  
-
+核心代码:
 
 ```SVG
 <svg viewBox="0 0 1200 600" class="anim">
@@ -1546,9 +956,6 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
 </svg>
 ```
 
-  
-
-
 ```CSS
 @layer animation {
     @keyframes stroke-offset {
@@ -1567,13 +974,7 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
 }
 ```
 
-  
-
-
-下面这个是动画化线条绘制小企鹅图形的动画。对三条不同的路径进行绘制：
-
-  
-
+动画化线条绘制小企鹅图形,对三条不同的路径依次绘制:
 
 ```SVG
 <svg x="0px" y="0px" width="250px" height="250px" viewBox="0 0 250 250">
@@ -1582,9 +983,6 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
     <path class="eye" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="  M23.833,146.667c11.667,1.833,14.16-23.786,3.83-25.56S12.167,144.834,23.833,146.667z"/>
 </svg>
 ```
-
-  
-
 
 ```CSS
 @layer animation {
@@ -1644,68 +1042,23 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/vYPoYQO
 
-  
-
-
-你可能会认为上面所展示的动画效果没有太多的实际意义。事实上，并非如此。利用 SVG 线条动画，你可以为 Web 应用或网站提供与众不同的效果。例如 [@Genaro Colusso](https://codepen.io/genarocolusso) 提供的 404 页面的效果：
-
-  
-
-
-  
-
+SVG 线条动画并非没有实际意义,它可以为 Web 应用或网站提供与众不同的效果。例如 [@Genaro Colusso](https://codepen.io/genarocolusso) 提供的 404 页面效果:
 
 > Demo 地址：https://codepen.io/genarocolusso/full/XWbGMLp （来源于 [@Genaro Colusso](https://codepen.io/genarocolusso)）
 
-  
-
-
-一些与众不同的页面加载动画：
-
-  
-
-
-  
-
+一些与众不同的页面加载动画:
 
 > Demo 地址：https://codepen.io/jkantner/full/abwgLNX （来源于 [@Jon Kantner](https://codepen.io/jkantner)）
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/ainalem/full/eYmGLyp （来源于 [@Mikael Ainalem](https://codepen.io/ainalem)）
 
-  
-
-
-还可以是一些 UI 组件，例如常见的圆形进度条效果：
-
-  
-
-
-  
-
+还可以是 UI 组件,例如常见的圆形进度条:
 
 > Demo 地址：https://codepen.io/airen/full/WNmVNVd
 
-  
-
-
-使用两个 `<path>` 创建两个圆环，然后通过 `stroke-dasharray` 对内圆环（绿色）做动画处理：
-
-  
-
+使用两个 `<path>` 创建两个圆环,通过 `stroke-dasharray` 对内圆环(绿色)做动画处理:
 
 ```SVG
 <svg viewBox="0 0 36 36" class="circular-chart" width="300">
@@ -1714,9 +1067,6 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
     <text x="18" y="20.35" class="percentage">30%</text>
 </svg>
 ```
-
-  
-
 
 ```CSS
 @layer animation {
@@ -1733,36 +1083,15 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
 }
 ```
 
-  
-
-
-在此基础上，借助一些 JavaScript 脚本，还可以制作一些更复杂的 UI 组件，例如 [@Jon Kantner](https://codepen.io/jkantner) 写的一个圆环时钟效果：
-
-  
-
-
-  
-
+在此基础上借助 JavaScript 脚本,还可以制作更复杂的 UI 组件,例如 [@Jon Kantner](https://codepen.io/jkantner) 的圆环时钟效果:
 
 > Demo 地址：https://codepen.io/jkantner/full/MWEmExB （来源于 [@Jon Kantner](https://codepen.io/jkantner)）
 
-  
-
-
-上面所展示的只是 SVG 常见的一些动画效果，你可以发挥你自己的创意，制作出一些更优秀的 SVG 线条动画效果。由于篇幅所限，有关于 SVG 的线条动画就暂时聊到这里。
-
-  
-
+以上是 SVG 常见的一些动画效果。在此基础上发挥创意,可以制作出更多优秀的 SVG 线条动画。
 
 ### 路径动画
 
-  
-
-
-在现实生活中，很少有东西沿着直线运动，因此沿着路径运动允许我们模仿我们在日常生活中看到的运动。通过 SMIL 动画的学习，我们知道，在 SVG 中，我们可以使用 `<animateMotion>` 来构建一个物体沿着指定的路径进行运动。
-
-  
-
+现实生活中很少有东西沿直线运动,因此沿着路径运动可以模仿日常生活中看到的运动。在 SVG 中,SMIL 动画使用 `<animateMotion>` 构建物体沿指定路径的运动:
 
 ```SVG
 <svg viewBox="-10 -10 173 61" width="300" class="anim">
@@ -1773,26 +1102,11 @@ CSS 调整 `<rect>` 元素的 `stroke-dasharray` 和 `stroke-dashoffset` 属性�
 </svg>
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/vYPoEZg
 
-  
+SMIL 的 `<animateMotion>` 构建路径动画很简单,但 SMIL 将慢慢被弃用。CSS 提供了相应的替代方案,可以直接使用 CSS 实现路径动画——使用 `offset-path`、`offset-distance`、`offset-rotate` 和 `offset-anchor` 等属性实现元素沿指定路径运动(详见《CSS 路径动画:动画对象沿着指定路径运动》)。
 
-
-SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢被弃用。庆幸的是，CSS 提供了相应的替代方案，这意味着，我们可以直接使用 CSS 来实现路径动画。《CSS 路径动画：动画对象沿着指定路径运动》一节课中，详细向大家介绍了如何使用 CSS 的 `offset-path` 、`offset-distance` 、`offset-rotate` 和 `offset-anchor` 等属性实现元素沿着指定路径运动。
-
-  
-
-
-就拿上面的示例来说，我们使用 CSS 的话，同样可以实现相似的效果：
-
-  
-
+以上面的示例为例,CSS 可以实现相似的效果:
 
 ```SVG
 <svg viewBox="-10 -10 173 61" width="300" class="anim">
@@ -1800,9 +1114,6 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
     <circle r="5" cx="0" cy="0" fill="purple" class="circle" />
 </svg>
 ```
-
-  
-
 
 ```CSS
 @layer animation {
@@ -1823,34 +1134,13 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/WNmVbzg
 
-  
-
-
-正如上面示例所示，你可以将任何物体按你所需的路径运动，例如下面这个火箭沿着指定路径，从屏幕左下角向右上角移动：
-
-  
-
-
-  
-
+任何物体都可以按所需的路径运动,例如火箭沿着指定路径从屏幕左下角向右上角移动:
 
 > Demo 地址：https://codepen.io/airen/full/NWJQPeE
 
-  
-
-
-上面示例对应的代码如下所示：
-
-  
-
+对应代码:
 
 ```SVG
 <svg  viewBox="0 0 1300 1000" class="anim">
@@ -1876,9 +1166,6 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 </svg>
 ```
 
-  
-
-
 ```CSS
 @layer animation {
     @keyframes fly {
@@ -1901,28 +1188,13 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-> 关于路径动画的更多案例和相关介绍，请移步阅读 《CSS 路径动画：动画对象沿着指定路径运动》！
-
-  
-
+路径动画的更多案例和相关介绍可参阅《CSS 路径动画:动画对象沿着指定路径运动》。
 
 ### 变形动画
 
-  
+变形动画常用于形状变形、文本变形,交互效果中也常见,例如鼠标悬浮在用户头像时变形。
 
-
-现如今，在 Web 应用或网站上时常能看到变形动画，该动画效果常用于形状变形、文本变形上，在一些交互效果上也能常看到，例如用鼠标悬浮在用户头像时变形。
-
-  
-
-
-在 SVG 中，我们知道通过 `<animate>` 改变路径的 `d` 属性，能轻易实现变形动画效果：
-
-  
-
+在 SVG 中,通过 SMIL 的 `<animate>` 改变路径的 `d` 属性,能轻易实现变形动画效果:
 
 ```SVG
 <svg xmlns="http://www.w3.org/2000/svg" width="288" height="288" viewBox="0 0 288 288" class="element">
@@ -1950,21 +1222,9 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 </svg>
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/rNRbXVa
 
-  
-
-
-上面这个 SVG 的变形动画效果，在 CSS 中同样可以实现：
-
-  
-
+这个 SVG 变形动画效果在 CSS 中同样可以实现:
 
 ```SVG
 <svg xmlns="http://www.w3.org/2000/svg" width="288" height="288" viewBox="0 0 288 288" class="element">
@@ -1976,13 +1236,7 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 </svg>
 ```
 
-  
-
-
-首先在 CSS 中给 `<path>` 指定 `d` 属性的初始值，然后在 `@keyframes` 改变 `d` 属性的值即可：
-
-  
-
+在 CSS 中给 `<path>` 指定 `d` 属性的初始值,然后在 `@keyframes` 中改变 `d` 属性的值:
 
 ```CSS
 @layer animation {
@@ -2002,21 +1256,9 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/LYawVbz
 
-  
-
-
-基于上面这个示例，我们只需要稍微调整一下，就可以给用户头像添加一个变形的过渡动画效果：
-
-  
-
+稍微调整一下,就可以给用户头像添加一个变形的过渡动画效果:
 
 ```SVG
 <svg viewBox="0 0 1024 768" class="avatar">
@@ -2027,9 +1269,6 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
     <image x="0" y="0"  height="800" clip-path="url(#mask1)"  xlink:href="http://i.pravatar.cc/500?img=7" />
 </svg>
 ```
-
-  
-
 
 ```CSS
 @layer animation {
@@ -2044,44 +1283,17 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/NWJQqBW
 
-  
-
-
-你还可以借助其他的 CSS 特性制作出更具创意的变形动画效果，例如 [@Dominika](https://codepen.io/magiai) 基于 SVG 滤镜和 CSS 的 `clip-path` 制作的文字变形效果：
-
-  
-
-
-  
-
+还可以借助其他 CSS 特性制作更具创意的变形动画,例如 [@Dominika](https://codepen.io/magiai) 基于 SVG 滤镜和 CSS 的 `clip-path` 制作的文字变形效果:
 
 > Demo 地址：https://codepen.io/magiai/full/YzaeQQy
 
-  
-
-
 ### 文本动画
 
-  
+给文本添加动画是 SVG 动画被广泛应用的另一个场景,从简单的文本淡入淡出效果到文本的线条效果,应用广泛。
 
-
-给文本添加动画效果是 SVG 动画被广泛应用的另一个场景。从简单的文本淡入淡出效果，到文本的线条效果，可以说，无处不在。
-
-  
-
-
-例如下面这个淡入淡出文本动画，它类似于在 HTML 中使用 CSS 实现的文本闪烁效果。
-
-  
-
+例如淡入淡出文本动画,类似于在 HTML 中使用 CSS 实现的文本闪烁效果:
 
 ```SVG
 <svg xmlns="http://www.w3.org/2000/svg" class="blinking--text" width="400" height="200" viewBox="0 0 400 200">
@@ -2091,13 +1303,7 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 </svg>
 ```
 
-  
-
-
-让我们使用 SVG 的 `<text>` 元素，并使用 CSS 设置一个关键帧动画来切换文本不透明度，实现平滑的淡入淡出 SVG 文本动画：
-
-  
-
+使用 SVG 的 `<text>` 元素,配合 CSS 关键帧动画切换文本不透明度,实现平滑的淡入淡出 SVG 文本动画:
 
 ```CSS
 @layer animation {
@@ -2116,21 +1322,9 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/XWGvNqM
 
-  
-
-
-在此基础上，我们可以很轻易扩展出一个 Loading 动画效果：
-
-  
-
+在此基础上可以轻易扩展出一个 Loading 动画效果:
 
 ```SVG
 <svg viewBox="0 0 240 240" class="loading">
@@ -2138,9 +1332,6 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
     <text x="32%" y="52%">Loading...</text>
 </svg>
 ```
-
-  
-
 
 ```CSS
 @layer animation {
@@ -2202,21 +1393,9 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/LYawbBd
 
-  
-
-
-我们还可以通过 SVG 的 `<text>` 元素（包裹单个字母）并结合 CSS 的变换特性来改变每个字母在 `Y` 轴上的位置，从而实现类似于波浪形运动的文本动画：
-
-  
-
+通过 SVG 的 `<text>` 元素(包裹单个字母)并结合 CSS 变换特性,改变每个字母在 `Y` 轴上的位置,可以实现类似波浪形运动的文本动画:
 
 ```SVG
 <svg width="400" class="wavy-text" viewBox="0 0 800 200">
@@ -2233,9 +1412,6 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
     </g>
 </svg>
 ```
-
-  
-
 
 ```CSS
 @layer animation {
@@ -2261,21 +1437,9 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/PoLMbVv
 
-  
-
-
-在 Web 上，有的时候会需要将文本环绕着指定的路径排列，例如环绕一个圆排列，这在 SVG 中很容易就能实现，例如：
-
-  
-
+有时需要将文本环绕指定路径排列,例如环绕一个圆排列,SVG 可以轻松实现:
 
 ```SVG
 <svg width="800" viewBox="100 100 200 200" class="text--circle">
@@ -2295,31 +1459,13 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 </svg>
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/RwdXoXd
 
-  
-
-
-你可以基于这个基础上，给文本添加一些动画效果。感兴趣的读者可以尝试一下！
-
-  
-
+可以在此基础上给文本添加动画效果。
 
 ### 遮罩动画
 
-  
-
-
-在 CSS 中，我们可以通过 CSS 的 Masking （遮罩）特性来创建很多与众不同的效果，包括遮罩动效。在 SVG 中同样如此。例如下面这个探照灯的效果，使用了 SVG 的 `mask` 功能，并使用 CSS 做了简单的位移动效：
-
-  
-
+CSS 的 Masking(遮罩)特性可以创建很多与众不同的效果,包括遮罩动效;SVG 中同样如此。例如探照灯效果,使用了 SVG 的 `mask` 功能,并用 CSS 做简单的位移动效:
 
 ```SVG
 <svg xmlns="http://www.w3.org/2000/svg" width="600" viewBox="0 0 600 100">
@@ -2335,9 +1481,6 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
     <path mask="url(#experiment)" class="tube" fill="yellow" d="M136.07 27.246h-22.185v5.547h2.31V67.92c0 3.05 2.497 5.547 5.547 5.547h6.47c3.052 0 5.547-2.496 5.547-5.547V32.793h2.31v-5.547zm-4.62 33.74h-11.094v-1.848h11.093v1.848zm0-6.93h-6.472v-1.85h6.47v1.85zm0-6.935h-11.094v-1.848h11.093v1.85zm0-6.932h-6.472V38.34h6.47v1.848z" />
 </svg>
 ```
-
-  
-
 
 ```CSS
 @layer animation {
@@ -2356,53 +1499,23 @@ SMIL 的 `<animateMotion>` 构建路径动画很简单，可 SMIL 将会慢慢�
 }
 ```
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/airen/full/BabXpWj
-
-  
-
 
 ### 粒子动画
 
-  
+`SVGGeometryElement.getPointAtLength()` 方法返回沿路径给定距离的点,给出沿路径精确距离上的坐标。例如 `path.getPointAtLength(10)` 将返回一个包含 `x` 和 `y` 坐标的 `SVGPoint`(一个对象)。
 
-
-前面在介绍 SVG 线条动画时，曾提到，我们可以使用 `SVGGeometryElement.getPointAtLength()` 方法返回沿路径的给定距离的点。它将给出沿路径精确距离上的坐标。例如 `path.getPointAtLength(10)` 将返回一个包含 `x` 和 `y` 坐标的 `SVGPoint`（一个对象）。
-
-  
-
-
-这意味着，我们可以基于 SVG 路径和 `getPointAtLength()` 来创建一些有创意的动画效果，例如 [@Louis Hoebregts](https://codepen.io/Mamboleoo) 提供的相关案例，他结合了 [GreenSock 相关特性](https://greensock.com/motionpath/)，创建了一个粒子动画效果。
-
-  
-
-
-  
-
+基于 SVG 路径和 `getPointAtLength()` 可以创建有创意的动画效果。例如 [@Louis Hoebregts](https://codepen.io/Mamboleoo) 结合 [GreenSock 相关特性](https://greensock.com/motionpath/)创建的粒子动画:
 
 > Demo 地址：https://codepen.io/Mamboleoo/full/NWaogXW （来源于 [@Louis Hoebregts](https://codepen.io/Mamboleoo) ）
 
-  
+这个动画在每一帧上创建一个新的圆圈元素并做动画处理,使新粒子弹出并淡出。核心步骤:
 
-
-这个动画在每一帧上，将创建一个新的圆圈元素，并对其进行动画处理，以使新的粒子弹出并淡出。以下是制作这个动画的效果的核心步骤：
-
-  
-
-
--   创建一个新的 `<circle>` 元素，并将其附加到 SVG 中
--   使用 `getPointAtLength` 计算的点坐标
--   为每个圆定义随机的半径和颜色
--   将圆的 `cx` 和 `cy` 属性动画到一个随机位置
--   动画完成后，从 DOM 中移除圆
-
-  
-
+- 创建一个新的 `<circle>` 元素,并将其附加到 SVG 中
+- 使用 `getPointAtLength` 计算点坐标
+- 为每个圆定义随机的半径和颜色
+- 将圆的 `cx` 和 `cy` 属性动画到一个随机位置
+- 动画完成后,从 DOM 中移除圆
 
 ```JavaScript
 function createParticle (point) {
@@ -2438,106 +1551,34 @@ function createParticle (point) {
 }
 ```
 
-  
+更详细的代码请参阅案例源码。
 
-
-更详细的代码，请参阅案例源码。
-
-  
-
-
-除此之外，要是你对 WebGL 了解，例如 [three.js](https://threejs.org/) 。你还可以制作出更酷炫的粒子动画效果，例如下面这个：
-
-  
-
-
-  
-
+如果对 WebGL 有了解,例如 [three.js](https://threejs.org/),还可以制作更酷炫的粒子动画:
 
 > Demo 地址：https://codepen.io/Mamboleoo/full/zYEJVWy （来源于 [@Louis Hoebregts](https://codepen.io/Mamboleoo)）
 
-  
-
-
-你也可以基于 [anime.js 来制作 SVG 动画](https://animejs.com/)。例如，下面这个动画效果，它给 `Notification` 组件的徽标添加了一个类似火焰燃烧的动画效果：
-
-  
-
-
-  
-
+也可以基于 [anime.js 制作 SVG 动画](https://animejs.com/)。例如给 `Notification` 组件的徽标添加类似火焰燃烧的动画效果:
 
 > Demo 地址：https://codepen.io/AlikinVV/full/wOyGNJ （来源于 [@Valery Alikin](https://codepen.io/AlikinVV)）
 
-  
-
-
 ### 其他动画效果
 
-  
-
-
-上面所展示的是 SVG 和 CSS 共同制作的一些动画效果，它有一些常见的基本动画效果，也有一些酷炫的粒子动画效果。其实，在 Web 上还有可能带有交互的效果的 SVG 动画，或者用于常用组件上的 SVG 动画。
-
-  
-
-
-  
-
+除了上述基本动画与粒子动画,Web 上还有带交互效果的 SVG 动画,或用于常用组件上的 SVG 动画:
 
 > Demo 地址：https://codepen.io/milanraring/full/qBEPzKB （来源于 [@Milan Raring](https://codepen.io/milanraring)）
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/Anna_Batura/details/ExKBXdd （来源于 [@BrawadaCom](https://codepen.io/Anna_Batura) ）
-
-  
-
-
-  
-
 
 > Demo 地址：https://codepen.io/TurkAysenur/details/bGawdKv （来源于 [@Aysenur Turk](https://codepen.io/TurkAysenur)）
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/aaroniker/details/yLyJYxx （来源于 [@Aaron Iker](https://codepen.io/aaroniker)）
-
-  
-
-
-  
-
 
 > Demo 地址：https://codepen.io/arcticben/full/zZaRqQ （来源于 [@Ben Sinca](https://codepen.io/arcticben)）
 
-  
-
-
-  
-
-
 > Demo 地址：https://codepen.io/AbubakerSaeed/full/yLOaaKM （来源于 [@Abubaker Saeed](https://codepen.io/AbubakerSaeed)）
 
-  
+可以在 CodePen 上查看更多 SVG 方面的动画作品。
 
+## 小结
 
-你可以在 CodePen 上查看更多有关于 SVG 方面的动画。这里就不一一向大家展示了。
-
-  
-
-
-## 结论
-
-  
-
-
-希望本文能鼓励你尝试制作一些精彩的 SVG 动画和交互，并将这种工作流程整合到你的日常项目中。我们只使用了一些小技巧和 CSS 属性，就能够轻松创建各种不错的效果。如果你愿意投入一些额外的时间、知识和努力，就能够创造一些真正令人惊叹和交互式的图形。
+使用 CSS 给 SVG 元素添加动画,只需要一些小技巧和 CSS 属性,就能轻松创建各种效果:过渡与关键帧动画处理颜色、位移和交互反馈;`stroke-dasharray`/`stroke-dashoffset` 驱动线条绘制动画并精确控制方向、起点和终点;`offset-path` 系列属性替代 SMIL 实现路径运动;`d: path()` 实现变形动画;`<text>`、`mask` 与 JavaScript 配合可实现文本、遮罩和粒子动画。投入额外的时间与知识,就能创造出真正令人惊叹的交互式图形。

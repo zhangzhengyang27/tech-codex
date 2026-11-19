@@ -9,16 +9,16 @@ tags: [Babel, 编译, AST, 插件]
 
 # 加餐：会了 babel 插件，就会写 prettier 插件
 
-最近写了一个 Prettier 插件，可以达到这样的效果：
+有一个 Prettier 插件案例，可以达到这样的效果：
 
 
-同事每次保存代码的时候，import 语句的顺序都会随机变。
+启用该插件后，每次保存代码时 import 语句的顺序都会随机变。
 
-但是他去 prettier 配置文件里还啥也发现不了。
+而从 prettier 配置文件里看不出任何异常。
 
-于是就会一脸懵逼。
+于是使用者会一脸懵逼。
 
-那么这个“恶搞”同事的 prettier 插件是怎么实现的呢？
+那么这个随机打乱 imports 顺序的 prettier 插件是怎么实现的呢？
 
 其实底层还是 babel 插件的东西。
 
@@ -43,12 +43,12 @@ prettier 其实也基于编译实现的，只不过不做中间的转换，只�
 
 ts、js、css、scss、html 等都支持，就是因为不同的后缀名会启用不同的 parser 和 printer。
 
-而且，它是支持插件的，你完全可以通过 prettier 插件来实现任何一种语言的格式化。
+而且，它是支持插件的，完全可以通过 prettier 插件来实现任何一种语言的格式化。
 
 很容易想到，插件自然也是指定什么后缀名的文件，用什么 parser 和 printer，所以是这样的格式：
 
 
-我们看一个真实的插件，格式化 nginx 配置文件的 prettier 插件 prettier-plugin-nginx：
+看一个真实的插件——格式化 nginx 配置文件的 prettier 插件 prettier-plugin-nginx：
 
 languages 部分就是指定这个语言的名字，什么后缀名的文件，用什么 parser。
 
@@ -63,7 +63,7 @@ printer 部分就是把 AST 打印成代码：
 
 总之，想扩展一种新的语言的格式化，只要实现 parser 和 printer 就好了。
 
-但前面那个修改 imports 的插件也不是新语言呀，不是 js/ts 代码么？这种怎么写 prettier 插件？
+但前面那个修改 imports 的插件并不是新语言，处理的就是 js/ts 代码，这种 prettier 插件怎么写？
 
 
 其实 parser 还可以指定一个预处理器：
@@ -74,10 +74,10 @@ printer 部分就是把 AST 打印成代码：
 所以完整的 prettier 流程应该是这样的：
 
 
-那我们写一个 prettier 插件，对 js/ts/vue/flow 的代码都做下同样的预处理，不就能实现随机打乱 imports 的效果么～
+写一个 prettier 插件，对 js/ts/vue/flow 的代码都做同样的预处理，就能实现随机打乱 imports 的效果。
 
 
-我们来写一下：
+下面开始实现：
 
 只需要对 prettier 默认的 babel 和 typescript 的 parser 做修改就可以了。
 
@@ -105,22 +105,22 @@ module.exports = {
 };
 ```
 
-我在代码后加了一个 guangguangguang。
+示例在代码后追加了一个 guangguangguang。
 
 在 prettier 配置文件里引入这个插件：
 
 
-然后我们跑下 prettier：
+然后运行 prettier：
 
 
-我们写的第一个 prettier 插件生效了！
+第一个 prettier 插件就生效了。
 
 而且除了 js、ts，在 vue 文件里也会生效：
 
 
 这是因为在 parse vue 的 sfc 的时候，script 的部分还是用 babel 或者 tsc 的。
 
-当然，一般我们会配置 vscode 在保存的时候自动调用 prettier 来格式化。
+当然，一般会配置 vscode 在保存的时候自动调用 prettier 来格式化。
 
 这需要安装 prettier 插件：
 
@@ -138,11 +138,11 @@ module.exports = {
 然后就每次保存自动用 prettier 格式化了：
 
 
-然后我们开始实现打乱 imports 的功能。
+然后开始实现打乱 imports 的功能。
 
 要找到 imports 的代码，然后做一些修改，自然会想到通过 babel 的 api。
 
-所以我们可以这样写：
+可以这样写：
 
 先引入这几个包：
 ```javascript
@@ -228,7 +228,7 @@ import 语句需要包裹一层 file 的根结点，用 @babel/types 包的 api 
 
 generate 的时候可以加一个 retainLines 为 true，也就是打印的时候保留在源码中的行数，这样打印完了行数不会变。
 
-至此，这个随机打乱 imports 顺序的 prettier 插件我们就完成了。
+至此，这个随机打乱 imports 顺序的 prettier 插件就完成了。
 
 完整代码如下：
 
@@ -289,7 +289,7 @@ module.exports = {
 };
 ```
 
-我们来试一下。
+试一下效果。
 
 在 js/ts 文件中：
 
@@ -299,12 +299,12 @@ module.exports = {
 
 都生效了！（因为 prettier 插件有缓存，不生效的话关掉再打开编辑器就好了）
 
-至此，我们这个“恶搞”同事的插件就完成了！
+至此，这个随机打乱 imports 顺序的插件就完成了。
 
-有的同学说，但是在配置文件里会引入呀，这个也太明显了吧。
+有人可能会质疑：在配置文件里会引入插件，这不是很明显吗？
 
 
-其实不是的。默认 prettier 会加载 node_modules 下的所有 prettier-plugin-xx 的或者 @xxx/prettier-plugin-yy 的插件，不需要手动指定 plugins，这个只有我们本地开发的时候需要这样指定。
+其实不是的。默认 prettier 会加载 node_modules 下的所有 prettier-plugin-xx 的或者 @xxx/prettier-plugin-yy 的插件，不需要手动指定 plugins，只有本地开发调试的时候需要这样指定。
 
 比如社区有 prettier-plugin-sort-import 这个插件，用于 import 排序的：
 
@@ -312,7 +312,7 @@ module.exports = {
 就不需要自己引入就可以直接做配置了：
 
 
-所以，只要安装这个打乱 imports 的 prettier 插件的依赖，prettier 就会自动应用，同事不看 package.json 就很难发现。
+所以，只要安装这个打乱 imports 的 prettier 插件的依赖，prettier 就会自动应用，从 package.json 之外的地方很难发现。
 
 ## 总结
 
@@ -326,8 +326,8 @@ prettier 是基于编译技术实现的，前端的编译都是 parse、transfor
 - parsers 部分实现字符串到 AST 的 parse，还可以指定预处理函数 preprocess。
 - printers 部分实现 AST 到 doc 的打印，doc 是 prettier 的一种中间格式，便于 prettier 再做一层统一的格式控制，之后再打印为字符串
 
-今天我们写的 prettier 插件并不是实现新语言的支持，所以只用到了 preprocess 对代码做了预处理，通过 babel 的 api 来对代码做了 imports 的处理。
+本文实现的 prettier 插件并不是实现新语言的支持，所以只用到了 preprocess 对代码做了预处理，通过 babel 的 api 来对代码做了 imports 的处理。
 
 所以，会了 babel 插件就会写 prettier 插件对 js/ts 做预处理，同理，会了 postcss、posthtml 等也可以用来对 css、scss、less、html 等做预处理，**在格式化代码时加入一些自定义逻辑**。
 
-最后，文中的 prettier 插件的案例只是学习用，不建议大家把这种插件引入项目，否则后果自负[旺柴]。
+最后，文中的 prettier 插件的案例只是学习用，不建议将这种插件引入项目。

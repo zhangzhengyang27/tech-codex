@@ -1,6 +1,6 @@
 ---
 title: 手写 Babel： cli篇
-description: "上节我们实现了完整的编译流程，支持了插件，可以通过引入模块的方式使用，这一节我们实现下命令行的方式。"
+description: "在已实现的 Babel 编译核心（支持插件、可模块引入）基础上，实现命令行工具：commander 参数解析、cosmiconfig 配置查找、glob 模糊匹配、sourcemap 关联与 chokidar watch 增量编译。"
 keywords: [手写, Babel, cli篇]
 category: tools
 tags: [Babel, 编译, AST, 插件]
@@ -9,9 +9,9 @@ tags: [Babel, 编译, AST, 插件]
 
 # 手写 Babel： cli篇
 
-上节我们实现了完整的编译流程，支持了插件，可以通过引入模块的方式使用，这一节我们实现下命令行的方式。
+此前已实现完整的编译流程并支持插件（通过引入模块的方式使用），本文在其基础上实现命令行方式的使用。
 
-我们会实现以下功能：
+实现的功能包括：
 
 - 支持命令行指定参数，指定要编译的文件、输出目录、是否 watch 等
 - 支持配置文件
@@ -21,7 +21,7 @@ tags: [Babel, 编译, AST, 插件]
 
 ## 思路分析
 
-命令行工具就是通过命令行启动的，要支持命令行启动需要在 js 文件开头加上
+命令行工具通过命令行启动。要支持命令行启动，需要在 js 文件开头加上
 ```
 #!/usr/bin/env node
 ```
@@ -34,7 +34,7 @@ tags: [Babel, 编译, AST, 插件]
 - 扩展名为 `.json`、 `.yaml`、 `.yml`、 `.js`、`.cjs` 、`.config.js`、`.config.cjs` 的 rc 文件
 - `.config.js` 或者 `.config.cjs` 的 commonjs 模块
 
-这种配置文件查找机制在 eslint、babel 等很多工具中都有应用，我们也采用这种方式。
+这种配置文件查找机制在 eslint、babel 等很多工具中都有应用，本文也采用这种方式。
 
 文件模糊匹配使用 [glob](https://www.npmjs.com/package/glob) 来匹配，它会返回匹配后的文件路径。
 
@@ -44,7 +44,7 @@ glob("**/*.js", options, function (er, files) {})
 
 watch 的实现使用 [chokidar](https://www.npmjs.com/package/chokidar)，它会监听文件的变动，包括文件增加、删除、修改、重命名，目录增加、删除等，然后把变动的文件路径传入回调函数。监听的文件也支持通过 glob 字符串来指定。
 
-知道了 watch、命令行参数解析、配置文件查找、文件模糊匹配都怎么做之后，我们来串联下整体流程：
+在确定 watch、命令行参数解析、配置文件查找、文件模糊匹配的实现方式后，整体流程如下：
 
 - 通过 commander 解析命令行参数，拿到 outDir（输出目录）、watch（是否监听）以及 glob 字符串
 - 解析 glob 字符串，拿到要编译的文件路径
@@ -52,9 +52,9 @@ watch 的实现使用 [chokidar](https://www.npmjs.com/package/chokidar)，它�
 - 依次编译每一个文件，传入配置信息，输出到 outDir 目录，并且添加 sourcemap 的关联
 - 如果开启了 watch，则监听文件变动，每次变动都重新编译该文件
 
-之后还需要在 package.json 中配置下 bin 属性，这样才可以作为命令行工具来注册。
+之后还需要在 package.json 中配置 bin 属性，这样才能作为命令行工具注册。
 
-下面我们实现一下：
+具体实现如下：
 
 ## 代码实现：
 
@@ -68,14 +68,14 @@ commander.option('--watch', '监听文件变动');
 
 commander.parse(process.argv);
 ```
-对传入的参数 process.argv 做 parse 之后就可以拿到具体的值：
+对传入的参数 process.argv 做 parse 之后就可以拿到具体的值。
 
-比如我们传入：
+例如传入：
 
 ```shell
 my-babel ./input/*.js --out-dir ./dist --watch
 ```
-在代码里就可以拿到
+在代码里可以拿到
 
 ```javascript
 const cliOpts = commander.opts();
@@ -84,7 +84,7 @@ cliOptions.outDir;// ./dist
 cliOptions.watch // true
 commander.args[0] // ./input/*.js
 ```
-我们要对输入的参数做下校验，然后打印提示信息：
+对输入的参数做校验，并打印提示信息：
 ```javascript
 if (process.argv.length <=2 ) {
     commander.outputHelp();
@@ -106,9 +106,9 @@ if(!cliOpts.outDir) {
 }
 ```
 
-这样，我们就完成了对命令行参数的处理。
+这样就完成了对命令行参数的处理。
 
-接下来，我们对 glob 字符串做解析，拿到具体的文件路径：
+接下来，解析 glob 字符串以拿到具体的文件路径：
 
 ```javascript
 const filenames = glob.sync(commander.args[0]);
@@ -118,7 +118,7 @@ const filenames = glob.sync(commander.args[0]);
 const explorerSync = cosmiconfigSync('myBabel');
 const searchResult = explorerSync.search();
 ```
-我们通过 options 来集中存放命令行参数和解析后的配置文件的参数：
+通过 options 集中存放命令行参数和解析后的配置文件参数：
 ```javascript
 const options = {
     babelOptions: searchResult.config,
@@ -129,7 +129,7 @@ const options = {
 }
 ```
 
-之后，就可以开始编译了。我们定义一个 compile 方法，传入文件路径的数组，然后，对每个文件的内容进行读取，然后进行编译，之后输出到目标目录。
+之后就可以开始编译。定义一个 compile 方法，传入文件路径数组，读取每个文件的内容，进行编译，然后输出到目标目录。
 
 这里要注意的是，如果 outDir 不存在，需要先创建。
 
@@ -158,7 +158,7 @@ function compile(fileNames) {
 }
 ```
 
-编译就是使用我们之前实现的 babel core，把生成的 sourcemap 关联到目标代码。
+编译使用之前实现的 babel core，并把生成的 sourcemap 关联到目标代码。
 
 ```javascript
 const res = myBabel.transformSync(fileContent, {
@@ -181,13 +181,11 @@ if(cliOpts.watch) {
     });
 }
 ```
-这样，我们就实现了命令行参数的解析，编译多个文件，watch 文件变动增量编译的功能。
-
-下面我们来测试一下：
+至此，就实现了命令行参数解析、多文件编译、watch 文件变动增量编译的功能。
 
 ## 测试
 
-我们在 test 目录下新建一个配置文件 myBabel.config.js:
+在 test 目录下新建一个配置文件 myBabel.config.js：
 ```javascript
 function plugin2(api, options) {
     return {
@@ -222,7 +220,7 @@ module.exports = {
 }
 ```
 
-然后添加一个 input 目录，里面放上两个文件：
+然后添加一个 input 目录，放入两个文件：
 ```javascript
 // input1.js
 const c = 1;
@@ -245,7 +243,7 @@ function minus(a, b) {
 minus(3, 4);
 ```
 
-之后我们可以通过下面的方式来测试：
+之后可以通过下面的方式测试：
 ```
 node ../src/cli/index.js ./input/*.js --out-dir ./dist --watch
 ```
@@ -263,8 +261,8 @@ node ../src/cli/index.js ./input/*.js --out-dir ./dist --watch
     "cwd": "${workspaceFolder}/exercise-babel/test"//运行的目录
 },
 ```
-然后点击 debug 按钮就可以跑了。
-但是这样测试需要指定路径，我们还可以把这个命令注册到本地的全局目录：
+然后点击 debug 按钮即可运行。
+这种测试方式需要指定路径，还可以把命令注册到本地全局目录：
 
 在 cli/index.js 文件开头加上:
 ```javascript
@@ -284,7 +282,7 @@ my-babel ./input/*.js --out-dir ./dist --watch
 
 当然，如果是正式的命令行工具，需要发布到 npm 仓库，然后 npm install 的方式来安装和使用。
 
-如果 npm link 之后还是找不到 my-babel 的命令，那么可能是你没有把全局bin 的位置添加到环境变量的 PATH 中，可以这样做：
+如果 npm link 之后仍然找不到 my-babel 命令，可能是全局 bin 的位置没有添加到环境变量 PATH 中，处理方式如下：
 
 ```shell
 export PATH=$PATH:$(npm get prefix)/bin
@@ -295,7 +293,7 @@ npm get prefix 是查看本地 npm 的全局路径，而 bin 就是命令的路�
 
 ## 总结
 
-我们实现了 babel cli 的命令行参数的解析（commander），模糊匹配文件（glob）、配置文件查找（cosmiconfig）、监听文件变动（chokidar）等功能。之后在 package.json 中的 bin 来注册就可以使用了。
+本文实现了 babel cli 的命令行参数解析（commander）、文件模糊匹配（glob）、配置文件查找（cosmiconfig）、监听文件变动（chokidar）等功能，并在 package.json 中通过 bin 注册为命令行工具。
 
 本地测试的时候可以 link 到全局目录，当然全局目录需要在 PATH 中，如果不在的话，需要 npm get prefix 看一下全局 npm 路径，然后添加到 PATH。
 

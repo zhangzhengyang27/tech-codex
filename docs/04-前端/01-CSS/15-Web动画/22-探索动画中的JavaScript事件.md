@@ -9,7 +9,7 @@ tags: [CSS, 布局, 动画, 响应式]
 
 # 探索动画中的JavaScript事件
 
-在现代 Web 开发中，CSS 过渡动画（transition）和关键帧动画（animation）已成为创作动画的关键技术之一。利用过渡和动画，我们仅用几行 CSS 代码就可以创建出复杂而又流畅的动画效果。通常情况下，仅使用样式表动画就足够了，但是在某些情况下，我们可能需要更多的控制。例如，当页面上的某个动画结束时触发另一个动画的运行，或者说，当页面上的某个动画结束时，更新元素的内容：
+在现代 Web 开发中，CSS 过渡动画（transition）和关键帧动画（animation）已成为创作动画的关键技术之一。利用过渡和动画，仅用几行 CSS 代码就可以创建出复杂而又流畅的动画效果。通常情况下，仅使用样式表动画就足够了，但在某些情况下需要更多的控制。例如，当页面上的某个动画结束时触发另一个动画的运行，或者说，当页面上的某个动画结束时，更新元素的内容：
 
   
 
@@ -17,17 +17,17 @@ tags: [CSS, 布局, 动画, 响应式]
   
 
 
-例如这样的组合效果：招手动画结束之后，文字才淡入淡出，当文字动画效果结束之后，底部按钮才出现。就这个组合效果而言，CSS 关键帧动画可以通过动画编排完成，但对于过渡动画，仅使用 CSS 是无法完成的，我们需要与 JavaScript 融合在一起才可能完成。
+例如这样的组合效果：招手动画结束之后，文字才淡入淡出，当文字动画效果结束之后，底部按钮才出现。就这个组合效果而言，CSS 关键帧动画可以通过动画编排完成，但对于过渡动画，仅使用 CSS 是无法完成的，需要与 JavaScript 融合在一起才可能完成。
 
   
 
 
-尽管这并不是很频繁，但在复杂的场景中确实会发生。事实上，Web 上的一些富交互场景中，不管是 CSS 的关键帧动画还是过渡动画，我们都需要与 JavaScript 融合在一起，尤其是在处理动画事件时。例如，我们想要捕获动画的完成，我们需要一个基于事件的回调，以便在其中运行相关的代码。
+尽管这并不是很频繁，但在复杂的场景中确实会发生。事实上，Web 上的一些富交互场景中，不管是 CSS 的关键帧动画还是过渡动画，都需要与 JavaScript 融合在一起，尤其是在处理动画事件时。例如，想要捕获动画的完成，就需要一个基于事件的回调，以便在其中运行相关的代码。
 
   
 
 
-虽然，在 Web 动画 API 出现之前，JavaScript 中并没有高级别的动画 API，但有一些 JavaScript API 可以帮助我们更好的控制 CSS 动画。本文将探讨 JavaScript 在处理 CSS 动画方面有哪些 API 可用，涵盖了CSS 动画的各种事件类型。通过详细的示例代码和实际应用场景，将学会如何精确监听过渡和动画的开始、结束、取消等事件，提高你的动画交互水平。你将掌握如何利用这些事件构建交互性更强的 Web 界面。
+虽然，在 Web 动画 API 出现之前，JavaScript 中并没有高级别的动画 API，但有一些 JavaScript API 可以帮助开发者更好地控制 CSS 动画。本文将探讨 JavaScript 在处理 CSS 动画方面有哪些 API 可用，涵盖 CSS 动画的各种事件类型。通过详细的示例代码和实际应用场景，可以学会如何精确监听过渡和动画的开始、结束、取消等事件，提高动画交互水平，并掌握如何利用这些事件构建交互性更强的 Web 界面。
 
   
 
@@ -58,7 +58,7 @@ tags: [CSS, 布局, 动画, 响应式]
   
 
 
-正如你所看到的，首屏上有多个动画元素，这些元素的动画效果大多都会是 `fadeIn` 、`fadeInDown` 、`fadeInRight` 、`fadeInUp` 、`fadeInLeft` 和 `zoomIn` 等，著名的 [Animation.css](https://animate.style/) 动画库就包含了这些常见的动画效果：
+首屏上有多个动画元素，这些元素的动画效果大多都会是 `fadeIn` 、`fadeInDown` 、`fadeInRight` 、`fadeInUp` 、`fadeInLeft` 和 `zoomIn` 等，著名的 [Animation.css](https://animate.style/) 动画库就包含了这些常见的动画效果：
 
   
 
@@ -271,7 +271,7 @@ tags: [CSS, 布局, 动画, 响应式]
   
 
 
-我想通过这个示例告诉大家的是，虽然 CSS 过渡动画和关键帧动画是制作 Web 动画的主流技术之一，使用它们也能创建出复杂而又流畅的动画效果，但在一些富交互场景，有些交互或效果不得不依赖于动画相关的事件来触发。在这样的情境之下，我们不得不将 CSS 过渡动画和关键帧动画与 JavaScript 事件相融合。这也是本文存在的目的以及其重要性。
+这个示例说明：虽然 CSS 过渡动画和关键帧动画是制作 Web 动画的主流技术之一，使用它们也能创建出复杂而又流畅的动画效果，但在一些富交互场景，有些交互或效果不得不依赖于动画相关的事件来触发。在这样的情境之下，需要将 CSS 过渡动画和关键帧动画与 JavaScript 事件相融合。这也是本文存在的目的以及其重要性。
 
   
 
@@ -281,7 +281,7 @@ tags: [CSS, 布局, 动画, 响应式]
   
 
 
-接下来我们要聊的动画事件并不是 WAAPI 中的 JavaScript API ，这部分会留到专门的内容中讲解。这里所说的动画事件主要还是 CSS 过渡动画和关键帧动画中的 JavaScript 事件。我们可以从 W3C 的相关规范中获得 [CSS 过渡动画](https://www.w3.org/TR/css-transitions-1/#transition-events)和[关键帧动画](https://www.w3.org/TR/css-animations-1/#events)所涉及到的相关事件：
+接下来介绍的动画事件并不是 WAAPI 中的 JavaScript API，这部分会留到专门的内容中讲解。这里所说的动画事件主要还是 CSS 过渡动画和关键帧动画中的 JavaScript 事件。可以从 W3C 的相关规范中获得 [CSS 过渡动画](https://www.w3.org/TR/css-transitions-1/#transition-events)和[关键帧动画](https://www.w3.org/TR/css-animations-1/#events)所涉及到的相关事件：
 
   
 
@@ -301,7 +301,7 @@ tags: [CSS, 布局, 动画, 响应式]
   
 
 
-当我们在运行一个 CSS 动画时，所看到的只是动画对元素视觉上的改变。事实上，在幕后，它们在它们的生命周期的关键点会触发相应的动画事件。这些事件使你能够在动画的不同阶段执行特定的操作。例如，在 `A` 动画结束时触发其他 `B` 动画的开始执行，或者在动画结束时打开一个对话框等。Web 开发者通过监听这些事件，可以更精确地控制和定制动画的行为。
+运行一个 CSS 动画时，所看到的只是动画对元素视觉上的改变。事实上，在幕后，它们在生命周期的关键点会触发相应的动画事件。这些事件使开发者能够在动画的不同阶段执行特定的操作。例如，在 `A` 动画结束时触发其他 `B` 动画的开始执行，或者在动画结束时打开一个对话框等。Web 开发者通过监听这些事件，可以更精确地控制和定制动画的行为。
 
   
 
@@ -397,7 +397,7 @@ element.dispatchEvent(transitionEndEvent);
   
 
 
-在这个示例中，我们创建了一个 `TransitionEvent` 对象，事件类型（`type`）是 `transitionend` 事件，并通过 `dispatchEvent` 方法分发了该事件。然后，通过添加事件监听器，可以在过渡结束时执行相应的操作。
+在这个示例中创建了一个 `TransitionEvent` 对象，事件类型（`type`）是 `transitionend` 事件，并通过 `dispatchEvent` 方法分发了该事件。然后，通过添加事件监听器，可以在过渡结束时执行相应的操作。
 
   
 
@@ -496,7 +496,7 @@ element.dispatchEvent(animationEndEvent);
   
 
 
-在这个示例中，我们创建了一个 `AnimationEvent` 对象，事件类型（`type`）是 `animationend` 事件，并通过 `dispatchEvent` 方法分发了该事件。然后，通过添加事件监听器，可以在关键帧动画（`ani`）结束时执行相应的操作。
+在这个示例中创建了一个 `AnimationEvent` 对象，事件类型（`type`）是 `animationend` 事件，并通过 `dispatchEvent` 方法分发了该事件。然后，通过添加事件监听器，可以在关键帧动画（`ani`）结束时执行相应的操作。
 
   
 
@@ -509,7 +509,7 @@ element.dispatchEvent(animationEndEvent);
   
 
 
-上面所介绍的仅是 CSS 动画中的相关事件的科普介绍，接下来，我们更深入的来了解这些事件，以及它们能帮助我们做些什么。
+上面所介绍的仅是 CSS 动画中相关事件的科普介绍，接下来更深入地了解这些事件，以及它们能帮助开发者做些什么。
 
   
 
@@ -546,7 +546,7 @@ element.dispatchEvent(animationEndEvent);
   
 
 
-正如你所见，过渡动画存在三个状态，但并不意味着每一个状态都有相对应的事件。就过渡动画而言，它主要有以下几个事件：
+过渡动画存在三个状态，但并不意味着每一个状态都有相对应的事件。就过渡动画而言，它主要有以下几个事件：
 
   
 
@@ -559,7 +559,7 @@ element.dispatchEvent(animationEndEvent);
   
 
 
-我们通过一些简单的案例来向大家解释这四个属性。
+下面通过一些简单的案例来解释这四个事件。
 
   
 
@@ -569,7 +569,7 @@ element.dispatchEvent(animationEndEvent);
   
 
 
-`transitionstart` 事件是在 CSS 过渡动画实际开始时被触发。请注意这里的“**实际**”一词。如果你对 CSS 过渡动画有所了解的话，你应该知道 CSS 过渡动画和关键帧动画有一个最明显的差异：“CSS 过渡动画必须由相应动作来触发，比如鼠标悬浮时、复选框选中时、类名切换时（由 JavaScript 控制）等；但 CSS 关键帧动画有所不同，文档加载完就可以触发。也就是说，即使你在样式表中创建了一个 CSS 过渡动画，但没有被“实际”触发执行的话，`transitionstart` 事件就永远不会被触发。例如下面这个示例：
+`transitionstart` 事件是在 CSS 过渡动画实际开始时被触发。请注意这里的“**实际**”一词。CSS 过渡动画和关键帧动画有一个最明显的差异：“CSS 过渡动画必须由相应动作来触发，比如鼠标悬浮时、复选框选中时、类名切换时（由 JavaScript 控制）等；但 CSS 关键帧动画有所不同，文档加载完就可以触发。也就是说，即使在样式表中创建了一个 CSS 过渡动画，但没有被“实际”触发执行的话，`transitionstart` 事件就永远不会被触发。例如下面这个示例：
 
   
 
@@ -617,7 +617,7 @@ element.addEventListener('transitionstart', (event) => {
   
 
 
-虽然我们在 `.element` 上设置了过渡动画，但如果不点击 “Play” 按钮的话，该过渡动画是不会执行的，对应的 `transitionstart` 事件也不会被触发：
+虽然在 `.element` 上设置了过渡动画，但如果不点击 “Play” 按钮的话，该过渡动画是不会执行的，对应的 `transitionstart` 事件也不会被触发：
 
   
 
@@ -625,7 +625,7 @@ element.addEventListener('transitionstart', (event) => {
   
 
 
-正如你所看到的，页面加载完之后，`transition` 动画并没有执行。如果这个时候你点击“Play”按钮，`transition` 动画会被触发，`.element` 元素水平方向会放大 `1.5` 倍。此时，过渡动画才是真正（“实际”）执行，相应的 `transitionstart` 事件也就被触发了，并且同时告诉浏览器 `.alert` 内容需要更改：
+页面加载完之后，`transition` 动画并没有执行。这个时候点击“Play”按钮，`transition` 动画会被触发，`.element` 元素水平方向会放大 `1.5` 倍。此时，过渡动画才是真正（“实际”）执行，相应的 `transitionstart` 事件也就被触发了，并且同时告诉浏览器 `.alert` 内容需要更改：
 
   
 
@@ -638,7 +638,7 @@ element.addEventListener('transitionstart', (event) => {
   
 
 
-我们都知道，CSS 过渡动画会因为延迟时间（transition-delay）推迟执行：
+CSS 过渡动画会因为延迟时间（transition-delay）推迟执行：
 
   
 
@@ -670,12 +670,12 @@ element.addEventListener('transitionstart', (event) => {
   
 
 
-这个示例告诉我们，`transitionstart` 事件会在 CSS 过渡动画（`transition`）实际开始的时候触发，或者说在某个 `transition-delay` 已经结束之后触发。
+这个示例说明，`transitionstart` 事件会在 CSS 过渡动画（`transition`）实际开始的时候触发，或者说在某个 `transition-delay` 已经结束之后触发。
 
   
 
 
-有一个小细节需要注意，当我们显式给 `transition-delay` 设置的值为 `0` 时，必须带上单位 `s` 或 `ms` ，否则会造成过渡动画失效，同时也就会引起 `transitionstart` 不会被触发。也就是说，当过渡动画并没有延迟时间时，请不要显式设置，如果有必要重置 `transition-delay` 的值为 `0` 时，请记得带上单位 `s` 或 `ms` ，否则它会被视为无效。
+有一个小细节需要注意：显式给 `transition-delay` 设置的值为 `0` 时，必须带上单位 `s` 或 `ms` ，否则会造成过渡动画失效，同时也就会引起 `transitionstart` 不会被触发。也就是说，当过渡动画并没有延迟时间时，请不要显式设置；如果有必要重置 `transition-delay` 的值为 `0` 时，请记得带上单位 `s` 或 `ms` ，否则它会被视为无效。
 
   
 
@@ -818,12 +818,12 @@ resetHandler.addEventListener('click', () => {
   
 
 
-在这个示例中，当你点击“Play”按钮时，会给 `.element` 添加一个新类名 `.animated` ，这个时候会触发 `transition` 过渡动画，元素 `.element` 在水平方向会被放大（`scale: 1` 过渡到 `scale: 1.5`）。当你点击“Reset”按钮时，将会删除刚才新增的 `.animated` 类名，此时 `.element` 会恢复到初始状态（`scale: 1.5` 回到 `scale: 1`）：
+在这个示例中，点击“Play”按钮时，会给 `.element` 添加一个新类名 `.animated` ，这个时候会触发 `transition` 过渡动画，元素 `.element` 在水平方向会被放大（`scale: 1` 过渡到 `scale: 1.5`）。点击“Reset”按钮时，将会删除刚才新增的 `.animated` 类名，此时 `.element` 会恢复到初始状态（`scale: 1.5` 回到 `scale: 1`）：
 
   
 
 
-如果你监听 `transitionend` 事件，你会发现点击“Play”按钮，过渡动画开始执行，待其结束时，`transitionend` 会被触发；再次点击“Reset”按钮时，过渡动画移动，恢复到默认状态时，`transitionend` 也会被触发：
+如果监听 `transitionend` 事件，会发现点击“Play”按钮，过渡动画开始执行，待其结束时，`transitionend` 会被触发；再次点击“Reset”按钮时，过渡动画移动，恢复到默认状态时，`transitionend` 也会被触发：
 
   
 
@@ -846,7 +846,7 @@ element.addEventListener('transitionend', (event) => {
   
 
 
-如果你觉得上面这个示例不太易于理解 `transitionend` 事件被触发的时间（毕竟点击两次按钮），你可以将过渡动画的触发改为元素的 `:hover` ：
+如果觉得上面这个示例不太易于理解 `transitionend` 事件被触发的时间（毕竟点击两次按钮），可以将过渡动画的触发改为元素的 `:hover` ：
 
   
 
@@ -878,7 +878,7 @@ element.addEventListener('transitionend', (event) => {
   
 
 
-你可能已经想到了，使用 `transitionend` 事件，我们可以正确捕获过渡动画结束的时机，并在这个时候做一些有趣的事情，比如在过渡动画结束的时候删除类名。请注意，在事件触发后，我们需要删除 `transitionend` 事件侦听器，以便下一次不会重复触发（为此，你需要一个唯一的回调函数）。销毁不必要的事件侦听器总是一个良好的实践！
+使用 `transitionend` 事件，可以正确捕获过渡动画结束的时机，并在这个时候做一些有趣的事情，比如在过渡动画结束的时候删除类名。请注意，在事件触发后，需要删除 `transitionend` 事件侦听器，以便下一次不会重复触发（为此，需要一个唯一的回调函数）。销毁不必要的事件侦听器总是一个良好的实践！
 
   
 
@@ -937,7 +937,7 @@ transitionEndCallback = (e) => {
   
 
 
-另外，`transitionend` 事件的事件处理程序中发生的情况是不太直观的。前面我们说过，`transitionend` 事件触发是两个方向的，即“在过渡到被过渡状态结束时触发，以及在完全恢复到默认或非过渡状态时触发”。除此之外，它为每个过渡影响的 CSS 属性触发一次。这意味着，如果你的过渡动画是对多个属性过渡处理，那么 `transitionend` 触发的次数就会更多。例如下面这个示例：
+另外，`transitionend` 事件的事件处理程序中发生的情况是不太直观的。前面说过，`transitionend` 事件触发是两个方向的，即“在过渡到被过渡状态结束时触发，以及在完全恢复到默认或非过渡状态时触发”。除此之外，它为每个过渡影响的 CSS 属性触发一次。这意味着，如果过渡动画是对多个属性过渡处理，那么 `transitionend` 触发的次数就会更多。例如下面这个示例：
 
   
 
@@ -960,7 +960,7 @@ transitionEndCallback = (e) => {
   
 
 
-上面示例中，同时对 `scale` 和 `opacity` 两个属性过渡动画处理，当你监听 `transitionend` 事件时，你会发现过渡动画结束时该事件被触发两次，一次用于 `scale` 属性，另一次用于 `opacity` 属性；当过渡动画结束，`scale` 和 `opacity` 恢复到初始状态（过渡动画开始之前的状态），会再次触发两次 `transitionend` 事件。
+上面示例中，同时对 `scale` 和 `opacity` 两个属性过渡动画处理，当监听 `transitionend` 事件时，会发现过渡动画结束时该事件被触发两次，一次用于 `scale` 属性，另一次用于 `opacity` 属性；当过渡动画结束，`scale` 和 `opacity` 恢复到初始状态（过渡动画开始之前的状态），会再次触发两次 `transitionend` 事件。
 
   
 
@@ -973,12 +973,12 @@ transitionEndCallback = (e) => {
   
 
 
-正如你所看到的，`transitionend` 事件被触发多次，这也意味着事件处理程序也会被调用多次。很可能，你并不希望 `transitionend` 事件处理程序被调用多次，至少对于相同的过渡和相同的持续时间的情况。虽然你不能阻止事件处理程序被调用多次，但你可以确保事件处理程序内部的代码仅被调用你希望的次数。
+`transitionend` 事件被触发多次，这也意味着事件处理程序也会被调用多次。很可能，开发者并不希望 `transitionend` 事件处理程序被调用多次，至少对于相同的过渡和相同的持续时间的情况。虽然不能阻止事件处理程序被调用多次，但可以确保事件处理程序内部的代码仅被调用希望的次数。
 
   
 
 
-注意，前面有一个案例，我们通过在 `transitionend` 事件触发后删除 `transitionend` 事件侦听器来避免事件处理程序被调用多次：
+注意，前面有一个案例，通过在 `transitionend` 事件触发后删除 `transitionend` 事件侦听器来避免事件处理程序被调用多次：
 
   
 
@@ -1072,12 +1072,12 @@ element.addEventListener("transitionend", detectTheEnd);
   
 
 
-在事件处理程序内部，事情相当简单。你不需要对 `scale` 等其他属性进行 `propertyName` 检查。因为 `transitionend` 事件几乎在同时相继被触发，因为 `scale` 和 `opacity` 两个属性过渡都在 `1s` 之后结束。在这种情境之下，将代码分拆并没有太大的意义。
+在事件处理程序内部，事情相当简单。不需要对 `scale` 等其他属性进行 `propertyName` 检查，因为 `transitionend` 事件几乎在同时相继被触发，`scale` 和 `opacity` 两个属性过渡都在 `1s` 之后结束。在这种情境之下，将代码分拆并没有太大的意义。
 
   
 
 
-反之，过渡动画中有多个属性过渡，并且持续时间不同，那么将代码分拆是有意义的。在这种情况下，你的 `transitionend` 事件将在不同的时间触发，你可能想要根据刚刚完成过渡的 CSS 属性来处理每次事件的触发。例如：
+反之，过渡动画中有多个属性过渡，并且持续时间不同，那么将代码分拆是有意义的。在这种情况下，`transitionend` 事件将在不同的时间触发，可能想要根据刚刚完成过渡的 CSS 属性来处理每次事件的触发。例如：
 
   
 
@@ -1100,7 +1100,7 @@ element.addEventListener("transitionend", detectTheEnd);
   
 
 
-上面代码中 `scale` 和 `opacity` 两个过渡属性的持续时间是不同的。在这种情况下，`transitionend` 将在 `0.5s` 的时候（`scale` 属性过渡完成时）会被触发一次，并在 `1s` 的时候（`opacity` 属性过渡完成时）会被再次触发。如果你希望对每个 `transitonend` 事件实例做出不同的反应，你可以使用多个 `if` 条件来判断 `propertyName` 的值。
+上面代码中 `scale` 和 `opacity` 两个过渡属性的持续时间是不同的。在这种情况下，`transitionend` 将在 `0.5s` 的时候（`scale` 属性过渡完成时）会被触发一次，并在 `1s` 的时候（`opacity` 属性过渡完成时）会被再次触发。如果希望对每个 `transitonend` 事件实例做出不同的反应，可以使用多个 `if` 条件来判断 `propertyName` 的值。
 
   
 
@@ -1133,12 +1133,12 @@ element.addEventListener("transitionend", detectTheEnd);
   
 
 
-通过有意识地检查 `propertyName`，你确保根据触发的 `transitionend` 事件执行正确的代码。
+通过有意识地检查 `propertyName`，可以确保根据触发的 `transitionend` 事件执行正确的代码。
 
   
 
 
-不过，大家需要知道的是，`transitionend` 事件不会总是被触发，下面这几种场景，它是不会被触发的：
+不过需要知道的是，`transitionend` 事件不会总是被触发，下面这几种场景，它是不会被触发的：
 
   
 
@@ -1152,7 +1152,7 @@ element.addEventListener("transitionend", detectTheEnd);
   
 
 
-这个事件对于执行在过渡结束时需要的任何操作非常有用。例如，你可以在 `transitionend` 事件中执行一些 JavaScript 操作，以便在过渡完成后更新页面状态或触发其他动作。稍后将会向你呈上这方面的具体案例，通过这些具体案例，你可以知道在实际生产中，我们可以用它来做哪些有意义的事情。
+这个事件对于执行在过渡结束时需要的任何操作非常有用。例如，可以在 `transitionend` 事件中执行一些 JavaScript 操作，以便在过渡完成后更新页面状态或触发其他动作。稍后将会呈上这方面的具体案例，通过这些具体案例，可以知道在实际生产中可以用它来做哪些有意义的事情。
 
   
 
@@ -1174,7 +1174,7 @@ element.addEventListener("transitionend", detectTheEnd);
   
 
 
-通常情况之下，如果在 `transitionrun` （`transition-delay` 之前触发）和 `transitionend` （`transition-delay` 之后触发）之间取消了过渡动画，那么 `transitioncancel` 事件将被触发。例如下面这个示例，用户鼠标悬浮在元素 `.element` 上 `1s` （`transition-duration: 1s`）过渡动画才会结束。如果你悬浮在元素 `.element` 上 `.5s` 就将鼠标移出元素，那么这个时候就会触发 `transitioncancel` 事件：
+通常情况之下，如果在 `transitionrun` （`transition-delay` 之前触发）和 `transitionend` （`transition-delay` 之后触发）之间取消了过渡动画，那么 `transitioncancel` 事件将被触发。例如下面这个示例，用户鼠标悬浮在元素 `.element` 上 `1s` （`transition-duration: 1s`）过渡动画才会结束。如果悬浮在元素 `.element` 上 `.5s` 就将鼠标移出元素，那么这个时候就会触发 `transitioncancel` 事件：
 
   
 
@@ -1221,7 +1221,7 @@ element.addEventListener('transitioncancel', e => {
   
 
 
-最后，我们通过一个简单的示例来向大家展示 `transitionstart` 、`transitionrun` 、`transitionend` 和 `transitioncancel` 四个过渡动画事件。在向大家演示之前，对于 CSS 过渡动画 `transition` 有一点必须知道，只有显式的设置了 `transition-property` 和 `transition-duration` 两个属性的值，过渡动画才会生效。而要展示 `transitionrun` 和 `transitionstart` 两个事件的差异，必须要显式设置过渡动画的延迟时间 `transition-delay` 。为了使过渡动画这四个事件之间的差异更加明显，我在示例中设置了 `transition-delay` 。
+最后，通过一个简单的示例来展示 `transitionstart` 、`transitionrun` 、`transitionend` 和 `transitioncancel` 四个过渡动画事件。对于 CSS 过渡动画 `transition` 有一点必须知道：只有显式设置了 `transition-property` 和 `transition-duration` 两个属性的值，过渡动画才会生效。而要展示 `transitionrun` 和 `transitionstart` 两个事件的差异，必须显式设置过渡动画的延迟时间 `transition-delay` 。为了使这四个事件之间的差异更加明显，示例中设置了 `transition-delay` 。
 
   
 
@@ -1242,7 +1242,7 @@ element.addEventListener('transitioncancel', e => {
   
 
 
-这个过渡动画很简单，我们仅对 `scale` 属性做了过渡处理。当你将鼠标悬浮在元素上时，等待 `2s` （`transition-delay: 2s`）之后，`scale` 属性的值将从 `1` 过渡到 `1.25` ，而且这个过程持续了 `1s` 时间（`transition-duration: 1s`）；当你将鼠标移出元素时，该元素的 `scale` 属性值立即恢复到初始值 `1` ：
+这个过渡动画很简单，仅对 `scale` 属性做了过渡处理。将鼠标悬浮在元素上时，等待 `2s` （`transition-delay: 2s`）之后，`scale` 属性的值将从 `1` 过渡到 `1.25` ，而且这个过程持续了 `1s` 时间（`transition-duration: 1s`）；将鼠标移出元素时，该元素的 `scale` 属性值立即恢复到初始值 `1` ：
 
   
 
@@ -1250,7 +1250,7 @@ element.addEventListener('transitioncancel', e => {
   
 
 
-现在，分别监听过渡动画的 `transitionrun`、`transitionstart`、`transitionend` 和 `transitioncancel` 的事件，这些事件所处理的事情很简单，就是改变元素 `.alert` 的文本内容，告诉你正在触发过渡动画的哪个事件。从可视化上向你呈现了它们之间的差异：
+分别监听过渡动画的 `transitionrun`、`transitionstart`、`transitionend` 和 `transitioncancel` 的事件，这些事件所处理的事情很简单，就是改变元素 `.alert` 的文本内容，提示当前触发的是过渡动画的哪个事件，从可视化上呈现它们之间的差异：
 
   
 
@@ -1263,7 +1263,7 @@ element.addEventListener('transitioncancel', e => {
   
 
 
-通过这个简单的示例，你应该可以看到所有四个事件都在工作以及它们之间的差异！
+通过这个简单的示例，可以看到所有四个事件都在工作以及它们之间的差异。
 
   
 
@@ -1273,7 +1273,7 @@ element.addEventListener('transitioncancel', e => {
   
 
 
-探完 CSS 过渡动画相关事件之后，我们再一起来看看 CSS 关键帧动画（`animation`）所对应的事件。当你播放一个 CSS 关键帧动画时，它会触发以下几个事件：
+探完 CSS 过渡动画相关事件之后，再来看 CSS 关键帧动画（`animation`）所对应的事件。播放一个 CSS 关键帧动画时，它会触发以下几个事件：
 
   
 
@@ -1286,7 +1286,7 @@ element.addEventListener('transitioncancel', e => {
   
 
 
-我们从这些事件的命名就能猜到它们在什么时候会被触发！`animationstart` 事件在动画开始时触发，`animationend` 事件在动画完成时触发，而 `animationiteration` 事件在每个动画迭代（除第一次）时触发，`animationcancel` 事件则在动画中断或取消。
+从这些事件的命名就能猜到它们在什么时候会被触发：`animationstart` 事件在动画开始时触发，`animationend` 事件在动画完成时触发，而 `animationiteration` 事件在每个动画迭代（除第一次）时触发，`animationcancel` 事件则在动画中断或取消。
 
   
 
@@ -1339,7 +1339,7 @@ resetHandler.addEventListener("click", () => {
   
 
 
-当你点击“Play”按钮之后，`.pulse` 开始执行 `pulse` 动画，每次持续时间为 `1s` ，并且循环播放三次之后停止。
+点击“Play”按钮之后，`.pulse` 开始执行 `pulse` 动画，每次持续时间为 `1s` ，并且循环播放三次之后停止。
 
   
 
@@ -1352,7 +1352,7 @@ resetHandler.addEventListener("click", () => {
   
 
 
-为了更直观地解释这个地方，我们用“时间位置”图来描述它：
+为了更直观地解释，用“时间位置”图来描述：
 
   
 
@@ -1366,14 +1366,14 @@ resetHandler.addEventListener("click", () => {
 
 
 -   `animationstart` 事件将在动画开始播放时被触发，它是唯一个始终会被触发的事件
--   `animationiteration` 事件将在动画的第二次迭代开始时才被触发，前提是你的动画设置了多次循环播放 `animation-iteration-count` ，如果你的动画只运行一次（取 `animation-iteration-count` 的默认值 `1`），那么 `animationiteration` 事件永远不会被触发
--   `animationend` 事件只有在动画结束时才会被触发。如果你的动画永远不会结束，例如 `animation-iteration-count` 的值为 `infinite` （无限循环播放），那么动画就不会结束，也就没有 `animationend` 事件可监听
--   `animationcancel` 事件只有动画在播放途中被中断或取消时才会被触发，如果你的动画永远都不会被中断或取消，那么也没有 `animationcancel` 事件可监听
+-   `animationiteration` 事件将在动画的第二次迭代开始时才被触发，前提是动画设置了多次循环播放 `animation-iteration-count` ，如果动画只运行一次（取 `animation-iteration-count` 的默认值 `1`），那么 `animationiteration` 事件永远不会被触发
+-   `animationend` 事件只有在动画结束时才会被触发。如果动画永远不会结束，例如 `animation-iteration-count` 的值为 `infinite` （无限循环播放），那么动画就不会结束，也就没有 `animationend` 事件可监听
+-   `animationcancel` 事件只有动画在播放途中被中断或取消时才会被触发，如果动画永远都不会被中断或取消，那么也没有 `animationcancel` 事件可监听
 
   
 
 
-接下来，我们来细说一下这几个动画事件。
+接下来细说这几个动画事件。
 
   
 
@@ -1383,7 +1383,7 @@ resetHandler.addEventListener("click", () => {
   
 
 
-我们先从 `animationstart` 事件开始说起。这个事件的工作原理正如其名称所示，它会在动画开始时立即触发。如果你的动画是在文档加载完成（通过文档时间线驱动），那么文档加载完，动画就会开始播放（在没有设置动画延迟的前提下），对应的 `animationstart` 事件就会被触发。例如：
+先从 `animationstart` 事件开始说起。这个事件的工作原理正如其名称所示，它会在动画开始时立即触发。如果动画是在文档加载完成（通过文档时间线驱动），那么文档加载完，动画就会开始播放（在没有设置动画延迟的前提下），对应的 `animationstart` 事件就会被触发。例如：
 
   
 
@@ -1436,7 +1436,7 @@ pulse.addEventListener('animationstart', e => {
   
 
 
-正如你所看到的，`animationstart` 事件会在 CSS 动画开始时触发。不过，它会受 `animation-delay` 所影响，如果你给动画显式设置了 `animation-delay` 属性的值，将意味着动画会延迟播放，那么 `animationstart` 事件也将会延迟触发，它会在延迟时效过后触发，即延迟时间之后触发。例如，你的动画设置的延迟时间为 `2s` ，这意味着动画要在 `2s` 之后才开始播放，相应的 `animationstart` 事件也需要在 `2s` 之后被触发：
+`animationstart` 事件会在 CSS 动画开始时触发。不过，它会受 `animation-delay` 所影响：如果给动画显式设置了 `animation-delay` 属性的值，意味着动画会延迟播放，那么 `animationstart` 事件也将会延迟触发，即延迟时间之后触发。例如，动画设置的延迟时间为 `2s` ，意味着动画要在 `2s` 之后才开始播放，相应的 `animationstart` 事件也需要在 `2s` 之后被触发：
 
   
 
@@ -1468,7 +1468,7 @@ pulse.addEventListener('animationstart', e => {
   
 
 
-我们在介绍动画延迟时间时说过，动画的延迟时间可以设置为负值。当动画的延迟时间设置为负值时，它不再表示延迟，而是成为一个偏移量。在这种情况下，关键帧动画会立即开始，但会在指定的时间偏移内自动进行，就好像动画在过去的某个时间点开始一样，因此看起来是在活跃的持续时间中间开始的。这个特性允许你更灵活地控制动画的启动时机。同时意味着，动画延迟时间要是设置了负值，动画播放就会触发 `animationstart` 事件：
+在介绍动画延迟时间时说过，动画的延迟时间可以设置为负值。当动画的延迟时间设置为负值时，它不再表示延迟，而是成为一个偏移量。在这种情况下，关键帧动画会立即开始，但会在指定的时间偏移内自动进行，就好像动画在过去的某个时间点开始一样，因此看起来是在活跃的持续时间中间开始的。这个特性允许开发者更灵活地控制动画的启动时机。同时意味着，动画延迟时间要是设置了负值，动画播放就会触发 `animationstart` 事件：
 
   
 
@@ -1611,7 +1611,7 @@ pulse.addEventListener("animationend", (e) => {
   
 
 
-上面示例我们通过三个不同的按钮来控制动画的播放、暂停播放和重复播放，同时我们通过监听 `animationstart` 和 `animationend` 事件来更改 `.alert` 的文本信息，同时在开发者调试工具中打印出相关的信息：
+上面示例通过三个不同的按钮来控制动画的播放、暂停播放和重复播放，同时通过监听 `animationstart` 和 `animationend` 事件来更改 `.alert` 的文本信息，并在开发者调试工具中打印出相关的信息：
 
   
 
@@ -1624,12 +1624,12 @@ pulse.addEventListener("animationend", (e) => {
   
 
 
-正如你所看到的，当你点击“播放”按钮后，`pulse` 动画立即会播放（没有设置动画延迟时间），同时立即触发 `animationstart` 事件，当动画播放结束（`3s` 之后，动画持续时间 `animation-duration` 设置为 `3s`）会立即触发 `animationend` 事件。另外，当动画播放到中途，你点击“暂停”按钮时，动画的 `animation-play-state` 会设置为 `paused` ，动画暂停播放，这个时候并不会触发 `animationend` 事件。
+点击“播放”按钮后，`pulse` 动画立即会播放（没有设置动画延迟时间），同时立即触发 `animationstart` 事件，当动画播放结束（`3s` 之后，动画持续时间 `animation-duration` 设置为 `3s`）会立即触发 `animationend` 事件。另外，当动画播放到中途点击“暂停”按钮时，动画的 `animation-play-state` 会设置为 `paused` ，动画暂停播放，这个时候并不会触发 `animationend` 事件。
 
   
 
 
-上面这个示例，动画只播放一次，即 `--animic:1` ，相当于 `animation-iteration-count` 属性的值为 `1` ，表示动画只播放一次就结束了，不会再次重复播放。换句话说，如果将上面示例的 `--animic` 设置为 `infinite` ，即 `animation-iteration-count` 的值为 `infinite` ，那么动画会无限次循环播放。这意味着动画根本停不下来，除非你中途将 `animation-play-state` 设置为 `paused` 暂停动画播放。无论如何，在这种情况下，`animationend` 事件就不存在，你永远无法触发 `animationend` 事件：
+上面这个示例，动画只播放一次，即 `--animic:1` ，相当于 `animation-iteration-count` 属性的值为 `1` ，表示动画只播放一次就结束了，不会再次重复播放。换句话说，如果将上面示例的 `--animic` 设置为 `infinite` ，即 `animation-iteration-count` 的值为 `infinite` ，那么动画会无限次循环播放。这意味着动画根本停不下来，除非中途将 `animation-play-state` 设置为 `paused` 暂停动画播放。无论如何，在这种情况下，`animationend` 事件就不存在，永远无法触发 `animationend` 事件：
 
   
 
@@ -1654,7 +1654,7 @@ pulse.addEventListener("animationend", (e) => {
   
 
 
-你可能已经发现了，不管你操作示例中哪个按钮，都不会触发 `animationend` 事件。另外，如果动画中途因 `animation-play-state` 属性设置为 `paused` ，并再次修改为 `running` 时，动画虽然恢复播放，但这个时间点并不会触发 `animationstart` 事件。但你点击“重播”按钮，动画会重新播放，这个时候是会触发 `animationstart` 事件的。
+不管操作示例中哪个按钮，都不会触发 `animationend` 事件。另外，如果动画中途因 `animation-play-state` 属性设置为 `paused` ，并再次修改为 `running` 时，动画虽然恢复播放，但这个时间点并不会触发 `animationstart` 事件。而点击“重播”按钮时，动画会重新播放，这个时候是会触发 `animationstart` 事件的。
 
   
 
@@ -1728,7 +1728,7 @@ pulse.addEventListener("animationiteration", (e) => {
   
 
 
-前面已经说过，CSS 关键帧动画事件并非都会被触发。另外，上面我们所展示的都是以文档时间轴来驱动动画的，在现代 CSS 中还有另一种控制动画的方式，那就是滚动驱动动画。滚动驱动动画是以滚动进度时间轴和视图进度时间轴进行的，动画播放进度由滚动容器的滚动轴位置来决定，当用户向前滚动容器时，动画向前播放，反之则向后播放。只不过，在滚动驱动动画中，只会触发 `animationstart` 事件，其他滚动事件则不会被触发。
+前面已经说过，CSS 关键帧动画事件并非都会被触发。另外，上面所展示的都是以文档时间轴来驱动动画的，在现代 CSS 中还有另一种控制动画的方式，那就是滚动驱动动画。滚动驱动动画是以滚动进度时间轴和视图进度时间轴进行的，动画播放进度由滚动容器的滚动轴位置来决定，当用户向前滚动容器时，动画向前播放，反之则向后播放。只不过，在滚动驱动动画中，只会触发 `animationstart` 事件，其他滚动事件则不会被触发。
 
   
 
@@ -1746,7 +1746,7 @@ pulse.addEventListener("animationiteration", (e) => {
   
 
 
-不管是过渡动画事件还是关键帧动画事件，它们都携带了一些额外的数据作为它们的事件参数。这些事件参数在我们的事件处理程序中通过巧妙命名的变量 `e` 获取，例如下面这个过渡动画，在你可以打印出 `transitionend` 事件所对应的参数：
+不管是过渡动画事件还是关键帧动画事件，它们都携带了一些额外的数据作为它们的事件参数。这些事件参数在事件处理程序中通过约定命名的变量 `e` 获取，例如下面这个过渡动画，可以打印出 `transitionend` 事件所对应的参数：
 
   
 
@@ -1810,7 +1810,7 @@ element.addEventListener("transitionend", detectTheEnd);
   
 
 
-例如，在过渡结束事件（`transitionend`）中，你可以这样使用事件对象：
+例如，在过渡结束事件（`transitionend`）中，可以这样使用事件对象：
 
   
 
@@ -1827,7 +1827,7 @@ function transitionEndCallback(e) {
   
 
 
-这样的事件处理程序可以让你根据过渡动画的不同阶段执行相应的操作。
+这样的事件处理程序可以根据过渡动画的不同阶段执行相应的操作。
 
   
 
@@ -1862,7 +1862,7 @@ function animationEndCallback(e) {
   
 
 
-通过这些事件，你可以更精细地控制动画，根据不同的事件阶段执行相应的操作。
+通过这些事件，可以更精细地控制动画，根据不同的事件阶段执行相应的操作。
 
   
 
@@ -1877,17 +1877,17 @@ function animationEndCallback(e) {
   
 
 
-我曾在《帧动画与过渡动画：谁更适合你的业务场景》深度地剖析了 CSS 关键帧动画与过渡动画的差异。相比之下，CSS 过渡动画的局限性比关键帧动画要多得多，最为常见的是，我们无法使用制作一个无限循环播放的过渡动画。那么，借助过渡动画事件，我们也可以实现一个无限播放的过渡动画。
+《帧动画与过渡动画：谁更适合你的业务场景》一文中深度剖析了 CSS 关键帧动画与过渡动画的差异。相比之下，CSS 过渡动画的局限性比关键帧动画要多得多，最为常见的是无法制作一个无限循环播放的过渡动画。而借助过渡动画事件，也可以实现一个无限播放的过渡动画。
 
   
 
 
-除此之外，如果我告诉你，我们可以不使用 `setTimeout` 、`setInterval` 或 `requestAnimationFrame` 来创建一个计时器，你会怎么想？换句话说，我要是说，我们可通过 CSS 动画相关事件切换一些类名来创建计时器，你是不是会感到很神奇。
+除此之外，还可以不使用 `setTimeout` 、`setInterval` 或 `requestAnimationFrame` 来创建一个计时器：通过 CSS 动画相关事件切换一些类名即可创建计时器。
 
   
 
 
-接下来，我们来看看如何通过动画事件来实现这些效果。首先来看无限循环的过渡动画。
+接下来看看如何通过动画事件来实现这些效果。首先来看无限循环的过渡动画。
 
   
 
@@ -1897,7 +1897,7 @@ function animationEndCallback(e) {
   
 
 
-在 CSS 中使用关键帧动画要创造一个无限循环播放的动画很容易，但要使用 `transition` 创建一个无限循环的过渡动画几乎是不可能的。例如下面这个示例，我在其中展示了一个永远循环播放的过渡。只需要将鼠标悬停到白色框上，就可以看到过渡动画开始播放，并且永远不会停止：
+在 CSS 中使用关键帧动画要创造一个无限循环播放的动画很容易，但要使用 `transition` 创建一个无限循环的过渡动画几乎是不可能的。例如下面这个示例展示了一个永远循环播放的过渡：只需要将鼠标悬停到白色框上，就可以看到过渡动画开始播放，并且永远不会停止：
 
   
 
@@ -1923,7 +1923,7 @@ function animationEndCallback(e) {
   
 
 
-接下来，我们来看看如何通过过渡动画事件是如何创建无限循环的播放。
+接下来看看如何通过过渡动画事件创建无限循环的播放。
 
   
 
@@ -1939,7 +1939,7 @@ function animationEndCallback(e) {
   
 
 
-假设你有一个像下面这样的 HTML 结构：
+假设有像下面这样的 HTML 结构：
 
   
 
@@ -1980,7 +1980,7 @@ function animationEndCallback(e) {
   
 
 
-到目前为止，看上去并不复杂，对吧。表情符现在从开始状态（`.state--start`）过渡到结束状态（`.state--end`），实际上是元素 `#emoji` 的类名在切换。因为我们定义了一个过渡，因此表情符从开始状态到结束状态有一个平滑的过渡效果，而不是瞬间的改变：
+表情符从开始状态（`.state--start`）过渡到结束状态（`.state--end`），实际上是元素 `#emoji` 的类名在切换。因为定义了一个过渡，表情符从开始状态到结束状态有一个平滑的过渡效果，而不是瞬间的改变：
 
   
 
@@ -2000,12 +2000,12 @@ function animationEndCallback(e) {
   
 
 
-记住，`#emoji` 元素的 `.state--start` 和 `.state--end` 的类名是如何进行切换，并无关紧要，因为我们有很多种方式可以实现，例如可以通过使用一些 JavaScript 直接在 `#emoji` 元素上切换类名。无论你如何触发属性更改，只要你定义了一个过渡（`transition`），它监听的属性发生变化，比如示例中的 `opacity` 、`scale` 等，过渡就会开始运行。
+`#emoji` 元素的 `.state--start` 和 `.state--end` 的类名如何切换并无关紧要，因为有很多种方式可以实现，例如可以通过一些 JavaScript 直接在 `#emoji` 元素上切换类名。无论如何触发属性更改，只要定义了一个过渡（`transition`），它监听的属性发生变化，比如示例中的 `opacity` 、`scale` 等，过渡就会开始运行。
 
   
 
 
-到目前为止，你所看到的过渡依旧还不是循环播放的过渡。
+到目前为止，所看到的过渡依旧还不是循环播放的过渡。
 
   
 
@@ -2018,12 +2018,12 @@ function animationEndCallback(e) {
   
 
 
-就 CSS 过渡 `transition` 而言，我们要实现这样的过渡效果是不可能的，因为它（`transition`）并没有一个像 CSS 关键帧动画 `animation-iteration-count` 属性，来指定循环播放的次数。因此，我们不得不借助 JavaScript 方面的能力，比如我们今天所学到的过渡动画事件。
+就 CSS 过渡 `transition` 而言，要实现这样的过渡效果是不可能的，因为它（`transition`）并没有一个像 CSS 关键帧动画 `animation-iteration-count` 属性，来指定循环播放的次数。因此，不得不借助 JavaScript 方面的能力，比如本文介绍的过渡动画事件。
 
   
 
 
-也就是说，我们可以通过过渡事件来监听过渡动画的状态，例如，使用 `transitionend` 事件来监听过渡动画是否完成。就我们这个示例而言，当 `.state--start` 的过渡结束时，就会触发 `transitionend` 事件，就在该事件（`transitionend`）触发时，我们可以将 `#emoji` 元素的类名更改为 `.state--end` 。同样的，当 `.state--end` 的过渡结束时，也会触发 `transitionend` 事件，在此时将 `#emoji` 元素的类名又更改为 `.state--start` 。我们只需要按照这种方式，不断的更换 `#emoji` 元素的类名：
+也就是说，可以通过过渡事件来监听过渡动画的状态，例如使用 `transitionend` 事件来监听过渡动画是否完成。就这个示例而言，当 `.state--start` 的过渡结束时，就会触发 `transitionend` 事件，在该事件触发时，可以将 `#emoji` 元素的类名更改为 `.state--end` ；同样的，当 `.state--end` 的过渡结束时，也会触发 `transitionend` 事件，在此时将 `#emoji` 元素的类名又更改为 `.state--start` 。只需按照这种方式不断更换 `#emoji` 元素的类名：
 
   
 
@@ -2072,9 +2072,9 @@ setup();
   
 
 
-另外再创建了一个 `loopTransition` 函数，每次调用 `loopTransition` 函数时，它都会检查 `#emoji` 元素上设置了什么类名。如果它的类名是 `.state--end` ，那么它就会将类名设置为 `.state--start` ，以再次触发我们的过渡，即可完成 `.state--end` 到 `.state--start` 的过渡。反之，在调用 `loopTransition` 函数时，要是 `#emoji` 元素的类名是 `.state--start` 的话，那么它会将该元素的类名重置为 `.state--end` ，以再次触发 `.state--start` 到 `.state--end` 的过渡。
+另外再创建了一个 `loopTransition` 函数，每次调用 `loopTransition` 函数时，它都会检查 `#emoji` 元素上设置了什么类名。如果它的类名是 `.state--end` ，那么它就会将类名设置为 `.state--start` ，以再次触发过渡，即可完成 `.state--end` 到 `.state--start` 的过渡。反之，在调用 `loopTransition` 函数时，要是 `#emoji` 元素的类名是 `.state--start` 的话，那么它会将该元素的类名重置为 `.state--end` ，以再次触发 `.state--start` 到 `.state--end` 的过渡。
 
-同时，我们会监听 `#emoji` 元素的 `transitionend` 事件，该事件触发时，就会调用创建好的 `loopTransition` 函数，从而实现了一个无限循环过渡的动画效果：
+同时，监听 `#emoji` 元素的 `transitionend` 事件，该事件触发时，就会调用创建好的 `loopTransition` 函数，从而实现一个无限循环过渡的动画效果：
 
   
 
@@ -2092,7 +2092,7 @@ setup();
   
 
 
-通常情况之下，一说到计时器，大家首先会想到的是 JavaScript 的 `setTimeout`、`setInterval` 或 `requestAnimationFrame` 的计时器。但我要是说，我们可以通过切换元素的类名来创建一个计时器，你是不是会觉得有点神奇。随着你往后面阅读，你会发现，原来并没有想象的那么神奇，也没有你想象的那么复杂。
+通常情况之下，一说到计时器，首先想到的是 JavaScript 的 `setTimeout`、`setInterval` 或 `requestAnimationFrame` 的计时器。实际上，通过切换元素的类名也可以创建一个计时器。随着阅读的深入会发现，这并没有想象的那么神奇，也没有那么复杂。
 
   
 
@@ -2102,7 +2102,7 @@ setup();
   
 
 
-既然是通过切换元素类名来创建一个计时器，那么就有必要定义一些类。是的，为了创建一个计时器，我们需要四个不同的 CSS 类名：
+既然是通过切换元素类名来创建一个计时器，那么就有必要定义一些类。为了创建一个计时器，需要四个不同的 CSS 类名：
 
   
 
@@ -2115,7 +2115,7 @@ setup();
   
 
 
-假设你有一个 `.timer` 元素：
+假设有一个 `.timer` 元素：
 
   
 
@@ -2154,17 +2154,17 @@ setup();
   
 
 
-上面的代码中，我们给 `.timer` 设置了动画持续时间为 `3000ms` （即 `3s`），而且缓动函数是 `linear` ，表示物体以恒速的方式运行。
+上面的代码给 `.timer` 设置了动画持续时间为 `3000ms` （即 `3s`），而且缓动函数是 `linear` ，表示物体以恒速的方式运行。
 
   
 
 
-到目前为止，`.timer` 并不会有任何动画效果，因为我们没有显式设置 `animation-name` 。你可以把这个想象成是一个初始状态，动画还没有启动。
+到目前为止，`.timer` 并不会有任何动画效果，因为没有显式设置 `animation-name` 。可以把这个想象成是一个初始状态，动画还没有启动。
 
   
 
 
-我们将通过添加 `.timer--running` 类来启动计时器。在重新启动它的情况下，我们还需要从 `.timer` 上移除 `.timer--done` 类。我们在上面的代码基础上，添加一个按钮，然后给这个按钮绑定一个 `click` 事件，再使用 JavaScript 来给 `.timer` 添加类名 `.timer--running` ，同时移除 `.timer--done` 类名：
+通过添加 `.timer--running` 类来启动计时器。在重新启动它的情况下，还需要从 `.timer` 上移除 `.timer--done` 类。在上面的代码基础上添加一个按钮，然后给这个按钮绑定一个 `click` 事件，再使用 JavaScript 来给 `.timer` 添加类名 `.timer--running` ，同时移除 `.timer--done` 类名：
 
   
 
@@ -2188,7 +2188,7 @@ toggle.addEventListener("click", () => {
   
 
 
-这个时候，当你点击 `.timer--toggle` 按钮时，`.timer` 会新增一个 `.timer--running` 类名：
+这个时候，点击 `.timer--toggle` 按钮时，`.timer` 会新增一个 `.timer--running` 类名：
 
   
 
@@ -2251,7 +2251,7 @@ toggle.addEventListener("click", () => {
   
 
 
-我们还需要监听 `.timer` 的 `animationend` 事件，一旦触发了该事件，我们就知道动画已经完成，所以需要给 `.timer` 添加 `.timer--done` 类，并同时移除 `.timer--running` 类：
+还需要监听 `.timer` 的 `animationend` 事件，一旦触发了该事件，就说明动画已经完成，需要给 `.timer` 添加 `.timer--done` 类，并同时移除 `.timer--running` 类：
 
   
 
@@ -2283,7 +2283,7 @@ timer.addEventListener("animationend", (e) => {
   
 
 
-在上面的基础上，我们在监听动画结束的时候，在页面上打印出动画结束的时间：
+在上面的基础上，在监听动画结束时，在页面上打印出动画结束的时间：
 
   
 
@@ -2400,7 +2400,7 @@ timer.addEventListener("animationend", (e) => {
   
 
 
-我们可以基于上面的示例基础上，将监听的 `animationend` 事件换成 `animationiteration` ，并把动画设置为无限次循环播放：
+基于上面的示例，将监听的 `animationend` 事件换成 `animationiteration` ，并把动画设置为无限次循环播放：
 
   
 
@@ -2425,7 +2425,7 @@ timer.addEventListener("animationiteration", () => {
   
 
 
-我们就可以获得类似于 JavaScript 的 `setInterval` 的行为：
+就可以获得类似于 JavaScript 的 `setInterval` 的行为：
 
   
 
@@ -2438,7 +2438,7 @@ timer.addEventListener("animationiteration", () => {
   
 
 
-我们还可以将多个计时器链接在一起。当一个计时器结束时，可以触发下一个计时器：
+还可以将多个计时器链接在一起。当一个计时器结束时，可以触发下一个计时器：
 
   
 
@@ -2559,7 +2559,7 @@ timers.forEach((timer) => {
   
 
 
-上面的示例看起来像是一个自动播放轮播图的分页指示器，对吧。你可能已经猜到了，我们可以使用类似的方式来制作一个自动播放轮播图的效果。在制作这个效果过程中，我们需要确保分页中的所有先前的计时器都设置为最终状态，而下一个计时器则设置为初始状态。
+上面的示例看起来像是一个自动播放轮播图的分页指示器。由此可以使用类似的方式来制作一个自动播放轮播图的效果。在制作这个效果过程中，需要确保分页中的所有先前的计时器都设置为最终状态，而下一个计时器则设置为初始状态。
 
   
 
@@ -2572,17 +2572,17 @@ timers.forEach((timer) => {
   
 
 
-上面向大家演示的是，如何通过监听动画事件来切换元素的类名，从而达到类似于JavaScript 的 `setTimeout`、`setInterval` 或 `requestAnimationFrame` 等 API 构建的计时器。虽然在形式上看上去非常相似，但使用这种方案制作的计时器，有一个明显的缺陷，那就是**无法精确追踪计时器的进度**。如果需要追踪计时器进度，还是要使用像 Web Animations API 来进行跟踪。这个 API 允许我们在 JavaScript 中创建和控制动画，它具有用于跟踪动画进度的 `currentTime` 属性。关于这方面的内容，将在后面的章节中详细介绍。
+上面演示的是如何通过监听动画事件来切换元素的类名，从而达到类似于 JavaScript 的 `setTimeout`、`setInterval` 或 `requestAnimationFrame` 等 API 构建的计时器。虽然形式上非常相似，但使用这种方案制作的计时器有一个明显的缺陷：**无法精确追踪计时器的进度**。如果需要追踪计时器进度，还是要使用像 Web Animations API 来进行跟踪。这个 API 允许开发者在 JavaScript 中创建和控制动画，它具有用于跟踪动画进度的 `currentTime` 属性。关于这方面的内容，将在后面的章节中详细介绍。
 
   
 
 
-另外，在此需要强调的是，CSS 动画并不是为这种情况（构建计时器）而设计的，但这里所介绍的可以当作一个小技巧，对于某些问题，它们提供了一个非常优雅的解决方案。其次，就是想通过这个示例，向大家展示我们可以使用动画事件来做哪些事情。
+另外，在此需要强调的是，CSS 动画并不是为这种情况（构建计时器）而设计的，但这里所介绍的可以当作一个小技巧，对于某些问题，它们提供了一个非常优雅的解决方案。同时，这个示例也展示了动画事件可以做哪些事情。
 
   
 
 
-除此之外，我们还可以利用相似的技术来实现 F.L.I.P 动画效果，例如 [@Taha Shashtari 提供的这个案例](https://codepen.io/tahazsh/full/MWPMEyB)：
+除此之外，还可以利用相似的技术来实现 F.L.I.P 动画效果，例如 [@Taha Shashtari 提供的这个案例](https://codepen.io/tahazsh/full/MWPMEyB)：
 
   
 
@@ -2605,4 +2605,4 @@ CSS 过渡动画和关键帧动画的事件是在 Web 开发中实现交互和�
   
 
 
-理解这些事件的时机和触发条件对于实现流畅、优雅的用户体验至关重要。在设计动画时，考虑动画的开始、结束以及可能的取消场景，以确保用户界面的一致性和可预测性。总体而言，了解和利用这些JavaScript事件可以让我们更好地管理和交互动画，为用户提供更丰富的体验。
+理解这些事件的时机和触发条件对于实现流畅、优雅的用户体验至关重要。在设计动画时，考虑动画的开始、结束以及可能的取消场景，以确保用户界面的一致性和可预测性。总体而言，了解和利用这些JavaScript事件可以让开发者更好地管理和交互动画，为用户提供更丰富的体验。

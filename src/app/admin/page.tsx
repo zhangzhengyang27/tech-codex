@@ -17,6 +17,7 @@ import {
   Unlock,
   FolderSync,
   CalendarRange,
+  Target,
 } from "lucide-react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
@@ -61,6 +62,7 @@ function StatCard({
 const QUICK_LINKS = [
   { href: "/admin/documents", label: "文档管理", desc: "公共库文档 · 上传 / 同步 / 重建", icon: FileText },
   { href: "/admin/eval", label: "RAG 评测", desc: "Golden Set · A/B 对照 · 趋势", icon: FlaskConical },
+  { href: "/admin/gaps", label: "内容缺口", desc: "未答/零引用/点踩 · 转评测", icon: Target },
   { href: "/admin/feedback", label: "问答反馈", desc: "点赞点踩 · 回流评测用例", icon: MessageSquare },
   { href: "/admin/usage", label: "用量统计", desc: "问答量 · token · Top 用户", icon: BarChart3 },
   { href: "/admin/report", label: "运营周报", desc: "点踩问题榜 · 反馈率 · 质量趋势", icon: CalendarRange },

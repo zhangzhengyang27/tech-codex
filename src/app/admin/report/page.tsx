@@ -146,11 +146,11 @@ export default function AdminReportPage() {
   }, [isLoggedIn, isAdmin, days, load]);
 
   if (!isLoggedIn || !isAdmin) {
-    return <div className="mx-auto max-w-[1440px] px-4 py-24 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
   }
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-8">
+    <div className="w-full">
       {/* 页头 */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>

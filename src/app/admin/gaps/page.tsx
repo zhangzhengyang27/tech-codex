@@ -97,13 +97,13 @@ export default function ContentGapsPage() {
   }, [hydrated, isLoggedIn, isAdmin, router, loadPage, loadMeta]);
 
   if (!hydrated) {
-    return <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
   }
   // 未登录时明确给出登录入口，而不是一直停在“加载中”：
   // 鉴权失败发生在客户端，若这里仍渲染 loading，用户会误以为接口卡死。
   if (!isLoggedIn) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/50">
+      <div className="w-full py-16 text-center text-sm text-foreground/50">
         <p>该页面需要管理员登录后查看。</p>
         <Link href="/login?from=/admin/gaps" className="mt-3 inline-block text-accent hover:underline">
           去登录
@@ -112,7 +112,7 @@ export default function ContentGapsPage() {
     );
   }
   if (!isAdmin) {
-    return <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/60">该页面需要管理员权限</div>;
+    return <div className="w-full py-16 text-center text-sm text-foreground/60">该页面需要管理员权限</div>;
   }
 
   const toggleSelect = (id: number) => setSelected((prev) => {
@@ -177,7 +177,7 @@ export default function ContentGapsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <div className="w-full">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">

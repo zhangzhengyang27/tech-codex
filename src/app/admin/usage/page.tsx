@@ -268,12 +268,12 @@ export default function AdminUsagePage() {
   }, []);
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="mx-auto max-w-[1440px] px-4 py-24 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
-      <div className="mx-auto flex max-w-[1440px] flex-col items-center gap-3 px-4 py-24 text-center">
+      <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
         <ShieldAlert size={36} className="text-foreground/30" />
         <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
       </div>
@@ -281,7 +281,7 @@ export default function AdminUsagePage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-8">
+    <div className="w-full">
       <div className="mb-6">
         <h1 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
           <BarChart3 size={20} />

@@ -50,11 +50,11 @@ export default function FeedbackAdminPage() {
   }, [load, hydrated, isAdmin, fetchPage]);
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
   }
   if (!isAdmin) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/60">
+      <div className="w-full py-16 text-center text-sm text-foreground/60">
         该页面需要管理员权限
       </div>
     );
@@ -85,7 +85,7 @@ export default function FeedbackAdminPage() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <div className="w-full">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <MessageSquare size={20} className="text-accent" />

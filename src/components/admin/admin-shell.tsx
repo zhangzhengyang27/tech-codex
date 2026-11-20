@@ -165,7 +165,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <SidebarFooter />
         </aside>
 
-        <main className="min-w-0 flex-1">{children}</main>
+        {/* 所有管理页共用同一内容容器：统一最大宽度和四周留白，避免各页各写一套 padding */}
+        <main className="min-w-0 flex-1">
+          <div className="mx-auto w-full max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">{children}</div>
+        </main>
       </div>
 
       {/* 移动端：顶部一条工作台入口，点击后从左侧展开抽屉 */}

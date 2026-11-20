@@ -12,6 +12,7 @@ import {
   type AuditLogView,
 } from "@/lib/audit";
 import { usePagedList } from "@/lib/use-paged-list";
+import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 const PAGE_SIZE = 20;
 
 const fmtTime = (iso: string | null): string => {
@@ -102,23 +103,28 @@ export default function AdminAuditPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6">
-        <h1 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
-          <ScrollText size={20} />
-          审计日志
-        </h1>
-        <p className="mt-1 text-[13px] text-foreground/50">
-          管理操作留痕：导入 / 删除 / 重建索引 / 配额变更
-        </p>
-      </div>
+      <AdminPageHeader
+        icon={ScrollText}
+        title="审计日志"
+        description="查询管理操作留痕：文档导入、删除、索引重建、配额与系统配置变更。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              共 {totalElements} 条记录
+            </span>
+            <span>按操作时间倒序</span>
+          </>
+        }
+      />
 
-      <div className="mb-6 flex flex-wrap items-end gap-4 rounded-xl border border-border bg-background p-4">
-        <label className="flex flex-col gap-1">
-          <span className="text-xs text-foreground/50">操作类型</span>
+      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <label className="flex flex-col gap-1.5">
+          <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">操作类型</span>
           <select
             value={action}
             onChange={(e) => setAction(e.target.value)}
-            className="h-8 w-40 rounded-md border border-border bg-background px-2 text-[13px] outline-none transition-colors focus:border-accent"
+            className="h-9 w-40 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
           >
             <option value="">全部</option>
             {AUDIT_ACTIONS.map((a) => (
@@ -126,14 +132,14 @@ export default function AdminAuditPage() {
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1">
-          <span className="text-xs text-foreground/50">空间（留空查全部；公共 default，个人 u-用户名）</span>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">空间</span>
           <input
             value={libraryId}
             onChange={(e) => setLibraryId(e.target.value)}
             list="audit-library-options"
-            placeholder="全部空间"
-            className="h-8 w-56 rounded-md border border-border bg-background px-2 font-mono text-[13px] outline-none transition-colors focus:border-accent"
+            placeholder="留空查全部；default / u-用户名"
+            className="h-9 w-64 rounded-lg border border-slate-200 bg-slate-50/70 px-3 font-mono text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
           />
           <datalist id="audit-library-options">
             {librarySuggestions.map((v) => (
@@ -141,56 +147,51 @@ export default function AdminAuditPage() {
             ))}
           </datalist>
         </label>
-        <button
-          onClick={applyFilters}
-          disabled={loading}
-          className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
-        >
+        <button onClick={applyFilters} disabled={loading} className={adminBtn("primary")}>
           {loading ? <Loader2 size={14} className="animate-spin" /> : <RotateCw size={14} />}
           查询
         </button>
-        {error && <span className="text-[13px] text-red-500">{error}</span>}
-        <span className="ml-auto text-xs text-foreground/40">共 {totalElements} 条</span>
+        {error && <span className="text-[11px] text-red-500">{error}</span>}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border bg-background">
+      <AdminCard title="操作记录" description="所有管理操作均不可篡改地留痕" icon={ScrollText} contentClassName="">
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full min-w-[680px] text-[12px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="px-4 py-2 font-medium">时间</th>
-                <th className="px-3 py-2 font-medium">操作</th>
-                <th className="px-3 py-2 font-medium">对象</th>
-                <th className="px-3 py-2 font-medium">操作人</th>
-                <th className="px-3 py-2 font-medium">空间</th>
-                <th className="px-3 py-2 font-medium">详情</th>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                <th className="whitespace-nowrap px-4 py-2.5 font-medium">时间</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">操作</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">对象</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">操作人</th>
+                <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">空间</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">详情</th>
               </tr>
             </thead>
             <tbody>
               {loading && rows.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-foreground/40">
-                    <Loader2 size={16} className="animate-spin" /> 加载中…
+                  <td colSpan={6} className="px-4 py-10 text-center text-slate-400">
+                    <Loader2 size={16} className="mx-auto mb-2 animate-spin" /> 加载中…
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-foreground/40">暂无审计记录</td>
+                  <td colSpan={6} className="px-4 py-10 text-center text-slate-400">暂无审计记录</td>
                 </tr>
               ) : (
                 rows.map((r) => (
-                  <tr key={r.id} className="border-b border-border/60 hover:bg-muted/40">
-                    <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-foreground/70">
+                  <tr key={r.id} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
+                    <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[11px] text-slate-500">
                       {fmtTime(r.createdDate)}
                     </td>
-                    <td className="px-3 py-2.5"><ActionBadge action={r.action} /></td>
-                    <td className="px-3 py-2.5 text-foreground/70">
+                    <td className="whitespace-nowrap px-3 py-2.5"><ActionBadge action={r.action} /></td>
+                    <td className="whitespace-nowrap px-3 py-2.5 text-slate-600">
                       {r.targetType}
-                      {r.targetId != null && <span className="font-mono text-foreground/50">#{r.targetId}</span>}
+                      {r.targetId != null && <span className="font-mono text-slate-400">#{r.targetId}</span>}
                     </td>
-                    <td className="px-3 py-2.5 font-mono text-foreground/70">{r.operator || "-"}</td>
-                    <td className="px-3 py-2.5 font-mono text-foreground/70">{r.libraryId || "公共"}</td>
-                    <td className="max-w-[360px] px-3 py-2.5">
+                    <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{r.operator || "-"}</td>
+                    <td className="hidden whitespace-nowrap px-3 py-2.5 font-mono text-slate-500 xl:table-cell">{r.libraryId || "公共"}</td>
+                    <td className="max-w-[240px] px-3 py-2.5 text-slate-500">
                       <div className="truncate" title={r.detail ?? undefined}>{r.detail || "-"}</div>
                     </td>
                   </tr>
@@ -200,27 +201,27 @@ export default function AdminAuditPage() {
           </table>
         </div>
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-[13px] text-foreground/50">
+          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
             <span>第 {page + 1} / {totalPages} 页</span>
             <div className="flex gap-1">
               <button
                 onClick={() => void load(Math.max(0, page - 1), fetchPage(action, libraryId))}
                 disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
               >
                 上一页
               </button>
               <button
                 onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage(action, libraryId))}
                 disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
               >
                 下一页
               </button>
             </div>
           </div>
         )}
-      </div>
+      </AdminCard>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
 import { listQuotas, updateUserLimits, type UserQuotaRow } from "@/lib/users";
 import { usePagedList } from "@/lib/use-paged-list";
+import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 
 const PAGE_SIZE = 20;
 
@@ -174,58 +175,55 @@ export default function AdminQuotasPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
-            <Gauge size={20} />
-            配额管理
-          </h1>
-          <p className="mt-1 text-[13px] text-foreground/50">
-            个人知识库（u-用户名）用量与限额一览；公共空间不限量。限额未自定义时跟随全局配置
-          </p>
-        </div>
-        <div className="text-xs text-foreground/40">共 {total} 位用户</div>
-      </div>
-
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <form onSubmit={onSearch} className="flex items-center gap-2">
-          <div className="relative">
-            <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-foreground/40" />
-            <input
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="搜索用户名或昵称"
-              className="h-8 w-56 rounded-md border border-border bg-muted/40 pl-8 pr-3 text-[13px] outline-none focus:border-accent"
-            />
-          </div>
-          <button
-            type="submit"
-            className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/70 hover:bg-muted/60"
-          >
-            搜索
+      <AdminPageHeader
+        icon={Gauge}
+        title="配额管理"
+        description="查看个人知识库（u-用户名）的文档、检索与问答用量；公共空间不限量，限额未自定义时跟随全局配置。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              共 {total} 位用户
+            </span>
+            <span>用量按当日 / 累计口径统计</span>
+          </>
+        }
+        actions={
+          <button onClick={() => void load(page, fetchPage)} className={adminBtn("secondary")}>
+            {loading ? <Loader2 size={14} className="animate-spin" /> : <RotateCw size={14} />}
+            刷新
           </button>
-        </form>
-        <button
-          onClick={() => void load(page, fetchPage)}
-          className="flex h-8 items-center gap-1 rounded-md border border-border px-2.5 text-[13px] text-foreground/60 hover:bg-muted/60"
-        >
-          {loading ? <Loader2 size={13} className="animate-spin" /> : <RotateCw size={13} />}
-          刷新
-        </button>
-        {msg && <span className="text-[13px] text-emerald-600">{msg}</span>}
-        {error && <span className="text-[13px] text-red-500">{error}</span>}
-      </div>
+        }
+      />
 
-      <div className="overflow-hidden rounded-xl border border-border bg-background">
+      <AdminCard title="用户配额" description="按用户查看额度使用率，支持调整个人上限" icon={Gauge} contentClassName="">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
+          <form onSubmit={onSearch} className="flex flex-1 flex-wrap items-center gap-2">
+            <div className="relative w-full max-w-xs flex-1">
+              <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="搜索用户名或昵称"
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
+              />
+            </div>
+            <button type="submit" className={adminBtn("secondary", "sm")}>搜索</button>
+          </form>
+          {msg && <span className="text-[11px] text-emerald-600">{msg}</span>}
+          {error && <span className="text-[11px] text-red-500">{error}</span>}
+          <span className="ml-auto rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">{total} 位</span>
+        </div>
+
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full min-w-[900px] text-[12px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="px-4 py-2 font-medium">用户</th>
-                <th className="px-3 py-2 font-medium">状态</th>
-                <th className="px-3 py-2 font-medium">文档数（累计）</th>
-                <th className="px-3 py-2 font-medium">检索（当日）</th>
-                <th className="px-3 py-2 font-medium">问答（当日）</th>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                <th className="whitespace-nowrap px-4 py-2.5 font-medium">用户</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">状态</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">文档数（累计）</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">检索（当日）</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">问答（当日）</th>
               </tr>
             </thead>
             <tbody>
@@ -282,27 +280,27 @@ export default function AdminQuotasPage() {
         </div>
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-[13px] text-foreground/50">
+          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
             <span>第 {page + 1} / {totalPages} 页</span>
             <div className="flex gap-1">
               <button
                 onClick={() => void load(Math.max(0, page - 1), fetchPage)}
                 disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
               >
                 上一页
               </button>
               <button
                 onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
                 disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
               >
                 下一页
               </button>
             </div>
           </div>
         )}
-      </div>
+      </AdminCard>
 
       {/* 限额编辑弹窗 */}
       {editTarget && (

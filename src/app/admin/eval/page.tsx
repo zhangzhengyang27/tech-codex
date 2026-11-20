@@ -9,6 +9,7 @@ import { EvalRunTab } from "@/components/admin/eval/eval-run-tab";
 import { EvalAbTab } from "@/components/admin/eval/eval-ab-tab";
 import { EvalTrendTab } from "@/components/admin/eval/eval-trend-tab";
 import { EvalCasesTab } from "@/components/admin/eval/eval-cases-tab";
+import { AdminPageHeader } from "@/components/admin/admin-ui";
 
 type Tab = "run" | "ab" | "trend" | "cases";
 
@@ -51,14 +52,14 @@ export default function AdminEvalPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold tracking-tight">RAG 评测</h1>
-        <p className="mt-1 text-[13px] text-foreground/50">
-          基于 Golden Set 的检索质量离线评测：命中率 / MRR / NDCG 三指标 + A/B 检索对比 + 每日趋势回归
-        </p>
-      </div>
+      <AdminPageHeader
+        icon={FlaskConical}
+        title="RAG 评测"
+        description="基于 Golden Set 的检索质量离线评测：命中率 / MRR / NDCG 三指标，支持 A/B 检索对比与每日趋势回归。"
+        meta={<span>默认空间 · 公共知识库</span>}
+      />
 
-      <div className="mb-6 flex gap-1 rounded-lg border border-border bg-background p-1 w-fit">
+      <div className="mb-5 flex w-fit flex-wrap gap-1 rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
         {TABS.map((t) => {
           const Icon = t.icon;
           const active = tab === t.key;
@@ -67,8 +68,8 @@ export default function AdminEvalPage() {
               key={t.key}
               onClick={() => setTab(t.key)}
               className={clsx(
-                "flex items-center gap-1.5 rounded-md px-3.5 py-1.5 text-[13px] font-medium transition-colors",
-                active ? "bg-accent text-white" : "text-foreground/60 hover:bg-muted hover:text-foreground",
+                "flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12px] font-medium transition-colors",
+                active ? "bg-accent text-white shadow-sm" : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
               )}
             >
               <Icon size={14} />

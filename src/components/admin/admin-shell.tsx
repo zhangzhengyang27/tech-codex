@@ -8,6 +8,7 @@ import {
   ArrowUpRight,
   BarChart3,
   CalendarRange,
+  Database,
   FileText,
   Gauge,
   LayoutDashboard,
@@ -71,10 +72,10 @@ function isActive(pathname: string, item: AdminNavItem): boolean {
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
-    <nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="管理导航">
+    <nav className="flex-1 overflow-y-auto px-3 py-4 [scrollbar-width:thin]" aria-label="管理导航">
       {ADMIN_NAV_GROUPS.map((group) => (
-        <div key={group.title} className="mb-4 last:mb-0">
-          <div className="px-2.5 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/35">
+        <div key={group.title} className="mb-5 last:mb-0">
+          <div className="px-2 pb-2 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-500">
             {group.title}
           </div>
           <div className="space-y-0.5">
@@ -88,21 +89,22 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
                   onClick={onNavigate}
                   aria-current={active ? "page" : undefined}
                   className={clsx(
-                    "group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] transition-colors",
+                    "group flex items-center gap-2.5 rounded-lg px-2.5 py-[9px] text-[13px] transition-colors",
                     active
-                      ? "bg-accent/10 font-medium text-accent shadow-[inset_2px_0_0_var(--accent)]"
-                      : "text-foreground/60 hover:bg-muted/70 hover:text-foreground",
+                      ? "bg-white/[0.08] font-medium text-white shadow-[inset_2px_0_0_#60a5fa]"
+                      : "text-slate-400 hover:bg-white/[0.05] hover:text-slate-100",
                   )}
                 >
                   <Icon
                     size={15}
-                    strokeWidth={active ? 2.2 : 1.8}
+                    strokeWidth={active ? 2.1 : 1.8}
                     className={clsx(
                       "shrink-0 transition-colors",
-                      active ? "text-accent" : "text-foreground/40 group-hover:text-foreground/70",
+                      active ? "text-blue-400" : "text-slate-500 group-hover:text-slate-300",
                     )}
                   />
                   <span className="truncate">{item.label}</span>
+                  {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-400/90" />}
                 </Link>
               );
             })}
@@ -115,15 +117,22 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 function SidebarBrand() {
   return (
-    <div className="border-b border-border px-4 py-4">
+    <div className="border-b border-white/10 px-4 py-4">
       <div className="flex items-center gap-2.5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white shadow-sm">
-          <ShieldCheck size={16} />
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-950/30">
+          <ShieldCheck size={17} />
         </span>
         <div className="min-w-0">
-          <div className="truncate text-[13px] font-semibold tracking-tight">管理工作台</div>
-          <div className="mt-0.5 truncate text-[11px] text-foreground/40">公共知识库 · default</div>
+          <div className="truncate text-[13px] font-semibold tracking-tight text-white">Tech Codex</div>
+          <div className="mt-0.5 text-[10px] uppercase tracking-[0.16em] text-slate-500">Admin Console</div>
         </div>
+      </div>
+      <div className="mt-3 flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-2">
+        <Database size={13} className="text-blue-400" />
+        <span className="truncate text-[11px] text-slate-300">公共知识库</span>
+        <span className="ml-auto rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[10px] text-slate-400">
+          default
+        </span>
       </div>
     </div>
   );
@@ -131,15 +140,15 @@ function SidebarBrand() {
 
 function SidebarFooter() {
   return (
-    <div className="border-t border-border p-2.5">
+    <div className="border-t border-white/10 p-2.5">
       <Link
         href="/"
-        className="flex items-center justify-between rounded-lg px-2.5 py-2 text-[12px] text-foreground/50 transition-colors hover:bg-muted/70 hover:text-foreground"
+        className="flex items-center justify-between rounded-lg px-2.5 py-2 text-[12px] text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-white"
       >
         返回文档站
         <ArrowUpRight size={13} />
       </Link>
-      <p className="px-2.5 pt-1 text-[10px] leading-relaxed text-foreground/30">
+      <p className="px-2.5 pt-1 text-[10px] leading-relaxed text-slate-600">
         管理操作会写入审计日志
       </p>
     </div>
@@ -156,10 +165,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-background">
+    <div className="min-h-[calc(100vh-3.5rem)] bg-[#f4f6f9]">
       <div className="flex min-h-[calc(100vh-3.5rem)]">
-        {/* 桌面端常驻侧栏：与顶部导航同为 sticky，主内容滚动时保持可见 */}
-        <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[228px] shrink-0 flex-col border-r border-border bg-muted/20 md:flex">
+        {/* 桌面端常驻侧栏：深色控制台风格，与内容画布形成清晰层级 */}
+        <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[236px] shrink-0 flex-col bg-[#0b1524] md:flex">
           <SidebarBrand />
           <NavLinks />
           <SidebarFooter />
@@ -167,7 +176,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
         {/* 所有管理页共用同一内容容器：统一最大宽度和四周留白，避免各页各写一套 padding */}
         <main className="min-w-0 flex-1">
-          <div className="mx-auto w-full max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">{children}</div>
+          <div className="mx-auto w-full max-w-[1440px] px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-7">
+            {children}
+          </div>
         </main>
       </div>
 
@@ -193,10 +204,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <button
             type="button"
             aria-label="关闭管理菜单"
-            className="absolute inset-0 bg-black/25"
+            className="absolute inset-0 bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="relative flex h-[calc(100vh-3.5rem)] w-[260px] flex-col border-r border-border bg-background shadow-2xl">
+          <aside className="relative flex h-[calc(100vh-3.5rem)] w-[264px] flex-col bg-[#0b1524] shadow-2xl">
             <SidebarBrand />
             <NavLinks onNavigate={() => setMobileOpen(false)} />
             <SidebarFooter />

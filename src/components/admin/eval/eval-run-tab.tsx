@@ -4,9 +4,10 @@
  * RAG 评测「跑测」Tab：对 Golden Set 跑单组检索并展示命中率 / MRR / NDCG 与用例明细。
  */
 import { useState } from "react";
-import { Loader2, Play } from "lucide-react";
+import { AlertCircle, ListOrdered, Loader2, Play, Target, TrendingUp } from "lucide-react";
 import { kbEvalRun, type KbEvalResult } from "@/lib/auth";
-import { CaseTable, MetricCard, NumInput, fmt, pct } from "./shared";
+import { AdminCard, AdminMetricCard, adminBtn } from "@/components/admin/admin-ui";
+import { CaseTable, NumInput, fmt, pct } from "./shared";
 
 export function EvalRunTab() {
   const [limit, setLimit] = useState("");
@@ -30,41 +31,69 @@ export function EvalRunTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-end gap-4 rounded-xl border border-border bg-background p-4">
-        <NumInput label="用例数上限 limit" value={limit} onChange={setLimit} placeholder="全部" />
-        <NumInput label="返回片段 topK" value={topK} onChange={setTopK} placeholder="5" />
-        <button
-          onClick={run}
-          disabled={loading}
-          className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
+        <AdminCard
+          title="本次评测配置"
+          description="在公共知识库上跑 Golden Set；留空即使用后端默认值"
+          icon={Play}
+          contentClassName="p-5"
         >
-          {loading ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} />}
-          开始评测
-        </button>
-        {error && <span className="text-[13px] text-red-500">{error}</span>}
+          <div className="flex flex-wrap items-end gap-4">
+            <NumInput label="用例数上限" value={limit} onChange={setLimit} placeholder="全部" />
+            <NumInput label="返回片段 topK" value={topK} onChange={setTopK} placeholder="5" />
+            <button onClick={run} disabled={loading} className={adminBtn("primary")}>
+              {loading ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} />}
+              开始评测
+            </button>
+          </div>
+          {error && (
+            <div className="mt-3 flex items-center gap-1.5 text-[12px] text-red-500">
+              <AlertCircle size={13} /> {error}
+            </div>
+          )}
+        </AdminCard>
+        <AdminCard title="指标口径" description="先看命中率，再看排序质量" icon={Target} contentClassName="p-5">
+          <dl className="space-y-3 text-[12px]">
+            <div>
+              <dt className="font-mono text-[11px] font-medium text-slate-700">HitRate</dt>
+              <dd className="mt-0.5 text-slate-500">TopK 内是否命中任一期望关键字，低于 60% 会触发质量告警。</dd>
+            </div>
+            <div>
+              <dt className="font-mono text-[11px] font-medium text-slate-700">MRR</dt>
+              <dd className="mt-0.5 text-slate-500">首个命中片段排名的倒数，衡量“正确答案是否排得够前”。</dd>
+            </div>
+            <div>
+              <dt className="font-mono text-[11px] font-medium text-slate-700">NDCG@K</dt>
+              <dd className="mt-0.5 text-slate-500">考虑位置与多期望文档的排序质量，需用例标注期望文档。</dd>
+            </div>
+          </dl>
+        </AdminCard>
       </div>
 
       {result && (
         <>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <MetricCard
+            <AdminMetricCard
               label="命中率 HitRate"
               value={pct(result.hitRate)}
-              sub={`${result.hit}/${result.total} 命中`}
-              good={result.hitRate >= 0.8}
+              hint={`${result.hit}/${result.total} 命中`}
+              icon={Target}
+              tone={result.hitRate >= 0.8 ? "emerald" : result.hitRate >= 0.6 ? "amber" : "red"}
             />
-            <MetricCard label="MRR" value={fmt(result.mrr)} sub="首个命中平均倒数排名" />
-            <MetricCard label="NDCG@K" value={fmt(result.ndcg)} sub="排序质量（需期望文档）" />
-            <MetricCard
+            <AdminMetricCard label="MRR" value={fmt(result.mrr)} hint="首个命中平均倒数排名" icon={TrendingUp} tone="blue" />
+            <AdminMetricCard label="NDCG@K" value={fmt(result.ndcg)} hint="排序质量（需期望文档）" icon={ListOrdered} tone="violet" />
+            <AdminMetricCard
               label="未命中"
               value={String(result.miss)}
-              sub="用于失败归因分析"
-              good={result.miss === 0 ? true : false}
+              hint="用于失败归因分析"
+              icon={AlertCircle}
+              tone={result.miss === 0 ? "emerald" : "red"}
             />
           </div>
           <CaseTable cases={result.cases} label="用例明细" />
         </>
       )}
     </div>
+
   );
 }

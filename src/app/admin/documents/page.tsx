@@ -4,12 +4,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import {
+  ArrowRight,
+  Database,
   Eye,
+  FileText,
   FileUp,
-  Pencil,
   FolderSync,
   Link2,
   Loader2,
+  Pencil,
   RefreshCw,
   RotateCw,
   Search,
@@ -18,6 +21,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
+import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 import {
   adminDocument,
   deleteAdminDocument,
@@ -39,6 +43,7 @@ import { DocEditor } from "@/components/admin/doc-editor";
 const errText = (e: unknown): string => (e instanceof Error ? e.message : "操作失败");
 
 const ACCEPT = ".md,.markdown,.txt,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.html,.htm";
+const PAGE_SIZE = 20;
 
 /** 状态筛选（对应后端 KbDocumentStatus）。 */
 const STATUS_OPTIONS = [
@@ -231,59 +236,82 @@ export default function AdminDocumentsPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex items-center gap-2">
-        <FileUp size={20} className="text-accent" />
-        <h1 className="text-xl font-semibold tracking-tight">文档管理</h1>
-        <span className="text-xs text-foreground/40">公共知识库（default 空间）</span>
-      </div>
+      <AdminPageHeader
+        icon={FileText}
+        title="文档管理"
+        description="维护公共知识库的文档、分块与向量索引，支持文件上传、目录导入和 URL 抓取。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              default 空间
+            </span>
+            <span>共 {total} 篇文档</span>
+            <span>每页 {PAGE_SIZE} 条</span>
+          </>
+        }
+        actions={
+          <>
+            <button onClick={() => void load(page, fetchPage)} className={adminBtn("secondary")}>
+              {loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+              刷新列表
+            </button>
+            <button
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading || taskId !== null}
+              className={adminBtn("primary")}
+            >
+              {uploading ? <Loader2 size={14} className="animate-spin" /> : <FileUp size={14} />}
+              上传文件
+            </button>
+          </>
+        }
+      />
 
-      {/* 运维操作区 */}
-      <div className="mb-6 rounded-xl border border-border bg-background p-4">
+      <input
+        ref={fileRef}
+        type="file"
+        accept={ACCEPT}
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) void onUpload(f);
+        }}
+      />
+
+      <AdminCard
+        title="导入与索引"
+        description="批量维护 docs 目录、重建向量索引，或将网页正文抓取为 Markdown"
+        icon={Database}
+        contentClassName="p-4"
+      >
         <div className="flex flex-wrap items-center gap-2">
-          <input
-            ref={fileRef}
-            type="file"
-            accept={ACCEPT}
-            className="hidden"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) void onUpload(f);
-            }}
-          />
-          <button
-            onClick={() => fileRef.current?.click()}
-            disabled={uploading || taskId !== null}
-            className="flex h-9 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
-          >
-            {uploading ? <Loader2 size={14} className="animate-spin" /> : <FileUp size={14} />}
-            上传文件
-          </button>
           <button
             onClick={() => setDirOpen((o) => !o)}
             disabled={taskId !== null}
-            className="flex h-9 items-center gap-1.5 rounded-md border border-border px-4 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-muted/60 disabled:opacity-60"
+            className={adminBtn("secondary", "sm")}
           >
-            <FolderSync size={14} />
+            <FolderSync size={13} />
             目录导入
           </button>
           <button
             onClick={() => void startTask("sync")}
             disabled={starting || taskId !== null}
-            className="flex h-9 items-center gap-1.5 rounded-md border border-border px-4 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-muted/60 disabled:opacity-60"
+            className={adminBtn("secondary", "sm")}
           >
-            {starting ? <Loader2 size={14} className="animate-spin" /> : <FolderSync size={14} />}
+            {starting ? <Loader2 size={13} className="animate-spin" /> : <FolderSync size={13} />}
             同步 docs 内容
           </button>
           <button
             onClick={() => void startTask("rebuild")}
             disabled={starting || taskId !== null}
-            className="flex h-9 items-center gap-1.5 rounded-md border border-border px-4 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-muted/60 disabled:opacity-60"
+            className={adminBtn("secondary", "sm")}
           >
-            <RefreshCw size={14} />
+            {starting ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
             重建向量索引
           </button>
-          <span className="text-xs text-foreground/40">
-            同步对账 docs 目录（新增/更新/改名/删除），与文档站内容保持一致
+          <span className="text-[11px] text-slate-400">
+            同步会按文件名对账新增、更新、改名和删除
           </span>
         </div>
 
@@ -293,149 +321,153 @@ export default function AdminDocumentsPage() {
               value={dirPath}
               onChange={(e) => setDirPath(e.target.value)}
               placeholder="服务器上的目录绝对路径，如 /data/docs/java"
-              className="h-9 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent focus:ring-1 focus:ring-accent/30"
+              className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
             />
             <button
               onClick={() => void startTask("dir")}
               disabled={starting}
-              className="flex h-9 items-center justify-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white disabled:opacity-60"
+              className={adminBtn("primary", "sm")}
             >
-              {starting ? <Loader2 size={14} className="animate-spin" /> : <FolderSync size={14} />}
+              {starting ? <Loader2 size={13} className="animate-spin" /> : <FolderSync size={13} />}
               开始导入
             </button>
           </div>
         )}
 
-        {uploadMsg && <div className="mt-2 text-xs text-emerald-600">{uploadMsg}</div>}
-        {actionError && <div className="mt-2 text-xs text-red-500">{actionError}</div>}
+        <div className="mt-4 border-t border-slate-100 pt-4">
+          <div className="mb-2 flex items-center gap-2 text-[11px] font-medium text-slate-500">
+            <Link2 size={13} className="text-accent" />
+            URL 导入
+            <span className="font-normal text-slate-400">抓取网页正文自动转为 Markdown 入库</span>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && onImport()}
+              placeholder="https://example.com/article"
+              className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
+            />
+            <button onClick={onImport} disabled={importing} className={adminBtn("primary", "sm")}>
+              {importing ? <Loader2 size={13} className="animate-spin" /> : <ArrowRight size={13} />}
+              导入
+            </button>
+          </div>
+          {importMsg && <div className="mt-2 text-[11px] text-emerald-600">{importMsg}</div>}
+          {importError && <div className="mt-2 text-[11px] text-red-500">{importError}</div>}
+        </div>
 
+        {uploadMsg && <div className="mt-2 text-[11px] text-emerald-600">{uploadMsg}</div>}
+        {actionError && <div className="mt-2 text-[11px] text-red-500">{actionError}</div>}
         <TaskProgress taskId={taskId} title={taskTitle} onDone={onTaskDone} onDismiss={() => setTaskId(null)} />
-      </div>
+      </AdminCard>
 
-      {/* URL 导入 */}
-      <div className="mb-6 rounded-xl border border-border bg-background p-4">
-        <div className="flex items-center gap-2 text-[13px] font-medium">
-          <Link2 size={15} className="text-accent" />
-          URL 导入
-          <span className="text-xs font-normal text-foreground/40">
-            抓取网页正文自动转为 Markdown 入库
-          </span>
-        </div>
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-          <input
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && onImport()}
-            placeholder="https://example.com/article"
-            className="h-9 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent focus:ring-1 focus:ring-accent/30"
-          />
-          <button
-            onClick={onImport}
-            disabled={importing}
-            className="flex h-9 items-center justify-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-background disabled:opacity-60"
-          >
-            {importing ? <Loader2 size={14} className="animate-spin" /> : <Link2 size={14} />}
-            导入
-          </button>
-        </div>
-        {importMsg && <div className="mt-2 text-xs text-emerald-600">{importMsg}</div>}
-        {importError && <div className="mt-2 text-xs text-red-500">{importError}</div>}
-      </div>
-
-      {/* 文档列表 */}
-      <div className="overflow-hidden rounded-xl border border-border bg-background">
-        <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
-          <form onSubmit={onSearch} className="flex flex-1 items-center gap-2">
-            <div className="relative flex-1 max-w-xs">
-              <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-foreground/40" />
+      <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
+          <div className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+              <FileText size={14} />
+            </span>
+            <div>
+              <h2 className="text-[13px] font-semibold tracking-tight text-slate-800">文档库</h2>
+              <p className="text-[11px] text-slate-400">按标题、文件名和索引状态筛选</p>
+            </div>
+          </div>
+          <form onSubmit={onSearch} className="ml-auto flex flex-1 items-center justify-end gap-2">
+            <div className="relative w-full max-w-xs flex-1">
+              <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索标题或文件名"
-                className="h-8 w-full rounded-md border border-border bg-muted/40 pl-8 pr-3 text-[13px] outline-none focus:border-accent"
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
-                void load(0, () => listDocuments(keyword, e.target.value || undefined, 0, 20));
+                void load(0, () => listDocuments(keyword, e.target.value || undefined, 0, PAGE_SIZE));
               }}
-              className="h-8 rounded-md border border-border bg-background px-2 text-[13px] outline-none focus:border-accent"
+              className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-[13px] text-slate-600 outline-none focus:border-accent"
             >
               {STATUS_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
-            <button
-              type="submit"
-              className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/70 hover:bg-muted/60"
-            >
-              搜索
-            </button>
+            <button type="submit" className={adminBtn("secondary", "sm")}>搜索</button>
           </form>
-          <div className="text-xs text-foreground/40">
-            共 {total} 篇
-          </div>
+          <span className="rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">
+            {total} 篇
+          </span>
           <button
             onClick={() => void load(page, fetchPage)}
-            className="flex h-8 items-center gap-1 rounded-md border border-border px-2.5 text-[13px] text-foreground/60 hover:bg-muted/60"
+            className="flex h-8 items-center gap-1 rounded-lg px-2 text-[12px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
             title="刷新"
           >
             {loading ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-            刷新
           </button>
         </div>
 
-        {error && <div className="px-4 py-3 text-[13px] text-red-500">{error}</div>}
+        {error && <div className="border-b border-red-100 bg-red-50 px-4 py-2.5 text-[12px] text-red-600">{error}</div>}
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1040px] text-[13px]">
+          <table className="w-full min-w-[680px] text-[13px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="whitespace-nowrap px-4 py-2 font-medium">标题</th>
-                <th className="whitespace-nowrap px-3 py-2 font-medium">来源</th>
-                <th className="whitespace-nowrap px-3 py-2 font-medium">大小</th>
-                <th className="whitespace-nowrap px-3 py-2 font-medium">分块</th>
-                <th className="whitespace-nowrap px-3 py-2 font-medium">状态</th>
-                <th className="whitespace-nowrap px-3 py-2 font-medium">导入时间</th>
-                <th className="whitespace-nowrap px-3 py-2 text-right font-medium">操作</th>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[11px] uppercase tracking-[0.06em] text-slate-400">
+                <th className="whitespace-nowrap px-4 py-2.5 font-medium">标题</th>
+                <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">来源</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">大小</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">分块</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">状态</th>
+                <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">导入时间</th>
+                <th className="whitespace-nowrap px-3 py-2.5 text-right font-medium">操作</th>
               </tr>
             </thead>
             <tbody>
               {!loading && docs.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-10 text-center text-sm text-foreground/40">
-                    暂无文档，可通过上传文件、URL 导入或「同步 docs 内容」添加
+                  <td colSpan={7} className="px-4 py-12 text-center">
+                    <FileText size={22} className="mx-auto mb-2 text-slate-300" />
+                    <p className="text-[13px] text-slate-500">暂无文档</p>
+                    <p className="mt-1 text-[11px] text-slate-400">可通过右上角上传、URL 导入或同步 docs 内容添加</p>
                   </td>
                 </tr>
               )}
               {docs.map((d) => (
-                <tr key={d.id} className="border-b border-border/60 last:border-b-0 hover:bg-muted/30">
-                  <td className="max-w-[260px] truncate px-4 py-2.5 font-medium" title={d.title}>{d.title}</td>
-                  <td className="max-w-[200px] truncate px-3 py-2.5 text-foreground/60" title={d.filePath}>
+                <tr key={d.id} className="border-b border-slate-100/80 last:border-b-0 hover:bg-slate-50/60">
+                  <td className="max-w-[280px] truncate px-4 py-2.5 font-medium text-slate-700" title={d.title}>{d.title}</td>
+                  <td className="hidden max-w-[200px] truncate px-3 py-2.5 text-slate-500 xl:table-cell" title={d.filePath}>
                     {d.fileName}
                   </td>
-                  <td className="px-3 py-2.5 text-foreground/50">{fmtSize(d.fileSize)}</td>
-                  <td className="px-3 py-2.5 text-foreground/50">{d.chunkCount ?? "-"}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-[11px] text-slate-400">{fmtSize(d.fileSize)}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-[11px] text-slate-400">{d.chunkCount ?? "-"}</td>
                   <td className="whitespace-nowrap px-3 py-2.5">
                     <span
                       className={clsx(
-                        "whitespace-nowrap rounded-full px-2 py-0.5 text-xs",
-                        d.status === "INDEXED" && "bg-emerald-500/10 text-emerald-600",
-                        d.status === "PENDING" && "bg-amber-500/10 text-amber-600",
-                        d.status === "FAILED" && "bg-red-500/10 text-red-500",
+                        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+                        d.status === "INDEXED" && "bg-emerald-50 text-emerald-600 ring-emerald-100",
+                        d.status === "PENDING" && "bg-amber-50 text-amber-600 ring-amber-100",
+                        d.status === "FAILED" && "bg-red-50 text-red-600 ring-red-100",
                       )}
                     >
+                      <span
+                        className={clsx(
+                          "h-1.5 w-1.5 rounded-full",
+                          d.status === "INDEXED" && "bg-emerald-500",
+                          d.status === "PENDING" && "bg-amber-500",
+                          d.status === "FAILED" && "bg-red-500",
+                        )}
+                      />
                       {statusText(d.status)}
                     </span>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2.5 text-foreground/50">{fmtDate(d.createdDate)}</td>
+                  <td className="hidden whitespace-nowrap px-3 py-2.5 text-[11px] text-slate-400 xl:table-cell">{fmtDate(d.createdDate)}</td>
                   <td className="whitespace-nowrap px-3 py-2.5 text-right">
                     <button
                       onClick={() => setViewId(d.id)}
-                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-foreground/60 hover:bg-muted hover:text-foreground"
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                       title="查看原文"
                     >
                       <Eye size={13} />
@@ -443,7 +475,7 @@ export default function AdminDocumentsPage() {
                     </button>
                     <button
                       onClick={() => setEditId(d.id)}
-                      className="ml-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-foreground/60 hover:bg-muted hover:text-foreground"
+                      className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                       title="编辑内容并重建索引"
                     >
                       <Pencil size={13} />
@@ -453,7 +485,7 @@ export default function AdminDocumentsPage() {
                       <button
                         onClick={() => void onRetry(d)}
                         disabled={busyId === d.id}
-                        className="ml-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-amber-600 hover:bg-amber-50 disabled:opacity-50"
+                        className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-amber-600 hover:bg-amber-50 disabled:opacity-50"
                         title="重建该文档的索引"
                       >
                         {busyId === d.id ? <Loader2 size={13} className="animate-spin" /> : <RotateCw size={13} />}
@@ -463,11 +495,10 @@ export default function AdminDocumentsPage() {
                     <button
                       onClick={() => void onDelete(d)}
                       disabled={busyId === d.id}
-                      className="ml-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-red-500/80 hover:bg-red-50 disabled:opacity-50"
+                      className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-red-500/80 hover:bg-red-50 disabled:opacity-50"
                       title="删除文档"
                     >
                       {busyId === d.id ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
-                      删除
                     </button>
                   </td>
                 </tr>
@@ -477,20 +508,20 @@ export default function AdminDocumentsPage() {
         </div>
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-[13px] text-foreground/50">
+          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
             <span>第 {page + 1} / {totalPages} 页</span>
             <div className="flex gap-1">
               <button
                 onClick={() => void load(Math.max(0, page - 1), fetchPage)}
                 disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] disabled:opacity-40 hover:bg-slate-100"
               >
                 上一页
               </button>
               <button
                 onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
                 disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] disabled:opacity-40 hover:bg-slate-100"
               >
                 下一页
               </button>

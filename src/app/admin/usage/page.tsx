@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { BarChart3, Loader2, ShieldAlert, RotateCw } from "lucide-react";
+import { BarChart3, Coins, Layers, Loader2, MessageSquare, ShieldAlert, RotateCw, Timer, Users } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { timeoutOr } from "@/lib/fetch-helpers";
 import {
@@ -13,6 +13,7 @@ import {
   type ChatUsageView,
   type UserUsageRow,
 } from "@/lib/usage";
+import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 
 const fmtNum = (v: number): string => v.toLocaleString("en-US");
 
@@ -34,18 +35,6 @@ const fmtTime = (iso: string | null): string => {
   return isNaN(d.getTime()) ? "-" : d.toLocaleString("zh-CN", { hour12: false });
 };
 
-/* ---------- 指标卡片 ---------- */
-
-function MetricCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div className="rounded-xl border border-border bg-background p-4">
-      <div className="text-[13px] text-foreground/50">{label}</div>
-      <div className="mt-1 text-2xl font-semibold tracking-tight font-mono">{value}</div>
-      {sub && <div className="mt-1 text-xs text-foreground/40">{sub}</div>}
-    </div>
-  );
-}
-
 /* ---------- 近 30 天趋势条形图（纯 CSS/DIV） ---------- */
 
 function TrendBarChart({ points }: { points: UsageSummaryView["trend"] }) {
@@ -58,18 +47,14 @@ function TrendBarChart({ points }: { points: UsageSummaryView["trend"] }) {
 
   if (!data) {
     return (
-      <div className="flex h-56 items-center justify-center rounded-xl border border-dashed border-border text-sm text-foreground/40">
-        暂无用量数据（产生问答后将在此显示每日趋势）
-      </div>
+      <AdminCard title="每日 token 消耗" description="按天统计问答 token" icon={BarChart3} contentClassName="px-4 py-12 text-center text-[12px] text-slate-400">
+        暂无用量数据，产生问答后将在此显示每日趋势
+      </AdminCard>
     );
   }
 
   return (
-    <div className="rounded-xl border border-border bg-background p-4">
-      <div className="mb-3 flex items-center justify-between text-xs text-foreground/40">
-        <span className="text-foreground/60">近 {data.arr.length} 天每日 token 消耗</span>
-        <span>峰值 {fmtNum(data.max)}</span>
-      </div>
+    <AdminCard title="每日 token 消耗" description={`近 ${data.arr.length} 天 · 峰值 ${fmtNum(data.max)}`} icon={BarChart3} contentClassName="p-4">
       <div className="flex h-44 items-end gap-[2px]">
         {data.arr.map((p) => (
           <div key={p.date} className="group relative flex-1" title={`${p.date} · 问题 ${p.questions} · token ${fmtNum(p.tokens)}`}>
@@ -78,14 +63,14 @@ function TrendBarChart({ points }: { points: UsageSummaryView["trend"] }) {
               style={{ height: `${Math.max(2, (p.tokens / data.max) * 100)}%` }}
             />
             {(data.arr.length <= 15 || p.date.endsWith("-01")) && (
-              <div className="mt-1 text-center text-[9px] text-foreground/30">
+              <div className="mt-1 text-center text-[9px] text-slate-400">
                 {p.date.slice(5)}
               </div>
             )}
           </div>
         ))}
       </div>
-    </div>
+    </AdminCard>
   );
 }
 
@@ -93,52 +78,53 @@ function TrendBarChart({ points }: { points: UsageSummaryView["trend"] }) {
 
 function UsageTable({ rows, loading }: { rows: ChatUsageView[]; loading: boolean }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-background">
-      <div className="border-b border-border px-4 py-2.5 text-[13px] font-medium">
-        最近用量明细
-        <span className="ml-2 text-xs font-normal text-foreground/40">{rows.length} 条</span>
-      </div>
+    <AdminCard
+      title="最近用量明细"
+      description={`${rows.length} 条问答记录`}
+      icon={MessageSquare}
+      contentClassName=""
+    >
       {loading && rows.length === 0 ? (
-        <div className="flex items-center justify-center gap-2 px-4 py-8 text-sm text-foreground/40">
+        <div className="flex items-center justify-center gap-2 px-4 py-10 text-sm text-slate-400">
           <Loader2 size={15} className="animate-spin" /> 加载中…
         </div>
       ) : rows.length === 0 ? (
-        <div className="px-4 py-8 text-center text-sm text-foreground/40">暂无用量记录</div>
+        <div className="px-4 py-10 text-center text-[12px] text-slate-400">暂无用量记录</div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full min-w-[760px] text-[12px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="px-4 py-2 font-medium">时间</th>
-                <th className="px-3 py-2 font-medium">用户</th>
-                <th className="px-3 py-2 font-medium">问题</th>
-                <th className="px-3 py-2 font-medium">命中片段</th>
-                <th className="px-3 py-2 font-medium">耗时</th>
-                <th className="px-3 py-2 font-medium">token 估算</th>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                <th className="whitespace-nowrap px-4 py-2.5 font-medium">时间</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">用户</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">问题</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">命中片段</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">耗时</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">token 估算</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-border/60 hover:bg-muted/40">
-                  <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-foreground/70">
+                <tr key={r.id} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
+                  <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[11px] text-slate-500">
                     {fmtTime(r.createdDate)}
                   </td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">{r.userId}</td>
-                  <td className="max-w-[280px] px-3 py-2.5">
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{r.userId}</td>
+                  <td className="max-w-[280px] px-3 py-2.5 text-slate-600">
                     <div className="truncate" title={r.question}>{r.question}</div>
                   </td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">{r.hitCount ?? 0}</td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{r.hitCount ?? 0}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">
                     {r.elapsedMs != null ? fmtMs(r.elapsedMs) : "-"}
                   </td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">{fmtNum(r.totalTokens ?? 0)}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{fmtNum(r.totalTokens ?? 0)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-    </div>
+    </AdminCard>
   );
 }
 
@@ -146,41 +132,42 @@ function UsageTable({ rows, loading }: { rows: ChatUsageView[]; loading: boolean
 
 function TopUsersTable({ rows, loading }: { rows: UserUsageRow[]; loading: boolean }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-background">
-      <div className="border-b border-border px-4 py-2.5 text-[13px] font-medium">
-        Top 用户（近 7 天，按问答数）
-        <span className="ml-2 text-xs font-normal text-foreground/40">{rows.length} 人</span>
-      </div>
+    <AdminCard
+      title="Top 用户"
+      description={`近 7 天按问答数排序 · ${rows.length} 人`}
+      icon={Users}
+      contentClassName=""
+    >
       {loading && rows.length === 0 ? (
-        <div className="flex items-center justify-center gap-2 px-4 py-8 text-sm text-foreground/40">
+        <div className="flex items-center justify-center gap-2 px-4 py-10 text-sm text-slate-400">
           <Loader2 size={15} className="animate-spin" /> 加载中…
         </div>
       ) : rows.length === 0 ? (
-        <div className="px-4 py-8 text-center text-sm text-foreground/40">周期内暂无问答记录</div>
+        <div className="px-4 py-10 text-center text-[12px] text-slate-400">周期内暂无问答记录</div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full min-w-[760px] text-[12px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="px-4 py-2 font-medium">#</th>
-                <th className="px-3 py-2 font-medium">用户</th>
-                <th className="px-3 py-2 font-medium">问答数</th>
-                <th className="px-3 py-2 font-medium">token 估算</th>
-                <th className="px-3 py-2 font-medium">平均耗时</th>
-                <th className="px-3 py-2 font-medium">平均命中</th>
-                <th className="px-3 py-2 font-medium">最近活跃</th>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                <th className="w-10 whitespace-nowrap px-4 py-2.5 font-medium">#</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">用户</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">问答数</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">token 估算</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">平均耗时</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">平均命中</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">最近活跃</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r, i) => (
-                <tr key={r.userId} className="border-b border-border/60 last:border-b-0 hover:bg-muted/40">
-                  <td className="px-4 py-2.5 font-mono text-foreground/40">{i + 1}</td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">{r.userId}</td>
-                  <td className="px-3 py-2.5 font-mono font-medium">{fmtNum(r.questions)}</td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">{fmtCompact(r.totalTokens)}</td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">{fmtMs(r.avgLatencyMs)}</td>
-                  <td className="px-3 py-2.5 font-mono text-foreground/70">{r.avgHitCount.toFixed(1)}</td>
-                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-xs text-foreground/50">
+                <tr key={r.userId} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
+                  <td className="px-4 py-2.5 font-mono text-[10px] text-slate-400">{String(i + 1).padStart(2, "0")}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{r.userId}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono font-medium text-slate-700">{fmtNum(r.questions)}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{fmtCompact(r.totalTokens)}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{fmtMs(r.avgLatencyMs)}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{r.avgHitCount.toFixed(1)}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-[10px] text-slate-400">
                     {fmtTime(r.lastActiveAt)}
                   </td>
                 </tr>
@@ -189,7 +176,7 @@ function TopUsersTable({ rows, loading }: { rows: UserUsageRow[]; loading: boole
           </table>
         </div>
       )}
-    </div>
+    </AdminCard>
   );
 }
 
@@ -282,53 +269,56 @@ export default function AdminUsagePage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6">
-        <h1 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
-          <BarChart3 size={20} />
-          用量统计
-        </h1>
-        <p className="mt-1 text-[13px] text-foreground/50">
-          基于 token 估算的问答用量看板（估算口径：中文约 1 字符/token）
-        </p>
-      </div>
+      <AdminPageHeader
+        icon={BarChart3}
+        title="用量统计"
+        description="基于 token 估算的问答用量看板；估算口径为中文约 1 字符 / token。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              最近 {days} 天
+            </span>
+            <span>按问答时间统计</span>
+          </>
+        }
+        actions={
+          <>
+            <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[11px] text-slate-500 shadow-sm">
+              天数
+              <input
+                type="number"
+                min={1}
+                max={90}
+                value={days}
+                onChange={(e) => setDays(e.target.value)}
+                className="h-6 w-12 rounded border border-slate-200 bg-slate-50 px-1 text-center font-mono text-[12px] outline-none focus:border-accent"
+              />
+            </label>
+            <button onClick={() => void loadAll()} disabled={loading} className={adminBtn("secondary")}>
+              {loading ? <Loader2 size={14} className="animate-spin" /> : <RotateCw size={14} />}
+              刷新
+            </button>
+          </>
+        }
+      />
 
-      <div className="mb-6 flex flex-wrap items-end gap-4 rounded-xl border border-border bg-background p-4">
-        <label className="flex flex-col gap-1">
-          <span className="text-xs text-foreground/50">最近天数 days（1~90）</span>
-          <input
-            type="number"
-            min={1}
-            max={90}
-            value={days}
-            onChange={(e) => setDays(e.target.value)}
-            className="h-8 w-24 rounded-md border border-border bg-background px-2 text-[13px] outline-none transition-colors focus:border-accent"
-          />
-        </label>
-        <button
-          onClick={() => void loadAll()}
-          disabled={loading}
-          className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
-        >
-          {loading ? <Loader2 size={14} className="animate-spin" /> : <RotateCw size={14} />}
-          刷新
-        </button>
-        {error && <span className="text-[13px] text-red-500">{error}</span>}
-      </div>
+      {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
 
       {summary && (
-        <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-          <MetricCard label="总问答数" value={fmtNum(summary.totalQuestions)} sub="周期内累计" />
-          <MetricCard label="总 token（估算）" value={fmtCompact(summary.totalTokens)} sub={`输入 ${fmtCompact(summary.totalInputTokens)} + 输出 ${fmtCompact(summary.totalOutputTokens)}`} />
-          <MetricCard label="平均耗时" value={fmtMs(summary.avgLatencyMs)} sub="每次问答" />
-          <MetricCard label="平均命中片段" value={summary.avgHitCount.toFixed(1)} sub="检索命中数" />
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <AdminMetricCard label="总问答数" value={fmtNum(summary.totalQuestions)} hint="周期内累计" icon={MessageSquare} tone="blue" />
+          <AdminMetricCard label="TOKEN 估算" value={fmtCompact(summary.totalTokens)} hint={`输入 ${fmtCompact(summary.totalInputTokens)} + 输出 ${fmtCompact(summary.totalOutputTokens)}`} icon={Coins} tone="violet" />
+          <AdminMetricCard label="平均耗时" value={fmtMs(summary.avgLatencyMs)} hint="每次问答" icon={Timer} tone="emerald" />
+          <AdminMetricCard label="平均命中片段" value={summary.avgHitCount.toFixed(1)} hint="检索命中数" icon={Layers} tone="amber" />
         </div>
       )}
 
-      {summary && <div className="mb-6"><TrendBarChart points={summary.trend} /></div>}
+      {summary && <div className="mt-5"><TrendBarChart points={summary.trend} /></div>}
 
-      <div className="mb-6"><TopUsersTable rows={topUsers} loading={recentLoading} /></div>
+      <div className="mt-5"><TopUsersTable rows={topUsers} loading={recentLoading} /></div>
 
-      <UsageTable rows={recent} loading={recentLoading} />
+      <div className="mt-5"><UsageTable rows={recent} loading={recentLoading} /></div>
     </div>
   );
 }

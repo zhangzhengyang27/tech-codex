@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ListPlus, Loader2, MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { ArrowRight, Inbox, ListPlus, Loader2, MessageSquare, ShieldCheck, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import {
   kbFeedbackList,
@@ -13,6 +13,7 @@ import {
 } from '@/lib/auth';
 import { usePagedList } from '@/lib/use-paged-list';
 import { useHydrated } from '@/lib/use-hydrated';
+import { AdminCard, AdminPageHeader, adminBtn } from '@/components/admin/admin-ui';
 
 type RatingFilter = '' | 'UP' | 'DOWN';
 const PAGE_SIZE = 20;
@@ -86,174 +87,227 @@ export default function FeedbackAdminPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <MessageSquare size={20} className="text-accent" />
-          <h1 className="text-xl font-semibold tracking-tight">问答反馈</h1>
-          <span className="text-xs text-foreground/40">共 {total} 条</span>
-        </div>
-        <div className="flex items-center gap-2 text-xs">
-          {(
-            [
-              ['全部', ''],
-              ['👍 点赞', 'UP'],
-              ['👎 点踩', 'DOWN'],
-            ] as [string, RatingFilter][]
-          ).map(([label, value]) => (
-            <button
-              key={label}
-              onClick={() => setRating(value)}
-              className={`rounded-full border px-3 py-1 transition-colors ${
-                rating === value
-                  ? 'border-accent bg-accent/10 text-accent'
-                  : 'border-border text-foreground/50 hover:text-foreground'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <AdminPageHeader
+        icon={MessageSquare}
+        title="问答反馈"
+        description="查看用户对问答结果的点赞与点踩，点踩条目可直接回流为 Golden Set 评测用例。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              共 {total} 条反馈
+            </span>
+            <span>按反馈时间倒序</span>
+          </>
+        }
+        actions={
+          <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white p-1 shadow-sm">
+            {(
+              [
+                ['全部', ''],
+                ['点赞', 'UP'],
+                ['点踩', 'DOWN'],
+              ] as [string, RatingFilter][]
+            ).map(([label, value]) => (
+              <button
+                key={label}
+                onClick={() => setRating(value)}
+                className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] transition-colors ${
+                  rating === value
+                    ? 'bg-accent text-white shadow-sm'
+                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                }`}
+              >
+                {value === 'UP' && <ThumbsUp size={12} />}
+                {value === 'DOWN' && <ThumbsDown size={12} />}
+                {label}
+              </button>
+            ))}
+          </div>
+        }
+      />
 
-      {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+      {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
 
-      {loading ? (
-        <div className="py-24 text-center text-sm text-foreground/40">加载中…</div>
-      ) : items.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border py-20 text-center text-sm text-foreground/50">
-          暂无反馈数据
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {items.map((item) => (
-            <div key={item.id} className="rounded-2xl border border-border bg-background p-4">
-              <div className="flex flex-wrap items-center gap-2 text-xs text-foreground/40">
-                <span
-                  className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-medium ${
-                    item.rating === 'UP'
-                      ? 'bg-accent/10 text-accent'
-                      : 'bg-red-500/10 text-red-500'
-                  }`}
-                >
-                  {item.rating === 'UP' ? <ThumbsUp size={11} /> : <ThumbsDown size={11} />}
-                  {item.rating === 'UP' ? '点赞' : '点踩'}
-                </span>
-                <span>{item.userId}</span>
-                <span>{new Date(item.createdDate).toLocaleString('zh-CN')}</span>
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="min-w-0">
+          {loading ? (
+            <AdminCard contentClassName="py-20 text-center text-sm text-slate-400">
+              <Loader2 size={18} className="mx-auto mb-2 animate-spin" />加载反馈…
+            </AdminCard>
+          ) : items.length === 0 ? (
+            <AdminCard contentClassName="px-6 py-16 text-center">
+              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 ring-1 ring-slate-200/70">
+                <Inbox size={22} />
+              </span>
+              <h2 className="mt-3 text-[14px] font-semibold text-slate-700">还没有问答反馈</h2>
+              <p className="mx-auto mt-1 max-w-md text-[11px] leading-5 text-slate-400">
+                用户在问答页点赞或点踩后会汇总到这里。点踩条目可以补充期望关键字，直接转成可回归的评测用例。
+              </p>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                <Link href="/admin/eval" className={adminBtn('secondary', 'sm')}>查看评测集 <ArrowRight size={12} /></Link>
+                <Link href="/docs" className={adminBtn('secondary', 'sm')}>去文档站</Link>
               </div>
-              {item.question && (
-                <p className="mt-2 line-clamp-2 text-sm font-medium">Q：{item.question}</p>
-              )}
-              {item.comment && (
-                <p className="mt-1 text-sm text-foreground/60">评语：{item.comment}</p>
-              )}
-              {item.answer && (
-                <>
-                  <button
-                    onClick={() => setExpanded(expanded === item.id ? null : item.id)}
-                    className="mt-1 text-xs text-accent hover:underline"
-                  >
-                    {expanded === item.id ? '收起回答' : '查看回答'}
-                  </button>
-                  {expanded === item.id && (
-                    <p className="mt-1 max-h-48 overflow-y-auto whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-xs leading-relaxed text-foreground/70">
-                      {item.answer}
+            </AdminCard>
+          ) : (
+            <div className="space-y-3">
+              {items.map((item) => (
+                <div key={item.id} className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+                  <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ring-1 ${
+                        item.rating === 'UP'
+                          ? 'bg-emerald-50 text-emerald-600 ring-emerald-100'
+                          : 'bg-red-50 text-red-600 ring-red-100'
+                      }`}
+                    >
+                      {item.rating === 'UP' ? <ThumbsUp size={10} /> : <ThumbsDown size={10} />}
+                      {item.rating === 'UP' ? '点赞' : '点踩'}
+                    </span>
+                    <span className="font-mono text-slate-500">{item.userId}</span>
+                    <span>{new Date(item.createdDate).toLocaleString('zh-CN')}</span>
+                    <span className="ml-auto font-mono text-[10px] text-slate-300">#{item.id}</span>
+                  </div>
+
+                  {item.question && (
+                    <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50/70 px-3.5 py-3">
+                      <div className="text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400">用户问题</div>
+                      <p className="mt-1 line-clamp-2 text-[13px] font-medium leading-5 text-slate-700">{item.question}</p>
+                    </div>
+                  )}
+
+                  {item.comment && (
+                    <p className="mt-2.5 text-[12px] leading-5 text-slate-500">
+                      <span className="mr-1 text-slate-400">评语</span>
+                      {item.comment}
                     </p>
                   )}
-                </>
-              )}
 
-              {/* 点踩回流：转为 Golden Set 评测用例 */}
-              {item.rating === 'DOWN' && (
-                <div className="mt-3 border-t border-border pt-3">
-                  {converted[item.id] ? (
-                    <p className="text-xs text-emerald-600">
-                      已转为评测用例 #{converted[item.id]}，可在检索评测页跑测验证
-                    </p>
-                  ) : convertForm?.id === item.id ? (
-                    <div className="space-y-2">
-                      <div className="flex flex-col gap-2 sm:flex-row">
-                        <input
-                          value={convertForm.keywords}
-                          onChange={(e) => setConvertForm({ ...convertForm, keywords: e.target.value })}
-                          placeholder="期望命中关键字（逗号分隔，必填）"
-                          className="h-8 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
-                        />
-                        <input
-                          value={convertForm.note}
-                          onChange={(e) => setConvertForm({ ...convertForm, note: e.target.value })}
-                          placeholder="备注（缺省记录用户评语）"
-                          className="h-8 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
+                  {item.answer && (
+                    <>
+                      <button
+                        onClick={() => setExpanded(expanded === item.id ? null : item.id)}
+                        className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-accent hover:underline"
+                      >
+                        {expanded === item.id ? '收起回答' : '查看回答'}
+                      </button>
+                      {expanded === item.id && (
+                        <p className="mt-2 max-h-48 overflow-y-auto whitespace-pre-wrap rounded-xl border border-slate-100 bg-slate-50/70 p-3 text-[11px] leading-5 text-slate-600">
+                          {item.answer}
+                        </p>
+                      )}
+                    </>
+                  )}
+
+                  {/* 点踩回流：转为 Golden Set 评测用例 */}
+                  {item.rating === 'DOWN' && (
+                    <div className="mt-3 border-t border-slate-100 pt-3">
+                      {converted[item.id] ? (
+                        <p className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-[11px] text-emerald-600 ring-1 ring-emerald-100">
+                          <ShieldCheck size={12} /> 已转为评测用例 #{converted[item.id]}，可在 RAG 评测页跑测验证
+                        </p>
+                      ) : convertForm?.id === item.id ? (
+                        <div className="space-y-2">
+                          <div className="flex flex-col gap-2 sm:flex-row">
+                            <input
+                              value={convertForm.keywords}
+                              onChange={(e) => setConvertForm({ ...convertForm, keywords: e.target.value })}
+                              placeholder="期望命中关键字（逗号分隔，必填）"
+                              className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none focus:border-accent focus:bg-white"
+                            />
+                            <input
+                              value={convertForm.note}
+                              onChange={(e) => setConvertForm({ ...convertForm, note: e.target.value })}
+                              placeholder="备注（缺省记录用户评语）"
+                              className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none focus:border-accent focus:bg-white"
+                            />
+                          </div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <button
+                              onClick={() => void onConvert()}
+                              disabled={converting}
+                              className={adminBtn('primary', 'sm')}
+                            >
+                              {converting ? <Loader2 size={12} className="animate-spin" /> : <ListPlus size={12} />}
+                              确认转用例
+                            </button>
+                            <button
+                              onClick={() => {
+                                setConvertForm(null);
+                                setConvertError('');
+                              }}
+                              className={adminBtn('secondary', 'sm')}
+                            >
+                              取消
+                            </button>
+                            {convertError && <span className="text-[11px] text-red-500">{convertError}</span>}
+                          </div>
+                        </div>
+                      ) : (
                         <button
-                          onClick={() => void onConvert()}
-                          disabled={converting}
-                          className="flex h-7 items-center gap-1 rounded-md bg-accent px-3 text-xs font-medium text-white disabled:opacity-60"
+                          onClick={() =>
+                            setConvertForm({ id: item.id, keywords: '', note: item.comment ?? '' })
+                          }
+                          className={adminBtn('secondary', 'sm')}
                         >
-                          {converting ? <Loader2 size={12} className="animate-spin" /> : <ListPlus size={12} />}
-                          确认转用例
+                          <ListPlus size={12} /> 转为评测用例
                         </button>
-                        <button
-                          onClick={() => {
-                            setConvertForm(null);
-                            setConvertError('');
-                          }}
-                          className="h-7 rounded-md border border-border px-3 text-xs text-foreground/60 hover:bg-muted"
-                        >
-                          取消
-                        </button>
-                        {convertError && <span className="text-xs text-red-500">{convertError}</span>}
-                      </div>
+                      )}
                     </div>
-                  ) : (
-                    <button
-                      onClick={() =>
-                        setConvertForm({ id: item.id, keywords: '', note: item.comment ?? '' })
-                      }
-                      className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs text-foreground/60 transition-colors hover:border-accent/40 hover:text-accent"
-                    >
-                      <ListPlus size={12} />
-                      转为评测用例
-                    </button>
                   )}
                 </div>
-              )}
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          )}
 
-      {totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-center gap-3 text-sm">
-          <button
-            disabled={page === 0}
-            onClick={() => void load(page - 1, fetchPage)}
-            className="rounded-md border border-border px-3 py-1 disabled:opacity-40"
-          >
-            上一页
-          </button>
-          <span className="text-xs text-foreground/50">
-            第 {page + 1} / {totalPages} 页
-          </span>
-          <button
-            disabled={page >= totalPages - 1}
-            onClick={() => void load(page + 1, fetchPage)}
-            className="rounded-md border border-border px-3 py-1 disabled:opacity-40"
-          >
-            下一页
-          </button>
+          {totalPages > 1 && (
+            <div className="mt-4 flex items-center justify-center gap-3 text-[11px] text-slate-400">
+              <button
+                disabled={page === 0}
+                onClick={() => void load(page - 1, fetchPage)}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] disabled:opacity-40"
+              >
+                上一页
+              </button>
+              <span>第 {page + 1} / {totalPages} 页</span>
+              <button
+                disabled={page >= totalPages - 1}
+                onClick={() => void load(page + 1, fetchPage)}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] disabled:opacity-40"
+              >
+                下一页
+              </button>
+            </div>
+          )}
         </div>
-      )}
 
-      <p className="mt-8 text-center text-xs text-foreground/30">
-        点踩条目可就地转为 Golden Set 用例，在{' '}
-        <Link href="/admin/eval" className="text-accent hover:underline">
-          检索评测页
-        </Link>{' '}
-        跑测回归，驱动检索质量提升
-      </p>
+        <aside className="space-y-4 xl:sticky xl:top-20 xl:self-start">
+          <AdminCard title="反馈如何回流" description="从用户信号到可回归的评测用例" icon={ListPlus} contentClassName="p-4">
+            <ol className="space-y-3">
+              {[
+                ['01', '收集反馈', '点赞 / 点踩与用户评语落到反馈表。'],
+                ['02', '补充期望', '点踩条目填写一到多个期望命中关键字。'],
+                ['03', '进入评测', '转为 Golden Set 用例，在 RAG 评测页回归。'],
+              ].map(([step, title, desc]) => (
+                <li key={step} className="flex gap-2.5">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-slate-100 font-mono text-[10px] text-slate-400">{step}</span>
+                  <div>
+                    <div className="text-[11px] font-medium text-slate-700">{title}</div>
+                    <p className="mt-0.5 text-[10px] leading-4 text-slate-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </AdminCard>
+          <AdminCard title="质量口径" description="反馈页只展示公共空间问答" icon={ShieldCheck} contentClassName="space-y-2 p-4 text-[10px] leading-4 text-slate-400">
+            <p>个人知识库问答不进入公共反馈池，避免跨账号泄露。</p>
+            <p>点踩回流时会复用问题快照，不改写用户原始提问。</p>
+            <Link href="/admin/eval" className="inline-flex items-center gap-1 pt-1 text-[11px] font-medium text-accent hover:underline">
+              查看评测集 <ArrowRight size={12} />
+            </Link>
+          </AdminCard>
+        </aside>
+      </div>
     </div>
   );
 }

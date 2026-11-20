@@ -57,29 +57,29 @@ export function CaseTable({ cases, label }: { cases: EvalCaseResult[]; label?: s
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-background">
-      <div className="border-b border-border px-4 py-2.5 text-[13px] font-medium">
+    <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="border-b border-slate-100 px-5 py-3.5 text-[13px] font-semibold text-slate-800">
         {label ?? "用例明细"}
-        <span className="ml-2 text-xs font-normal text-foreground/40">
+        <span className="ml-2 text-[11px] font-normal text-slate-400">
           {cases.length} 条
         </span>
       </div>
       {cases.length === 0 ? (
-        <div className="px-4 py-8 text-center text-sm text-foreground/40">
+        <div className="px-4 py-10 text-center text-[12px] text-slate-400">
           暂无评测用例（Golden Set）
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full min-w-[760px] text-[12px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="px-4 py-2 font-medium">问题</th>
-                <th className="px-3 py-2 font-medium">期望关键字</th>
-                <th className="px-3 py-2 font-medium">结果</th>
-                <th className="px-3 py-2 font-medium">首命中位</th>
-                <th className="px-3 py-2 font-medium">NDCG</th>
-                <th className="px-3 py-2 font-medium">缺失关键字</th>
-                <th className="px-2 py-2" />
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                <th className="whitespace-nowrap px-4 py-2.5 font-medium">问题</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">期望关键字</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">结果</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">首命中位</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">NDCG</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">缺失关键字</th>
+                <th className="w-12 px-2 py-2.5" />
               </tr>
             </thead>
             <tbody>
@@ -115,7 +115,7 @@ function FragmentRow({
     <>
       <tr
         className={clsx(
-          "border-b border-border/60 transition-colors hover:bg-muted/40",
+          "border-b border-slate-100/80 transition-colors last:border-0 hover:bg-slate-50/60",
           !c.hit && "bg-red-50/40",
         )}
       >
@@ -124,7 +124,7 @@ function FragmentRow({
             {c.question}
           </div>
         </td>
-        <td className="px-3 py-2.5 text-foreground/60">{c.expectedKeywords}</td>
+        <td className="px-3 py-2.5 text-slate-500">{c.expectedKeywords}</td>
         <td className="px-3 py-2.5">
           <span
             className={clsx(
@@ -135,10 +135,10 @@ function FragmentRow({
             {c.hit ? "命中" : "未命中"}
           </span>
         </td>
-        <td className="px-3 py-2.5 font-mono text-foreground/70">
+        <td className="px-3 py-2.5 font-mono text-slate-600">
           {c.firstHitRank > 0 ? `#${c.firstHitRank}` : "-"}
         </td>
-        <td className="px-3 py-2.5 font-mono text-foreground/70">{fmt(c.ndcg)}</td>
+        <td className="px-3 py-2.5 font-mono text-slate-600">{fmt(c.ndcg)}</td>
         <td className="px-3 py-2.5">
           {c.missingKeywords.length > 0 ? (
             <div className="flex flex-wrap gap-1">
@@ -152,7 +152,7 @@ function FragmentRow({
               ))}
             </div>
           ) : (
-            <span className="text-foreground/30">-</span>
+            <span className="text-slate-300">-</span>
           )}
         </td>
         <td className="px-2 py-2.5 text-right">
@@ -165,7 +165,7 @@ function FragmentRow({
         </td>
       </tr>
       {open && (
-        <tr className="border-b border-border/60 bg-muted/30">
+        <tr className="border-b border-slate-100 bg-slate-50/50">
           <td colSpan={7} className="px-4 py-3">
             <div className="text-xs font-medium text-foreground/40">
               返回片段 Top-{c.returnedCount}

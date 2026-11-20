@@ -5,9 +5,10 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  AlertTriangle, ArrowRight, CheckCircle2, Download, Layers, Loader2,
-  MessageCircleQuestion, RefreshCw, Search, Target, X,
+  AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, Download, Layers, Loader2,
+  MessageCircleQuestion, RefreshCw, Search, Sparkles, Target, X,
 } from 'lucide-react';
+import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn } from '@/components/admin/admin-ui';
 import { useAuth } from '@/context/AuthContext';
 import { useHydrated } from '@/lib/use-hydrated';
 import {
@@ -178,131 +179,130 @@ export default function ContentGapsPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <Target size={20} className="text-accent" />
-            <h1 className="text-xl font-semibold tracking-tight">内容缺口</h1>
-            <span className="text-xs text-foreground/40">共 {total} 条</span>
-          </div>
-          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-foreground/50">
-            聚合未答、零引用、点踩、追问四类信号；按归一化问题去重，向量聚类后流转到评测集。
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button onClick={refresh} disabled={loading}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs text-foreground/60 hover:text-foreground disabled:opacity-50">
-            <RefreshCw size={13} className={loading ? 'animate-spin' : ''} /> 刷新
-          </button>
-          <button onClick={onExport} disabled={exporting}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs text-foreground/60 hover:text-foreground disabled:opacity-50">
-            {exporting ? <Loader2 size={13} className="animate-spin" /> : <Download size={13} />} 导出 CSV
-          </button>
-        </div>
-      </div>
+      <AdminPageHeader
+        icon={Target}
+        title="内容缺口"
+        description="聚合未答、零引用、点踩、追问四类信号，按归一化问题去重并聚类，流转为可评测的缺口。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+              共 {total} 条缺口
+            </span>
+            {summary && <span>待处理 {summary.open} 条</span>}
+            {summary && <span>近 7 天新增 {summary.last7Days} 条</span>}
+          </>
+        }
+        actions={
+          <>
+            <button onClick={refresh} disabled={loading} className={adminBtn('secondary')}>
+              <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> 刷新
+            </button>
+            <button onClick={onExport} disabled={exporting} className={adminBtn('secondary')}>
+              {exporting ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+              导出 CSV
+            </button>
+          </>
+        }
+      />
 
       {summary && (
-        <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-5">
-          {[
-            { label: '待处理', value: summary.open, tone: 'text-amber-600' },
-            { label: '已分诊', value: summary.triaged, tone: 'text-sky-600' },
-            { label: '已排期', value: summary.planned, tone: 'text-violet-600' },
-            { label: '已解决', value: summary.resolved, tone: 'text-emerald-600' },
-            { label: '近 7 天新增', value: summary.last7Days, tone: 'text-foreground/70' },
-          ].map((card) => (
-            <div key={card.label} className="rounded-xl border border-border bg-background p-3">
-              <div className="text-[11px] text-foreground/45">{card.label}</div>
-              <div className={`mt-1 font-mono text-xl font-semibold ${card.tone}`}>{card.value}</div>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+          <AdminMetricCard label="待处理" value={String(summary.open)} hint="需要分诊或补文档" icon={AlertTriangle} tone="amber" />
+          <AdminMetricCard label="已分诊" value={String(summary.triaged)} hint="已确认问题归因" icon={Search} tone="blue" />
+          <AdminMetricCard label="已排期" value={String(summary.planned)} hint="已进入内容计划" icon={CalendarClock} tone="violet" />
+          <AdminMetricCard label="已解决" value={String(summary.resolved)} hint="内容或评测已补齐" icon={CheckCircle2} tone="emerald" />
+          <AdminMetricCard label="近 7 天新增" value={String(summary.last7Days)} hint="按最近出现时间统计" icon={Sparkles} tone="slate" />
         </div>
       )}
 
-      {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+      {error && <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_260px]">
-        <div className="min-w-0">
-          <div className="mb-3 flex flex-wrap items-center gap-2">
-            <div className="flex flex-wrap items-center gap-1.5">
+      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+          <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 bg-slate-50/60 px-3 py-3">
+            <div className="flex flex-wrap items-center gap-1">
               {([['全部', ''], ['待处理', 'OPEN'], ['已分诊', 'TRIAGED'], ['已排期', 'PLANNED'], ['已解决', 'RESOLVED'], ['已忽略', 'IGNORED']] as [string, GapStatus | ''][]).map(([label, value]) => (
                 <button key={label} onClick={() => setStatus(value)}
-                  className={`rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
-                    status === value ? 'border-accent bg-accent/10 text-accent' : 'border-border text-foreground/50 hover:text-foreground'
+                  className={`rounded-lg border px-2.5 py-1.5 text-[11px] transition-colors ${
+                    status === value ? 'border-accent/20 bg-white font-medium text-accent shadow-sm' : 'border-transparent text-slate-500 hover:bg-white hover:text-slate-800'
                   }`}>{label}</button>
               ))}
             </div>
             <div className="relative ml-auto w-full sm:w-56">
-              <Search size={13} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-foreground/30" />
+              <Search size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="搜索问题…"
-                className="w-full rounded-lg border border-border bg-background py-1.5 pl-8 pr-3 text-xs outline-none focus:border-accent/50" />
+                className="h-8 w-full rounded-lg border border-slate-200 bg-white pl-8 pr-3 text-[12px] outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/25" />
             </div>
           </div>
 
           {selected.size > 0 && (
-            <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2 text-xs">
-              <span className="text-foreground/60">已选 {selected.size} 条</span>
+            <div className="m-3 flex flex-wrap items-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-[11px]">
+              <span className="font-medium text-accent">已选 {selected.size} 条</span>
               <button disabled={batchBusy} onClick={() => onBatchStatus('TRIAGED')}
-                className="rounded-md border border-border px-2 py-1 hover:text-accent disabled:opacity-50">标记已分诊</button>
+                className="rounded-md border border-slate-200 bg-white px-2 py-1 text-slate-600 hover:text-accent disabled:opacity-50">标记已分诊</button>
               <button disabled={batchBusy} onClick={() => onBatchStatus('IGNORED')}
-                className="rounded-md border border-border px-2 py-1 hover:text-foreground/80 disabled:opacity-50">忽略</button>
+                className="rounded-md border border-slate-200 bg-white px-2 py-1 text-slate-600 hover:text-slate-800 disabled:opacity-50">忽略</button>
               <button disabled={batchBusy} onClick={() => void loadPage(page)}
-                className="ml-auto text-foreground/40 hover:text-foreground">取消选择</button>
+                className="ml-auto text-slate-400 hover:text-slate-700">取消选择</button>
             </div>
           )}
 
           {loading ? (
-            <div className="rounded-xl border border-border py-16 text-center text-sm text-foreground/40">
+            <div className="py-16 text-center text-sm text-slate-400">
               <Loader2 size={18} className="mx-auto mb-2 animate-spin" />加载中…
             </div>
           ) : items.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border px-6 py-16 text-center">
-              <CheckCircle2 size={24} className="mx-auto mb-3 text-emerald-500/70" />
-              <p className="text-sm text-foreground/60">当前筛选下没有内容缺口</p>
-              <p className="mt-1 text-xs text-foreground/40">用户遇到未答/零引用/点踩/追问时会自动汇总到这里</p>
+            <div className="px-6 py-16 text-center">
+              <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-500 ring-1 ring-emerald-100">
+                <CheckCircle2 size={22} />
+              </span>
+              <p className="mt-3 text-[13px] font-medium text-slate-600">当前筛选下没有内容缺口</p>
+              <p className="mt-1 text-[11px] text-slate-400">用户遇到未答、零引用、点踩或追问时会自动汇总到这里</p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-border">
+            <div className="overflow-x-auto">
               <table className="w-full min-w-[680px] text-left text-xs">
-                <thead className="bg-foreground/[0.03] text-foreground/40">
-                  <tr>
-                    <th className="w-10 px-3 py-2"><input type="checkbox" checked={selected.size === items.length && items.length > 0} onChange={toggleAll} aria-label="全选" /></th>
-                    <th className="px-3 py-2 font-normal">问题</th>
-                    <th className="w-16 px-2 py-2 text-right font-normal">频次</th>
-                    <th className="w-28 px-2 py-2 font-normal">信号</th>
-                    <th className="w-24 px-2 py-2 font-normal">状态</th>
-                    <th className="w-24 px-2 py-2 font-normal">最近</th>
+                <thead className="bg-slate-50/80 text-[11px] uppercase tracking-[0.06em] text-slate-400">
+                  <tr className="border-b border-slate-100">
+                    <th className="w-10 px-3 py-2.5"><input type="checkbox" checked={selected.size === items.length && items.length > 0} onChange={toggleAll} aria-label="全选" /></th>
+                    <th className="px-3 py-2.5 font-medium">问题</th>
+                    <th className="w-16 px-2 py-2.5 text-right font-medium">频次</th>
+                    <th className="w-28 px-2 py-2.5 font-medium">信号</th>
+                    <th className="w-24 px-2 py-2.5 font-medium">状态</th>
+                    <th className="w-24 px-2 py-2.5 font-medium">最近</th>
                   </tr>
                 </thead>
                 <tbody>
                   {items.map((item) => {
                     const sm = statusMeta(item.status);
                     return (
-                      <tr key={item.id} className="border-t border-border/70 align-top hover:bg-foreground/[0.02]">
+                      <tr key={item.id} className="border-b border-slate-100/80 align-top last:border-b-0 hover:bg-slate-50/60">
                         <td className="px-3 py-3"><input type="checkbox" checked={selected.has(item.id)} onChange={() => toggleSelect(item.id)} aria-label={`选择 ${item.question}`} /></td>
                         <td className="max-w-[360px] px-3 py-3">
                           <button onClick={() => void openDetail(item.id)}
-                            className="block text-left font-medium leading-snug text-foreground/80 hover:text-accent">{item.question}</button>
-                          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px] text-foreground/40">
-                            {item.clusterLabel && <span className="inline-flex items-center gap-1"><Layers size={11} />{item.clusterLabel.slice(0, 24)}</span>}
+                            className="block text-left text-[13px] font-medium leading-snug text-slate-700 hover:text-accent">{item.question}</button>
+                          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-400">
+                            {item.clusterLabel && <span className="inline-flex items-center gap-1"><Layers size={10} />{item.clusterLabel.slice(0, 24)}</span>}
                             {item.relatedDocIds && <span>文档 {item.relatedDocIds.split(',').length} 篇</span>}
                             {item.evalCaseId && <span className="text-violet-600">评测 #{item.evalCaseId}</span>}
                           </div>
                         </td>
-                        <td className="px-2 py-3 text-right font-mono text-foreground/70">{item.frequency}</td>
+                        <td className="px-2 py-3 text-right font-mono text-[12px] text-slate-500">{item.frequency}</td>
                         <td className="px-2 py-3">
                           <div className="flex flex-wrap gap-1">
                             {signalChips(item.signalSummary).map((s) => (
-                              <span key={s.key} className="rounded bg-foreground/5 px-1.5 py-0.5 text-[10px] text-foreground/50">{s.label}{s.count > 1 ? `×${s.count}` : ''}</span>
+                              <span key={s.key} className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">{s.label}{s.count > 1 ? `×${s.count}` : ''}</span>
                             ))}
                           </div>
                         </td>
-                        <td className="px-2 py-3">
+                        <td className="whitespace-nowrap px-2 py-3">
                           <select value={item.status} disabled={actionBusy} onChange={(e) => void onStatusChange(item.id, e.target.value as GapStatus)}
-                            className={`rounded-md border px-1.5 py-1 text-[11px] outline-none ${sm.tone}`}>
+                            className={`rounded-md border px-1.5 py-1 text-[10px] outline-none ${sm.tone}`}>
                             {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
                           </select>
                         </td>
-                        <td className="px-2 py-3 text-[11px] text-foreground/40">{formatDate(item.lastSeen)}</td>
+                        <td className="whitespace-nowrap px-2 py-3 text-[10px] text-slate-400">{formatDate(item.lastSeen)}</td>
                       </tr>
                     );
                   })}
@@ -312,40 +312,37 @@ export default function ContentGapsPage() {
           )}
 
           {totalPages > 1 && (
-            <div className="mt-3 flex items-center justify-between text-xs text-foreground/40">
+            <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
               <span>第 {page + 1} / {totalPages} 页</span>
-              <div className="flex gap-2">
-                <button disabled={page <= 0 || loading} onClick={() => void loadPage(page - 1)} className="rounded-md border border-border px-2 py-1 disabled:opacity-40">上一页</button>
-                <button disabled={page >= totalPages - 1 || loading} onClick={() => void loadPage(page + 1)} className="rounded-md border border-border px-2 py-1 disabled:opacity-40">下一页</button>
+              <div className="flex gap-1">
+                <button disabled={page <= 0 || loading} onClick={() => void loadPage(page - 1)} className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40">上一页</button>
+                <button disabled={page >= totalPages - 1 || loading} onClick={() => void loadPage(page + 1)} className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40">下一页</button>
               </div>
             </div>
           )}
         </div>
 
-        <aside className="space-y-3">
-          <div className="rounded-xl border border-border p-4">
-            <h2 className="flex items-center gap-1.5 text-sm font-medium"><Layers size={15} className="text-accent" /> 主题聚类</h2>
-            <p className="mt-1 text-[11px] leading-relaxed text-foreground/40">本地 embedding 在线归并；同簇问题共享主题。</p>
-            {clusters.length === 0 ? <p className="mt-4 text-xs text-foreground/40">暂无聚类，先积累一些信号。</p> : (
-              <ul className="mt-3 space-y-2">
+        <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
+          <AdminCard title="主题聚类" description="本地 embedding 在线归并；同簇问题共享主题" icon={Layers} contentClassName="p-4">
+            {clusters.length === 0 ? <p className="text-[11px] text-slate-400">暂无聚类，先积累一些信号。</p> : (
+              <ul className="space-y-2">
                 {clusters.slice(0, 8).map((c) => (
-                  <li key={c.key} className="rounded-lg bg-foreground/[0.03] px-2.5 py-2">
-                    <div className="line-clamp-2 text-[11px] leading-snug text-foreground/65">{c.label || c.key}</div>
-                    <div className="mt-1 text-[10px] text-foreground/35">{c.size} 个问题 · {formatDate(c.lastSeen)}</div>
+                  <li key={c.key} className="rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5">
+                    <div className="line-clamp-2 text-[11px] leading-snug text-slate-600">{c.label || c.key}</div>
+                    <div className="mt-1 text-[10px] text-slate-400">{c.size} 个问题 · {formatDate(c.lastSeen)}</div>
                   </li>
                 ))}
               </ul>
             )}
-          </div>
-          <div className="rounded-xl border border-border p-4">
-            <h2 className="flex items-center gap-1.5 text-sm font-medium"><AlertTriangle size={15} className="text-amber-500" /> 怎么用</h2>
-            <ul className="mt-2 space-y-1.5 text-[11px] leading-relaxed text-foreground/45">
-              <li>· 高频缺口优先补文档，补完后在详情里标记「已解决」。</li>
-              <li>· 可转评测的缺口填写期望关键字，自动进 Golden Set。</li>
-              <li>· 点踩信号与反馈页同源，可交叉查看原对话。</li>
+          </AdminCard>
+          <AdminCard title="处理指引" description="从缺口到评测闭环" icon={AlertTriangle} contentClassName="p-4">
+            <ul className="space-y-2 text-[11px] leading-relaxed text-slate-500">
+              <li className="flex gap-2"><span className="font-mono text-slate-300">01</span>高频缺口优先补文档，补完后在详情里标记「已解决」。</li>
+              <li className="flex gap-2"><span className="font-mono text-slate-300">02</span>可转评测的缺口填写期望关键字，自动进 Golden Set。</li>
+              <li className="flex gap-2"><span className="font-mono text-slate-300">03</span>点踩信号与反馈页同源，可交叉查看原对话。</li>
             </ul>
-            <Link href="/admin/feedback" className="mt-3 inline-flex items-center gap-1 text-[11px] text-accent hover:underline">去看问答反馈 <ArrowRight size={12} /></Link>
-          </div>
+            <Link href="/admin/feedback" className="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-accent hover:underline">去看问答反馈 <ArrowRight size={12} /></Link>
+          </AdminCard>
         </aside>
       </div>
 

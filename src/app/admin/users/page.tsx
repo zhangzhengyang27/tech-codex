@@ -6,6 +6,7 @@ import clsx from "clsx";
 import {
   KeyRound,
   Loader2,
+  RefreshCw,
   Search,
   ShieldAlert,
   ShieldCheck,
@@ -15,6 +16,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
 import { usePagedList } from "@/lib/use-paged-list";
+import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 import {
   listUsers,
   updateUserRole,
@@ -131,116 +133,126 @@ export default function AdminUsersPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
-            <Users size={20} />
-            用户管理
-          </h1>
-          <p className="mt-1 text-[13px] text-foreground/50">
-            角色变更与禁用即时生效（鉴权层按账号现状校验）；引导管理员受保护不可降级/禁用
-          </p>
-        </div>
-        <div className="text-xs text-foreground/40">共 {total} 位用户</div>
-      </div>
-
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <form onSubmit={onSearch} className="flex items-center gap-2">
-          <div className="relative">
-            <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-foreground/40" />
-            <input
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="搜索用户名或昵称"
-              className="h-8 w-56 rounded-md border border-border bg-muted/40 pl-8 pr-3 text-[13px] outline-none focus:border-accent"
-            />
-          </div>
-          <button
-            type="submit"
-            className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/70 hover:bg-muted/60"
-          >
-            搜索
+      <AdminPageHeader
+        icon={Users}
+        title="用户管理"
+        description="管理账号角色、启用状态和密码；角色变更与禁用即时生效，引导管理员受保护不可降级或禁用。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              共 {total} 位用户
+            </span>
+            <span>所有变更写入审计日志</span>
+          </>
+        }
+        actions={
+          <button onClick={() => void load(page, fetchPage)} className={adminBtn("secondary")}>
+            {loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+            刷新
           </button>
-        </form>
-        <button
-          onClick={() => void load(page, fetchPage)}
-          className="flex h-8 items-center gap-1 rounded-md border border-border px-2.5 text-[13px] text-foreground/60 hover:bg-muted/60"
-        >
-          {loading ? <Loader2 size={13} className="animate-spin" /> : null}
-          刷新
-        </button>
-        {msg && <span className="text-[13px] text-emerald-600">{msg}</span>}
-        {error && <span className="text-[13px] text-red-500">{error}</span>}
-      </div>
+        }
+      />
 
-      <div className="overflow-hidden rounded-xl border border-border bg-background">
+      <AdminCard title="账号列表" description="用户名、角色与账号状态" icon={Users} contentClassName="">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
+          <form onSubmit={onSearch} className="flex flex-1 flex-wrap items-center gap-2">
+            <div className="relative w-full max-w-xs flex-1">
+              <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="搜索用户名或昵称"
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
+              />
+            </div>
+            <button type="submit" className={adminBtn("secondary", "sm")}>搜索</button>
+          </form>
+          {msg && <span className="text-[11px] text-emerald-600">{msg}</span>}
+          {error && <span className="text-[11px] text-red-500">{error}</span>}
+          <span className="ml-auto rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">
+            {total} 个账号
+          </span>
+        </div>
+
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full min-w-[680px] text-[13px]">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="px-4 py-2 font-medium">用户名</th>
-                <th className="px-3 py-2 font-medium">昵称</th>
-                <th className="px-3 py-2 font-medium">角色</th>
-                <th className="px-3 py-2 font-medium">状态</th>
-                <th className="px-3 py-2 font-medium">个人空间</th>
-                <th className="px-3 py-2 font-medium">注册时间</th>
-                <th className="px-3 py-2 text-right font-medium">操作</th>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[11px] uppercase tracking-[0.06em] text-slate-400">
+                <th className="whitespace-nowrap px-4 py-2.5 font-medium">用户名</th>
+                <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">昵称</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">角色</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">状态</th>
+                <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">个人空间</th>
+                <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">注册时间</th>
+                <th className="whitespace-nowrap px-3 py-2.5 text-right font-medium">操作</th>
               </tr>
             </thead>
             <tbody>
               {loading && users.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-foreground/40">
-                    <Loader2 size={16} className="animate-spin" /> 加载中…
+                  <td colSpan={7} className="px-4 py-10 text-center text-slate-400">
+                    <Loader2 size={16} className="mx-auto mb-2 animate-spin" /> 加载中…
                   </td>
                 </tr>
               ) : users.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-foreground/40">暂无匹配用户</td>
+                  <td colSpan={7} className="px-4 py-10 text-center">
+                    <Users size={22} className="mx-auto mb-2 text-slate-300" />
+                    <p className="text-[13px] text-slate-500">暂无匹配用户</p>
+                  </td>
                 </tr>
               ) : (
                 users.map((u) => {
                   const self = u.username === user?.username;
                   const busy = busyId === u.id;
                   return (
-                    <tr key={u.id} className="border-b border-border/60 last:border-b-0 hover:bg-muted/30">
-                      <td className="px-4 py-2.5 font-mono">
-                        {u.username}
-                        {self && <span className="ml-1.5 rounded bg-accent/10 px-1.5 py-0.5 text-[11px] text-accent">我</span>}
+                    <tr key={u.id} className="border-b border-slate-100/80 last:border-b-0 hover:bg-slate-50/60">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-100 font-mono text-[10px] font-semibold uppercase text-slate-500">
+                            {u.username.slice(0, 1)}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="truncate font-mono text-[12px] font-medium text-slate-700">{u.username}</div>
+                            {self && <div className="mt-0.5 text-[10px] text-accent">当前账号</div>}
+                          </div>
+                        </div>
                       </td>
-                      <td className="max-w-[140px] truncate px-3 py-2.5 text-foreground/70">{u.nickname || "-"}</td>
-                      <td className="px-3 py-2.5">
+                      <td className="hidden max-w-[140px] truncate px-3 py-3 text-slate-500 xl:table-cell">{u.nickname || "-"}</td>
+                      <td className="whitespace-nowrap px-3 py-3">
                         <span
                           className={clsx(
-                            "rounded-full px-2 py-0.5 text-xs font-medium",
-                            u.role === "ADMIN" ? "bg-purple-100 text-purple-700" : "bg-muted text-foreground/60",
+                            "inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+                            u.role === "ADMIN" ? "bg-violet-50 text-violet-600 ring-violet-100" : "bg-slate-100 text-slate-500 ring-slate-200",
                           )}
                         >
                           {u.role === "ADMIN" ? "管理员" : "用户"}
                         </span>
                       </td>
-                      <td className="px-3 py-2.5">
+                      <td className="whitespace-nowrap px-3 py-3">
                         <span
                           className={clsx(
-                            "rounded-full px-2 py-0.5 text-xs",
-                            u.status === "DISABLED" ? "bg-red-500/10 text-red-500" : "bg-emerald-500/10 text-emerald-600",
+                            "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+                            u.status === "DISABLED" ? "bg-red-50 text-red-600 ring-red-100" : "bg-emerald-50 text-emerald-600 ring-emerald-100",
                           )}
                         >
+                          <span className={clsx("h-1.5 w-1.5 rounded-full", u.status === "DISABLED" ? "bg-red-500" : "bg-emerald-500")} />
                           {u.status === "DISABLED" ? "已禁用" : "正常"}
                         </span>
                       </td>
-                      <td className="px-3 py-2.5 font-mono text-xs text-foreground/50">{u.libraryId || "-"}</td>
-                      <td className="whitespace-nowrap px-3 py-2.5 font-mono text-xs text-foreground/50">
+                      <td className="hidden px-3 py-3 font-mono text-[11px] text-slate-400 xl:table-cell">{u.libraryId || "-"}</td>
+                      <td className="hidden whitespace-nowrap px-3 py-3 font-mono text-[11px] text-slate-400 xl:table-cell">
                         {fmtDate(u.createdDate)}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5 text-right">
+                      <td className="whitespace-nowrap px-3 py-3 text-right">
                         <button
                           onClick={() => onToggleRole(u)}
                           disabled={busy || self}
                           title={self ? "不能变更自己的角色" : "变更角色"}
-                          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-foreground/60 hover:bg-muted hover:text-foreground disabled:opacity-40"
+                          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800 disabled:opacity-40"
                         >
-                          <ShieldCheck size={13} />
+                          <ShieldCheck size={12} />
                           {u.role === "ADMIN" ? "降为用户" : "升为管理员"}
                         </button>
                         <button
@@ -248,11 +260,11 @@ export default function AdminUsersPage() {
                           disabled={busy || self}
                           title={self ? "不能禁用自己的账号" : u.status === "DISABLED" ? "启用账号" : "禁用账号"}
                           className={clsx(
-                            "ml-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs disabled:opacity-40",
+                            "ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] disabled:opacity-40",
                             u.status === "DISABLED" ? "text-emerald-600 hover:bg-emerald-50" : "text-red-500/80 hover:bg-red-50",
                           )}
                         >
-                          {busy ? <Loader2 size={13} className="animate-spin" /> : <UserCog size={13} />}
+                          {busy ? <Loader2 size={12} className="animate-spin" /> : <UserCog size={12} />}
                           {u.status === "DISABLED" ? "启用" : "禁用"}
                         </button>
                         <button
@@ -261,9 +273,9 @@ export default function AdminUsersPage() {
                             setNewPwd("");
                             setError("");
                           }}
-                          className="ml-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-foreground/60 hover:bg-muted hover:text-foreground"
+                          className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                         >
-                          <KeyRound size={13} />
+                          <KeyRound size={12} />
                           重置密码
                         </button>
                       </td>
@@ -276,27 +288,27 @@ export default function AdminUsersPage() {
         </div>
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-[13px] text-foreground/50">
+          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
             <span>第 {page + 1} / {totalPages} 页</span>
             <div className="flex gap-1">
               <button
                 onClick={() => void load(Math.max(0, page - 1), fetchPage)}
                 disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
               >
                 上一页
               </button>
               <button
                 onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
                 disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
               >
                 下一页
               </button>
             </div>
           </div>
         )}
-      </div>
+      </AdminCard>
 
       {/* 重置密码弹窗 */}
       {pwdTarget && (
@@ -308,11 +320,13 @@ export default function AdminUsersPage() {
           aria-label="重置密码"
         >
           <div
-            className="w-full max-w-sm rounded-xl border border-border bg-background p-5 shadow-2xl"
+            className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="text-sm font-semibold">重置密码 · {pwdTarget.username}</div>
-            <p className="mt-1 text-xs text-foreground/50">为新密码直接生效，无需旧密码；请通过其他渠道告知该用户。</p>
+            <div className="flex items-center gap-2 text-[14px] font-semibold text-slate-800">
+              <KeyRound size={15} className="text-accent" /> 重置密码 · {pwdTarget.username}
+            </div>
+            <p className="mt-1.5 text-[11px] leading-5 text-slate-400">新密码直接生效，无需旧密码；请通过其他渠道告知该用户。</p>
             <input
               type="password"
               value={newPwd}
@@ -321,19 +335,19 @@ export default function AdminUsersPage() {
               placeholder="新密码（至少 8 位）"
               autoComplete="new-password"
               autoFocus
-              className="mt-3 h-9 w-full rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
+              className="mt-4 h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] outline-none focus:border-accent focus:bg-white"
             />
             <div className="mt-4 flex justify-end gap-2">
               <button
                 onClick={() => setPwdTarget(null)}
-                className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/60 hover:bg-muted"
+                className={adminBtn("secondary", "sm")}
               >
                 取消
               </button>
               <button
                 onClick={onResetPwd}
                 disabled={newPwd.length < 8 || busyId === pwdTarget.id}
-                className="h-8 rounded-md bg-accent px-4 text-[13px] font-medium text-white hover:bg-accent/90 disabled:opacity-60"
+                className={adminBtn("primary", "sm")}
               >
                 确认重置
               </button>

@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import { Loader2, RotateCcw, Save, Settings, ShieldAlert } from "lucide-react";
+import { Loader2, RotateCcw, Save, Settings, ShieldAlert, SlidersHorizontal } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
 import { listConfig, updateConfig, type ConfigItem } from "@/lib/config";
+import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 
 const errText = (e: unknown): string => (e instanceof Error ? e.message : "保存失败");
 
@@ -117,118 +118,128 @@ export default function AdminConfigPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
-            <Settings size={20} />
-            系统配置
-          </h1>
-          <p className="mt-1 text-[13px] text-foreground/50">
-            检索参数 / 个人库配额 / 内容安全在线调整，保存后即时生效、无需重启；未自定义的项跟随部署默认值
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          {msg && <span className="max-w-md truncate text-xs text-emerald-600" title={msg}>{msg}</span>}
-          {error && <span className="max-w-md truncate text-xs text-red-500" title={error}>{error}</span>}
+      <AdminPageHeader
+        icon={Settings}
+        title="系统配置"
+        description="在线调整检索参数、个人库配额与内容安全策略；保存后即时生效，无需重启服务。"
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              {items.length} 个配置项
+            </span>
+            <span>{items.filter((it) => it.overridden).length} 项自定义覆盖</span>
+            {dirtyKeys.length > 0 && <span className="text-amber-600">{dirtyKeys.length} 项待保存</span>}
+            {msg && <span className="text-emerald-600">{msg}</span>}
+            {error && <span className="text-red-500">{error}</span>}
+          </>
+        }
+        actions={
           <button
             onClick={() => void onSave()}
             disabled={saving || loading || dirtyKeys.length === 0}
-            className="flex h-9 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
+            className={adminBtn("primary")}
           >
             {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-            保存{dirtyKeys.length > 0 ? `（${dirtyKeys.length} 项修改）` : ""}
+            保存{dirtyKeys.length > 0 ? `（${dirtyKeys.length} 项）` : ""}
           </button>
-        </div>
+        }
+      />
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+        <AdminMetricCard label="配置项" value={String(items.length)} hint="按部署默认值生效" icon={Settings} tone="blue" />
+        <AdminMetricCard label="已自定义" value={String(items.filter((it) => it.overridden).length)} hint="覆盖部署默认值" icon={SlidersHorizontal} tone="violet" />
+        <AdminMetricCard label="待保存" value={String(dirtyKeys.length)} hint={dirtyKeys.length > 0 ? "保存后立即生效" : "当前没有未保存修改"} icon={Save} tone={dirtyKeys.length > 0 ? "amber" : "emerald"} />
       </div>
 
       {loading && items.length === 0 && (
-        <div className="flex items-center justify-center gap-2 py-20 text-sm text-foreground/40">
-          <Loader2 size={16} className="animate-spin" /> 加载中…
+        <div className="mt-5 flex items-center justify-center gap-2 rounded-2xl border border-slate-200/80 bg-white py-20 text-sm text-slate-400">
+          <Loader2 size={16} className="animate-spin" /> 加载配置…
         </div>
       )}
 
-      <div className="space-y-5">
+      <div className="mt-5 grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
         {categories.map(({ category, items: group }) => (
-          <div key={category} className="overflow-hidden rounded-xl border border-border bg-background">
-            <div className="border-b border-border bg-muted/40 px-4 py-2.5 text-[13px] font-medium">
-              {category}
-              <span className="ml-2 text-xs font-normal text-foreground/40">{group.length} 项</span>
-            </div>
-            <div className="divide-y divide-border/60">
-              {group.map((it) => {
-                const draft = drafts[it.key];
-                const effective = draft
-                  ? draft.restoreDefault
-                    ? it.defaultValue
-                    : draft.value
-                  : it.value;
-                const changed = !!draft && (draft.restoreDefault ? effective !== it.value : draft.value !== it.value);
-                return (
-                  <div key={it.key} className="flex flex-col gap-2 px-4 py-3.5 sm:flex-row sm:items-start">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground/70">
-                          {it.key}
-                        </code>
-                        {it.overridden && <span className="rounded bg-accent/10 px-1.5 py-0.5 text-[10px] text-accent">已自定义</span>}
-                        {changed && <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] text-amber-600">待保存</span>}
-                      </div>
-                      <p className="mt-1 text-xs text-foreground/50">{it.description}</p>
-                      {!it.overridden && (
-                        <p className="mt-0.5 font-mono text-[11px] text-foreground/30">默认：{it.defaultValue || "（空）"}</p>
-                      )}
+          <AdminCard
+            key={category}
+            title={category}
+            description={`${group.length} 个配置项 · 未修改项跟随部署默认值`}
+            icon={Settings}
+            contentClassName="divide-y divide-slate-100"
+          >
+            {group.map((it) => {
+              const draft = drafts[it.key];
+              const effective = draft
+                ? draft.restoreDefault
+                  ? it.defaultValue
+                  : draft.value
+                : it.value;
+              const changed = !!draft && (draft.restoreDefault ? effective !== it.value : draft.value !== it.value);
+              return (
+                <div key={it.key} className="grid gap-3 px-4 py-3.5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <code className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-600">
+                        {it.key}
+                      </code>
+                      {it.overridden && <span className="rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-600 ring-1 ring-blue-100">已自定义</span>}
+                      {changed && <span className="rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-600 ring-1 ring-amber-100">待保存</span>}
                     </div>
-                    <div className="flex items-center gap-2">
-                      {it.type === "BOOL" ? (
-                        <div className="flex h-8 overflow-hidden rounded-md border border-border">
-                          {[
-                            { v: "true", label: "开" },
-                            { v: "false", label: "关" },
-                          ].map((o) => (
-                            <button
-                              key={o.v}
-                              onClick={() => setDraft(it.key, o.v)}
-                              className={clsx(
-                                "px-3 text-[12px] transition-colors",
-                                effective === o.v ? "bg-accent text-white" : "bg-background text-foreground/50 hover:bg-muted",
-                              )}
-                            >
-                              {o.label}
-                            </button>
-                          ))}
-                        </div>
-                      ) : it.type === "TEXT" ? (
-                        <textarea
-                          value={effective}
-                          onChange={(e) => setDraft(it.key, e.target.value)}
-                          rows={2}
-                          className="w-72 resize-y rounded-md border border-border bg-muted/40 px-2 py-1.5 font-mono text-xs outline-none focus:border-accent"
-                        />
-                      ) : (
-                        <input
-                          type="number"
-                          step={it.type === "DOUBLE" ? "0.01" : "1"}
-                          value={effective}
-                          onChange={(e) => setDraft(it.key, e.target.value)}
-                          className="h-8 w-28 rounded-md border border-border bg-muted/40 px-2 font-mono text-[13px] outline-none focus:border-accent"
-                        />
-                      )}
-                      {it.overridden && (
-                        <button
-                          onClick={() => restoreDefault(it.key)}
-                          title="清除自定义覆盖，恢复跟随部署默认值"
-                          className="flex h-8 items-center gap-1 rounded-md border border-border px-2 text-xs text-foreground/50 hover:bg-muted hover:text-foreground"
-                        >
-                          <RotateCcw size={12} />
-                          恢复默认
-                        </button>
-                      )}
-                    </div>
+                    <p className="mt-1.5 text-[11px] leading-4 text-slate-500">{it.description}</p>
+                    {!it.overridden && (
+                      <p className="mt-1 font-mono text-[10px] text-slate-400">默认：{it.defaultValue || "（空）"}</p>
+                    )}
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {it.type === "BOOL" ? (
+                      <div className="flex h-8 overflow-hidden rounded-lg border border-slate-200 bg-white">
+                        {[
+                          { v: "true", label: "开" },
+                          { v: "false", label: "关" },
+                        ].map((o) => (
+                          <button
+                            key={o.v}
+                            onClick={() => setDraft(it.key, o.v)}
+                            className={clsx(
+                              "px-3.5 text-[12px] transition-colors",
+                              effective === o.v ? "bg-accent text-white" : "text-slate-500 hover:bg-slate-50",
+                            )}
+                          >
+                            {o.label}
+                          </button>
+                        ))}
+                      </div>
+                    ) : it.type === "TEXT" ? (
+                      <textarea
+                        value={effective}
+                        onChange={(e) => setDraft(it.key, e.target.value)}
+                        rows={2}
+                        className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 py-1.5 font-mono text-[11px] outline-none focus:border-accent focus:bg-white sm:w-80"
+                      />
+                    ) : (
+                      <input
+                        type="number"
+                        step={it.type === "DOUBLE" ? "0.01" : "1"}
+                        value={effective}
+                        onChange={(e) => setDraft(it.key, e.target.value)}
+                        className="h-8 w-28 rounded-lg border border-slate-200 bg-slate-50/70 px-2 font-mono text-[12px] outline-none focus:border-accent focus:bg-white"
+                      />
+                    )}
+                    {it.overridden && (
+                      <button
+                        onClick={() => restoreDefault(it.key)}
+                        title="清除自定义覆盖，恢复跟随部署默认值"
+                        className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 text-[11px] text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                      >
+                        <RotateCcw size={12} />
+                        恢复默认
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </AdminCard>
         ))}
       </div>
     </div>

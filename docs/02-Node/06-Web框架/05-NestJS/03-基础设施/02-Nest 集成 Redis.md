@@ -9,7 +9,7 @@ tags: [Node.js, NestJS, Redis]
 # Nest 集成 Redis
 
 ::: tip 分工声明：Redis 专题
-本篇聚焦 Nest 集成（连接、缓存、发布订阅）；Redis 基础与进阶（数据类型、命令、持久化、最佳实践）见 [07-数据库/05-Redis-1-基础入门](../../07-数据库/05-Redis-1-基础入门.md) 系列，不在本篇重复。
+本篇聚焦 Nest 集成（连接、缓存、发布订阅）；Redis 基础与进阶（数据类型、命令、持久化、最佳实践）见 [07-数据库/05-Redis-1-基础入门](../../../07-数据库/05-Redis-1-基础入门.md) 系列，不在本篇重复。
 :::
 
 通过 redis-cli 命令行和 RedisInsight 的 GUI 工具入门了 redis，那在 Node 里怎么操作 redis 呢？这就需要用 redis 的 node 的客户端了。

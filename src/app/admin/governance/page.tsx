@@ -6,6 +6,7 @@ import { AlertTriangle, CheckCircle2, Copy, Database, FileWarning, Link2, Loader
 import { useAuth } from "@/context/AuthContext";
 import { timeoutOr } from "@/lib/fetch-helpers";
 import {
+  assignGovernanceOwners,
   governanceIssues,
   governanceSummary,
   updateGovernance,
@@ -54,6 +55,7 @@ export default function AdminGovernancePage() {
   const [syncResult, setSyncResult] = useState<GitSyncResult | null>(null);
   const [syncTask, setSyncTask] = useState<ImportTask | null>(null);
   const [syncLoading, setSyncLoading] = useState(false);
+  const [assigning, setAssigning] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setHydrated(true), 0);
@@ -84,6 +86,20 @@ export default function AdminGovernancePage() {
     const t = setTimeout(() => void load(), 0);
     return () => clearTimeout(t);
   }, [load, hydrated, isAdmin]);
+
+  const assignOwners = async () => {
+    setAssigning(true);
+    setError("");
+    try {
+      const result = await assignGovernanceOwners();
+      await load();
+      window.alert(`已分派 ${result.assigned} 篇到团队队列；保留人工责任人 ${result.kept} 篇。`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "责任人分派失败");
+    } finally {
+      setAssigning(false);
+    }
+  };
 
   const runLint = async () => {
     setLintLoading(true);
@@ -158,7 +174,10 @@ export default function AdminGovernancePage() {
         title="知识治理中心"
         description="重复 / 过期 / 责任人 / 空分块体检；治理结果进入周报，不再靠人工抽查。"
         meta={<><span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-blue-500" />公共库 default</span><span>过期口径 180 天</span></>}
-        actions={<button onClick={() => void load()} disabled={loading} className={adminBtn("secondary")}>{loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}重新扫描</button>}
+        actions={<>
+          <button onClick={() => void assignOwners()} disabled={assigning} className={adminBtn("secondary")}>{assigning ? <Loader2 size={14} className="animate-spin" /> : <UserX size={14} />}按目录分派责任人</button>
+          <button onClick={() => void load()} disabled={loading} className={adminBtn("secondary")}>{loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}重新扫描</button>
+        </>}
       />
       {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
       {summary && (
@@ -222,18 +241,29 @@ export default function AdminGovernancePage() {
                   </div>
                 ))}
               </div>
+              {Object.keys(lint.brokenByOwner ?? {}).length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
+                  <span className="text-[10px] text-slate-400">断链责任人</span>
+                  {Object.entries(lint.brokenByOwner).map(([owner, count]) => (
+                    <span key={owner} className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] ${owner === "UNASSIGNED" ? "border-amber-200 bg-amber-50 text-amber-600" : "border-slate-200 bg-slate-50 text-slate-600"}`}>
+                      <span className="font-mono">{owner}</span><span className="font-semibold">{count}</span>
+                    </span>
+                  ))}
+                </div>
+              )}
               {lint.issues.length === 0 ? (
                 <AdminEmptyState icon={CheckCircle2} title="没有发现断链或同名标题" description="当前公共库内容 Lint 全部通过。" compact />
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[860px] text-[12px]">
                     <thead><tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
-                      <th className="px-4 py-2.5 font-medium">文档</th><th className="px-3 py-2.5 font-medium">问题</th><th className="px-3 py-2.5 font-medium">修复建议</th>
+                      <th className="px-4 py-2.5 font-medium">文档</th><th className="px-3 py-2.5 font-medium">问题</th><th className="px-3 py-2.5 font-medium">责任人</th><th className="px-3 py-2.5 font-medium">修复建议</th>
                     </tr></thead>
                     <tbody>{lint.issues.slice(0, 20).map((issue) => (
                       <tr key={`${issue.docId}-${issue.type}-${issue.detail}`} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
                         <td className="max-w-[300px] px-4 py-2.5"><div className="truncate font-medium text-slate-700" title={issue.title}>{issue.title}</div><div className="truncate text-[10px] text-slate-400" title={issue.filePath}>{issue.filePath}</div></td>
                         <td className="px-3 py-2.5"><span className={`inline-flex rounded-full border px-1.5 py-0.5 text-[10px] ${issue.type === "BROKEN_LINK" ? "border-red-200 bg-red-50 text-red-600" : "border-amber-200 bg-amber-50 text-amber-600"}`}>{issue.type === "BROKEN_LINK" ? "断链" : "同名标题"}</span><div className="mt-1 max-w-[260px] text-[10px] text-slate-400">{issue.detail}</div></td>
+                        <td className="whitespace-nowrap px-3 py-2.5 font-mono text-[11px] text-slate-500">{issue.owner || <span className="text-amber-600">未分派</span>}</td>
                         <td className="max-w-[300px] px-3 py-2.5 text-[11px] text-slate-500">{issue.suggestion}</td>
                       </tr>
                     ))}</tbody>

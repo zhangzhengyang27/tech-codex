@@ -65,6 +65,12 @@ export async function governanceIssues(type?: GovernanceIssueType, staleDays = 1
   return (await res.json()) as GovernanceIssue[];
 }
 
+/** 按一级目录把空责任人分派到团队队列；已有人工 owner 不覆盖。 */
+export async function assignGovernanceOwners(): Promise<{ assigned: number; kept: number }> {
+  const res = await govFetch(`/governance/assign-owners`, { method: "POST" });
+  return (await res.json()) as { assigned: number; kept: number };
+}
+
 /** 更新责任人与复核日期；owner 传空字符串表示清空。 */
 export async function updateGovernance(docId: number, owner: string, reviewDueDate: string): Promise<void> {
   const body = new URLSearchParams({ owner });

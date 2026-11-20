@@ -28,7 +28,9 @@ export function SourceList({
           const meta = section
             ? s.chunkType === 'code'
               ? `代码 · ${s.codeLang || 'code'} · ${section}`
-              : section
+              : s.chunkType === 'table'
+                ? `表格${s.tableHeader ? ` · ${s.tableHeader}` : ''} · ${section}`
+                : section
             : null;
           return (
             <li key={idx} className="flex items-start gap-2">

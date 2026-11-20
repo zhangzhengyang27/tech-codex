@@ -12,6 +12,7 @@ export interface LintIssue {
   filePath: string;
   detail: string;
   suggestion: string;
+  owner: string | null;
 }
 
 export interface LintReport {
@@ -20,6 +21,8 @@ export interface LintReport {
   linkCount: number;
   brokenLinkCount: number;
   duplicateTitleCount: number;
+  /** 断链按团队队列聚合，如 { "frontend-team": 12, "UNASSIGNED": 3 } */
+  brokenByOwner: Record<string, number>;
   issues: LintIssue[];
   prSummary: string;
   scannedAt: string;

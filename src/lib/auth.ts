@@ -63,10 +63,12 @@ export interface KbChunkHit {
   anchor?: string;
   /** 标题序号（0=首个标题前） */
   headingOrdinal?: number;
-  /** 分块类型：text=正文，code=代码块 */
+  /** 分块类型：text=正文，code=代码块，table=表格 */
   chunkType?: string;
   /** 代码语言（chunkType=code 时如 java/bash） */
   codeLang?: string;
+  /** 表格首行表头（chunkType=table 时） */
+  tableHeader?: string;
   /** 引用编号（问答 sources 事件返回，如 "1"） */
   citationId?: string;
 }

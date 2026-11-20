@@ -2,8 +2,8 @@
 
 /** 单条会话消息气泡：用户消息 / AI 消息（含 Markdown 渲染与溯源来源）。 */
 import { useState } from 'react';
-import Link from 'next/link';
-import { Bot, User, FileText, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Bot, User, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { SourceList } from '@/components/ai/source-list';
 import { ChatMarkdown } from '@/components/ai/chat-markdown';
 import type { KbChunkHit } from '@/lib/auth';
 
@@ -45,7 +45,11 @@ export function ChatMessage({ message, streaming, urlMap = {}, onFeedback }: Cha
         {message.role === 'ai' ? (
           message.content ? (
             <>
-              <ChatMarkdown content={message.content} />
+              <ChatMarkdown
+                content={message.content}
+                sources={message.sources}
+                urlMap={urlMap}
+              />
               {streaming && (
                 <span className="mt-1 inline-block h-4 w-[2px] animate-pulse rounded bg-accent align-middle" />
               )}
@@ -57,49 +61,8 @@ export function ChatMessage({ message, streaming, urlMap = {}, onFeedback }: Cha
           <div className="whitespace-pre-wrap text-left">{message.content}</div>
         )}
 
-        {message.role === 'ai' && message.sources && message.sources.length > 0 && (
-          <div className="mt-3 border-t border-border pt-2">
-            <p className="mb-1.5 flex items-center gap-1 text-xs font-medium text-foreground/50">
-              <FileText size={12} />
-              引用来源
-            </p>
-            <ul className="space-y-1">
-              {message.sources.map((s, idx) => {
-                const href = urlMap[s.filePath] ?? null;
-                const label = s.title || s.filePath;
-                const section = s.headingPath?.trim();
-                const meta = section
-                  ? (s.chunkType === 'code' ? `代码 · ${s.codeLang || 'code'} · ${section}` : section)
-                  : null;
-                return (
-                  <li key={idx}>
-                    {href ? (
-                      <Link
-                        href={href}
-                        className="block text-xs text-accent hover:underline"
-                      >
-                        <span className="line-clamp-1">{label}</span>
-                        {meta && (
-                          <span className="mt-0.5 block line-clamp-1 text-[10px] font-normal text-foreground/45">
-                            {meta}
-                          </span>
-                        )}
-                      </Link>
-                    ) : (
-                      <span className="block text-xs text-foreground/50">
-                        <span className="line-clamp-1">{label}</span>
-                        {meta && (
-                          <span className="mt-0.5 block line-clamp-1 text-[10px] text-foreground/45">
-                            {meta}
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+        {message.role === 'ai' && message.sources && (
+          <SourceList sources={message.sources} urlMap={urlMap} />
         )}
 
         {message.role === 'ai' && !streaming && onFeedback && message.content && (

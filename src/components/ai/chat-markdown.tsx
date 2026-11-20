@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { LazyCodeBlock } from '@/components/ui/lazy-code-block';
+import { linkifyCitations } from '@/lib/citation';
+import type { KbChunkHit } from '@/lib/auth';
 
 /** 类名是否带语言标识（language-xxx / lang-xxx） */
 function resolveLang(className?: string): string | undefined {
@@ -33,7 +35,17 @@ export function normalizeAtxHeadings(md: string): string {
 const THROTTLE_MS = 120;
 const THROTTLE_MIN_DELTA = 80;
 
-export function ChatMarkdown({ content }: { content: string }) {
+export function ChatMarkdown({
+  content,
+  sources,
+  urlMap,
+}: {
+  content: string;
+  /** 本轮引用来源；传入后把正文 [n] 渲染为可点击角标 */
+  sources?: KbChunkHit[];
+  /** 来源 filePath → 文档 URL（由父组件批量反查） */
+  urlMap?: Record<string, string | null>;
+}) {
   // 流式回答约每 33ms 追加一个 token，逐帧全量 reparse markdown 开销大：
   // 对传给 react-markdown 的文本做节流（时间或增量达标才更新），流结束后由尾帧
   // 定时器强制渲染最终值，最终渲染结果不变。
@@ -64,6 +76,17 @@ export function ChatMarkdown({ content }: { content: string }) {
       <Markdown
         remarkPlugins={[remarkGfm]}
         components={{
+          // 引用角标/普通 Markdown 链接：统一 accent 色，点击由浏览器跳转
+          a({ href, children }) {
+            return (
+              <a
+                href={href}
+                className="mx-0.5 text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+              >
+                {children}
+              </a>
+            );
+          },
           // 代码块：用深色容器包裹，交给 LazyCodeBlock 懒高亮。
           // 高亮主题是 github-dark（浅色 token），必须配深色底否则文字压白底看不清，
           // 与文档站 CodeCard 的深色卡片一致。
@@ -83,7 +106,7 @@ export function ChatMarkdown({ content }: { content: string }) {
           },
         }}
       >
-        {normalizeAtxHeadings(renderText)}
+        {linkifyCitations(normalizeAtxHeadings(renderText), sources, urlMap)}
       </Markdown>
     </div>
   );

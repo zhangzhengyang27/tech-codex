@@ -39,6 +39,14 @@ body {
 .prose-doc h2 { font-size: 1.4rem; font-weight: 600; margin: 1.8rem 0 0.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
 .prose-doc h3 { font-size: 1.15rem; font-weight: 600; margin: 1.4rem 0 0.6rem; }
 .prose-doc h4 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.5rem; }
+/* 从 AI 引用 [n] 跳到标题时留出顶部导航空间，并短暂高亮目标标题 */
+.prose-doc h1, .prose-doc h2, .prose-doc h3, .prose-doc h4 { scroll-margin-top: 5rem; }
+.prose-doc h1:target, .prose-doc h2:target, .prose-doc h3:target, .prose-doc h4:target {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
+  transition: background 0.25s ease;
+}
 .prose-doc p { margin: 0.75rem 0; }
 .prose-doc ul, .prose-doc ol { margin: 0.75rem 0; padding-left: 1.5rem; }
 .prose-doc ul { list-style: disc; }

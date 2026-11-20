@@ -67,6 +67,8 @@ export interface KbChunkHit {
   chunkType?: string;
   /** 代码语言（chunkType=code 时如 java/bash） */
   codeLang?: string;
+  /** 引用编号（问答 sources 事件返回，如 "1"） */
+  citationId?: string;
 }
 
 /** SSE 流式事件类型 */

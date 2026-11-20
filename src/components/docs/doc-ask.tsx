@@ -8,13 +8,15 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Sparkles, X, Send } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { streamChat, type ChatStreamEvent } from '@/lib/auth';
+import { streamChat, type ChatStreamEvent, type KbChunkHit } from '@/lib/auth';
 import { ChatMarkdown } from '@/components/ai/chat-markdown';
+import { SourceList } from '@/components/ai/source-list';
 import { TypewriterPump } from '@/components/ai/typewriter';
 
 interface AskMessage {
   role: 'user' | 'ai';
   content: string;
+  sources?: KbChunkHit[];
 }
 
 export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: string }) {
@@ -91,6 +93,20 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
             cidRef.current = ev.data;
           } else if (ev.type === 'token') {
             pump.push(ev.data);
+          } else if (ev.type === 'sources') {
+            try {
+              const parsed = JSON.parse(ev.data) as KbChunkHit[];
+              if (Array.isArray(parsed)) {
+                setMessages((prev) => {
+                  const next = [...prev];
+                  const last = next[next.length - 1];
+                  if (last?.role === 'ai') last.sources = parsed;
+                  return next;
+                });
+              }
+            } catch {
+              /* 忽略解析失败 */
+            }
           } else if (ev.type === 'error') {
             setError(ev.data);
           }
@@ -192,7 +208,10 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
                         >
                           {m.role === 'ai' ? (
                             content ? (
-                              <ChatMarkdown content={content} />
+                              <>
+                                <ChatMarkdown content={content} sources={m.sources} />
+                                {m.sources && <SourceList sources={m.sources} />}
+                              </>
                             ) : (
                               <span className="inline-block h-4 w-8 animate-pulse rounded bg-foreground/15 align-middle" />
                             )

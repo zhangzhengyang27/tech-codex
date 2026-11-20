@@ -391,16 +391,16 @@ export default function AdminDocumentsPage() {
         {error && <div className="px-4 py-3 text-[13px] text-red-500">{error}</div>}
 
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full min-w-[1040px] text-[13px]">
             <thead>
               <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
-                <th className="px-4 py-2 font-medium">标题</th>
-                <th className="px-3 py-2 font-medium">来源</th>
-                <th className="px-3 py-2 font-medium">大小</th>
-                <th className="px-3 py-2 font-medium">分块</th>
-                <th className="px-3 py-2 font-medium">状态</th>
-                <th className="px-3 py-2 font-medium">导入时间</th>
-                <th className="px-3 py-2 text-right font-medium">操作</th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium">标题</th>
+                <th className="whitespace-nowrap px-3 py-2 font-medium">来源</th>
+                <th className="whitespace-nowrap px-3 py-2 font-medium">大小</th>
+                <th className="whitespace-nowrap px-3 py-2 font-medium">分块</th>
+                <th className="whitespace-nowrap px-3 py-2 font-medium">状态</th>
+                <th className="whitespace-nowrap px-3 py-2 font-medium">导入时间</th>
+                <th className="whitespace-nowrap px-3 py-2 text-right font-medium">操作</th>
               </tr>
             </thead>
             <tbody>
@@ -419,10 +419,10 @@ export default function AdminDocumentsPage() {
                   </td>
                   <td className="px-3 py-2.5 text-foreground/50">{fmtSize(d.fileSize)}</td>
                   <td className="px-3 py-2.5 text-foreground/50">{d.chunkCount ?? "-"}</td>
-                  <td className="px-3 py-2.5">
+                  <td className="whitespace-nowrap px-3 py-2.5">
                     <span
                       className={clsx(
-                        "rounded-full px-2 py-0.5 text-xs",
+                        "whitespace-nowrap rounded-full px-2 py-0.5 text-xs",
                         d.status === "INDEXED" && "bg-emerald-500/10 text-emerald-600",
                         d.status === "PENDING" && "bg-amber-500/10 text-amber-600",
                         d.status === "FAILED" && "bg-red-500/10 text-red-500",

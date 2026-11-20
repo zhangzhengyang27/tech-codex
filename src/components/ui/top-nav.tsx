@@ -432,15 +432,17 @@ export function TopNav() {
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="lg:hidden ml-auto p-2 rounded-md bg-muted border border-border text-foreground/60"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="切换菜单"
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
+          {/* Mobile menu button：管理区已有自己的移动端导航条，避免同屏出现两个汉堡菜单 */}
+          {!isAdminAreaActive && (
+            <button
+              className="lg:hidden ml-auto p-2 rounded-md bg-muted border border-border text-foreground/60"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="切换菜单"
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          )}
         </div>
       </header>
       {mobileOpen && (

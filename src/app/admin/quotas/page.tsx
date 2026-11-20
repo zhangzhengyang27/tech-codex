@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
 import { listQuotas, updateUserLimits, type UserQuotaRow } from "@/lib/users";
 import { usePagedList } from "@/lib/use-paged-list";
-import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
+import { AdminCard, AdminPageHeader, AdminPagination, adminBtn } from "@/components/admin/admin-ui";
 
 const PAGE_SIZE = 20;
 
@@ -25,20 +25,20 @@ function UsageBar({ used, limit, custom }: { used: number; limit: number; custom
   const unlimited = limit <= 0;
   const pct = unlimited ? 0 : Math.min(100, Math.round((used / limit) * 100));
   return (
-    <div className="min-w-[150px]">
+    <div className="min-w-[128px]">
       <div className="flex items-baseline gap-1.5 font-mono text-xs">
-        <span className={clsx(!unlimited && pct >= 100 ? "text-red-500 font-semibold" : "text-foreground/70")}>
+        <span className={clsx(!unlimited && pct >= 100 ? "text-red-500 font-semibold" : "text-slate-700")}>
           {used}
         </span>
-        <span className="text-foreground/30">/</span>
-        <span className="text-foreground/50">{unlimited ? "不限" : limit}</span>
-        {custom && <span className="rounded bg-accent/10 px-1 py-px text-[10px] text-accent">自定义</span>}
+        <span className="text-slate-300">/</span>
+        <span className="text-slate-500">{unlimited ? "不限" : limit}</span>
+        {custom && <span className="rounded bg-blue-50 px-1 py-px text-[9px] font-medium text-accent ring-1 ring-blue-100">自定义</span>}
       </div>
-      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-border">
+      <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
         <div
           className={clsx(
             "h-full rounded-full",
-            unlimited ? "bg-accent/40" : pct >= 100 ? "bg-red-500" : pct >= 80 ? "bg-amber-500" : "bg-accent",
+            unlimited ? "bg-slate-300" : pct >= 100 ? "bg-red-500" : pct >= 80 ? "bg-amber-500" : "bg-accent",
           )}
           style={{ width: unlimited ? "100%" : `${Math.max(pct, 2)}%` }}
         />
@@ -151,14 +151,14 @@ export default function AdminQuotasPage() {
   };
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
@@ -167,7 +167,7 @@ export default function AdminQuotasPage() {
   const EditBtn = ({ onClick }: { onClick: () => void }) => (
     <button
       onClick={onClick}
-      className="rounded-md px-1.5 py-0.5 text-[11px] text-foreground/40 transition-colors hover:bg-muted hover:text-accent"
+      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] text-slate-400 transition-colors hover:bg-slate-100 hover:text-accent"
     >
       调整
     </button>
@@ -216,11 +216,11 @@ export default function AdminQuotasPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px] text-[12px]">
+          <table className="w-full min-w-[700px] text-[12px]">
             <thead>
               <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">用户</th>
-                <th className="whitespace-nowrap px-3 py-2.5 font-medium">状态</th>
+                <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">账号</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">文档数（累计）</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">检索（当日）</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">问答（当日）</th>
@@ -229,26 +229,29 @@ export default function AdminQuotasPage() {
             <tbody>
               {loading && rows.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-foreground/40">
+                  <td colSpan={5} className="px-4 py-8 text-center text-slate-400">
                     <Loader2 size={16} className="animate-spin" /> 加载中…
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-foreground/40">暂无用户</td>
+                  <td colSpan={5} className="px-4 py-8 text-center text-slate-400">暂无用户</td>
                 </tr>
               ) : (
                 rows.map((r) => (
-                  <tr key={r.userId} className="border-b border-border/60 last:border-b-0 hover:bg-muted/30">
+                  <tr key={r.userId} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
                     <td className="px-4 py-2.5">
-                      <div className="font-mono">{r.username}</div>
-                      {r.nickname && <div className="text-xs text-foreground/40">{r.nickname}</div>}
+                      <div className="flex items-center gap-1.5">
+                        <span className={clsx("h-1.5 w-1.5 shrink-0 rounded-full", r.status === "DISABLED" ? "bg-red-500" : "bg-emerald-500")} title={r.status === "DISABLED" ? "已禁用" : "正常"} />
+                        <span className="truncate font-mono text-[12px] font-medium text-slate-700">{r.username}</span>
+                      </div>
+                      {r.nickname && <div className="mt-0.5 truncate pl-3 text-[10px] text-slate-400">{r.nickname}</div>}
                     </td>
-                    <td className="px-3 py-2.5">
+                    <td className="hidden px-3 py-2.5 xl:table-cell">
                       <span
                         className={clsx(
-                          "rounded-full px-2 py-0.5 text-xs",
-                          r.status === "DISABLED" ? "bg-red-500/10 text-red-500" : "bg-emerald-500/10 text-emerald-600",
+                          "rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+                          r.status === "DISABLED" ? "bg-red-50 text-red-600 ring-red-100" : "bg-emerald-50 text-emerald-600 ring-emerald-100",
                         )}
                       >
                         {r.status === "DISABLED" ? "已禁用" : "正常"}
@@ -279,44 +282,33 @@ export default function AdminQuotasPage() {
           </table>
         </div>
 
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
-            <span>第 {page + 1} / {totalPages} 页</span>
-            <div className="flex gap-1">
-              <button
-                onClick={() => void load(Math.max(0, page - 1), fetchPage)}
-                disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
-              >
-                上一页
-              </button>
-              <button
-                onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
-                disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
-              >
-                下一页
-              </button>
-            </div>
-          </div>
-        )}
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalElements={total}
+          pageSize={PAGE_SIZE}
+          unit="位用户"
+          loading={loading}
+          onPrev={() => void load(Math.max(0, page - 1), fetchPage)}
+          onNext={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
+        />
       </AdminCard>
 
       {/* 限额编辑弹窗 */}
       {editTarget && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/45 p-4 backdrop-blur-sm"
           onClick={() => setEditTarget(null)}
           role="dialog"
           aria-modal="true"
           aria-label="调整限额"
         >
           <div
-            className="w-full max-w-md rounded-xl border border-border bg-background p-5 shadow-2xl"
+            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_32px_80px_-24px_rgba(15,23,42,0.55)]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="text-sm font-semibold">调整个人库限额 · {editTarget.username}</div>
-            <p className="mt-1 text-xs text-foreground/50">
+            <div className="text-[14px] font-semibold text-slate-800">调整个人库限额 · <span className="font-mono text-[12px] text-slate-500">{editTarget.username}</span></div>
+            <p className="mt-1 text-[11px] leading-5 text-slate-400">
               留空=不变更；0=不限制。清除自定义后恢复跟随系统配置中的全局默认值。
             </p>
             <div className="mt-4 space-y-3">
@@ -327,7 +319,7 @@ export default function AdminQuotasPage() {
               ] as [MetricKey, string, (v: string) => void, boolean, (v: boolean) => void, number][]).map(
                 ([key, val, setVal, clear, setClear, current]) => (
                   <div key={key} className="flex items-center gap-3">
-                    <span className="w-28 text-[13px] text-foreground/60">{METRIC_LABEL[key]}</span>
+                    <span className="w-28 text-[12px] text-slate-600">{METRIC_LABEL[key]}</span>
                     <input
                       type="number"
                       min={0}
@@ -335,9 +327,9 @@ export default function AdminQuotasPage() {
                       onChange={(e) => setVal(e.target.value)}
                       disabled={clear}
                       placeholder={`当前 ${current}`}
-                      className="h-8 w-28 rounded-md border border-border bg-muted/40 px-2 text-[13px] outline-none focus:border-accent disabled:opacity-40"
+                      className="h-9 w-28 rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 font-mono text-[12px] outline-none transition-colors focus:border-accent focus:bg-white disabled:opacity-40"
                     />
-                    <label className="flex items-center gap-1.5 text-xs text-foreground/50">
+                    <label className="flex items-center gap-1.5 text-[11px] text-slate-500">
                       <input type="checkbox" checked={clear} onChange={(e) => setClear(e.target.checked)} />
                       跟随默认
                     </label>
@@ -349,14 +341,14 @@ export default function AdminQuotasPage() {
             <div className="mt-5 flex justify-end gap-2">
               <button
                 onClick={() => setEditTarget(null)}
-                className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/60 hover:bg-muted"
+                className={adminBtn("secondary", "sm")}
               >
                 取消
               </button>
               <button
                 onClick={() => void onSave()}
                 disabled={saving}
-                className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white hover:bg-accent/90 disabled:opacity-60"
+                className={adminBtn("primary", "sm")}
               >
                 {saving && <Loader2 size={13} className="animate-spin" />}
                 保存

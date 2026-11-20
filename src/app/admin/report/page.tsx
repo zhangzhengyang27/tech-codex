@@ -141,7 +141,7 @@ export default function AdminReportPage() {
   }, [isLoggedIn, isAdmin, days, load]);
 
   if (!isLoggedIn || !isAdmin) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   return (
@@ -194,9 +194,10 @@ export default function AdminReportPage() {
         </AdminCard>
       ) : report ? (
         <div className="space-y-5">
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-6">
             <AdminMetricCard
               label="问答总数"
+              className="md:col-span-2"
               value={fmtNum(report.usage.totalQuestions)}
               hint={`均值 ${report.usage.avgHitCount.toFixed(1)} 片命中`}
               icon={MessageSquare}
@@ -204,6 +205,7 @@ export default function AdminReportPage() {
             />
             <AdminMetricCard
               label="token 消耗"
+              className="md:col-span-2"
               value={fmtNum(report.usage.totalTokens)}
               hint={`平均耗时 ${(report.usage.avgLatencyMs / 1000).toFixed(2)}s`}
               icon={Coins}
@@ -211,6 +213,7 @@ export default function AdminReportPage() {
             />
             <AdminMetricCard
               label="点赞 / 点踩"
+              className="md:col-span-2"
               value={`${report.feedbackUp} / ${report.feedbackDown}`}
               hint={`共 ${report.feedbackUp + report.feedbackDown} 条反馈`}
               icon={ThumbsUp}
@@ -218,6 +221,7 @@ export default function AdminReportPage() {
             />
             <AdminMetricCard
               label="点踩率"
+              className="md:col-span-3"
               value={fmtPct(report.downRate)}
               hint="≥30% 红 · ≥15% 黄"
               icon={Percent}
@@ -225,6 +229,7 @@ export default function AdminReportPage() {
             />
             <AdminMetricCard
               label="未处理告警"
+              className="col-span-2 md:col-span-3"
               value={fmtNum(report.openAlerts)}
               hint={report.openAlerts > 0 ? "需要关注" : "全部已处理"}
               icon={ShieldAlert}
@@ -240,7 +245,7 @@ export default function AdminReportPage() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
+          <div className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
             <AdminCard
               title="点踩 Top 问题榜"
               description="按出现次数排序，可直接作为内容补强清单"

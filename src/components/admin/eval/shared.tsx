@@ -29,8 +29,8 @@ export function MetricCard({
   good?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-background p-4">
-      <div className="text-[13px] text-foreground/50">{label}</div>
+    <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="text-[13px] text-slate-500">{label}</div>
       <div
         className={clsx(
           "mt-1 text-2xl font-semibold tracking-tight font-mono",
@@ -40,7 +40,7 @@ export function MetricCard({
       >
         {value}
       </div>
-      {sub && <div className="mt-1 text-xs text-foreground/40">{sub}</div>}
+      {sub && <div className="mt-1 text-xs text-slate-400">{sub}</div>}
     </div>
   );
 }
@@ -158,7 +158,7 @@ function FragmentRow({
         <td className="px-2 py-2.5 text-right">
           <button
             onClick={onToggle}
-            className="rounded-md px-2 py-1 text-xs text-foreground/40 hover:bg-muted hover:text-foreground"
+            className="rounded-md px-2 py-1 text-xs text-slate-400 hover:bg-slate-100 hover:text-slate-900"
           >
             {open ? "收起" : "片段"}
           </button>
@@ -167,11 +167,11 @@ function FragmentRow({
       {open && (
         <tr className="border-b border-slate-100 bg-slate-50/50">
           <td colSpan={7} className="px-4 py-3">
-            <div className="text-xs font-medium text-foreground/40">
+            <div className="text-xs font-medium text-slate-400">
               返回片段 Top-{c.returnedCount}
             </div>
             {c.topTitles.length === 0 ? (
-              <div className="mt-1 text-[13px] text-foreground/40">
+              <div className="mt-1 text-[13px] text-slate-400">
                 无检索结果（可能检索异常或知识库为空）
               </div>
             ) : (
@@ -179,9 +179,9 @@ function FragmentRow({
                 {c.topTitles.map((t, idx) => (
                   <li
                     key={idx}
-                    className="flex gap-2 text-[13px] text-foreground/80"
+                    className="flex gap-2 text-[13px] text-slate-900/80"
                   >
-                    <span className="w-5 shrink-0 text-right font-mono text-xs text-foreground/40">
+                    <span className="w-5 shrink-0 text-right font-mono text-xs text-slate-400">
                       {idx + 1}
                     </span>
                     <span className="truncate" title={t}>
@@ -211,14 +211,14 @@ export function NumInput({
 }) {
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-xs text-foreground/50">{label}</span>
+      <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
       <input
         type="number"
         min={0}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-8 w-24 rounded-md border border-border bg-background px-2 text-[13px] outline-none transition-colors focus:border-accent"
+        className="h-9 w-24 rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 font-mono text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
       />
     </label>
   );
@@ -240,8 +240,8 @@ export function ToggleGroup({
   ];
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-xs text-foreground/50">{label}</span>
-      <div className="flex h-8 overflow-hidden rounded-md border border-border">
+      <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
+      <div className="flex h-9 overflow-hidden rounded-lg border border-slate-200 bg-white">
         {opts.map((o) => (
           <button
             key={o.v}
@@ -250,7 +250,7 @@ export function ToggleGroup({
               "px-2.5 text-[12px] transition-colors",
               value === o.v
                 ? "bg-accent text-white"
-                : "bg-background text-foreground/50 hover:bg-muted",
+                : "bg-white text-slate-500 hover:bg-slate-50",
             )}
           >
             {o.label}

@@ -27,8 +27,8 @@ function GroupConfig({
   onTopK: (v: string) => void;
 }) {
   return (
-    <div className="flex-1 rounded-xl border border-border bg-background p-4">
-      <div className="mb-3 text-[13px] font-medium">{title}</div>
+    <div className="flex-1 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="mb-3 text-[12px] font-semibold text-slate-700">{title}</div>
       <div className="flex flex-wrap items-end gap-4">
         <ToggleGroup label="语义重排 rerank" value={rerank} onChange={onRerank} />
         <ToggleGroup label="BM25 关键词" value={bm25} onChange={onBm25} />
@@ -51,16 +51,16 @@ function AbMetric({
 }) {
   const pctDiff = Math.abs(diff) >= 0.0001;
   return (
-    <div className="rounded-xl border border-border bg-background p-4">
-      <div className="text-[13px] text-foreground/50">{label}</div>
-      <div className="mt-1 flex items-baseline gap-3">
-        <span className="font-mono text-lg font-semibold">{fmt(base)}</span>
-        <span className="text-foreground/30">→</span>
-        <span className="font-mono text-lg font-semibold">{fmt(variant)}</span>
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">{label}</div>
+      <div className="mt-2 flex items-baseline gap-3">
+        <span className="font-mono text-[17px] font-semibold text-slate-800">{fmt(base)}</span>
+        <span className="text-slate-300">→</span>
+        <span className="font-mono text-[17px] font-semibold text-slate-800">{fmt(variant)}</span>
         <span
           className={clsx(
-            "ml-auto text-[13px] font-mono",
-            pctDiff ? (diff > 0 ? "text-emerald-600" : "text-red-500") : "text-foreground/30",
+            "ml-auto font-mono text-[11px]",
+            pctDiff ? (diff > 0 ? "text-emerald-600" : "text-red-500") : "text-slate-300",
           )}
         >
           {pctDiff ? `${diff > 0 ? "+" : ""}${fmt(diff)}` : "持平"}
@@ -112,15 +112,15 @@ export function EvalAbTab() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-border bg-background p-4">
-        <div className="mb-3 text-[13px] font-medium">同用例集跑两组检索参数（差值 = 变体 − 基线）</div>
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div className="mb-3 text-[12px] font-semibold text-slate-700">同用例集跑两组检索参数（差值 = 变体 − 基线）</div>
         <div className="flex flex-wrap items-end gap-4">
           <NumInput label="用例数上限 limit" value={limit} onChange={setLimit} placeholder="全部" />
           <NumInput label="返回片段 topK" value={topK} onChange={setTopK} placeholder="5" />
           <button
             onClick={run}
             disabled={loading}
-            className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
+            className="flex h-9 items-center gap-1.5 rounded-lg bg-accent px-4 text-[12px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
           >
             {loading ? <Loader2 size={14} className="animate-spin" /> : <FlaskConical size={14} />}
             对比

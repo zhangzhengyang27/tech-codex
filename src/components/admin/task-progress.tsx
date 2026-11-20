@@ -96,20 +96,20 @@ export function TaskProgress({
   const pct = task && task.total > 0 ? Math.round((task.processed / task.total) * 100) : null;
 
   return (
-    <div className="mt-4 rounded-xl border border-border bg-muted/30 p-4">
-      <div className="flex items-center gap-2 text-[13px] font-medium">
+    <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+      <div className="flex items-center gap-2 text-[12px] font-medium text-slate-700">
         {running && <Loader2 size={15} className="animate-spin text-accent" />}
         {done && !failed && <CheckCircle2 size={15} className="text-emerald-600" />}
         {(failed || error) && <AlertTriangle size={15} className="text-red-500" />}
         <span>{title}{running ? "进行中…" : ""}</span>
         {task && task.total > 0 && (
-          <span className="font-mono text-xs text-foreground/50">
+          <span className="font-mono text-[10px] text-slate-400">
             {task.processed}/{task.total}
           </span>
         )}
         <button
           onClick={onDismiss}
-          className="ml-auto rounded-md p-1 text-foreground/40 hover:bg-muted hover:text-foreground"
+          className="ml-auto rounded-md p-1 text-slate-400 hover:bg-white hover:text-slate-700"
           aria-label="关闭进度"
         >
           <X size={14} />
@@ -117,7 +117,7 @@ export function TaskProgress({
       </div>
 
       {running && (
-        <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-border">
+        <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-slate-200">
           <div
             className={clsx("h-full rounded-full bg-accent transition-all", pct === null && "w-1/3 animate-pulse")}
             style={pct !== null ? { width: `${pct}%` } : undefined}
@@ -126,20 +126,20 @@ export function TaskProgress({
       )}
 
       {done && (
-        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-foreground/60">
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-500">
           <span className="text-emerald-600">成功 {task?.succeeded ?? 0}</span>
           {(task?.failed ?? 0) > 0 && <span className="text-red-500">失败 {task?.failed}</span>}
-          {(task?.failed ?? 0) === 0 && <span className="text-foreground/40">全部处理完成</span>}
+          {(task?.failed ?? 0) === 0 && <span className="text-slate-400">全部处理完成</span>}
         </div>
       )}
 
       {error && (
-        <div className="mt-2 flex items-center gap-2 text-xs text-red-500">
+        <div className="mt-2 flex items-center gap-2 text-[11px] text-red-500">
           {error}
           {pollBroken && (
             <button
               onClick={() => setAttempt((a) => a + 1)}
-              className="flex items-center gap-1 rounded-md border border-border px-2 py-0.5 text-[11px] text-foreground/60 hover:bg-muted hover:text-foreground"
+              className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-500 hover:bg-slate-50 hover:text-slate-700"
             >
               <RotateCw size={11} />
               重试查询
@@ -155,7 +155,7 @@ export function TaskProgress({
           </summary>
           <ul className="mt-1.5 max-h-40 space-y-1 overflow-y-auto">
             {task.errors.slice(0, 20).map((e, i) => (
-              <li key={i} className="break-all text-xs text-foreground/60">
+              <li key={i} className="break-all text-[11px] text-slate-500">
                 {e}
               </li>
             ))}

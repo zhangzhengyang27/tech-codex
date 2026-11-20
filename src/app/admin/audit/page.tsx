@@ -12,7 +12,7 @@ import {
   type AuditLogView,
 } from "@/lib/audit";
 import { usePagedList } from "@/lib/use-paged-list";
-import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
+import { AdminCard, AdminPageHeader, AdminPagination, adminBtn } from "@/components/admin/admin-ui";
 const PAGE_SIZE = 20;
 
 const fmtTime = (iso: string | null): string => {
@@ -40,7 +40,7 @@ const ACTION_COLOR: Record<string, string> = {
 };
 
 function ActionBadge({ action }: { action: string | null }) {
-  const color = action ? ACTION_COLOR[action] : "bg-muted text-foreground/50";
+  const color = action ? ACTION_COLOR[action] : "bg-slate-100 text-slate-500";
   return (
     <span className={clsx("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", color)}>
       {auditActionLabel(action)}
@@ -89,14 +89,14 @@ export default function AdminAuditPage() {
   const librarySuggestions = ["default", `u-${user?.username ?? ""}`].filter((v) => v !== "u-");
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
@@ -200,27 +200,16 @@ export default function AdminAuditPage() {
             </tbody>
           </table>
         </div>
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
-            <span>第 {page + 1} / {totalPages} 页</span>
-            <div className="flex gap-1">
-              <button
-                onClick={() => void load(Math.max(0, page - 1), fetchPage(action, libraryId))}
-                disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
-              >
-                上一页
-              </button>
-              <button
-                onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage(action, libraryId))}
-                disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
-              >
-                下一页
-              </button>
-            </div>
-          </div>
-        )}
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalElements={totalElements}
+          pageSize={PAGE_SIZE}
+          unit="条记录"
+          loading={loading}
+          onPrev={() => void load(Math.max(0, page - 1), fetchPage(action, libraryId))}
+          onNext={() => void load(Math.min(totalPages - 1, page + 1), fetchPage(action, libraryId))}
+        />
       </AdminCard>
     </div>
   );

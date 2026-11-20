@@ -80,6 +80,13 @@ export default function AdminConfigPage() {
 
   const dirtyKeys = Object.keys(drafts).filter((k) => drafts[k] !== undefined);
 
+  /** 放弃本轮全部草稿，回到服务端当前值。 */
+  const onDiscard = () => {
+    setDrafts({});
+    setMsg("");
+    setError("");
+  };
+
   const onSave = async () => {
     if (dirtyKeys.length === 0) {
       setMsg("没有待保存的修改");
@@ -104,14 +111,14 @@ export default function AdminConfigPage() {
   };
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
@@ -149,7 +156,7 @@ export default function AdminConfigPage() {
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
         <AdminMetricCard label="配置项" value={String(items.length)} hint="按部署默认值生效" icon={Settings} tone="blue" />
         <AdminMetricCard label="已自定义" value={String(items.filter((it) => it.overridden).length)} hint="覆盖部署默认值" icon={SlidersHorizontal} tone="violet" />
-        <AdminMetricCard label="待保存" value={String(dirtyKeys.length)} hint={dirtyKeys.length > 0 ? "保存后立即生效" : "当前没有未保存修改"} icon={Save} tone={dirtyKeys.length > 0 ? "amber" : "emerald"} />
+        <AdminMetricCard className="col-span-2 md:col-span-1" label="待保存" value={String(dirtyKeys.length)} hint={dirtyKeys.length > 0 ? "保存后立即生效" : "当前没有未保存修改"} icon={Save} tone={dirtyKeys.length > 0 ? "amber" : "emerald"} />
       </div>
 
       {loading && items.length === 0 && (
@@ -242,6 +249,32 @@ export default function AdminConfigPage() {
           </AdminCard>
         ))}
       </div>
+
+      {dirtyKeys.length > 0 && (
+        <div className="sticky bottom-4 z-20 mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-amber-200 bg-white/95 px-4 py-3 shadow-[0_18px_40px_-20px_rgba(15,23,42,0.45)] backdrop-blur">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 ring-1 ring-amber-100">
+            <SlidersHorizontal size={15} />
+          </span>
+          <div className="min-w-0">
+            <div className="text-[12px] font-medium text-slate-700">{dirtyKeys.length} 项修改待保存</div>
+            <div className="mt-0.5 flex flex-wrap gap-1">
+              {dirtyKeys.slice(0, 3).map((key) => (
+                <span key={key} className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">{key}</span>
+              ))}
+              {dirtyKeys.length > 3 && <span className="px-1 text-[10px] text-slate-400">+{dirtyKeys.length - 3}</span>}
+            </div>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <button onClick={onDiscard} disabled={saving} className={adminBtn("ghost", "sm")}>
+              放弃修改
+            </button>
+            <button onClick={() => void onSave()} disabled={saving} className={adminBtn("primary", "sm")}>
+              {saving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
+              保存并生效
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

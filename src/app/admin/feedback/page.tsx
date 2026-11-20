@@ -51,11 +51,11 @@ export default function FeedbackAdminPage() {
   }, [load, hydrated, isAdmin, fetchPage]);
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
   if (!isAdmin) {
     return (
-      <div className="w-full py-16 text-center text-sm text-foreground/60">
+      <div className="w-full py-16 text-center text-sm text-slate-500">
         该页面需要管理员权限
       </div>
     );
@@ -129,7 +129,7 @@ export default function FeedbackAdminPage() {
 
       {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
         <div className="min-w-0">
           {loading ? (
             <AdminCard contentClassName="py-20 text-center text-sm text-slate-400">

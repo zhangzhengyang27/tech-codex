@@ -80,12 +80,12 @@ export function EvalCasesTab() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-border bg-background p-4">
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <div className="flex items-center justify-between">
-          <div className="text-[13px] font-medium">新增评测用例（Golden Set）</div>
+          <div className="text-[12px] font-semibold text-slate-700">新增评测用例（Golden Set）</div>
           <button
             onClick={() => setExpanded((o) => !o)}
-            className="flex h-8 items-center gap-1 rounded-md border border-border px-3 text-[13px] text-foreground/70 hover:bg-muted/60"
+            className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-[11px] text-slate-500 hover:bg-slate-50 hover:text-slate-700"
           >
             <Plus size={13} />
             {expanded ? "收起" : "展开表单"}
@@ -97,33 +97,33 @@ export function EvalCasesTab() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="评测问题（用户会问的原始问题）"
-              className="h-9 w-full rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
+              className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
             />
             <div className="flex flex-col gap-2.5 sm:flex-row">
               <input
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
                 placeholder="期望命中关键字（逗号分隔，必填）"
-                className="h-9 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
+                className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
               />
               <input
                 value={docIds}
                 onChange={(e) => setDocIds(e.target.value)}
                 placeholder="期望文档 id（逗号分隔，可选，供 NDCG）"
-                className="h-9 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
+                className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
               />
             </div>
             <input
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="备注 / 预期答案说明（可选）"
-              className="h-9 w-full rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
+              className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
             />
             <div className="flex items-center gap-3">
               <button
                 onClick={onSubmit}
                 disabled={submitting}
-                className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
+                className="flex h-9 items-center gap-1.5 rounded-lg bg-accent px-4 text-[12px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
               >
                 {submitting ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
                 新增用例
@@ -135,25 +135,25 @@ export function EvalCasesTab() {
         )}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border bg-background">
-        <div className="border-b border-border px-4 py-2.5 text-[13px] font-medium">
+      <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div className="border-b border-slate-100 px-5 py-3.5 text-[13px] font-semibold text-slate-800">
           用例列表
-          <span className="ml-2 text-xs font-normal text-foreground/40">共 {total} 条</span>
+          <span className="ml-2 text-[11px] font-normal text-slate-400">共 {total} 条</span>
         </div>
         {error && <div className="px-4 py-3 text-[13px] text-red-500">{error}</div>}
         {loading && cases.length === 0 ? (
-          <div className="flex items-center justify-center gap-2 px-4 py-10 text-sm text-foreground/40">
+          <div className="flex items-center justify-center gap-2 px-4 py-10 text-[12px] text-slate-400">
             <Loader2 size={15} className="animate-spin" /> 加载中…
           </div>
         ) : cases.length === 0 ? (
-          <div className="px-4 py-10 text-center text-sm text-foreground/40">
+          <div className="px-4 py-10 text-center text-[12px] text-slate-400">
             暂无评测用例——可在此新增，或在「问答反馈」页将点踩一键转为用例
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-[13px]">
+            <table className="w-full min-w-[760px] text-[12px]">
               <thead>
-                <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
+                <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
                   <th className="px-4 py-2 font-medium">问题</th>
                   <th className="px-3 py-2 font-medium">期望关键字</th>
                   <th className="px-3 py-2 font-medium">备注</th>
@@ -164,18 +164,18 @@ export function EvalCasesTab() {
               </thead>
               <tbody>
                 {cases.map((c) => (
-                  <tr key={c.id} className="border-b border-border/60 last:border-b-0 hover:bg-muted/30">
+                  <tr key={c.id} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
                     <td className="max-w-[300px] px-4 py-2.5">
                       <div className="truncate" title={c.question}>{c.question}</div>
                     </td>
-                    <td className="max-w-[200px] px-3 py-2.5 text-foreground/60">
+                    <td className="max-w-[200px] px-3 py-2.5 text-slate-500">
                       <div className="truncate" title={c.expectedKeywords}>{c.expectedKeywords}</div>
                     </td>
-                    <td className="max-w-[220px] px-3 py-2.5 text-foreground/50">
+                    <td className="max-w-[220px] px-3 py-2.5 text-slate-400">
                       <div className="truncate" title={c.note ?? undefined}>{c.note || "-"}</div>
                     </td>
-                    <td className="px-3 py-2.5 font-mono text-foreground/50">{c.createdBy || "-"}</td>
-                    <td className="whitespace-nowrap px-3 py-2.5 font-mono text-xs text-foreground/50">
+                    <td className="px-3 py-2.5 font-mono text-slate-400">{c.createdBy || "-"}</td>
+                    <td className="whitespace-nowrap px-3 py-2.5 font-mono text-xs text-slate-400">
                       {c.createdDate ? new Date(c.createdDate).toLocaleString("zh-CN", { hour12: false }) : "-"}
                     </td>
                     <td className="px-2 py-2.5 text-right">
@@ -195,20 +195,20 @@ export function EvalCasesTab() {
           </div>
         )}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-[13px] text-foreground/50">
+          <div className="flex items-center justify-between border-t border-slate-200 px-4 py-2.5 text-[13px] text-slate-400">
             <span>第 {page + 1} / {totalPages} 页</span>
             <div className="flex gap-1">
               <button
                 onClick={() => void load(Math.max(0, page - 1), fetchPage)}
                 disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-slate-100"
               >
                 上一页
               </button>
               <button
                 onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
                 disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-muted"
+                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-slate-100"
               >
                 下一页
               </button>

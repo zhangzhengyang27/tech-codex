@@ -13,7 +13,7 @@ import {
   type ChatUsageView,
   type UserUsageRow,
 } from "@/lib/usage";
-import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
+import { AdminCard, AdminEmptyState, AdminMetricCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 
 const fmtNum = (v: number): string => v.toLocaleString("en-US");
 
@@ -255,17 +255,21 @@ export default function AdminUsagePage() {
   }, []);
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
+
+  // 空态判定：三个数据源都确认无数据后才展示单一空态，避免多张空卡片堆叠
+  const isEmpty = summary !== null && !recentLoading
+    && summary.totalQuestions === 0 && recent.length === 0 && topUsers.length === 0;
 
   return (
     <div className="w-full">
@@ -305,7 +309,7 @@ export default function AdminUsagePage() {
 
       {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
 
-      {summary && (
+      {summary && !isEmpty && (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <AdminMetricCard label="总问答数" value={fmtNum(summary.totalQuestions)} hint="周期内累计" icon={MessageSquare} tone="blue" />
           <AdminMetricCard label="TOKEN 估算" value={fmtCompact(summary.totalTokens)} hint={`输入 ${fmtCompact(summary.totalInputTokens)} + 输出 ${fmtCompact(summary.totalOutputTokens)}`} icon={Coins} tone="violet" />
@@ -314,11 +318,31 @@ export default function AdminUsagePage() {
         </div>
       )}
 
-      {summary && <div className="mt-5"><TrendBarChart points={summary.trend} /></div>}
+      {isEmpty ? (
+        <div className="mt-5">
+          <AdminCard title="用量概览" description="近周期内的问答、token 与用户分布" icon={BarChart3} contentClassName="">
+            <AdminEmptyState
+              icon={MessageSquare}
+              title="还没有问答用量"
+              description="产生第一条问答后，这里会显示每日 token 趋势、Top 用户和最近问答明细。"
+              compact
+              action={
+                <button onClick={() => router.push("/ai")} className={adminBtn("primary")}>
+                  去问答页体验
+                </button>
+              }
+            />
+          </AdminCard>
+        </div>
+      ) : (
+        <>
+          {summary && <div className="mt-5"><TrendBarChart points={summary.trend} /></div>}
 
-      <div className="mt-5"><TopUsersTable rows={topUsers} loading={recentLoading} /></div>
+          <div className="mt-5"><TopUsersTable rows={topUsers} loading={recentLoading} /></div>
 
-      <div className="mt-5"><UsageTable rows={recent} loading={recentLoading} /></div>
+          <div className="mt-5"><UsageTable rows={recent} loading={recentLoading} /></div>
+        </>
+      )}
     </div>
   );
 }

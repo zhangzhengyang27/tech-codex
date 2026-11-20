@@ -8,7 +8,7 @@ import {
   AlertTriangle, ArrowRight, CalendarClock, CheckCircle2, Download, Layers, Loader2,
   MessageCircleQuestion, RefreshCw, Search, Sparkles, Target, X,
 } from 'lucide-react';
-import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn } from '@/components/admin/admin-ui';
+import { AdminCard, AdminMetricCard, AdminPageHeader, AdminPagination, adminBtn } from '@/components/admin/admin-ui';
 import { useAuth } from '@/context/AuthContext';
 import { useHydrated } from '@/lib/use-hydrated';
 import {
@@ -24,7 +24,7 @@ const STATUS_OPTIONS: { value: GapStatus; label: string; tone: string }[] = [
   { value: 'TRIAGED', label: '已分诊', tone: 'text-sky-600 border-sky-500/30 bg-sky-500/10' },
   { value: 'PLANNED', label: '已排期', tone: 'text-violet-600 border-violet-500/30 bg-violet-500/10' },
   { value: 'RESOLVED', label: '已解决', tone: 'text-emerald-600 border-emerald-500/30 bg-emerald-500/10' },
-  { value: 'IGNORED', label: '已忽略', tone: 'text-foreground/40 border-border bg-foreground/5' },
+  { value: 'IGNORED', label: '已忽略', tone: 'text-slate-500 border-slate-200 bg-slate-50' },
 ];
 const SIGNAL_LABEL: Record<string, string> = {
   NO_ANSWER: '未答', ZERO_CITATION: '零引用', THUMB_DOWN: '点踩', FOLLOW_UP: '追问',
@@ -98,13 +98,13 @@ export default function ContentGapsPage() {
   }, [hydrated, isLoggedIn, isAdmin, router, loadPage, loadMeta]);
 
   if (!hydrated) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
   // 未登录时明确给出登录入口，而不是一直停在“加载中”：
   // 鉴权失败发生在客户端，若这里仍渲染 loading，用户会误以为接口卡死。
   if (!isLoggedIn) {
     return (
-      <div className="w-full py-16 text-center text-sm text-foreground/50">
+      <div className="w-full py-16 text-center text-sm text-slate-500">
         <p>该页面需要管理员登录后查看。</p>
         <Link href="/login?from=/admin/gaps" className="mt-3 inline-block text-accent hover:underline">
           去登录
@@ -113,7 +113,7 @@ export default function ContentGapsPage() {
     );
   }
   if (!isAdmin) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/60">该页面需要管理员权限</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-500">该页面需要管理员权限</div>;
   }
 
   const toggleSelect = (id: number) => setSelected((prev) => {
@@ -207,24 +207,24 @@ export default function ContentGapsPage() {
       />
 
       {summary && (
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
-          <AdminMetricCard label="待处理" value={String(summary.open)} hint="需要分诊或补文档" icon={AlertTriangle} tone="amber" />
-          <AdminMetricCard label="已分诊" value={String(summary.triaged)} hint="已确认问题归因" icon={Search} tone="blue" />
-          <AdminMetricCard label="已排期" value={String(summary.planned)} hint="已进入内容计划" icon={CalendarClock} tone="violet" />
-          <AdminMetricCard label="已解决" value={String(summary.resolved)} hint="内容或评测已补齐" icon={CheckCircle2} tone="emerald" />
-          <AdminMetricCard label="近 7 天新增" value={String(summary.last7Days)} hint="按最近出现时间统计" icon={Sparkles} tone="slate" />
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-6">
+          <AdminMetricCard className="md:col-span-2" label="待处理" value={String(summary.open)} hint="需要分诊或补文档" icon={AlertTriangle} tone="amber" />
+          <AdminMetricCard className="md:col-span-2" label="已分诊" value={String(summary.triaged)} hint="已确认问题归因" icon={Search} tone="blue" />
+          <AdminMetricCard className="md:col-span-2" label="已排期" value={String(summary.planned)} hint="已进入内容计划" icon={CalendarClock} tone="violet" />
+          <AdminMetricCard className="md:col-span-3" label="已解决" value={String(summary.resolved)} hint="内容或评测已补齐" icon={CheckCircle2} tone="emerald" />
+          <AdminMetricCard className="col-span-2 md:col-span-3" label="近 7 天新增" value={String(summary.last7Days)} hint="按最近出现时间统计" icon={Sparkles} tone="slate" />
         </div>
       )}
 
       {error && <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
 
-      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
+      <div className="mt-5 grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
         <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
           <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 bg-slate-50/60 px-3 py-3">
-            <div className="flex flex-wrap items-center gap-1">
+            <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto [scrollbar-width:none]">
               {([['全部', ''], ['待处理', 'OPEN'], ['已分诊', 'TRIAGED'], ['已排期', 'PLANNED'], ['已解决', 'RESOLVED'], ['已忽略', 'IGNORED']] as [string, GapStatus | ''][]).map(([label, value]) => (
                 <button key={label} onClick={() => setStatus(value)}
-                  className={`rounded-lg border px-2.5 py-1.5 text-[11px] transition-colors ${
+                  className={`shrink-0 whitespace-nowrap rounded-lg border px-2.5 py-1.5 text-[11px] transition-colors ${
                     status === value ? 'border-accent/20 bg-white font-medium text-accent shadow-sm' : 'border-transparent text-slate-500 hover:bg-white hover:text-slate-800'
                   }`}>{label}</button>
               ))}
@@ -262,7 +262,7 @@ export default function ContentGapsPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[680px] text-left text-xs">
+              <table className="w-full min-w-[640px] text-left text-xs">
                 <thead className="bg-slate-50/80 text-[11px] uppercase tracking-[0.06em] text-slate-400">
                   <tr className="border-b border-slate-100">
                     <th className="w-10 px-3 py-2.5"><input type="checkbox" checked={selected.size === items.length && items.length > 0} onChange={toggleAll} aria-label="全选" /></th>
@@ -311,18 +311,19 @@ export default function ContentGapsPage() {
             </div>
           )}
 
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
-              <span>第 {page + 1} / {totalPages} 页</span>
-              <div className="flex gap-1">
-                <button disabled={page <= 0 || loading} onClick={() => void loadPage(page - 1)} className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40">上一页</button>
-                <button disabled={page >= totalPages - 1 || loading} onClick={() => void loadPage(page + 1)} className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40">下一页</button>
-              </div>
-            </div>
-          )}
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            totalElements={total}
+            pageSize={PAGE_SIZE}
+            unit="条缺口"
+            loading={loading}
+            onPrev={() => void loadPage(page - 1)}
+            onNext={() => void loadPage(page + 1)}
+          />
         </div>
 
-        <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
+        <aside className="space-y-4 xl:sticky xl:top-20 xl:self-start">
           <AdminCard title="主题聚类" description="本地 embedding 在线归并；同簇问题共享主题" icon={Layers} contentClassName="p-4">
             {clusters.length === 0 ? <p className="text-[11px] text-slate-400">暂无聚类，先积累一些信号。</p> : (
               <ul className="space-y-2">
@@ -347,27 +348,27 @@ export default function ContentGapsPage() {
       </div>
 
       {drawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/30 backdrop-blur-[1px]" onClick={() => setDrawerOpen(false)}>
-          <div className="h-full w-full max-w-xl overflow-y-auto border-l border-border bg-background p-5 shadow-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/40 backdrop-blur-sm" onClick={() => setDrawerOpen(false)}>
+          <div className="h-full w-full max-w-xl overflow-y-auto border-l border-slate-200 bg-white p-5 shadow-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-[11px] uppercase tracking-wide text-foreground/35">缺口详情</div>
-                <h2 className="mt-1 text-base font-semibold leading-snug text-foreground/85">{detail?.gap.question ?? '加载中…'}</h2>
+                <div className="text-[10px] font-medium uppercase tracking-[0.14em] text-slate-400">缺口详情</div>
+                <h2 className="mt-1 text-[17px] font-semibold leading-snug tracking-tight text-slate-900">{detail?.gap.question ?? '加载中…'}</h2>
               </div>
-              <button onClick={() => setDrawerOpen(false)} className="rounded-md p-1 text-foreground/40 hover:text-foreground"><X size={18} /></button>
+              <button onClick={() => setDrawerOpen(false)} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800"><X size={18} /></button>
             </div>
 
             {detailLoading ? (
-              <div className="mt-12 text-center text-sm text-foreground/40"><Loader2 size={18} className="mx-auto mb-2 animate-spin" />加载中…</div>
+              <div className="mt-12 text-center text-[13px] text-slate-400"><Loader2 size={18} className="mx-auto mb-2 animate-spin" />加载中…</div>
             ) : drawerError ? <p className="mt-4 text-sm text-red-500">{drawerError}</p> : detail ? (
               <>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                  <div className="rounded-lg bg-foreground/[0.03] p-2.5"><div className="text-[10px] text-foreground/40">累计频次</div><div className="mt-1 font-mono text-lg font-semibold">{detail.gap.frequency}</div></div>
-                  <div className="rounded-lg bg-foreground/[0.03] p-2.5"><div className="text-[10px] text-foreground/40">状态</div><div className={`mt-1 inline-flex rounded-md border px-1.5 py-0.5 text-[11px] ${statusMeta(detail.gap.status).tone}`}>{statusMeta(detail.gap.status).label}</div></div>
-                  <div className="col-span-2 rounded-lg bg-foreground/[0.03] p-2.5"><div className="text-[10px] text-foreground/40">信号构成</div><div className="mt-1 flex flex-wrap gap-1">{signalChips(detail.gap.signalSummary).map((s) => <span key={s.key} className="rounded bg-background px-1.5 py-0.5 text-[11px] text-foreground/55">{s.label} ×{s.count}</span>)}</div></div>
+                  <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-3"><div className="text-[10px] text-slate-400">累计频次</div><div className="mt-1 font-mono text-[18px] font-semibold text-slate-800">{detail.gap.frequency}</div></div>
+                  <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-3"><div className="text-[10px] text-slate-400">状态</div><div className={`mt-1 inline-flex rounded-md border px-1.5 py-0.5 text-[11px] ${statusMeta(detail.gap.status).tone}`}>{statusMeta(detail.gap.status).label}</div></div>
+                  <div className="col-span-2 rounded-lg bg-foreground/[0.03] p-2.5"><div className="text-[10px] text-slate-400">信号构成</div><div className="mt-1 flex flex-wrap gap-1">{signalChips(detail.gap.signalSummary).map((s) => <span key={s.key} className="rounded bg-white px-1.5 py-0.5 text-[11px] text-slate-900/55">{s.label} ×{s.count}</span>)}</div></div>
                 </div>
 
-                <div className="mt-3 space-y-1 text-[11px] text-foreground/45">
+                <div className="mt-3 space-y-1.5 rounded-xl border border-slate-100 bg-slate-50/60 p-3 text-[11px] leading-5 text-slate-500">
                   <div>主题：{detail.gap.clusterLabel ?? detail.gap.clusterKey ?? '未聚类'}</div>
                   <div>相关文档：{detail.gap.relatedDocIds ?? '-'}</div>
                   <div>样本对话：{detail.gap.sampleConversationId ?? '-'}</div>
@@ -375,7 +376,7 @@ export default function ContentGapsPage() {
                 </div>
 
                 <div className="mt-5">
-                  <label className="text-xs font-medium text-foreground/60">流转状态</label>
+                  <label className="text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">流转状态</label>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {STATUS_OPTIONS.map((s) => (
                       <button key={s.value} disabled={actionBusy || detail.gap.status === s.value} onClick={() => void onStatusChange(detail.gap.id, s.value)}
@@ -384,13 +385,13 @@ export default function ContentGapsPage() {
                   </div>
                 </div>
 
-                <div className="mt-5 rounded-xl border border-border p-3">
-                  <h3 className="flex items-center gap-1.5 text-sm font-medium"><MessageCircleQuestion size={15} className="text-violet-500" /> 转为评测用例</h3>
+                <div className="mt-5 rounded-2xl border border-violet-100 bg-violet-50/40 p-4">
+                  <h3 className="flex items-center gap-1.5 text-[13px] font-semibold text-violet-800"><MessageCircleQuestion size={15} className="text-violet-500" /> 转为评测用例</h3>
                   {detail.gap.evalCaseId ? <p className="mt-2 text-xs text-violet-600">已转评测用例 #{detail.gap.evalCaseId}</p> : (
                     <>
-                      <p className="mt-1 text-[11px] leading-relaxed text-foreground/40">问题原文直接复用；填写一个能区分正确/错误答案的关键字（逗号分隔多个）。</p>
-                      <input value={convertKeywords} onChange={(e) => setConvertKeywords(e.target.value)} placeholder="如：扩容、负载因子" className="mt-2 w-full rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs outline-none focus:border-accent/50" />
-                      <input value={convertNote} onChange={(e) => setConvertNote(e.target.value)} placeholder="备注（可选）" className="mt-2 w-full rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs outline-none focus:border-accent/50" />
+                      <p className="mt-1 text-[11px] leading-relaxed text-slate-500">问题原文直接复用；填写一个能区分正确/错误答案的关键字（逗号分隔多个）。</p>
+                      <input value={convertKeywords} onChange={(e) => setConvertKeywords(e.target.value)} placeholder="如：扩容、负载因子" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-[12px] text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
+                      <input value={convertNote} onChange={(e) => setConvertNote(e.target.value)} placeholder="备注（可选）" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-[12px] text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
                       <button onClick={() => void onConvert()} disabled={converting} className="mt-2 flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50">
                         {converting ? <Loader2 size={13} className="animate-spin" /> : <ArrowRight size={13} />} 创建评测用例
                       </button>
@@ -399,13 +400,13 @@ export default function ContentGapsPage() {
                 </div>
 
                 <div className="mt-5">
-                  <h3 className="text-xs font-medium text-foreground/60">信号记录</h3>
+                  <h3 className="text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">信号记录</h3>
                   <div className="mt-2 space-y-2">
-                    {detail.events.length === 0 ? <p className="text-xs text-foreground/40">暂无事件</p> : detail.events.map((event) => (
-                      <div key={event.id} className="rounded-lg border border-border/70 px-3 py-2 text-[11px]">
-                        <div className="flex items-center justify-between gap-2"><span className="font-medium text-foreground/65">{SIGNAL_LABEL[event.signalType] ?? event.signalType}</span><span className="text-foreground/35">{formatDate(event.createdDate)}</span></div>
-                        {event.detail && <p className="mt-1 text-foreground/45">{event.detail}</p>}
-                        {(event.conversationId || event.feedbackId) && <p className="mt-1 text-foreground/35">{event.conversationId ? `对话 ${event.conversationId.slice(0, 8)}…` : ''}{event.feedbackId ? ` · 反馈 #${event.feedbackId}` : ''}</p>}
+                    {detail.events.length === 0 ? <p className="text-xs text-slate-400">暂无事件</p> : detail.events.map((event) => (
+                      <div key={event.id} className="rounded-xl border border-slate-100 bg-white px-3 py-2.5 text-[11px]">
+                        <div className="flex items-center justify-between gap-2"><span className="font-medium text-slate-900/65">{SIGNAL_LABEL[event.signalType] ?? event.signalType}</span><span className="text-slate-900/35">{formatDate(event.createdDate)}</span></div>
+                        {event.detail && <p className="mt-1 text-slate-500">{event.detail}</p>}
+                        {(event.conversationId || event.feedbackId) && <p className="mt-1 text-slate-400">{event.conversationId ? `对话 ${event.conversationId.slice(0, 8)}…` : ''}{event.feedbackId ? ` · 反馈 #${event.feedbackId}` : ''}</p>}
                       </div>
                     ))}
                   </div>

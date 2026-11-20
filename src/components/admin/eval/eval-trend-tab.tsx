@@ -51,12 +51,12 @@ export function EvalTrendTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-end gap-4 rounded-xl border border-border bg-background p-4">
+      <div className="flex flex-wrap items-end gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <NumInput label="最近天数 days（1~90）" value={days} onChange={setDays} placeholder="30" />
         <button
           onClick={() => void load(days)}
           disabled={loading}
-          className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
+          className="flex h-9 items-center gap-1.5 rounded-lg bg-accent px-4 text-[12px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
         >
           {loading ? <Loader2 size={14} className="animate-spin" /> : <RotateCw size={14} />}
           刷新
@@ -67,17 +67,17 @@ export function EvalTrendTab() {
       <TrendChart points={points} />
 
       {loaded && points.length > 0 && (
-        <div className="overflow-hidden rounded-xl border border-border bg-background">
-          <div className="border-b border-border px-4 py-2.5 text-[13px] font-medium">
+        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+          <div className="border-b border-slate-100 px-5 py-3.5 text-[13px] font-semibold text-slate-800">
             历史记录
-            <span className="ml-2 text-xs font-normal text-foreground/40">
+            <span className="ml-2 text-[11px] font-normal text-slate-400">
               每日 02:00 定时评测自动落库
             </span>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-[13px]">
+            <table className="w-full min-w-[640px] text-[12px]">
               <thead>
-                <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
+                <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
                   <th className="px-4 py-2 font-medium">日期</th>
                   <th className="px-3 py-2 font-medium">用例数</th>
                   <th className="px-3 py-2 font-medium">命中率</th>
@@ -87,12 +87,12 @@ export function EvalTrendTab() {
               </thead>
               <tbody>
                 {points.map((p) => (
-                  <tr key={p.date} className="border-b border-border/60 hover:bg-muted/40">
+                  <tr key={p.date} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
                     <td className="px-4 py-2.5 font-mono">{p.date}</td>
-                    <td className="px-3 py-2.5 font-mono text-foreground/70">{p.caseCount}</td>
-                    <td className="px-3 py-2.5 font-mono text-foreground/70">{pct(p.hitRate)}</td>
-                    <td className="px-3 py-2.5 font-mono text-foreground/70">{fmt(p.mrr)}</td>
-                    <td className="px-3 py-2.5 font-mono text-foreground/70">{fmt(p.ndcg)}</td>
+                    <td className="px-3 py-2.5 font-mono text-slate-600">{p.caseCount}</td>
+                    <td className="px-3 py-2.5 font-mono text-slate-600">{pct(p.hitRate)}</td>
+                    <td className="px-3 py-2.5 font-mono text-slate-600">{fmt(p.mrr)}</td>
+                    <td className="px-3 py-2.5 font-mono text-slate-600">{fmt(p.ndcg)}</td>
                   </tr>
                 ))}
               </tbody>

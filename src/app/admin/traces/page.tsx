@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
 import { listTraces, type RetrievalTraceView } from "@/lib/traces";
 import { usePagedList } from "@/lib/use-paged-list";
-import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
+import { AdminCard, AdminPageHeader, AdminPagination, adminBtn } from "@/components/admin/admin-ui";
 
 const PAGE_SIZE = 20;
 
@@ -24,12 +24,12 @@ const fmtMs = (ms: number | null): string => {
 };
 
 function BoolBadge({ value, onLabel, offLabel }: { value: boolean | null; onLabel: string; offLabel: string }) {
-  if (value === null) return <span className="text-foreground/30">-</span>;
+  if (value === null) return <span className="text-slate-300">-</span>;
   return (
     <span
       className={clsx(
-        "rounded-full px-2 py-0.5 text-xs",
-        value ? "bg-emerald-500/10 text-emerald-600" : "bg-muted text-foreground/50",
+        "rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+        value ? "bg-emerald-50 text-emerald-600 ring-emerald-100" : "bg-slate-50 text-slate-500 ring-slate-200",
       )}
     >
       {value ? onLabel : offLabel}
@@ -72,14 +72,14 @@ export default function AdminTracesPage() {
   };
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
@@ -169,13 +169,13 @@ export default function AdminTracesPage() {
             <tbody>
               {loading && rows.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-foreground/40">
+                  <td colSpan={8} className="px-4 py-8 text-center text-slate-400">
                     <Loader2 size={16} className="animate-spin" /> 加载中…
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-foreground/40">
+                  <td colSpan={8} className="px-4 py-8 text-center text-slate-400">
                     暂无检索记录（产生一次问答或检索后出现）
                   </td>
                 </tr>
@@ -185,43 +185,43 @@ export default function AdminTracesPage() {
                   return (
                     <Fragment key={t.id}>
                       <tr
-                        className="cursor-pointer border-b border-border/60 hover:bg-muted/40"
+                        className="cursor-pointer border-b border-slate-100/80 transition-colors hover:bg-slate-50/60"
                         onClick={() => setExpanded(open ? null : t.id)}
                       >
-                        <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-foreground/70">
+                        <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[11px] text-slate-500">
                           {fmtTime(t.createdDate)}
                         </td>
-                        <td className="hidden px-3 py-2.5 font-mono text-foreground/70 xl:table-cell">{t.userId || "-"}</td>
-                        <td className="max-w-[220px] px-3 py-2.5">
+                        <td className="hidden px-3 py-2.5 font-mono text-slate-600 xl:table-cell">{t.userId || "-"}</td>
+                        <td className="max-w-[220px] px-3 py-2.5 text-slate-700">
                           <div className="truncate" title={t.originalQuery}>{t.originalQuery}</div>
                         </td>
-                        <td className="whitespace-nowrap px-3 py-2.5 font-mono text-foreground/70">
+                        <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">
                           {t.vectorCount ?? "-"} / {t.keywordCount ?? "-"} / {t.fusedCount ?? "-"}
                         </td>
                         <td className="hidden px-3 py-2.5 xl:table-cell">
                           <BoolBadge value={t.reranked} onLabel="已重排" offLabel="RRF" />
                         </td>
-                        <td className="hidden px-3 py-2.5 font-mono text-foreground/70 xl:table-cell">{t.resultCount ?? "-"}</td>
-                        <td className="whitespace-nowrap px-3 py-2.5 font-mono text-foreground/70">{fmtMs(t.elapsedMs)}</td>
-                        <td className="px-2 py-2.5 text-right text-foreground/40">
+                        <td className="hidden px-3 py-2.5 font-mono text-slate-600 xl:table-cell">{t.resultCount ?? "-"}</td>
+                        <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{fmtMs(t.elapsedMs)}</td>
+                        <td className="px-2 py-2.5 text-right text-slate-400">
                           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                         </td>
                       </tr>
                       {open && (
-                        <tr className="border-b border-border/60 bg-muted/30">
+                        <tr className="border-b border-slate-100 bg-slate-50/50">
                           <td colSpan={8} className="px-4 py-3">
-                            <div className="grid gap-3 text-[13px] md:grid-cols-2">
+                            <div className="grid gap-4 rounded-xl border border-slate-100 bg-white p-4 text-[12px] md:grid-cols-2">
                               <div>
-                                <div className="text-xs font-medium text-foreground/40">检索用查询（改写后）</div>
-                                <p className="mt-1 break-all text-foreground/80">{t.searchQuery || "-"}</p>
+                                <div className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">检索用查询（改写后）</div>
+                                <p className="mt-1 break-all leading-5 text-slate-700">{t.searchQuery || "-"}</p>
                               </div>
                               <div>
-                                <div className="text-xs font-medium text-foreground/40">命中片段（docId#chunk）</div>
-                                <p className="mt-1 break-all font-mono text-xs text-foreground/80">
+                                <div className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">命中片段（docId#chunk）</div>
+                                <p className="mt-1 break-all font-mono text-[11px] leading-5 text-slate-700">
                                   {t.hitSummary || "-"}
                                 </p>
                               </div>
-                              <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-foreground/60">
+                              <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-slate-100 pt-3 text-[11px] text-slate-500 md:col-span-2">
                                 <span>关键词通道：{t.keywordUsed ? "参与" : "未参与"}</span>
                                 <span>重排模型：{t.rerankModelAvailable ? "可用" : "不可用（降级）"}</span>
                                 <span>空间：{t.libraryId || "-"}</span>
@@ -238,27 +238,16 @@ export default function AdminTracesPage() {
             </tbody>
           </table>
         </div>
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
-            <span>第 {page + 1} / {totalPages} 页</span>
-            <div className="flex gap-1">
-              <button
-                onClick={() => void load(Math.max(0, page - 1), fetchPage({ libraryId, userId, keyword }))}
-                disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
-              >
-                上一页
-              </button>
-              <button
-                onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage({ libraryId, userId, keyword }))}
-                disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[12px] hover:bg-slate-100 disabled:opacity-40"
-              >
-                下一页
-              </button>
-            </div>
-          </div>
-        )}
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalElements={totalElements}
+          pageSize={PAGE_SIZE}
+          unit="条记录"
+          loading={loading}
+          onPrev={() => void load(Math.max(0, page - 1), fetchPage({ libraryId, userId, keyword }))}
+          onNext={() => void load(Math.min(totalPages - 1, page + 1), fetchPage({ libraryId, userId, keyword }))}
+        />
       </AdminCard>
     </div>
   );

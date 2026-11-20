@@ -20,7 +20,7 @@ export function adminBtn(
   size: "sm" | "md" = "md",
 ): string {
   const base =
-    "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-55";
+    "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-55";
   const sizes = {
     sm: "h-8 px-3 text-xs",
     md: "h-9 px-4 text-[13px]",
@@ -56,7 +56,7 @@ export function AdminPageHeader({
           <Icon size={19} strokeWidth={1.9} />
         </span>
         <div className="min-w-0">
-          <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-slate-400">{eyebrow}</div>
+          <div className="hidden text-[10px] font-medium uppercase tracking-[0.16em] text-slate-400 sm:block">{eyebrow}</div>
           <h1 className="mt-1 text-[22px] font-semibold leading-7 tracking-[-0.02em] text-slate-900">{title}</h1>
           {description && <p className="mt-1.5 max-w-3xl text-[13px] leading-5 text-slate-500">{description}</p>}
           {meta && <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">{meta}</div>}
@@ -119,6 +119,7 @@ export function AdminMetricCard({
   icon: Icon,
   tone = "slate",
   href,
+  className,
 }: {
   label: string;
   value: string;
@@ -126,10 +127,11 @@ export function AdminMetricCard({
   icon: LucideIcon;
   tone?: AdminTone;
   href?: string;
+  className?: string;
 }) {
   const styles = TONE_STYLES[tone];
   const card = (
-    <div className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_10px_28px_-18px_rgba(15,23,42,0.35)]">
+    <div className={clsx("group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_10px_28px_-18px_rgba(15,23,42,0.35)]", className)}>
       <span className={clsx("absolute inset-x-0 top-0 h-0.5", styles.bar)} />
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -145,7 +147,7 @@ export function AdminMetricCard({
       {hint && <div className="mt-1.5 truncate text-[11px] text-slate-400">{hint}</div>}
     </div>
   );
-  return href ? <Link href={href} className="block">{card}</Link> : card;
+  return href ? <Link href={href} className={clsx("block", className)}>{card}</Link> : card;
 }
 
 export function AdminEmptyState({
@@ -169,6 +171,51 @@ export function AdminEmptyState({
       <p className="mt-3 text-[13px] font-medium text-slate-600">{title}</p>
       {description && <p className="mt-1 max-w-md text-xs leading-5 text-slate-400">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
+    </div>
+  );
+}
+
+/** 管理表格统一分页条：始终展示总数，翻页按钮保持同一密度。 */
+export function AdminPagination({
+  page,
+  totalPages,
+  totalElements,
+  pageSize,
+  unit = "条",
+  loading = false,
+  onPrev,
+  onNext,
+}: {
+  page: number;
+  totalPages: number;
+  totalElements: number;
+  pageSize: number;
+  unit?: string;
+  loading?: boolean;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  const pages = Math.max(totalPages, 1);
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
+      <span>共 {totalElements} {unit} · 第 {page + 1} / {pages} 页</span>
+      <div className="flex items-center gap-2">
+        <span className="hidden sm:inline">每页 {pageSize} 条</span>
+        <button
+          onClick={onPrev}
+          disabled={page <= 0 || loading}
+          className="rounded-md border border-slate-200 bg-white px-3 py-1 text-[11px] text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          上一页
+        </button>
+        <button
+          onClick={onNext}
+          disabled={page >= pages - 1 || loading}
+          className="rounded-md border border-slate-200 bg-white px-3 py-1 text-[11px] text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          下一页
+        </button>
+      </div>
     </div>
   );
 }

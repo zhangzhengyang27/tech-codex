@@ -9,6 +9,7 @@ import {
   Eye,
   FileText,
   FileUp,
+  FolderOpen,
   FolderSync,
   Link2,
   Loader2,
@@ -21,7 +22,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
-import { AdminCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
+import { AdminCard, AdminPageHeader, AdminPagination, adminBtn } from "@/components/admin/admin-ui";
 import {
   adminDocument,
   deleteAdminDocument,
@@ -100,14 +101,14 @@ export default function AdminDocumentsPage() {
 
   /** 以当前筛选加载指定页（fetch 闭包在调用点捕获筛选，请求序守卫由 usePagedList 保证） */
   const fetchPage = useCallback(
-    (pg: number) => listDocuments(keyword, statusFilter || undefined, pg, 20),
+    (pg: number) => listDocuments(keyword, statusFilter || undefined, pg, PAGE_SIZE),
     [keyword, statusFilter],
   );
 
   useEffect(() => {
     if (!hydrated || !isLoggedIn) return;
     // 仅挂载时首载；筛选变化由控件回调显式触发，避免每次键入都重查
-    void load(0, () => listDocuments("", undefined, 0, 20));
+    void load(0, () => listDocuments("", undefined, 0, PAGE_SIZE));
   }, [load, hydrated, isLoggedIn]);
 
   const onImport = async () => {
@@ -222,14 +223,14 @@ export default function AdminDocumentsPage() {
   };
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
@@ -246,7 +247,7 @@ export default function AdminDocumentsPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               default 空间
             </span>
-            <span>共 {total} 篇文档</span>
+            <span>共 {total.toLocaleString("zh-CN")} 篇文档</span>
             <span>每页 {PAGE_SIZE} 条</span>
           </>
         }
@@ -285,36 +286,53 @@ export default function AdminDocumentsPage() {
         icon={Database}
         contentClassName="p-4"
       >
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid gap-2 sm:grid-cols-3">
           <button
             onClick={() => setDirOpen((o) => !o)}
             disabled={taskId !== null}
-            className={adminBtn("secondary", "sm")}
+            className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-3 text-left transition-colors hover:border-accent/30 hover:bg-white disabled:opacity-50"
           >
-            <FolderSync size={13} />
-            目录导入
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-slate-500 ring-1 ring-slate-200 group-hover:text-accent">
+              <FolderOpen size={14} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[12px] font-medium text-slate-700">目录导入</span>
+              <span className="mt-0.5 block text-[10px] text-slate-400">批量导入服务器目录</span>
+            </span>
+            <ArrowRight size={13} className="mt-2 shrink-0 text-slate-300 group-hover:text-accent" />
           </button>
           <button
             onClick={() => void startTask("sync")}
             disabled={starting || taskId !== null}
-            className={adminBtn("secondary", "sm")}
+            className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-3 text-left transition-colors hover:border-accent/30 hover:bg-white disabled:opacity-50"
           >
-            {starting ? <Loader2 size={13} className="animate-spin" /> : <FolderSync size={13} />}
-            同步 docs 内容
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-slate-500 ring-1 ring-slate-200 group-hover:text-accent">
+              {starting ? <Loader2 size={14} className="animate-spin" /> : <FolderSync size={14} />}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[12px] font-medium text-slate-700">同步 docs 内容</span>
+              <span className="mt-0.5 block text-[10px] text-slate-400">按文件名对账新增与删除</span>
+            </span>
+            <ArrowRight size={13} className="mt-2 shrink-0 text-slate-300 group-hover:text-accent" />
           </button>
           <button
             onClick={() => void startTask("rebuild")}
             disabled={starting || taskId !== null}
-            className={adminBtn("secondary", "sm")}
+            className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-3 text-left transition-colors hover:border-accent/30 hover:bg-white disabled:opacity-50"
           >
-            {starting ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-            重建向量索引
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-slate-500 ring-1 ring-slate-200 group-hover:text-accent">
+              <RefreshCw size={14} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[12px] font-medium text-slate-700">重建向量索引</span>
+              <span className="mt-0.5 block text-[10px] text-slate-400">全量修复 · 本地嵌入</span>
+            </span>
+            <ArrowRight size={13} className="mt-2 shrink-0 text-slate-300 group-hover:text-accent" />
           </button>
-          <span className="text-[11px] text-slate-400">
-            同步会按文件名对账新增、更新、改名和删除
-          </span>
         </div>
-
+        <p className="mt-2.5 text-[10px] leading-4 text-slate-400">
+          docs 同步按相对路径对账新增、更新、改名和删除；重建索引会重新切分并写入全部向量。
+        </p>
         {dirOpen && (
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <input
@@ -399,7 +417,7 @@ export default function AdminDocumentsPage() {
             <button type="submit" className={adminBtn("secondary", "sm")}>搜索</button>
           </form>
           <span className="rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">
-            {total} 篇
+            {total.toLocaleString("zh-CN")} 篇
           </span>
           <button
             onClick={() => void load(page, fetchPage)}
@@ -426,6 +444,13 @@ export default function AdminDocumentsPage() {
               </tr>
             </thead>
             <tbody>
+              {loading && docs.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-14 text-center text-[12px] text-slate-400">
+                    <Loader2 size={18} className="mx-auto mb-2 animate-spin" /> 正在加载文档…
+                  </td>
+                </tr>
+              )}
               {!loading && docs.length === 0 && (
                 <tr>
                   <td colSpan={7} className="px-4 py-12 text-center">
@@ -497,6 +522,7 @@ export default function AdminDocumentsPage() {
                       disabled={busyId === d.id}
                       className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-red-500/80 hover:bg-red-50 disabled:opacity-50"
                       title="删除文档"
+                      aria-label={`删除文档 ${d.title}`}
                     >
                       {busyId === d.id ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
                     </button>
@@ -507,27 +533,16 @@ export default function AdminDocumentsPage() {
           </table>
         </div>
 
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400">
-            <span>第 {page + 1} / {totalPages} 页</span>
-            <div className="flex gap-1">
-              <button
-                onClick={() => void load(Math.max(0, page - 1), fetchPage)}
-                disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[12px] disabled:opacity-40 hover:bg-slate-100"
-              >
-                上一页
-              </button>
-              <button
-                onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
-                disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[12px] disabled:opacity-40 hover:bg-slate-100"
-              >
-                下一页
-              </button>
-            </div>
-          </div>
-        )}
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          totalElements={total}
+          pageSize={PAGE_SIZE}
+          unit="篇"
+          loading={loading}
+          onPrev={() => void load(Math.max(0, page - 1), fetchPage)}
+          onNext={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
+        />
       </div>
 
       <DocViewer docId={viewId} onClose={() => setViewId(null)} loader={adminLoader} />

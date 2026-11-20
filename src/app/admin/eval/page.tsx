@@ -38,14 +38,14 @@ export default function AdminEvalPage() {
   }, [isLoggedIn, hydrated, router]);
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
@@ -59,7 +59,7 @@ export default function AdminEvalPage() {
         meta={<span>默认空间 · 公共知识库</span>}
       />
 
-      <div className="mb-5 flex w-fit flex-wrap gap-1 rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
+      <div className="mb-5 flex w-full gap-1 overflow-x-auto rounded-xl border border-slate-200 bg-white p-1 shadow-sm [scrollbar-width:none] sm:w-fit">
         {TABS.map((t) => {
           const Icon = t.icon;
           const active = tab === t.key;
@@ -68,11 +68,11 @@ export default function AdminEvalPage() {
               key={t.key}
               onClick={() => setTab(t.key)}
               className={clsx(
-                "flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12px] font-medium transition-colors",
+                "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-[12px] font-medium transition-colors",
                 active ? "bg-accent text-white shadow-sm" : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
               )}
             >
-              <Icon size={14} />
+              <Icon size={14} className="hidden sm:block" />
               {t.label}
             </button>
           );

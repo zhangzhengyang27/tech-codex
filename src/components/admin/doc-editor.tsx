@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AlertTriangle, FileText, Loader2, Save, X } from "lucide-react";
 import { adminDocument, updateDocumentContent, type KbDocumentView } from "@/lib/documents";
+import { adminBtn } from "@/components/admin/admin-ui";
 
 const errText = (e: unknown): string => (e instanceof Error ? e.message : "保存失败");
 
@@ -77,6 +78,10 @@ export function DocEditor({
 
   if (docId == null) return null;
 
+  // 只有普通入库文档可编辑；docs 同步文档是只读的，弹窗不应撑到整屏空白。
+  const editable = !!doc && doc.sourceType !== "SYNC";
+  const readOnlySync = !!doc && doc.sourceType === "SYNC";
+
   const onSave = async () => {
     if (!content.trim()) {
       setError("文档内容不能为空");
@@ -103,26 +108,28 @@ export function DocEditor({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/45 p-4 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label="编辑文档"
     >
       <div
-        className="flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-border bg-background shadow-2xl"
+        className={`flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_32px_80px_-24px_rgba(15,23,42,0.55)] ${
+          editable ? "h-[85vh]" : "max-h-[85vh]"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 头部 */}
-        <div className="flex items-start gap-3 border-b border-border px-5 py-3.5">
-          <FileText size={18} className="mt-0.5 shrink-0 text-accent" />
+        <div className="flex items-start gap-3 border-b border-slate-100 px-5 py-4">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-accent ring-1 ring-blue-100"><FileText size={15} /></span>
           <div className="min-w-0 flex-1">
-            <div className="text-sm font-semibold">编辑文档</div>
-            {doc && <div className="mt-0.5 truncate text-xs text-foreground/40">{doc.fileName}</div>}
+            <div className="text-[14px] font-semibold text-slate-800">编辑文档</div>
+            {doc && <div className="mt-0.5 truncate font-mono text-[10px] text-slate-400">{doc.fileName}</div>}
           </div>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-foreground/40 transition-colors hover:bg-muted hover:text-foreground"
+            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-800"
             aria-label="关闭"
           >
             <X size={18} />
@@ -130,9 +137,9 @@ export function DocEditor({
         </div>
 
         {/* 编辑区 */}
-        <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-5 py-4">
+        <div className={`flex flex-col gap-3 overflow-y-auto px-5 py-4 ${editable ? "flex-1" : ""}`}>
           {loading && (
-            <div className="flex flex-1 items-center justify-center text-sm text-foreground/40">
+            <div className="flex flex-1 items-center justify-center text-[13px] text-slate-400">
               <Loader2 size={20} className="mr-2 animate-spin" />
               正在加载文档…
             </div>
@@ -140,24 +147,24 @@ export function DocEditor({
           {!loading && doc && doc.sourceType !== "SYNC" && (
             <>
               <label className="flex items-center gap-2">
-                <span className="shrink-0 text-[13px] text-foreground/50">标题</span>
+                <span className="shrink-0 text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">标题</span>
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="h-9 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
+                  className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
                 />
               </label>
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 spellCheck={false}
-                className="min-h-[46vh] flex-1 resize-none rounded-md border border-border bg-muted/40 p-3 font-mono text-[13px] leading-relaxed outline-none focus:border-accent"
+                className="min-h-[46vh] flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50/60 p-4 font-mono text-[12px] leading-relaxed text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
                 placeholder="Markdown 原文"
               />
             </>
           )}
           {error && (
-            <div className="flex items-start gap-2 rounded-lg bg-red-50 p-3 text-[13px] text-red-600">
+            <div className="flex items-start gap-2 rounded-xl border border-red-100 bg-red-50 p-3 text-[12px] text-red-600">
               <AlertTriangle size={15} className="mt-0.5 shrink-0" />
               {error}
             </div>
@@ -165,23 +172,27 @@ export function DocEditor({
         </div>
 
         {/* 底部操作 */}
-        <div className="flex items-center justify-between border-t border-border px-5 py-3">
-          <span className="text-xs text-foreground/40">保存后将自动重建该文档的分块与向量索引</span>
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 bg-slate-50/50 px-5 py-3">
+          <span className="text-[11px] text-slate-400">
+            {readOnlySync ? "docs 同步文档为只读，修改请走源仓库同步" : "保存后将自动重建该文档的分块与向量索引"}
+          </span>
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/60 hover:bg-muted"
+              className={adminBtn("secondary", "sm")}
             >
-              取消
+              {readOnlySync ? "关闭" : "取消"}
             </button>
-            <button
-              onClick={() => void onSave()}
-              disabled={saving || loading || !doc || doc.sourceType === "SYNC"}
-              className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-4 text-[13px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
-            >
-              {saving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
-              保存并重建索引
-            </button>
+            {editable && (
+              <button
+                onClick={() => void onSave()}
+                disabled={saving || loading || !doc}
+                className={adminBtn("primary", "sm")}
+              >
+                {saving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
+                保存并重建索引
+              </button>
+            )}
           </div>
         </div>
       </div>

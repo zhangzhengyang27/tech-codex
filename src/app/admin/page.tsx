@@ -155,14 +155,14 @@ export default function AdminOverviewPage() {
   };
 
   if (!hydrated || !isLoggedIn) {
-    return <div className="w-full py-16 text-center text-sm text-foreground/40">加载中…</div>;
+    return <div className="w-full py-16 text-center text-sm text-slate-400">加载中…</div>;
   }
 
   if (!isAdmin) {
     return (
       <div className="flex w-full flex-col items-center gap-3 py-16 text-center">
-        <ShieldAlert size={36} className="text-foreground/30" />
-        <p className="text-sm text-foreground/60">该页面需要管理员权限</p>
+        <ShieldAlert size={36} className="text-slate-300" />
+        <p className="text-sm text-slate-500">该页面需要管理员权限</p>
       </div>
     );
   }
@@ -207,9 +207,10 @@ export default function AdminOverviewPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-6">
         <AdminMetricCard
           label="文档总数"
+          className="md:col-span-2"
           value={stats ? fmtNum(stats.totalDocuments) : "…"}
           hint={stats ? `已索引 ${fmtNum(stats.indexedDocuments)} 篇` : "正在读取统计"}
           icon={FileText}
@@ -218,6 +219,7 @@ export default function AdminOverviewPage() {
         />
         <AdminMetricCard
           label="分块总数"
+          className="md:col-span-2"
           value={stats ? fmtNum(stats.totalChunks) : "…"}
           hint="kb_chunk 已落库"
           icon={Layers}
@@ -225,6 +227,7 @@ export default function AdminOverviewPage() {
         />
         <AdminMetricCard
           label="待索引"
+          className="md:col-span-2"
           value={stats ? fmtNum(stats.pendingDocuments) : "…"}
           hint="处理中 / 排队"
           icon={HardDrive}
@@ -233,6 +236,7 @@ export default function AdminOverviewPage() {
         />
         <AdminMetricCard
           label="索引失败"
+          className="md:col-span-3"
           value={stats ? fmtNum(stats.failedDocuments) : "…"}
           hint={stats && stats.failedDocuments > 0 ? "可在文档管理重试" : "当前无失败文档"}
           icon={ShieldAlert}
@@ -241,6 +245,7 @@ export default function AdminOverviewPage() {
         />
         <AdminMetricCard
           label="向量规模"
+          className="col-span-2 md:col-span-3"
           value={stats ? fmtNum(stats.totalVectorCount) : "…"}
           hint="Redis 向量索引"
           icon={Database}
@@ -248,7 +253,7 @@ export default function AdminOverviewPage() {
         />
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)]">
+      <div className="mt-5 grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)]">
         <AdminCard
           title="待办与告警"
           description="需要人工介入的评测异常、内容问题和登录安全事件"

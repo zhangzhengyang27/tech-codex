@@ -89,7 +89,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
                   onClick={onNavigate}
                   aria-current={active ? "page" : undefined}
                   className={clsx(
-                    "group flex items-center gap-2.5 rounded-lg px-2.5 py-[9px] text-[13px] transition-colors",
+                    "group flex items-center gap-2.5 rounded-lg px-2.5 py-[9px] text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30",
                     active
                       ? "bg-white/[0.08] font-medium text-white shadow-[inset_2px_0_0_#60a5fa]"
                       : "text-slate-400 hover:bg-white/[0.05] hover:text-slate-100",
@@ -104,7 +104,6 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
                     )}
                   />
                   <span className="truncate">{item.label}</span>
-                  {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-400/90" />}
                 </Link>
               );
             })}
@@ -164,11 +163,48 @@ export function AdminShell({ children }: { children: ReactNode }) {
     setMobileOpen(false);
   }, [pathname]);
 
+  // 移动端抽屉支持 Esc 关闭；抽屉打开后不再需要管理条上的汉堡按钮。
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    // 抽屉打开时锁住背景滚动，避免移动端在菜单上滑动却滚动到下层页面。
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [mobileOpen]);
+
   return (
     <div className="min-h-[calc(100vh-3.5rem)] bg-[#f4f6f9]">
+      {/* 移动端：顶部一条工作台入口，点击后从左侧展开抽屉。必须放在内容之前，
+          sticky 才能在首屏可见并固定于全局导航下方。 */}
+      <div className={clsx(
+        "sticky top-14 z-30 flex h-11 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur lg:hidden",
+        mobileOpen && "invisible",
+      )}>
+        <span className="flex items-center gap-2 text-[13px] font-medium text-slate-800">
+          <ShieldCheck size={15} className="text-accent" />
+          管理工作台
+        </span>
+        <button
+          type="button"
+          onClick={() => setMobileOpen((open) => !open)}
+          aria-label={mobileOpen ? "关闭管理菜单" : "打开管理菜单"}
+          aria-expanded={mobileOpen}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800"
+        >
+          {mobileOpen ? <X size={17} /> : <Menu size={17} />}
+        </button>
+      </div>
+
       <div className="flex min-h-[calc(100vh-3.5rem)]">
         {/* 桌面端常驻侧栏：深色控制台风格，与内容画布形成清晰层级 */}
-        <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[236px] shrink-0 flex-col bg-[#0b1524] md:flex">
+        <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[236px] shrink-0 flex-col bg-[#0b1524] lg:flex">
           <SidebarBrand />
           <NavLinks />
           <SidebarFooter />
@@ -182,25 +218,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      {/* 移动端：顶部一条工作台入口，点击后从左侧展开抽屉 */}
-      <div className="sticky top-14 z-30 flex h-11 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur md:hidden">
-        <span className="flex items-center gap-2 text-[13px] font-medium">
-          <ShieldCheck size={15} className="text-accent" />
-          管理工作台
-        </span>
-        <button
-          type="button"
-          onClick={() => setMobileOpen((open) => !open)}
-          aria-label={mobileOpen ? "关闭管理菜单" : "打开管理菜单"}
-          aria-expanded={mobileOpen}
-          className="flex h-8 w-8 items-center justify-center rounded-md text-foreground/60 transition-colors hover:bg-muted"
-        >
-          {mobileOpen ? <X size={17} /> : <Menu size={17} />}
-        </button>
-      </div>
 
       {mobileOpen && (
-        <div className="fixed inset-0 top-14 z-30 md:hidden">
+        <div className="fixed inset-0 top-14 z-30 lg:hidden">
           <button
             type="button"
             aria-label="关闭管理菜单"
@@ -208,6 +228,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
             onClick={() => setMobileOpen(false)}
           />
           <aside className="relative flex h-[calc(100vh-3.5rem)] w-[264px] flex-col bg-[#0b1524] shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setMobileOpen(false)}
+              aria-label="关闭管理菜单"
+              className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
+            >
+              <X size={17} />
+            </button>
             <SidebarBrand />
             <NavLinks onNavigate={() => setMobileOpen(false)} />
             <SidebarFooter />

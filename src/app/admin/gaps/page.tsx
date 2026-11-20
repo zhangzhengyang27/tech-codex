@@ -96,8 +96,20 @@ export default function ContentGapsPage() {
     void loadPage(0); void loadMeta();
   }, [hydrated, isLoggedIn, isAdmin, router, loadPage, loadMeta]);
 
-  if (!hydrated || !isLoggedIn) {
+  if (!hydrated) {
     return <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/40">加载中…</div>;
+  }
+  // 未登录时明确给出登录入口，而不是一直停在“加载中”：
+  // 鉴权失败发生在客户端，若这里仍渲染 loading，用户会误以为接口卡死。
+  if (!isLoggedIn) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/50">
+        <p>该页面需要管理员登录后查看。</p>
+        <Link href="/login?from=/admin/gaps" className="mt-3 inline-block text-accent hover:underline">
+          去登录
+        </Link>
+      </div>
+    );
   }
   if (!isAdmin) {
     return <div className="mx-auto max-w-6xl px-4 py-24 text-center text-sm text-foreground/60">该页面需要管理员权限</div>;

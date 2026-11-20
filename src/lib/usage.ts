@@ -20,6 +20,16 @@ export interface UsageSummaryView {
   totalTokens: number;
   avgLatencyMs: number;
   avgHitCount: number;
+  /** 未答数：回答为空（相关度拒答/知识库无内容） */
+  unansweredQuestions: number;
+  /** 未答率：unansweredQuestions / totalQuestions */
+  unansweredRate: number;
+  /** 命中语义缓存的问答数 */
+  cacheHitCount: number;
+  /** 缓存命中节省的 token 估算 */
+  cacheSavedTokens: number;
+  /** cacheHitCount / totalQuestions，0~1 */
+  cacheHitRate: number;
   trend: UsageTrendPoint[];
 }
 
@@ -34,6 +44,10 @@ export interface ChatUsageView {
   totalTokens: number | null;
   elapsedMs: number | null;
   hitCount: number | null;
+  /** 是否命中语义缓存 */
+  cacheHit: boolean | null;
+  /** 缓存命中节省的输出 token 估算 */
+  cacheSavedTokens: number | null;
   createdDate: string | null;
 }
 

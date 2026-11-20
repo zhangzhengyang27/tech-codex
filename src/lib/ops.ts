@@ -95,6 +95,11 @@ export interface UsageSummary {
   totalTokens: number;
   avgLatencyMs: number;
   avgHitCount: number;
+  cacheHitCount: number;
+  cacheSavedTokens: number;
+  cacheHitRate: number;
+  unansweredQuestions?: number;
+  unansweredRate?: number;
   trend: UsageTrendPoint[];
 }
 
@@ -113,6 +118,15 @@ export interface EvalTrendPoint {
   ndcg: number | null;
 }
 
+/** 周报缺口 Top10 项：只保留运营动作需要的字段，避免把完整缺口详情塞进周报契约。 */
+export interface GapTopItem {
+  id: number;
+  question: string;
+  frequency: number;
+  status: string;
+  lastSeen: string | null;
+}
+
 export interface WeeklyReport {
   days: number;
   generatedAt: string;
@@ -122,6 +136,14 @@ export interface WeeklyReport {
   downRate: number;
   openAlerts: number;
   downTopQuestions: DownQuestion[];
+  gapTop: GapTopItem[];
+  governance?: {
+    avgHealthScore: number;
+    duplicateDocuments: number;
+    staleDocuments: number;
+    missingOwnerDocuments: number;
+    emptyChunkDocuments: number;
+  } | null;
   evalTrend: EvalTrendPoint[];
 }
 

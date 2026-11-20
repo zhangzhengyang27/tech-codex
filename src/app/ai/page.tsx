@@ -64,6 +64,12 @@ export default function AiPage() {
   /** 会话历史加载失败（区别于流式请求错误，展示在消息区） */
   const [historyError, setHistoryError] = useState("");
 
+  // 全局 ⌘K 搜索跳转过来时，把问题预填到输入框（不自动发送，避免误解用户意图）
+  useEffect(() => {
+    const initial = new URLSearchParams(window.location.search).get("q");
+    if (initial) setInput(initial);
+  }, []);
+
   // 打字机泵：SSE token 高速进缓冲（零渲染），渲染层按肉眼可读节奏逐帧放出
   const pumpRef = useRef<TypewriterPump | null>(null);
   const [streamText, setStreamText] = useState("");

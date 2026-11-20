@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import { ArrowRight, CalendarRange, Coins, Loader2, MessageSquare, Percent, RotateCw, ShieldAlert, ThumbsUp } from "lucide-react";
+import { ArrowRight, BookOpen, CalendarRange, Coins, Database, Loader2, MessageSquare, Percent, RotateCw, ShieldAlert, ThumbsUp } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { weeklyReport, type WeeklyReport } from "@/lib/ops";
@@ -93,6 +93,75 @@ function EvalTrendTable({ report }: { report: WeeklyReport }) {
               <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{p.hitRate == null ? "-" : fmtPct(p.hitRate)}</td>
               <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{p.mrr == null ? "-" : p.mrr.toFixed(3)}</td>
               <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{p.ndcg == null ? "-" : p.ndcg.toFixed(3)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </AdminCard>
+  );
+}
+
+/* ---------- 内容缺口 Top10（周报必须带上的内容补强清单） ---------- */
+
+const GAP_STATUS_LABEL: Record<string, string> = {
+  OPEN: "待处理",
+  TRIAGED: "已分诊",
+  PLANNED: "已排期",
+  RESOLVED: "已解决",
+  IGNORED: "已忽略",
+};
+
+function GapTopTable({ report }: { report: WeeklyReport }) {
+  const gaps = report.gapTop ?? [];
+  if (gaps.length === 0) {
+    return (
+      <AdminCard
+        title="内容缺口 Top 10"
+        description="未答 / 零引用 / 点踩 / 追问聚合，按频次排序"
+        icon={BookOpen}
+        actions={<Link href="/admin/gaps" className="text-[11px] text-accent hover:underline">全部缺口 →</Link>}
+        contentClassName="px-4 py-10 text-center text-[12px] text-slate-400"
+      >
+        周期内没有待处理缺口，内容覆盖保持良好
+      </AdminCard>
+    );
+  }
+  return (
+    <AdminCard
+      title="内容缺口 Top 10"
+      description="按出现频次排序，可直接作为内容补强与评测集来源"
+      icon={BookOpen}
+      actions={<Link href="/admin/gaps" className="text-[11px] text-accent hover:underline">全部缺口 →</Link>}
+      contentClassName="overflow-x-auto"
+    >
+      <table className="w-full min-w-[620px] text-left text-[12px]">
+        <thead>
+          <tr className="border-b border-slate-100 bg-slate-50/80 text-[10px] uppercase tracking-[0.06em] text-slate-400">
+            <th className="w-10 px-4 py-2.5 font-medium">#</th>
+            <th className="px-3 py-2.5 font-medium">问题</th>
+            <th className="w-16 px-3 py-2.5 font-medium">频次</th>
+            <th className="w-20 px-3 py-2.5 font-medium">状态</th>
+            <th className="w-28 px-3 py-2.5 font-medium">最近出现</th>
+          </tr>
+        </thead>
+        <tbody>
+          {gaps.map((g, i) => (
+            <tr key={g.id} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
+              <td className="px-4 py-2.5 font-mono text-[10px] text-slate-400">{String(i + 1).padStart(2, "0")}</td>
+              <td className="max-w-0 truncate px-3 py-2.5 text-slate-700" title={g.question}>{g.question}</td>
+              <td className="px-3 py-2.5">
+                <span className={clsx("font-mono font-medium", g.frequency >= 3 ? "text-amber-600" : "text-slate-600")}>
+                  {g.frequency}
+                </span>
+              </td>
+              <td className="px-3 py-2.5">
+                <span className="inline-flex rounded-full border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] text-slate-500">
+                  {GAP_STATUS_LABEL[g.status] ?? g.status}
+                </span>
+              </td>
+              <td className="whitespace-nowrap px-3 py-2.5 text-[10px] text-slate-400">
+                {g.lastSeen ? new Date(g.lastSeen).toLocaleDateString("zh-CN") : "-"}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -235,6 +304,14 @@ export default function AdminReportPage() {
               icon={ShieldAlert}
               tone={report.openAlerts > 0 ? "amber" : "emerald"}
             />
+            <AdminMetricCard
+              label="知识健康分"
+              className="col-span-2 md:col-span-3"
+              value={(report.governance?.avgHealthScore ?? 0).toFixed(1)}
+              hint={`重复 ${report.governance?.duplicateDocuments ?? 0} · 过期 ${report.governance?.staleDocuments ?? 0}`}
+              icon={Database}
+              tone={(report.governance?.avgHealthScore ?? 0) >= 80 ? "emerald" : "amber"}
+            />
           </div>
 
           {report.openAlerts > 0 && (
@@ -315,6 +392,8 @@ export default function AdminReportPage() {
               </Link>
             </AdminCard>
           </div>
+
+          <GapTopTable report={report} />
 
           <ChatTrendChart report={report} />
           <EvalTrendTable report={report} />

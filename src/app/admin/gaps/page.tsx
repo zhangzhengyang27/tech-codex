@@ -12,10 +12,10 @@ import { AdminCard, AdminMetricCard, AdminPageHeader, AdminPagination, adminBtn 
 import { useAuth } from '@/context/AuthContext';
 import { useHydrated } from '@/lib/use-hydrated';
 import {
-  batchGapStatus, convertGap, downloadGapCsv, gapClusters, gapDetail, gapSummary,
+  batchGapStatus, convertGap, downloadGapCsv, draftGap, gapClusters, gapDetail, gapSummary,
   listGaps, updateGapStatus,
   type ContentGapCluster, type ContentGapDetail, type ContentGapItem,
-  type ContentGapSummary, type GapStatus,
+  type ContentGapSummary, type ContentDraft, type GapStatus,
 } from '@/lib/gaps';
 
 const PAGE_SIZE = 20;
@@ -70,6 +70,8 @@ export default function ContentGapsPage() {
   const [convertKeywords, setConvertKeywords] = useState('');
   const [convertNote, setConvertNote] = useState('');
   const [converting, setConverting] = useState(false);
+  const [draft, setDraft] = useState<ContentDraft | null>(null);
+  const [drafting, setDrafting] = useState(false);
   const [actionBusy, setActionBusy] = useState(false);
 
   const loadMeta = useCallback(async () => {
@@ -144,7 +146,7 @@ export default function ContentGapsPage() {
 
   const openDetail = async (id: number) => {
     setDrawerOpen(true); setDetailLoading(true); setDrawerError(''); setDetail(null);
-    setConvertKeywords(''); setConvertNote('');
+    setConvertKeywords(''); setConvertNote(''); setDraft(null);
     try { setDetail(await gapDetail(id)); }
     catch (e) { setDrawerError(e instanceof Error ? e.message : '详情加载失败'); }
     finally { setDetailLoading(false); }
@@ -159,6 +161,14 @@ export default function ContentGapsPage() {
       void loadMeta();
     } catch (e) { setError(e instanceof Error ? e.message : '状态更新失败'); }
     finally { setActionBusy(false); }
+  };
+
+  const onDraft = async () => {
+    if (!detail) return;
+    setDrafting(true); setDrawerError('');
+    try { setDraft(await draftGap(detail.gap.id)); }
+    catch (e) { setDrawerError(e instanceof Error ? e.message : '大纲生成失败'); }
+    finally { setDrafting(false); }
   };
 
   const onConvert = async () => {
@@ -383,6 +393,11 @@ export default function ContentGapsPage() {
                         className={`rounded-md border px-2 py-1 text-[11px] disabled:opacity-40 ${s.tone}`}>{s.label}</button>
                     ))}
                   </div>
+                </div>
+
+                <div className="mt-5 rounded-2xl border border-amber-100 bg-amber-50/50 p-4">
+                  <h3 className="flex items-center gap-1.5 text-[13px] font-semibold text-amber-800"><Sparkles size={15} className="text-amber-500" /> 内容生产大纲</h3>
+                 add_marker
                 </div>
 
                 <div className="mt-5 rounded-2xl border border-violet-100 bg-violet-50/40 p-4">

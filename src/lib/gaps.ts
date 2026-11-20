@@ -102,6 +102,28 @@ export async function gapClusters(): Promise<ContentGapCluster[]> {
   return (await res.json()) as ContentGapCluster[];
 }
 
+export interface ContentDraftSection {
+  heading: string;
+  points: string[];
+}
+
+export interface ContentDraft {
+  gapId: number;
+  sourceQuestion: string;
+  title: string;
+  summary: string;
+  outline: ContentDraftSection[];
+  researchQuestions: string[];
+  generatedBy: "AI" | "FALLBACK";
+}
+
+/** 缺口转内容生产：生成文章大纲（不自动入库）。 */
+export async function draftGap(id: number): Promise<ContentDraft> {
+  const res = await apiFetch(`/kb-admin/gaps/${id}/draft`, { method: "POST", headers: authHeaders() });
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
+  return (await res.json()) as ContentDraft;
+}
+
 export async function gapDetail(id: number): Promise<ContentGapDetail> {
   const res = await apiFetch(`/kb-admin/gaps/${id}`, { headers: authHeaders() });
   if (!res.ok) throw new Error(await apiErrorMessage(res));

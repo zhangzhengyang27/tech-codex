@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { TopNav } from '@/components/ui/top-nav';
+import { CommandPalette } from '@/components/ui/command-palette';
 import { RouteProgress } from '@/components/route-progress';
 import { AuthProvider } from '@/context/AuthContext';
 import { SITE_URL } from '@/lib/site';
@@ -54,6 +55,7 @@ export default function RootLayout({
             <RouteProgress />
           </Suspense>
           <TopNav />
+          <CommandPalette />
           {children}
         </AuthProvider>
       </body>

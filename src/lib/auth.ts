@@ -395,6 +395,10 @@ export interface KbEvalResult {
   hitRate: number;
   mrr: number;
   ndcg: number;
+  /** Context Precision：Top-K 分块中期望文档占比 */
+  contextPrecision?: number;
+  /** Context Recall：期望文档被召回比例 */
+  contextRecall?: number;
   cases: EvalCaseResult[];
 }
 
@@ -492,6 +496,8 @@ export interface KbEvalCase {
   question: string;
   expectedKeywords: string;
   expectedDocIds: string | null;
+  /** RETRIEVAL=检索召回；ANSWER_FORMAT=格式/引用类，不参与 HitRate */
+  caseType: string | null;
   note: string | null;
   createdBy: string | null;
   createdDate: string | null;
@@ -526,10 +532,12 @@ export async function kbEvalAddCase(p: {
   question: string;
   expectedKeywords: string;
   expectedDocIds?: string;
+  caseType?: string;
   note?: string;
 }): Promise<{ id: number }> {
   const body = new URLSearchParams({ question: p.question, expectedKeywords: p.expectedKeywords });
   if (p.expectedDocIds?.trim()) body.set("expectedDocIds", p.expectedDocIds.trim());
+  if (p.caseType?.trim()) body.set("caseType", p.caseType.trim());
   if (p.note?.trim()) body.set("note", p.note.trim());
   const res = await adminFetch(`/eval/cases`, { method: "POST", body });
   return (await res.json()) as { id: number };
@@ -553,4 +561,38 @@ export async function kbEvalCaseFromFeedback(p: {
   if (p.note?.trim()) body.set("note", p.note.trim());
   const res = await adminFetch(`/eval/cases/from-feedback`, { method: "POST", body });
   return (await res.json()) as { id: number };
+}
+
+
+/* ===== 学习型 AI（Phase 3） ===== */
+
+export interface LearningSection {
+  title: string;
+  points: string[];
+}
+
+export interface LearningQuiz {
+  question: string;
+  options: string[];
+  answer: string;
+}
+
+export interface LearningGuide {
+  docId: number;
+  title: string;
+  summary: string;
+  sections: LearningSection[];
+  quiz: LearningQuiz[];
+  generatedBy: "AI" | "FALLBACK";
+}
+
+/** 按文档相对路径生成学习导读；首次调用会等待模型，前端需展示 loading。 */
+export async function fetchLearningGuide(path: string): Promise<LearningGuide> {
+  const token = getToken();
+  const res = await apiFetch(`/kb-api/learning/by-path?path=${encodeURIComponent(path)}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (res.status === 401) handleUnauthorized();
+  if (!res.ok) throw new Error(await apiErrorMessage(res));
+  return (await res.json()) as LearningGuide;
 }

@@ -72,7 +72,7 @@ export function EvalRunTab() {
 
       {result && (
         <>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
             <AdminMetricCard
               label="命中率 HitRate"
               value={pct(result.hitRate)}
@@ -82,6 +82,8 @@ export function EvalRunTab() {
             />
             <AdminMetricCard label="MRR" value={fmt(result.mrr)} hint="首个命中平均倒数排名" icon={TrendingUp} tone="blue" />
             <AdminMetricCard label="NDCG@K" value={fmt(result.ndcg)} hint="排序质量（需期望文档）" icon={ListOrdered} tone="violet" />
+            <AdminMetricCard label="Context Precision" value={fmt(result.contextPrecision ?? 0)} hint="Top-K 相关分块占比" icon={Target} tone="blue" />
+            <AdminMetricCard label="Context Recall" value={fmt(result.contextRecall ?? 0)} hint="期望文档召回比例" icon={Target} tone="emerald" />
             <AdminMetricCard
               label="未命中"
               value={String(result.miss)}

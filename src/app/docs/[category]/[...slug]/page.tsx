@@ -16,6 +16,7 @@ import { MermaidBlock } from '@/components/ui/mermaid-block';
 import { VpContainer } from '@/components/ui/vp-container';
 import { CodeGroup } from '@/components/ui/code-group';
 import { DocAskPanel } from '@/components/docs/doc-ask';
+import { LearningGuideButton } from '@/components/docs/learning-guide';
 import { FavoriteButton } from '@/components/docs/favorite-button';
 import { remarkVitepressContainers, normalizeVitepressContainers } from '@/lib/remark-vitepress-containers';
 import { remarkDocLinks } from '@/lib/remark-doc-links';
@@ -158,6 +159,7 @@ export default async function DocPage({
           <span className="text-foreground">{doc.title}</span>
           {/* 收藏星标：仅登录用户且文档已入知识库时可见（内部自判断） */}
           <FavoriteButton docPath={relativePath} />
+          <LearningGuideButton docPath={relativePath} docTitle={doc.title} />
         </nav>
 
         <article className="prose-doc">

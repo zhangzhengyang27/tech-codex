@@ -16,6 +16,7 @@ import {
   MessageSquare,
   ScrollText,
   Settings,
+  ShieldAlert,
   ShieldCheck,
   Target,
   Users,
@@ -49,6 +50,7 @@ const ADMIN_NAV_GROUPS: { title: string; items: AdminNavItem[] }[] = [
     title: "质量与检索",
     items: [
       { href: "/admin/eval", label: "RAG 评测", icon: ShieldCheck },
+      { href: "/admin/governance", label: "知识治理", icon: ShieldAlert },
       { href: "/admin/traces", label: "检索诊断", icon: Activity },
     ],
   },

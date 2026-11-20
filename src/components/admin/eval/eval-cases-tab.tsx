@@ -21,6 +21,7 @@ export function EvalCasesTab() {
   const [question, setQuestion] = useState("");
   const [keywords, setKeywords] = useState("");
   const [docIds, setDocIds] = useState("");
+  const [caseType, setCaseType] = useState("RETRIEVAL");
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -48,12 +49,14 @@ export function EvalCasesTab() {
         question: question.trim(),
         expectedKeywords: keywords.trim(),
         expectedDocIds: docIds,
+        caseType,
         note,
       });
       setFormMsg(`已新增用例 #${id}`);
       setQuestion("");
       setKeywords("");
       setDocIds("");
+      setCaseType("RETRIEVAL");
       setNote("");
       void load(0, fetchPage);
     } catch (e) {
@@ -113,12 +116,22 @@ export function EvalCasesTab() {
                 className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
               />
             </div>
-            <input
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="备注 / 预期答案说明（可选）"
-              className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
-            />
+            <div className="flex flex-col gap-2.5 sm:flex-row">
+              <select
+                value={caseType}
+                onChange={(e) => setCaseType(e.target.value)}
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white sm:w-52"
+              >
+                <option value="RETRIEVAL">检索召回（进入 HitRate）</option>
+                <option value="ANSWER_FORMAT">回答格式/引用（不计 HitRate）</option>
+              </select>
+              <input
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder="备注 / 预期答案说明（可选）"
+                className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
+              />
+            </div>
             <div className="flex items-center gap-3">
               <button
                 onClick={onSubmit}
@@ -156,6 +169,7 @@ export function EvalCasesTab() {
                 <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
                   <th className="px-4 py-2 font-medium">问题</th>
                   <th className="px-3 py-2 font-medium">期望关键字</th>
+                  <th className="px-3 py-2 font-medium">类型</th>
                   <th className="px-3 py-2 font-medium">备注</th>
                   <th className="px-3 py-2 font-medium">创建人</th>
                   <th className="px-3 py-2 font-medium">创建时间</th>
@@ -170,6 +184,13 @@ export function EvalCasesTab() {
                     </td>
                     <td className="max-w-[200px] px-3 py-2.5 text-slate-500">
                       <div className="truncate" title={c.expectedKeywords}>{c.expectedKeywords}</div>
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-2.5">
+                      <span className={c.caseType === "ANSWER_FORMAT"
+                        ? "inline-flex rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] text-amber-600"
+                        : "inline-flex rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] text-slate-500"}>
+                        {c.caseType === "ANSWER_FORMAT" ? "格式/引用" : "检索"}
+                      </span>
                     </td>
                     <td className="max-w-[220px] px-3 py-2.5 text-slate-400">
                       <div className="truncate" title={c.note ?? undefined}>{c.note || "-"}</div>

@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { BarChart3, Coins, Layers, Loader2, MessageSquare, ShieldAlert, RotateCw, Timer, Users } from "lucide-react";
+import clsx from "clsx";
+import { BarChart3, Coins, Layers, Loader2, MessageSquare, ShieldAlert, RotateCw, Timer, Users, Zap } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { timeoutOr } from "@/lib/fetch-helpers";
 import {
@@ -16,6 +17,7 @@ import {
 import { AdminCard, AdminEmptyState, AdminMetricCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
 
 const fmtNum = (v: number): string => v.toLocaleString("en-US");
+const fmtPct = (v: number): string => `${(v * 100).toFixed(1)}%`;
 
 /** 大数缩写（>1e6 显示 M，>1e3 显示 k）。 */
 const fmtCompact = (v: number): string => {
@@ -99,6 +101,7 @@ function UsageTable({ rows, loading }: { rows: ChatUsageView[]; loading: boolean
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">用户</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">问题</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">命中片段</th>
+                <th className="whitespace-nowrap px-3 py-2.5 font-medium">缓存</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">耗时</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">token 估算</th>
               </tr>
@@ -114,6 +117,16 @@ function UsageTable({ rows, loading }: { rows: ChatUsageView[]; loading: boolean
                     <div className="truncate" title={r.question}>{r.question}</div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{r.hitCount ?? 0}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5">
+                    <span className={clsx(
+                      "inline-flex rounded-full border px-1.5 py-0.5 text-[10px]",
+                      r.cacheHit
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-600"
+                        : "border-slate-200 bg-slate-50 text-slate-400",
+                    )}>
+                      {r.cacheHit ? "命中" : "回源"}
+                    </span>
+                  </td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">
                     {r.elapsedMs != null ? fmtMs(r.elapsedMs) : "-"}
                   </td>
@@ -310,11 +323,13 @@ export default function AdminUsagePage() {
       {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
 
       {summary && !isEmpty && (
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
           <AdminMetricCard label="总问答数" value={fmtNum(summary.totalQuestions)} hint="周期内累计" icon={MessageSquare} tone="blue" />
           <AdminMetricCard label="TOKEN 估算" value={fmtCompact(summary.totalTokens)} hint={`输入 ${fmtCompact(summary.totalInputTokens)} + 输出 ${fmtCompact(summary.totalOutputTokens)}`} icon={Coins} tone="violet" />
-          <AdminMetricCard label="平均耗时" value={fmtMs(summary.avgLatencyMs)} hint="每次问答" icon={Timer} tone="emerald" />
-          <AdminMetricCard label="平均命中片段" value={summary.avgHitCount.toFixed(1)} hint="检索命中数" icon={Layers} tone="amber" />
+          <AdminMetricCard label="缓存命中率" value={fmtPct(summary.cacheHitRate)} hint={`${fmtNum(summary.cacheHitCount)} 次命中`} icon={Zap} tone={summary.cacheHitRate >= 0.2 ? "emerald" : "amber"} />
+          <AdminMetricCard label="缓存节省 TOKEN" value={fmtCompact(summary.cacheSavedTokens)} hint="命中回放估算" icon={Zap} tone="emerald" />
+          <AdminMetricCard label="未答率" value={fmtPct(summary.unansweredRate)} hint={`${fmtNum(summary.unansweredQuestions)} 条空回答`} icon={ShieldAlert} tone={summary.unansweredRate < 0.1 ? "emerald" : "amber"} />
+          <AdminMetricCard label="平均耗时" value={fmtMs(summary.avgLatencyMs)} hint={`平均命中 ${summary.avgHitCount.toFixed(1)} 片段`} icon={Timer} tone="emerald" />
         </div>
       )}
 

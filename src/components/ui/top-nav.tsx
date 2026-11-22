@@ -43,7 +43,20 @@ const navItems: NavItem[] = [
       { label: "前端调试", href: "/docs/debugging", icon: "🔍" },
     ],
   },
-  { label: "Java", href: "/docs/java", icon: "☕" },
+  {
+    label: "Java",
+    children: [
+      // Java 目录被拆成 7 个子分类，顶栏不能只落到 /docs/java（20 篇语言基础）；
+      // 和「前端」一样用下拉暴露全部入口，避免用户误判 Java 只有少量文档。
+      { label: "Java 基础", href: "/docs/java", icon: "☕" },
+      { label: "JVM 与并发", href: "/docs/java-jvm", icon: "⚙️" },
+      { label: "核心框架", href: "/docs/java-framework", icon: "🧩" },
+      { label: "工程与架构", href: "/docs/java-arch", icon: "🏗️" },
+      { label: "实战项目", href: "/docs/java-project", icon: "🚀" },
+      { label: "性能与调优", href: "/docs/java-perf", icon: "📈" },
+      { label: "面试与进阶", href: "/docs/java-interview", icon: "💡" },
+    ],
+  },
   { label: "Python", href: "/docs/python", icon: "🐍" },
   { label: "Node.js", href: "/docs/node", icon: "🟢" },
   { label: "DevOps", href: "/docs/ops" },

@@ -124,6 +124,8 @@ export function EvalCasesTab() {
               >
                 <option value="RETRIEVAL">检索召回（进入 HitRate）</option>
                 <option value="ANSWER_FORMAT">回答格式/引用（不计 HitRate）</option>
+                <option value="MULTI_HOP">多跳召回（自然问法，Top-K 覆盖全部期望文档）</option>
+                <option value="MULTI_HOP_REF">引用型多跳（显式《标题》，验证实体链接）</option>
               </select>
               <input
                 value={note}
@@ -188,8 +190,10 @@ export function EvalCasesTab() {
                     <td className="whitespace-nowrap px-3 py-2.5">
                       <span className={c.caseType === "ANSWER_FORMAT"
                         ? "inline-flex rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] text-amber-600"
-                        : "inline-flex rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] text-slate-500"}>
-                        {c.caseType === "ANSWER_FORMAT" ? "格式/引用" : "检索"}
+                        : c.caseType === "MULTI_HOP" || c.caseType === "MULTI_HOP_REF"
+                          ? "inline-flex rounded-full border border-violet-200 bg-violet-50 px-1.5 py-0.5 text-[10px] text-violet-600"
+                          : "inline-flex rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] text-slate-500"}>
+                        {c.caseType === "ANSWER_FORMAT" ? "格式/引用" : c.caseType === "MULTI_HOP" ? "多跳" : c.caseType === "MULTI_HOP_REF" ? "引用型多跳" : "检索"}
                       </span>
                     </td>
                     <td className="max-w-[220px] px-3 py-2.5 text-slate-400">

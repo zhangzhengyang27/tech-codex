@@ -1,6 +1,6 @@
 # tech-codex Next.js 单容器多阶段构建
 # 关键点：
-# - 分类页 SSG + 详情页动态 SSR（运行时读 docs/），run 阶段必须带 docs/
+# - DB-only：内容全部来自后端 /content/**，构建与运行都不再需要 docs/ 目录
 # - redirects/ 由 next.config.ts 启动时读取，run 阶段必须带
 # - ⚠️ rewrites 的 KB_BACKEND_ORIGIN 在 next build 时烘焙进 routes-manifest，
 #   必须在构建期注入（值=kbnet 内后端容器名），运行期 env 只对 SSR 请求路径有效
@@ -23,10 +23,9 @@ WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
-COPY --from=build /app/docs ./docs
 COPY --from=build /app/redirects ./redirects
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/next.config.ts ./next.config.ts
 COPY --from=build /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 EXPOSE 4200
-CMD ["pnpm", "start", "-p", "4200"]
+CMD ["node", "node_modules/next/dist/bin/next", "start", "-p", "4200"]

@@ -1,4 +1,4 @@
-import { getCategoryFiles } from "@/lib/docs-reader";
+import { getCategoryFiles, type CategoryFileItem } from "@/lib/docs-reader";
 
 /**
  * 相关文档（服务端计算，纯内容重叠度 v1）：
@@ -28,18 +28,18 @@ function titleTokens(title: string): Set<string> {
  * 在 category 分类下为 currentPath（相对分类目录、去 .md）的文档找 top N 相关文档。
  * currentTitle 为当前文档标题；无重叠时返回空数组。
  */
-export function relatedDocs(
+export async function relatedDocs(
   categorySlug: string,
   currentPath: string,
   currentTitle: string,
   limit = 3
-): RelatedDoc[] {
-  const files = getCategoryFiles(categorySlug);
+): Promise<RelatedDoc[]> {
+  const files = await getCategoryFiles(categorySlug);
   if (files.length <= 1) return [];
   const cur = titleTokens(currentTitle);
   if (cur.size === 0) return [];
 
-  const scored: { item: (typeof files)[number]; score: number }[] = [];
+  const scored: { item: CategoryFileItem; score: number }[] = [];
   for (const f of files) {
     if (f.slug === currentPath) continue;
     const t = titleTokens(f.title);

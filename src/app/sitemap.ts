@@ -1,20 +1,24 @@
 import type { MetadataRoute } from 'next';
 
 import { allCategories } from '@/lib/docs-config';
-import { getCategoryFiles } from '@/lib/docs-reader';
+import { getDocsSnapshot } from '@/lib/docs-reader';
 import { SITE_URL } from '@/lib/site';
 
 /**
  * 全站 sitemap：首页 + 全部分类落地页 + 全部文档详情页（约 4000 条，远低于 5 万条/文件上限）。
- * 分类页 SSG、详情页 SSR，构建期与运行期均可安全读取 docs/ 索引。
+ * DB-only 后内容索引只能运行时拉取，因此 sitemap 走动态生成，不再在构建期扫描 docs/。
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = 'force-dynamic';
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, changeFrequency: 'daily', priority: 1 },
   ];
+  const { filesBySlug } = await getDocsSnapshot();
+
   for (const cat of allCategories) {
     entries.push({ url: `${SITE_URL}/docs/${cat.slug}`, changeFrequency: 'weekly', priority: 0.7 });
-    for (const file of getCategoryFiles(cat.slug)) {
+    for (const file of filesBySlug.get(cat.slug) ?? []) {
       entries.push({
         // 中文 slug 逐段 percent-encode（保留 / 分隔符），否则生成的 URL 含非法裸字符
         url: `${SITE_URL}/docs/${cat.slug}/${encodeDocPath(file.slug)}`,

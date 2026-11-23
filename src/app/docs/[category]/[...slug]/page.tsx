@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -6,7 +6,7 @@ import { MarkdownAsync as ReactMarkdown } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import { getCategoryBySlug } from '@/lib/docs-config';
-import { getDocContent } from '@/lib/docs-reader';
+import { getDocContent, getDocPaths } from '@/lib/docs-reader';
 import { excerptOf } from '@/lib/site';
 import { relatedDocs } from '@/lib/related-docs';
 import { Toc } from '@/components/ui/toc';
@@ -22,14 +22,17 @@ import { remarkVitepressContainers, normalizeVitepressContainers } from '@/lib/r
 import { remarkDocLinks } from '@/lib/remark-doc-links';
 import type { Components } from 'react-markdown';
 
+/** 正文与站内链接目标都来自数据库，构建期无内容源，必须运行时渲染。 */
+export const dynamic = 'force-dynamic';
+
 /** 重型交互组件按需分包：仅当文档真实出现 html/vue 代码块时才加载对应 chunk。
  *  注意：预览弹窗组件内部依赖 React 状态，必须保留 SSR（不能 ssr:false），
  *  否则会因服务端/客户端渲染结果不一致报 hydration 错误。 */
-const HtmlPreview = dynamic(
+const HtmlPreview = nextDynamic(
   () => import('@/components/ui/html-preview').then((m) => m.HtmlPreview),
   { ssr: true }
 );
-const VuePreview = dynamic(
+const VuePreview = nextDynamic(
   () => import('@/components/ui/vue-preview').then((m) => m.VuePreview),
   { ssr: true }
 );
@@ -109,7 +112,7 @@ export async function generateMetadata({
   // Next.js(Turbopack)传入的 catch-all 参数为 percent-encoded 原始段，须解码；
   // try/catch 容错：URL 里未编码的裸 % 序列不再导致 500，按原文处理
   const slugPath = slug.map((s) => { try { return decodeURIComponent(s); } catch { return s; } }).join('/');
-  const doc = getDocContent(`${cat.dir}/${slugPath}.md`);
+  const doc = await getDocContent(`${cat.dir}/${slugPath}.md`);
   if (!doc) return {};
   const description = excerptOf(doc.content) || `${cat.title} · ${doc.title}`;
   return {
@@ -138,12 +141,14 @@ export default async function DocPage({
   // try/catch 容错：URL 里未编码的裸 % 序列不再导致 500，按原文处理
   const slugPath = slug.map((s) => { try { return decodeURIComponent(s); } catch { return s; } }).join('/');
   const relativePath = `${cat.dir}/${slugPath}.md`;
-  const doc = getDocContent(relativePath);
+  const doc = await getDocContent(relativePath);
   if (!doc) notFound();
 
   const tocItems = extractToc(doc.content);
-  // 相关文档：同分类内标题词元重叠度 top3（服务端计算，无额外 IO）
-  const related = relatedDocs(category, slugPath, doc.title);
+  // 相对链接重写需要“哪些路径真实存在”，DB-only 下用数据库已发布路径集合判断
+  const knownPaths = await getDocPaths();
+  // 相关文档：同分类内标题词元重叠度 top3（复用内容索引缓存，无额外 IO）
+  const related = await relatedDocs(category, slugPath, doc.title);
 
   return (
     <div className="flex flex-col gap-0 lg:flex-row lg:gap-10">
@@ -164,7 +169,7 @@ export default async function DocPage({
 
         <article className="prose-doc">
           <ReactMarkdown
-            remarkPlugins={[remarkGfm, remarkVitepressContainers, remarkDocLinks(relativePath)]}
+            remarkPlugins={[remarkGfm, remarkVitepressContainers, remarkDocLinks(relativePath, knownPaths)]}
             rehypePlugins={[rehypeSlug]}
             components={markdownComponents}
           >

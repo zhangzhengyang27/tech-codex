@@ -1,11 +1,5 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
-import { allCategories } from '@/lib/docs-config';
-import { getDocContent } from '@/lib/docs-reader';
-import { excerptOf } from '@/lib/site';
-
-const DOCS_ROOT = path.join(process.cwd(), 'docs');
+import { getAllContentIndex } from '@/lib/docs-reader';
+import { getCategoryBySlug } from '@/lib/docs-config';
 
 export interface RecentDoc {
   /** 分类 slug（URL 第一段） */
@@ -14,71 +8,45 @@ export interface RecentDoc {
   slug: string;
   title: string;
   summary: string;
-  /** 文件修改时间（ISO 字符串；容器/挂载保留源 mtime） */
+  /** 最近更新时间（ISO 字符串） */
   updatedAt: string;
 }
 
+function timeOf(iso: string | null | undefined): number {
+  if (!iso) return 0;
+  const t = Date.parse(iso);
+  return Number.isNaN(t) ? 0 : t;
+}
+
 /**
- * 按文件 mtime 取最近更新的文档（RSS 用）。
- * 不依赖 git（生产容器内无 .git，recent-updates 的 git log 会静默失效），
- * 直接 stat 全部 md 文件按 mtime 排序后取前 N 篇，标题/摘要现读 frontmatter/正文。
+ * 最近更新的文档（RSS 用）。
+ *
+ * DB-only 后不再 stat 文件 mtime，也不依赖容器内 .git（生产镜像没有 .git）；
+ * 直接按数据库索引里的 updatedDate/publishedAt 排序，摘要取 CMS 的结构化 description。
+ * CMS 每次发布都会刷新 updatedDate，因此能反映在线编辑。
  */
-export function getRecentDocs(limit = 50): RecentDoc[] {
-  const candidates: { category: string; slug: string; abs: string; mtime: number }[] = [];
-  for (const cat of allCategories) {
-    const base = path.join(DOCS_ROOT, cat.dir);
-    if (!fs.existsSync(base)) continue;
-    walk(base, (abs) => {
-      const rel = path.relative(base, abs).replace(/\.md$/, '').split(path.sep).join('/');
-      candidates.push({
+export async function getRecentDocs(limit = 50): Promise<RecentDoc[]> {
+  const docs = await getAllContentIndex();
+  const candidates = docs
+    .filter((d) => d.categorySlug && d.path)
+    .map((d) => {
+      const cat = getCategoryBySlug(d.categorySlug!);
+      if (!cat || !d.path.startsWith(`${cat.dir}/`)) return null;
+      const rel = d.path.slice(cat.dir.length + 1).replace(/\.md$/, '');
+      const updatedAt = d.updatedDate ?? d.publishedAt ?? d.createdDate ?? null;
+      return {
         category: cat.slug,
         slug: rel,
-        abs,
-        mtime: fs.statSync(abs).mtimeMs,
-      });
-    });
-  }
-  candidates.sort((a, b) => b.mtime - a.mtime);
+        title: d.title?.trim() || rel.split('/').pop() || rel,
+        summary: d.description?.trim() || `${cat.title} · 内容更新`,
+        updatedAt,
+      };
+    })
+    .filter((d): d is NonNullable<typeof d> => Boolean(d && d.updatedAt));
 
-  const seen = new Set<string>();
-  const result: RecentDoc[] = [];
-  for (const c of candidates) {
-    if (result.length >= limit) break;
-    // 去重键用绝对文件路径：分类目录互相嵌套时同一文件会被多个分类 walk 到，
-    // 按 category/slug 去重会漏掉（键不同），按绝对路径才能保证一篇只出现一次
-    const key = c.abs;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    const doc = getDocContent(relPathOf(c));
-    if (!doc) continue;
-    result.push({
-      category: c.category,
-      slug: c.slug,
-      title: doc.title,
-      summary: excerptOf(doc.content, 160),
-      updatedAt: new Date(c.mtime).toISOString(),
-    });
-  }
-  return result;
-}
-
-/** 由绝对路径还原 docs/ 相对路径（供 getDocContent 使用） */
-function relPathOf(c: { category: string; slug: string }): string {
-  const cat = allCategories.find((x) => x.slug === c.category)!;
-  return `${cat.dir}/${c.slug}.md`;
-}
-
-function walk(dir: string, onFile: (abs: string) => void): void {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.isDirectory() && !entry.name.startsWith('.')) {
-      walk(path.join(dir, entry.name), onFile);
-    } else if (
-      entry.isFile() &&
-      entry.name.endsWith('.md') &&
-      entry.name !== 'index.md' &&
-      !entry.name.startsWith('_') // 工作区元文件不进最近更新列表
-    ) {
-      onFile(path.join(dir, entry.name));
-    }
-  }
+  candidates.sort((a, b) => timeOf(b.updatedAt) - timeOf(a.updatedAt));
+  return candidates.slice(0, limit).map((d) => ({
+    ...d,
+    updatedAt: new Date(d.updatedAt!).toISOString(),
+  }));
 }

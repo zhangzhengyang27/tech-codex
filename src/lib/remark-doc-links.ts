@@ -1,9 +1,6 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import type { Link, Root } from 'mdast';
 import { allCategories } from './docs-config';
-
-const DOCS_ROOT = path.join(process.cwd(), 'docs');
 
 /** 分类按 dir 长度降序（最长前缀优先），模块级常量——避免每条链接重排 */
 const CATEGORIES_BY_DIR_DEPTH = [...allCategories].sort((a, b) => b.dir.length - a.dir.length);
@@ -13,12 +10,16 @@ const CATEGORIES_BY_DIR_DEPTH = [...allCategories].sort((a, b) => b.dir.length -
  *
  * docs/ 内大量文章使用相对链接互引(如 ./01-xxx.md 或 ../04-数组)。
  * 站点路由为 /docs/[category]/[...slug],直接渲染相对 href 会 404。
- * 本插件把"目标文件真实存在"的相对链接重写为对应站内路由;
+ * DB-only 分支没有文件系统可探测，目标是否存在改由调用方传入的已发布路径集合判断；
  * 外链、锚点、绝对路径与解析不到目标的链接保持原样。
  */
 
 /** 解析单个链接,返回站内路由;无法解析时返回 null */
-export function resolveDocHref(docRelativePath: string, href: string): string | null {
+export function resolveDocHref(
+  docRelativePath: string,
+  href: string,
+  knownPaths: ReadonlySet<string>
+): string | null {
   if (!href || href.startsWith('#') || href.startsWith('/') ||
       /^(https?|mailto|data):/i.test(href)) return null;
 
@@ -37,11 +38,9 @@ export function resolveDocHref(docRelativePath: string, href: string): string | 
   // 相对链接跳出了 docs/ 目录,不处理
   if (resolved.startsWith('..')) return null;
 
-  // 链接可能带或不带 .md 后缀,依次尝试
+  // 链接可能带或不带 .md 后缀,依次在数据库已发布路径集合里查找
   const candidates = [resolved, `${resolved}.md`];
-  const hit = candidates.find(
-    (c) => fs.existsSync(path.join(DOCS_ROOT, c)) && fs.statSync(path.join(DOCS_ROOT, c)).isFile()
-  );
+  const hit = candidates.find((c) => knownPaths.has(c));
   if (!hit) return null;
 
   // 找到该文件所属的最具体分类(与 docs-reader buildIndex 的最长前缀归属一致)
@@ -58,21 +57,26 @@ export function resolveDocHref(docRelativePath: string, href: string): string | 
   return `/docs/${owner.slug}/${encodedPath}${hash ? `#${encodeURIComponent(hash)}` : ''}`;
 }
 
-function visitLinks(node: Root['children'][number], docRel: string, rewrites: [Link, string][]): void {
+function visitLinks(
+  node: Root['children'][number],
+  docRel: string,
+  knownPaths: ReadonlySet<string>,
+  rewrites: [Link, string][]
+): void {
   if (node.type === 'link') {
-    const target = resolveDocHref(docRel, node.url);
+    const target = resolveDocHref(docRel, node.url, knownPaths);
     if (target) rewrites.push([node, target]);
   }
   if ('children' in node && Array.isArray(node.children)) {
-    for (const child of node.children) visitLinks(child, docRel, rewrites);
+    for (const child of node.children) visitLinks(child, docRel, knownPaths, rewrites);
   }
 }
 
-/** 工厂:绑定当前文档路径的 remark 插件(attacher 返回 transformer) */
-export function remarkDocLinks(docRelativePath: string) {
+/** 工厂:绑定当前文档路径与已发布路径集合的 remark 插件(attacher 返回 transformer) */
+export function remarkDocLinks(docRelativePath: string, knownPaths: ReadonlySet<string>) {
   return () => (tree: Root) => {
     const rewrites: [Link, string][] = [];
-    for (const child of tree.children) visitLinks(child, docRelativePath, rewrites);
+    for (const child of tree.children) visitLinks(child, docRelativePath, knownPaths, rewrites);
     for (const [node, target] of rewrites) node.url = target;
   };
 }

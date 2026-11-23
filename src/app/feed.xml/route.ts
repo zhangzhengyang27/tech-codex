@@ -1,8 +1,8 @@
 import { getRecentDocs } from '@/lib/recent-files';
 import { SITE_URL } from '@/lib/site';
 
-/** RSS 2.0 订阅源：最近更新的 50 篇文档。按小时 revalidate 避免每次请求全量 stat。 */
-export const revalidate = 3600;
+/** RSS 2.0 订阅源：最近更新的 50 篇文档。内容索引来自数据库，需运行时生成。 */
+export const dynamic = 'force-dynamic';
 
 function escapeXml(s: string): string {
   return s
@@ -19,8 +19,8 @@ function docUrl(d: { category: string; slug: string }): string {
   return escapeXml(`${SITE_URL}/docs/${d.category}/${path}`);
 }
 
-export function GET(): Response {
-  const docs = getRecentDocs(50);
+export async function GET(): Promise<Response> {
+  const docs = await getRecentDocs(50);
   const items = docs
     .map(
       (d) => `    <item>

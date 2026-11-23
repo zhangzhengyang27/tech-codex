@@ -6,8 +6,8 @@ import { buildLlmsFull, buildLlmsFullIndex, llmsFullTooLarge } from '@/lib/llms'
  */
 export const dynamic = 'force-dynamic';
 
-export function GET() {
-  const body = llmsFullTooLarge() ? buildLlmsFullIndex() : buildLlmsFull();
+export async function GET() {
+  const body = (await llmsFullTooLarge()) ? await buildLlmsFullIndex() : await buildLlmsFull();
   return new Response(body, {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   });

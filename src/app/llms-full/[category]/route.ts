@@ -9,7 +9,7 @@ export async function GET(
 ) {
   const { category } = await params;
   const catSlug = category.replace(/\.txt$/i, '');
-  const body = buildCategoryFull(catSlug);
+  const body = await buildCategoryFull(catSlug);
   if (!body) {
     return new Response('Not Found', { status: 404 });
   }

@@ -1,13 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getCategoryBySlug, allCategories } from '@/lib/docs-config';
+import { getCategoryBySlug } from '@/lib/docs-config';
 import { getSections } from '@/lib/docs-reader';
 import type { DocSection } from '@/lib/docs-reader';
 
-export function generateStaticParams() {
-  return allCategories.map((cat) => ({ category: cat.slug }));
-}
+/** 分类页内容来自数据库，不再在构建期扫描 docs 目录生成静态参数。 */
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params,
@@ -80,7 +79,7 @@ export default async function CategoryPage({
   const cat = getCategoryBySlug(category);
   if (!cat) notFound();
 
-  const sections = getSections(category);
+  const sections = await getSections(category);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">

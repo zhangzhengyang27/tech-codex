@@ -7,6 +7,7 @@ import {
   Activity,
   ArrowUpRight,
   BarChart3,
+  BookOpen,
   CalendarRange,
   Database,
   FileText,
@@ -40,6 +41,7 @@ const ADMIN_NAV_GROUPS: { title: string; items: AdminNavItem[] }[] = [
   {
     title: "内容运营",
     items: [
+      { href: "/admin/content", label: "内容中心", icon: BookOpen },
       { href: "/admin/documents", label: "文档管理", icon: FileText },
       { href: "/admin/gaps", label: "内容缺口", icon: Target },
       { href: "/admin/feedback", label: "问答反馈", icon: MessageSquare },

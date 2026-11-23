@@ -7,3 +7,6 @@ node_modules
 *.log
 scripts
 .workbuddy
+.env
+.env.*
+docs

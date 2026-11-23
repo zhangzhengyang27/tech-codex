@@ -4,6 +4,9 @@ import { getSections } from '@/lib/docs-reader';
 import { DocsSidebar } from '@/components/ui/docs-sidebar';
 import { MobileDocsDrawer } from '@/components/ui/mobile-docs-drawer';
 
+/** 侧边栏来自数据库，构建期无内容源，必须运行时渲染。 */
+export const dynamic = 'force-dynamic';
+
 export default async function CategoryLayout({
   children,
   params,
@@ -15,7 +18,7 @@ export default async function CategoryLayout({
   const cat = getCategoryBySlug(category);
   if (!cat) notFound();
 
-  const sections = getSections(category);
+  const sections = await getSections(category);
 
   return (
     <div className="flex flex-col gap-0 px-4 md:flex-row md:gap-8 md:px-8 lg:pr-8 xl:pr-12">

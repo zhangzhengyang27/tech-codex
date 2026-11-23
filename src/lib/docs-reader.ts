@@ -1,9 +1,58 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import matter from 'gray-matter';
 import { allCategories, getCategoryBySlug } from './docs-config';
 
-const DOCS_ROOT = path.join(process.cwd(), 'docs');
+/**
+ * 站点内容读取层（DB-only 分支）。
+ *
+ * 旧实现用 fs 扫描 docs/ 并解析 frontmatter；现在内容真相在 MySQL 的 kb_document，
+ * Spring 通过 /content/index、/content/doc、/content/category 暴露只读内容。
+ * 前端不再依赖构建产物或容器挂载的 Markdown 文件。
+ *
+ * 缓存边界：
+ * - 模块级快照缓存避免每次页面渲染都拉 4.5k 条索引；CMS 代理写操作后调用
+ *   invalidateDocsCache() + revalidateTag('docs-content') 立即失效。
+ * - dev 环境 TTL 更短，便于本地改库后尽快看到变化；生产 TTL 60s 作为兜底。
+ */
+
+const BACKEND = process.env.KB_BACKEND_ORIGIN ?? 'http://localhost:8081';
+const DEV_TTL_MS = 30_000;
+const PROD_TTL_MS = 60_000;
+
+/** 后端 /content/index 的条目（与 ContentIndexItem 对齐）。 */
+export interface ContentIndexItem {
+  id: number;
+  title: string | null;
+  description: string | null;
+  categorySlug: string | null;
+  categoryDir: string | null;
+  docSlug: string | null;
+  path: string;
+  fileSize: number | null;
+  createdDate: string | null;
+  updatedDate: string | null;
+  publishedAt: string | null;
+  revision: number | null;
+}
+
+interface ContentIndexResponse {
+  total: number;
+  generatedAt: string;
+  docs: ContentIndexItem[];
+}
+
+/** 后端 /content/doc 的响应。 */
+interface ContentDocResponse {
+  title: string;
+  description: string | null;
+  path: string;
+  categorySlug: string;
+  categoryDir: string;
+  docSlug: string;
+  body: string;
+  frontmatter: string;
+  revision: number | null;
+  publishedAt: string | null;
+  updatedDate: string | null;
+}
 
 export interface DocSection {
   title: string;
@@ -19,244 +68,58 @@ export interface DocFile {
   path: string;
 }
 
-/** 从文件名提取侧边栏文件标题：保留序号前缀（如 "01-前端框架概述"） */
-function extractFileTitle(filename: string): string {
-  return filename
-    .replace(/\.md$/, '')
-    .replace(/^(README|index)$/, '概述')
-    .trim();
-}
-
-/** 从目录名提取章节标题：去掉序号前缀（"0-基础入门" → "基础入门"） */
-function extractSectionTitle(name: string): string {
-  return name
-    .replace(/^[\d.]+-\s*/, '')
-    .replace(/^[\d.]+$/, '')
-    .trim() || name;
-}
-
-/** 分组索引文件名：作为目录/章节的说明页，不计入侧边栏文件列表。
- *  仅排除 index.md——README.md 在全站多被用作真实正文文件名，不可排除。
- *  `*_` 前缀文件（如 AI 写作指令 _PROMPT.md、写作队列 _OUTLINE.md）为仓库工作区
- *  元文件，不属于站点内容，同样不进侧边栏。 */
-const INDEX_FILES = new Set(['index.md']);
-
-/** 工作区元文件前缀：以下划线开头的 md 文件只在仓库内使用，不作为站点文章渲染 */
-const WORKSPACE_FILE_PREFIX = '_';
-
-function isRenderableDoc(name: string): boolean {
-  return (
-    name.endsWith('.md') && !INDEX_FILES.has(name) && !name.startsWith(WORKSPACE_FILE_PREFIX)
-  );
-}
-
-/** 读取单文件 frontmatter 的 title（用于目录标题回退） */
-function readFrontmatterTitle(relativePath: string): string | null {
-  const filePath = path.join(DOCS_ROOT, relativePath);
-  if (!fs.existsSync(filePath)) return null;
-  try {
-    const { data } = matter(fs.readFileSync(filePath, 'utf-8'));
-    return (data.title as string) || null;
-  } catch {
-    return null;
-  }
-}
-
-/** 对文件按序号排序 */
-function sortByName(a: string, b: string): number {
-  const numA = parseInt(a.match(/^(\d+)/)?.[1] ?? '999', 10);
-  const numB = parseInt(b.match(/^(\d+)/)?.[1] ?? '999', 10);
-  if (numA !== numB) return numA - numB;
-  return a.localeCompare(b, 'zh-CN');
-}
-
-/** getSections 缓存（按分类 slug 键）：分类侧边栏在布局与列表页每次请求都全量
- *  readdir + frontmatter 解析，dev 长时间运行会累积拖慢。与 getDocsIndex 同款策略：
- *  生产环境永久缓存，dev 环境按 TTL 过期以便反映新增/重命名文档。 */
-interface SectionsCacheEntry {
-  sections: DocSection[];
-  at: number;
-}
-const sectionsCache = new Map<string, SectionsCacheEntry>();
-const DEV_SECTIONS_TTL_MS = 30_000;
-
-/** 获取某个分类下的所有章节和文件（递归构建嵌套树，支持任意深度目录） */
-export function getSections(categorySlug: string): DocSection[] {
-  const now = Date.now();
-  const cached = sectionsCache.get(categorySlug);
-  if (
-    cached &&
-    (process.env.NODE_ENV === 'production' || now - cached.at < DEV_SECTIONS_TTL_MS)
-  ) {
-    return cached.sections;
-  }
-
-  const sections = buildSections(categorySlug);
-  sectionsCache.set(categorySlug, { sections, at: now });
-  return sections;
-}
-
-/** 递归扫描分类目录构建章节树（getSections 的实际实现，结果由上层缓存） */
-function buildSections(categorySlug: string): DocSection[] {
-  const category = getCategoryBySlug(categorySlug);
-  if (!category) return [];
-
-  const categoryDir = path.join(DOCS_ROOT, category.dir);
-  if (!fs.existsSync(categoryDir)) return [];
-
-  const entries = fs.readdirSync(categoryDir, { withFileTypes: true });
-  const sections: DocSection[] = [];
-
-  // 根目录下的 md 文件作为“概述”章节（排除 index/README 索引文件）
-  const rootFiles = entries
-    .filter((e) => e.isFile() && isRenderableDoc(e.name))
-    .map((e) => e.name)
-    .sort(sortByName);
-
-  if (rootFiles.length > 0) {
-    sections.push({
-      title: '概述',
-      slug: '_root',
-      files: rootFiles.map((f) => ({
-        title: extractFileTitle(f),
-        slug: f.replace(/\.md$/, ''),
-        path: path.join(category.dir, f),
-      })),
-      children: [],
-    });
-  }
-
-  // 子目录递归构建为章节（含其下级子目录）
-  const dirs = entries
-    .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
-    .map((e) => e.name)
-    .sort(sortByName);
-
-  for (const dir of dirs) {
-    const section = buildSection(
-      path.join(categoryDir, dir),
-      path.join(category.dir, dir),
-      dir
-    );
-    if (section) sections.push(section);
-  }
-
-  return sections;
-}
-
-/** 递归构建单个章节：收集当前目录的 md 文件，并递归处理子目录 */
-function buildSection(absDir: string, relDir: string, relSlug: string): DocSection | null {
-  const entries = fs.readdirSync(absDir, { withFileTypes: true });
-
-  const mdFiles = entries
-    .filter((e) => e.isFile() && isRenderableDoc(e.name))
-    .map((e) => e.name)
-    .sort(sortByName);
-
-  const subDirs = entries
-    .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
-    .map((e) => e.name)
-    .sort(sortByName);
-
-  const children: DocSection[] = [];
-  for (const sub of subDirs) {
-    const child = buildSection(
-      path.join(absDir, sub),
-      path.join(relDir, sub),
-      `${relSlug}/${sub}`
-    );
-    if (child) children.push(child);
-  }
-
-  // 既无文件又无子节点的目录跳过
-  if (mdFiles.length === 0 && children.length === 0) return null;
-
-  // 优先用 index/README 的 frontmatter title 作为章节标题，否则回退到目录名
-  const indexTitle =
-    readFrontmatterTitle(`${relDir}/index.md`) ??
-    readFrontmatterTitle(`${relDir}/README.md`);
-  const sectionTitle = indexTitle ?? extractSectionTitle(path.basename(relSlug));
-
-  return {
-    title: sectionTitle,
-    slug: relSlug,
-    files: mdFiles.map((f) => ({
-      title: extractFileTitle(f),
-      slug: f.replace(/\.md$/, ''),
-      path: path.join(relDir, f),
-    })),
-    children,
-  };
-}
-
-/** getDocContent 结果微缓存：详情页 generateMetadata 与页面主体同一请求各读一次，
- *  以 (绝对路径 + mtimeMs) 为键复用读取与 frontmatter 解析；mtime 参与键保证 dev 下
- *  改文件立即生效。LRU 上限防止长驻进程内存无界增长。 */
-const DOC_CONTENT_CACHE_MAX = 128;
-const docContentCache = new Map<string, { title: string; content: string }>();
-
-/** 读取单篇文档内容 */
-export function getDocContent(relativePath: string): { title: string; content: string } | null {
-  // 工作区元文件（_* 前缀）不作为站点内容对外渲染
-  if (path.basename(relativePath).startsWith(WORKSPACE_FILE_PREFIX)) return null;
-  // 路径越界防护：解析后必须仍在 docs/ 目录内（防御 ../ 或绝对路径注入）
-  const filePath = path.resolve(DOCS_ROOT, relativePath);
-  if (filePath !== DOCS_ROOT && !filePath.startsWith(DOCS_ROOT + path.sep)) return null;
-  if (!fs.existsSync(filePath)) return null;
-
-  const mtimeMs = fs.statSync(filePath).mtimeMs;
-  const cacheKey = `${filePath}\u0000${mtimeMs}`;
-  const hit = docContentCache.get(cacheKey);
-  if (hit) {
-    // LRU：命中后移到队尾
-    docContentCache.delete(cacheKey);
-    docContentCache.set(cacheKey, hit);
-    return hit;
-  }
-
-  const raw = fs.readFileSync(filePath, 'utf-8');
-  let title: string;
-  let content: string;
-  try {
-    const { data, content: body } = matter(raw);
-    title = (data.title as string) || extractSectionTitle(path.basename(relativePath));
-    content = body;
-  } catch {
-    // frontmatter 解析失败时回退：整个文件作为正文，标题取自文件名，避免单篇文档缺陷导致整站构建失败
-    title = extractSectionTitle(path.basename(relativePath));
-    content = raw;
-  }
-
-  const result = { title, content };
-  docContentCache.set(cacheKey, result);
-  if (docContentCache.size > DOC_CONTENT_CACHE_MAX) {
-    const oldest = docContentCache.keys().next().value;
-    if (oldest !== undefined) docContentCache.delete(oldest);
-  }
-  return result;
-}
-
-/** 全站文档统计（真实扫描 docs/，构建/请求期执行，不在客户端运行） */
 export interface DocsStats {
-  /** 全站 .md 文件总数（含 hidden 子分类，排除 docs/ 根目录元文件） */
+  /** 全站 .md 文件总数 */
   total: number;
-  /** 按分类目录名（DocCategory.dir）索引的文档数（每个文件只归属其最具体分类） */
+  /** 按分类目录名（DocCategory.dir）索引的文档数 */
   byDir: Record<string, number>;
+  /** 全站 Markdown 原始字节总数（llms-full 体积预算用） */
+  totalBytes: number;
 }
 
-/** 首页索引用的扁平文件条目 */
 export interface CategoryFileItem {
   title: string;
   /** 相对分类目录的路径（去 .md 后缀，含子目录前缀），用于构造详情页链接 */
   slug: string;
 }
 
-/** 单遍扫描 docs/ 建好的全站索引 */
-interface DocsIndex {
-  total: number;
-  byDir: Record<string, number>;
-  /** 每个分类的扁平文件列表（按最具体分类归属，父分类不重复包含 hidden 子分类文件） */
+/** 单次拉取后在进程内复用的派生索引。 */
+interface DocsSnapshot {
+  docs: ContentIndexItem[];
+  /** docs 相对路径 → 条目，O(1) 判断文档是否存在（相对链接重写用） */
+  byPath: Map<string, ContentIndexItem>;
+  /** 分类 slug（精确归属）→ 扁平文件列表 */
   bySlug: Map<string, CategoryFileItem[]>;
+  /** 分类 slug → 侧边栏章节树（懒构建） */
+  sectionsBySlug: Map<string, DocSection[]>;
+  stats: DocsStats;
+  at: number;
+}
+
+let snapshot: DocsSnapshot | null = null;
+let snapshotPromise: Promise<DocsSnapshot> | null = null;
+
+function cacheTtl(): number {
+  return process.env.NODE_ENV === 'production' ? PROD_TTL_MS : DEV_TTL_MS;
+}
+
+function fresh(entry: DocsSnapshot | null): entry is DocsSnapshot {
+  return Boolean(entry && Date.now() - entry.at < cacheTtl());
+}
+
+/** 从文件名提取侧边栏文件标题（数据库标题缺失时的兜底） */
+function extractFileTitle(filename: string): string {
+  return filename.replace(/\.md$/, '').replace(/^(README|index)$/, '概述').trim();
+}
+
+/** 从目录名提取章节标题：去掉序号前缀（"0-基础入门" → "基础入门"） */
+function extractSectionTitle(name: string): string {
+  return (
+    name
+      .replace(/^[\d.]+-\s*/, '')
+      .replace(/^[\d.]+$/, '')
+      .trim() || name
+  );
 }
 
 /** 按序号 + 中文本地化排序（与旧 getCategoryFiles 行为一致） */
@@ -269,86 +132,286 @@ function sortFileItems(items: CategoryFileItem[]): void {
   });
 }
 
-/** 单遍遍历 docs/，把每个文件归属到目录前缀最长的分类（避免父分类与 hidden 子分类重复） */
-function buildIndex(): DocsIndex {
-  // 按 dir 长度降序，保证最长前缀优先匹配
-  const cats = [...allCategories].sort((a, b) => b.dir.length - a.dir.length);
+function isRenderableBasename(name: string): boolean {
+  return name.endsWith('.md') && name !== 'index.md' && !name.startsWith('_');
+}
+
+/** 把 docs 相对路径切成路径段；非法/无法归属的路径直接丢弃。 */
+function relativeSlugOf(item: ContentIndexItem, categoryDir: string): string | null {
+  const docPath = item.path?.replace(/\\/g, '/');
+  if (!docPath || !docPath.startsWith(`${categoryDir}/`)) return null;
+  const rel = docPath.slice(categoryDir.length + 1).replace(/\.md$/, '');
+  const basename = rel.split('/').pop() ?? rel;
+  if (!isRenderableBasename(`${basename}.md`)) return null;
+  return rel;
+}
+
+/** 拉取后端索引并构建首页/侧栏/链接判断所需的所有派生结构。 */
+async function loadSnapshot(): Promise<DocsSnapshot> {
+  let res: Response;
+  try {
+    res = await fetch(`${BACKEND}/content/index`, {
+      headers: { Accept: 'application/json' },
+      ...(process.env.NODE_ENV === 'production'
+        ? { next: { revalidate: 60, tags: ['docs-content'] } }
+        : { cache: 'no-store' as RequestCache }),
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch (e) {
+    throw new Error(`内容索引不可达（${BACKEND}/content/index）：${e instanceof Error ? e.message : '请求失败'}`);
+  }
+  if (!res.ok) {
+    throw new Error(`内容索引返回 ${res.status}`);
+  }
+  const body = (await res.json()) as ContentIndexResponse;
+  const docs = Array.isArray(body.docs) ? body.docs.filter((d) => d.path && d.categorySlug) : [];
+
+  const byPath = new Map<string, ContentIndexItem>();
   const bySlug = new Map<string, CategoryFileItem[]>();
   const byDir: Record<string, number> = {};
-  for (const c of cats) {
-    bySlug.set(c.slug, []);
-    byDir[c.dir] = 0;
+  let totalBytes = 0;
+  for (const cat of allCategories) {
+    bySlug.set(cat.slug, []);
+    byDir[cat.dir] = 0;
   }
 
-  const files: string[] = []; // 相对 docs/ 的路径（去 .md 后缀）
-
-  function walk(dir: string, prefix: string, isRoot: boolean) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (entry.isDirectory() && !entry.name.startsWith('.')) {
-        walk(path.join(dir, entry.name), `${prefix}${entry.name}/`, false);
-      } else if (!isRoot && entry.isFile() && isRenderableDoc(entry.name)) {
-        files.push(`${prefix}${entry.name.replace(/\.md$/, '')}`);
-      }
-    }
-  }
-  walk(DOCS_ROOT, '', true);
-
-  for (const rel of files) {
-    const owner = cats.find((c) => rel === c.dir || rel.startsWith(`${c.dir}/`));
-    if (!owner) continue;
-
-    const slug = rel.slice(owner.dir.length).replace(/^\//, '');
-    const basename = rel.split('/').pop() ?? rel;
-    bySlug.get(owner.slug)!.push({ title: extractFileTitle(basename), slug });
-    byDir[owner.dir]++;
+  for (const item of docs) {
+    byPath.set(item.path, item);
+    totalBytes += item.fileSize ?? 0;
+    const cat = item.categorySlug ? getCategoryBySlug(item.categorySlug) : undefined;
+    if (!cat || !item.categoryDir) continue;
+    const rel = relativeSlugOf(item, cat.dir);
+    if (!rel) continue;
+    bySlug.get(cat.slug)?.push({
+      title: item.title?.trim() || extractFileTitle(rel.split('/').pop() ?? rel),
+      slug: rel,
+    });
+    byDir[cat.dir] = (byDir[cat.dir] ?? 0) + 1;
   }
 
   for (const list of bySlug.values()) sortFileItems(list);
 
-  return { total: files.length, byDir, bySlug };
+  return {
+    docs,
+    byPath,
+    bySlug,
+    sectionsBySlug: new Map(),
+    stats: { total: docs.length, byDir, totalBytes },
+    at: Date.now(),
+  };
 }
 
-let cachedIndex: DocsIndex | null = null;
-let cachedIndexAt = 0;
-/** dev 环境索引缓存 TTL：dev 下每请求全量重扫 3994 篇（首页/阅读页/相关文档都要用索引），
- *  长时间运行会累积导致 Node 堆 OOM；30s TTL 内直接复用，新增文档最多延迟 30s 可见。 */
-const DEV_INDEX_TTL_MS = 30_000;
+/** 获取进程内快照；并发请求共享同一个 Promise，避免缓存击穿。 */
+async function getSnapshot(): Promise<DocsSnapshot> {
+  if (snapshot && fresh(snapshot)) return snapshot;
+  if (snapshotPromise) return snapshotPromise;
+  snapshotPromise = loadSnapshot()
+    .then((next) => {
+      snapshot = next;
+      return next;
+    })
+    .finally(() => {
+      snapshotPromise = null;
+    });
+  return snapshotPromise;
+}
 
-/** 获取索引：生产环境永久缓存（构建/运行期只扫一次）；dev 环境按 TTL 缓存以便即时反映新增文档 */
-function getDocsIndex(): DocsIndex {
-  const now = Date.now();
-  if (cachedIndex && (process.env.NODE_ENV === 'production' || now - cachedIndexAt < DEV_INDEX_TTL_MS)) {
-    return cachedIndex;
-  }
-  cachedIndex = buildIndex();
-  cachedIndexAt = now;
-  return cachedIndex;
+/** 获取全站索引条目（供最近更新/RSS 等纯元数据场景复用同一份缓存）。 */
+export async function getAllContentIndex(): Promise<ContentIndexItem[]> {
+  return (await getSnapshot()).docs;
+}
+
+/** 获取某个分类下的所有章节和文件（递归构建嵌套树，支持任意深度目录）。 */
+export async function getSections(categorySlug: string): Promise<DocSection[]> {
+  const snap = await getSnapshot();
+  const cached = snap.sectionsBySlug.get(categorySlug);
+  if (cached) return cached;
+  const sections = buildSections(categorySlug, snap.docs);
+  snap.sectionsBySlug.set(categorySlug, sections);
+  return sections;
+}
+
+interface TreeNode {
+  dirs: Map<string, TreeNode>;
+  files: ContentIndexItem[];
+}
+
+function newNode(): TreeNode {
+  return { dirs: new Map(), files: [] };
 }
 
 /**
- * 首页一次性快照：单遍扫描得到全站统计 + 每个分类的扁平文件列表，
- * 供首页全量索引展示，链接格式与 docs/[category]/page.tsx 一致。
+ * 用数据库索引还原旧文件系统的章节树。
+ *
+ * 归属规则与旧 getSections 对齐：父分类页面要包含子孙分类目录下的文档，
+ * 所以这里按 category.dir 前缀收集，而不是只取 categorySlug 精确相等的那批；
+ * 首页的扁平列表（getCategoryFiles）仍按最具体分类归属，避免父子页面重复计数。
  */
-export function getDocsSnapshot(): { stats: DocsStats; filesBySlug: Map<string, CategoryFileItem[]> } {
-  const idx = getDocsIndex();
-  return { stats: { total: idx.total, byDir: idx.byDir }, filesBySlug: idx.bySlug };
-}
-
-/**
- * 获取某分类目录下全部 .md 文件的扁平列表（每个文件只归属其最具体分类）。
- * 供首页全量索引展示，链接格式与 docs/[category]/page.tsx 一致。
- */
-export function getCategoryFiles(categorySlug: string): CategoryFileItem[] {
+function buildSections(categorySlug: string, docs: ContentIndexItem[]): DocSection[] {
   const category = getCategoryBySlug(categorySlug);
   if (!category) return [];
-  return getDocsIndex().bySlug.get(category.slug) ?? [];
+
+  const rootNode = newNode();
+  const descendants = docs
+    .filter((d) => d.path?.replace(/\\/g, '/').startsWith(`${category.dir}/`))
+    .sort((a, b) => a.path.localeCompare(b.path, 'zh-CN'));
+
+  for (const item of descendants) {
+    const rel = relativeSlugOf(item, category.dir);
+    if (!rel) continue;
+    const parts = rel.split('/');
+    let node = rootNode;
+    for (const dir of parts.slice(0, -1)) {
+      let child = node.dirs.get(dir);
+      if (!child) {
+        child = newNode();
+        node.dirs.set(dir, child);
+      }
+      node = child;
+    }
+    node.files.push(item);
+  }
+
+  const children = buildChildSections(rootNode, '');
+  const rootFiles = rootNode.files.sort((a, b) => sortPath(a.path, b.path));
+  if (rootFiles.length > 0) {
+    children.unshift({
+      title: '概述',
+      slug: '_root',
+      files: rootFiles.map((item) => toDocFile(item)),
+      children: [],
+    });
+  }
+  return children;
+}
+
+function sortPath(a: string, b: string): number {
+  const na = parseInt(a.split('/').pop()?.match(/^(\d+)/)?.[1] ?? '999', 10);
+  const nb = parseInt(b.split('/').pop()?.match(/^(\d+)/)?.[1] ?? '999', 10);
+  if (na !== nb) return na - nb;
+  return a.localeCompare(b, 'zh-CN');
+}
+
+function buildChildSections(node: TreeNode, basePath: string): DocSection[] {
+  const sections: DocSection[] = [];
+  const dirs = [...node.dirs.entries()].sort(([a], [b]) => sortPath(a, b));
+
+  for (const [dir, child] of dirs) {
+    const relDir = basePath ? `${basePath}/${dir}` : dir;
+    const files = child.files.sort((a, b) => sortPath(a.path, b.path)).map((item) => toDocFile(item));
+    const children = buildChildSections(child, relDir);
+    if (files.length === 0 && children.length === 0) continue;
+
+    // 目录说明页（README/index）的标题优先作为章节标题，否则回退到去编号的目录名
+    const readme = child.files.find((f) => /(^|\/)(README|index)\.md$/.test(f.path));
+    sections.push({
+      title: readme?.title?.trim() || extractSectionTitle(dir),
+      slug: relDir,
+      files,
+      children,
+    });
+  }
+  return sections;
+}
+
+function toDocFile(item: ContentIndexItem): DocFile {
+  const basename = item.path.split('/').pop() ?? item.path;
+  const slug = basename.replace(/\.md$/, '');
+  return {
+    title: item.title?.trim() || extractFileTitle(basename),
+    slug,
+    path: item.path,
+  };
+}
+
+/** 全站文档统计（一次索引拉取，不访问文件系统） */
+export async function getDocsStats(): Promise<DocsStats> {
+  return (await getSnapshot()).stats;
+}
+
+/** 首页一次性快照：全站统计 + 每个分类的扁平文件列表。 */
+export async function getDocsSnapshot(): Promise<{
+  stats: DocsStats;
+  filesBySlug: Map<string, CategoryFileItem[]>;
+}> {
+  const snap = await getSnapshot();
+  return { stats: snap.stats, filesBySlug: snap.bySlug };
+}
+
+/** 获取某分类目录下全部文档的扁平列表（每个文件只归属其最具体分类）。 */
+export async function getCategoryFiles(categorySlug: string): Promise<CategoryFileItem[]> {
+  const snap = await getSnapshot();
+  return snap.bySlug.get(categorySlug) ?? [];
+}
+
+/** 全部已发布文档的 docs 相对路径集合（remark 相对链接重写用）。 */
+export async function getDocPaths(): Promise<Set<string>> {
+  return new Set((await getSnapshot()).byPath.keys());
 }
 
 /**
- * 递归统计每个分类目录下的 .md 文件数量（每个文件只归属其最具体分类）。
- * total 直接遍历 docs/ 全目录统计，天然排除 docs/ 根目录散落的元文件。
+ * 读取单篇文档内容。
+ *
+ * 404 表示数据库里没有这篇已发布文档，返回 null 交给页面 notFound；
+ * 网络/5xx 则抛错，避免把后端故障伪装成“文章不存在”。
+ * 返回值保持旧接口的 {title, content} 形状，减少调用方改动。
  */
-export function getDocsStats(): DocsStats {
-  const idx = getDocsIndex();
-  return { total: idx.total, byDir: idx.byDir };
+export async function getDocContent(relativePath: string): Promise<{ title: string; content: string } | null> {
+  const docPath = relativePath.replace(/\\/g, '/').replace(/^\//, '');
+  if (!docPath || docPath.split('/').pop()?.startsWith('_')) return null;
+
+  let res: Response;
+  try {
+    res = await fetch(`${BACKEND}/content/doc?path=${encodeURIComponent(docPath)}`, {
+      headers: { Accept: 'application/json' },
+      ...(process.env.NODE_ENV === 'production'
+        ? { next: { revalidate: 60, tags: ['docs-content'] } }
+        : { cache: 'no-store' as RequestCache }),
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch (e) {
+    throw new Error(`文档内容不可达（${docPath}）：${e instanceof Error ? e.message : '请求失败'}`);
+  }
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`文档内容返回 ${res.status}（${docPath}）`);
+
+  const doc = (await res.json()) as ContentDocResponse;
+  return {
+    title: doc.title?.trim() || extractFileTitle(docPath.split('/').pop() ?? docPath),
+    content: doc.body ?? '',
+  };
+}
+
+/** 单分类全量正文（llms 分类全文用，一次 HTTP 取完整个分类）。 */
+export async function getCategoryDocs(categorySlug: string): Promise<{ title: string; path: string; content: string }[]> {
+  let res: Response;
+  try {
+    res = await fetch(`${BACKEND}/content/category?slug=${encodeURIComponent(categorySlug)}`, {
+      headers: { Accept: 'application/json' },
+      ...(process.env.NODE_ENV === 'production'
+        ? { next: { revalidate: 60, tags: ['docs-content'] } }
+        : { cache: 'no-store' as RequestCache }),
+      signal: AbortSignal.timeout(30_000),
+    });
+  } catch (e) {
+    throw new Error(`分类内容不可达（${categorySlug}）：${e instanceof Error ? e.message : '请求失败'}`);
+  }
+  if (!res.ok) throw new Error(`分类内容返回 ${res.status}（${categorySlug}）`);
+  const docs = (await res.json()) as ContentDocResponse[];
+  return docs.map((doc) => ({
+    title: doc.title?.trim() || extractFileTitle(doc.path.split('/').pop() ?? doc.path),
+    path: doc.path,
+    content: doc.body ?? '',
+  }));
+}
+
+/**
+ * 管理端发布后清空内容缓存。
+ *
+ * 只清当前 Node 进程的模块级快照；Next 的 fetch data cache 由 CMS 代理路由
+ * 额外调用 revalidateTag('docs-content') 失效，两者缺一不可。
+ */
+export function invalidateDocsCache(): void {
+  snapshot = null;
+  snapshotPromise = null;
 }

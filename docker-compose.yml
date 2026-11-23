@@ -1,5 +1,7 @@
 # https://docs.zhangzhengyang.com → frp/VPS → 本容器 :4200
 # KB 后端代理：/kb-auth|/kb-api|/kb-admin → rag-backend:8081（kbnet 网络）
+# DB-only：内容由后端 /content/** 提供，前端容器不再挂载 docs/ 目录，
+# 也不再需要共享内容卷；发布内容后前端靠 CMS 代理的 revalidate 清缓存。
 name: tech-codex
 services:
   tech-codex:

@@ -1,5 +1,6 @@
 import path from 'node:path';
-import type { Link, Root } from 'mdast';
+import type { Image, Link, Root } from 'mdast';
+import { resolveDocAssetUrl } from './doc-asset-url';
 import { allCategories } from './docs-config';
 
 /** 分类按 dir 长度降序（最长前缀优先），模块级常量——避免每条链接重排 */
@@ -61,10 +62,15 @@ function visitLinks(
   node: Root['children'][number],
   docRel: string,
   knownPaths: ReadonlySet<string>,
-  rewrites: [Link, string][]
+  rewrites: [(Link | Image), string][]
 ): void {
   if (node.type === 'link') {
     const target = resolveDocHref(docRel, node.url, knownPaths);
+    if (target) rewrites.push([node, target]);
+  }
+  // DB-only 后图片迁到 public/docs-assets，按文档相对路径改写 img src
+  if (node.type === 'image') {
+    const target = resolveDocAssetUrl(docRel, node.url);
     if (target) rewrites.push([node, target]);
   }
   if ('children' in node && Array.isArray(node.children)) {
@@ -75,7 +81,7 @@ function visitLinks(
 /** 工厂:绑定当前文档路径与已发布路径集合的 remark 插件(attacher 返回 transformer) */
 export function remarkDocLinks(docRelativePath: string, knownPaths: ReadonlySet<string>) {
   return () => (tree: Root) => {
-    const rewrites: [Link, string][] = [];
+    const rewrites: [(Link | Image), string][] = [];
     for (const child of tree.children) visitLinks(child, docRelativePath, knownPaths, rewrites);
     for (const [node, target] of rewrites) node.url = target;
   };

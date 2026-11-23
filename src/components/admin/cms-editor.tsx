@@ -30,6 +30,7 @@ import {
   type CmsVersion,
 } from "@/lib/cms";
 import { allCategories } from "@/lib/docs-config";
+import { resolveDocAssetUrl } from "@/lib/doc-asset-url";
 import { resolveDocUrl } from "@/lib/doc-url";
 
 const CATEGORY_BY_DIR = new Map(allCategories.map((c) => [c.dir, c]));
@@ -286,7 +287,14 @@ export function CmsEditor({ docId }: { docId?: number }) {
               ) : (
                 <div className="prose-doc min-h-[62vh] overflow-auto rounded-xl border border-slate-200 bg-white p-6">
                   {body.trim() ? (
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      urlTransform={(url, key) =>
+                        key === "src" ? (resolveDocAssetUrl(detail?.filePath ?? "", url) ?? url) : url
+                      }
+                    >
+                      {body}
+                    </ReactMarkdown>
                   ) : (
                     <p className="text-sm text-slate-400">正文为空，暂无预览</p>
                   )}

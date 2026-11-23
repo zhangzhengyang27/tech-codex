@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
-  Database,
   ExternalLink,
   FilePlus2,
   Loader2,
@@ -16,20 +15,16 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
 import { useRouter } from "next/navigation";
-import { AdminCard, AdminPageHeader, AdminPagination, adminBtn } from "@/components/admin/admin-ui";
+import { AdminPageHeader, AdminPagination, adminBtn } from "@/components/admin/admin-ui";
 import { usePagedList } from "@/lib/use-paged-list";
 import {
-  importCmsDocs,
   listCmsDocuments,
   type CmsDocumentSummary,
-  type CmsImportResult,
 } from "@/lib/cms";
 import { allCategories } from "@/lib/docs-config";
 import { resolveDocUrl } from "@/lib/doc-url";
 
 const PAGE_SIZE = 20;
-
-const errText = (e: unknown): string => (e instanceof Error ? e.message : "操作失败");
 
 const CATEGORY_BY_DIR = new Map(allCategories.map((c) => [c.dir, c]));
 
@@ -37,13 +32,11 @@ export default function AdminContentPage() {
   const router = useRouter();
   const { isLoggedIn, isAdmin } = useAuth();
   const hydrated = useHydrated();
-  const { items, page, totalElements, totalPages, loading, error, setError, load } =
+  const { items, page, totalElements, totalPages, loading, error, load } =
     usePagedList<CmsDocumentSummary>();
 
   const [keyword, setKeyword] = useState("");
   const [categoryDir, setCategoryDir] = useState("");
-  const [importing, setImporting] = useState(false);
-  const [importResult, setImportResult] = useState<CmsImportResult | null>(null);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -64,23 +57,6 @@ export default function AdminContentPage() {
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
     void load(0, fetchPage);
-  };
-
-  const onImport = async () => {
-    setImporting(true);
-    setImportResult(null);
-    setError("");
-    try {
-      const result = await importCmsDocs(
-        allCategories.map((c) => ({ slug: c.slug, dir: c.dir })),
-      );
-      setImportResult(result);
-      void load(0, fetchPage);
-    } catch (e) {
-      setError(errText(e));
-    } finally {
-      setImporting(false);
-    }
   };
 
   if (!hydrated || !isLoggedIn) {
@@ -113,47 +89,12 @@ export default function AdminContentPage() {
           </>
         }
         actions={
-          <>
-            <button onClick={() => void onImport()} disabled={importing} className={adminBtn("secondary")}>
-              {importing ? <Loader2 size={14} className="animate-spin" /> : <Database size={14} />}
-              导入 docs 到 CMS
-            </button>
-            <Link href="/admin/content/new" className={adminBtn("primary")}>
-              <FilePlus2 size={14} />
-              新建内容
-            </Link>
-          </>
+          <Link href="/admin/content/new" className={adminBtn("primary")}>
+            <FilePlus2 size={14} />
+            新建内容
+          </Link>
         }
       />
-
-      <AdminCard
-        title="迁移说明"
-        description="首次上线执行一次；已有 SYNC 文档按 filePath 原地收编，不重建向量"
-        icon={Database}
-        contentClassName="p-4"
-      >
-        <p className="text-[12px] leading-5 text-slate-500">
-          「导入 docs 到 CMS」只把存量文档的正文、分类与责任元数据收编到 CMS，不会重复向量化。
-          如果扫描结果里有「新建」文档，导入后请到「文档管理 → 重建向量索引」补一次索引。
-          CMS 模式下 docs 目录同步已停用，避免在线修改被旧文件覆盖。
-        </p>
-        {importResult && (
-          <div className="mt-3 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 text-[12px] text-emerald-700">
-            扫描 {importResult.scanned} 篇，收编 {importResult.adopted} 篇，新建 {importResult.created} 篇，
-            跳过 {importResult.skipped} 篇，失败 {importResult.failed} 篇。
-            {importResult.errors.length > 0 && (
-              <details className="mt-2 text-[11px] text-amber-700">
-                <summary className="cursor-pointer">查看前 {importResult.errors.length} 条错误</summary>
-                <ul className="mt-1 list-disc space-y-1 pl-4">
-                  {importResult.errors.map((e, i) => (
-                    <li key={i}>{e}</li>
-                  ))}
-                </ul>
-              </details>
-            )}
-          </div>
-        )}
-      </AdminCard>
 
       <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
@@ -241,7 +182,7 @@ export default function AdminContentPage() {
                     <BookOpen size={22} className="mx-auto mb-2 text-slate-300" />
                     <p className="text-[13px] text-slate-500">还没有 CMS 内容</p>
                     <p className="mt-1 text-[11px] text-slate-400">
-                      首次迁移可点击右上角「导入 docs 到 CMS」，把历史 Markdown 收编为可在线编辑的内容
+                      点击右上角「新建内容」创建第一篇；历史 Markdown 已迁移到数据库，不再从 docs 目录导入
                     </p>
                   </td>
                 </tr>

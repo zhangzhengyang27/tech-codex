@@ -31,7 +31,6 @@ import {
   listDocuments,
   rebuildIndex,
   reindexAdminDocument,
-  syncDocs,
   uploadAdminDocument,
   type AdminTaskView,
   type KbDocumentView,
@@ -80,7 +79,7 @@ export default function AdminDocumentsPage() {
   const [dirOpen, setDirOpen] = useState(false);
   const [dirPath, setDirPath] = useState("");
 
-  // 后台任务（同步 / 重建 / 目录导入共用进度面板）
+  // 后台任务（重建 / 目录导入共用进度面板）
   const [taskId, setTaskId] = useState<string | null>(null);
   const [taskTitle, setTaskTitle] = useState("");
   const [actionError, setActionError] = useState("");
@@ -148,8 +147,8 @@ export default function AdminDocumentsPage() {
     }
   };
 
-  /** 启动一个后台任务（目录导入 / docs 同步 / 重建索引），进度由 TaskProgress 轮询。 */
-  const startTask = async (kind: "dir" | "sync" | "rebuild") => {
+  /** 启动一个后台任务（目录导入 / 重建索引），进度由 TaskProgress 轮询。 */
+  const startTask = async (kind: "dir" | "rebuild") => {
     setStarting(true);
     setActionError("");
     try {
@@ -164,10 +163,6 @@ export default function AdminDocumentsPage() {
         setTaskId(id);
         setDirOpen(false);
         setDirPath("");
-      } else if (kind === "sync") {
-        const { taskId: id } = await syncDocs();
-        setTaskTitle("docs 内容同步");
-        setTaskId(id);
       } else {
         const { taskId: id } = await rebuildIndex();
         setTaskTitle("向量索引重建");
@@ -282,11 +277,11 @@ export default function AdminDocumentsPage() {
 
       <AdminCard
         title="导入与索引"
-        description="批量维护 docs 目录、重建向量索引，或将网页正文抓取为 Markdown"
+        description="上传文件、从服务器目录导入、抓取网页正文，或重建向量索引；内容统一写入数据库"
         icon={Database}
         contentClassName="p-4"
       >
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2">
           <button
             onClick={() => setDirOpen((o) => !o)}
             disabled={taskId !== null}
@@ -297,21 +292,7 @@ export default function AdminDocumentsPage() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-[12px] font-medium text-slate-700">目录导入</span>
-              <span className="mt-0.5 block text-[10px] text-slate-400">批量导入服务器目录</span>
-            </span>
-            <ArrowRight size={13} className="mt-2 shrink-0 text-slate-300 group-hover:text-accent" />
-          </button>
-          <button
-            onClick={() => void startTask("sync")}
-            disabled={starting || taskId !== null}
-            className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-3 text-left transition-colors hover:border-accent/30 hover:bg-white disabled:opacity-50"
-          >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-slate-500 ring-1 ring-slate-200 group-hover:text-accent">
-              {starting ? <Loader2 size={14} className="animate-spin" /> : <FolderSync size={14} />}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-[12px] font-medium text-slate-700">同步 docs 内容</span>
-              <span className="mt-0.5 block text-[10px] text-slate-400">按文件名对账新增与删除</span>
+              <span className="mt-0.5 block text-[10px] text-slate-400">一次性导入服务器目录</span>
             </span>
             <ArrowRight size={13} className="mt-2 shrink-0 text-slate-300 group-hover:text-accent" />
           </button>
@@ -331,14 +312,14 @@ export default function AdminDocumentsPage() {
           </button>
         </div>
         <p className="mt-2.5 text-[10px] leading-4 text-slate-400">
-          docs 同步按相对路径对账新增、更新、改名和删除；重建索引会重新切分并写入全部向量。
+          目录导入只读取一次性指定的外部目录并写入数据库，不作为站点内容源；重建索引会重新切分并写入全部向量。
         </p>
         {dirOpen && (
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <input
               value={dirPath}
               onChange={(e) => setDirPath(e.target.value)}
-              placeholder="服务器上的目录绝对路径，如 /data/docs/java"
+              placeholder="服务器上的目录绝对路径，如 /data/import/java"
               className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
             />
             <button
@@ -456,7 +437,7 @@ export default function AdminDocumentsPage() {
                   <td colSpan={7} className="px-4 py-12 text-center">
                     <FileText size={22} className="mx-auto mb-2 text-slate-300" />
                     <p className="text-[13px] text-slate-500">暂无文档</p>
-                    <p className="mt-1 text-[11px] text-slate-400">可通过右上角上传、URL 导入或同步 docs 内容添加</p>
+                    <p className="mt-1 text-[11px] text-slate-400">可通过右上角上传、URL 导入或目录导入添加</p>
                   </td>
                 </tr>
               )}

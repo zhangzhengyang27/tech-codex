@@ -10,7 +10,7 @@ const MAX_AUTO_RETRY = 3;
 const AUTO_RETRY_DELAY_MS = 2000;
 
 /**
- * 后台任务进度面板（目录导入 / docs 同步 / 重建索引共用）。
+ * 后台任务进度面板（目录导入 / 重建索引共用）。
  * taskId 非空时自动轮询任务进度；任务结束后保留结果并回调 onDone 供父级刷新列表，
  * onDismiss 由父级清空 taskId 关闭面板。
  * 轮询中的瞬时网络错误自动重试（最多 MAX_AUTO_RETRY 次）；连续失败后提供手动重试。

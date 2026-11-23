@@ -9,7 +9,7 @@ const errText = (e: unknown): string => (e instanceof Error ? e.message : "保�
 
 /**
  * 文档在线编辑器：弹窗内编辑 Markdown 原文（可选改标题），保存后后端重建索引。
- * docs 同步受管（SYNC）文档不允许在线编辑——需在源仓库修改后执行「同步 docs 内容」。
+ * 历史 SYNC 文档不允许在线编辑，避免旧同步源覆盖数据库内容。
  */
 export function DocEditor({
   docId,
@@ -45,7 +45,7 @@ export function DocEditor({
       const d = await adminDocument(id, true);
       if (seq !== loadSeqRef.current) return; // 已切换到其他文档，丢弃过期响应
       if (d.sourceType === "SYNC") {
-        setError("docs 同步受管文档不支持在线编辑：请在源仓库修改后执行「同步 docs 内容」");
+        setError("历史 SYNC 文档不支持在线编辑；如需修改，请通过 CMS 新建内容或迁移后再编辑。");
       }
       loadedIdRef.current = id;
       setDoc(d);
@@ -78,7 +78,7 @@ export function DocEditor({
 
   if (docId == null) return null;
 
-  // 只有普通入库文档可编辑；docs 同步文档是只读的，弹窗不应撑到整屏空白。
+  // 只有普通入库文档可编辑；历史 SYNC 文档是只读的，弹窗不应撑到整屏空白。
   const editable = !!doc && doc.sourceType !== "SYNC";
   const readOnlySync = !!doc && doc.sourceType === "SYNC";
 
@@ -174,7 +174,7 @@ export function DocEditor({
         {/* 底部操作 */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 bg-slate-50/50 px-5 py-3">
           <span className="text-[11px] text-slate-400">
-            {readOnlySync ? "docs 同步文档为只读，修改请走源仓库同步" : "保存后将自动重建该文档的分块与向量索引"}
+            {readOnlySync ? "历史 SYNC 文档为只读，请在 CMS 中新建或迁移后编辑" : "保存后将自动重建该文档的分块与向量索引"}
           </span>
           <div className="flex gap-2">
             <button

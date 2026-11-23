@@ -13,7 +13,6 @@ import {
   Database,
   FileText,
   FlaskConical,
-  FolderSync,
   HardDrive,
   Layers,
   LayoutDashboard,
@@ -27,7 +26,7 @@ import {
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
-import { kbStats, syncDocs, rebuildIndex, type KbStats, type AdminTaskView } from "@/lib/documents";
+import { kbStats, rebuildIndex, type KbStats, type AdminTaskView } from "@/lib/documents";
 import { listOpenAlerts, listLockedAccounts, resolveAlert, unlockAccount, type KbAlertItem, type LockedAccountItem } from "@/lib/ops";
 import { TaskProgress } from "@/components/admin/task-progress";
 import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn, type AdminTone } from "@/components/admin/admin-ui";
@@ -35,7 +34,7 @@ import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn, type AdminTone }
 const fmtNum = (v: number): string => v.toLocaleString("en-US");
 
 const QUICK_LINKS: { href: string; label: string; desc: string; icon: typeof FileText; tone: AdminTone }[] = [
-  { href: "/admin/documents", label: "文档管理", desc: "公共库文档 · 上传 / 同步 / 重建", icon: FileText, tone: "blue" },
+  { href: "/admin/documents", label: "文档管理", desc: "公共库文档 · 上传 / 导入 / 重建", icon: FileText, tone: "blue" },
   { href: "/admin/eval", label: "RAG 评测", desc: "Golden Set · A/B 对照 · 趋势", icon: FlaskConical, tone: "violet" },
   { href: "/admin/gaps", label: "内容缺口", desc: "未答 / 零引用 / 点踩 · 转评测", icon: Target, tone: "amber" },
   { href: "/admin/feedback", label: "问答反馈", desc: "点赞点踩 · 回流评测用例", icon: MessageSquare, tone: "emerald" },
@@ -62,7 +61,7 @@ export default function AdminOverviewPage() {
   const [taskId, setTaskId] = useState<string | null>(null);
   const [taskTitle, setTaskTitle] = useState("");
   const [actionError, setActionError] = useState("");
-  const [starting, setStarting] = useState<"sync" | "rebuild" | null>(null);
+  const [starting, setStarting] = useState<"rebuild" | null>(null);
   const [alerts, setAlerts] = useState<KbAlertItem[]>([]);
   const [locked, setLocked] = useState<LockedAccountItem[]>([]);
 
@@ -99,20 +98,6 @@ export default function AdminOverviewPage() {
     }, 0);
     return () => clearTimeout(t);
   }, [loadStats, loadOps, hydrated, isAdmin]);
-
-  const startSync = async () => {
-    setStarting("sync");
-    setActionError("");
-    try {
-      const { taskId: id } = await syncDocs();
-      setTaskTitle("docs 内容同步");
-      setTaskId(id);
-    } catch (e) {
-      setActionError(e instanceof Error ? e.message : "触发同步失败");
-    } finally {
-      setStarting(null);
-    }
-  };
 
   const startRebuild = async () => {
     setStarting("rebuild");
@@ -327,22 +312,8 @@ export default function AdminOverviewPage() {
           )}
         </AdminCard>
 
-        <AdminCard title="运维操作" description="内容变更后先对账，再按需重建向量索引" icon={Database} contentClassName="space-y-4 p-4">
+        <AdminCard title="运维操作" description="内容发布后需要时重建向量索引" icon={Database} contentClassName="space-y-4 p-4">
           <div className="grid grid-cols-1 gap-2">
-            <button
-              onClick={() => void startSync()}
-              disabled={starting !== null || taskId !== null}
-              className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-3 text-left transition-colors hover:border-accent/30 hover:bg-accent/[0.03] disabled:opacity-60"
-            >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-accent ring-1 ring-slate-200">
-                {starting === "sync" ? <RefreshCw size={14} className="animate-spin" /> : <FolderSync size={14} />}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[12px] font-medium text-slate-700">同步 docs 内容</span>
-                <span className="mt-0.5 block text-[10px] text-slate-400">对账新增 / 更新 / 改名 / 删除</span>
-              </span>
-              <ArrowRight size={13} className="text-slate-300 group-hover:text-accent" />
-            </button>
             <button
               onClick={() => void startRebuild()}
               disabled={starting !== null || taskId !== null}

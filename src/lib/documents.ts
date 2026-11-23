@@ -14,7 +14,7 @@ export interface KbDocumentView {
   fileSize: number | null;
   chunkCount: number | null;
   status: string;
-  /** 来源类型：UPLOAD/URL/DIRECTORY/SYNC（SYNC 为 docs 同步受管，不支持在线编辑） */
+  /** 来源类型：UPLOAD/URL/DIRECTORY/SYNC（SYNC 为历史 docs 同步受管，不支持在线编辑） */
   sourceType: string | null;
   importedBy: string;
   createdDate: string | null;
@@ -137,13 +137,6 @@ export async function importDirectory(path: string): Promise<{ taskId: string }>
 /** 删除公共库文档（连分块与向量一并清理）：DELETE /admin/kb/documents/{id} */
 export async function deleteAdminDocument(id: number): Promise<void> {
   await documentFetch(`/${id}`, { method: "DELETE" });
-}
-
-/** 手动触发 docs 目录同步对账（异步任务）：POST /admin/kb/documents/sync → taskId */
-export async function syncDocs(path?: string): Promise<{ taskId: string }> {
-  const qs = path && path.trim() ? `?path=${encodeURIComponent(path.trim())}` : "";
-  const res = await documentFetch(`/sync${qs}`, { method: "POST" });
-  return (await res.json()) as { taskId: string };
 }
 
 /** 重建公共库向量索引（异步任务）：POST /admin/kb/index/rebuild → taskId */

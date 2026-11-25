@@ -76,11 +76,14 @@ export function ChatMarkdown({
       <Markdown
         remarkPlugins={[remarkGfm]}
         components={{
-          // 引用角标/普通 Markdown 链接：统一 accent 色，点击由浏览器跳转
+          // 引用角标/普通 Markdown 链接：统一 accent 色。
+          // 新窗口打开：回答里的链接多为站内文档，同页跳转会卸载对话页、丢失当前会话上下文
           a({ href, children }) {
             return (
               <a
                 href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mx-0.5 text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
               >
                 {children}

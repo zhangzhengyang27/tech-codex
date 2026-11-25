@@ -13,9 +13,12 @@ const SUGGESTIONS = [
 export function WelcomeCard({
   onAsk,
   isNewChat,
+  scopeLabel = '全部公共文档',
 }: {
   onAsk: (q: string) => void;
   isNewChat: boolean;
+  /** 当前检索范围的中文描述：文案随 scope 变化，避免固定写「全部文档」与实际范围不符 */
+  scopeLabel?: string;
 }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-5 text-center px-4">
@@ -29,7 +32,7 @@ export function WelcomeCard({
           </h2>
           <p className="mt-1 flex items-center justify-center gap-1 text-xs text-foreground/45">
             <Sparkles size={12} />
-            基于全部 docs 文档的智能问答 · RAG 检索 · 支持多轮上下文
+            基于{scopeLabel}的智能问答 · RAG 检索 · 支持多轮上下文
           </p>
         </div>
       </div>

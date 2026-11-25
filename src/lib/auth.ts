@@ -282,7 +282,8 @@ export async function streamChat(
   signal?: AbortSignal,
   docPath?: string,
   scope?: KbScope,
-  category?: string
+  category?: string,
+  regenerate = false
 ): Promise<void> {
   const token = getToken();
   const body = new URLSearchParams({ message });
@@ -290,6 +291,8 @@ export async function streamChat(
   if (docPath) body.set("docPath", docPath);
   if (scope) body.set("scope", scope);
   if (category) body.set("category", category);
+  // 重新生成：后端先删除该对话最后一轮问答再落库，避免同一问答在历史里出现两份
+  if (regenerate) body.set("regenerate", "true");
   const res = await fetch("/kb-api/chat-stream", {
     method: "POST",
     headers: {
@@ -299,7 +302,12 @@ export async function streamChat(
     body,
     signal,
   });
-  if (res.status === 401) throw new Error("登录已过期，请重新登录");
+  // 401 与其他接口同口径处理：清会话并广播事件，页面监听后统一跳登录；
+  // 只 throw 不清会话会让页面停在"登录已过期"错误态，用户不知道要重新登录
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error("登录已过期，请重新登录");
+  }
   if (!res.ok) throw new Error(`请求失败（${res.status}）`);
   if (!res.body) throw new Error("浏览器不支持流式响应");
 

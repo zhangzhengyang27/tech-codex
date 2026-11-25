@@ -2,7 +2,11 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 
 export interface FieldProps {
-  label: string;
+  /**
+   * 标签内容。放开成 ReactNode 是为了配置页的 key（需要等宽 code 样式）这类场景，
+   * 不必为此再做一个字段组件；纯文本调用方式不受影响。
+   */
+  label: ReactNode;
   htmlFor?: string;
   /** 常驻说明：与 error 互斥，有 error 时优先显示 error，避免两条提示同时出现 */
   hint?: ReactNode;

@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useHydrated } from "@/lib/use-hydrated";
 import { listConfig, updateConfig, type ConfigItem } from "@/lib/config";
 import { AdminCard, AdminMetricCard, AdminPageHeader, adminBtn } from "@/components/admin/admin-ui";
+import { Field } from "@/components/ui/field";
 
 const errText = (e: unknown): string => (e instanceof Error ? e.message : "保存失败");
 
@@ -183,66 +184,79 @@ export default function AdminConfigPage() {
                 : it.value;
               const changed = !!draft && (draft.restoreDefault ? effective !== it.value : draft.value !== it.value);
               return (
-                <div key={it.key} className="grid gap-3 px-4 py-3.5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <code className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-caption text-slate-600">
-                        {it.key}
-                      </code>
-                      {it.overridden && <span className="rounded-md bg-blue-50 px-1.5 py-0.5 text-2xs font-medium text-blue-600 ring-1 ring-blue-100">已自定义</span>}
-                      {changed && <span className="rounded-md bg-amber-50 px-1.5 py-0.5 text-2xs font-medium text-amber-600 ring-1 ring-amber-100">待保存</span>}
+                <div key={it.key} className="px-4 py-3.5">
+                  {/* 键名 + 状态徽标作为 Field 标签，说明与默认值走 hint，控件独占一行 */}
+                  <Field
+                    size="sm"
+                    label={
+                      <span className="flex flex-wrap items-center gap-1.5">
+                        <code className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-caption font-normal text-slate-600">
+                          {it.key}
+                        </code>
+                        {it.overridden && <span className="rounded-md bg-blue-50 px-1.5 py-0.5 text-2xs font-medium text-blue-600 ring-1 ring-blue-100">已自定义</span>}
+                        {changed && <span className="rounded-md bg-amber-50 px-1.5 py-0.5 text-2xs font-medium text-amber-600 ring-1 ring-amber-100">待保存</span>}
+                      </span>
+                    }
+                    htmlFor={it.type === "BOOL" ? undefined : `cfg-${it.key}`}
+                    hint={
+                      <>
+                        {it.description}
+                        {!it.overridden && (
+                          <span className="ml-1.5 font-mono text-2xs text-slate-400">默认：{it.defaultValue || "（空）"}</span>
+                        )}
+                      </>
+                    }
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      {it.type === "BOOL" ? (
+                        <div role="group" aria-label={it.key} className="flex h-8 overflow-hidden rounded-lg border border-slate-200 bg-white">
+                          {[
+                            { v: "true", label: "开" },
+                            { v: "false", label: "关" },
+                          ].map((o) => (
+                            <button
+                              key={o.v}
+                              onClick={() => setDraft(it.key, o.v)}
+                              aria-pressed={effective === o.v}
+                              className={clsx(
+                                "px-3.5 text-xs transition-colors",
+                                effective === o.v ? "bg-accent text-white" : "text-slate-500 hover:bg-slate-50",
+                              )}
+                            >
+                              {o.label}
+                            </button>
+                          ))}
+                        </div>
+                      ) : it.type === "TEXT" ? (
+                        <textarea
+                          id={`cfg-${it.key}`}
+                          value={effective}
+                          onChange={(e) => setDraft(it.key, e.target.value)}
+                          rows={2}
+                          className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 py-1.5 font-mono text-caption outline-none focus:border-accent focus:bg-white"
+                        />
+                      ) : (
+                        <input
+                          id={`cfg-${it.key}`}
+                          type="number"
+                          step={it.type === "DOUBLE" ? "0.01" : "1"}
+                          value={effective}
+                          onChange={(e) => setDraft(it.key, e.target.value)}
+                          className="h-8 w-32 rounded-lg border border-slate-200 bg-slate-50/70 px-2 font-mono text-xs outline-none focus:border-accent focus:bg-white"
+                        />
+                      )}
+                      {it.overridden && (
+                        <button
+                          onClick={() => restoreDefault(it.key)}
+                          title="清除自定义覆盖，恢复跟随部署默认值"
+                          className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 text-caption text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                        >
+                          <RotateCcw size={12} />
+                          恢复默认
+                        </button>
+                      )}
                     </div>
-                    <p className="mt-1.5 text-caption leading-4 text-slate-500">{it.description}</p>
-                    {!it.overridden && (
-                      <p className="mt-1 font-mono text-2xs text-slate-400">默认：{it.defaultValue || "（空）"}</p>
-                    )}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    {it.type === "BOOL" ? (
-                      <div className="flex h-8 overflow-hidden rounded-lg border border-slate-200 bg-white">
-                        {[
-                          { v: "true", label: "开" },
-                          { v: "false", label: "关" },
-                        ].map((o) => (
-                          <button
-                            key={o.v}
-                            onClick={() => setDraft(it.key, o.v)}
-                            className={clsx(
-                              "px-3.5 text-xs transition-colors",
-                              effective === o.v ? "bg-accent text-white" : "text-slate-500 hover:bg-slate-50",
-                            )}
-                          >
-                            {o.label}
-                          </button>
-                        ))}
-                      </div>
-                    ) : it.type === "TEXT" ? (
-                      <textarea
-                        value={effective}
-                        onChange={(e) => setDraft(it.key, e.target.value)}
-                        rows={2}
-                        className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 py-1.5 font-mono text-caption outline-none focus:border-accent focus:bg-white sm:w-80"
-                      />
-                    ) : (
-                      <input
-                        type="number"
-                        step={it.type === "DOUBLE" ? "0.01" : "1"}
-                        value={effective}
-                        onChange={(e) => setDraft(it.key, e.target.value)}
-                        className="h-8 w-28 rounded-lg border border-slate-200 bg-slate-50/70 px-2 font-mono text-xs outline-none focus:border-accent focus:bg-white"
-                      />
-                    )}
-                    {it.overridden && (
-                      <button
-                        onClick={() => restoreDefault(it.key)}
-                        title="清除自定义覆盖，恢复跟随部署默认值"
-                        className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 text-caption text-slate-500 hover:bg-slate-50 hover:text-slate-800"
-                      >
-                        <RotateCcw size={12} />
-                        恢复默认
-                      </button>
-                    )}
-                  </div>
+                  </Field>
                 </div>
               );
             })}

@@ -59,7 +59,7 @@ export default function AdminEvalPage() {
         meta={<span>默认空间 · 公共知识库</span>}
       />
 
-      <div className="mb-5 flex w-full gap-1 overflow-x-auto rounded-xl border border-slate-200 bg-white p-1 shadow-sm [scrollbar-width:none] sm:w-fit">
+      <div className="mb-5 flex w-full gap-1 overflow-x-auto rounded-lg border border-slate-200 bg-white p-1 shadow-sm [scrollbar-width:none] sm:w-fit">
         {TABS.map((t) => {
           const Icon = t.icon;
           const active = tab === t.key;
@@ -68,7 +68,7 @@ export default function AdminEvalPage() {
               key={t.key}
               onClick={() => setTab(t.key)}
               className={clsx(
-                "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-[12px] font-medium transition-colors",
+                "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-xs font-medium transition-colors",
                 active ? "bg-accent text-white shadow-sm" : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
               )}
             >

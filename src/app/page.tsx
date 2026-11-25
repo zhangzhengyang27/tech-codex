@@ -13,7 +13,8 @@ export interface HomeGroup extends DocGroup {
 
 export default async function HomePage() {
   const { stats, filesBySlug } = await getDocsSnapshot();
-  const updates = await getRecentUpdates(12);
+  // 首页只留最近 8 篇：更多内容交给 /docs 总览，让首页保持"入口"而不是列表页
+  const updates = await getRecentUpdates(8);
 
   const groups: HomeGroup[] = docGroups.map((g) => ({
     ...g,

@@ -6,7 +6,6 @@ import {
   ArrowRight,
   FileText,
   FileUp,
-  Loader2,
   MessageSquareText,
   RefreshCw,
 } from "lucide-react";
@@ -16,23 +15,27 @@ import { useHydrated } from "@/lib/use-hydrated";
 import { myDocuments, myQuota, type KbQuota } from "@/lib/kb";
 import { fmtDate, fmtSize, statusBadgeCls, statusText } from "@/lib/format";
 import type { KbDocumentView } from "@/lib/documents";
+import { Button } from "@/components/ui/button";
 
 /** 单项配额统计卡；limit<=0 表示不限制。 */
 function StatCard({
   label,
   used,
   limit,
+  hint,
 }: {
   label: string;
   used: number;
   limit: number;
+  /** 补充口径说明（如"检索 3/200 · 问答 1/100"），避免用户猜合并值怎么来的 */
+  hint?: string;
 }) {
   const unlimited = !limit || limit <= 0;
   const pct = unlimited ? 0 : Math.min(100, Math.round((used / limit) * 100));
   const nearLimit = !unlimited && pct >= 80;
   return (
-    <div className="rounded-xl border border-border bg-background p-4">
-      <div className="flex items-center justify-between text-[13px]">
+    <div className="rounded-lg border border-border bg-background p-4">
+      <div className="flex items-center justify-between text-compact">
         <span className="text-foreground/60">{label}</span>
         <span className={clsx("font-mono text-xs", nearLimit ? "text-amber-600" : "text-foreground/40")}>
           {unlimited ? "不限" : `${pct}%`}
@@ -50,6 +53,7 @@ function StatCard({
           style={{ width: `${unlimited ? Math.min(100, used * 2) : pct}%` }}
         />
       </div>
+      {hint && <p className="mt-2 text-xs leading-5 text-foreground/60">{hint}</p>}
     </div>
   );
 }
@@ -115,15 +119,33 @@ export default function MyKbOverviewPage() {
     return <div className="py-16 text-center text-sm text-foreground/40">加载中…</div>;
   }
 
+  // 检索与问答对用户是同一件事（"用掉一次 AI 能力"），但后端是两条独立额度，
+  // 所以卡片显示合计进度，hint 里保留两条额度的明细口径。
+  const retrievalLimit = quota?.retrievalDailyLimit ?? 0;
+  const chatLimit = quota?.chatDailyLimit ?? 0;
+  const callUsed = (quota?.retrievalUsed ?? 0) + (quota?.chatUsed ?? 0);
+  // 任一子额度不限，合计就无法给出有意义的百分比，统一按"不限"展示。
+  const callLimit = retrievalLimit <= 0 || chatLimit <= 0 ? 0 : retrievalLimit + chatLimit;
+  const limitText = (v: number) => (v <= 0 ? "不限" : String(v));
+
   return (
     <div className="space-y-6">
-      {error && <div className="rounded-md bg-red-50 px-3 py-2 text-[13px] text-red-600">{error}</div>}
+      {error && <div className="rounded-md bg-red-50 px-3 py-2 text-compact text-red-600">{error}</div>}
 
-      {/* 配额统计 */}
-      <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="私有文档" used={quota?.docUsed ?? 0} limit={quota?.docLimit ?? 0} />
-        <StatCard label="今日检索" used={quota?.retrievalUsed ?? 0} limit={quota?.retrievalDailyLimit ?? 0} />
-        <StatCard label="今日问答" used={quota?.chatUsed ?? 0} limit={quota?.chatDailyLimit ?? 0} />
+      {/* 配额统计：文档与调用各一张，避免"检索/问答是否重复计数"的困惑 */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <StatCard
+          label="私有文档"
+          used={quota?.docUsed ?? 0}
+          limit={quota?.docLimit ?? 0}
+          hint="仅自己可见，不计入公共文档站"
+        />
+        <StatCard
+          label="今日调用"
+          used={callUsed}
+          limit={callLimit}
+          hint={`检索 ${quota?.retrievalUsed ?? 0}/${limitText(retrievalLimit)} · 问答 ${quota?.chatUsed ?? 0}/${limitText(chatLimit)}`}
+        />
       </div>
 
       {/* 快捷操作 */}
@@ -132,9 +154,9 @@ export default function MyKbOverviewPage() {
           <Link
             key={a.href}
             href={a.href}
-            className="group rounded-xl border border-border bg-background p-4 transition-colors hover:border-accent/50 hover:bg-muted/30"
+            className="group rounded-lg border border-border bg-background p-4 transition-colors hover:border-accent/50 hover:bg-muted/30"
           >
-            <div className="flex items-center gap-2 text-[13px] font-medium">
+            <div className="flex items-center gap-2 text-compact font-medium">
               <a.icon size={15} className="text-accent" />
               {a.title}
               <ArrowRight
@@ -142,47 +164,51 @@ export default function MyKbOverviewPage() {
                 className="ml-auto text-foreground/30 transition-transform group-hover:translate-x-0.5 group-hover:text-accent"
               />
             </div>
-            <p className="mt-1.5 text-xs leading-relaxed text-foreground/50">{a.desc}</p>
+            <p className="mt-1.5 text-xs leading-relaxed text-foreground/60">{a.desc}</p>
           </Link>
         ))}
       </div>
 
       {/* 最近文档 */}
-      <div className="overflow-hidden rounded-xl border border-border bg-background">
+      <div className="overflow-hidden rounded-lg border border-border bg-background">
         <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
-          <span className="text-[13px] font-medium">最近上传</span>
+          <span className="text-compact font-medium">最近上传</span>
           <div className="ml-auto flex items-center gap-2">
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => void load()}
-              className="flex h-7 items-center gap-1 rounded-md border border-border px-2 text-xs text-foreground/60 hover:bg-muted/60"
+              loading={loading}
+              className="px-2"
               title="刷新"
             >
-              {loading ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
+              {!loading && <RefreshCw size={12} />}
               刷新
-            </button>
+            </Button>
             <Link href="/my/kb/documents" className="text-xs text-accent hover:underline">
               查看全部 →
             </Link>
-            <Link href="/my/favorites" className="text-xs text-foreground/50 hover:text-accent">
+            <Link href="/my/favorites" className="text-xs text-foreground/60 hover:text-accent">
               我的收藏
             </Link>
           </div>
         </div>
         {!recent || recent.length === 0 ? (
-          <div className="px-4 py-8 text-center text-sm text-foreground/40">
-            还没有文档，
-            <Link href="/my/kb/upload" className="text-accent hover:underline">
-              去上传第一个文件
-            </Link>
-            ，构建你的私有知识库
+          <div className="px-4 py-8 text-center text-sm text-foreground/60">
+            还没有上传过文档。上传的文件只进入你的私有知识库，不会出现在公共文档站。
+            <div className="mt-2">
+              <Link href="/my/kb/upload" className="text-accent hover:underline">
+                上传第一份文件
+              </Link>
+            </div>
           </div>
         ) : (
-          <table className="w-full text-[13px]">
+          <table className="w-full text-compact">
             <tbody>
               {recent.map((d) => (
                 <tr key={d.id} className="border-b border-border/60 last:border-b-0 hover:bg-muted/30">
                   <td className="max-w-[280px] truncate px-4 py-2.5 font-medium">{d.title}</td>
-                  <td className="px-3 py-2.5 text-foreground/50">{fmtSize(d.fileSize)}</td>
+                  <td className="px-3 py-2.5 text-foreground/60">{fmtSize(d.fileSize)}</td>
                   <td className="px-3 py-2.5">
                     <span className={clsx("rounded-full px-2 py-0.5 text-xs", statusBadgeCls(d.status))}>
                       {statusText(d.status)}

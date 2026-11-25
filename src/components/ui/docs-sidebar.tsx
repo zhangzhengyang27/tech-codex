@@ -53,7 +53,7 @@ export function DocsSidebar({ categorySlug, sections }: DocsSidebarProps) {
             className={clsx('shrink-0 transition-transform', !isCollapsed && 'rotate-90')}
           />
           <span className="truncate">{section.title}</span>
-          <span className="ml-auto text-[11px] text-foreground/40">{countFiles(section)}</span>
+          <span className="ml-auto text-caption text-foreground/40">{countFiles(section)}</span>
         </button>
 
         {!isCollapsed && (
@@ -66,7 +66,7 @@ export function DocsSidebar({ categorySlug, sections }: DocsSidebarProps) {
                   <Link
                     href={href}
                     className={clsx(
-                      'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[13px] leading-snug transition-colors',
+                      'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-compact leading-snug transition-colors',
                       current
                         ? 'bg-accent/10 text-accent font-medium'
                         : 'text-foreground/55 hover:text-foreground hover:bg-muted/60'

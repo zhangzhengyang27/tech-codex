@@ -6,7 +6,8 @@ import { MarkdownAsync as ReactMarkdown } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import { getCategoryBySlug } from '@/lib/docs-config';
-import { getDocContent, getDocPaths } from '@/lib/docs-reader';
+import { getDocContent, getDocPaths, getSections } from '@/lib/docs-reader';
+import { docHref, flattenDocFiles, neighborsOf } from '@/lib/doc-neighbors';
 import { excerptOf } from '@/lib/site';
 import { relatedDocs } from '@/lib/related-docs';
 import { Toc } from '@/components/ui/toc';
@@ -113,7 +114,9 @@ export async function generateMetadata({
   // try/catch 容错：URL 里未编码的裸 % 序列不再导致 500，按原文处理
   const slugPath = slug.map((s) => { try { return decodeURIComponent(s); } catch { return s; } }).join('/');
   const doc = await getDocContent(`${cat.dir}/${slugPath}.md`);
-  if (!doc) return {};
+  // 不存在的文档在 metadata 阶段就判 404：docs 路由有 loading.tsx 会提前流式输出，
+  // 等 page 体再调 notFound() 时响应头已发出 200，状态码改不回来（页面内容仍是 404）。
+  if (!doc) notFound();
   const description = excerptOf(doc.content) || `${cat.title} · ${doc.title}`;
   return {
     title: doc.title,
@@ -149,12 +152,15 @@ export default async function DocPage({
   const knownPaths = await getDocPaths();
   // 相关文档：同分类内标题词元重叠度 top3（复用内容索引缓存，无额外 IO）
   const related = await relatedDocs(category, slugPath, doc.title);
+  // 上一篇/下一篇：分类内按侧栏顺序线性排列，连续阅读不必回目录找下一节。
+  // getSections 与侧栏共用同一份快照缓存，这里不产生额外数据库请求。
+  const { prev, next } = neighborsOf(flattenDocFiles(await getSections(category)), relativePath);
 
   return (
     <div className="flex flex-col gap-0 lg:flex-row lg:gap-10">
       {/* 文档正文 */}
       <main className="min-w-0 flex-1 px-1 py-6 lg:px-0 lg:py-10">
-        <nav className="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground/50">
+        <nav className="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground/60">
           <Link href="/" className="hover:text-accent">首页</Link>
           <span className="mx-0.5">/</span>
           <Link href={`/docs/${category}`} className="hover:text-accent">
@@ -177,6 +183,34 @@ export default async function DocPage({
           </ReactMarkdown>
         </article>
 
+        {/* 相邻篇章：与侧栏同一顺序，首/末篇各缺一侧时用空占位保持两列不塌陷 */}
+        {(prev || next) && (
+          <nav className="mt-12 grid gap-3 border-t border-border pt-6 sm:grid-cols-2" aria-label="相邻文档">
+            {prev ? (
+              <Link
+                href={docHref(category, cat.dir, prev.path)}
+                className="group rounded-lg border border-border p-4 transition-colors hover:border-accent/40"
+              >
+                <span className="text-xs text-foreground/60">上一篇</span>
+                <p className="mt-1 line-clamp-1 text-sm font-medium group-hover:text-accent">{prev.title}</p>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {next ? (
+              <Link
+                href={docHref(category, cat.dir, next.path)}
+                className="group rounded-lg border border-border p-4 text-right transition-colors hover:border-accent/40"
+              >
+                <span className="text-xs text-foreground/60">下一篇</span>
+                <p className="mt-1 line-clamp-1 text-sm font-medium group-hover:text-accent">{next.title}</p>
+              </Link>
+            ) : (
+              <span />
+            )}
+          </nav>
+        )}
+
         {related.length > 0 && (
           <section className="mt-12 border-t border-border pt-6">
             <h2 className="text-sm font-semibold text-foreground/70">相关文档</h2>
@@ -185,7 +219,7 @@ export default async function DocPage({
                 <Link
                   key={r.href}
                   href={r.href}
-                  className="group rounded-xl border border-border bg-muted/30 p-3 text-sm transition-colors hover:border-accent/40"
+                  className="group rounded-lg border border-border bg-muted/30 p-3 text-sm transition-colors hover:border-accent/40"
                 >
                   <span className="line-clamp-2 group-hover:text-accent">{r.title}</span>
                 </Link>

@@ -40,7 +40,7 @@ export function ScopeSwitcher({
             "rounded px-2 py-1 text-xs transition-colors disabled:opacity-50",
             value === o.value
               ? "bg-background font-medium text-foreground shadow-sm"
-              : "text-foreground/50 hover:text-foreground",
+              : "text-foreground/60 hover:text-foreground",
           )}
         >
           {o.label}

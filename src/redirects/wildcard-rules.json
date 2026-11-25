@@ -1,0 +1,190 @@
+[
+  {
+    "source": "/docs/web-security/:path*",
+    "destination": "/docs/security/:path*"
+  },
+  {
+    "source": "/docs/%E5%89%8D%E7%AB%AF/10-Web%E5%AE%89%E5%85%A8/:path*",
+    "destination": "/docs/security/:path*"
+  },
+  {
+    "source": "/docs/os-course/:path*",
+    "destination": "/docs/cs-basics/01-操作系统/:path*"
+  },
+  {
+    "source": "/docs/python/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/:path*",
+    "destination": "/docs/cs-basics/01-操作系统/:path*"
+  },
+  {
+    "source": "/docs/python-devops/:path*",
+    "destination": "/docs/ops/:path*"
+  },
+  {
+    "source": "/docs/misc-notes/:path*",
+    "destination": "/docs/java/:path*"
+  },
+  {
+    "source": "/docs/architecture/11-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/:path*",
+    "destination": "/docs/cs-basics/03-计算机网络/:path*"
+  },
+  {
+    "source": "/docs/architecture/02-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/01-%E4%B8%AD%E5%8F%B0%E4%B8%93%E9%A2%98/:path*",
+    "destination": "/docs/architecture/02-中台架构/:path*"
+  },
+  {
+    "source": "/docs/visualization/:path*",
+    "destination": "/docs/frontend-visualization/:path*"
+  },
+  {
+    "source": "/docs/architecture/02-%E4%B8%AD%E5%8F%B0%E6%9E%B6%E6%9E%84/:path*",
+    "destination": "/docs/architecture/02-架构设计/中台架构/:path*"
+  },
+  {
+    "source": "/docs/javascript/11-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/:path*",
+    "destination": "/docs/javascript/10-性能优化/:path*"
+  },
+  {
+    "source": "/docs/javascript/12-%E5%AE%89%E5%85%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/:path*",
+    "destination": "/docs/javascript/11-安全最佳实践/:path*"
+  },
+  {
+    "source": "/docs/javascript/13-%E5%B7%A5%E5%85%B7%E5%BA%93%E4%B8%8E%E6%A1%86%E6%9E%B6/:path*",
+    "destination": "/docs/javascript/12-工具库与框架/:path*"
+  },
+  {
+    "source": "/docs/javascript/14-%E8%A1%A8%E5%8D%95%E4%B8%8E%E5%AF%8C%E6%96%87%E6%9C%AC/:path*",
+    "destination": "/docs/javascript/13-表单与富文本/:path*"
+  },
+  {
+    "source": "/docs/javascript/15-%E6%A8%A1%E5%9D%97%E5%8C%96/:path*",
+    "destination": "/docs/javascript/14-模块化/:path*"
+  },
+  {
+    "source": "/docs/javascript/16-%E5%89%8D%E7%AB%AF%E6%B5%8B%E8%AF%95/:path*",
+    "destination": "/docs/javascript/15-前端测试/:path*"
+  },
+  {
+    "source": "/docs/javascript/17-Web%20Workers%E4%B8%8EService%20Worker/:path*",
+    "destination": "/docs/javascript/16-Web Workers与Service Worker/:path*"
+  },
+  {
+    "source": "/docs/javascript/18-%E6%A0%87%E5%87%86%E5%BA%93/:path*",
+    "destination": "/docs/javascript/17-标准库/:path*"
+  },
+  {
+    "source": "/docs/javascript/19-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/:path*",
+    "destination": "/docs/javascript/18-浏览器原理/:path*"
+  },
+  {
+    "source": "/docs/javascript/20-%E9%AB%98%E9%98%B6%E5%BC%80%E5%8F%91%E8%83%BD%E5%8A%9B/:path*",
+    "destination": "/docs/javascript/19-高阶开发能力/:path*"
+  },
+  {
+    "source": "/docs/node/10-%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81/:path*",
+    "destination": "/docs/node/09-安全认证/:path*"
+  },
+  {
+    "source": "/docs/node/11-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/:path*",
+    "destination": "/docs/node/10-性能优化/:path*"
+  },
+  {
+    "source": "/docs/node/12-%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B/:path*",
+    "destination": "/docs/node/11-实战案例/:path*"
+  },
+  {
+    "source": "/docs/node/13-CLI%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/:path*",
+    "destination": "/docs/node/12-CLI工具开发/:path*"
+  },
+  {
+    "source": "/docs/node/14-%E7%BC%96%E8%AF%91%E4%B8%8E%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/:path*",
+    "destination": "/docs/node/13-编译与底层原理/:path*"
+  },
+  {
+    "source": "/docs/architecture/10-%E6%8A%80%E6%9C%AF%E6%96%B9%E6%B3%95%E8%AE%BA/:path*",
+    "destination": "/docs/architecture/09-技术方法论/:path*"
+  },
+  {
+    "source": "/docs/architecture/12-%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/:path*",
+    "destination": "/docs/java-project/02-项目实战/01-医院全栈项目实战/:path*"
+  },
+  {
+    "source": "/docs/architecture/13-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E9%9D%A2%E8%AF%95%E7%B2%BE%E8%AE%B2/:path*",
+    "destination": "/docs/architecture/10-架构设计面试精讲/:path*"
+  },
+  {
+    "source": "/docs/python-basics/:path*",
+    "destination": "/docs/python/02-基础与入门/:path*"
+  },
+  {
+    "source": "/docs/python-web/:path*",
+    "destination": "/docs/python/01-Web与爬虫/01-Web开发/:path*"
+  },
+  {
+    "source": "/docs/python-data/:path*",
+    "destination": "/docs/python/04-数据分析思维/:path*"
+  },
+  {
+    "source": "/docs/python-data-analysis/:path*",
+    "destination": "/docs/python/05-数据科学/:path*"
+  },
+  {
+    "source": "/docs/python-crawler/:path*",
+    "destination": "/docs/python/01-Web与爬虫/02-爬虫/:path*"
+  },
+  {
+    "source": "/docs/python-automation/:path*",
+    "destination": "/docs/python/自动化办公/:path*"
+  },
+  {
+    "source": "/docs/python-concurrent/:path*",
+    "destination": "/docs/python/09-进阶核心/01-并发编程/:path*"
+  },
+  {
+    "source": "/docs/python-engineering/:path*",
+    "destination": "/docs/python/03-工程化与运维/01-工程化/:path*"
+  },
+  {
+    "source": "/docs/dm-course/:path*",
+    "destination": "/docs/python/数据科学/06-算法与数据挖掘/:path*"
+  },
+  {
+    "source": "/docs/python/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/:path*",
+    "destination": "/docs/python/04-数据分析思维/:path*"
+  },
+  {
+    "source": "/docs/python/基础与入门/:path*",
+    "destination": "/docs/python/02-基础与入门/:path*"
+  },
+  {
+    "source": "/docs/python/Web与爬虫/:path*",
+    "destination": "/docs/python/01-Web与爬虫/:path*"
+  },
+  {
+    "source": "/docs/python/工程化与运维/:path*",
+    "destination": "/docs/python/03-工程化与运维/:path*"
+  },
+  {
+    "source": "/docs/python/数据分析/:path*",
+    "destination": "/docs/python/04-数据分析思维/:path*"
+  },
+  {
+    "source": "/docs/python/数据科学/:path*",
+    "destination": "/docs/python/05-数据科学/:path*"
+  },
+  {
+    "source": "/docs/python/机器学习/:path*",
+    "destination": "/docs/python/06-AI应用开发/:path*"
+  },
+  {
+    "source": "/docs/python/模块/:path*",
+    "destination": "/docs/python/07-模块/:path*"
+  },
+  {
+    "source": "/docs/python/自动化办公/:path*",
+    "destination": "/docs/python/08-自动化办公/:path*"
+  },
+  {
+    "source": "/docs/python/进阶核心/:path*",
+    "destination": "/docs/python/09-进阶核心/:path*"
+  }
+]

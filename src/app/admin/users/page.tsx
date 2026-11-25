@@ -139,7 +139,7 @@ export default function AdminUsersPage() {
         description="管理账号角色、启用状态和密码；角色变更与禁用即时生效，引导管理员受保护不可降级或禁用。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               共 {total} 位用户
             </span>
@@ -163,22 +163,22 @@ export default function AdminUsersPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索用户名或昵称"
-                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-compact outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
               />
             </div>
             <button type="submit" className={adminBtn("secondary", "sm")}>搜索</button>
           </form>
-          {msg && <span className="text-[11px] text-emerald-600">{msg}</span>}
-          {error && <span className="text-[11px] text-red-500">{error}</span>}
-          <span className="ml-auto rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">
+          {msg && <span className="text-caption text-emerald-600">{msg}</span>}
+          {error && <span className="text-caption text-red-500">{error}</span>}
+          <span className="ml-auto rounded-full bg-slate-50 px-2.5 py-1 font-mono text-2xs text-slate-400">
             {total} 个账号
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[680px] text-[13px]">
+          <table className="w-full min-w-[680px] text-compact">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[11px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-caption uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">用户名</th>
                 <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">昵称</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">角色</th>
@@ -199,7 +199,7 @@ export default function AdminUsersPage() {
                 <tr>
                   <td colSpan={7} className="px-4 py-10 text-center">
                     <Users size={22} className="mx-auto mb-2 text-slate-300" />
-                    <p className="text-[13px] text-slate-500">暂无匹配用户</p>
+                    <p className="text-compact text-slate-500">暂无匹配用户</p>
                   </td>
                 </tr>
               ) : (
@@ -210,12 +210,12 @@ export default function AdminUsersPage() {
                     <tr key={u.id} className="border-b border-slate-100/80 last:border-b-0 hover:bg-slate-50/60">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-100 font-mono text-[10px] font-semibold uppercase text-slate-500">
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-100 font-mono text-2xs font-semibold uppercase text-slate-500">
                             {u.username.slice(0, 1)}
                           </span>
                           <div className="min-w-0">
-                            <div className="truncate font-mono text-[12px] font-medium text-slate-700">{u.username}</div>
-                            {self && <div className="mt-0.5 text-[10px] text-accent">当前账号</div>}
+                            <div className="truncate font-mono text-xs font-medium text-slate-700">{u.username}</div>
+                            {self && <div className="mt-0.5 text-2xs text-accent">当前账号</div>}
                           </div>
                         </div>
                       </td>
@@ -223,7 +223,7 @@ export default function AdminUsersPage() {
                       <td className="whitespace-nowrap px-3 py-3">
                         <span
                           className={clsx(
-                            "inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+                            "inline-flex rounded-full px-2 py-0.5 text-2xs font-medium ring-1",
                             u.role === "ADMIN" ? "bg-violet-50 text-violet-600 ring-violet-100" : "bg-slate-100 text-slate-500 ring-slate-200",
                           )}
                         >
@@ -233,7 +233,7 @@ export default function AdminUsersPage() {
                       <td className="whitespace-nowrap px-3 py-3">
                         <span
                           className={clsx(
-                            "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+                            "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-2xs font-medium ring-1",
                             u.status === "DISABLED" ? "bg-red-50 text-red-600 ring-red-100" : "bg-emerald-50 text-emerald-600 ring-emerald-100",
                           )}
                         >
@@ -241,8 +241,8 @@ export default function AdminUsersPage() {
                           {u.status === "DISABLED" ? "已禁用" : "正常"}
                         </span>
                       </td>
-                      <td className="hidden px-3 py-3 font-mono text-[11px] text-slate-400 xl:table-cell">{u.libraryId || "-"}</td>
-                      <td className="hidden whitespace-nowrap px-3 py-3 font-mono text-[11px] text-slate-400 xl:table-cell">
+                      <td className="hidden px-3 py-3 font-mono text-caption text-slate-400 xl:table-cell">{u.libraryId || "-"}</td>
+                      <td className="hidden whitespace-nowrap px-3 py-3 font-mono text-caption text-slate-400 xl:table-cell">
                         {fmtDate(u.createdDate)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-3 text-right">
@@ -250,7 +250,7 @@ export default function AdminUsersPage() {
                           onClick={() => onToggleRole(u)}
                           disabled={busy || self}
                           title={self ? "不能变更自己的角色" : "变更角色"}
-                          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800 disabled:opacity-40"
+                          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption text-slate-500 hover:bg-slate-100 hover:text-slate-800 disabled:opacity-40"
                         >
                           <ShieldCheck size={12} />
                           {u.role === "ADMIN" ? "降为用户" : "升为管理员"}
@@ -260,7 +260,7 @@ export default function AdminUsersPage() {
                           disabled={busy || self}
                           title={self ? "不能禁用自己的账号" : u.status === "DISABLED" ? "启用账号" : "禁用账号"}
                           className={clsx(
-                            "ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] disabled:opacity-40",
+                            "ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption disabled:opacity-40",
                             u.status === "DISABLED" ? "text-emerald-600 hover:bg-emerald-50" : "text-red-500/80 hover:bg-red-50",
                           )}
                         >
@@ -273,7 +273,7 @@ export default function AdminUsersPage() {
                             setNewPwd("");
                             setError("");
                           }}
-                          className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                          className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                         >
                           <KeyRound size={12} />
                           重置密码
@@ -309,13 +309,13 @@ export default function AdminUsersPage() {
           aria-label="重置密码"
         >
           <div
-            className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl"
+            className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center gap-2 text-[14px] font-semibold text-slate-800">
+            <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
               <KeyRound size={15} className="text-accent" /> 重置密码 · {pwdTarget.username}
             </div>
-            <p className="mt-1.5 text-[11px] leading-5 text-slate-400">新密码直接生效，无需旧密码；请通过其他渠道告知该用户。</p>
+            <p className="mt-1.5 text-caption leading-5 text-slate-400">新密码直接生效，无需旧密码；请通过其他渠道告知该用户。</p>
             <input
               type="password"
               value={newPwd}
@@ -324,7 +324,7 @@ export default function AdminUsersPage() {
               placeholder="新密码（至少 8 位）"
               autoComplete="new-password"
               autoFocus
-              className="mt-4 h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] outline-none focus:border-accent focus:bg-white"
+              className="mt-4 h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-compact outline-none focus:border-accent focus:bg-white"
             />
             <div className="mt-4 flex justify-end gap-2">
               <button

@@ -51,13 +51,13 @@ export function ChatInput({
           placeholder={placeholder}
           disabled={busy}
           rows={1}
-          className="max-h-40 min-h-[48px] flex-1 resize-y rounded-xl border border-border px-4 py-2.5 text-sm focus:border-accent focus:outline-none disabled:opacity-60"
+          className="max-h-40 min-h-[48px] flex-1 resize-y rounded-lg border border-border px-4 py-2.5 text-sm focus:border-accent focus:outline-none disabled:opacity-60"
         />
         {busy ? (
           <button
             type="button"
             onClick={onStop}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-foreground/50 transition-colors hover:bg-muted hover:text-foreground"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-foreground/60 transition-colors hover:bg-muted hover:text-foreground"
             aria-label="停止"
           >
             <Square size={15} />
@@ -66,7 +66,7 @@ export function ChatInput({
           <button
             type="submit"
             disabled={!value.trim()}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+            className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-white transition-opacity hover:opacity-90 disabled:opacity-40"
             aria-label="发送"
           >
             <Send size={16} />

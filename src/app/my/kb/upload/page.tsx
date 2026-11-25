@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   FileText,
   FileUp,
-  Loader2,
   MessageSquareText,
   X,
 } from "lucide-react";
@@ -16,6 +15,9 @@ import { useHydrated } from "@/lib/use-hydrated";
 import { myQuota, uploadMyDocument, type KbQuota } from "@/lib/kb";
 import { fmtSize } from "@/lib/format";
 import type { KbDocumentView } from "@/lib/documents";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Field } from "@/components/ui/field";
 
 function errText(e: unknown): string {
   return e instanceof Error ? e.message : "上传失败";
@@ -89,7 +91,7 @@ export default function MyKbUploadPage() {
   return (
     <div className="space-y-4">
       {/* 上传区 */}
-      <div className="rounded-xl border border-border bg-background p-4">
+      <div className="rounded-lg border border-border bg-background p-4">
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -98,18 +100,15 @@ export default function MyKbUploadPage() {
           onDragLeave={() => setDragOver(false)}
           onDrop={onDrop}
           className={clsx(
-            "flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-6 py-10 transition-colors",
+            "flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed px-6 py-10 transition-colors",
             dragOver ? "border-accent bg-accent/5" : "border-border hover:border-accent/50",
           )}
         >
           <FileUp size={28} className="text-foreground/30" />
           <p className="text-sm text-foreground/60">拖拽文件到这里，或</p>
-          <button
-            onClick={() => fileRef.current?.click()}
-            className="rounded-md bg-accent px-4 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
-          >
+          <Button variant="primary" size="sm" onClick={() => fileRef.current?.click()}>
             选择文件
-          </button>
+          </Button>
           <input
             ref={fileRef}
             type="file"
@@ -127,7 +126,7 @@ export default function MyKbUploadPage() {
           <div className="mt-3 flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-3 py-2.5">
             <FileText size={18} className="shrink-0 text-accent" />
             <div className="min-w-0 flex-1">
-              <div className="truncate text-[13px] font-medium">{file.name}</div>
+              <div className="truncate text-compact font-medium">{file.name}</div>
               <div className="text-xs text-foreground/40">{fmtSize(file.size)}</div>
             </div>
             <button
@@ -141,22 +140,32 @@ export default function MyKbUploadPage() {
           </div>
         )}
 
-        {/* 标题 + 提交 */}
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="文档标题（可选，默认取文件名）"
-            className="h-9 flex-1 rounded-md border border-border bg-muted/40 px-3 text-[13px] outline-none focus:border-accent"
-          />
-          <button
-            onClick={onUpload}
-            disabled={uploading || !file}
-            className="flex h-9 items-center justify-center gap-1.5 rounded-md bg-accent px-5 text-[13px] font-medium text-white disabled:opacity-60"
+        {/* 标题 + 提交：改成纵向 Field，横向排布下 label 无处安放 */}
+        <div className="mt-3 space-y-3">
+          <Field
+            label="文档标题"
+            htmlFor="upload-title"
+            hint="可选，留空时用文件名作为标题"
           >
-            {uploading ? <Loader2 size={14} className="animate-spin" /> : <FileUp size={14} />}
-            {uploading ? "上传解析中…" : "上传"}
-          </button>
+            <Input
+              id="upload-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="例如：Redis 持久化机制"
+            />
+          </Field>
+          <div className="flex justify-end">
+            <Button
+              variant="primary"
+              onClick={onUpload}
+              disabled={!file}
+              loading={uploading}
+              className="px-5"
+            >
+              {!uploading && <FileUp size={14} />}
+              {uploading ? "上传解析中…" : "上传"}
+            </Button>
+          </div>
         </div>
 
         {error && <div className="mt-2 text-xs text-red-500">{error}</div>}
@@ -169,8 +178,8 @@ export default function MyKbUploadPage() {
 
       {/* 上传成功引导 */}
       {result && (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
-          <div className="flex items-center gap-2 text-[13px] font-medium text-emerald-700">
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+          <div className="flex items-center gap-2 text-compact font-medium text-emerald-700">
             <CheckCircle2 size={16} />
             已上传《{result.title}》，分块 {result.chunkCount ?? 0} 条，索引处理中…
           </div>
@@ -180,21 +189,21 @@ export default function MyKbUploadPage() {
           <div className="mt-3 flex flex-wrap gap-2">
             <Link
               href="/my/kb/documents"
-              className="flex items-center gap-1.5 rounded-md border border-emerald-300 px-3 py-1.5 text-[13px] text-emerald-700 transition-colors hover:bg-emerald-100"
+              className="flex items-center gap-1.5 rounded-md border border-emerald-300 px-3 py-1.5 text-compact text-emerald-700 transition-colors hover:bg-emerald-100"
             >
               <FileText size={13} />
               查看文档列表
             </Link>
             <Link
               href="/ai"
-              className="flex items-center gap-1.5 rounded-md border border-emerald-300 px-3 py-1.5 text-[13px] text-emerald-700 transition-colors hover:bg-emerald-100"
+              className="flex items-center gap-1.5 rounded-md border border-emerald-300 px-3 py-1.5 text-compact text-emerald-700 transition-colors hover:bg-emerald-100"
             >
               <MessageSquareText size={13} />
               去 AI 问答
             </Link>
             <button
               onClick={() => setResult(null)}
-              className="rounded-md px-3 py-1.5 text-[13px] text-emerald-700/70 hover:text-emerald-700"
+              className="rounded-md px-3 py-1.5 text-compact text-emerald-700/70 hover:text-emerald-700"
             >
               再传一个
             </button>

@@ -160,7 +160,7 @@ export default function AdminOverviewPage() {
         description="公共知识库（default 空间）的运行状态、待办告警和常用运维入口。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               公共知识库 · default
             </span>
@@ -187,7 +187,7 @@ export default function AdminOverviewPage() {
       />
 
       {error && (
-        <div className="mb-5 flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">
+        <div className="mb-5 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-compact text-red-600">
           <ShieldAlert size={15} /> {error}
         </div>
       )}
@@ -216,7 +216,8 @@ export default function AdminOverviewPage() {
           value={stats ? fmtNum(stats.pendingDocuments) : "…"}
           hint="处理中 / 排队"
           icon={HardDrive}
-          tone="amber"
+          // 颜色跟随状态而不是指标本身：0 条排队是正常态，不该染成告警黄
+          tone={stats && stats.pendingDocuments > 0 ? "amber" : "slate"}
           href="/admin/documents"
         />
         <AdminMetricCard
@@ -225,7 +226,7 @@ export default function AdminOverviewPage() {
           value={stats ? fmtNum(stats.failedDocuments) : "…"}
           hint={stats && stats.failedDocuments > 0 ? "可在文档管理重试" : "当前无失败文档"}
           icon={ShieldAlert}
-          tone={stats && stats.failedDocuments > 0 ? "red" : "emerald"}
+          tone={stats && stats.failedDocuments > 0 ? "red" : "slate"}
           href="/admin/documents"
         />
         <AdminMetricCard
@@ -244,20 +245,20 @@ export default function AdminOverviewPage() {
           description="需要人工介入的评测异常、内容问题和登录安全事件"
           icon={BellRing}
           actions={
-            <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-2xs text-slate-400">
               {alerts.length + locked.length} 项
             </span>
           }
           contentClassName="space-y-3 p-4"
         >
           {alerts.length === 0 && locked.length === 0 ? (
-            <div className="flex items-start gap-3 rounded-xl border border-emerald-200/80 bg-emerald-50/60 p-4">
+            <div className="flex items-start gap-3 rounded-lg border border-emerald-200/80 bg-emerald-50/60 p-4">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
                 <CircleCheck size={16} />
               </span>
               <div>
-                <div className="text-[13px] font-medium text-emerald-800">当前没有待处理异常</div>
-                <p className="mt-1 text-[11px] leading-4 text-emerald-700/70">
+                <div className="text-compact font-medium text-emerald-800">当前没有待处理异常</div>
+                <p className="mt-1 text-caption leading-4 text-emerald-700/70">
                   评测命中率、内容缺口和登录安全均在正常范围内。
                 </p>
               </div>
@@ -265,13 +266,13 @@ export default function AdminOverviewPage() {
           ) : null}
 
           {alerts.map((a) => (
-            <div key={a.id} className="flex items-start gap-3 rounded-xl border border-amber-200/80 bg-amber-50/50 p-3">
+            <div key={a.id} className="flex items-start gap-3 rounded-lg border border-amber-200/80 bg-amber-50/50 p-3">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
                 <BellRing size={15} />
               </span>
               <div className="min-w-0 flex-1">
-                <div className="text-[13px] font-medium leading-5 text-slate-800">{a.message}</div>
-                <div className="mt-1 font-mono text-[10px] text-slate-400">
+                <div className="text-compact font-medium leading-5 text-slate-800">{a.message}</div>
+                <div className="mt-1 font-mono text-2xs text-slate-400">
                   {a.type}
                   {a.createdDate && !Number.isNaN(new Date(a.createdDate).getTime()) && (
                     <> · {new Date(a.createdDate).toLocaleString("zh-CN", { hour12: false })}</>
@@ -280,7 +281,7 @@ export default function AdminOverviewPage() {
               </div>
               <button
                 onClick={() => void onResolveAlert(a.id)}
-                className="shrink-0 rounded-lg border border-amber-300/70 bg-white px-2.5 py-1 text-[11px] font-medium text-amber-700 hover:bg-amber-100"
+                className="shrink-0 rounded-lg border border-amber-300/70 bg-white px-2.5 py-1 text-caption font-medium text-amber-700 hover:bg-amber-100"
               >
                 标记处理
               </button>
@@ -288,19 +289,19 @@ export default function AdminOverviewPage() {
           ))}
 
           {locked.map((l) => (
-            <div key={l.username} className="flex items-start gap-3 rounded-xl border border-red-200/80 bg-red-50/50 p-3">
+            <div key={l.username} className="flex items-start gap-3 rounded-lg border border-red-200/80 bg-red-50/50 p-3">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-600">
                 <Unlock size={15} />
               </span>
               <div className="min-w-0 flex-1">
-                <div className="font-mono text-[13px] font-medium text-slate-800">{l.username}</div>
-                <div className="mt-1 text-[11px] text-slate-500">
+                <div className="font-mono text-compact font-medium text-slate-800">{l.username}</div>
+                <div className="mt-1 text-caption text-slate-500">
                   连续失败 {l.failureCount} 次 · 剩余 {Math.ceil(l.remainingSeconds / 60)} 分钟解锁
                 </div>
               </div>
               <button
                 onClick={() => void onUnlock(l.username)}
-                className="shrink-0 rounded-lg border border-red-300/70 bg-white px-2.5 py-1 text-[11px] font-medium text-red-600 hover:bg-red-100"
+                className="shrink-0 rounded-lg border border-red-300/70 bg-white px-2.5 py-1 text-caption font-medium text-red-600 hover:bg-red-100"
               >
                 解锁
               </button>
@@ -308,7 +309,7 @@ export default function AdminOverviewPage() {
           ))}
 
           {alerts.length > 5 && (
-            <p className="px-1 text-[11px] text-slate-400">还有 {alerts.length - 5} 条告警未展示</p>
+            <p className="px-1 text-caption text-slate-400">还有 {alerts.length - 5} 条告警未展示</p>
           )}
         </AdminCard>
 
@@ -317,19 +318,19 @@ export default function AdminOverviewPage() {
             <button
               onClick={() => void startRebuild()}
               disabled={starting !== null || taskId !== null}
-              className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-left transition-colors hover:border-accent/30 hover:bg-accent/[0.03] disabled:opacity-60"
+              className="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-left transition-colors hover:border-accent/30 hover:bg-accent/[0.03] disabled:opacity-60"
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
                 {starting === "rebuild" ? <RefreshCw size={14} className="animate-spin" /> : <RefreshCw size={14} />}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[12px] font-medium text-slate-700">重建向量索引</span>
-                <span className="mt-0.5 block text-[10px] text-slate-400">全量修复 · 本地嵌入，无 API 成本</span>
+                <span className="block text-xs font-medium text-slate-700">重建向量索引</span>
+                <span className="mt-0.5 block text-2xs text-slate-400">全量修复 · 本地嵌入，无 API 成本</span>
               </span>
               <ArrowRight size={13} className="text-slate-300 group-hover:text-accent" />
             </button>
           </div>
-          {actionError && <p className="text-[11px] text-red-500">{actionError}</p>}
+          {actionError && <p className="text-caption text-red-500">{actionError}</p>}
           <TaskProgress taskId={taskId} title={taskTitle} onDone={onTaskDone} onDismiss={() => setTaskId(null)} />
         </AdminCard>
       </div>
@@ -337,10 +338,10 @@ export default function AdminOverviewPage() {
       <section className="mt-7">
         <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
           <div>
-            <h2 className="text-[15px] font-semibold tracking-tight text-slate-800">功能入口</h2>
+            <h2 className="text-reading font-semibold tracking-tight text-slate-800">功能入口</h2>
             <p className="mt-0.5 text-xs text-slate-400">按运营场景快速进入对应管理模块</p>
           </div>
-          <Link href="/admin/eval" className="inline-flex items-center gap-1 text-[11px] text-accent hover:underline">
+          <Link href="/admin/eval" className="inline-flex items-center gap-1 text-caption text-accent hover:underline">
             查看评测质量 <ArrowUpRight size={12} />
           </Link>
         </div>
@@ -351,16 +352,16 @@ export default function AdminOverviewPage() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all hover:-translate-y-0.5 hover:border-accent/25 hover:shadow-[0_12px_30px_-22px_rgba(15,23,42,0.4)]"
+                className="group relative overflow-hidden rounded-lg border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all hover:-translate-y-0.5 hover:border-accent/25 hover:shadow-[0_12px_30px_-22px_rgba(15,23,42,0.4)]"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <span className={clsx("flex h-9 w-9 items-center justify-center rounded-xl ring-1", QUICK_TONE[l.tone])}>
+                  <span className={clsx("flex h-9 w-9 items-center justify-center rounded-lg ring-1", QUICK_TONE[l.tone])}>
                     <Icon size={16} />
                   </span>
                   <ArrowUpRight size={14} className="text-slate-300 transition-colors group-hover:text-accent" />
                 </div>
-                <div className="mt-3 text-[13px] font-semibold text-slate-800">{l.label}</div>
-                <p className="mt-1 text-[11px] leading-4 text-slate-400">{l.desc}</p>
+                <div className="mt-3 text-compact font-semibold text-slate-800">{l.label}</div>
+                <p className="mt-1 text-caption leading-4 text-slate-400">{l.desc}</p>
               </Link>
             );
           })}

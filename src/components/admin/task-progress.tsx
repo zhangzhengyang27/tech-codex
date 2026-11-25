@@ -96,14 +96,14 @@ export function TaskProgress({
   const pct = task && task.total > 0 ? Math.round((task.processed / task.total) * 100) : null;
 
   return (
-    <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-      <div className="flex items-center gap-2 text-[12px] font-medium text-slate-700">
+    <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50/70 p-4">
+      <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
         {running && <Loader2 size={15} className="animate-spin text-accent" />}
         {done && !failed && <CheckCircle2 size={15} className="text-emerald-600" />}
         {(failed || error) && <AlertTriangle size={15} className="text-red-500" />}
         <span>{title}{running ? "进行中…" : ""}</span>
         {task && task.total > 0 && (
-          <span className="font-mono text-[10px] text-slate-400">
+          <span className="font-mono text-2xs text-slate-400">
             {task.processed}/{task.total}
           </span>
         )}
@@ -126,7 +126,7 @@ export function TaskProgress({
       )}
 
       {done && (
-        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-500">
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-caption text-slate-500">
           <span className="text-emerald-600">成功 {task?.succeeded ?? 0}</span>
           {(task?.failed ?? 0) > 0 && <span className="text-red-500">失败 {task?.failed}</span>}
           {(task?.failed ?? 0) === 0 && <span className="text-slate-400">全部处理完成</span>}
@@ -134,12 +134,12 @@ export function TaskProgress({
       )}
 
       {error && (
-        <div className="mt-2 flex items-center gap-2 text-[11px] text-red-500">
+        <div className="mt-2 flex items-center gap-2 text-caption text-red-500">
           {error}
           {pollBroken && (
             <button
               onClick={() => setAttempt((a) => a + 1)}
-              className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+              className="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2 py-0.5 text-caption text-slate-500 hover:bg-slate-50 hover:text-slate-700"
             >
               <RotateCw size={11} />
               重试查询
@@ -155,7 +155,7 @@ export function TaskProgress({
           </summary>
           <ul className="mt-1.5 max-h-40 space-y-1 overflow-y-auto">
             {task.errors.slice(0, 20).map((e, i) => (
-              <li key={i} className="break-all text-[11px] text-slate-500">
+              <li key={i} className="break-all text-caption text-slate-500">
                 {e}
               </li>
             ))}

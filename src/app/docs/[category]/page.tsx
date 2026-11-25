@@ -15,7 +15,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { category } = await params;
   const cat = getCategoryBySlug(category);
-  if (!cat) return {};
+  // 未知分类在 metadata 阶段就判 404：docs 路由的 loading.tsx 会先流式输出响应头，
+  // page 体里再调 notFound() 只能改页面内容、改不回状态码。
+  if (!cat) notFound();
   return {
     title: cat.title,
     description: cat.description || `${cat.title} 分类下的全部技术文档`,
@@ -83,17 +85,14 @@ export default async function CategoryPage({
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
-      <nav className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground/50">
+      <nav className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground/60">
         <Link href="/" className="hover:text-accent">首页</Link>
         <span className="mx-0.5">/</span>
         <span className="text-foreground">{cat.title}</span>
       </nav>
 
       <header className="mb-10">
-        <h1 className="text-3xl font-bold">
-          <span className="mr-3">{cat.icon}</span>
-          {cat.title}
-        </h1>
+        <h1 className="text-3xl font-bold">{cat.title}</h1>
         <p className="mt-2 text-foreground/60">{cat.description}</p>
       </header>
 

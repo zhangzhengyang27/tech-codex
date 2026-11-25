@@ -195,7 +195,7 @@ export default function ContentGapsPage() {
         description="聚合未答、零引用、点踩、追问四类信号，按归一化问题去重并聚类，流转为可评测的缺口。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
               共 {total} 条缺口
             </span>
@@ -226,15 +226,15 @@ export default function ContentGapsPage() {
         </div>
       )}
 
-      {error && <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
+      {error && <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-compact text-red-600">{error}</p>}
 
       <div className="mt-5 grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
-        <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div className="min-w-0 overflow-hidden rounded-lg border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
           <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 bg-slate-50/60 px-3 py-3">
             <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto [scrollbar-width:none]">
               {([['全部', ''], ['待处理', 'OPEN'], ['已分诊', 'TRIAGED'], ['已排期', 'PLANNED'], ['已解决', 'RESOLVED'], ['已忽略', 'IGNORED']] as [string, GapStatus | ''][]).map(([label, value]) => (
                 <button key={label} onClick={() => setStatus(value)}
-                  className={`shrink-0 whitespace-nowrap rounded-lg border px-2.5 py-1.5 text-[11px] transition-colors ${
+                  className={`shrink-0 whitespace-nowrap rounded-lg border px-2.5 py-1.5 text-caption transition-colors ${
                     status === value ? 'border-accent/20 bg-white font-medium text-accent shadow-sm' : 'border-transparent text-slate-500 hover:bg-white hover:text-slate-800'
                   }`}>{label}</button>
               ))}
@@ -242,12 +242,12 @@ export default function ContentGapsPage() {
             <div className="relative ml-auto w-full sm:w-56">
               <Search size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="搜索问题…"
-                className="h-8 w-full rounded-lg border border-slate-200 bg-white pl-8 pr-3 text-[12px] outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/25" />
+                className="h-8 w-full rounded-lg border border-slate-200 bg-white pl-8 pr-3 text-xs outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/25" />
             </div>
           </div>
 
           {selected.size > 0 && (
-            <div className="m-3 flex flex-wrap items-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-[11px]">
+            <div className="m-3 flex flex-wrap items-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-caption">
               <span className="font-medium text-accent">已选 {selected.size} 条</span>
               <button disabled={batchBusy} onClick={() => onBatchStatus('TRIAGED')}
                 className="rounded-md border border-slate-200 bg-white px-2 py-1 text-slate-600 hover:text-accent disabled:opacity-50">标记已分诊</button>
@@ -264,16 +264,16 @@ export default function ContentGapsPage() {
             </div>
           ) : items.length === 0 ? (
             <div className="px-6 py-16 text-center">
-              <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-500 ring-1 ring-emerald-100">
+              <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-50 text-emerald-500 ring-1 ring-emerald-100">
                 <CheckCircle2 size={22} />
               </span>
-              <p className="mt-3 text-[13px] font-medium text-slate-600">当前筛选下没有内容缺口</p>
-              <p className="mt-1 text-[11px] text-slate-400">用户遇到未答、零引用、点踩或追问时会自动汇总到这里</p>
+              <p className="mt-3 text-compact font-medium text-slate-600">当前筛选下没有内容缺口</p>
+              <p className="mt-1 text-caption text-slate-400">用户遇到未答、零引用、点踩或追问时会自动汇总到这里</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-left text-xs">
-                <thead className="bg-slate-50/80 text-[11px] uppercase tracking-[0.06em] text-slate-400">
+                <thead className="bg-slate-50/80 text-caption uppercase tracking-[0.06em] text-slate-400">
                   <tr className="border-b border-slate-100">
                     <th className="w-10 px-3 py-2.5"><input type="checkbox" checked={selected.size === items.length && items.length > 0} onChange={toggleAll} aria-label="全选" /></th>
                     <th className="px-3 py-2.5 font-medium">问题</th>
@@ -291,28 +291,28 @@ export default function ContentGapsPage() {
                         <td className="px-3 py-3"><input type="checkbox" checked={selected.has(item.id)} onChange={() => toggleSelect(item.id)} aria-label={`选择 ${item.question}`} /></td>
                         <td className="max-w-[360px] px-3 py-3">
                           <button onClick={() => void openDetail(item.id)}
-                            className="block text-left text-[13px] font-medium leading-snug text-slate-700 hover:text-accent">{item.question}</button>
-                          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-400">
+                            className="block text-left text-compact font-medium leading-snug text-slate-700 hover:text-accent">{item.question}</button>
+                          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-2xs text-slate-400">
                             {item.clusterLabel && <span className="inline-flex items-center gap-1"><Layers size={10} />{item.clusterLabel.slice(0, 24)}</span>}
                             {item.relatedDocIds && <span>文档 {item.relatedDocIds.split(',').length} 篇</span>}
                             {item.evalCaseId && <span className="text-violet-600">评测 #{item.evalCaseId}</span>}
                           </div>
                         </td>
-                        <td className="px-2 py-3 text-right font-mono text-[12px] text-slate-500">{item.frequency}</td>
+                        <td className="px-2 py-3 text-right font-mono text-xs text-slate-500">{item.frequency}</td>
                         <td className="px-2 py-3">
                           <div className="flex flex-wrap gap-1">
                             {signalChips(item.signalSummary).map((s) => (
-                              <span key={s.key} className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">{s.label}{s.count > 1 ? `×${s.count}` : ''}</span>
+                              <span key={s.key} className="rounded bg-slate-100 px-1.5 py-0.5 text-2xs text-slate-500">{s.label}{s.count > 1 ? `×${s.count}` : ''}</span>
                             ))}
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-2 py-3">
                           <select value={item.status} disabled={actionBusy} onChange={(e) => void onStatusChange(item.id, e.target.value as GapStatus)}
-                            className={`rounded-md border px-1.5 py-1 text-[10px] outline-none ${sm.tone}`}>
+                            className={`rounded-md border px-1.5 py-1 text-2xs outline-none ${sm.tone}`}>
                             {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
                           </select>
                         </td>
-                        <td className="whitespace-nowrap px-2 py-3 text-[10px] text-slate-400">{formatDate(item.lastSeen)}</td>
+                        <td className="whitespace-nowrap px-2 py-3 text-2xs text-slate-400">{formatDate(item.lastSeen)}</td>
                       </tr>
                     );
                   })}
@@ -335,24 +335,24 @@ export default function ContentGapsPage() {
 
         <aside className="space-y-4 xl:sticky xl:top-20 xl:self-start">
           <AdminCard title="主题聚类" description="本地 embedding 在线归并；同簇问题共享主题" icon={Layers} contentClassName="p-4">
-            {clusters.length === 0 ? <p className="text-[11px] text-slate-400">暂无聚类，先积累一些信号。</p> : (
+            {clusters.length === 0 ? <p className="text-caption text-slate-400">暂无聚类，先积累一些信号。</p> : (
               <ul className="space-y-2">
                 {clusters.slice(0, 8).map((c) => (
-                  <li key={c.key} className="rounded-xl border border-slate-100 bg-slate-50/70 px-3 py-2.5">
-                    <div className="line-clamp-2 text-[11px] leading-snug text-slate-600">{c.label || c.key}</div>
-                    <div className="mt-1 text-[10px] text-slate-400">{c.size} 个问题 · {formatDate(c.lastSeen)}</div>
+                  <li key={c.key} className="rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2.5">
+                    <div className="line-clamp-2 text-caption leading-snug text-slate-600">{c.label || c.key}</div>
+                    <div className="mt-1 text-2xs text-slate-400">{c.size} 个问题 · {formatDate(c.lastSeen)}</div>
                   </li>
                 ))}
               </ul>
             )}
           </AdminCard>
           <AdminCard title="处理指引" description="从缺口到评测闭环" icon={AlertTriangle} contentClassName="p-4">
-            <ul className="space-y-2 text-[11px] leading-relaxed text-slate-500">
+            <ul className="space-y-2 text-caption leading-relaxed text-slate-500">
               <li className="flex gap-2"><span className="font-mono text-slate-300">01</span>高频缺口优先补文档，补完后在详情里标记「已解决」。</li>
               <li className="flex gap-2"><span className="font-mono text-slate-300">02</span>可转评测的缺口填写期望关键字，自动进 Golden Set。</li>
               <li className="flex gap-2"><span className="font-mono text-slate-300">03</span>点踩信号与反馈页同源，可交叉查看原对话。</li>
             </ul>
-            <Link href="/admin/feedback" className="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-accent hover:underline">去看问答反馈 <ArrowRight size={12} /></Link>
+            <Link href="/admin/feedback" className="mt-3 inline-flex items-center gap-1 text-caption font-medium text-accent hover:underline">去看问答反馈 <ArrowRight size={12} /></Link>
           </AdminCard>
         </aside>
       </div>
@@ -362,23 +362,23 @@ export default function ContentGapsPage() {
           <div className="h-full w-full max-w-xl overflow-y-auto border-l border-slate-200 bg-white p-5 shadow-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-[10px] font-medium uppercase tracking-[0.14em] text-slate-400">缺口详情</div>
-                <h2 className="mt-1 text-[17px] font-semibold leading-snug tracking-tight text-slate-900">{detail?.gap.question ?? '加载中…'}</h2>
+                <div className="text-2xs font-medium uppercase tracking-[0.14em] text-slate-400">缺口详情</div>
+                <h2 className="mt-1 text-title font-semibold leading-snug tracking-tight text-slate-900">{detail?.gap.question ?? '加载中…'}</h2>
               </div>
               <button onClick={() => setDrawerOpen(false)} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800"><X size={18} /></button>
             </div>
 
             {detailLoading ? (
-              <div className="mt-12 text-center text-[13px] text-slate-400"><Loader2 size={18} className="mx-auto mb-2 animate-spin" />加载中…</div>
+              <div className="mt-12 text-center text-compact text-slate-400"><Loader2 size={18} className="mx-auto mb-2 animate-spin" />加载中…</div>
             ) : drawerError ? <p className="mt-4 text-sm text-red-500">{drawerError}</p> : detail ? (
               <>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                  <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-3"><div className="text-[10px] text-slate-400">累计频次</div><div className="mt-1 font-mono text-[18px] font-semibold text-slate-800">{detail.gap.frequency}</div></div>
-                  <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-3"><div className="text-[10px] text-slate-400">状态</div><div className={`mt-1 inline-flex rounded-md border px-1.5 py-0.5 text-[11px] ${statusMeta(detail.gap.status).tone}`}>{statusMeta(detail.gap.status).label}</div></div>
-                  <div className="col-span-2 rounded-lg bg-foreground/[0.03] p-2.5"><div className="text-[10px] text-slate-400">信号构成</div><div className="mt-1 flex flex-wrap gap-1">{signalChips(detail.gap.signalSummary).map((s) => <span key={s.key} className="rounded bg-white px-1.5 py-0.5 text-[11px] text-slate-900/55">{s.label} ×{s.count}</span>)}</div></div>
+                  <div className="rounded-lg border border-slate-100 bg-slate-50/70 p-3"><div className="text-2xs text-slate-400">累计频次</div><div className="mt-1 font-mono text-[18px] font-semibold text-slate-800">{detail.gap.frequency}</div></div>
+                  <div className="rounded-lg border border-slate-100 bg-slate-50/70 p-3"><div className="text-2xs text-slate-400">状态</div><div className={`mt-1 inline-flex rounded-md border px-1.5 py-0.5 text-caption ${statusMeta(detail.gap.status).tone}`}>{statusMeta(detail.gap.status).label}</div></div>
+                  <div className="col-span-2 rounded-lg bg-foreground/[0.03] p-2.5"><div className="text-2xs text-slate-400">信号构成</div><div className="mt-1 flex flex-wrap gap-1">{signalChips(detail.gap.signalSummary).map((s) => <span key={s.key} className="rounded bg-white px-1.5 py-0.5 text-caption text-slate-900/55">{s.label} ×{s.count}</span>)}</div></div>
                 </div>
 
-                <div className="mt-3 space-y-1.5 rounded-xl border border-slate-100 bg-slate-50/60 p-3 text-[11px] leading-5 text-slate-500">
+                <div className="mt-3 space-y-1.5 rounded-lg border border-slate-100 bg-slate-50/60 p-3 text-caption leading-5 text-slate-500">
                   <div>主题：{detail.gap.clusterLabel ?? detail.gap.clusterKey ?? '未聚类'}</div>
                   <div>相关文档：{detail.gap.relatedDocIds ?? '-'}</div>
                   <div>样本对话：{detail.gap.sampleConversationId ?? '-'}</div>
@@ -386,27 +386,27 @@ export default function ContentGapsPage() {
                 </div>
 
                 <div className="mt-5">
-                  <label className="text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">流转状态</label>
+                  <label className="text-caption font-medium uppercase tracking-[0.08em] text-slate-400">流转状态</label>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {STATUS_OPTIONS.map((s) => (
                       <button key={s.value} disabled={actionBusy || detail.gap.status === s.value} onClick={() => void onStatusChange(detail.gap.id, s.value)}
-                        className={`rounded-md border px-2 py-1 text-[11px] disabled:opacity-40 ${s.tone}`}>{s.label}</button>
+                        className={`rounded-md border px-2 py-1 text-caption disabled:opacity-40 ${s.tone}`}>{s.label}</button>
                     ))}
                   </div>
                 </div>
 
-                <div className="mt-5 rounded-2xl border border-amber-100 bg-amber-50/50 p-4">
-                  <h3 className="flex items-center gap-1.5 text-[13px] font-semibold text-amber-800"><Sparkles size={15} className="text-amber-500" /> 内容生产大纲</h3>
+                <div className="mt-5 rounded-lg border border-amber-100 bg-amber-50/50 p-4">
+                  <h3 className="flex items-center gap-1.5 text-compact font-semibold text-amber-800"><Sparkles size={15} className="text-amber-500" /> 内容生产大纲</h3>
                  add_marker
                 </div>
 
-                <div className="mt-5 rounded-2xl border border-violet-100 bg-violet-50/40 p-4">
-                  <h3 className="flex items-center gap-1.5 text-[13px] font-semibold text-violet-800"><MessageCircleQuestion size={15} className="text-violet-500" /> 转为评测用例</h3>
+                <div className="mt-5 rounded-lg border border-violet-100 bg-violet-50/40 p-4">
+                  <h3 className="flex items-center gap-1.5 text-compact font-semibold text-violet-800"><MessageCircleQuestion size={15} className="text-violet-500" /> 转为评测用例</h3>
                   {detail.gap.evalCaseId ? <p className="mt-2 text-xs text-violet-600">已转评测用例 #{detail.gap.evalCaseId}</p> : (
                     <>
-                      <p className="mt-1 text-[11px] leading-relaxed text-slate-500">问题原文直接复用；填写一个能区分正确/错误答案的关键字（逗号分隔多个）。</p>
-                      <input value={convertKeywords} onChange={(e) => setConvertKeywords(e.target.value)} placeholder="如：扩容、负载因子" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-[12px] text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
-                      <input value={convertNote} onChange={(e) => setConvertNote(e.target.value)} placeholder="备注（可选）" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-[12px] text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
+                      <p className="mt-1 text-caption leading-relaxed text-slate-500">问题原文直接复用；填写一个能区分正确/错误答案的关键字（逗号分隔多个）。</p>
+                      <input value={convertKeywords} onChange={(e) => setConvertKeywords(e.target.value)} placeholder="如：扩容、负载因子" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
+                      <input value={convertNote} onChange={(e) => setConvertNote(e.target.value)} placeholder="备注（可选）" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
                       <button onClick={() => void onConvert()} disabled={converting} className="mt-2 flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50">
                         {converting ? <Loader2 size={13} className="animate-spin" /> : <ArrowRight size={13} />} 创建评测用例
                       </button>
@@ -415,10 +415,10 @@ export default function ContentGapsPage() {
                 </div>
 
                 <div className="mt-5">
-                  <h3 className="text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">信号记录</h3>
+                  <h3 className="text-caption font-medium uppercase tracking-[0.08em] text-slate-400">信号记录</h3>
                   <div className="mt-2 space-y-2">
                     {detail.events.length === 0 ? <p className="text-xs text-slate-400">暂无事件</p> : detail.events.map((event) => (
-                      <div key={event.id} className="rounded-xl border border-slate-100 bg-white px-3 py-2.5 text-[11px]">
+                      <div key={event.id} className="rounded-lg border border-slate-100 bg-white px-3 py-2.5 text-caption">
                         <div className="flex items-center justify-between gap-2"><span className="font-medium text-slate-900/65">{SIGNAL_LABEL[event.signalType] ?? event.signalType}</span><span className="text-slate-900/35">{formatDate(event.createdDate)}</span></div>
                         {event.detail && <p className="mt-1 text-slate-500">{event.detail}</p>}
                         {(event.conversationId || event.feedbackId) && <p className="mt-1 text-slate-400">{event.conversationId ? `对话 ${event.conversationId.slice(0, 8)}…` : ''}{event.feedbackId ? ` · 反馈 #${event.feedbackId}` : ''}</p>}

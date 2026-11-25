@@ -69,7 +69,7 @@ export function MobileDocsDrawer({
               </span>
               <button
                 onClick={() => setOpen(false)}
-                className="rounded-md p-1 text-foreground/50 hover:bg-muted"
+                className="rounded-md p-1 text-foreground/60 hover:bg-muted"
                 aria-label="关闭目录"
               >
                 <X size={16} />

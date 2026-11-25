@@ -32,7 +32,7 @@ export function Toc({ items }: { items: TocItem[] }) {
   if (items.length === 0) return null;
 
   return (
-    <nav className="text-[13px]">
+    <nav className="text-compact">
       <p className="mb-3 font-semibold text-foreground/70">目录</p>
       <ul className="space-y-0.5 border-l border-border">
         {items.map((item) => (
@@ -51,7 +51,7 @@ export function Toc({ items }: { items: TocItem[] }) {
                 item.level === 4 && 'pl-9',
                 activeId === item.id
                   ? 'border-accent text-accent font-medium'
-                  : 'border-transparent text-foreground/50 hover:text-foreground'
+                  : 'border-transparent text-foreground/60 hover:text-foreground'
               )}
             >
               {item.text}

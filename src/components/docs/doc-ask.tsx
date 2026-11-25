@@ -145,14 +145,14 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
 
       {/* 问答面板 */}
       {open && (
-        <div className="fixed bottom-6 right-4 z-40 flex h-[540px] max-h-[75vh] w-[calc(100vw-2rem)] max-w-[400px] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl">
+        <div className="fixed bottom-6 right-4 z-40 flex h-[540px] max-h-[75vh] w-[calc(100vw-2rem)] max-w-[400px] flex-col overflow-hidden rounded-lg border border-border bg-background shadow-2xl">
           {/* 头部 */}
           <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
             <div className="flex min-w-0 items-center gap-2">
               <Sparkles size={15} className="shrink-0 text-accent" />
               <div className="min-w-0">
                 <p className="truncate text-sm font-medium">问这篇文档</p>
-                <p className="truncate text-[11px] text-foreground/40">{docTitle}</p>
+                <p className="truncate text-caption text-foreground/40">{docTitle}</p>
               </div>
             </div>
             <button
@@ -167,10 +167,10 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
           {!isLoggedIn ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
               <Sparkles size={24} className="text-foreground/30" />
-              <p className="text-sm text-foreground/50">登录后可基于本文档内容提问</p>
+              <p className="text-sm text-foreground/60">登录后可基于本文档内容提问</p>
               <Link
                 href="/login"
-                className="rounded-full bg-accent px-4 py-1.5 text-xs font-medium text-white hover:opacity-90"
+                className="rounded-md bg-accent px-4 py-1.5 text-xs font-medium text-white hover:opacity-90"
               >
                 去登录
               </Link>
@@ -182,7 +182,7 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
                 {messages.length === 0 ? (
                   <div className="flex h-full flex-col items-center justify-center gap-1 px-4 text-center">
                     <Sparkles size={20} className="text-accent/60" />
-                    <p className="text-sm text-foreground/50">针对本文档提问</p>
+                    <p className="text-sm text-foreground/60">针对本文档提问</p>
                     <p className="text-xs text-foreground/35">
                       检索范围限定在这篇文档内，例如「总结要点」「举个例子」
                     </p>
@@ -200,7 +200,7 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
                         className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
                         <div
-                          className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                          className={`max-w-[85%] rounded-lg px-3 py-2 text-sm leading-relaxed ${
                             m.role === 'user'
                               ? 'bg-accent text-white'
                               : 'border border-border bg-muted/50'
@@ -241,12 +241,12 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
                     }}
                     rows={1}
                     placeholder="针对本文档提问…"
-                    className="max-h-24 flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-foreground/35 focus:border-accent"
+                    className="max-h-24 flex-1 resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-foreground/35 focus:border-accent"
                   />
                   <button
                     onClick={send}
                     disabled={busy || !input.trim()}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent text-white transition-opacity disabled:opacity-40"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent text-white transition-opacity disabled:opacity-40"
                     aria-label="发送"
                   >
                     <Send size={15} />

@@ -290,29 +290,29 @@ export function VuePreview({ code }: VuePreviewProps) {
 
   return (
     <>
-      <div className="group relative my-4 overflow-hidden rounded-lg border border-[#30363d] bg-[#0d1117]">
+      <div className="group relative my-4 overflow-hidden rounded-lg border border-code-border bg-code-bg">
         <div className="absolute right-4 top-[11px] z-10 flex items-center gap-3.5">
-          <span className="text-[11px] font-semibold uppercase tracking-[1.2px] text-[#6e7681]">Vue SFC</span>
+          <span className="text-caption font-semibold uppercase tracking-[1.2px] text-code-muted">Vue SFC</span>
           <button
             type="button"
             onClick={copy}
             title="复制"
             aria-label="复制"
-            className="text-[#6e7681] transition-colors hover:text-[#e6edf3]"
+            className="text-code-muted transition-colors hover:text-code-fg"
           >
-            {copied ? <Check className="h-[15px] w-[15px] text-[#3fb950]" /> : <Copy className="h-[15px] w-[15px]" />}
+            {copied ? <Check className="h-[15px] w-[15px] text-success" /> : <Copy className="h-[15px] w-[15px]" />}
           </button>
           <button
             type="button"
             onClick={() => setOpen(true)}
             title="预览"
             aria-label="预览"
-            className="text-[#6e7681] transition-colors hover:text-[#e6edf3]"
+            className="text-code-muted transition-colors hover:text-code-fg"
           >
             <Eye className="h-[15px] w-[15px]" />
           </button>
         </div>
-        <LazyCodeBlock code={code} lang="vue" className="code-card-pre overflow-auto p-4 text-[13px] leading-[1.7]" />
+        <LazyCodeBlock code={code} lang="vue" className="code-card-pre overflow-auto p-4 text-compact leading-[1.7]" />
       </div>
 
       {open &&
@@ -327,7 +327,7 @@ export function VuePreview({ code }: VuePreviewProps) {
               className="html-preview-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setOpen(false)}
             />
-            <div className="html-preview-dialog relative flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-border/60 bg-background shadow-[0_24px_80px_-12px_rgba(0,0,0,0.35)]">
+            <div className="html-preview-dialog relative flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border border-border/60 bg-background shadow-[0_24px_80px_-12px_rgba(0,0,0,0.35)]">
               {/* 标题栏 */}
               <div className="flex items-center justify-between border-b border-border/50 bg-gradient-to-r from-white to-gray-50/80 px-5 py-3 dark:from-gray-900 dark:to-gray-950/90">
                 <div className="flex items-center gap-2.5">
@@ -346,7 +346,7 @@ export function VuePreview({ code }: VuePreviewProps) {
                 </button>
               </div>
               {/* iframe 预览区 */}
-              <div className="overflow-auto rounded-b-2xl">
+              <div className="overflow-auto rounded-b-lg">
                 <iframe
                   ref={iframeRef}
                   title="Vue 预览"

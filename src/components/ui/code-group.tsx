@@ -105,7 +105,7 @@ export function CodeGroup({ 'data-items': dataItems }: { 'data-items'?: string }
   };
 
   return (
-    <div className="group relative my-4 overflow-hidden rounded-lg border border-[#30363d] bg-[#0d1117]">
+    <div className="group relative my-4 overflow-hidden rounded-lg border border-code-border bg-code-bg">
       <div className="flex items-center border-b border-[#21262d] pr-3">
         <div className="flex flex-1 items-center gap-1 overflow-x-auto px-2">
           {items.map((it, idx) => (
@@ -115,7 +115,7 @@ export function CodeGroup({ 'data-items': dataItems }: { 'data-items'?: string }
               onClick={() => setActive(idx)}
               className={`whitespace-nowrap border-b-2 px-3 py-2 text-xs transition-colors ${
                 idx === active
-                  ? 'border-[#e6edf3] font-medium text-[#e6edf3]'
+                  ? 'border-[#e6edf3] font-medium text-code-fg'
                   : 'border-transparent text-[#8b949e] hover:text-[#adbac7]'
               }`}
             >
@@ -128,17 +128,17 @@ export function CodeGroup({ 'data-items': dataItems }: { 'data-items'?: string }
           onClick={handleCopy}
           title="复制代码"
           aria-label="复制代码"
-          className="ml-2 shrink-0 text-[#6e7681] transition-colors hover:text-[#e6edf3]"
+          className="ml-2 shrink-0 text-code-muted transition-colors hover:text-code-fg"
         >
-          {copied ? <Check className="h-[15px] w-[15px] text-[#3fb950]" /> : <Copy className="h-[15px] w-[15px]" />}
+          {copied ? <Check className="h-[15px] w-[15px] text-success" /> : <Copy className="h-[15px] w-[15px]" />}
         </button>
       </div>
       {entryValid ? (
-        <pre className="code-card-pre overflow-auto p-4 text-[13px] leading-[1.7]">
+        <pre className="code-card-pre overflow-auto p-4 text-compact leading-[1.7]">
           <code dangerouslySetInnerHTML={{ __html: entry!.html }} />
         </pre>
       ) : (
-        <pre className="code-card-pre overflow-auto p-4 text-[13px] leading-[1.7]">
+        <pre className="code-card-pre overflow-auto p-4 text-compact leading-[1.7]">
           <code>{activeCode}</code>
         </pre>
       )}

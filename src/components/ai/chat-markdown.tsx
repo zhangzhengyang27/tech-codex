@@ -95,7 +95,7 @@ export function ChatMarkdown({
               ?.props;
             const code = typeof codeEl?.children === 'string' ? codeEl.children : '';
             return (
-              <div className="my-2.5 overflow-hidden rounded-lg border border-[#30363d] bg-[#0d1117]">
+              <div className="my-2.5 overflow-hidden rounded-lg border border-code-border bg-code-bg">
                 <LazyCodeBlock
                   code={code}
                   lang={resolveLang(codeEl?.className) ?? 'plaintext'}

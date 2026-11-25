@@ -9,6 +9,7 @@ import { useHydrated } from "@/lib/use-hydrated";
 import { listQuotas, updateUserLimits, type UserQuotaRow } from "@/lib/users";
 import { usePagedList } from "@/lib/use-paged-list";
 import { AdminCard, AdminPageHeader, AdminPagination, adminBtn } from "@/components/admin/admin-ui";
+import { Field } from "@/components/ui/field";
 
 const PAGE_SIZE = 20;
 
@@ -32,7 +33,7 @@ function UsageBar({ used, limit, custom }: { used: number; limit: number; custom
         </span>
         <span className="text-slate-300">/</span>
         <span className="text-slate-500">{unlimited ? "不限" : limit}</span>
-        {custom && <span className="rounded bg-blue-50 px-1 py-px text-[9px] font-medium text-accent ring-1 ring-blue-100">自定义</span>}
+        {custom && <span className="rounded bg-blue-50 px-1 py-px text-3xs font-medium text-accent ring-1 ring-blue-100">自定义</span>}
       </div>
       <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
         <div
@@ -167,7 +168,7 @@ export default function AdminQuotasPage() {
   const EditBtn = ({ onClick }: { onClick: () => void }) => (
     <button
       onClick={onClick}
-      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] text-slate-400 transition-colors hover:bg-slate-100 hover:text-accent"
+      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-2xs text-slate-400 transition-colors hover:bg-slate-100 hover:text-accent"
     >
       调整
     </button>
@@ -181,7 +182,7 @@ export default function AdminQuotasPage() {
         description="查看个人知识库（u-用户名）的文档、检索与问答用量；公共空间不限量，限额未自定义时跟随全局配置。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               共 {total} 位用户
             </span>
@@ -205,20 +206,20 @@ export default function AdminQuotasPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索用户名或昵称"
-                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-compact outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
               />
             </div>
             <button type="submit" className={adminBtn("secondary", "sm")}>搜索</button>
           </form>
-          {msg && <span className="text-[11px] text-emerald-600">{msg}</span>}
-          {error && <span className="text-[11px] text-red-500">{error}</span>}
-          <span className="ml-auto rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">{total} 位</span>
+          {msg && <span className="text-caption text-emerald-600">{msg}</span>}
+          {error && <span className="text-caption text-red-500">{error}</span>}
+          <span className="ml-auto rounded-full bg-slate-50 px-2.5 py-1 font-mono text-2xs text-slate-400">{total} 位</span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[700px] text-[12px]">
+          <table className="w-full min-w-[700px] text-xs">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">用户</th>
                 <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">账号</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">文档数（累计）</th>
@@ -243,14 +244,14 @@ export default function AdminQuotasPage() {
                     <td className="px-4 py-2.5">
                       <div className="flex items-center gap-1.5">
                         <span className={clsx("h-1.5 w-1.5 shrink-0 rounded-full", r.status === "DISABLED" ? "bg-red-500" : "bg-emerald-500")} title={r.status === "DISABLED" ? "已禁用" : "正常"} />
-                        <span className="truncate font-mono text-[12px] font-medium text-slate-700">{r.username}</span>
+                        <span className="truncate font-mono text-xs font-medium text-slate-700">{r.username}</span>
                       </div>
-                      {r.nickname && <div className="mt-0.5 truncate pl-3 text-[10px] text-slate-400">{r.nickname}</div>}
+                      {r.nickname && <div className="mt-0.5 truncate pl-3 text-2xs text-slate-400">{r.nickname}</div>}
                     </td>
                     <td className="hidden px-3 py-2.5 xl:table-cell">
                       <span
                         className={clsx(
-                          "rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+                          "rounded-full px-2 py-0.5 text-2xs font-medium ring-1",
                           r.status === "DISABLED" ? "bg-red-50 text-red-600 ring-red-100" : "bg-emerald-50 text-emerald-600 ring-emerald-100",
                         )}
                       >
@@ -304,11 +305,11 @@ export default function AdminQuotasPage() {
           aria-label="调整限额"
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_32px_80px_-24px_rgba(15,23,42,0.55)]"
+            className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-5 shadow-[0_32px_80px_-24px_rgba(15,23,42,0.55)]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="text-[14px] font-semibold text-slate-800">调整个人库限额 · <span className="font-mono text-[12px] text-slate-500">{editTarget.username}</span></div>
-            <p className="mt-1 text-[11px] leading-5 text-slate-400">
+            <div className="text-sm font-semibold text-slate-800">调整个人库限额 · <span className="font-mono text-xs text-slate-500">{editTarget.username}</span></div>
+            <p className="mt-1 text-caption leading-5 text-slate-400">
               留空=不变更；0=不限制。清除自定义后恢复跟随系统配置中的全局默认值。
             </p>
             <div className="mt-4 space-y-3">
@@ -318,18 +319,25 @@ export default function AdminQuotasPage() {
                 ["chat", chatVal, setChatVal, clearChat, setClearChat, editTarget.chatLimit],
               ] as [MetricKey, string, (v: string) => void, boolean, (v: boolean) => void, number][]).map(
                 ([key, val, setVal, clear, setClear, current]) => (
-                  <div key={key} className="flex items-center gap-3">
-                    <span className="w-28 text-[12px] text-slate-600">{METRIC_LABEL[key]}</span>
-                    <input
-                      type="number"
-                      min={0}
-                      value={clear ? "" : val}
-                      onChange={(e) => setVal(e.target.value)}
-                      disabled={clear}
-                      placeholder={`当前 ${current}`}
-                      className="h-9 w-28 rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 font-mono text-[12px] outline-none transition-colors focus:border-accent focus:bg-white disabled:opacity-40"
-                    />
-                    <label className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                  <div key={key} className="flex items-end gap-3">
+                    <Field
+                      size="sm"
+                      label={METRIC_LABEL[key]}
+                      htmlFor={`quota-${key}`}
+                      className="flex-1"
+                    >
+                      <input
+                        id={`quota-${key}`}
+                        type="number"
+                        min={0}
+                        value={clear ? "" : val}
+                        onChange={(e) => setVal(e.target.value)}
+                        disabled={clear}
+                        placeholder={`当前 ${current}`}
+                        className="h-9 w-32 rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 font-mono text-xs outline-none transition-colors focus:border-accent focus:bg-white disabled:opacity-40"
+                      />
+                    </Field>
+                    <label className="mb-0.5 flex items-center gap-1.5 text-caption text-slate-500">
                       <input type="checkbox" checked={clear} onChange={(e) => setClear(e.target.checked)} />
                       跟随默认
                     </label>

@@ -6,6 +6,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { usePagedList } from "@/lib/use-paged-list";
+import { Field } from "@/components/ui/field";
 import { kbEvalCases, kbEvalAddCase, kbEvalDeleteCase, type KbEvalCase } from "@/lib/auth";
 
 const CASE_PAGE_SIZE = 20;
@@ -83,12 +84,12 @@ export function EvalCasesTab() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="rounded-lg border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <div className="flex items-center justify-between">
-          <div className="text-[12px] font-semibold text-slate-700">新增评测用例（Golden Set）</div>
+          <div className="text-xs font-semibold text-slate-700">新增评测用例（Golden Set）</div>
           <button
             onClick={() => setExpanded((o) => !o)}
-            className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-[11px] text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+            className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-caption text-slate-500 hover:bg-slate-50 hover:text-slate-700"
           >
             <Plus size={13} />
             {expanded ? "收起" : "展开表单"}
@@ -96,49 +97,91 @@ export function EvalCasesTab() {
         </div>
         {expanded && (
           <div className="mt-3 space-y-2.5">
-            <input
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="评测问题（用户会问的原始问题）"
-              className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
-            />
-            <div className="flex flex-col gap-2.5 sm:flex-row">
+            <Field
+              size="sm"
+              label="问题"
+              htmlFor="eval-question"
+              required
+              hint="用户会问的原始问题，检索召回按它执行"
+            >
               <input
-                value={keywords}
-                onChange={(e) => setKeywords(e.target.value)}
-                placeholder="期望命中关键字（逗号分隔，必填）"
-                className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
+                id="eval-question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="例如：Redis 持久化有哪几种方式"
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none transition-colors focus:border-accent focus:bg-white"
               />
-              <input
-                value={docIds}
-                onChange={(e) => setDocIds(e.target.value)}
-                placeholder="期望文档 id（逗号分隔，可选，供 NDCG）"
-                className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
-              />
-            </div>
-            <div className="flex flex-col gap-2.5 sm:flex-row">
-              <select
-                value={caseType}
-                onChange={(e) => setCaseType(e.target.value)}
-                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white sm:w-52"
+            </Field>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              <Field
+                size="sm"
+                label="期望命中关键字"
+                htmlFor="eval-keywords"
+                required
+                hint="逗号分隔；单个分块需覆盖全部关键字才算命中"
               >
-                <option value="RETRIEVAL">检索召回（进入 HitRate）</option>
-                <option value="ANSWER_FORMAT">回答格式/引用（不计 HitRate）</option>
-                <option value="MULTI_HOP">多跳召回（自然问法，Top-K 覆盖全部期望文档）</option>
-                <option value="MULTI_HOP_REF">引用型多跳（显式《标题》，验证实体链接）</option>
-              </select>
-              <input
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder="备注 / 预期答案说明（可选）"
-                className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
-              />
+                <input
+                  id="eval-keywords"
+                  value={keywords}
+                  onChange={(e) => setKeywords(e.target.value)}
+                  placeholder="Redis, 持久化"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none transition-colors focus:border-accent focus:bg-white"
+                />
+              </Field>
+              <Field
+                size="sm"
+                label="期望文档 id"
+                htmlFor="eval-doc-ids"
+                hint="逗号分隔，可选；仅参与 NDCG 计算"
+              >
+                <input
+                  id="eval-doc-ids"
+                  value={docIds}
+                  onChange={(e) => setDocIds(e.target.value)}
+                  placeholder="可选"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none transition-colors focus:border-accent focus:bg-white"
+                />
+              </Field>
+            </div>
+            <div className="grid gap-2.5 sm:grid-cols-[13rem_1fr]">
+              <Field
+                size="sm"
+                label="用例类型"
+                htmlFor="eval-case-type"
+                hint="多跳类不计入 HitRate"
+              >
+                <select
+                  id="eval-case-type"
+                  value={caseType}
+                  onChange={(e) => setCaseType(e.target.value)}
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none transition-colors focus:border-accent focus:bg-white"
+                >
+                  <option value="RETRIEVAL">检索召回（进入 HitRate）</option>
+                  <option value="ANSWER_FORMAT">回答格式/引用（不计 HitRate）</option>
+                  <option value="MULTI_HOP">多跳召回（自然问法，Top-K 覆盖全部期望文档）</option>
+                  <option value="MULTI_HOP_REF">引用型多跳（显式《标题》，验证实体链接）</option>
+                </select>
+              </Field>
+              <Field
+                size="sm"
+                label="备注"
+                htmlFor="eval-note"
+                hint="可选；写预期答案或来源"
+              >
+                <input
+                  id="eval-note"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="预期答案说明"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none transition-colors focus:border-accent focus:bg-white"
+                />
+              </Field>
             </div>
             <div className="flex items-center gap-3">
               <button
                 onClick={onSubmit}
                 disabled={submitting}
-                className="flex h-9 items-center gap-1.5 rounded-lg bg-accent px-4 text-[12px] font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
+                className="flex h-9 items-center gap-1.5 rounded-lg bg-accent px-4 text-xs font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
               >
                 {submitting ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
                 新增用例
@@ -150,25 +193,25 @@ export function EvalCasesTab() {
         )}
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-        <div className="border-b border-slate-100 px-5 py-3.5 text-[13px] font-semibold text-slate-800">
+      <div className="overflow-hidden rounded-lg border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div className="border-b border-slate-100 px-5 py-3.5 text-compact font-semibold text-slate-800">
           用例列表
-          <span className="ml-2 text-[11px] font-normal text-slate-400">共 {total} 条</span>
+          <span className="ml-2 text-caption font-normal text-slate-400">共 {total} 条</span>
         </div>
-        {error && <div className="px-4 py-3 text-[13px] text-red-500">{error}</div>}
+        {error && <div className="px-4 py-3 text-compact text-red-500">{error}</div>}
         {loading && cases.length === 0 ? (
-          <div className="flex items-center justify-center gap-2 px-4 py-10 text-[12px] text-slate-400">
+          <div className="flex items-center justify-center gap-2 px-4 py-10 text-xs text-slate-400">
             <Loader2 size={15} className="animate-spin" /> 加载中…
           </div>
         ) : cases.length === 0 ? (
-          <div className="px-4 py-10 text-center text-[12px] text-slate-400">
+          <div className="px-4 py-10 text-center text-xs text-slate-400">
             暂无评测用例——可在此新增，或在「问答反馈」页将点踩一键转为用例
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px] text-[12px]">
+            <table className="w-full min-w-[760px] text-xs">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                   <th className="px-4 py-2 font-medium">问题</th>
                   <th className="px-3 py-2 font-medium">期望关键字</th>
                   <th className="px-3 py-2 font-medium">类型</th>
@@ -189,10 +232,10 @@ export function EvalCasesTab() {
                     </td>
                     <td className="whitespace-nowrap px-3 py-2.5">
                       <span className={c.caseType === "ANSWER_FORMAT"
-                        ? "inline-flex rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] text-amber-600"
+                        ? "inline-flex rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-2xs text-amber-600"
                         : c.caseType === "MULTI_HOP" || c.caseType === "MULTI_HOP_REF"
-                          ? "inline-flex rounded-full border border-violet-200 bg-violet-50 px-1.5 py-0.5 text-[10px] text-violet-600"
-                          : "inline-flex rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] text-slate-500"}>
+                          ? "inline-flex rounded-full border border-violet-200 bg-violet-50 px-1.5 py-0.5 text-2xs text-violet-600"
+                          : "inline-flex rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-2xs text-slate-500"}>
                         {c.caseType === "ANSWER_FORMAT" ? "格式/引用" : c.caseType === "MULTI_HOP" ? "多跳" : c.caseType === "MULTI_HOP_REF" ? "引用型多跳" : "检索"}
                       </span>
                     </td>
@@ -220,20 +263,20 @@ export function EvalCasesTab() {
           </div>
         )}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-slate-200 px-4 py-2.5 text-[13px] text-slate-400">
+          <div className="flex items-center justify-between border-t border-slate-200 px-4 py-2.5 text-compact text-slate-400">
             <span>第 {page + 1} / {totalPages} 页</span>
             <div className="flex gap-1">
               <button
                 onClick={() => void load(Math.max(0, page - 1), fetchPage)}
                 disabled={page <= 0}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-slate-100"
+                className="rounded-md px-3 py-1 text-compact disabled:opacity-40 hover:bg-slate-100"
               >
                 上一页
               </button>
               <button
                 onClick={() => void load(Math.min(totalPages - 1, page + 1), fetchPage)}
                 disabled={page >= totalPages - 1}
-                className="rounded-md px-3 py-1 text-[13px] disabled:opacity-40 hover:bg-slate-100"
+                className="rounded-md px-3 py-1 text-compact disabled:opacity-40 hover:bg-slate-100"
               >
                 下一页
               </button>

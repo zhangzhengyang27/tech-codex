@@ -4,21 +4,22 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Home, ChevronDown, Menu, X, Sparkles, Shield, FileText, BarChart3, ScrollText, Library, LogOut, LayoutDashboard, MessageSquare, Users, Gauge, Activity, Settings, CalendarRange, Target } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import type { LucideIcon } from "lucide-react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
+import { iconFromHref } from "@/lib/category-icons";
 
 /* ---------- 导航数据结构 ---------- */
 
 interface NavChild {
   label: string;
   href: string;
-  icon: string;
 }
 
 interface NavItem {
   label: string;
   href?: string; // 有 href 则为直链，无则为下拉
-  icon?: string; // 直链项的图标
+  icon?: LucideIcon; // 管理台等已显式声明组件的直链项
   children?: NavChild[];
 }
 
@@ -28,19 +29,19 @@ const navItems: NavItem[] = [
   {
     label: "前端",
     children: [
-      { label: "HTML5", href: "/docs/html5", icon: "📄" },
-      { label: "CSS", href: "/docs/css", icon: "🎨" },
-      { label: "JavaScript", href: "/docs/javascript", icon: "⚡" },
-      { label: "TypeScript", href: "/docs/typescript", icon: "🔷" },
-      { label: "Vue2", href: "/docs/vue2", icon: "💚" },
-      { label: "Vue3", href: "/docs/vue3", icon: "💚" },
-      { label: "React", href: "/docs/react", icon: "⚛️" },
-      { label: "Next.js", href: "/docs/nextjs", icon: "▲" },
-      { label: "Taro", href: "/docs/taro", icon: "🔷" },
-      { label: "构建工具", href: "/docs/frontend-toolchain", icon: "🔧" },
-      { label: "数据可视化", href: "/docs/frontend-visualization", icon: "📊" },
-      { label: "Electron", href: "/docs/electron", icon: "🖥️" },
-      { label: "前端调试", href: "/docs/debugging", icon: "🔍" },
+      { label: "HTML5", href: "/docs/html5" },
+      { label: "CSS", href: "/docs/css" },
+      { label: "JavaScript", href: "/docs/javascript" },
+      { label: "TypeScript", href: "/docs/typescript" },
+      { label: "Vue2", href: "/docs/vue2" },
+      { label: "Vue3", href: "/docs/vue3" },
+      { label: "React", href: "/docs/react" },
+      { label: "Next.js", href: "/docs/nextjs" },
+      { label: "Taro", href: "/docs/taro" },
+      { label: "构建工具", href: "/docs/frontend-toolchain" },
+      { label: "数据可视化", href: "/docs/frontend-visualization" },
+      { label: "Electron", href: "/docs/electron" },
+      { label: "前端调试", href: "/docs/debugging" },
     ],
   },
   {
@@ -48,26 +49,26 @@ const navItems: NavItem[] = [
     children: [
       // Java 目录被拆成 7 个子分类，顶栏不能只落到 /docs/java（20 篇语言基础）；
       // 和「前端」一样用下拉暴露全部入口，避免用户误判 Java 只有少量文档。
-      { label: "Java 基础", href: "/docs/java", icon: "☕" },
-      { label: "JVM 与并发", href: "/docs/java-jvm", icon: "⚙️" },
-      { label: "核心框架", href: "/docs/java-framework", icon: "🧩" },
-      { label: "工程与架构", href: "/docs/java-arch", icon: "🏗️" },
-      { label: "实战项目", href: "/docs/java-project", icon: "🚀" },
-      { label: "性能与调优", href: "/docs/java-perf", icon: "📈" },
-      { label: "面试与进阶", href: "/docs/java-interview", icon: "💡" },
+      { label: "Java 基础", href: "/docs/java" },
+      { label: "JVM 与并发", href: "/docs/java-jvm" },
+      { label: "核心框架", href: "/docs/java-framework" },
+      { label: "工程与架构", href: "/docs/java-arch" },
+      { label: "实战项目", href: "/docs/java-project" },
+      { label: "性能与调优", href: "/docs/java-perf" },
+      { label: "面试与进阶", href: "/docs/java-interview" },
     ],
   },
-  { label: "Python", href: "/docs/python", icon: "🐍" },
-  { label: "Node.js", href: "/docs/node", icon: "🟢" },
+  { label: "Python", href: "/docs/python" },
+  { label: "Node.js", href: "/docs/node" },
   { label: "DevOps", href: "/docs/ops" },
     {
     label: "更多",
     children: [
-      { label: "安全", href: "/docs/security", icon: "🛡️" },
-      { label: "测试", href: "/docs/testing", icon: "🧪" },
-      { label: "架构与工程", href: "/docs/architecture", icon: "🏗️" },
-      { label: "技术管理", href: "/docs/tech-management", icon: "👔" },
-      { label: "产品", href: "/docs/product", icon: "📱" },
+      { label: "安全", href: "/docs/security" },
+      { label: "测试", href: "/docs/testing" },
+      { label: "架构与工程", href: "/docs/architecture" },
+      { label: "技术管理", href: "/docs/tech-management" },
+      { label: "产品", href: "/docs/product" },
     ],
   },
 ];
@@ -109,23 +110,25 @@ function DropdownPanel({
       )}
       style={{ animationDuration: "0.18s" }}
     >
-      <div className="rounded-xl border border-border bg-background/95 backdrop-blur-xl shadow-xl shadow-black/5 p-2 min-w-[180px] space-y-0.5">
+      <div className="rounded-lg border border-border bg-background/95 backdrop-blur-xl shadow-xl shadow-black/5 p-2 min-w-[180px] space-y-0.5">
         {item.children!.map((child) => {
           const active =
             pathname === child.href || pathname.startsWith(child.href + "/");
+          // 图标按 href 反查分类映射，导航配置不再各自维护 emoji
+          const ChildIcon = iconFromHref(child.href);
           return (
             <Link
               key={child.href}
               href={child.href}
               onClick={onClose}
               className={clsx(
-                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition-colors",
+                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-compact transition-colors",
                 active
                   ? "bg-accent/10 text-accent font-medium"
                   : "text-foreground/70 hover:bg-muted hover:text-foreground",
               )}
             >
-              <span className="text-base leading-none">{child.icon}</span>
+              <ChildIcon size={14} className="text-foreground/60" />
               {child.label}
             </Link>
           );
@@ -175,7 +178,7 @@ function AccountMenu() {
 
   const itemCls = (active: boolean) =>
     clsx(
-      "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition-colors",
+      "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-compact transition-colors",
       active ? "bg-accent/10 font-medium text-accent" : "text-foreground/70 hover:bg-muted hover:text-foreground",
     );
 
@@ -183,13 +186,13 @@ function AccountMenu() {
     <div className="relative" ref={boxRef}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 pl-1 pr-2 py-1 rounded-full transition-colors hover:bg-muted/60"
+        className="flex items-center gap-1.5 pl-1 pr-2 py-1 rounded-lg transition-colors hover:bg-muted/60"
         aria-label="账号菜单"
       >
         <span className="w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center text-xs font-semibold shrink-0">
           {initial}
         </span>
-        <span className="max-w-[96px] truncate text-[13px] font-medium text-foreground/70">
+        <span className="max-w-[96px] truncate text-compact font-medium text-foreground/70">
           {displayName}
         </span>
         <ChevronDown
@@ -199,7 +202,7 @@ function AccountMenu() {
       </button>
       {open && (
         <div className="absolute right-0 top-full pt-2 z-50">
-          <div className="min-w-[220px] rounded-xl border border-border bg-background/95 shadow-xl shadow-black/5 backdrop-blur-xl overflow-hidden animate-fade-up" style={{ animationDuration: "0.18s" }}>
+          <div className="min-w-[220px] rounded-lg border border-border bg-background/95 shadow-xl shadow-black/5 backdrop-blur-xl overflow-hidden animate-fade-up" style={{ animationDuration: "0.18s" }}>
             <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
               <span className="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center text-sm font-semibold shrink-0">
                 {initial}
@@ -211,17 +214,17 @@ function AccountMenu() {
             </div>
             <div className="p-1.5 space-y-0.5">
               <Link href="/my/kb" onClick={() => setOpen(false)} className={itemCls(isActive("/my/kb"))}>
-                <Library size={14} className="text-foreground/50" />
+                <Library size={14} className="text-foreground/60" />
                 我的知识库
               </Link>
               <Link href="/ai" onClick={() => setOpen(false)} className={itemCls(isActive("/ai"))}>
-                <Sparkles size={14} className="text-foreground/50" />
+                <Sparkles size={14} className="text-foreground/60" />
                 AI 助手
               </Link>
               <div className="my-1 border-t border-border" />
               <button
                 onClick={onLogout}
-                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-red-500/90 transition-colors hover:bg-red-50"
+                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-compact text-red-500/90 transition-colors hover:bg-red-50"
               >
                 <LogOut size={14} />
                 退出登录
@@ -319,10 +322,10 @@ export function TopNav() {
                   >
                     <button
                       className={clsx(
-                        "relative flex items-center gap-1 px-3 py-1.5 rounded-md text-[13px] font-medium transition-colors",
+                        "relative flex items-center gap-1 px-3 py-1.5 rounded-md text-compact font-medium transition-colors",
                         active || activeDropdown === item.label
                           ? "text-foreground bg-muted"
-                          : "text-foreground/50 hover:text-foreground hover:bg-muted/60",
+                          : "text-foreground/60 hover:text-foreground hover:bg-muted/60",
                       )}
                       onClick={() =>
                         setActiveDropdown(
@@ -358,10 +361,10 @@ export function TopNav() {
                   key={item.href}
                   href={item.href!}
                   className={clsx(
-                    "relative flex items-center gap-2 px-3 py-1.5 rounded-md text-[13px] font-medium transition-colors",
+                    "relative flex items-center gap-2 px-3 py-1.5 rounded-md text-compact font-medium transition-colors",
                     active
                       ? "text-foreground bg-muted"
-                      : "text-foreground/50 hover:text-foreground hover:bg-muted/60",
+                      : "text-foreground/60 hover:text-foreground hover:bg-muted/60",
                   )}
                 >
                   {item.label === "首页" && (
@@ -388,16 +391,16 @@ export function TopNav() {
                   >
                     <button
                       className={clsx(
-                        "relative flex items-center gap-1 px-3 py-1.5 rounded-md text-[13px] font-medium transition-colors",
+                        "relative flex items-center gap-1 px-3 py-1.5 rounded-md text-compact font-medium transition-colors",
                         isAdminAreaActive || activeDropdown === "管理"
                           ? "text-foreground bg-muted"
-                          : "text-foreground/50 hover:text-foreground hover:bg-muted/60",
+                          : "text-foreground/60 hover:text-foreground hover:bg-muted/60",
                       )}
                       onClick={() =>
                         setActiveDropdown(activeDropdown === "管理" ? null : "管理")
                       }
                     >
-                      <Shield size={14} className="text-foreground/50" />
+                      <Shield size={14} className="text-foreground/60" />
                       管理
                       <ChevronDown
                         size={13}
@@ -409,20 +412,20 @@ export function TopNav() {
                     </button>
                     {activeDropdown === "管理" && (
                       <div className="absolute right-0 top-full pt-2 z-50">
-                        <div className="min-w-[170px] space-y-0.5 rounded-xl border border-border bg-background/95 p-2 shadow-xl shadow-black/5 backdrop-blur-xl">
+                        <div className="min-w-[170px] space-y-0.5 rounded-lg border border-border bg-background/95 p-2 shadow-xl shadow-black/5 backdrop-blur-xl">
                           {ADMIN_LINKS.map((l) => (
                             <Link
                               key={l.href}
                               href={l.href}
                               onClick={() => setActiveDropdown(null)}
                               className={clsx(
-                                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition-colors",
+                                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-compact transition-colors",
                                 pathname === l.href || pathname.startsWith(l.href + "/")
                                   ? "bg-accent/10 font-medium text-accent"
                                   : "text-foreground/70 hover:bg-muted hover:text-foreground",
                               )}
                             >
-                              <l.icon size={14} className="text-foreground/50" />
+                              <l.icon size={14} className="text-foreground/60" />
                               {l.label}
                             </Link>
                           ))}
@@ -437,7 +440,7 @@ export function TopNav() {
               <Link
                 href="/login?from=/ai"
                 onClick={() => setActiveDropdown(null)}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-md text-[13px] font-medium text-accent hover:bg-accent/10 transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-md text-compact font-medium text-accent hover:bg-accent/10 transition-colors"
               >
                 <Sparkles size={14} />
                 AI 助手 · 登录
@@ -472,7 +475,7 @@ export function TopNav() {
               </span>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="rounded-md p-1 text-foreground/50 hover:bg-muted"
+                className="rounded-md p-1 text-foreground/60 hover:bg-muted"
                 aria-label="关闭菜单"
               >
                 <X size={18} />
@@ -511,6 +514,7 @@ export function TopNav() {
                             const childActive =
                               pathname === child.href ||
                               pathname.startsWith(child.href + "/");
+                            const ChildIcon = iconFromHref(child.href);
                             return (
                               <Link
                                 key={child.href}
@@ -523,7 +527,7 @@ export function TopNav() {
                                     : "text-foreground/60 hover:text-foreground hover:bg-muted",
                                 )}
                               >
-                                <span className="text-base">{child.icon}</span>
+                                <ChildIcon size={14} />
                                 {child.label}
                               </Link>
                             );
@@ -582,7 +586,7 @@ export function TopNav() {
                           router.push("/");
                           router.refresh();
                         }}
-                        className="text-sm text-foreground/50"
+                        className="text-sm text-foreground/60"
                       >
                         退出登录
                       </button>

@@ -48,8 +48,8 @@ export function ConversationSidebar({
 
       <div className="flex-1 overflow-y-auto px-2 pb-3">
         {conversations.length === 0 ? (
-          <p className="px-2 pt-4 text-center text-xs text-foreground/35">
-            暂无历史对话
+          <p className="px-2 pt-4 text-center text-xs leading-5 text-foreground/60">
+            还没有历史对话。提问后会自动保存在这里，方便下次接着聊。
           </p>
         ) : (
           <ul className="space-y-1">
@@ -65,8 +65,8 @@ export function ConversationSidebar({
                 >
                   <MessageSquare size={14} className="shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[13px] leading-tight">{c.title}</p>
-                    <p className="text-[11px] text-foreground/35">
+                    <p className="truncate text-compact leading-tight">{c.title}</p>
+                    <p className="text-caption text-foreground/35">
                       {c.messageCount} 条 · {formatTime(c.updatedAt)}
                     </p>
                   </div>

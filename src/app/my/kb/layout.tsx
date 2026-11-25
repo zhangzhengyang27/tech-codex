@@ -43,10 +43,10 @@ export default function MyKbLayout({ children }: { children: React.ReactNode }) 
               key={t.href}
               href={t.href}
               className={clsx(
-                "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors",
+                "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-compact font-medium transition-colors",
                 active
                   ? "bg-background text-foreground shadow-sm"
-                  : "text-foreground/50 hover:text-foreground",
+                  : "text-foreground/60 hover:text-foreground",
               )}
             >
               <t.icon size={14} />

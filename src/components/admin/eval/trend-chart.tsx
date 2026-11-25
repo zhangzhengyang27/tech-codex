@@ -46,7 +46,7 @@ export function TrendChart({ points }: { points: EvalTrendPoint[] }) {
 
   if (!data) {
     return (
-      <div className="flex h-56 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white text-[12px] text-slate-400">
+      <div className="flex h-56 items-center justify-center rounded-lg border border-dashed border-slate-200 bg-white text-xs text-slate-400">
         暂无趋势数据（每日 02:00 定时评测落库后显示）
       </div>
     );
@@ -54,16 +54,16 @@ export function TrendChart({ points }: { points: EvalTrendPoint[] }) {
 
   const latest = points[0]; // 接口按日期倒序
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+    <div className="rounded-lg border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       <div className="mb-3 flex flex-wrap items-center gap-4">
         {data.keys.map((k) => (
-          <span key={k.key} className="flex items-center gap-1.5 text-[11px] text-slate-500">
+          <span key={k.key} className="flex items-center gap-1.5 text-caption text-slate-500">
             <span className="h-2 w-2 rounded-full" style={{ background: k.color }} />
             {k.label}
           </span>
         ))}
         {latest && (
-          <span className="ml-auto text-[11px] text-slate-400">
+          <span className="ml-auto text-caption text-slate-400">
             最新 {latest.date} · {latest.caseCount} 用例
           </span>
         )}

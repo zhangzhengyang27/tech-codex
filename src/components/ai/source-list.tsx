@@ -16,7 +16,7 @@ export function SourceList({
   if (!sources.length) return null;
   return (
     <div className="mt-3 border-t border-border pt-2">
-      <p className="mb-1.5 flex items-center gap-1 text-xs font-medium text-foreground/50">
+      <p className="mb-1.5 flex items-center gap-1 text-xs font-medium text-foreground/60">
         <FileText size={12} />
         引用来源
       </p>
@@ -34,23 +34,23 @@ export function SourceList({
             : null;
           return (
             <li key={idx} className="flex items-start gap-2">
-              <span className="mt-0.5 inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded bg-accent/10 px-1 text-[10px] font-medium text-accent">
+              <span className="mt-0.5 inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded bg-accent/10 px-1 text-2xs font-medium text-accent">
                 {s.citationId ?? idx + 1}
               </span>
               {href ? (
                 <Link href={href} className="block min-w-0 text-xs text-accent hover:underline">
                   <span className="line-clamp-1">{label}</span>
                   {meta && (
-                    <span className="mt-0.5 block line-clamp-1 text-[10px] font-normal text-foreground/45">
+                    <span className="mt-0.5 block line-clamp-1 text-2xs font-normal text-foreground/45">
                       {meta}
                     </span>
                   )}
                 </Link>
               ) : (
-                <span className="block min-w-0 text-xs text-foreground/50">
+                <span className="block min-w-0 text-xs text-foreground/60">
                   <span className="line-clamp-1">{label}</span>
                   {meta && (
-                    <span className="mt-0.5 block line-clamp-1 text-[10px] text-foreground/45">
+                    <span className="mt-0.5 block line-clamp-1 text-2xs text-foreground/45">
                       {meta}
                     </span>
                   )}

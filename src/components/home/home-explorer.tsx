@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { createElement, useState, useMemo, useEffect, useRef } from 'react';
+import { categoryIcon } from '@/lib/category-icons';
 import {
   Search,
   FileText,
@@ -159,7 +160,7 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={mode === 'smart' ? '语义 + 全文混合检索，试试描述你想找的内容…' : '搜索分组、分类或文档标题…'}
-                className="w-full rounded-full border border-border bg-background py-3.5 pl-12 pr-4 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent focus:ring-4 focus:ring-accent/10"
+                className="w-full rounded-lg border border-border bg-background py-3.5 pl-12 pr-4 text-sm text-foreground outline-none transition-all placeholder:text-foreground/40 focus:border-accent focus:ring-4 focus:ring-accent/10"
               />
             </div>
             {/* 检索模式切换 */}
@@ -192,7 +193,7 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
       <div className="mx-auto max-w-[1280px] px-4 pb-24 sm:px-6">
         {/* 工具条 */}
         <div className="mb-6 flex items-center gap-4">
-          <p className="text-sm text-foreground/50">
+          <p className="text-sm text-foreground/60">
             {smartActive ? (
               <>
                 智能搜索「<span className="font-medium text-foreground">{query}</span>」命中{' '}
@@ -217,7 +218,9 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
         </div>
 
         {/* 智能搜索结果区（语义+全文混合检索；空查询派生回空闲态） */}
-        {smartActive && <SmartSearchSection state={q ? smart : SMART_IDLE} query={query.trim()} />}
+        {smartActive && (
+          <SmartSearchSection state={q ? smart : SMART_IDLE} query={query.trim()} onReset={() => setQuery('')} />
+        )}
 
         {!smartActive && (filtered.length > 0 ? (
           <div className="space-y-10">
@@ -229,7 +232,7 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
                       <Layers size={18} className="text-accent" />
                       {group.title}
                     </h2>
-                    <p className="mt-1 text-sm text-foreground/50">{group.description}</p>
+                    <p className="mt-1 text-sm text-foreground/60">{group.description}</p>
                   </div>
                   <span className="shrink-0 text-xs text-foreground/40">
                     {group.categories.length} 个分类 ·{' '}
@@ -246,17 +249,33 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-20 text-center">
             <Search size={28} className="text-foreground/30" />
-            <p className="mt-4 text-sm text-foreground/50">
+            <p className="mt-4 text-sm text-foreground/60">
               没有匹配「<span className="font-medium text-foreground">{query}</span>」的内容
             </p>
-            <button
-              onClick={() => setQuery('')}
-              className="mt-3 rounded-full border border-border px-4 py-1.5 text-xs text-foreground/60 transition-colors hover:border-accent hover:text-accent"
-            >
-              清除搜索
-            </button>
+            {/* 空结果的第二条出路：不要求用户先清空输入，直接给分类与 AI 两个去向 */}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setQuery('')}
+                className="rounded-md border border-border px-4 py-1.5 text-xs text-foreground/60 transition-colors hover:border-accent hover:text-accent"
+              >
+                清除搜索
+              </button>
+              <Link
+                href="/docs"
+                className="rounded-md border border-border px-4 py-1.5 text-xs text-foreground/60 transition-colors hover:border-accent hover:text-accent"
+              >
+                按分类浏览
+              </Link>
+              <Link
+                href={`/ai?q=${encodeURIComponent(query)}`}
+                className="rounded-md bg-accent px-4 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
+              >
+                去问 AI
+              </Link>
+            </div>
           </div>
         ))}
 
@@ -273,11 +292,11 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
                 <>
                   <div className="flex items-center gap-2">
                     {u.type === 'new' ? (
-                      <span className="rounded bg-accent/15 px-1.5 py-0.5 text-[10px] font-medium text-accent">
+                      <span className="rounded bg-accent/15 px-1.5 py-0.5 text-2xs font-medium text-accent">
                         NEW
                       </span>
                     ) : (
-                      <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-foreground/50">
+                      <span className="rounded bg-muted px-1.5 py-0.5 text-2xs text-foreground/60">
                         修订
                       </span>
                     )}
@@ -285,7 +304,7 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
                       {u.title}
                     </span>
                   </div>
-                  <p className="mt-1 line-clamp-2 text-xs text-foreground/50">
+                  <p className="mt-1 line-clamp-2 text-xs text-foreground/60">
                     {u.description}
                   </p>
                 </>
@@ -296,12 +315,12 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
                   {u.href ? (
                     <Link
                       href={u.href}
-                      className="group block rounded-2xl border border-border bg-muted/30 p-4 transition-colors hover:border-accent/40"
+                      className="group block rounded-lg border border-border bg-muted/30 p-4 transition-colors hover:border-accent/40"
                     >
                       {inner}
                     </Link>
                   ) : (
-                    <div className="block rounded-2xl border border-border bg-muted/30 p-4">
+                    <div className="block rounded-lg border border-border bg-muted/30 p-4">
                       {inner}
                     </div>
                   )}
@@ -326,16 +345,21 @@ function CategoryCard({
   return (
     <Link
       href={`/docs/${cat.slug}`}
-      className="group flex items-start gap-3 rounded-2xl border border-border bg-background p-4 text-left transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
+      className="group flex items-start gap-3 rounded-lg border border-border bg-background p-4 text-left transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-xl transition-colors group-hover:bg-accent/10">
-        {cat.icon}
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted transition-colors group-hover:bg-accent/10">
+        {/*
+          这里用 createElement 而不是 `const Icon = categoryIcon(...)`：
+          在渲染期声明大写变量会被 react-hooks 规则判成"渲染中创建组件"，
+          而映射表里取出的都是模块级已定义的图标组件，语义上并不是新建。
+        */}
+        {createElement(categoryIcon(cat.slug), { size: 20, className: 'text-accent' })}
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-2">
           <span className="font-medium group-hover:text-accent">{cat.title}</span>
           {cat.hidden && (
-            <span className="rounded bg-orange-500/10 px-1.5 py-0.5 text-[10px] font-medium text-orange-500">
+            <span className="rounded bg-orange-500/10 px-1.5 py-0.5 text-2xs font-medium text-orange-500">
               拉勾专栏
             </span>
           )}
@@ -344,7 +368,7 @@ function CategoryCard({
             {cat.files.length}
           </span>
         </span>
-        <span className="mt-1 line-clamp-2 text-xs text-foreground/50">
+        <span className="mt-1 line-clamp-2 text-xs text-foreground/60">
           {cat.description}
         </span>
       </span>
@@ -362,7 +386,7 @@ function Stat({ value, label }: { value: number; label: string }) {
       <span className="text-2xl font-bold tracking-tight text-foreground">
         {value.toLocaleString()}
       </span>
-      <span className="mt-1 text-xs text-foreground/50">{label}</span>
+      <span className="mt-1 text-xs text-foreground/60">{label}</span>
     </div>
   );
 }
@@ -381,10 +405,10 @@ function ModeButton({
   return (
     <button
       onClick={onClick}
-      className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 transition-colors ${
+      className={`inline-flex items-center gap-1 rounded-md border px-3 py-1 transition-colors ${
         active
           ? 'border-accent bg-accent/10 text-accent'
-          : 'border-border text-foreground/50 hover:border-accent/40 hover:text-foreground'
+          : 'border-border text-foreground/60 hover:border-accent/40 hover:text-foreground'
       }`}
     >
       {children}
@@ -395,26 +419,29 @@ function ModeButton({
 function SmartSearchSection({
   state,
   query,
+  onReset,
 }: {
   state: SmartState;
   query: string;
+  /** 清空搜索词：空结果的第一条出路是让用户直接改词，而不是让他自己去找输入框 */
+  onReset: () => void;
 }) {
   if (state.loading) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16 text-center">
+      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
         <Sparkles size={24} className="animate-pulse text-accent" />
-        <p className="mt-3 text-sm text-foreground/50">正在检索全库（语义 + 全文）…</p>
+        <p className="mt-3 text-sm text-foreground/60">正在检索全库（语义 + 全文）…</p>
       </div>
     );
   }
   if (state.needLogin) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16 text-center">
+      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
         <Sparkles size={24} className="text-foreground/30" />
-        <p className="mt-3 text-sm text-foreground/50">智能搜索需要登录后使用</p>
+        <p className="mt-3 text-sm text-foreground/60">智能搜索需要登录后使用</p>
         <Link
           href={`/login?from=/`}
-          className="mt-3 rounded-full bg-accent px-4 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
+          className="mt-3 rounded-md bg-accent px-4 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
         >
           去登录
         </Link>
@@ -423,22 +450,44 @@ function SmartSearchSection({
   }
   if (state.error) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16 text-center">
+      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
         <Search size={24} className="text-foreground/30" />
-        <p className="mt-3 text-sm text-foreground/50">{state.error}</p>
+        <p className="mt-3 text-sm text-foreground/60">{state.error}</p>
       </div>
     );
   }
   if (state.results.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16 text-center">
+      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
         <Search size={24} className="text-foreground/30" />
-        <p className="mt-3 text-sm text-foreground/50">
+        <p className="mt-3 text-sm text-foreground/60">
           没有找到与「<span className="font-medium text-foreground">{query}</span>」相关的内容
         </p>
-        <p className="mt-1 text-xs text-foreground/40">
-          试试更具体的技术关键词，或切换到「标题匹配」
+        {/* 搜索为空是高频死路：给改词、翻分类、转 AI 三条出口，任何一条都能继续 */}
+        <p className="mt-1 max-w-md text-xs leading-5 text-foreground/60">
+          可以换个更具体的技术关键词，或换一种方式继续找。
         </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={onReset}
+            className="rounded-md border border-border px-3 py-1.5 text-xs text-foreground/60 transition-colors hover:border-accent hover:text-accent"
+          >
+            换个关键词
+          </button>
+          <Link
+            href="/docs"
+            className="rounded-md border border-border px-3 py-1.5 text-xs text-foreground/60 transition-colors hover:border-accent hover:text-accent"
+          >
+            按分类浏览
+          </Link>
+          <Link
+            href={`/ai?q=${encodeURIComponent(query)}`}
+            className="rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
+          >
+            去问 AI
+          </Link>
+        </div>
       </div>
     );
   }
@@ -462,7 +511,7 @@ function SmartHit({ hit, query }: { hit: KbChunkHit; query: string }) {
           {hit.title || hit.filePath}
         </span>
         {typeof hit.score === 'number' && hit.score > 0 && (
-          <span className="ml-auto shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] text-foreground/40">
+          <span className="ml-auto shrink-0 rounded bg-muted px-1.5 py-0.5 text-2xs text-foreground/40">
             {hit.score >= 1 ? `命中 ${hit.score.toFixed(1)}` : `相关度 ${hit.score.toFixed(2)}`}
           </span>
         )}
@@ -476,12 +525,12 @@ function SmartHit({ hit, query }: { hit: KbChunkHit; query: string }) {
   return href ? (
     <Link
       href={href}
-      className="group block rounded-2xl border border-border bg-background p-4 transition-all hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
+      className="group block rounded-lg border border-border bg-background p-4 transition-all hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
     >
       {inner}
     </Link>
   ) : (
-    <div className="block rounded-2xl border border-border bg-muted/30 p-4">{inner}</div>
+    <div className="block rounded-lg border border-border bg-muted/30 p-4">{inner}</div>
   );
 }
 

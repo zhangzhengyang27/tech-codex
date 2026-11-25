@@ -20,7 +20,7 @@ export function WelcomeCard({
   return (
     <div className="flex h-full flex-col items-center justify-center gap-5 text-center px-4">
       <div className="flex flex-col items-center gap-3">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/10 text-accent">
+        <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-accent/10 text-accent">
           <Bot size={28} />
         </div>
         <div>
@@ -39,7 +39,7 @@ export function WelcomeCard({
           <button
             key={q}
             onClick={() => onAsk(q)}
-            className="rounded-xl border border-border bg-muted/40 px-4 py-3 text-left text-[13px] text-foreground/75 transition-colors hover:border-accent/50 hover:bg-accent/5 hover:text-foreground"
+            className="rounded-lg border border-border bg-muted/40 px-4 py-3 text-left text-compact text-foreground/75 transition-colors hover:border-accent/50 hover:bg-accent/5 hover:text-foreground"
           >
             {q}
           </button>

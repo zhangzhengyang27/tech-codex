@@ -29,8 +29,8 @@ export function MetricCard({
   good?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <div className="text-[13px] text-slate-500">{label}</div>
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <div className="text-compact text-slate-500">{label}</div>
       <div
         className={clsx(
           "mt-1 text-2xl font-semibold tracking-tight font-mono",
@@ -57,22 +57,22 @@ export function CaseTable({ cases, label }: { cases: EvalCaseResult[]; label?: s
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-      <div className="border-b border-slate-100 px-5 py-3.5 text-[13px] font-semibold text-slate-800">
+    <div className="overflow-hidden rounded-lg border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="border-b border-slate-100 px-5 py-3.5 text-compact font-semibold text-slate-800">
         {label ?? "用例明细"}
-        <span className="ml-2 text-[11px] font-normal text-slate-400">
+        <span className="ml-2 text-caption font-normal text-slate-400">
           {cases.length} 条
         </span>
       </div>
       {cases.length === 0 ? (
-        <div className="px-4 py-10 text-center text-[12px] text-slate-400">
+        <div className="px-4 py-10 text-center text-xs text-slate-400">
           暂无评测用例（Golden Set）
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] text-[12px]">
+          <table className="w-full min-w-[760px] text-xs">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">问题</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">期望关键字</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">结果</th>
@@ -145,7 +145,7 @@ function FragmentRow({
               {c.missingKeywords.map((k) => (
                 <span
                   key={k}
-                  className="rounded bg-red-100 px-1.5 py-0.5 text-[11px] text-red-600"
+                  className="rounded bg-red-100 px-1.5 py-0.5 text-caption text-red-600"
                 >
                   {k}
                 </span>
@@ -171,7 +171,7 @@ function FragmentRow({
               返回片段 Top-{c.returnedCount}
             </div>
             {c.topTitles.length === 0 ? (
-              <div className="mt-1 text-[13px] text-slate-400">
+              <div className="mt-1 text-compact text-slate-400">
                 无检索结果（可能检索异常或知识库为空）
               </div>
             ) : (
@@ -179,7 +179,7 @@ function FragmentRow({
                 {c.topTitles.map((t, idx) => (
                   <li
                     key={idx}
-                    className="flex gap-2 text-[13px] text-slate-900/80"
+                    className="flex gap-2 text-compact text-slate-900/80"
                   >
                     <span className="w-5 shrink-0 text-right font-mono text-xs text-slate-400">
                       {idx + 1}
@@ -211,14 +211,14 @@ export function NumInput({
 }) {
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
+      <span className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
       <input
         type="number"
         min={0}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-9 w-24 rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 font-mono text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
+        className="h-9 w-24 rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 font-mono text-xs outline-none transition-colors focus:border-accent focus:bg-white"
       />
     </label>
   );
@@ -240,14 +240,14 @@ export function ToggleGroup({
   ];
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
+      <span className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
       <div className="flex h-9 overflow-hidden rounded-lg border border-slate-200 bg-white">
         {opts.map((o) => (
           <button
             key={o.v}
             onClick={() => onChange(o.v)}
             className={clsx(
-              "px-2.5 text-[12px] transition-colors",
+              "px-2.5 text-xs transition-colors",
               value === o.v
                 ? "bg-accent text-white"
                 : "bg-white text-slate-500 hover:bg-slate-50",

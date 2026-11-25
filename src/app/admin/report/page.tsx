@@ -21,7 +21,7 @@ function ChatTrendChart({ report }: { report: WeeklyReport }) {
   const points = report.usage.trend;
   if (points.length === 0) {
     return (
-      <AdminCard title="每日问答量" description="周期内按天统计问答与 token" icon={MessageSquare} contentClassName="px-4 py-12 text-center text-[12px] text-slate-400">
+      <AdminCard title="每日问答量" description="周期内按天统计问答与 token" icon={MessageSquare} contentClassName="px-4 py-12 text-center text-xs text-slate-400">
         周期内暂无问答数据
       </AdminCard>
     );
@@ -42,7 +42,7 @@ function ChatTrendChart({ report }: { report: WeeklyReport }) {
               style={{ height: `${Math.max(2, (p.questions / max) * 100)}%` }}
             />
             {(arr.length <= 15 || p.date.endsWith("-01")) && (
-              <div className="mt-1 text-center text-[9px] text-slate-400">{p.date.slice(5)}</div>
+              <div className="mt-1 text-center text-3xs text-slate-400">{p.date.slice(5)}</div>
             )}
           </div>
         ))}
@@ -60,8 +60,8 @@ function EvalTrendTable({ report }: { report: WeeklyReport }) {
         title="检索质量趋势"
         description="评测日报：命中率 / MRR / NDCG"
         icon={ShieldAlert}
-        actions={<Link href="/admin/eval" className="text-[11px] text-accent hover:underline">去评测 →</Link>}
-        contentClassName="px-4 py-10 text-center text-[12px] text-slate-400"
+        actions={<Link href="/admin/eval" className="text-caption text-accent hover:underline">去评测 →</Link>}
+        contentClassName="px-4 py-10 text-center text-xs text-slate-400"
       >
         周期内暂无评测报告，在 RAG 评测手动或定时运行后显示
       </AdminCard>
@@ -72,12 +72,12 @@ function EvalTrendTable({ report }: { report: WeeklyReport }) {
       title="检索质量趋势"
       description="评测日报：命中率 / MRR / NDCG"
       icon={ShieldAlert}
-      actions={<Link href="/admin/eval" className="text-[11px] text-accent hover:underline">去评测 →</Link>}
+      actions={<Link href="/admin/eval" className="text-caption text-accent hover:underline">去评测 →</Link>}
       contentClassName="overflow-x-auto"
     >
-      <table className="w-full min-w-[640px] text-left text-[12px]">
+      <table className="w-full min-w-[640px] text-left text-xs">
         <thead>
-          <tr className="border-b border-slate-100 bg-slate-50/80 text-[10px] uppercase tracking-[0.06em] text-slate-400">
+          <tr className="border-b border-slate-100 bg-slate-50/80 text-2xs uppercase tracking-[0.06em] text-slate-400">
             <th className="whitespace-nowrap px-4 py-2.5 font-medium">日期</th>
             <th className="whitespace-nowrap px-3 py-2.5 font-medium">用例数</th>
             <th className="whitespace-nowrap px-3 py-2.5 font-medium">命中率</th>
@@ -88,7 +88,7 @@ function EvalTrendTable({ report }: { report: WeeklyReport }) {
         <tbody>
           {report.evalTrend.slice(0, 10).map((p) => (
             <tr key={p.date} className="border-b border-slate-100/80 last:border-0">
-              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[11px] text-slate-500">{p.date}</td>
+              <td className="whitespace-nowrap px-4 py-2.5 font-mono text-caption text-slate-500">{p.date}</td>
               <td className="whitespace-nowrap px-3 py-2.5 text-slate-600">{p.caseCount}</td>
               <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{p.hitRate == null ? "-" : fmtPct(p.hitRate)}</td>
               <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{p.mrr == null ? "-" : p.mrr.toFixed(3)}</td>
@@ -119,8 +119,8 @@ function GapTopTable({ report }: { report: WeeklyReport }) {
         title="内容缺口 Top 10"
         description="未答 / 零引用 / 点踩 / 追问聚合，按频次排序"
         icon={BookOpen}
-        actions={<Link href="/admin/gaps" className="text-[11px] text-accent hover:underline">全部缺口 →</Link>}
-        contentClassName="px-4 py-10 text-center text-[12px] text-slate-400"
+        actions={<Link href="/admin/gaps" className="text-caption text-accent hover:underline">全部缺口 →</Link>}
+        contentClassName="px-4 py-10 text-center text-xs text-slate-400"
       >
         周期内没有待处理缺口，内容覆盖保持良好
       </AdminCard>
@@ -131,12 +131,12 @@ function GapTopTable({ report }: { report: WeeklyReport }) {
       title="内容缺口 Top 10"
       description="按出现频次排序，可直接作为内容补强与评测集来源"
       icon={BookOpen}
-      actions={<Link href="/admin/gaps" className="text-[11px] text-accent hover:underline">全部缺口 →</Link>}
+      actions={<Link href="/admin/gaps" className="text-caption text-accent hover:underline">全部缺口 →</Link>}
       contentClassName="overflow-x-auto"
     >
-      <table className="w-full min-w-[620px] text-left text-[12px]">
+      <table className="w-full min-w-[620px] text-left text-xs">
         <thead>
-          <tr className="border-b border-slate-100 bg-slate-50/80 text-[10px] uppercase tracking-[0.06em] text-slate-400">
+          <tr className="border-b border-slate-100 bg-slate-50/80 text-2xs uppercase tracking-[0.06em] text-slate-400">
             <th className="w-10 px-4 py-2.5 font-medium">#</th>
             <th className="px-3 py-2.5 font-medium">问题</th>
             <th className="w-16 px-3 py-2.5 font-medium">频次</th>
@@ -147,7 +147,7 @@ function GapTopTable({ report }: { report: WeeklyReport }) {
         <tbody>
           {gaps.map((g, i) => (
             <tr key={g.id} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
-              <td className="px-4 py-2.5 font-mono text-[10px] text-slate-400">{String(i + 1).padStart(2, "0")}</td>
+              <td className="px-4 py-2.5 font-mono text-2xs text-slate-400">{String(i + 1).padStart(2, "0")}</td>
               <td className="max-w-0 truncate px-3 py-2.5 text-slate-700" title={g.question}>{g.question}</td>
               <td className="px-3 py-2.5">
                 <span className={clsx("font-mono font-medium", g.frequency >= 3 ? "text-amber-600" : "text-slate-600")}>
@@ -155,11 +155,11 @@ function GapTopTable({ report }: { report: WeeklyReport }) {
                 </span>
               </td>
               <td className="px-3 py-2.5">
-                <span className="inline-flex rounded-full border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] text-slate-500">
+                <span className="inline-flex rounded-full border border-slate-200 bg-white px-1.5 py-0.5 text-2xs text-slate-500">
                   {GAP_STATUS_LABEL[g.status] ?? g.status}
                 </span>
               </td>
-              <td className="whitespace-nowrap px-3 py-2.5 text-[10px] text-slate-400">
+              <td className="whitespace-nowrap px-3 py-2.5 text-2xs text-slate-400">
                 {g.lastSeen ? new Date(g.lastSeen).toLocaleDateString("zh-CN") : "-"}
               </td>
             </tr>
@@ -221,7 +221,7 @@ export default function AdminReportPage() {
         description="按周期汇总问答用量、用户反馈、点踩问题榜和检索质量趋势。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               最近 {days} 天
             </span>
@@ -237,7 +237,7 @@ export default function AdminReportPage() {
                   type="button"
                   onClick={() => setDays(p)}
                   className={clsx(
-                    "rounded-md px-2.5 py-1.5 text-[12px] transition-colors",
+                    "rounded-md px-2.5 py-1.5 text-xs transition-colors",
                     days === p
                       ? "bg-accent font-medium text-white shadow-sm"
                       : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
@@ -255,7 +255,7 @@ export default function AdminReportPage() {
         }
       />
 
-      {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
+      {error && <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-compact text-red-600">{error}</p>}
 
       {!report && loading ? (
         <AdminCard contentClassName="py-20 text-center text-sm text-slate-400">
@@ -315,7 +315,7 @@ export default function AdminReportPage() {
           </div>
 
           {report.openAlerts > 0 && (
-            <div className="flex flex-wrap items-center gap-2 rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-[12px] text-amber-700">
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border border-amber-200 bg-amber-50/70 px-4 py-3 text-xs text-amber-700">
               <ShieldAlert size={15} />
               有 {report.openAlerts} 条未处理告警，建议先到总览处理。
               <Link href="/admin" className="inline-flex items-center gap-1 font-medium text-amber-700 underline underline-offset-2">去处理 <ArrowRight size={12} /></Link>
@@ -327,19 +327,19 @@ export default function AdminReportPage() {
               title="点踩 Top 问题榜"
               description="按出现次数排序，可直接作为内容补强清单"
               icon={ThumbsUp}
-              actions={<Link href="/admin/feedback?rating=DOWN" className="text-[11px] text-accent hover:underline">全部点踩 →</Link>}
+              actions={<Link href="/admin/feedback?rating=DOWN" className="text-caption text-accent hover:underline">全部点踩 →</Link>}
               contentClassName="overflow-x-auto"
             >
               {report.downTopQuestions.length === 0 ? (
                 <div className="px-4 py-12 text-center">
                   <ThumbsUp size={22} className="mx-auto mb-2 text-emerald-400" />
-                  <p className="text-[12px] font-medium text-slate-600">周期内没有点踩反馈</p>
-                  <p className="mt-1 text-[11px] text-slate-400">问答质量保持良好，继续关注评测趋势即可</p>
+                  <p className="text-xs font-medium text-slate-600">周期内没有点踩反馈</p>
+                  <p className="mt-1 text-caption text-slate-400">问答质量保持良好，继续关注评测趋势即可</p>
                 </div>
               ) : (
-                <table className="w-full min-w-[560px] text-[12px]">
+                <table className="w-full min-w-[560px] text-xs">
                   <thead>
-                    <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                    <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                       <th className="w-10 px-4 py-2.5 font-medium">#</th>
                       <th className="px-3 py-2.5 font-medium">问题</th>
                       <th className="w-16 px-3 py-2.5 font-medium">次数</th>
@@ -350,7 +350,7 @@ export default function AdminReportPage() {
                   <tbody>
                     {report.downTopQuestions.map((q, i) => (
                       <tr key={`${q.question}-${i}`} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
-                        <td className="px-4 py-2.5 font-mono text-[10px] text-slate-400">{String(i + 1).padStart(2, "0")}</td>
+                        <td className="px-4 py-2.5 font-mono text-2xs text-slate-400">{String(i + 1).padStart(2, "0")}</td>
                         <td className="max-w-0 truncate px-3 py-2.5 text-slate-700" title={q.question}>{q.question}</td>
                         <td className="px-3 py-2.5">
                           <span className={clsx("font-mono font-medium", q.count >= 3 ? "text-red-500" : "text-slate-600")}>
@@ -360,7 +360,7 @@ export default function AdminReportPage() {
                         <td className="hidden max-w-0 truncate px-3 py-2.5 text-slate-500 xl:table-cell" title={q.lastComment ?? ""}>
                           {q.lastComment ?? "-"}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-2.5 text-[10px] text-slate-400">
+                        <td className="whitespace-nowrap px-3 py-2.5 text-2xs text-slate-400">
                           {q.lastAt ? new Date(q.lastAt).toLocaleDateString("zh-CN") : "-"}
                         </td>
                       </tr>
@@ -379,15 +379,15 @@ export default function AdminReportPage() {
                   ["未处理告警", `${report.openAlerts} 条`],
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-center justify-between border-b border-slate-100 pb-2 last:border-0 last:pb-0">
-                    <span className="text-[11px] text-slate-400">{label}</span>
-                    <span className="font-mono text-[13px] font-medium text-slate-700">{value}</span>
+                    <span className="text-caption text-slate-400">{label}</span>
+                    <span className="font-mono text-compact font-medium text-slate-700">{value}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50/70 p-3 text-[10px] leading-4 text-slate-400">
+              <div className="mt-4 rounded-lg border border-slate-100 bg-slate-50/70 p-3 text-2xs leading-4 text-slate-400">
                 点踩率 ≥ 30% 标红，≥ 15% 标黄；点踩条目可在问答反馈页转为 Golden Set 用例。
               </div>
-              <Link href="/admin/feedback" className="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-accent hover:underline">
+              <Link href="/admin/feedback" className="mt-3 inline-flex items-center gap-1 text-caption font-medium text-accent hover:underline">
                 查看全部反馈 <ArrowRight size={12} />
               </Link>
             </AdminCard>

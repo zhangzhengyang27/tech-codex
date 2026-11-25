@@ -49,7 +49,7 @@ function FavoriteCard({
           </span>
           <span
             className={clsx(
-              "rounded-full px-2 py-0.5 text-[11px] font-medium",
+              "rounded-full px-2 py-0.5 text-caption font-medium",
               isPublic ? "bg-accent/10 text-accent" : "bg-emerald-500/10 text-emerald-600",
             )}
           >
@@ -78,7 +78,7 @@ function FavoriteCard({
         {item.filePath}
       </p>
 
-      <div className="mt-3 flex items-center gap-1.5 border-t border-border/60 pt-2.5 text-[11px] text-foreground/35">
+      <div className="mt-3 flex items-center gap-1.5 border-t border-border/60 pt-2.5 text-caption text-foreground/35">
         <Clock size={11} />
         {fmtDate(item.createdAt) || "—"} 收藏
         {href?.startsWith("/docs/") && <ExternalLink size={11} className="ml-auto opacity-0 transition-opacity group-hover:opacity-100" />}
@@ -89,12 +89,12 @@ function FavoriteCard({
   return href ? (
     <Link
       href={href}
-      className="group relative flex flex-col rounded-xl border border-border bg-background p-4 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-sm"
+      className="group relative flex flex-col rounded-lg border border-border bg-background p-4 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-sm"
     >
       {body}
     </Link>
   ) : (
-    <div className="group relative flex flex-col rounded-xl border border-border bg-background p-4">
+    <div className="group relative flex flex-col rounded-lg border border-border bg-background p-4">
       {body}
     </div>
   );
@@ -103,7 +103,7 @@ function FavoriteCard({
 /** 加载骨架 */
 function CardSkeleton() {
   return (
-    <div className="flex flex-col rounded-xl border border-border bg-background p-4">
+    <div className="flex flex-col rounded-lg border border-border bg-background p-4">
       <div className="flex items-center gap-2">
         <div className="h-8 w-8 animate-pulse rounded-lg bg-muted" />
         <div className="h-5 w-16 animate-pulse rounded-full bg-muted" />
@@ -230,7 +230,7 @@ export default function MyFavoritesPage() {
           </p>
         </div>
         {!loading && total > 0 && (
-          <span className="rounded-full bg-muted px-3 py-1 text-xs text-foreground/50">{total} 篇</span>
+          <span className="rounded-full bg-muted px-3 py-1 text-xs text-foreground/60">{total} 篇</span>
         )}
       </div>
 
@@ -246,8 +246,8 @@ export default function MyFavoritesPage() {
         </ul>
       ) : items.length === 0 ? (
         /* 空态引导 */
-        <div className="flex flex-col items-center rounded-2xl border border-dashed border-border py-20 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400/10">
+        <div className="flex flex-col items-center rounded-lg border border-dashed border-border py-20 text-center">
+          <span className="flex h-14 w-14 items-center justify-center rounded-lg bg-amber-400/10">
             <Star size={26} className="text-amber-400" />
           </span>
           <h2 className="mt-4 text-base font-medium">还没有收藏任何文档</h2>
@@ -286,7 +286,7 @@ export default function MyFavoritesPage() {
           <button
             onClick={() => void loadMore()}
             disabled={loadingMore}
-            className="flex items-center gap-1.5 rounded-full border border-border px-4 py-1.5 text-xs text-foreground/60 hover:bg-muted hover:text-foreground disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-md border border-border px-4 py-1.5 text-xs text-foreground/60 hover:bg-muted hover:text-foreground disabled:opacity-50"
           >
             {loadingMore && <Loader2 size={12} className="animate-spin" />}
             加载更多（已加载 {items.length} / {total} 篇）

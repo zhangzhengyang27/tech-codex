@@ -47,23 +47,23 @@ export function EvalRunTab() {
             </button>
           </div>
           {error && (
-            <div className="mt-3 flex items-center gap-1.5 text-[12px] text-red-500">
+            <div className="mt-3 flex items-center gap-1.5 text-xs text-red-500">
               <AlertCircle size={13} /> {error}
             </div>
           )}
         </AdminCard>
         <AdminCard title="指标口径" description="先看命中率，再看排序质量" icon={Target} contentClassName="p-5">
-          <dl className="space-y-3 text-[12px]">
+          <dl className="space-y-3 text-xs">
             <div>
-              <dt className="font-mono text-[11px] font-medium text-slate-700">HitRate</dt>
+              <dt className="font-mono text-caption font-medium text-slate-700">HitRate</dt>
               <dd className="mt-0.5 text-slate-500">TopK 内是否命中任一期望关键字，低于 60% 会触发质量告警。</dd>
             </div>
             <div>
-              <dt className="font-mono text-[11px] font-medium text-slate-700">MRR</dt>
+              <dt className="font-mono text-caption font-medium text-slate-700">MRR</dt>
               <dd className="mt-0.5 text-slate-500">首个命中片段排名的倒数，衡量“正确答案是否排得够前”。</dd>
             </div>
             <div>
-              <dt className="font-mono text-[11px] font-medium text-slate-700">NDCG@K</dt>
+              <dt className="font-mono text-caption font-medium text-slate-700">NDCG@K</dt>
               <dd className="mt-0.5 text-slate-500">考虑位置与多期望文档的排序质量，需用例标注期望文档。</dd>
             </div>
           </dl>

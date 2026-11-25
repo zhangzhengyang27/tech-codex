@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AlertTriangle, FileText, Loader2, Save, X } from "lucide-react";
 import { adminDocument, updateDocumentContent, type KbDocumentView } from "@/lib/documents";
 import { adminBtn } from "@/components/admin/admin-ui";
+import { Field } from "@/components/ui/field";
 
 const errText = (e: unknown): string => (e instanceof Error ? e.message : "保存失败");
 
@@ -115,7 +116,7 @@ export function DocEditor({
       aria-label="编辑文档"
     >
       <div
-        className={`flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_32px_80px_-24px_rgba(15,23,42,0.55)] ${
+        className={`flex w-full max-w-4xl flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_32px_80px_-24px_rgba(15,23,42,0.55)] ${
           editable ? "h-[85vh]" : "max-h-[85vh]"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -124,8 +125,8 @@ export function DocEditor({
         <div className="flex items-start gap-3 border-b border-slate-100 px-5 py-4">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-accent ring-1 ring-blue-100"><FileText size={15} /></span>
           <div className="min-w-0 flex-1">
-            <div className="text-[14px] font-semibold text-slate-800">编辑文档</div>
-            {doc && <div className="mt-0.5 truncate font-mono text-[10px] text-slate-400">{doc.fileName}</div>}
+            <div className="text-sm font-semibold text-slate-800">编辑文档</div>
+            {doc && <div className="mt-0.5 truncate font-mono text-2xs text-slate-400">{doc.fileName}</div>}
           </div>
           <button
             onClick={onClose}
@@ -139,32 +140,41 @@ export function DocEditor({
         {/* 编辑区 */}
         <div className={`flex flex-col gap-3 overflow-y-auto px-5 py-4 ${editable ? "flex-1" : ""}`}>
           {loading && (
-            <div className="flex flex-1 items-center justify-center text-[13px] text-slate-400">
+            <div className="flex flex-1 items-center justify-center text-compact text-slate-400">
               <Loader2 size={20} className="mr-2 animate-spin" />
               正在加载文档…
             </div>
           )}
           {!loading && doc && doc.sourceType !== "SYNC" && (
             <>
-              <label className="flex items-center gap-2">
-                <span className="shrink-0 text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">标题</span>
+              <Field size="sm" label="标题" htmlFor="doc-edit-title">
                 <input
+                  id="doc-edit-title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-compact text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
                 />
-              </label>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                spellCheck={false}
-                className="min-h-[46vh] flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50/60 p-4 font-mono text-[12px] leading-relaxed text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
-                placeholder="Markdown 原文"
-              />
+              </Field>
+              <Field
+                size="sm"
+                label="正文"
+                htmlFor="doc-edit-content"
+                hint="Markdown 原文；保存后重新分块并更新检索索引"
+                className="flex flex-1 flex-col"
+              >
+                <textarea
+                  id="doc-edit-content"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  spellCheck={false}
+                  className="min-h-[46vh] flex-1 resize-none rounded-lg border border-slate-200 bg-slate-50/60 p-4 font-mono text-xs leading-relaxed text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
+                  placeholder="Markdown 原文"
+                />
+              </Field>
             </>
           )}
           {error && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-100 bg-red-50 p-3 text-[12px] text-red-600">
+            <div className="flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 p-3 text-xs text-red-600">
               <AlertTriangle size={15} className="mt-0.5 shrink-0" />
               {error}
             </div>
@@ -173,7 +183,7 @@ export function DocEditor({
 
         {/* 底部操作 */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 bg-slate-50/50 px-5 py-3">
-          <span className="text-[11px] text-slate-400">
+          <span className="text-caption text-slate-400">
             {readOnlySync ? "历史 SYNC 文档为只读，请在 CMS 中新建或迁移后编辑" : "保存后将自动重建该文档的分块与向量索引"}
           </span>
           <div className="flex gap-2">

@@ -17,7 +17,7 @@ export default function DocError({
   return (
     <div className="flex flex-col gap-0 lg:flex-row lg:gap-10">
       <main className="min-w-0 flex-1 px-1 py-6 lg:px-0 lg:py-10">
-        <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border py-20 text-center">
+        <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-border py-20 text-center">
           <p className="text-sm font-medium text-red-500">文档加载出错</p>
           <p className="break-all px-6 text-sm text-foreground/60">
             {error.message || '发生了未知错误，请稍后重试'}

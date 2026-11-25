@@ -86,18 +86,18 @@ export function CodeCard({ lang, code }: CodeCardProps) {
   };
 
   return (
-    <div className="group relative my-4 overflow-hidden rounded-lg border border-[#30363d] bg-[#0d1117]">
+    <div className="group relative my-4 overflow-hidden rounded-lg border border-code-border bg-code-bg">
       {/* 右上角悬浮控件：语言标识 + 复制 + 运行（仅 JS） */}
       <div className="absolute right-4 top-[11px] z-10 flex items-center gap-3.5">
-        <span className="text-[11px] font-semibold uppercase tracking-[1.2px] text-[#6e7681]">{lang}</span>
+        <span className="text-caption font-semibold uppercase tracking-[1.2px] text-code-muted">{lang}</span>
         <button
           type="button"
           onClick={handleCopy}
           title="复制代码"
           aria-label="复制代码"
-          className="text-[#6e7681] transition-colors hover:text-[#e6edf3]"
+          className="text-code-muted transition-colors hover:text-code-fg"
         >
-          {copied ? <Check className="h-[15px] w-[15px] text-[#3fb950]" /> : <Copy className="h-[15px] w-[15px]" />}
+          {copied ? <Check className="h-[15px] w-[15px] text-success" /> : <Copy className="h-[15px] w-[15px]" />}
         </button>
         {runnable && (
           <button
@@ -105,7 +105,7 @@ export function CodeCard({ lang, code }: CodeCardProps) {
             onClick={handleRun}
             title="运行"
             aria-label="运行"
-            className="text-[#6e7681] transition-colors hover:text-[#e6edf3]"
+            className="text-code-muted transition-colors hover:text-code-fg"
           >
             <Play className="h-[15px] w-[15px] fill-current" />
           </button>
@@ -113,18 +113,18 @@ export function CodeCard({ lang, code }: CodeCardProps) {
       </div>
 
       {/* 代码区：高度由内容撑开，不设最大值 */}
-      <LazyCodeBlock code={code} lang={lang} className="code-card-pre overflow-auto p-4 text-[13px] leading-[1.7]" />
+      <LazyCodeBlock code={code} lang={lang} className="code-card-pre overflow-auto p-4 text-compact leading-[1.7]" />
 
       {/* 运行结果控制台（点击运行后展开） */}
       {logs && (
         <div className="border-t border-[#21262d] bg-[#010409] px-4 py-2.5 font-mono text-[12.5px]">
-          <div className="mb-1 text-[11px] uppercase tracking-[0.5px] text-[#6e7681]">Console</div>
+          <div className="mb-1 text-caption uppercase tracking-[0.5px] text-code-muted">Console</div>
           {logs.length === 0 ? (
-            <div className="text-[#6e7681]">（无输出）</div>
+            <div className="text-code-muted">（无输出）</div>
           ) : (
             logs.map((line, i) => (
-              <div key={i} className="whitespace-pre-wrap text-[#e6edf3]">
-                <span className="text-[#3fb950]">› </span>
+              <div key={i} className="whitespace-pre-wrap text-code-fg">
+                <span className="text-success">› </span>
                 {line}
               </div>
             ))

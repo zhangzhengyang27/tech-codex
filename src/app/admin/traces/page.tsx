@@ -28,7 +28,7 @@ function BoolBadge({ value, onLabel, offLabel }: { value: boolean | null; onLabe
   return (
     <span
       className={clsx(
-        "rounded-full px-2 py-0.5 text-[10px] font-medium ring-1",
+        "rounded-full px-2 py-0.5 text-2xs font-medium ring-1",
         value ? "bg-emerald-50 text-emerald-600 ring-emerald-100" : "bg-slate-50 text-slate-500 ring-slate-200",
       )}
     >
@@ -92,7 +92,7 @@ export default function AdminTracesPage() {
         description="查看每次混合检索的召回明细（向量 / 关键词 / 融合 / 重排），判断「答不好」是检索问题还是生成问题。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               共 {totalElements} 条检索记录
             </span>
@@ -101,37 +101,37 @@ export default function AdminTracesPage() {
         }
       />
 
-      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">空间</span>
+          <span className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">空间</span>
           <input
             value={libraryId}
             onChange={(e) => setLibraryId(e.target.value)}
             placeholder="default / u-用户名"
-            className="h-9 w-40 rounded-lg border border-slate-200 bg-slate-50/70 px-3 font-mono text-[12px] outline-none focus:border-accent focus:bg-white"
+            className="h-9 w-40 rounded-lg border border-slate-200 bg-slate-50/70 px-3 font-mono text-xs outline-none focus:border-accent focus:bg-white"
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">用户</span>
+          <span className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">用户</span>
           <input
             value={userId}
             onChange={(e) => setUserId(e.target.value)}
             list="trace-user-options"
             placeholder="按用户过滤"
-            className="h-9 w-40 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none focus:border-accent focus:bg-white"
+            className="h-9 w-40 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none focus:border-accent focus:bg-white"
           />
           <datalist id="trace-user-options">
             <option value={user?.username ?? ""} />
           </datalist>
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">查询关键字</span>
+          <span className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">查询关键字</span>
           <input
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && onSearch()}
             placeholder="匹配原始 / 检索用查询"
-            className="h-9 w-52 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none focus:border-accent focus:bg-white"
+            className="h-9 w-52 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none focus:border-accent focus:bg-white"
           />
         </label>
         <button
@@ -142,20 +142,20 @@ export default function AdminTracesPage() {
           {loading ? <Loader2 size={14} className="animate-spin" /> : <RotateCw size={14} />}
           查询
         </button>
-        {error && <span className="text-[11px] text-red-500">{error}</span>}
+        {error && <span className="text-caption text-red-500">{error}</span>}
       </div>
 
       <AdminCard
         title="检索明细"
         description="展开任一行查看改写后查询、命中片段与通道状态"
         icon={Activity}
-        actions={<span className="rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">{totalElements} 条</span>}
+        actions={<span className="rounded-full bg-slate-50 px-2.5 py-1 font-mono text-2xs text-slate-400">{totalElements} 条</span>}
         contentClassName=""
       >
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[640px] text-[12px]">
+          <table className="w-full min-w-[640px] text-xs">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">时间</th>
                 <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">用户</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">原始查询</th>
@@ -188,7 +188,7 @@ export default function AdminTracesPage() {
                         className="cursor-pointer border-b border-slate-100/80 transition-colors hover:bg-slate-50/60"
                         onClick={() => setExpanded(open ? null : t.id)}
                       >
-                        <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[11px] text-slate-500">
+                        <td className="whitespace-nowrap px-4 py-2.5 font-mono text-caption text-slate-500">
                           {fmtTime(t.createdDate)}
                         </td>
                         <td className="hidden px-3 py-2.5 font-mono text-slate-600 xl:table-cell">{t.userId || "-"}</td>
@@ -210,18 +210,18 @@ export default function AdminTracesPage() {
                       {open && (
                         <tr className="border-b border-slate-100 bg-slate-50/50">
                           <td colSpan={8} className="px-4 py-3">
-                            <div className="grid gap-4 rounded-xl border border-slate-100 bg-white p-4 text-[12px] md:grid-cols-2">
+                            <div className="grid gap-4 rounded-lg border border-slate-100 bg-white p-4 text-xs md:grid-cols-2">
                               <div>
-                                <div className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">检索用查询（改写后）</div>
+                                <div className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">检索用查询（改写后）</div>
                                 <p className="mt-1 break-all leading-5 text-slate-700">{t.searchQuery || "-"}</p>
                               </div>
                               <div>
-                                <div className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">命中片段（docId#chunk）</div>
-                                <p className="mt-1 break-all font-mono text-[11px] leading-5 text-slate-700">
+                                <div className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">命中片段（docId#chunk）</div>
+                                <p className="mt-1 break-all font-mono text-caption leading-5 text-slate-700">
                                   {t.hitSummary || "-"}
                                 </p>
                               </div>
-                              <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-slate-100 pt-3 text-[11px] text-slate-500 md:col-span-2">
+                              <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-slate-100 pt-3 text-caption text-slate-500 md:col-span-2">
                                 <span>关键词通道：{t.keywordUsed ? "参与" : "未参与"}</span>
                                 <span>重排模型：{t.rerankModelAvailable ? "可用" : "不可用（降级）"}</span>
                                 <span>空间：{t.libraryId || "-"}</span>

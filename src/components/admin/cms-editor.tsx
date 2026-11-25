@@ -209,7 +209,7 @@ export function CmsEditor({ docId }: { docId?: number }) {
         title={isNew ? "新建内容" : detail?.title ?? "编辑内容"}
         description={isNew ? "选择分类并写入 Markdown 正文，发布后写入数据库并重建索引。" : "修改元数据或正文后直接发布，数据库版本与索引同步更新。"}
         meta={
-          <Link href="/admin/content" className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-accent">
+          <Link href="/admin/content" className="inline-flex items-center gap-1 text-caption text-slate-500 hover:text-accent">
             <ArrowLeft size={12} /> 返回内容中心
             {detail && <span className="ml-2 font-mono text-slate-400">r{detail.revision ?? 1}</span>}
           </Link>
@@ -235,20 +235,20 @@ export function CmsEditor({ docId }: { docId?: number }) {
       />
 
       {error && (
-        <div className="mb-4 flex items-start gap-2 rounded-xl border border-red-100 bg-red-50 p-3 text-[12px] text-red-600">
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-100 bg-red-50 p-3 text-xs text-red-600">
           <AlertTriangle size={15} className="mt-0.5 shrink-0" />
           {error}
         </div>
       )}
       {message && (
-        <div className="mb-4 flex items-start gap-2 rounded-xl border border-emerald-100 bg-emerald-50 p-3 text-[12px] text-emerald-700">
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-emerald-100 bg-emerald-50 p-3 text-xs text-emerald-700">
           <CheckCircle2 size={15} className="mt-0.5 shrink-0" />
           {message}
         </div>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center py-20 text-[13px] text-slate-400">
+        <div className="flex items-center justify-center py-20 text-compact text-slate-400">
           <Loader2 size={18} className="mr-2 animate-spin" /> 正在加载内容…
         </div>
       ) : (
@@ -265,8 +265,8 @@ export function CmsEditor({ docId }: { docId?: number }) {
                       onClick={() => setTab(t)}
                       className={
                         tab === t
-                          ? "rounded-md bg-white px-3 py-1 text-[11px] font-medium text-slate-800 shadow-sm"
-                          : "rounded-md px-3 py-1 text-[11px] text-slate-500 hover:text-slate-800"
+                          ? "rounded-md bg-white px-3 py-1 text-caption font-medium text-slate-800 shadow-sm"
+                          : "rounded-md px-3 py-1 text-caption text-slate-500 hover:text-slate-800"
                       }
                     >
                       {t === "edit" ? "编辑" : "预览"}
@@ -282,10 +282,10 @@ export function CmsEditor({ docId }: { docId?: number }) {
                   onChange={(e) => setBody(e.target.value)}
                   spellCheck={false}
                   placeholder="# 标题&#10;&#10;正文…"
-                  className="min-h-[62vh] w-full resize-y rounded-xl border border-slate-200 bg-slate-50/60 p-4 font-mono text-[12px] leading-relaxed text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
+                  className="min-h-[62vh] w-full resize-y rounded-lg border border-slate-200 bg-slate-50/60 p-4 font-mono text-xs leading-relaxed text-slate-700 outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
                 />
               ) : (
-                <div className="prose-doc min-h-[62vh] overflow-auto rounded-xl border border-slate-200 bg-white p-6">
+                <div className="prose-doc min-h-[62vh] overflow-auto rounded-lg border border-slate-200 bg-white p-6">
                   {body.trim() ? (
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
@@ -308,7 +308,7 @@ export function CmsEditor({ docId }: { docId?: number }) {
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[13px] outline-none focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-compact outline-none focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
                 />
               </Field>
               <Field label="摘要">
@@ -316,7 +316,7 @@ export function CmsEditor({ docId }: { docId?: number }) {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/70 px-3 py-2 text-[12px] leading-5 outline-none focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
+                  className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/70 px-3 py-2 text-xs leading-5 outline-none focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
                   placeholder="用于列表与 SEO，可空"
                 />
               </Field>
@@ -324,7 +324,7 @@ export function CmsEditor({ docId }: { docId?: number }) {
                 <select
                   value={categoryDir}
                   onChange={(e) => onCategoryChange(e.target.value)}
-                  className="h-9 w-full rounded-lg border border-slate-200 bg-white px-2.5 text-[12px] text-slate-600 outline-none focus:border-accent"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-600 outline-none focus:border-accent"
                 >
                   <option value="">请选择分类</option>
                   {allCategories.map((c) => (
@@ -338,17 +338,17 @@ export function CmsEditor({ docId }: { docId?: number }) {
                 <input
                   value={docSlug}
                   onChange={(e) => setDocSlug(e.target.value)}
-                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 font-mono text-[12px] outline-none focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 px-3 font-mono text-xs outline-none focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/20"
                   placeholder="如 01-快速开始"
                 />
                 {categorySlug && (
-                  <p className="mt-1 break-all font-mono text-[10px] text-slate-400">
+                  <p className="mt-1 break-all font-mono text-2xs text-slate-400">
                     /docs/{categorySlug}/{docSlug || "…"}
                   </p>
                 )}
               </Field>
               {!isNew && (
-                <p className="text-[11px] leading-5 text-slate-400">
+                <p className="text-caption leading-5 text-slate-400">
                   修改 slug 会改变线上 URL，旧链接不会自动重定向；如需保留旧链接，请在 next.config.ts 增加 redirect。
                 </p>
               )}
@@ -362,27 +362,27 @@ export function CmsEditor({ docId }: { docId?: number }) {
               contentClassName="p-3"
             >
               {versions.length === 0 ? (
-                <p className="px-1 py-2 text-[11px] text-slate-400">暂无版本记录</p>
+                <p className="px-1 py-2 text-caption text-slate-400">暂无版本记录</p>
               ) : (
                 <ul className="max-h-[36vh] space-y-1 overflow-auto">
                   {versions.map((v) => (
                     <li key={v.id} className="rounded-lg px-1.5 py-1.5 hover:bg-slate-50">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[11px] font-medium text-slate-600">r{v.revision}</span>
+                        <span className="font-mono text-caption font-medium text-slate-600">r{v.revision}</span>
                         {detail && v.revision !== detail.revision && (
                           <button
                             onClick={() => void onRestore(v)}
                             disabled={saving}
-                            className="rounded px-1.5 py-0.5 text-[10px] text-accent hover:bg-blue-50 disabled:opacity-50"
+                            className="rounded px-1.5 py-0.5 text-2xs text-accent hover:bg-blue-50 disabled:opacity-50"
                           >
                             回滚
                           </button>
                         )}
                       </div>
-                      <div className="mt-0.5 truncate text-[10px] text-slate-400">
+                      <div className="mt-0.5 truncate text-2xs text-slate-400">
                         {fmtDate(v.createdDate)} · {v.createdBy ?? "-"}
                       </div>
-                      {v.changeNote && <div className="mt-0.5 truncate text-[10px] text-slate-500">{v.changeNote}</div>}
+                      {v.changeNote && <div className="mt-0.5 truncate text-2xs text-slate-500">{v.changeNote}</div>}
                     </li>
                   ))}
                 </ul>
@@ -397,7 +397,7 @@ export function CmsEditor({ docId }: { docId?: number }) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
+      <span className="mb-1 block text-caption font-medium uppercase tracking-[0.08em] text-slate-400">{label}</span>
       {children}
     </label>
   );

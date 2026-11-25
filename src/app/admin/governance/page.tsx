@@ -173,13 +173,13 @@ export default function AdminGovernancePage() {
         icon={ShieldAlert}
         title="知识治理中心"
         description="重复 / 过期 / 责任人 / 空分块体检；治理结果进入周报，不再靠人工抽查。"
-        meta={<><span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-blue-500" />公共库 default</span><span>过期口径 180 天</span></>}
+        meta={<><span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-blue-500" />公共库 default</span><span>过期口径 180 天</span></>}
         actions={<>
           <button onClick={() => void assignOwners()} disabled={assigning} className={adminBtn("secondary")}>{assigning ? <Loader2 size={14} className="animate-spin" /> : <UserX size={14} />}按目录分派责任人</button>
           <button onClick={() => void load()} disabled={loading} className={adminBtn("secondary")}>{loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}重新扫描</button>
         </>}
       />
-      {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
+      {error && <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-compact text-red-600">{error}</p>}
       {summary && (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
           <AdminMetricCard label="平均健康分" value={summary.avgHealthScore.toFixed(1)} hint={`${summary.totalDocuments} 篇文档`} icon={CheckCircle2} tone={summary.avgHealthScore >= 80 ? "emerald" : "amber"} />
@@ -192,13 +192,13 @@ export default function AdminGovernancePage() {
       <div className="mt-5">
         <AdminCard title="GitHub 增量同步" description="浅克隆或 fetch 更新仓库，再按相对路径增量索引；只同步 Markdown，不自动改仓库。" icon={Database}>
           <div className="grid gap-3 px-4 py-4 md:grid-cols-[minmax(0,2fr)_120px_minmax(0,1fr)_auto]">
-            <input value={repoUrl} onChange={(e) => setRepoUrl(e.target.value)} placeholder="https://github.com/owner/repo" className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 font-mono text-[12px] outline-none focus:border-accent" />
-            <input value={branch} onChange={(e) => setBranch(e.target.value)} placeholder="main" className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 font-mono text-[12px] outline-none focus:border-accent" />
-            <input value={repoPath} onChange={(e) => setRepoPath(e.target.value)} placeholder="docs（仓库内子目录）" className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 font-mono text-[12px] outline-none focus:border-accent" />
+            <input value={repoUrl} onChange={(e) => setRepoUrl(e.target.value)} placeholder="https://github.com/owner/repo" className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 font-mono text-xs outline-none focus:border-accent" />
+            <input value={branch} onChange={(e) => setBranch(e.target.value)} placeholder="main" className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 font-mono text-xs outline-none focus:border-accent" />
+            <input value={repoPath} onChange={(e) => setRepoPath(e.target.value)} placeholder="docs（仓库内子目录）" className="h-9 rounded-lg border border-slate-200 bg-slate-50 px-3 font-mono text-xs outline-none focus:border-accent" />
             <button onClick={() => void runSync()} disabled={syncLoading} className={adminBtn("primary")}>{syncLoading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}同步</button>
           </div>
           {syncResult && (
-            <div className="border-t border-slate-100 px-4 py-3 text-[11px] text-slate-500">
+            <div className="border-t border-slate-100 px-4 py-3 text-caption text-slate-500">
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                 <span>任务 <span className="font-mono text-slate-700">{syncResult.taskId}</span></span>
                 <span>目录 <span className="font-mono text-slate-700">{syncResult.localPath}</span></span>
@@ -225,7 +225,7 @@ export default function AdminGovernancePage() {
           actions={<button onClick={() => void runLint()} disabled={lintLoading} className={adminBtn("secondary")}>{lintLoading ? <Loader2 size={14} className="animate-spin" /> : <Link2 size={14} />}跑全站 Lint</button>}
         >
           {!lint ? (
-            <div className="px-4 py-6 text-[12px] text-slate-400">尚未扫描。点右上角“跑全站 Lint”，约数秒完成 4,000+ 篇文档。</div>
+            <div className="px-4 py-6 text-xs text-slate-400">尚未扫描。点右上角“跑全站 Lint”，约数秒完成 4,000+ 篇文档。</div>
           ) : (
             <>
               <div className="grid grid-cols-2 gap-3 border-b border-slate-100 px-4 py-4 md:grid-cols-4">
@@ -235,17 +235,17 @@ export default function AdminGovernancePage() {
                   ["断链", lint.brokenLinkCount, "个"],
                   ["同名标题", lint.duplicateTitleCount, "篇"],
                 ].map(([label, value, unit]) => (
-                  <div key={String(label)} className="rounded-xl border border-slate-100 bg-slate-50/60 px-3 py-2.5">
-                    <div className="text-[10px] text-slate-400">{label}</div>
-                    <div className="mt-1 font-mono text-[18px] font-semibold text-slate-800">{String(value)}<span className="ml-1 text-[10px] font-normal text-slate-400">{unit}</span></div>
+                  <div key={String(label)} className="rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2.5">
+                    <div className="text-2xs text-slate-400">{label}</div>
+                    <div className="mt-1 font-mono text-[18px] font-semibold text-slate-800">{String(value)}<span className="ml-1 text-2xs font-normal text-slate-400">{unit}</span></div>
                   </div>
                 ))}
               </div>
               {Object.keys(lint.brokenByOwner ?? {}).length > 0 && (
                 <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
-                  <span className="text-[10px] text-slate-400">断链责任人</span>
+                  <span className="text-2xs text-slate-400">断链责任人</span>
                   {Object.entries(lint.brokenByOwner).map(([owner, count]) => (
-                    <span key={owner} className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] ${owner === "UNASSIGNED" ? "border-amber-200 bg-amber-50 text-amber-600" : "border-slate-200 bg-slate-50 text-slate-600"}`}>
+                    <span key={owner} className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-2xs ${owner === "UNASSIGNED" ? "border-amber-200 bg-amber-50 text-amber-600" : "border-slate-200 bg-slate-50 text-slate-600"}`}>
                       <span className="font-mono">{owner}</span><span className="font-semibold">{count}</span>
                     </span>
                   ))}
@@ -255,24 +255,24 @@ export default function AdminGovernancePage() {
                 <AdminEmptyState icon={CheckCircle2} title="没有发现断链或同名标题" description="当前公共库内容 Lint 全部通过。" compact />
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[860px] text-[12px]">
-                    <thead><tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+                  <table className="w-full min-w-[860px] text-xs">
+                    <thead><tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                       <th className="px-4 py-2.5 font-medium">文档</th><th className="px-3 py-2.5 font-medium">问题</th><th className="px-3 py-2.5 font-medium">责任人</th><th className="px-3 py-2.5 font-medium">修复建议</th>
                     </tr></thead>
                     <tbody>{lint.issues.slice(0, 20).map((issue) => (
                       <tr key={`${issue.docId}-${issue.type}-${issue.detail}`} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
-                        <td className="max-w-[300px] px-4 py-2.5"><div className="truncate font-medium text-slate-700" title={issue.title}>{issue.title}</div><div className="truncate text-[10px] text-slate-400" title={issue.filePath}>{issue.filePath}</div></td>
-                        <td className="px-3 py-2.5"><span className={`inline-flex rounded-full border px-1.5 py-0.5 text-[10px] ${issue.type === "BROKEN_LINK" ? "border-red-200 bg-red-50 text-red-600" : "border-amber-200 bg-amber-50 text-amber-600"}`}>{issue.type === "BROKEN_LINK" ? "断链" : "同名标题"}</span><div className="mt-1 max-w-[260px] text-[10px] text-slate-400">{issue.detail}</div></td>
-                        <td className="whitespace-nowrap px-3 py-2.5 font-mono text-[11px] text-slate-500">{issue.owner || <span className="text-amber-600">未分派</span>}</td>
-                        <td className="max-w-[300px] px-3 py-2.5 text-[11px] text-slate-500">{issue.suggestion}</td>
+                        <td className="max-w-[300px] px-4 py-2.5"><div className="truncate font-medium text-slate-700" title={issue.title}>{issue.title}</div><div className="truncate text-2xs text-slate-400" title={issue.filePath}>{issue.filePath}</div></td>
+                        <td className="px-3 py-2.5"><span className={`inline-flex rounded-full border px-1.5 py-0.5 text-2xs ${issue.type === "BROKEN_LINK" ? "border-red-200 bg-red-50 text-red-600" : "border-amber-200 bg-amber-50 text-amber-600"}`}>{issue.type === "BROKEN_LINK" ? "断链" : "同名标题"}</span><div className="mt-1 max-w-[260px] text-2xs text-slate-400">{issue.detail}</div></td>
+                        <td className="whitespace-nowrap px-3 py-2.5 font-mono text-caption text-slate-500">{issue.owner || <span className="text-amber-600">未分派</span>}</td>
+                        <td className="max-w-[300px] px-3 py-2.5 text-caption text-slate-500">{issue.suggestion}</td>
                       </tr>
                     ))}</tbody>
                   </table>
-                  {lint.issues.length > 20 && <p className="border-t border-slate-100 px-4 py-2 text-[10px] text-slate-400">仅展示前 20 条，完整清单可复制下方 PR 建议。</p>}
+                  {lint.issues.length > 20 && <p className="border-t border-slate-100 px-4 py-2 text-2xs text-slate-400">仅展示前 20 条，完整清单可复制下方 PR 建议。</p>}
                 </div>
               )}
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-4 py-3">
-                <p className="text-[10px] text-slate-400">扫描于 {new Date(lint.scannedAt).toLocaleString("zh-CN")} · 仅提示，不自动提交</p>
+                <p className="text-2xs text-slate-400">扫描于 {new Date(lint.scannedAt).toLocaleString("zh-CN")} · 仅提示，不自动提交</p>
                 <button onClick={() => void copyPrSummary()} className={adminBtn("secondary")}>{copied ? <CheckCircle2 size={14} /> : <Copy size={14} />}{copied ? "已复制" : "复制 PR 建议"}</button>
               </div>
             </>
@@ -288,23 +288,23 @@ export default function AdminGovernancePage() {
             ))}
           </div>
           {loading && issues.length === 0 ? (
-            <div className="flex items-center justify-center gap-2 px-4 py-10 text-[12px] text-slate-400"><Loader2 size={15} className="animate-spin" />扫描中…</div>
+            <div className="flex items-center justify-center gap-2 px-4 py-10 text-xs text-slate-400"><Loader2 size={15} className="animate-spin" />扫描中…</div>
           ) : issues.length === 0 ? (
             <AdminEmptyState icon={CheckCircle2} title="没有发现治理问题" description="当前筛选下全部通过。" compact />
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[900px] text-[12px]">
-                <thead><tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+              <table className="w-full min-w-[900px] text-xs">
+                <thead><tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                   <th className="px-4 py-2.5 font-medium">文档</th><th className="px-3 py-2.5 font-medium">问题</th><th className="px-3 py-2.5 font-medium">责任人</th><th className="px-3 py-2.5 font-medium">复核日期</th><th className="px-3 py-2.5 font-medium">健康分</th><th className="px-3 py-2.5 text-right font-medium">操作</th>
                 </tr></thead>
                 <tbody>{issues.map((issue) => (
                   <tr key={`${issue.docId}-${issue.type}`} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
-                    <td className="max-w-[320px] px-4 py-2.5"><div className="truncate font-medium text-slate-700" title={issue.title}>{issue.title}</div><div className="truncate text-[10px] text-slate-400" title={issue.filePath}>{issue.filePath}</div></td>
-                    <td className="px-3 py-2.5"><span className={`inline-flex rounded-full border px-1.5 py-0.5 text-[10px] ${SEVERITY_CLASS[issue.severity]}`}>{TYPE_LABEL[issue.type]}</span><div className="mt-1 max-w-[240px] text-[10px] text-slate-400">{issue.detail}</div></td>
+                    <td className="max-w-[320px] px-4 py-2.5"><div className="truncate font-medium text-slate-700" title={issue.title}>{issue.title}</div><div className="truncate text-2xs text-slate-400" title={issue.filePath}>{issue.filePath}</div></td>
+                    <td className="px-3 py-2.5"><span className={`inline-flex rounded-full border px-1.5 py-0.5 text-2xs ${SEVERITY_CLASS[issue.severity]}`}>{TYPE_LABEL[issue.type]}</span><div className="mt-1 max-w-[240px] text-2xs text-slate-400">{issue.detail}</div></td>
                     <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{issue.owner || "-"}</td>
                     <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{fmtDate(issue.reviewDueDate)}</td>
                     <td className="whitespace-nowrap px-3 py-2.5 font-mono font-medium text-slate-700">{issue.healthScore}</td>
-                    <td className="px-3 py-2.5 text-right"><button onClick={() => openEdit(issue)} className="text-[11px] text-accent hover:underline">设置责任人</button></td>
+                    <td className="px-3 py-2.5 text-right"><button onClick={() => openEdit(issue)} className="text-caption text-accent hover:underline">设置责任人</button></td>
                   </tr>
                 ))}</tbody>
               </table>
@@ -314,13 +314,13 @@ export default function AdminGovernancePage() {
       </div>
       {editing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 p-4" onClick={() => setEditing(null)}>
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-sm font-semibold text-slate-800">设置治理信息</h3>
-            <p className="mt-1 line-clamp-2 text-[11px] text-slate-400">{editing.title}</p>
-            <label className="mt-4 block text-[11px] text-slate-500">责任人</label>
-            <input value={owner} onChange={(e) => setOwner(e.target.value)} placeholder="如 张三 / frontend-team" className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-[12px] outline-none focus:border-accent" />
-            <label className="mt-3 block text-[11px] text-slate-500">下次复核日期</label>
-            <input type="date" value={due} onChange={(e) => setDue(e.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-[12px] outline-none focus:border-accent" />
+            <p className="mt-1 line-clamp-2 text-caption text-slate-400">{editing.title}</p>
+            <label className="mt-4 block text-caption text-slate-500">责任人</label>
+            <input value={owner} onChange={(e) => setOwner(e.target.value)} placeholder="如 张三 / frontend-team" className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs outline-none focus:border-accent" />
+            <label className="mt-3 block text-caption text-slate-500">下次复核日期</label>
+            <input type="date" value={due} onChange={(e) => setDue(e.target.value)} className="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs outline-none focus:border-accent" />
             <div className="mt-4 flex justify-end gap-2">
               <button onClick={() => setEditing(null)} className={adminBtn("secondary")}>取消</button>
               <button onClick={() => void save()} disabled={saving} className={adminBtn("primary")}>{saving ? <Loader2 size={14} className="animate-spin" /> : null}保存</button>

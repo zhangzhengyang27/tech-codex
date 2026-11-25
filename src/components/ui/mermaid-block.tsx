@@ -132,12 +132,12 @@ export function MermaidBlock({ code }: { code: string }) {
   // 渲染失败：回退显示源码
   if (failureForCurrentCode) {
     return (
-      <div className="overflow-hidden rounded bg-[#f6f8fa]">
+      <div className="overflow-hidden rounded bg-code-bg-light">
         <div className="flex items-center justify-between border-b border-black/10 px-4 py-2">
           <span className="text-xs font-medium text-gray-500">MERMAID</span>
           <span className="text-xs text-red-400" title={failure.message}>渲染失败</span>
         </div>
-        <pre className="code-card-pre max-h-[480px] overflow-auto p-4 text-[13px] leading-[1.7]">
+        <pre className="code-card-pre max-h-[480px] overflow-auto p-4 text-compact leading-[1.7]">
           <code>{code}</code>
         </pre>
       </div>
@@ -149,12 +149,12 @@ export function MermaidBlock({ code }: { code: string }) {
   // 渲染完成：显示图表
   if (resultForCurrentCode) {
     return (
-      <div className="overflow-x-auto rounded bg-[#f6f8fa] p-4">
+      <div className="overflow-x-auto rounded bg-code-bg-light p-4">
         <div className="mermaid-svg flex justify-center" dangerouslySetInnerHTML={{ __html: result.svg }} />
       </div>
     );
   }
 
   // 渲染中：占位
-  return <div className="rounded bg-[#f6f8fa] p-4 text-xs text-gray-400">图表渲染中…</div>;
+  return <div className="rounded bg-code-bg-light p-4 text-xs text-gray-400">图表渲染中…</div>;
 }

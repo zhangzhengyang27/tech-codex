@@ -29,6 +29,7 @@ import { ChatInput } from "@/components/ai/chat-input";
 import { ScopeSwitcher } from "@/components/kb/scope-switcher";
 import { CategorySwitcher } from "@/components/kb/category-switcher";
 import { SESSION_INVALIDATED_EVENT } from "@/lib/fetch-helpers";
+import { Button } from "@/components/ui/button";
 
 /** 流式中断（后端 error/异常/空闲超时）时提交的部分回答尾部提示 */
 const PARTIAL_SUFFIX = "（连接中断，以上为部分回答）";
@@ -467,38 +468,41 @@ export default function AiPage() {
         {/* 顶部工具行 */}
         <div className="flex items-center justify-between gap-3 px-4 py-3 md:px-8">
           <div className="flex items-center gap-3">
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setMobileOpen(true)}
-              className="rounded-md p-1.5 text-foreground/50 hover:bg-muted hover:text-foreground lg:hidden"
+              className="px-1.5 lg:hidden"
               aria-label="打开会话列表"
             >
               <PanelLeft size={18} />
-            </button>
+            </Button>
             <div className="flex items-center gap-2">
-              <button
-                onClick={newChat}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-foreground/60 hover:bg-muted hover:text-foreground"
-              >
+              <Button variant="ghost" size="sm" onClick={newChat} className="px-2">
                 <Plus size={13} />
                 新对话
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={clearHistory}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-foreground/40 hover:bg-muted hover:text-foreground"
+                className="px-2"
                 title="清空当前对话"
               >
                 <Trash2 size={13} />
                 清空
-              </button>
+              </Button>
               {canRegenerate && (
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={regenerate}
-                  className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-foreground/40 hover:bg-muted hover:text-foreground"
+                  className="px-2"
                   title="重新生成当前回答"
                 >
                   <RotateCcw size={13} />
                   重新生成
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -528,17 +532,18 @@ export default function AiPage() {
           ) : historyError ? (
             <div className="flex h-full flex-col items-center justify-center gap-3 text-sm text-foreground/40">
               <span className="text-red-500">{historyError}</span>
-              <button
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => {
                   // 重新拉取当前会话历史：先置 null 再恢复以触发历史加载 effect
                   const id = activeId;
                   setActiveId(null);
                   requestAnimationFrame(() => id && setActiveId(id));
                 }}
-                className="rounded-md border border-border px-3 py-1.5 text-xs text-foreground/60 hover:bg-muted"
               >
                 重试
-              </button>
+              </Button>
             </div>
           ) : messages.length === 0 ? (
             <WelcomeCard onAsk={send} isNewChat={activeId == null} />
@@ -549,7 +554,7 @@ export default function AiPage() {
                   <button
                     onClick={() => void loadOlderHistory()}
                     disabled={loadingOlder}
-                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-foreground/50 hover:bg-muted hover:text-foreground disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-foreground/60 hover:bg-muted hover:text-foreground disabled:opacity-50"
                   >
                     {loadingOlder && <Loader2 size={12} className="animate-spin" />}
                     加载更早的消息
@@ -578,8 +583,9 @@ export default function AiPage() {
           <div ref={bottomRef} />
         </div>
 
-        {/* 输入区 */}
-        <div className="border-t border-border px-4 py-3 md:px-8">
+        {/* 输入区：底栏留白比顶部多 4px，让输入框与下方免责声明之间有明显呼吸区，
+            避免打字时视线直接撞上说明文字 */}
+        <div className="border-t border-border px-4 pb-4 pt-3 md:px-8">
           <ChatInput
             value={input}
             onChange={setInput}
@@ -589,7 +595,7 @@ export default function AiPage() {
             placeholder={activeId ? "继续追问…（带上下文）" : "输入你的问题…"}
             error={error}
           />
-          <p className="mt-2 text-center text-xs text-foreground/30">
+          <p className="mt-3 text-center text-xs text-foreground/50">
             AI 回答基于知识库文档检索，支持多轮上下文；内容仅供参考
           </p>
         </div>

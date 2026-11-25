@@ -49,7 +49,7 @@ function TrendBarChart({ points }: { points: UsageSummaryView["trend"] }) {
 
   if (!data) {
     return (
-      <AdminCard title="每日 token 消耗" description="按天统计问答 token" icon={BarChart3} contentClassName="px-4 py-12 text-center text-[12px] text-slate-400">
+      <AdminCard title="每日 token 消耗" description="按天统计问答 token" icon={BarChart3} contentClassName="px-4 py-12 text-center text-xs text-slate-400">
         暂无用量数据，产生问答后将在此显示每日趋势
       </AdminCard>
     );
@@ -65,7 +65,7 @@ function TrendBarChart({ points }: { points: UsageSummaryView["trend"] }) {
               style={{ height: `${Math.max(2, (p.tokens / data.max) * 100)}%` }}
             />
             {(data.arr.length <= 15 || p.date.endsWith("-01")) && (
-              <div className="mt-1 text-center text-[9px] text-slate-400">
+              <div className="mt-1 text-center text-3xs text-slate-400">
                 {p.date.slice(5)}
               </div>
             )}
@@ -91,12 +91,12 @@ function UsageTable({ rows, loading }: { rows: ChatUsageView[]; loading: boolean
           <Loader2 size={15} className="animate-spin" /> 加载中…
         </div>
       ) : rows.length === 0 ? (
-        <div className="px-4 py-10 text-center text-[12px] text-slate-400">暂无用量记录</div>
+        <div className="px-4 py-10 text-center text-xs text-slate-400">暂无用量记录</div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] text-[12px]">
+          <table className="w-full min-w-[760px] text-xs">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">时间</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">用户</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">问题</th>
@@ -109,7 +109,7 @@ function UsageTable({ rows, loading }: { rows: ChatUsageView[]; loading: boolean
             <tbody>
               {rows.map((r) => (
                 <tr key={r.id} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
-                  <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[11px] text-slate-500">
+                  <td className="whitespace-nowrap px-4 py-2.5 font-mono text-caption text-slate-500">
                     {fmtTime(r.createdDate)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{r.userId}</td>
@@ -119,7 +119,7 @@ function UsageTable({ rows, loading }: { rows: ChatUsageView[]; loading: boolean
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{r.hitCount ?? 0}</td>
                   <td className="whitespace-nowrap px-3 py-2.5">
                     <span className={clsx(
-                      "inline-flex rounded-full border px-1.5 py-0.5 text-[10px]",
+                      "inline-flex rounded-full border px-1.5 py-0.5 text-2xs",
                       r.cacheHit
                         ? "border-emerald-200 bg-emerald-50 text-emerald-600"
                         : "border-slate-200 bg-slate-50 text-slate-400",
@@ -156,12 +156,12 @@ function TopUsersTable({ rows, loading }: { rows: UserUsageRow[]; loading: boole
           <Loader2 size={15} className="animate-spin" /> 加载中…
         </div>
       ) : rows.length === 0 ? (
-        <div className="px-4 py-10 text-center text-[12px] text-slate-400">周期内暂无问答记录</div>
+        <div className="px-4 py-10 text-center text-xs text-slate-400">周期内暂无问答记录</div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] text-[12px]">
+          <table className="w-full min-w-[760px] text-xs">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                 <th className="w-10 whitespace-nowrap px-4 py-2.5 font-medium">#</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">用户</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">问答数</th>
@@ -174,13 +174,13 @@ function TopUsersTable({ rows, loading }: { rows: UserUsageRow[]; loading: boole
             <tbody>
               {rows.map((r, i) => (
                 <tr key={r.userId} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
-                  <td className="px-4 py-2.5 font-mono text-[10px] text-slate-400">{String(i + 1).padStart(2, "0")}</td>
+                  <td className="px-4 py-2.5 font-mono text-2xs text-slate-400">{String(i + 1).padStart(2, "0")}</td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">{r.userId}</td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono font-medium text-slate-700">{fmtNum(r.questions)}</td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{fmtCompact(r.totalTokens)}</td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{fmtMs(r.avgLatencyMs)}</td>
                   <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-500">{r.avgHitCount.toFixed(1)}</td>
-                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-[10px] text-slate-400">
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-2xs text-slate-400">
                     {fmtTime(r.lastActiveAt)}
                   </td>
                 </tr>
@@ -292,7 +292,7 @@ export default function AdminUsagePage() {
         description="基于 token 估算的问答用量看板；估算口径为中文约 1 字符 / token。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               最近 {days} 天
             </span>
@@ -301,7 +301,7 @@ export default function AdminUsagePage() {
         }
         actions={
           <>
-            <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[11px] text-slate-500 shadow-sm">
+            <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-caption text-slate-500 shadow-sm">
               天数
               <input
                 type="number"
@@ -309,7 +309,7 @@ export default function AdminUsagePage() {
                 max={90}
                 value={days}
                 onChange={(e) => setDays(e.target.value)}
-                className="h-6 w-12 rounded border border-slate-200 bg-slate-50 px-1 text-center font-mono text-[12px] outline-none focus:border-accent"
+                className="h-6 w-12 rounded border border-slate-200 bg-slate-50 px-1 text-center font-mono text-xs outline-none focus:border-accent"
               />
             </label>
             <button onClick={() => void loadAll()} disabled={loading} className={adminBtn("secondary")}>
@@ -320,7 +320,7 @@ export default function AdminUsagePage() {
         }
       />
 
-      {error && <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-600">{error}</p>}
+      {error && <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-compact text-red-600">{error}</p>}
 
       {summary && !isEmpty && (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">

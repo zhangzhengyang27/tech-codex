@@ -12,6 +12,19 @@ html {
   --muted: #f5f5f5;
   --border: #e5e5e5;
   --accent: #2563eb;
+
+  /* 语义色：原先散落在组件里的红/绿/橙裸值收敛到一处。
+     这里先沿用现状值不换色，目的是建立唯一入口，后续调色只改这一行。 */
+  --danger: #cf222e;
+  --success: #3fb950;
+  --warn: #d97706;
+
+  /* 代码块专用面色：75 处硬编码 hex 的主要来源。
+     单独成组，避免深色底外溢到正文与卡片边框。 */
+  --code-bg: #0d1117;
+  --code-border: #30363d;
+  --code-fg: #e6edf3;
+  --code-muted: #6e7681;
 }
 
 @theme inline {
@@ -20,6 +33,30 @@ html {
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warn: var(--warn);
+  --color-code-bg: var(--code-bg);
+  --color-code-border: var(--code-border);
+  --color-code-fg: var(--code-fg);
+  --color-code-muted: var(--code-muted);
+
+  /* 字号阶梯：把历史散落的 9/10/11/13/15/17px 收成命名 token。
+     12px 与 14px 直接复用内置 text-xs / text-sm，不重复定义。
+     所有值沿用现状，因此把任意值替换成这些类名不会产生视觉回归。 */
+  --text-3xs: 9px;
+  --text-2xs: 10px;
+  --text-caption: 11px;
+  --text-compact: 13px;
+  --text-reading: 15px;
+  --text-title: 17px;
+
+  /* 圆角阶梯：三档，对齐 HashiCorp 2–8px 的收紧方向。
+     先只定义、新代码使用；存量 rounded-2xl 逐步迁移，不在一次改版里全量替换。 */
+  --radius-chip: 4px;
+  --radius-control: 6px;
+  --radius-card: 8px;
+
   --font-sans: var(--font-display);
   --font-mono: var(--font-mono);
 }

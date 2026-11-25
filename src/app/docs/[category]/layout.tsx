@@ -26,7 +26,7 @@ export default async function CategoryLayout({
       <aside className="hidden lg:block w-64 shrink-0">
         <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto py-8 pr-2">
           <p className="mb-3 px-2.5 text-xs font-semibold uppercase tracking-wider text-foreground/40">
-            {cat.icon} {cat.title}
+            {cat.title}
           </p>
           <DocsSidebar categorySlug={category} sections={sections} />
         </div>
@@ -36,7 +36,7 @@ export default async function CategoryLayout({
       <div className="min-w-0 flex-1">
         <MobileDocsDrawer
           categorySlug={category}
-          categoryTitle={`${cat.icon} ${cat.title}`}
+          categoryTitle={cat.title}
           sections={sections}
         />
         {children}

@@ -85,7 +85,7 @@ export function DocViewer({
       aria-label="文档查看"
     >
       <div
-        className="flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-border bg-background shadow-2xl"
+        className="flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border border-border bg-background shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 头部：元信息 + 关闭 */}

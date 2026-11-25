@@ -80,7 +80,7 @@ export default function AdminContentPage() {
         description="数据库是唯一内容源；编辑发布后站点与 RAG 索引同步更新，不再生成 Markdown 文件。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               CMS 内容源
             </span>
@@ -96,15 +96,15 @@ export default function AdminContentPage() {
         }
       />
 
-      <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="mt-5 overflow-hidden rounded-lg border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
               <BookOpen size={14} />
             </span>
             <div>
-              <h2 className="text-[13px] font-semibold tracking-tight text-slate-800">站点文档</h2>
-              <p className="text-[11px] text-slate-400">按标题、路径与分类筛选</p>
+              <h2 className="text-compact font-semibold tracking-tight text-slate-800">站点文档</h2>
+              <p className="text-caption text-slate-400">按标题、路径与分类筛选</p>
             </div>
           </div>
           <form onSubmit={onSearch} className="ml-auto flex flex-1 flex-wrap items-center justify-end gap-2">
@@ -114,7 +114,7 @@ export default function AdminContentPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索标题或路径"
-                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-[13px] outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-compact outline-none transition-colors focus:border-accent focus:bg-white focus:ring-1 focus:ring-accent/25"
               />
             </div>
             <select
@@ -130,7 +130,7 @@ export default function AdminContentPage() {
                   }),
                 );
               }}
-              className="h-9 max-w-[220px] rounded-lg border border-slate-200 bg-white px-2.5 text-[13px] text-slate-600 outline-none focus:border-accent"
+              className="h-9 max-w-[220px] rounded-lg border border-slate-200 bg-white px-2.5 text-compact text-slate-600 outline-none focus:border-accent"
             >
               <option value="">全部分类</option>
               {allCategories.map((c) => (
@@ -141,24 +141,24 @@ export default function AdminContentPage() {
             </select>
             <button type="submit" className={adminBtn("secondary", "sm")}>搜索</button>
           </form>
-          <span className="rounded-full bg-slate-50 px-2.5 py-1 font-mono text-[10px] text-slate-400">
+          <span className="rounded-full bg-slate-50 px-2.5 py-1 font-mono text-2xs text-slate-400">
             {totalElements.toLocaleString("zh-CN")} 篇
           </span>
           <button
             onClick={() => void load(page, fetchPage)}
-            className="flex h-8 items-center gap-1 rounded-lg px-2 text-[12px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+            className="flex h-8 items-center gap-1 rounded-lg px-2 text-xs text-slate-500 hover:bg-slate-100 hover:text-slate-800"
             title="刷新"
           >
             {loading ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
           </button>
         </div>
 
-        {error && <div className="border-b border-red-100 bg-red-50 px-4 py-2.5 text-[12px] text-red-600">{error}</div>}
+        {error && <div className="border-b border-red-100 bg-red-50 px-4 py-2.5 text-xs text-red-600">{error}</div>}
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] text-[13px]">
+          <table className="w-full min-w-[760px] text-compact">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[11px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-caption uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">标题</th>
                 <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium lg:table-cell">分类</th>
                 <th className="hidden whitespace-nowrap px-3 py-2.5 font-medium xl:table-cell">Slug</th>
@@ -171,7 +171,7 @@ export default function AdminContentPage() {
             <tbody>
               {loading && items.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-14 text-center text-[12px] text-slate-400">
+                  <td colSpan={7} className="px-4 py-14 text-center text-xs text-slate-400">
                     <Loader2 size={18} className="mx-auto mb-2 animate-spin" /> 正在加载内容…
                   </td>
                 </tr>
@@ -180,8 +180,8 @@ export default function AdminContentPage() {
                 <tr>
                   <td colSpan={7} className="px-4 py-12 text-center">
                     <BookOpen size={22} className="mx-auto mb-2 text-slate-300" />
-                    <p className="text-[13px] text-slate-500">还没有 CMS 内容</p>
-                    <p className="mt-1 text-[11px] text-slate-400">
+                    <p className="text-compact text-slate-500">还没有 CMS 内容</p>
+                    <p className="mt-1 text-caption text-slate-400">
                       点击右上角「新建内容」创建第一篇；历史 Markdown 已迁移到数据库，不再从 docs 目录导入
                     </p>
                   </td>
@@ -196,35 +196,35 @@ export default function AdminContentPage() {
                       <Link href={`/admin/content/${doc.id}`} className="block truncate font-medium text-slate-700 hover:text-accent">
                         {doc.title}
                       </Link>
-                      <div className="mt-0.5 truncate font-mono text-[10px] text-slate-400" title={doc.filePath ?? ""}>
+                      <div className="mt-0.5 truncate font-mono text-2xs text-slate-400" title={doc.filePath ?? ""}>
                         {doc.filePath ?? "-"}
                       </div>
                     </td>
-                    <td className="hidden max-w-[180px] truncate px-3 py-2.5 text-[12px] text-slate-500 lg:table-cell">
+                    <td className="hidden max-w-[180px] truncate px-3 py-2.5 text-xs text-slate-500 lg:table-cell">
                       {cat?.title ?? doc.categoryDir ?? "-"}
                     </td>
-                    <td className="hidden max-w-[220px] truncate px-3 py-2.5 font-mono text-[11px] text-slate-400 xl:table-cell">
+                    <td className="hidden max-w-[220px] truncate px-3 py-2.5 font-mono text-caption text-slate-400 xl:table-cell">
                       {doc.docSlug ?? "-"}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-2.5 font-mono text-[11px] text-slate-500">r{doc.revision ?? 1}</td>
+                    <td className="whitespace-nowrap px-3 py-2.5 font-mono text-caption text-slate-500">r{doc.revision ?? 1}</td>
                     <td className="whitespace-nowrap px-3 py-2.5">
                       <span
                         className={
                           doc.status === "INDEXED"
-                            ? "rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-600 ring-1 ring-emerald-100"
-                            : "rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-600 ring-1 ring-amber-100"
+                            ? "rounded-full bg-emerald-50 px-2 py-0.5 text-2xs font-medium text-emerald-600 ring-1 ring-emerald-100"
+                            : "rounded-full bg-amber-50 px-2 py-0.5 text-2xs font-medium text-amber-600 ring-1 ring-amber-100"
                         }
                       >
                         {doc.status === "INDEXED" ? "已索引" : "待索引"}
                       </span>
                     </td>
-                    <td className="hidden whitespace-nowrap px-3 py-2.5 text-[11px] text-slate-400 xl:table-cell">
+                    <td className="hidden whitespace-nowrap px-3 py-2.5 text-caption text-slate-400 xl:table-cell">
                       {fmtDate(doc.updatedDate)}
                     </td>
                     <td className="whitespace-nowrap px-3 py-2.5 text-right">
                       <Link
                         href={`/admin/content/${doc.id}`}
-                        className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                        className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                       >
                         编辑
                       </Link>
@@ -233,7 +233,7 @@ export default function AdminContentPage() {
                           href={publicUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                          className="ml-0.5 inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                         >
                           <ExternalLink size={12} /> 查看
                         </a>
@@ -258,7 +258,7 @@ export default function AdminContentPage() {
         />
       </div>
 
-      <div className="mt-4 flex items-start gap-2 text-[11px] leading-5 text-slate-400">
+      <div className="mt-4 flex items-start gap-2 text-caption leading-5 text-slate-400">
         <ArrowRight size={13} className="mt-1 shrink-0" />
         <p>
           发布顺序：事务写库与版本 → 重建向量 → 清缓存并重算首页/分类页。

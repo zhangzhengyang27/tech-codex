@@ -6,6 +6,7 @@ import { Bot, User, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { SourceList } from '@/components/ai/source-list';
 import { ChatMarkdown } from '@/components/ai/chat-markdown';
 import type { KbChunkHit } from '@/lib/auth';
+import { Button } from '@/components/ui/button';
 
 export interface ChatMessageData {
   role: 'user' | 'ai';
@@ -36,7 +37,7 @@ export function ChatMessage({ message, streaming, urlMap = {}, onFeedback }: Cha
         </div>
       )}
       <div
-        className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+        className={`max-w-[78%] rounded-lg px-4 py-2.5 text-sm leading-relaxed ${
           message.role === 'user'
             ? 'bg-accent text-white'
             : 'border border-border bg-muted/50'
@@ -128,7 +129,7 @@ function FeedbackRow({
         >
           <ThumbsDown size={13} />
         </button>
-        <span className="text-[11px] text-foreground/30">这条回答对你有帮助吗？</span>
+        <span className="text-caption text-foreground/30">这条回答对你有帮助吗？</span>
       </div>
       {showComment && (
         <div className="mt-2">
@@ -141,12 +142,9 @@ function FeedbackRow({
             className="w-full rounded-lg border border-border bg-background p-2 text-xs outline-none placeholder:text-foreground/30 focus:border-accent"
           />
           <div className="mt-1 flex justify-end gap-2 text-xs">
-            <button
-              onClick={() => rate('DOWN')}
-              className="rounded-md bg-accent px-2.5 py-1 text-white transition-opacity hover:opacity-90"
-            >
+            <Button variant="primary" size="sm" onClick={() => rate("DOWN")}>
               提交
-            </button>
+            </Button>
           </div>
         </div>
       )}

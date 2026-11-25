@@ -80,9 +80,9 @@ export default function MyKbDocumentsPage() {
 
   return (
     <div className="space-y-3">
-      {error && <div className="rounded-md bg-red-50 px-3 py-2 text-[13px] text-red-600">{error}</div>}
+      {error && <div className="rounded-md bg-red-50 px-3 py-2 text-compact text-red-600">{error}</div>}
 
-      <div className="overflow-hidden rounded-xl border border-border bg-background">
+      <div className="overflow-hidden rounded-lg border border-border bg-background">
         <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
           <form onSubmit={onSearch} className="flex flex-1 items-center gap-2">
             <div className="relative max-w-xs flex-1">
@@ -91,12 +91,12 @@ export default function MyKbDocumentsPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索标题或文件名"
-                className="h-8 w-full rounded-md border border-border bg-muted/40 pl-8 pr-3 text-[13px] outline-none focus:border-accent"
+                className="h-8 w-full rounded-md border border-border bg-muted/40 pl-8 pr-3 text-compact outline-none focus:border-accent"
               />
             </div>
             <button
               type="submit"
-              className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/70 hover:bg-muted/60"
+              className="h-8 rounded-md border border-border px-3 text-compact text-foreground/70 hover:bg-muted/60"
             >
               搜索
             </button>
@@ -104,7 +104,7 @@ export default function MyKbDocumentsPage() {
           <div className="text-xs text-foreground/40">共 {total} 篇</div>
           <button
             onClick={() => void load(keyword, page)}
-            className="flex h-8 items-center gap-1 rounded-md border border-border px-2.5 text-[13px] text-foreground/60 hover:bg-muted/60"
+            className="flex h-8 items-center gap-1 rounded-md border border-border px-2.5 text-compact text-foreground/60 hover:bg-muted/60"
             title="刷新"
           >
             {loading ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
@@ -112,7 +112,7 @@ export default function MyKbDocumentsPage() {
           </button>
           <Link
             href="/my/kb/upload"
-            className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-3 text-[13px] font-medium text-white hover:opacity-90"
+            className="flex h-8 items-center gap-1.5 rounded-md bg-accent px-3 text-compact font-medium text-white hover:opacity-90"
           >
             <FileUp size={13} />
             上传文档
@@ -120,9 +120,9 @@ export default function MyKbDocumentsPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
+          <table className="w-full text-compact">
             <thead>
-              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/50">
+              <tr className="border-b border-border bg-muted/50 text-left text-xs text-foreground/60">
                 <th className="px-4 py-2 font-medium">标题</th>
                 <th className="px-3 py-2 font-medium">文件</th>
                 <th className="px-3 py-2 font-medium">大小</th>
@@ -138,12 +138,12 @@ export default function MyKbDocumentsPage() {
                   <td colSpan={7} className="px-4 py-12 text-center text-sm text-foreground/40">
                     <Inbox size={28} className="mx-auto mb-2 text-foreground/20" />
                     {keyword.trim() ? (
-                      "没有匹配的文档，换个关键字试试"
+                      `没有匹配「${keyword.trim()}」的文档，换个关键字或清空搜索`
                     ) : (
                       <>
-                        还没有文档，
+                        还没有上传过文档。上传的文件只进入私有知识库，不会出现在公共文档站。
                         <Link href="/my/kb/upload" className="text-accent hover:underline">
-                          去上传第一个文件
+                          上传第一份文件
                         </Link>
                       </>
                     )}
@@ -164,14 +164,14 @@ export default function MyKbDocumentsPage() {
                   <td className="max-w-[200px] truncate px-3 py-2.5 text-foreground/60" title={d.filePath}>
                     {d.fileName}
                   </td>
-                  <td className="px-3 py-2.5 text-foreground/50">{fmtSize(d.fileSize)}</td>
-                  <td className="px-3 py-2.5 text-foreground/50">{d.chunkCount ?? "-"}</td>
+                  <td className="px-3 py-2.5 text-foreground/60">{fmtSize(d.fileSize)}</td>
+                  <td className="px-3 py-2.5 text-foreground/60">{d.chunkCount ?? "-"}</td>
                   <td className="px-3 py-2.5">
                     <span className={clsx("rounded-full px-2 py-0.5 text-xs", statusBadgeCls(d.status))}>
                       {statusText(d.status)}
                     </span>
                   </td>
-                  <td className="px-3 py-2.5 text-foreground/50">{fmtDate(d.createdDate)}</td>
+                  <td className="px-3 py-2.5 text-foreground/60">{fmtDate(d.createdDate)}</td>
                   <td className="px-3 py-2.5 text-right">
                     <div className="flex items-center justify-end gap-0.5">
                       <button
@@ -204,7 +204,7 @@ export default function MyKbDocumentsPage() {
             <button
               onClick={() => void load(keyword, page - 1)}
               disabled={page <= 0 || loading}
-              className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/70 hover:bg-muted/60 disabled:opacity-40"
+              className="h-8 rounded-md border border-border px-3 text-compact text-foreground/70 hover:bg-muted/60 disabled:opacity-40"
             >
               上一页
             </button>
@@ -214,7 +214,7 @@ export default function MyKbDocumentsPage() {
             <button
               onClick={() => void load(keyword, page + 1)}
               disabled={page >= totalPages - 1 || loading}
-              className="h-8 rounded-md border border-border px-3 text-[13px] text-foreground/70 hover:bg-muted/60 disabled:opacity-40"
+              className="h-8 rounded-md border border-border px-3 text-compact text-foreground/70 hover:bg-muted/60 disabled:opacity-40"
             >
               下一页
             </button>

@@ -109,7 +109,7 @@ export default function AdminAuditPage() {
         description="查询管理操作留痕：文档导入、删除、索引重建、配额与系统配置变更。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               共 {totalElements} 条记录
             </span>
@@ -118,13 +118,13 @@ export default function AdminAuditPage() {
         }
       />
 
-      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border border-slate-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">操作类型</span>
+          <span className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">操作类型</span>
           <select
             value={action}
             onChange={(e) => setAction(e.target.value)}
-            className="h-9 w-40 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
+            className="h-9 w-40 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none transition-colors focus:border-accent focus:bg-white"
           >
             <option value="">全部</option>
             {AUDIT_ACTIONS.map((a) => (
@@ -133,13 +133,13 @@ export default function AdminAuditPage() {
           </select>
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">空间</span>
+          <span className="text-2xs font-medium uppercase tracking-[0.08em] text-slate-400">空间</span>
           <input
             value={libraryId}
             onChange={(e) => setLibraryId(e.target.value)}
             list="audit-library-options"
             placeholder="留空查全部；default / u-用户名"
-            className="h-9 w-64 rounded-lg border border-slate-200 bg-slate-50/70 px-3 font-mono text-[12px] outline-none transition-colors focus:border-accent focus:bg-white"
+            className="h-9 w-64 rounded-lg border border-slate-200 bg-slate-50/70 px-3 font-mono text-xs outline-none transition-colors focus:border-accent focus:bg-white"
           />
           <datalist id="audit-library-options">
             {librarySuggestions.map((v) => (
@@ -151,14 +151,14 @@ export default function AdminAuditPage() {
           {loading ? <Loader2 size={14} className="animate-spin" /> : <RotateCw size={14} />}
           查询
         </button>
-        {error && <span className="text-[11px] text-red-500">{error}</span>}
+        {error && <span className="text-caption text-red-500">{error}</span>}
       </div>
 
       <AdminCard title="操作记录" description="所有管理操作均不可篡改地留痕" icon={ScrollText} contentClassName="">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[680px] text-[12px]">
+          <table className="w-full min-w-[680px] text-xs">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-[10px] uppercase tracking-[0.06em] text-slate-400">
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-2xs uppercase tracking-[0.06em] text-slate-400">
                 <th className="whitespace-nowrap px-4 py-2.5 font-medium">时间</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">操作</th>
                 <th className="whitespace-nowrap px-3 py-2.5 font-medium">对象</th>
@@ -181,7 +181,7 @@ export default function AdminAuditPage() {
               ) : (
                 rows.map((r) => (
                   <tr key={r.id} className="border-b border-slate-100/80 last:border-0 hover:bg-slate-50/60">
-                    <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[11px] text-slate-500">
+                    <td className="whitespace-nowrap px-4 py-2.5 font-mono text-caption text-slate-500">
                       {fmtTime(r.createdDate)}
                     </td>
                     <td className="whitespace-nowrap px-3 py-2.5"><ActionBadge action={r.action} /></td>

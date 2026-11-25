@@ -131,7 +131,7 @@ export default function AdminConfigPage() {
         description="在线调整检索参数、个人库配额与内容安全策略；保存后即时生效，无需重启服务。"
         meta={
           <>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-caption text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               {items.length} 个配置项
             </span>
@@ -160,7 +160,7 @@ export default function AdminConfigPage() {
       </div>
 
       {loading && items.length === 0 && (
-        <div className="mt-5 flex items-center justify-center gap-2 rounded-2xl border border-slate-200/80 bg-white py-20 text-sm text-slate-400">
+        <div className="mt-5 flex items-center justify-center gap-2 rounded-lg border border-slate-200/80 bg-white py-20 text-sm text-slate-400">
           <Loader2 size={16} className="animate-spin" /> 加载配置…
         </div>
       )}
@@ -186,15 +186,15 @@ export default function AdminConfigPage() {
                 <div key={it.key} className="grid gap-3 px-4 py-3.5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <code className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] text-slate-600">
+                      <code className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-caption text-slate-600">
                         {it.key}
                       </code>
-                      {it.overridden && <span className="rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-600 ring-1 ring-blue-100">已自定义</span>}
-                      {changed && <span className="rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-600 ring-1 ring-amber-100">待保存</span>}
+                      {it.overridden && <span className="rounded-md bg-blue-50 px-1.5 py-0.5 text-2xs font-medium text-blue-600 ring-1 ring-blue-100">已自定义</span>}
+                      {changed && <span className="rounded-md bg-amber-50 px-1.5 py-0.5 text-2xs font-medium text-amber-600 ring-1 ring-amber-100">待保存</span>}
                     </div>
-                    <p className="mt-1.5 text-[11px] leading-4 text-slate-500">{it.description}</p>
+                    <p className="mt-1.5 text-caption leading-4 text-slate-500">{it.description}</p>
                     {!it.overridden && (
-                      <p className="mt-1 font-mono text-[10px] text-slate-400">默认：{it.defaultValue || "（空）"}</p>
+                      <p className="mt-1 font-mono text-2xs text-slate-400">默认：{it.defaultValue || "（空）"}</p>
                     )}
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
@@ -208,7 +208,7 @@ export default function AdminConfigPage() {
                             key={o.v}
                             onClick={() => setDraft(it.key, o.v)}
                             className={clsx(
-                              "px-3.5 text-[12px] transition-colors",
+                              "px-3.5 text-xs transition-colors",
                               effective === o.v ? "bg-accent text-white" : "text-slate-500 hover:bg-slate-50",
                             )}
                           >
@@ -221,7 +221,7 @@ export default function AdminConfigPage() {
                         value={effective}
                         onChange={(e) => setDraft(it.key, e.target.value)}
                         rows={2}
-                        className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 py-1.5 font-mono text-[11px] outline-none focus:border-accent focus:bg-white sm:w-80"
+                        className="w-full resize-y rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 py-1.5 font-mono text-caption outline-none focus:border-accent focus:bg-white sm:w-80"
                       />
                     ) : (
                       <input
@@ -229,14 +229,14 @@ export default function AdminConfigPage() {
                         step={it.type === "DOUBLE" ? "0.01" : "1"}
                         value={effective}
                         onChange={(e) => setDraft(it.key, e.target.value)}
-                        className="h-8 w-28 rounded-lg border border-slate-200 bg-slate-50/70 px-2 font-mono text-[12px] outline-none focus:border-accent focus:bg-white"
+                        className="h-8 w-28 rounded-lg border border-slate-200 bg-slate-50/70 px-2 font-mono text-xs outline-none focus:border-accent focus:bg-white"
                       />
                     )}
                     {it.overridden && (
                       <button
                         onClick={() => restoreDefault(it.key)}
                         title="清除自定义覆盖，恢复跟随部署默认值"
-                        className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 text-[11px] text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                        className="flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 text-caption text-slate-500 hover:bg-slate-50 hover:text-slate-800"
                       >
                         <RotateCcw size={12} />
                         恢复默认
@@ -251,17 +251,17 @@ export default function AdminConfigPage() {
       </div>
 
       {dirtyKeys.length > 0 && (
-        <div className="sticky bottom-4 z-20 mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-amber-200 bg-white/95 px-4 py-3 shadow-[0_18px_40px_-20px_rgba(15,23,42,0.45)] backdrop-blur">
+        <div className="sticky bottom-4 z-20 mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-amber-200 bg-white/95 px-4 py-3 shadow-[0_18px_40px_-20px_rgba(15,23,42,0.45)] backdrop-blur">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 ring-1 ring-amber-100">
             <SlidersHorizontal size={15} />
           </span>
           <div className="min-w-0">
-            <div className="text-[12px] font-medium text-slate-700">{dirtyKeys.length} 项修改待保存</div>
+            <div className="text-xs font-medium text-slate-700">{dirtyKeys.length} 项修改待保存</div>
             <div className="mt-0.5 flex flex-wrap gap-1">
               {dirtyKeys.slice(0, 3).map((key) => (
-                <span key={key} className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">{key}</span>
+                <span key={key} className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-2xs text-slate-500">{key}</span>
               ))}
-              {dirtyKeys.length > 3 && <span className="px-1 text-[10px] text-slate-400">+{dirtyKeys.length - 3}</span>}
+              {dirtyKeys.length > 3 && <span className="px-1 text-2xs text-slate-400">+{dirtyKeys.length - 3}</span>}
             </div>
           </div>
           <div className="ml-auto flex items-center gap-2">

@@ -352,6 +352,7 @@ export default function AdminDocumentsPage() {
       <input
         ref={fileRef}
         type="file"
+        aria-label="选择要上传的文件"
         accept={ACCEPT}
         className="hidden"
         onChange={(e) => {
@@ -402,6 +403,7 @@ export default function AdminDocumentsPage() {
         {dirOpen && (
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <input
+              aria-label="服务器目录路径"
               value={dirPath}
               onChange={(e) => setDirPath(e.target.value)}
               placeholder="服务器上的目录绝对路径，如 /data/import/java"
@@ -426,6 +428,7 @@ export default function AdminDocumentsPage() {
           </div>
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
+              aria-label="导入来源 URL"
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -462,6 +465,7 @@ export default function AdminDocumentsPage() {
             <div className="relative w-full max-w-xs flex-1">
               <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
+                aria-label="搜索文档"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索标题或文件名"
@@ -469,6 +473,7 @@ export default function AdminDocumentsPage() {
               />
             </div>
             <select
+              aria-label="按状态筛选"
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);

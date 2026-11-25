@@ -160,6 +160,7 @@ export default function AdminUsersPage() {
             <div className="relative w-full max-w-xs flex-1">
               <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
+                aria-label="搜索用户"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索用户名或昵称"
@@ -317,6 +318,7 @@ export default function AdminUsersPage() {
             </div>
             <p className="mt-1.5 text-caption leading-5 text-slate-400">新密码直接生效，无需旧密码；请通过其他渠道告知该用户。</p>
             <input
+              aria-label="新密码"
               type="password"
               value={newPwd}
               onChange={(e) => setNewPwd(e.target.value)}

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { getCategoryBySlug } from "./lib/docs-config";
 import exactMap from "./redirects/exact-map.json";
 import inlineMap from "./redirects/inline-map.json";
 import wildcardRules from "./redirects/wildcard-rules.json";
@@ -74,7 +75,69 @@ export const config = {
   matcher: ["/docs/:path*"],
 };
 
-export default function proxy(req: NextRequest) {
+/**
+ * 存在性预检：/docs 的 404 必须在响应头发送前决定。
+ *
+ * 页面里的 notFound() 发生在流式渲染中，那时响应头已经是 200；之前只能靠删掉 loading.tsx
+ * 让 Next 等到判定完成。这里把判定提前到 proxy：详情页按分类 dir 反推 filePath 向后端要一次存在性，
+ * 分类页按 56 个 slug 静态判定。后端 5xx/超时一律放行——宁可让页面自己 404，
+ * 也不能因为后端抖动把整站文档误判为不存在。
+ */
+const BACKEND_ORIGIN = process.env.KB_BACKEND_ORIGIN ?? "http://127.0.0.1:8084";
+const EXIST_TTL_MS = 60_000;
+const EXIST_CACHE_MAX = 500;
+const existCache = new Map<string, { ok: boolean; at: number }>();
+
+const DOC_CATEGORY = /^\/docs\/([^/]+)\/?$/;
+const DOC_DETAIL = /^\/docs\/([^/]+)\/(.+?)\/?$/;
+
+/** pathname 可能是编码形态（含中文段），解码失败时按原样使用，不能因此抛错。 */
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function remember(filePath: string, ok: boolean) {
+  // 只缓存明确结论（存在/不存在）；超时与 5xx 不进缓存，下次请求重新判定。
+  if (existCache.size >= EXIST_CACHE_MAX) {
+    const oldest = existCache.keys().next().value;
+    if (oldest) existCache.delete(oldest);
+  }
+  existCache.set(filePath, { ok, at: Date.now() });
+}
+
+async function docExists(filePath: string): Promise<boolean | null> {
+  const cached = existCache.get(filePath);
+  if (cached && Date.now() - cached.at < EXIST_TTL_MS) return cached.ok;
+  try {
+    const res = await fetch(`${BACKEND_ORIGIN}/content/doc?path=${encodeURIComponent(filePath)}`, {
+      headers: { accept: "application/json" },
+      cache: "no-store",
+      signal: AbortSignal.timeout(1500),
+    });
+    if (res.status === 404) {
+      remember(filePath, false);
+      return false;
+    }
+    if (res.ok) {
+      remember(filePath, true);
+      return true;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/** rewrite 到站点自己的 404 页并显式带 404 状态；返回空响应会丢掉导航与文案。 */
+function missingPage(req: NextRequest) {
+  return NextResponse.rewrite(new URL("/not-found", req.url), { status: 404 });
+}
+
+export default async function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   for (const candidate of variants(pathname)) {
@@ -96,6 +159,22 @@ export default function proxy(req: NextRequest) {
       const rest = pathname.slice(normalized.length);
       return redirect(req, rule.destination.replace(PATH_MARKER, rest));
     }
+  }
+
+  // 旧链接已在上面的重定向里处理，剩下的是"当前 URL 是否真有这页"
+  const decoded = safeDecode(pathname);
+
+  const categoryOnly = DOC_CATEGORY.exec(decoded);
+  if (categoryOnly && !getCategoryBySlug(categoryOnly[1])) return missingPage(req);
+
+  const detail = DOC_DETAIL.exec(decoded);
+  if (detail) {
+    const category = getCategoryBySlug(detail[1]);
+    const rest = detail[2].replace(/\/+$/, "");
+    if (!category || !rest) return missingPage(req);
+    // URL 相对分类目录的部分补回 .md，即后端 filePath
+    const exists = await docExists(`${category.dir}/${rest}.md`);
+    if (exists === false) return missingPage(req);
   }
 
   return NextResponse.next();

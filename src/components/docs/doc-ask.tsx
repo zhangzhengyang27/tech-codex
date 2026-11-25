@@ -231,6 +231,7 @@ export function DocAskPanel({ docPath, docTitle }: { docPath: string; docTitle: 
                 {error && <p className="mb-1.5 text-xs text-red-500">{error}</p>}
                 <div className="flex items-end gap-2">
                   <textarea
+                    aria-label="向文档提问"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => {

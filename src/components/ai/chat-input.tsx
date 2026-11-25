@@ -40,6 +40,7 @@ export function ChatInput({
       )}
       <form onSubmit={submit} className="flex items-end gap-2">
         <textarea
+          aria-label="输入对话内容"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => {

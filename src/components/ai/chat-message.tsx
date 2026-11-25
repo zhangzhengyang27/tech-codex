@@ -134,6 +134,7 @@ function FeedbackRow({
       {showComment && (
         <div className="mt-2">
           <textarea
+            aria-label="填写反馈说明"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             rows={2}

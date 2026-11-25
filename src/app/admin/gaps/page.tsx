@@ -241,7 +241,7 @@ export default function ContentGapsPage() {
             </div>
             <div className="relative ml-auto w-full sm:w-56">
               <Search size={13} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="搜索问题…"
+              <input aria-label="搜索内容缺口" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="搜索问题…"
                 className="h-8 w-full rounded-lg border border-slate-200 bg-white pl-8 pr-3 text-xs outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/25" />
             </div>
           </div>
@@ -307,7 +307,7 @@ export default function ContentGapsPage() {
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-2 py-3">
-                          <select value={item.status} disabled={actionBusy} onChange={(e) => void onStatusChange(item.id, e.target.value as GapStatus)}
+                          <select aria-label="调整缺口状态" value={item.status} disabled={actionBusy} onChange={(e) => void onStatusChange(item.id, e.target.value as GapStatus)}
                             className={`rounded-md border px-1.5 py-1 text-2xs outline-none ${sm.tone}`}>
                             {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
                           </select>
@@ -405,8 +405,8 @@ export default function ContentGapsPage() {
                   {detail.gap.evalCaseId ? <p className="mt-2 text-xs text-violet-600">已转评测用例 #{detail.gap.evalCaseId}</p> : (
                     <>
                       <p className="mt-1 text-caption leading-relaxed text-slate-500">问题原文直接复用；填写一个能区分正确/错误答案的关键字（逗号分隔多个）。</p>
-                      <input value={convertKeywords} onChange={(e) => setConvertKeywords(e.target.value)} placeholder="如：扩容、负载因子" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
-                      <input value={convertNote} onChange={(e) => setConvertNote(e.target.value)} placeholder="备注（可选）" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
+                      <input aria-label="期望命中关键字" value={convertKeywords} onChange={(e) => setConvertKeywords(e.target.value)} placeholder="如：扩容、负载因子" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
+                      <input aria-label="转换备注" value={convertNote} onChange={(e) => setConvertNote(e.target.value)} placeholder="备注（可选）" className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent/20" />
                       <button onClick={() => void onConvert()} disabled={converting} className="mt-2 flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50">
                         {converting ? <Loader2 size={13} className="animate-spin" /> : <ArrowRight size={13} />} 创建评测用例
                       </button>

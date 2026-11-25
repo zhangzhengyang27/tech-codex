@@ -210,12 +210,14 @@ export default function FeedbackAdminPage() {
                         <div className="space-y-2">
                           <div className="flex flex-col gap-2 sm:flex-row">
                             <input
+                              aria-label="期望命中关键字"
                               value={convertForm.keywords}
                               onChange={(e) => setConvertForm({ ...convertForm, keywords: e.target.value })}
                               placeholder="期望命中关键字（逗号分隔，必填）"
                               className="h-9 flex-1 rounded-lg border border-slate-200 bg-slate-50/70 px-3 text-xs outline-none focus:border-accent focus:bg-white"
                             />
                             <input
+                              aria-label="转换备注"
                               value={convertForm.note}
                               onChange={(e) => setConvertForm({ ...convertForm, note: e.target.value })}
                               placeholder="备注（缺省记录用户评语）"

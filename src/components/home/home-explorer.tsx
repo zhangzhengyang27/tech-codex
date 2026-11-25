@@ -157,6 +157,7 @@ export function HomeExplorer({ groups, stats, updates }: HomeExplorerProps) {
                 className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40"
               />
               <input
+                aria-label="搜索文档"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={mode === 'smart' ? '语义 + 全文混合检索，试试描述你想找的内容…' : '搜索分组、分类或文档标题…'}

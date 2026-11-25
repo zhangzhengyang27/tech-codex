@@ -111,6 +111,7 @@ export default function AdminContentPage() {
             <div className="relative w-full max-w-xs flex-1">
               <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
+                aria-label="搜索内容"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="搜索标题或路径"
@@ -118,6 +119,7 @@ export default function AdminContentPage() {
               />
             </div>
             <select
+              aria-label="按分类筛选"
               value={categoryDir}
               onChange={(e) => {
                 setCategoryDir(e.target.value);

@@ -184,11 +184,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, [mobileOpen]);
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-[#f4f6f9]">
+    <div className="min-h-screen bg-[#f4f6f9]">
       {/* 移动端：顶部一条工作台入口，点击后从左侧展开抽屉。必须放在内容之前，
           sticky 才能在首屏可见并固定于全局导航下方。 */}
       <div className={clsx(
-        "sticky top-14 z-30 flex h-11 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur lg:hidden",
+        "sticky top-0 z-30 flex h-11 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur lg:hidden",
         mobileOpen && "invisible",
       )}>
         <span className="flex items-center gap-2 text-compact font-medium text-slate-800">
@@ -206,9 +206,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </button>
       </div>
 
-      <div className="flex min-h-[calc(100vh-3.5rem)]">
+      <div className="flex min-h-screen">
         {/* 桌面端常驻侧栏：深色控制台风格，与内容画布形成清晰层级 */}
-        <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[236px] shrink-0 flex-col bg-[#0b1524] lg:flex">
+        <aside className="sticky top-0 hidden h-screen w-[236px] shrink-0 flex-col bg-[#0b1524] lg:flex">
           <SidebarBrand />
           <NavLinks />
           <SidebarFooter />
@@ -224,14 +224,14 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
 
       {mobileOpen && (
-        <div className="fixed inset-0 top-14 z-30 lg:hidden">
+        <div className="fixed inset-0 z-30 lg:hidden">
           <button
             type="button"
             aria-label="关闭管理菜单"
             className="absolute inset-0 bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="relative flex h-[calc(100vh-3.5rem)] w-[264px] flex-col bg-[#0b1524] shadow-2xl">
+          <aside className="relative flex h-screen w-[264px] flex-col bg-[#0b1524] shadow-2xl">
             <button
               type="button"
               onClick={() => setMobileOpen(false)}

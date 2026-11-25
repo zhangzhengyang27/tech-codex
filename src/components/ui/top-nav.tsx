@@ -288,6 +288,10 @@ export function TopNav() {
     closeTimer.current = setTimeout(() => setActiveDropdown(null), 120);
   };
 
+  // 管理台是独立工作窗口：不渲染前台导航，避免 /admin 被站点外壳包裹。
+  // 入口链接统一 target="_blank"，从文档站点进来就落到独立窗口。
+  if (pathname.startsWith("/admin")) return null;
+
   return (
     <>
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/70 backdrop-blur-xl">
@@ -417,6 +421,8 @@ export function TopNav() {
                             <Link
                               key={l.href}
                               href={l.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               onClick={() => setActiveDropdown(null)}
                               className={clsx(
                                 "flex items-center gap-2.5 rounded-lg px-3 py-2 text-compact transition-colors",
@@ -623,6 +629,8 @@ export function TopNav() {
                             <Link
                               key={l.href}
                               href={l.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               onClick={() => setMobileOpen(false)}
                               className={clsx(
                                 "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors",
